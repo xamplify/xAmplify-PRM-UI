@@ -204,6 +204,13 @@ export class DashboardService {
         .catch(this.handleError);
     }
 
+    
+    changeAccess(campaignAccess:any){
+        return this.http.post(this.authenticationService.REST_URL + `admin/updateAccess?access_token=${this.authenticationService.access_token}`,campaignAccess)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         // console.log("response.json(): "+body);

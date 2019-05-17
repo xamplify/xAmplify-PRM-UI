@@ -88,9 +88,8 @@
 								<a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
 								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a>
 								
-								<!-- <a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
-								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a> -->
-								
+								<a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
+								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a>
 								</td>
 							</tr>
 							</ng-container>
@@ -150,53 +149,57 @@
   <app-scroll-top></app-scroll-top>
   <section>
   <!-- ---Access Modal Pop Up -->
-<!--   <div class="modal right " id="access-template-div" >
+  <div class="modal right " id="access-modal" data-backdrop="static">
 			<div class="modal-dialog modal-lg" style="width: 75%;right:0">
 				<div class="modal-content">
+ 			   <ngx-loading [show]="updateFormLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 					<div class="modal-header">
-						<button type="button" class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i>
+						<button type="button" class="close-circle" data-dismiss="modal">
+							<i class="fa fa-times"></i>
 						</button>
 						<h4 class="modal-title text-center" id="email-template-title">Available Modules</h4>
 					</div>
 					<div class="modal-body">
+						<app-response-message [customResponse]="updateFormCustomResponse" *ngIf="updateFormCustomResponse.isVisible"></app-response-message>
 						<div class="portlet-body clearfix">
 						<div class="table-responsive" style="overflow-x:inherit">
 							<table class="table table-striped  table-hover" style="width:100%">
 							  <tr>
 							    <th>Email Campaign</th>
-							    <td><input type="checkbox" [(ngModel)]="modulesAccess.regular"></td>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.emailCampaign"></td>
 							  </tr>
 							  <tr>
 							    <th>Video Campaign</th>
-							    <td>{{modulesAccess?.video}}</td>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.videoCampaign"></td>
 							  </tr>
 							  <tr>
 							    <th>Social Campaign</th>
-							    <td>{{modulesAccess?.social}}</td>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.socialCampaign"></td>
 							  </tr>
 							  <tr>
 							    <th>Event Campaign</th>
-							    <td>{{modulesAccess?.event}}</td>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"></td>
 							  </tr>
 							  <tr>
 							    <th>Leads</th>
-							    <td>{{modulesAccess?.leads}}</td>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.leads"></td>
 							  </tr>
 							  <tr>
-							    <th>Landing Pages</th>
-							    <td>{{modulesAccess?.landingPages}}</td>
+							    <th>Form Builder</th>
+							   <td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder"></td>
 							  </tr>
 							</table>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
+						<button type="button" (click)="updateAccess()" class="btn btn-info">Update</button>
 						<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
 					</div>
 				</div>
 			</div>
 		</div>
-   -->
+  
   </section>
   
 </div>

@@ -1,0 +1,337 @@
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
+          [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i></li>
+      <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a
+          [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+      <li style="color: #808080">Manage Forms</li>
+    </ul>
+  </div>
+  <div style="position: relative; top: -10px">
+    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  </div>
+  <div class="row">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class="col-md-12">
+      <div class="portlet light clearfix" style="min-height: 644px;">
+        <div class="portlet-title" style="border-bottom: none">
+          <div class="row">
+            <div class="page-toolbar col-xs-12">
+              <div class="btn-group pull-right">
+                <ng-container class='m10'>
+                  <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View"
+                    [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i
+                      class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                  <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="Grid View"
+                    [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i
+                      class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                </ng-container>
+                <div class="inputs" align="right" style="float: right">
+                  <div style="float: left;">
+                    <select class="form-control" [(ngModel)]="selectedSortedOption"
+                      (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
+                      <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="portlet-input input-inline input-small" style="width: 198px !important;">
+                    <div class="input-icon right" style="position: relative;right: -5px;">
+                      <input type="text" class="form-control" [(ngModel)]="searchKey"
+                        [ngModelOptions]="{standalone: true}" placeholder="Search for a form"
+                        (keypress)="eventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+                        (click)="searchKey='';searchForms()"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchForms()"><i
+                          class="fa fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+        <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+        <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+        <section [hidden]="!isListView">
+          <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+            <div class="table-responsive">
+              <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
+                <thead>
+                  <tr>
+                    <th class="visible-xs" colspan="1" style="width: 45%">Email Template List</th>
+                    <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form Details</th>
+                    <th class="hidden-xs text-center">Created On</th>
+                    <th class="text-center" style="min-width: 145px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let form of pagination.pagedItems ;let i =index">
+                      <td class="hidden-xs" style="width: 10%;">
+                          <img class="img-class" src="assets/images/bee-template/rich-co-branding-news-letter.png" alt="{{form.name}}">
+                      </td>
+                    <td>
+                      <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                        {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
+                      </h4>
+                      <h6>
+                        Created By <b>{{form.createdName}}</b>
+                      </h6>
+                      <h6>
+                        From <b>{{form.companyName}}</b>
+                      </h6>
+                    </td>
+                  
+                    <td class="hidden-xs text-center">
+                      <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
+                      </app-timestamp>
+                    </td>
+                    <td id="actions-row">
+                      <div class="actions-block override-actions">
+                        <a  data-toggle="tooltip" data-placement="top"  title="Edit" (click)="edit(form.id)">
+                          <i class="fa fa-pencil-square-o"></i>
+                        </a> 
+                        <a  data-toggle="tooltip"  data-placement="top" title="Preview" (click)="preview(form.id)"> 
+                        	<i class="fa fa-eye"></i>
+                        </a> 
+                        <a id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete">
+                          <i class="fa fa-trash-o"></i>
+                        </a>
+                        <a data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)" >
+                          <i class="fa fa-clipboard"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+        </section>
+
+        <div class="row" [hidden]="isListView || httpRequestLoader.isLoading">
+          <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index"
+            id="formListDiv_{{form.id}}">
+            <div class="grid-box">
+                <img class="img-class" src="assets/images/bee-template/rich-co-branding-news-letter.png" alt="{{form.name}}">
+              <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
+              </h4>
+              <div>
+                <h6>
+                  Created On <b>
+                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
+                  </b>
+                </h6>
+                  <h6 title="{{form.createdName}}">
+                    By <b>{{form.createdName | slice:0:17}}</b>
+                    <span *ngIf="form.createdName?.length>17">..</span>
+                  </h6>
+                  <h6 title="{{form.companyName}}">
+                    From <b>{{form.companyName | slice:0:17}}</b>
+                    <span *ngIf="form.companyName?.length>17">..</span>
+                  </h6>
+              </div>
+              <div class="bar">
+                <a  data-toggle="tooltip" data-placement="top"
+                  title="Edit" (click)="edit(form.id)">
+                  <i class="fa fa-pencil-square-o"></i>
+                </a> 
+                <a   data-toggle="tooltip"
+                  data-placement="top" title="Preview" (click)="preview(form.id)"> <i class="fa fa-eye"></i>
+                </a> 
+                <a (click)="confirmDelete(form)" data-toggle="tooltip"
+                  data-placement="top" title="Delete">
+                  <i class="fa fa-trash-o"></i>
+                </a>
+                <a data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)" >
+                  <i class="fa fa-clipboard"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+          <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+            (notifyParentDropDown)="listForms($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+        </div>
+        <!-- End of 24 -->
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+          <strong>No Forms Found.   <a [routerLink]="['/home/forms/add']">Create a new one</a></strong>
+        </div>
+      </div>
+      <!-- END PAGE CONTENT-->
+    </div>
+  </div>
+
+<!-- ----------------------Preview Modal Pop Up------------------- -->
+  <div class="modal right " id="form-preview-modal-old" data-backdrop="static">
+			<div class="modal-dialog modal-lg" style="width: 75%;right:0">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close-circle" data-dismiss="modal">
+							<i class="fa fa-times"></i>
+						</button>
+						<h4 class="modal-title text-center">{{form?.name}}</h4>
+					</div>
+					<div class="modal-body">
+						<ng-container *ngFor="let field of form?.formLabelDTOs;let i = index">
+						<fieldset class="default-fieldset">
+							<div class="form-group">
+								<label class="control-label">{{field.labelName}}</label>
+								<!-- -------Email/Text-------- -->
+								<ng-container  *ngIf="field.labelType=='text' ||field.labelType=='email'">
+									<input type="{{field.labelType}}" class="form-control"  placeholder="{{field.placeHolder}}" disabled="disabled">
+								</ng-container>
+								<!-- -------Text Area-------- -->
+							<ng-container *ngIf="field.labelType=='textarea'">
+								<textarea rows="4" cols="4" autoComplete="off" maxlength="0" placeholder="{{field.placeHolder}}" class="form-control" disabled="disabled"></textarea>
+							</ng-container>
+							<!-- -----Radio Button------ -->
+							<ng-container *ngIf="field.labelType=='radio'"> 
+									<ng-container	*ngFor="let radioButton of field.radioButtonChoices;let i=index">
+									<div class="form-check">
+										<label class="form-check-label"> 
+											<input disabled="disabled" type="{{field.labelType}}" name="{{field.labelId}}"	class="form-check-input"> {{radioButton.name}}
+										</label>
+									</div>
+								<br>
+								</ng-container> 
+							</ng-container>
+							<!-- ---------------------------Check Box----------------------------- -->
+							<ng-container *ngIf="field.labelType=='checkbox'">
+							<ng-container
+								*ngFor="let checkBox of field.checkBoxChoices;let i=index">
+							<div class="form-check">
+								<label class="form-check-label"> <input
+									type="{{field.labelType}}" name="{{field.labelId}}"
+									class="form-check-input" disabled="disabled"> {{checkBox.name}}
+								</label>
+							</div>
+							<br>
+							</ng-container> </ng-container>
+							<!-- ---------------------------DropDown Menu----------------------------- -->
+							<ng-container *ngIf="field.labelType=='select'">
+							<select class="form-control">
+								<option *ngFor="let dropDownValue of field.dropDownChoices">
+									{{dropDownValue.name}}</option>
+							</select> </ng-container>
+						</div>
+						</fieldset>
+						</ng-container>
+					</div>
+					<div class="modal-footer">
+						<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+					</div>
+				</div>
+			</div>
+    </div>
+    <!-- ----------------------Preview Form Url------------------- -->
+    <div class="modal right " id="form-url-modal" data-backdrop="static">
+      <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close-circle" data-dismiss="modal">
+              <i class="fa fa-times"></i>
+            </button>
+            <h4 class="modal-title text-center">DIRECT LINK OF YOUR FORM</h4>
+          </div>
+          <div class="modal-body">
+              <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible"></app-response-message>
+            <input type="text" class="form-control" readonly="readonly" value="{{clientUrl}}f/{{form.alias}}" #userinput>
+          </div>
+          <div class="modal-footer">
+              <!-- <a class="btn btn-info" href="{{clientUrl}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
+            <a class="btn btn-primary" (click)="copyInputMessage(userinput)">Copy Link</a>
+			<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+					</div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <!------New Preview Form-->
+      <div class="modal right " id="form-preview-modal" data-backdrop="static">
+        <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close-circle" data-dismiss="modal">
+                <i class="fa fa-times"></i>
+              </button>
+              <h4 class="modal-title text-center">Form Preview</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <div class="panel-title">{{form.name}}</div>
+                    </div>
+                    <div class="panel-body">
+                      <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
+                        <div class="form-group">
+                          <label class="control-label">{{columnInfo.labelName}}
+                            <span class="required" *ngIf="columnInfo.required">*</span>
+                          </label>
+                          <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
+                            <input type="{{columnInfo.labelType}}" class="form-control"
+                              placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="50">
+                          </ng-container>
+      
+                          <ng-container *ngIf="columnInfo.labelType=='textarea'">
+                            <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+                              maxlength="250"></textarea>
+                          </ng-container>
+                          <!-- ---------------------------Radio Button----------------------------- -->
+                          <ng-container *ngIf="columnInfo.labelType=='radio'">
+                            <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                              <div class="form-check">
+                                <label class="form-check-label">
+                                  <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                                    class="form-check-input">
+                                  {{radioButton.name}}
+                                </label>
+                              </div>
+                              <br>
+                            </ng-container>
+                          </ng-container>
+                          <!-- ---------------------------Check Box----------------------------- -->
+                          <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                            <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                              <div class="form-check">
+                                <label class="form-check-label">
+                                  <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                                    class="form-check-input">
+                                  {{checkBox.name}}
+                                </label>
+                              </div>
+                              <br>
+                            </ng-container>
+                          </ng-container>
+                          <!-- ---------------------------DropDown Menu----------------------------- -->
+                          <ng-container *ngIf="columnInfo.labelType=='select'">
+                            <select class="form-control">
+                              <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                                {{dropDownValue.name}}</option>
+                            </select>
+                          </ng-container>
+                        </div>
+                      </ng-container>
+                      <button type="submit" class="btn green-haze" id="bottom-right">Submit</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  <app-scroll-top></app-scroll-top>
+</div>

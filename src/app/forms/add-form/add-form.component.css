@@ -1,0 +1,218 @@
+
+
+
+.btn-group-form button {
+	background-color: #97A6B1; /* Green background */
+	border: 1px solid #97A6B1; /* Green border */
+	color: #fff; /* White text */
+	padding: 10px 24px; /* Some padding */
+	cursor: pointer; /* Pointer/hand icon */
+	width: 100%; /* Set a width if needed */
+	margin-bottom: 10px;
+}
+
+.btn-group
+button:not
+(:last-child)
+{
+border-bottom:none;
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+	background-color: #3e8e41;
+}
+
+.right-corner {
+	float: right;
+}
+
+#portlet-height {
+	height: 785px;
+}
+
+#portlet-form-height {
+	height: 300px;
+}
+
+#create-from-div, #edit-from-div {
+	overflow-y: auto;
+	max-height: 536px;
+}
+
+#bottom-right {
+	float: right;
+}
+
+.required {
+	color: red;
+	margin: 1px;
+}
+
+.required-choice {
+	color: red;
+	margin: 15px;
+}
+
+.info {
+	color: #0c5460;
+	background-color: #d1ecf1;
+	border-color: #bee5eb;
+	margin: 1px;
+}
+
+.default-fieldset {
+	margin: 8px;
+	border: 1px solid #97A6B1;
+	padding: 8px;
+	border-radius: 4px;
+	margin-right: 1px;
+	margin-left: 1px;
+}
+
+LEGEND {
+	padding: 2px;
+}
+
+.default-fieldset.border-error {
+	margin: 8px;
+	border: 1px solid red;
+	padding: 8px;
+	border-radius: 4px;
+	margin-right: 1px;
+	margin-left: 1px;
+}
+
+.default-fieldset.border-success {
+	margin: 8px;
+	border: 1px solid green;
+	padding: 8px;
+	border-radius: 4px;
+	margin-right: 1px;
+	margin-left: 1px;
+}
+
+.selected {
+	background-color: #e5e5e5;
+	/* cursor: default; */
+
+	cursor: move;
+}
+
+#form-div:hover {
+	/* cursor: pointer; */
+
+	cursor: move;
+}
+
+.form-control.disabled {
+	/* cursor: default; */
+
+	cursor: move;
+}
+
+.form-error .control-label {
+	color: red;
+}
+
+.form-error .form-control {
+	border-color: red;
+	box-shadow: none;
+}
+
+.blur-content {
+	-webkit-filter: url(#svg-blur);
+	filter: url(#svg-blur);
+}
+.valid-form-name{
+	color: green;
+}
+.invalid-form-name{
+	color: red;
+}
+
+
+
+
+
+/* in-flight clone */
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  pointer-events: none;
+}
+/* high-performance display:none; helper */
+.gu-hide {
+  left: -9999px !important;
+}
+/* added to mirrorContainer (default = body) while dragging */
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+/* added to the source element while its mirror is dragged */
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+/* dragula-specific example page styles */
+.wrapper {
+  display: table;
+}
+.container {
+  display: table-cell;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 50%;
+}
+.container:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+/*
+ * note that styling gu-mirror directly is a bad practice because it's too generic.
+ * you're better off giving the draggable elements a unique class and styling that directly!
+ */
+.container div, .gu-mirror:not(.container) {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.4s ease-in-out;
+}
+.container div {
+  cursor: move;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+.gu-mirror {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+.container .ex-moved {
+  background-color: #e74c3c;
+}
+.container.ex-over {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.handle {
+  padding: 0 5px;
+  margin-right: 5px;
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: move;
+}
+
+#drag-div {
+	cursor: move;
+}
+
+#full-screen{
+	float: right;
+}

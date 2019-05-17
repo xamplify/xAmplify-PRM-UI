@@ -10,6 +10,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { Roles } from '../../core/models/roles';
+import { CampaignAccess } from '../../campaigns/models/campaign-access';
+
 
 declare var swal,$:any;
 
@@ -17,7 +19,7 @@ declare var swal,$:any;
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
-  providers: [Pagination, HttpRequestLoader, Properties]
+  providers: [Pagination, HttpRequestLoader, Properties,CampaignAccess]
 })
 
 export class AdminReportComponent implements OnInit {
@@ -28,14 +30,15 @@ export class AdminReportComponent implements OnInit {
     vendorsDetails: any;
     selectedVendorsDetails: any;
     detailsTielsView = false;
-    isAccessView = false;
     selectedVendorRow: any;
     loading = false;
+    updateFormLoading = false;
     isListLoading = false;
     public searchKey: string;
     customResponse: CustomResponse = new CustomResponse();
+    updateFormCustomResponse: CustomResponse = new CustomResponse();
     roles: Roles = new Roles();
-    
+    campaignAccess = new CampaignAccess();
     sortcolumn: string = null;
     sortingOrder: string = null;
 
@@ -182,7 +185,7 @@ public authenticationService: AuthenticationService, public router:Router) {
               this.loading = false;
               swal("Vedor has signed up but not yet created company information.");
           }else{
-    	  this.selectedVendorRow = selectedVendor;
+          this.selectedVendorRow = selectedVendor;
           this.authenticationService.selectedVendorId = selectedVendor.id;
           this.dashboardService.loadDashboardReportsCount( selectedVendor.id )
               .subscribe(
@@ -264,14 +267,13 @@ public authenticationService: AuthenticationService, public router:Router) {
       try {
           this.loading = true;
           this.customResponse = new CustomResponse();
+          this.updateFormCustomResponse  =new CustomResponse();
           this.dashboardService.getAccess(report.companyId)
               .subscribe(
               ( data: any ) => {
-                  console.log(data);
-                  this.isAccessView = true;
                   this.loading = false;
-                  this.modulesAccess = data;
-                  $('#access-template-div').modal('show');
+                  this.campaignAccess = data;
+                  $('#access-modal').modal('show');
               },
               error => {
                   console.error( error )
@@ -285,6 +287,24 @@ public authenticationService: AuthenticationService, public router:Router) {
           console.error( error, "adminReportComponent", "changeAccess()" );
       }
   
+  }
+  
+  updateAccess(){
+      this.updateFormLoading = true;
+      this.dashboardService.changeAccess(this.campaignAccess)
+      .subscribe(
+      ( data: any ) => {
+          this.updateFormLoading=false;
+          this.updateFormCustomResponse = new CustomResponse('SUCCESS',data.message,true );
+      },
+      error => {
+          this.updateFormLoading=false;
+          this.updateFormCustomResponse = new CustomResponse('ERROR','Something went wrong.',true );
+      },
+      () => console.info( "updateAccess() finished" )
+      )
+     
+
   }
   
   

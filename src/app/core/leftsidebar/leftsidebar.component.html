@@ -5,7 +5,7 @@
   <div class="page-sidebar navbar-collapse collapse">
     <!-- BEGIN SIDEBAR MENU -->
     <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-      <li  [ngClass]="{'active': location.path().includes('dashboard')}">
+      <li  [ngClass]="{'active': location?.path().includes('dashboard')}">
         <a [routerLink]="['/home/dashboard/default']" ><!-- [class.disabled]="!authService.user.hasCompany ?true:null" -->
         <i class="icon-home"></i>
         <span class="title">Account Dashboard</span>
@@ -169,7 +169,6 @@
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-
       </li>
 
 
@@ -181,22 +180,31 @@
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-        <!-- <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
-          <li>
-              <a *ngIf="!isOnlyPartner && authService.module.isCampaign"  [routerLink]="['./deals/manage']" >
-              <i class="fa fa-tags"></i>
-              <span class="title">As Vendor</span>
-              </a>
+        
 
-            </li>
-            <li>
-              <a  *ngIf="isOnlyPartner || authService.module.isCompanyPartner || authService.module.isPartner" [routerLink]="['./deals/manage/partners']">
-              <i class="fa fa-tags"></i>
-              <span class="title">As Partner</span>
-              </a>
-            </li>
-          </ul> -->
-      </li>
+		<li *ngIf="authService.module.hasFormAccess" [ngClass]="{'active': location.path().includes('forms')}">
+		        <a  href="javascript:;" (click)="openOrCloseTabs('forms')" >
+		        <i class="fa fa-wpforms"></i>
+		        <span class="title">Form Builder</span>
+		        <span class="arrow "></span>
+		        <span class="selected"></span>
+		        </a>
+		        <ul class="sub-menu" [ngStyle]="{'display': forms? 'block': 'none' }">
+		        <li>
+		            <a  [routerLink] ="['./forms/add']" >
+		            <i class="fa fa-wpforms"></i>
+		            <span class="title">Create Form</span>
+		            </a>
+		          </li>
+		          <li>
+		            <a  [routerLink] ="['./forms/manage']">
+		            <i class="fa fa-list"></i>
+		            <span class="title">Manage Form</span>
+		            </a>
+		          </li>
+		        </ul>
+	     </li>
+
 
 
       <!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">

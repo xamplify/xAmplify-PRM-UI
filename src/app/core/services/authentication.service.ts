@@ -81,7 +81,8 @@ export class AuthenticationService {
                         'refreshToken': this.map.refresh_token,
                         'expiresIn': this.map.expires_in,
                         'hasCompany': res.json().hasCompany,
-                        'roles': res.json().roles
+                        'roles': res.json().roles,
+                        'campaignAccessDto':res.json().campaignAccessDto
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
@@ -292,6 +293,7 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+        module.hasFormAccess = false;
         this.isAddedByVendor = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {

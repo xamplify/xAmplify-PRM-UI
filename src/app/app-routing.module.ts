@@ -26,6 +26,8 @@ import { CompanyPageComponent } from './dashboard/company-profile/company-page/c
 import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
+import {FormPreviewComponent} from './forms/preview/form-preview.component';
+
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -51,6 +53,7 @@ export const routes: Routes = [
           { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
           { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
           { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
+          { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
           { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
@@ -71,6 +74,7 @@ export const routes: Routes = [
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'rsvp/:alias', component: RsvpComponent },
+    {path: 'f/:alias', component:FormPreviewComponent},
     { path: '**', component: PageNotFoundComponent},
 ];
 

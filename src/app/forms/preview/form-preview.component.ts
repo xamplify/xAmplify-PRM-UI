@@ -1,0 +1,136 @@
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ReferenceService } from '../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import {FormService} from '../services/form.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { Form } from '../models/form';
+import { FormSubmit } from '../models/form-submit';
+import { FormSubmitField } from '../models/form-submit-field';
+import { Processor } from '../../core/models/processor';
+import { ColumnInfo } from '../models/column-info';
+import {FormOption} from '../models/form-option';
+import { CustomResponse } from '../../common/models/custom-response';
+
+declare var $:any;
+
+
+@Component({
+  selector: 'app-form-preview',
+  templateUrl: './form-preview.component.html',
+  styleUrls: ['./form-preview.component.css','../../../assets/css/loader.css'],
+  providers: [HttpRequestLoader,FormService,Processor],
+})
+export class FormPreviewComponent implements OnInit {
+  ngxLoading = false;
+    customResponse: CustomResponse = new CustomResponse();
+    alias: any;
+    form:Form = new Form();
+    hasFormExists = true;
+    validForm = true;
+    alertClass ="";
+    successAlertClass = "alert alert-success";
+    errorAlertClass = "alert alert-danger";
+    show: boolean;
+    formSubmitted = false;
+    message: string;
+  constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
+    private authenticationService:AuthenticationService,private formService:FormService,
+    private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor) { }
+
+  ngOnInit() {
+      this.processor.set(this.processor);
+      this.alias = this.route.snapshot.params['alias'];
+      this.getFormFieldsByAlias(this.alias);
+
+  }
+
+  getFormFieldsByAlias(alias: string) {
+    this.formService.getByAlias(alias)
+      .subscribe(
+        (response: any) => {
+          if (response.statusCode === 200) {
+            this.hasFormExists = true;
+            this.form = response.data;
+          } else {
+            this.hasFormExists = false;
+          }
+          this.processor.remove(this.processor);
+
+        },
+        (error: string) => {
+          this.processor.remove(this.processor);
+          this.logger.errorPage(error);
+          this.referenceService.showServerError(this.httpRequestLoader);
+        }
+      );
+
+  }
+
+
+  /*******Submit Forms********* */
+  submitForm(){
+    this.show = false;
+    this.ngxLoading = true;
+    this.referenceService.goToTop();
+    this.validForm = true;
+    const formLabelDtos = this.form.formLabelDTOs;
+    const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length===0) );
+    if(requiredFormLabels.length>0){
+      this.validForm = false;
+      this.addHeaderMessage('Please fill required fields',this.errorAlertClass);
+    }else{
+      this.validForm = true;
+      const formSubmit = new FormSubmit();
+      formSubmit.id = this.form.id;
+      $.each(formLabelDtos,function(index:number,field:ColumnInfo){
+          const formField  = new FormSubmitField();
+          formField.id = field.id;
+          formField.value = $.trim(field.value);
+          if(field.labelType==="checkbox"){
+            formField.dropdownIds = field.value;
+            formField.value = "";
+          }
+          formSubmit.fields.push(formField);
+      });
+      this.formService.submitForm(formSubmit)
+      .subscribe(
+        (response: any) => {
+          if(response.statusCode==200){
+              this.addHeaderMessage(response.message,this.successAlertClass);
+              this.formSubmitted = true;
+          }
+        },
+        (error: string) => {
+          this.ngxLoading = false;
+          this.addHeaderMessage("Something went wrong.Please try after sometime",this.errorAlertClass);
+        }
+      );
+
+
+    }
+  }
+
+  addHeaderMessage(message:string,divAlertClass:string){
+      this.ngxLoading = false;
+      this.show = true;
+      this.message = message;
+      this.alertClass = divAlertClass;
+  }
+  removeErrorMessage(){
+    this.show = false;
+  }
+
+  updateCheckBoxModel(columnInfo:ColumnInfo,formOption:FormOption,event:any){
+    if(columnInfo.value===undefined){
+      columnInfo.value = Array<number>();
+    }
+    if(event.target.checked){
+      columnInfo.value.push(formOption.id);
+    }else{
+      columnInfo.value.splice($.inArray(formOption.id,columnInfo.value),1);
+    }
+  }
+
+}

@@ -101,7 +101,6 @@ export class ReferenceService {
     dealId = 0;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
-        console.log('reference service constructor');
         this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
         this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
         this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
@@ -188,7 +187,6 @@ export class ReferenceService {
     }
     extractData(res: Response) {
         let body = res.json();
-        console.log(body);
         return body || {};
     }
 
@@ -1717,8 +1715,8 @@ export class ReferenceService {
         const scrollingElement = (document.scrollingElement || document.body)
         $("#"+elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
      }
-    getOrgCampaignTypes(companyId: any) {
-      return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
+    getOrgCampaignTypes(userId: any) {
+      return this.http.get(this.authenticationService.REST_URL + `campaign/access/${userId}?access_token=${this.authenticationService.access_token}` )
           .map(this.extractData)
           .catch(this.handleError);
     }
@@ -1727,5 +1725,24 @@ export class ReferenceService {
        return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
         .map(this.extractData)
         .catch(this.handleError);
+    }
+    
+    replaceAllSpacesWithUnderScore(text:string){
+        return text = text.replace(/ /g,"_").toLocaleLowerCase();
+    }
+    replaceAllSpacesWithEmpty(text:string){
+        return text = text.replace(/ /g,"").toLocaleLowerCase();
+    }
+    
+    scrollToBottomByDivId(divId:string){
+        $('#'+divId).animate({
+            scrollTop: $('#'+divId)[0].scrollHeight}, 500);
+    }
+    
+    removeObjectFromArrayList(arr:any,id:string,key:string){
+        arr = $.grep(arr, function(data, index) {
+            return data[key] !== id;
+         });
+        return arr;
     }
 }

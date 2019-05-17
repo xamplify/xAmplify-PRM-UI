@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
-
+import { LoadingModule } from 'ngx-loading';
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -51,15 +51,16 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
+import {FormPreviewComponent} from './forms/preview/form-preview.component';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
+        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule],
     providers: [{
         provide: Http,
         useFactory: httpService,
