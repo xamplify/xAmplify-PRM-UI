@@ -212,6 +212,7 @@
                 <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else OtherType">Email Co-Branding</span>
                 <ng-template #OtherType>{{emailTemplate.emailTemplateType}}</ng-template>
               </span>
+              <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
 							</h4>
 							<!-- <h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5> -->
 							<div>
