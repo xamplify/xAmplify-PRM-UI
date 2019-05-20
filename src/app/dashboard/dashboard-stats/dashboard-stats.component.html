@@ -20,7 +20,7 @@
 				</div>
 				<div class="details">
 					<div class="number">{{dashboardReport.totalCreatedCampaigns}}</div>
-					<div class="desc">Total Campaigns</div>
+					<div class="desc">Campaigns</div>
         </div>
         <span  class="morePadding">
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -36,7 +36,7 @@
 				</div>
 				<div class="details">
           <div class="number">{{dashboardReport.totalContacts}}</div>
-					<div class="desc" >Total Contacts</div>
+					<div class="desc" >Contacts</div>
         </div>
         <span  class="morePadding">
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -101,7 +101,7 @@
               <span *ngIf="dashboardReport.vendorsCount; else vendorsEmpty">{{dashboardReport.vendorsCount}} </span>
               <ng-template #vendorsEmpty>0</ng-template>
           </div>
-          <div class="desc">Total Vendors</div>
+          <div class="desc">Vendors</div>
         </div>
         <span id="permhref" class="morePadding">
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -116,7 +116,7 @@
 				</div>
 				<div class="details">
           <div class="number">{{dashboardReport.totalContacts}}</div>
-					<div class="desc" >Total Contacts</div>
+					<div class="desc" >Contacts</div>
         </div>
         <span  class="morePadding">
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -145,7 +145,7 @@
 				</div>
 				<div class="details">
 					<div class="number">{{dashboardReport.toalEmailTemplates}}</div>
-					<div class="desc">Total Email Templates</div>
+					<div class="desc">Email Templates</div>
         </div>
         <span id="permhref" class="morePadding">
           <a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
@@ -166,7 +166,7 @@
             <span *ngIf="dashboardReport.totalTeamMembers; else count">{{dashboardReport.totalTeamMembers}}</span>
             <ng-template #count>0</ng-template>
           </div>
-					<div class="desc" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor && !authenticationService.isSuperAdmin()">Total Contacts</div>
+					<div class="desc" *ngIf="!this.authenticationService.isVendor() && !authenticationService.isAddedByVendor && !authenticationService.isSuperAdmin()">Contacts</div>
 					<div class="desc" *ngIf="(this.authenticationService.isVendor() && !authenticationService.isAddedByVendor) || authenticationService.isSuperAdmin()">Team Members</div>
           <div class="desc" *ngIf="authenticationService.isAddedByVendor">Team Members</div>
           <!-- Total Partners -->
