@@ -1,0 +1,107 @@
+<div class="page-content">
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home"></i>
+        <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+       <li>
+      		<a [routerLink]="['/home/forms/manage']">Manage Forms</a><i class="fa fa-angle-right"></i>
+      	</li>
+      <li>
+        <a>Analytics</a>
+      </li>
+    </ul>
+  </div>
+<div class="row" id="responsive">
+          <div class="col-xs-12 p5" *ngIf="statusCode==200">
+            <div class="portlet light">
+              <div class="portlet-title">
+               <!--  <div class="caption">
+                  <span class="caption-subject font-red-sunglo uppercase">List</span>
+                </div> -->
+                <div class="inputs" align="right" style="float: right">
+					<div style="float: left;">
+						<!-- <select class="form-control" [(ngModel)]="sortOption.campaignPartnersRemoveAccessDefaultSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+							<option *ngFor="let option of sortOption.campaignPartnersRemoveAccessSortDropDown" [ngValue]="option">{{option.name}}</option>
+						</select> -->
+					</div>
+					<div class="portlet-input input-inline input-small" style="margin-right: 10px;">
+						<div class="input-icon right" style="position: relative;right: -11px;">
+							<!-- <input type="text"  style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchOnKeyPress($event.keyCode)">
+					            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
+					            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button> -->
+					            
+					             <button type="button" class="close-circle" [routerLink]="['/home/forms/manage']"  data-toggle="tooltip" data-placement="top"  title="Close" >
+										<i class="fa fa-times"></i>
+								</button>
+								 <button type="button" class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top"  title="Refresh"  >
+										<i class="fa fa-refresh"></i>
+								</button>
+	               		</div>
+					</div>
+				</div>
+              </div>
+               <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+              <div class="portlet-body"  *ngIf="!httpRequestLoader.isLoading">
+               <table class="table tgrid">
+							<thead>
+								<tr>
+								<ng-container *ngFor="let column of columns;let i  = index">
+									<th>{{column.labelName}} <span class="required" *ngIf="column.required">*</span></th>
+								</ng-container>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let formDataRow of pagination.pagedItems">
+								<td *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">{{columnValue.value}}</td>           
+ 						</tr>
+							</tbody>
+						</table>
+              </div>
+              
+              <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+         		 <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+            	(notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+        	</div>
+        	<!-- End of 24 -->
+        	<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+         	 <strong>No Data Found.   <a [routerLink]="['/home/forms/manage']">Go Back</a></strong>
+       	 </div>
+              
+              
+              
+              <!-- 	<div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
+						<div *ngIf="partnersPagination.pagedItems.length !== 0">
+							<app-pagination [pagination]="partnersPagination"  [isDropdown]="true"
+							 (notifyParent)="setPage($event)"
+							  (notifyParentDropDown)="listPartners($event)">
+							</app-pagination>
+							<select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize"
+								 (ngModelChange)="paginationDropdown($event)">
+								<option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
+							</select>
+						</div>
+					</div> -->
+            </div>
+          </div>
+          
+          <div class="col-xs-12 p5" *ngIf="statusCode==404">
+          	<div class="alert alert-danger">
+          		<strong><h4>Form does not exists</h4></strong>
+          	</div>
+          </div>
+          
+          
+          <div class="col-xs-12 p5" *ngIf="statusCode==403">
+          	<div class="alert alert-danger">
+          		<strong><h4>Access Denied</h4></strong>
+          	</div>
+          </div>
+          
+        </div>
+        <app-scroll-top></app-scroll-top>
+</div>
+
+
