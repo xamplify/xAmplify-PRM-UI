@@ -747,17 +747,25 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         var startTime = new Date();
         $( "#clipBoardValidationMessage" ).html( '' );
         var self = this;
+        
         var allTextLines = this.clipboardTextareaText.split( "\n" );
         this.xtremandLogger.info( "allTextLines: " + allTextLines );
         this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
-        for ( var i = 0; i < allTextLines.length; i++ ) {
+        if(this.clipboardTextareaText === ""){
+            $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>" );  
+            isValidData = false;
+        }
+        
+        if(this.clipboardTextareaText != ""){
+         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
             if ( !this.validateEmailAddress( data[4] ) ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
                 isValidData = false;
             }
             this.newPartnerUser.length = 0;
+         }
         }
         if ( isValidData ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );

@@ -919,7 +919,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.xtremandLogger.info( "allTextLines: " + allTextLines );
         this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
-        for ( var i = 0; i < allTextLines.length; i++ ) {
+        if(this.clipboardTextareaText === ""){
+            $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>" );  
+            isValidData = false;
+        }
+        
+        if(this.clipboardTextareaText != ""){
+         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
             if ( !this.validateEmailAddress( data[4] ) ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
@@ -927,6 +933,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             }
             this.users.length = 0;
             this.pagination.pagedItems.length = 0;
+         }
         }
         if ( isValidData ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
