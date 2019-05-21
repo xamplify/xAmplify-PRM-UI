@@ -219,6 +219,7 @@ export class PartnerReportsComponent implements OnInit {
       // this.listRedistributedThroughPartnerCampaigns(this.pagination);
       $('#active-partner-div').show();
       $("#redistribute-partners-div").hide();
+      this.getActivePartnerReports();
   }
 
   /****************************Through Partner Analytics**************************/

@@ -251,7 +251,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     loadContactLists( pagination: Pagination ) {
         try {
             this.referenceService.loading( this.httpRequestLoader, true );
-            //this.pagination.maxResults = 12;
             this.pagination.filterKey = 'isPartnerUserList';
             this.pagination.filterValue = this.isPartner;
             this.contactService.loadContactLists( pagination )
@@ -267,12 +266,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     } else {
                         pagination.totalRecords = this.totalRecords;
                         pagination = this.pagerService.getPagedItems( pagination, this.contactLists );
-
-                        for( let i=0; i< data.listOfUserLists.length; i++ ){
-                            if( data.listOfUserLists[i].defaultPartnerList){
-                                this.defaultPartnerListId = data.listOfUserLists[i].id;
-                            }
-                        }
 
                     }
                     if ( this.contactLists.length == 0 ) {
@@ -1499,6 +1492,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     if ( data.message == "success" ) {
                         this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
                         this.contactService.successMessage = true;
+                    }else {
+                        this.customResponse = new CustomResponse( 'ERROR', 'Some thing went wrong please try after some time.', true );
                     }
                 },
                 ( error: any ) => {
@@ -1555,6 +1550,26 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
 
     }
+    
+    
+    defaultPartnerList( userId: number ) {
+        try {
+            this.contactService.defaultPartnerList( userId )
+                .subscribe(
+                ( data: any ) => {
+                    console.log( data );
+                    this.defaultPartnerListId = data.id;
+                    this.contactService.partnerListName = data.name;
+                },
+                error => this.xtremandLogger.error( error ),
+                () => {
+                    console.log( 'loadContacts() finished' );
+                }
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "default PartnerList" );
+        }
+    }
 
 
     ngAfterViewInit() {
@@ -1567,6 +1582,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.loadContactLists( this.pagination );
             this.contactsCount();
             this.loadContactListsNames();
+            
+            if(this.isPartner){
+                this.defaultPartnerList( this.authenticationService.getUserId() );
+            }
+            
         }
         catch ( error ) {
             this.xtremandLogger.error( "ERROR : MangeContactsComponent ngOnInit() " + error );
