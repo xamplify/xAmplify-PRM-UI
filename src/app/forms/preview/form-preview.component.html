@@ -25,11 +25,11 @@
 							</label>
 							<ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
 									<input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" 
-									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="50">
+									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="255">
 							</ng-container>	
 
 							<ng-container *ngIf="columnInfo.labelType=='textarea'">
-								<textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="250"></textarea>		
+								<textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="255"></textarea>		
 							</ng-container>	
 							<!-- ---------------------------Radio Button----------------------------- -->
 							<ng-container *ngIf="columnInfo.labelType=='radio'">

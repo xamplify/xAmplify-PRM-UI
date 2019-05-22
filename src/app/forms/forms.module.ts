@@ -8,6 +8,7 @@ import {FormsRoutingModule} from "./forms-routing.module";
 
 import { AddFormComponent } from './add-form/add-form.component';
 import { ManageFormComponent } from './manage-form/manage-form.component';
+import { FormAnalyticsComponent } from './form-analytics/form-analytics.component';
 
 
 
@@ -15,7 +16,7 @@ import { ManageFormComponent } from './manage-form/manage-form.component';
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent],
+    declarations: [AddFormComponent, ManageFormComponent, FormAnalyticsComponent,FormAnalyticsComponent],
     providers: [FormService]
 } )
 export class FormsModule { }

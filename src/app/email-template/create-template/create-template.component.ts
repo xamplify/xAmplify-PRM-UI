@@ -215,6 +215,22 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' } );
             mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' } );
         }
+        
+        var mergeContents = [{
+            name: 'Headline news',
+            value: '{headline}'
+           }, {
+            name: 'Image of last product viewed',
+            value: '{last-product-viewed}'
+           }];
+        var specialLinks: [{
+            type: 'Subscription',
+            label: 'Unsubscribe',
+            link: 'http://[unsubscribe]/'
+           }, {
+            type: 'Subscription',
+           label: 'Subscribe', 
+           link: 'http://[subscribe]/' }];
 
         if ( refService.defaultPlayerSettings != null ) {
             var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
@@ -224,6 +240,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                 autosave: 15,
                 language: 'en-US',
                 mergeTags: mergeTags,
+                specialLinks:specialLinks, 
                 onSave: function( jsonFile, htmlFile ) {
                     save( jsonFile, htmlFile );
                 },

@@ -68,12 +68,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
         public authenticationService:AuthenticationService,public formService:FormService,
         private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch) {
             
-        
-      /*  dragulaService.setOptions("VAMPIRES", {
-            removeOnSpill: true
-          });
-        */
-        
         if(this.formService.form===undefined){
             if(this.router.url==="/home/forms/edit"){
                 this.router.navigate(["/home/forms/manage"]);
@@ -101,7 +95,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
 
     private onDropModel(args) {
-        console.log(this.columnInfos);
     }
     
     ngOnInit() {
@@ -230,6 +223,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
         }else{
             columnInfo.required = false;
         }
+        if(!this.isAdd && column.id!=undefined){
+            columnInfo.id = column.id;
+            columnInfo.placeHolder = column.placeHolder;
+        }
         columnInfo.labelId = this.referenceService.replaceAllSpacesWithUnderScore(columnInfo.labelName);
         columnInfo.hiddenLabelId = this.referenceService.replaceAllSpacesWithEmpty(columnInfo.labelName);
         columnInfo.labelType = column.labelType;
@@ -317,24 +314,25 @@ export class AddFormComponent implements OnInit, OnDestroy {
     
     
     removeChoice( columnInfo: ColumnInfo, index: number,choice:FormOption) {
-        if(columnInfo. labelType==='radio'){
+        if(columnInfo.labelType==='radio'){
             this.removeRadioButtonChoice(columnInfo,index,choice);
-        }else if(columnInfo. labelType==="checkbox"){
+        }else if(columnInfo.labelType==="checkbox"){
             this.removeCheckBoxChoice(columnInfo, index,choice);
-        }else if(columnInfo. labelType==="select"){
+        }else if(columnInfo.labelType==="select"){
             this.removeDropDownChoice(columnInfo, index, choice);
         }
      }
 
      
      removeRadioButtonChoice( columnInfo: ColumnInfo, index: number,choice:FormOption){
-         if ( columnInfo.radioButtonChoices.length === 2 ) {
+         if (columnInfo.radioButtonChoices.length === 2 ) {
              columnInfo.radioButtonErrorMessage = "Minimum two options required";
          }else{
              columnInfo.radioButtonErrorMessage = "";
-             columnInfo.radioButtonChoices = this.referenceService.removeObjectFromArrayList( columnInfo.radioButtonChoices, choice.labelId, 'id' );
+             console.log(choice.labelId);
+             columnInfo.radioButtonChoices = this.referenceService.removeObjectFromArrayList(columnInfo.radioButtonChoices, choice.labelId, 'labelId' );
          }
-        
+        console.log(columnInfo.radioButtonChoices);
      }
      
      removeCheckBoxChoice( columnInfo: ColumnInfo, index: number,choice:FormOption ){
@@ -342,7 +340,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
              columnInfo.checkBoxErrorMessage = "Minimum one option required";
          }else{
              columnInfo.checkBoxErrorMessage = "";
-             columnInfo.checkBoxChoices = this.referenceService.removeObjectFromArrayList( columnInfo.checkBoxChoices, choice.labelId, 'id' );
+             columnInfo.checkBoxChoices = this.referenceService.removeObjectFromArrayList( columnInfo.checkBoxChoices, choice.labelId, 'labelId' );
 
          }
      }
@@ -352,7 +350,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
              columnInfo.dropDownErrorMessage = "Minimum two options required";
          }else{
              columnInfo.dropDownErrorMessage = "";
-             columnInfo.dropDownChoices = this.referenceService.removeObjectFromArrayList( columnInfo.dropDownChoices, choice.labelId, 'id' );
+             columnInfo.dropDownChoices = this.referenceService.removeObjectFromArrayList( columnInfo.dropDownChoices, choice.labelId, 'labelId' );
          }
 
      }

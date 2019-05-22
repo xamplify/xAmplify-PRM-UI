@@ -32,7 +32,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     pagination = new Pagination();
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService ) {
-        console.log( authService.getUserId() );
         this.updateLeftSideBar( location );
     }
 
@@ -40,7 +39,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.location = location;
         try {
             const roles = this.authService.getRoles();
-            console.log(roles);
             if ( roles ) {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
@@ -97,7 +95,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                                 if ( !this.enableLeadsByVendor ) {
                                     this.enableLeadsByVendor = data.enableLeads;
                                 }
-                                console.log( data )
                             } );
                         } );
                     } )

@@ -15,7 +15,7 @@ import { FormSubmit } from '../models/form-submit';
 export class FormService {
 
     URL = this.authenticationService.REST_URL + "form/";
-    form:Form;
+    form: Form;
 
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger ) { }
 
@@ -32,7 +32,7 @@ export class FormService {
             .catch( this.handleError );
     }
 
-    
+
     list( pagination: Pagination ): Observable<any> {
         return this.http.post( this.URL + "list?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
@@ -52,25 +52,33 @@ export class FormService {
             .map( this.extractData )
             .catch( this.handleError );
     }
-    
-    getById(id:number) {
+
+    getById( id: number ) {
         return this.http.get( this.URL + "getById/" + id + "?access_token=" + this.authenticationService.access_token, "" )
-        .map( this.extractData )
-        .catch( this.handleError );
-   }
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
-   getByAlias(alias:string) {
-    return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias, "" )
-    .map( this.extractData )
-    .catch( this.handleError );
-}
+    getByAlias( alias: string ) {
+        return this.http.get( this.authenticationService.REST_URL + "/getByFormAlias/" + alias, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
 
-submitForm( formSubmit: FormSubmit ) {
-    return this.http.post( this.URL + "submit/save", formSubmit )
-        .map( this.extractData )
-        .catch( this.handleError );
-}
+    submitForm( formSubmit: FormSubmit ) {
+        return this.http.post( this.URL + "submit/save", formSubmit )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+
+    getSubmittedFormData( pagination: Pagination,alias:string ): Observable<any> {
+        return this.http.post( this.URL + "analytics/"+alias+"?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
 
 
 

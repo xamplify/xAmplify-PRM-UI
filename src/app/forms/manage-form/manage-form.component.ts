@@ -251,6 +251,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.form = new Form();
         $( '#form-preview-modal' ).modal( 'hide' );
         swal.close();
+    }
+    
+    goToAnalytics(form:Form){
+        this.router.navigate(['/home/forms/'+form.alias+'/analytics']);
 
     }
 
