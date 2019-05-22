@@ -464,7 +464,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getCampaignUrls(campaign:Campaign){
         if(campaign.campaignUrls!=undefined){
             this.urls = campaign.campaignUrls;
-            for(var i=0;i<this.urls.length;i++){
+            for(var i=0;i< this.urls.length;i++){
                 let url = this.urls[i];
                 if(url.defaultTemplate){
                     url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
@@ -1869,7 +1869,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     getRepliesData(){
-        for(var i=0;i<this.replies.length;i++){
+        for(var i=0;i< this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
@@ -1949,7 +1949,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     getOnClickData(){
-        for(var i=0;i<this.urls.length;i++){
+        for(var i=0;i< this.urls.length;i++){
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
@@ -2106,7 +2106,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                 /*self.getRepliesData();
                                 self.getOnClickData();*/
                         },function (dismiss) {
-                            if (dismiss == 'No') {
+                            if (dismiss == 'cancel') {
                                 self.reInitialize();
                             }
                         })
