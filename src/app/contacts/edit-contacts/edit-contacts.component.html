@@ -454,9 +454,16 @@
 														<tbody>
 															<ng-container *ngFor="let user of csvPagedItems; let i = index">
 															<tr>
-																<td>{{user.firstName}}</td>
-																<td>{{user.lastName}}</td>
-																<td>{{user.emailId}}</td>
+																<td title="{{user.firstName}}">{{user.firstName | slice:0:30}}
+																	<span *ngIf="user.firstName?.length>30">...</span>
+																</td>
+																<td title="{{user.lastName}}">{{user.lastName | slice:0:25}}
+																	<span *ngIf="user.lastName?.length>25">...</span>
+																</td>
+																<td title="{{user.emailId}}">{{user.emailId | slice:0:35}}
+																	<span *ngIf="user.emailId?.length>35">...</span>
+																</td>
+																
 																<td>
 																	<button id='more_less_button_{{i}}'
 																		(click)="user.isShowDetails = ! user.isShowDetails">
