@@ -26,6 +26,10 @@ import { CompanyPageComponent } from './dashboard/company-profile/company-page/c
 import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
+import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
+import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
+import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
+import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
 import {FormPreviewComponent} from './forms/preview/form-preview.component';
 
 
@@ -67,9 +71,13 @@ export const routes: Routes = [
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
+    { path: 'smsShowCampaign/:alias', component: LogRegularCampaignComponentSMS },
+    { path: 'smsCampaignVideo/:alias', component: CampaignSMSVideoComponent },
+    { path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
     { path: 'company-page/:alias', component: CompanyPageComponent },
     { path: 'partner-page/:alias', component: CompanyPageComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
+    { path: 'logs/:alias', component: LogSMSClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
@@ -82,6 +90,7 @@ export const routes: Routes = [
     imports: [RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader })
             ],
     exports: [RouterModule],
-    providers : [AppCustomPreloader]
+    providers : [AppCustomPreloader]s
 })
 export class AppRoutingModule { }
+ 

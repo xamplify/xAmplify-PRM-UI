@@ -3,6 +3,7 @@ export class CampaignAccess {
   emailCampaign = false
   socialCampaign = false;
   eventCampaign = false;
+  smsCampaign = false;
   leads = false;
   formBuilder = false;
   companyId = 0;

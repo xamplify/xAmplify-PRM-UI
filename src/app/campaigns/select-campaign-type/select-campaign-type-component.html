@@ -69,6 +69,26 @@
 											</div>
 										</div>
 									</div>
+									<div [class]="changeClass" *ngIf="campaignAccess.smsCampaign">
+										<div class="pricing hover-effect pointer"  (click)="createSMS_Campaign()">
+											<div class="pricing-head">
+												<h3>SMS Campaign</h3>
+												<h4><img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+											</div>
+											<h5><span style="padding-left:5px;"> Steps involved:</span></h5>
+											<ul class="pricing-content list-unstyled">
+												<li><i class="fa fa-list"></i> Provide campaign(SMS) details</li>
+												<li><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
+												<li><i class="fa fa-envelope"></i> Select an Web template </li>
+												<li><i class="fa fa-rocket"></i> Preview and Launch</li>
+											</ul>
+											<div class="pricing-footer" style="margin-bottom: -2px;">
+												<div class="col-xs-hidden"><br><br></div>
+												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
+												<a href="javascript:;" class="btn yellow-crusta" (click)="createSMS_Campaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
+											</div>
+										</div>
+									</div>
 									<div [class]="changeClass" *ngIf="campaignAccess.socialCampaign">
 										<div class="pricing hover-effect pointer" (click)="socialMediaCampaign()">
 											<div class="pricing-head">

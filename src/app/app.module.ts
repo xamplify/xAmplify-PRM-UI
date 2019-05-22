@@ -53,10 +53,15 @@ import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/lo
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 import {FormPreviewComponent} from './forms/preview/form-preview.component';
 
-
+import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
+import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
+import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
+import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
+    ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
+         ,LogSMSClickComponent
     ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),

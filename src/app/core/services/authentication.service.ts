@@ -330,6 +330,11 @@ export class AuthenticationService {
         let stompClient = Stomp.over( socket );
         return stompClient;
     }
+     getSMSServiceModule(userId: number) {
+        return this.http.get(this.REST_URL + 'admin/getSMSServiceModule/' + userId + '?access_token=' + this.access_token)
+            .map((res: Response) => { return res.json(); })
+            .catch((error: any) => { return error; });
+    }
     
     extractData( res: Response ) {
         let body = res.json();

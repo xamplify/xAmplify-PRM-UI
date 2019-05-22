@@ -227,11 +227,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      templateSuccessMsg: any;
      pushToMarketo = false;
 
+     smsService = false;
+
      loadingMarketo: boolean;
      marketoButtonClass = "btn btn-default";
-
+ 
      //ENABLE or DISABLE LEADS
      enableLeads : boolean;
+     enableSMS:boolean;
+    smsText: any;
+    enableSmsText: boolean;
+    smsTextDivClass: string;
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -249,7 +256,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                     });
                 })
-
+ 				authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
+                    console.log(response);
+                   this.enableSMS = response.data;
+                })
         this.logger.info("create-campaign-component constructor loaded");
         $('.bootstrap-switch-label').css('cssText', 'width:31px;!important');
         /*  CKEDITOR.config.width = 500;
@@ -632,6 +642,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           }
 
         });
+        if(isValid && (this.smsService || this.campaignType == 'sms')){
+            if( this.smsText!=null && this.smsText.length > 0)
+                isValid = true;
+            else
+                isValid = false;
+        }
         if(isValid && this.isValidCampaignName){
             this.isCampaignDetailsFormValid = true;
         }else{
@@ -706,6 +722,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.messageDivClass = errorClass;
              }
          }
+         else if(fieldId=="smsText"){
+            if(fieldValue.length>0){
+                this.smsTextDivClass = successClass;
+            }else{
+                this.smsTextDivClass = errorClass;
+            }
+        }
      }
     loadCampaignNames(userId:number){
         this.campaignService.getCampaignNames(userId)
@@ -1809,6 +1832,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             campaignType = CampaignType.REGULAR;
         }else if("video"==this.campaignType){
             campaignType = CampaignType.VIDEO;
+        }else if("sms" == this.campaignType){
+            campaignType = CampaignType.SMS;
         }
         let country = $.trim($('#countryName option:selected').text());
 
@@ -1862,7 +1887,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'country':country,
             'createdFromVideos':this.campaign.createdFromVideos,
             'nurtureCampaign':false,
-            'pushToMarketo':this.pushToMarketo
+            'pushToMarketo':this.pushToMarketo,
+            'smsService':this.smsService,
+            'smsText':this.smsText
         };
         console.log(data);
         return data;
@@ -2566,6 +2593,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.checkMarketoCredentials();
         }
     }
+    
+     smsServices(){
+        
+        this.smsService =  !this.smsService;
+        
+            this.enableSmsText =  this.smsService;
+       
+        
+    }
 
 
     clearValues()
@@ -2753,8 +2789,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
-    spamCheck() {
-        $("#email_spam_check").modal('show');
-    }
+
 
 }

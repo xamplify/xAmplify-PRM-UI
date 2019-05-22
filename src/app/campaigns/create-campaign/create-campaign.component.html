@@ -173,7 +173,7 @@
 												</div>
 											</div>
 
-											<div class="form-group" [attr.class]="fromNameDivClass">
+											<div class="form-group" [attr.class]="fromNameDivClass" *ngIf="campaignType!='sms'">
 												<label class="control-label col-sm-4">From Name
 													<font style="color: red">
 														<b>*</b>
@@ -184,7 +184,7 @@
 													 (input)="validateForm();validateField('fromName');" maxlength="200" />
 												</div>
 											</div>
-											<div class="form-group" [attr.class]="subjectLineDivClass">
+											<div class="form-group" [attr.class]="subjectLineDivClass" *ngIf="campaignType!='sms'">
 												<label class="control-label col-sm-4">Subject Line
 													<font style="color: red">
 														<b>*</b>
@@ -195,7 +195,7 @@
 													 (input)="validateForm();validateField('subjectLine');" maxlength="200" />
 												</div>
 											</div>
-											<div class="form-group" [attr.class]="fromEmaiDivClass">
+											<div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
 												<label class="control-label col-sm-4">From Email
 													<font style="color: red">
 														<b>*</b>
@@ -211,7 +211,7 @@
 													</select>
 												</div>
 											</div>
-											<div class="form-group" [attr.class]="preHeaderDivClass">
+											<div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
 												<label class="control-label col-sm-4">Pre Header<font style="color: red"><b>*</b></font></label>
 												<div class="col-sm-8">
 													<input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader"
@@ -221,8 +221,8 @@
 											<div class="form-group">
 												<label class="control-label col-sm-4">Notify Me When</label>
 												<div class="col-sm-8">
-													<div class="email-options-checkbox-group email-options-notify">
-														<div class="email-options-checkbox clearfix">
+													<div class="email-options-checkbox-group email-options-notify" >
+														<div class="email-options-checkbox clearfix" *ngIf="campaignType!='sms'">
 															<div class="col-sm-1 ui-switch-custom-div">
 																<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch> -->
 																<switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -232,6 +232,18 @@
 															</div>
 															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
 																<label>Email is opened</label>
+															</div>
+														</div>
+														<div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
+															<div class="col-sm-1 ui-switch-custom-div">
+																<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch> -->
+																<switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+																 (statusChange)="setEmailOpened($event)">
+																</switch>
+															</div>
+															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+																<label>SMS is opened</label>
 															</div>
 														</div>
 														<div class="email-options-checkbox clearfix" *ngIf="campaignType=='video'">
@@ -273,6 +285,41 @@
 													</div>
 												</div>
 											</div>
+											
+											<div class="form-group" *ngIf="!isOnlyPartner && refService.smsCampaign && enableSMS  && campaignType!='sms'">
+												<label class="control-label col-sm-4">SMS service</label>
+												<div class="col-sm-8">
+													<div class="email-options-checkbox-group email-options-notify">
+														<div class="email-options-checkbox clearfix">
+															<div class="col-sm-1 ui-switch-custom-div">
+															 <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
+															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)" id="falseAction" *ngIf="!smsService">
+																</switch>
+																<switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)" id="trueAction" *ngIf="smsService">
+																</switch>
+															</div>
+																<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+																<span style="cursor: pointer;color: #54a7e9;" title="Enable SMS services for this campaign">
+																		<i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 0px;"></i>
+																	</span>
+															</div>
+														</div> 
+													</div>
+												</div>
+											</div>
+											<div class="form-group" [attr.class]="smsTextDivClass" *ngIf="enableSmsText || campaignType=='sms'" >
+												<label class="control-label col-sm-4">Sms Text
+													<font style="color: red">
+														<b>*</b>
+													</font>
+												</label>
+												<div class="col-sm-8">
+													<textarea  id="smsText" placeholder="Sms Text" class="form-control" [(ngModel)]="smsText" name="smsText"
+													 (input)="validateForm();validateField('smsText');" maxlength="200" ></textarea>
+												</div>
+											</div>
 											<!-- 	<div class="form-group">
 										<label class="control-label col-sm-4">Sharing Options</label>
 										<div class="col-sm-8">
@@ -311,6 +358,10 @@
 								 (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
 
 								<button *ngIf="campaignType=='regular'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green"
+								 (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+								 
+								 
+								 <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green"
 								 (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
 
 							</div>
@@ -858,7 +909,7 @@
             (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
           </div>
           <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
-          <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate"
+          <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]=" campaignType != 'sms'  && !isEmailTemplate"
             title="Please Select Email Template">Next</button>
           </div>
           </form>
@@ -1552,7 +1603,6 @@
 												<button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;">Previous</button>
 												<button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,false)" style="width: 10em;">Send Test Email</button>
 												<button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid"  style="width: 10em;">{{buttonName}}</button>
-												<button type="button" class="btn green" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
 											</div>
 										</div>
 									</div>
@@ -1658,26 +1708,9 @@ data-backdrop="static">
 				 <button class="btn btn-default" (click)="clearValues()">Clear</button>
 
 				 <button [attr.class]="marketoButtonClass" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
-			 
+
 				</div>
 		 </div>
 	 </div>
  </div>
 </div>
-
-	<div class="modal right fade" id="email_spam_check" *ngIf="emailTemplate">
-		<div class="modal-dialog modal-lg modal-template" style="width: 65% !important;right:0">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
-					<h4 class="modal-title">Email Spam Check</h4>
-				</div>
-				<div class="modal-body">
-					<app-email-spam-check *ngIf="emailTemplate" [emailTemplate] = "emailTemplate"></app-email-spam-check>
-				</div>
-				<div class="modal-footer">
-					<a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-				</div>
-			</div>
-		</div>
-	</div>

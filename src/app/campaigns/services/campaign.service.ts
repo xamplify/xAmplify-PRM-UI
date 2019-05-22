@@ -141,15 +141,20 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean) {
-        return this.http.post(this.URL + 'campaign/views/' + campaignId + '/'+ isChannelCampaign + '?access_token=' + this.authenticationService.access_token, pagination)
+    smsActionList(campaignId: number, actionType: string, pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/list-smslogs-by-action/' + campaignId + '/' + actionType + '?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    listCampaignInteractiveViews(pagination: Pagination) {
-        return this.http.post(this.URL + 'campaign/interactive-views?access_token=' + this.authenticationService.access_token, pagination)
+    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean,smsAnalytics=false) {
+        return this.http.post(this.URL + 'campaign/views/' + campaignId + '/'+ isChannelCampaign + '/'+smsAnalytics+'?access_token=' + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listCampaignInteractiveViews(pagination: Pagination,smsAnalytics=false) {
+        return this.http.post(this.URL + 'campaign/interactive-views/'+smsAnalytics+'?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -166,8 +171,29 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    getSmsLogCountByCampaign(campaignId: number) {
+        return this.http.get(this.URL + 'campaign/smslog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     getEmailSentCount(campaignId: number) {
         return this.http.get(this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getSmsSentCount(campaignId: number) {
+        return this.http.get(this.URL + 'sms_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getSmsSentSuccessCount(campaignId: number) {
+        return this.http.get(this.URL + 'sms_sent_success_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getSmsSentFailureCount(campaignId: number) {
+        return this.http.get(this.URL + 'sms_sent_failure_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -216,6 +242,11 @@ export class CampaignService {
 
     listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
         return this.http.get(this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    listSMSLogsByCampaignAndUser(campaignId: number, userId: number) {
+        return this.http.get(this.URL + 'campaign/user-timeline-log-sms/'+campaignId+'/'+userId+'?access_token=' + this.authenticationService.access_token )
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -599,8 +630,18 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getEventCampaignByAliasSms(alias: string) {
+        return this.http.get(this.URL + `get-event-campaign-rsvp-alias-sms/${alias}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     saveEventCampaignRsvp(campaignRsvp: any) {
         return this.http.post(this.URL + `save-rsvp`, campaignRsvp)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    saveEventCampaignRsvpSms(campaignRsvp: any) {
+        return this.http.post(this.URL + `save-rsvp-sms`, campaignRsvp)
             .map(this.extractData)
             .catch(this.handleError);
     }

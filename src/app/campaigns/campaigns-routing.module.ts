@@ -13,6 +13,7 @@ import { EventCampaignComponent } from './event-campaign/event-campaign.componen
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "select", pathMatch: "full" },
@@ -36,7 +37,8 @@ export const campaignRoutes: Routes = [
   { path: "re-distribute-event/:id", component: EventCampaignComponent },
   { path: "re-distribute-manage/:id", component: EventCampaignComponent },
   { path: ":campaignId/remove-access", component: PreviewPartnersComponent },
-  { path: "calendar", component: CalendarComponent }
+  { path: "calendar", component: CalendarComponent },
+  { path: "sms", component: CreateSmsCampaignComponent }
 ];
 
 @NgModule({

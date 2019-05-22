@@ -99,6 +99,8 @@ export class ReferenceService {
     eventCampaign = false;
     loadingPreview = false;
     dealId = 0;
+    smsCampaign = false;
+    
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
