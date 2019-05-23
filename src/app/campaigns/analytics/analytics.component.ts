@@ -1732,59 +1732,58 @@ showTimeLineView(){
             this.rsvpDetailAnalyticsPagination.pageIndex = 1;
             this.getRsvpEmailNotOpenDetails();
         }
-        
-        getSmsSentCount(campaignId: number) {
-    try{
-    this.loading = true;
-      this.campaignService.getSmsSentCount(campaignId)
-      .subscribe(
-      data => {
-        this.campaignReport.smsSentCount = data.sms_sent_count;
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => {
-        this.listCampaignViews(campaignId, this.campaignViewsPagination);
-      }
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
-  }
-  getSmsSentSuccessCount(campaignId: number) {
-    try{
-    this.loading = true;
-      this.campaignService.getSmsSentSuccessCount(campaignId)
-      .subscribe(
-      data => {
-        this.campaignReport.smsSentSuccessCount = data.sms_sent__success_count;
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => {
-        this.listCampaignViews(campaignId, this.campaignViewsPagination);
-      }
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
-  }
-  getSmsSentFailureCount(campaignId: number) {
-    try{
-    this.loading = true;
-      this.campaignService.getSmsSentFailureCount(campaignId)
-      .subscribe(
-      data => {
-        console.log(data)
-        this.campaignReport.smsSentFailureCount = data.sms_sent_failure_count;
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => {
-        this.listCampaignViews(campaignId, this.campaignViewsPagination);
-      }
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
-  }
-        
-        
     }
+    
+    
+    getSmsSentCount(campaignId: number) {
+        try{
+        this.loading = true;
+          this.campaignService.getSmsSentCount(campaignId)
+          .subscribe(
+          data => {
+            this.campaignReport.smsSentCount = data.sms_sent_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
+          )
+        }catch(error){ this.xtremandLogger.error('error'+error);}
+      }
+      getSmsSentSuccessCount(campaignId: number) {
+        try{
+        this.loading = true;
+          this.campaignService.getSmsSentSuccessCount(campaignId)
+          .subscribe(
+          data => {
+            this.campaignReport.smsSentSuccessCount = data.sms_sent__success_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
+          )
+        }catch(error){ this.xtremandLogger.error('error'+error);}
+      }
+      getSmsSentFailureCount(campaignId: number) {
+        try{
+        this.loading = true;
+          this.campaignService.getSmsSentFailureCount(campaignId)
+          .subscribe(
+          data => {
+            console.log(data)
+            this.campaignReport.smsSentFailureCount = data.sms_sent_failure_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
+          )
+        }catch(error){ this.xtremandLogger.error('error'+error);}
+      }
     
     getSmsLogCountByCampaign(campaignId: number) {
     try{

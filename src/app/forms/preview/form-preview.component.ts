@@ -29,6 +29,7 @@ export class FormPreviewComponent implements OnInit {
     form:Form = new Form();
     hasFormExists = true;
     validForm = true;
+    isValidEmailIds = true;
     alertClass ="";
     successAlertClass = "alert alert-success";
     errorAlertClass = "alert alert-danger";
@@ -44,6 +45,14 @@ export class FormPreviewComponent implements OnInit {
       this.alias = this.route.snapshot.params['alias'];
       this.getFormFieldsByAlias(this.alias);
 
+  }
+  
+  refreshForm(){
+      this.validForm = true;
+      this.isValidEmailIds = true;
+      this.customResponse = new CustomResponse();
+      this.show = false;
+      this.getFormFieldsByAlias(this.alias);
   }
 
   getFormFieldsByAlias(alias: string) {
@@ -67,6 +76,22 @@ export class FormPreviewComponent implements OnInit {
       );
 
   }
+  
+  validateEmail(columnInfo:ColumnInfo){
+      if(columnInfo.labelType=='email'){
+          if(!this.referenceService.validateEmailId($.trim(columnInfo.value))){
+              columnInfo.divClass="error";
+          }else{
+              columnInfo.divClass="success";
+          }
+      }
+      const invalidEmailIdsFieldsCount = this.form.formLabelDTOs.filter((item) => (item.divClass=='error')).length;
+      if(invalidEmailIdsFieldsCount==0){
+          this.isValidEmailIds = true;
+      }else{
+          this.isValidEmailIds = false;
+      }
+  }
 
 
   /*******Submit Forms********* */
@@ -77,7 +102,8 @@ export class FormPreviewComponent implements OnInit {
     this.validForm = true;
     const formLabelDtos = this.form.formLabelDTOs;
     const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length===0) );
-    if(requiredFormLabels.length>0){
+    const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass=='error')).length;
+    if(requiredFormLabels.length>0 ||invalidEmailIdsFieldsCount>0){
       this.validForm = false;
       this.addHeaderMessage('Please fill required fields',this.errorAlertClass);
     }else{
@@ -131,6 +157,13 @@ export class FormPreviewComponent implements OnInit {
     }else{
       columnInfo.value.splice($.inArray(formOption.id,columnInfo.value),1);
     }
+  }
+  
+  showForm(){
+      this.formSubmitted = false;
+      this.show = false;
+      this.customResponse = new CustomResponse();
+      this.getFormFieldsByAlias(this.alias);
   }
 
 }

@@ -320,7 +320,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-group" id="formNameDiv">
-		           	<input type="text" class="form-control" [(ngModel)]="form.name" id="formName"  placeholder="Enter Form Name" maxlength="50"  (input)="validateFormNames(form.name)" >
+		           	<input type="text" class="form-control" [(ngModel)]="form.name" id="formName"  placeholder="Enter Form Name" maxlength="50"  (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
 					<span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
 	          	</div>
 			</div>

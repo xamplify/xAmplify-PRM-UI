@@ -7,6 +7,10 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import {FormService} from '../services/form.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import {SubmittedFormRow} from '../models/submitted-form-row';
+import {SubmittedFormData} from '../models/submitted-form-data';
+declare var $:any,swal:any ;
+
 
 
 @Component({
@@ -18,9 +22,13 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 export class FormAnalyticsComponent implements OnInit {
 
     alias:string="";
+    formName = "";
     pagination: Pagination = new Pagination();
     columns:Array<any> = new Array<any>();
+    formDataRows:Array<SubmittedFormData> = new Array<SubmittedFormData>();
     statusCode:number = 200;
+    selectedSortedOption:any;
+    searchKey = "";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService,public formService:FormService, 
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,
@@ -40,9 +48,12 @@ export class FormAnalyticsComponent implements OnInit {
                 const data = response.data;
                 this.statusCode = response.statusCode;
                 if(response.statusCode==200){
+                    this.formName = data.formName;
                     this.columns = data.columns;
+                    this.selectedSortedOption = this.columns[0];
+                    this.formDataRows = data.submittedData;
                     pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.submittedData);
+                    pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
@@ -52,13 +63,30 @@ export class FormAnalyticsComponent implements OnInit {
     refreshList(){
         this.listSubmittedData(this.pagination);
     }
-    
-   
-    
     /************Page************** */
     setPage( event: any ) {
         this.pagination.pageIndex = event.page;
         this.listSubmittedData(this.pagination);
+    }
+    
+    expandColumns(selectedFormDataRow:any,selectedIndex:number){
+       $.each(this.formDataRows,function(index,row){
+           if(selectedIndex!=index){
+               row.expanded = false;
+               $('#form-data-row-'+index).css("background-color", "#fff");
+           }
+       });
+       selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
+       if(selectedFormDataRow.expanded){
+           $('#form-data-row-'+selectedIndex).css("background-color", "#d3d3d357");
+       }else{
+           $('#form-data-row-'+selectedIndex).css("background-color", "#fff");
+       }
+
+    }
+    
+    getSortedResult(text: any){
+        console.log(text);
     }
 
 }

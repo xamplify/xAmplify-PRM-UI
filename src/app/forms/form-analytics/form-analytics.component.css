@@ -1,5 +1,7 @@
 .required {
 	color: red;
+	display:inline-flex !important; 
+	
 }
 
 #responsive {
@@ -12,4 +14,23 @@
 
 .close-circle {
 	margin-left: 5px;
+}
+
+#th-width{
+	width: 25%;
+}
+#expanded-table{
+	background-color: #dddddd24;
+}
+
+#search-margin{
+	margin-right: 10px;
+}
+
+#icon-right{
+	position: relative;right: -11px;
+}
+
+#search-text{
+	height:34px;
 }

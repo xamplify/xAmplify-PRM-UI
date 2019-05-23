@@ -52,7 +52,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     duplicateOrEmptyLabelErrorMessage = "Empty/duplicate field lables are not allowed";
     requiredMessage = "Required";
     duplicateLabelMessage = "Already exists";
-    minimumOneColumn = "Form should contain atleast one field";
+    minimumOneColumn = "Form should contain atleast one required field";
     formErrorClass = "form-group form-error";
     defaultFormClass = "form-group";
     formNameErrorMessage = "";
@@ -168,7 +168,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     
     validateFormNames(formName:string){
         if($.trim(formName).length>0){
-            if(this.names.indexOf($.trim(formName).toLowerCase())>-1 && formName.toLowerCase()!=this.existingFormName){
+            if(this.names.indexOf($.trim(formName).toLowerCase())>-1 && $.trim(formName).toLowerCase()!=this.existingFormName){
                 this.addFormNameErrorMessage(this.duplicateLabelMessage);
             }else{
                this.removeFormNameErrorClass();
@@ -177,6 +177,14 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.addFormNameErrorMessage(this.requiredMessage);
         }
     }
+    
+    
+    sumbitOnEnter(event){
+        if(event.keyCode==13 &&this.form.isValid){
+            this.unBlurDiv();
+        }
+    }
+    
     
     
     removeFormNameErrorClass(){
@@ -382,32 +390,38 @@ export class AddFormComponent implements OnInit, OnDestroy {
          this.ngxloading = true;
          this.removeErrorMessage();
          if(this.columnInfos.length>0){
-            const duplicateFieldLabels = this.referenceService.returnDuplicates(this.columnInfos.map(function(a) {return a.hiddenLabelId;}));
-            const self = this;
-             $.each(this.columnInfos,function(index,columnInfo){
-                $('#'+columnInfo.divId).removeClass(self.borderErrorClass);
-                 $('#'+columnInfo.divId).addClass(self.borderSuccessClass);
-                 columnInfo.editFormChoiceDivClass = this.borderSuccessClass;
-                 columnInfo.editFormLabelDivClass = this.borderSuccessClass;
-                 const labelName = $.trim(columnInfo.labelName);
-                 /*********Validate Empty Label Names********************/
-                 self.validateEmptyLabelNames(columnInfo, labelName);
-                 /**********Validate Empty Choice Values For Radio Button/DropDown/CheckBox********************/
-                 self.validateChoices(columnInfo);
-                 /*********Validate Duplicate Label Names********************/
-                 self.validateDuplicateFieldLabels(duplicateFieldLabels, columnInfo);
-                 /******validate Duplicate Radio Button/DropDown/CheckBox**************/
-                 self.validateDuplicateChoiceLables(columnInfo);
-                 
-             });
-             const invalidLabelDivCount = this.columnInfos.filter((item) => item.editFormLabelDivClass === this.borderErrorClass).length;
-             const invalidChoicesDivCount = this.columnInfos.filter((item) => item.editFormChoiceDivClass === this.borderErrorClass).length;
-             const totalCount = invalidLabelDivCount+invalidChoicesDivCount;
-             if(totalCount==0 && this.form.isValid){
-                 this.saveOrUpdateForm();
+             const requiredFieldsLength = this.columnInfos.filter((item) => item.required ===true).length;
+             if(requiredFieldsLength>=1){
+                 const duplicateFieldLabels = this.referenceService.returnDuplicates(this.columnInfos.map(function(a) {return a.hiddenLabelId;}));
+                 const self = this;
+                  $.each(this.columnInfos,function(index,columnInfo){
+                     $('#'+columnInfo.divId).removeClass(self.borderErrorClass);
+                      $('#'+columnInfo.divId).addClass(self.borderSuccessClass);
+                      columnInfo.editFormChoiceDivClass = this.borderSuccessClass;
+                      columnInfo.editFormLabelDivClass = this.borderSuccessClass;
+                      const labelName = $.trim(columnInfo.labelName);
+                      /*********Validate Empty Label Names********************/
+                      self.validateEmptyLabelNames(columnInfo, labelName);
+                      /**********Validate Empty Choice Values For Radio Button/DropDown/CheckBox********************/
+                      self.validateChoices(columnInfo);
+                      /*********Validate Duplicate Label Names********************/
+                      self.validateDuplicateFieldLabels(duplicateFieldLabels, columnInfo);
+                      /******validate Duplicate Radio Button/DropDown/CheckBox**************/
+                      self.validateDuplicateChoiceLables(columnInfo);
+                      
+                  });
+                  const invalidLabelDivCount = this.columnInfos.filter((item) => item.editFormLabelDivClass === this.borderErrorClass).length;
+                  const invalidChoicesDivCount = this.columnInfos.filter((item) => item.editFormChoiceDivClass === this.borderErrorClass).length;
+                  const totalCount = invalidLabelDivCount+invalidChoicesDivCount;
+                  if(totalCount==0 && this.form.isValid){
+                      this.saveOrUpdateForm();
+                  }else{
+                      this.addErrorMessage(this.duplicateOrEmptyLabelErrorMessage);
+                  }
              }else{
-                 this.addErrorMessage(this.duplicateOrEmptyLabelErrorMessage);
+                 this.addErrorMessage(this.minimumOneColumn);
              }
+
          }else{
              this.addErrorMessage(this.minimumOneColumn);
          }

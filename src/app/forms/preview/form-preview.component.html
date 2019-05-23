@@ -7,13 +7,18 @@
 		<ng-container *ngIf="formSubmitted">
 			<div class="panel-body">
 				<h4 class="alert alert-success" id="header-center">
-				<i class="fa fa-check-circle" id="check-mark"></i>Your Form submitted successfully</h4>
+				<i class="fa fa-check-circle" id="check-mark"></i>Your Form submitted successfully.
+				</h4>
+				<a (click)="showForm()" id="bottom-right">Click here to submit again.</a>
 			</div>
 		</ng-container>
 		
 		
 		<ng-container *ngIf="!formSubmitted">
 			<div class="panel-heading">
+			 <button type="button" class="close-circle" (click)="refreshForm()" data-toggle="tooltip" data-placement="top"  title="Refresh">
+						<i class="fa fa-refresh"></i>
+				</button>
 				<div class="panel-title">{{form.name}}</div>
 			</div>
 			<div class="panel-body">
@@ -25,7 +30,8 @@
 							</label>
 							<ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
 									<input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" 
-									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="255">
+									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="255" (input)="validateEmail(columnInfo)">
+									 <span class="required" *ngIf="columnInfo.divClass=='error'">Please enter a valid email address</span>
 							</ng-container>	
 
 							<ng-container *ngIf="columnInfo.labelType=='textarea'">
@@ -68,7 +74,7 @@
 								  </ng-container>
 						</div>
 					</ng-container>
-					<button  type="submit" class="btn green-haze" id="bottom-right" (click)="submitForm()">Submit</button>
+					<button  type="submit" [disabled]="!isValidEmailIds" class="btn green-haze" id="bottom-right" (click)="submitForm()">Submit</button>
 			</div>
 			</ng-container>
 		</div>
