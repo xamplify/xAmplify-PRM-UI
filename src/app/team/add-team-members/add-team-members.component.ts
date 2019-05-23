@@ -479,7 +479,7 @@ export class AddTeamMembersComponent implements OnInit {
         }
         team.socialShare = true;
         team.partners = true;
-        team.opportunity = true;
+       // team.opportunity = true;
 
     }
     removeAllRoles(team:TeamMember){
@@ -490,7 +490,7 @@ export class AddTeamMembersComponent implements OnInit {
         team.contact = false;
         team.socialShare = false;
         team.partners = false;
-        team.opportunity = false;
+       // team.opportunity = false;
     }
 
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
@@ -574,7 +574,6 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-
             if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);

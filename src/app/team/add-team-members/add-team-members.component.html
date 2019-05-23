@@ -130,9 +130,9 @@
 									<th class="rest-header">
 										<i class="fa fa-users" aria-hidden="true"></i><br>Partners
                                     </th>
-                                    <th class="rest-header">
+                                   <!--  <th class="rest-header">
 										<i class="fa fa-tags" aria-hidden="true"></i><br>Opportunities
-									</th>
+									</th> -->
 									<th></th>
 								</tr>
 							</thead>
@@ -169,8 +169,8 @@
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
 								<td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-                                <td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-                                <td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><i class="fa fa-times red"></i></a></td>
+<!--                                 <td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
+ -->                                <td><a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)"><i class="fa fa-times red"></i></a></td>
 							</tr>
 							</ng-container>
 
@@ -239,9 +239,9 @@
 									<th class="rest-header">
 										<i class="fa fa-users" aria-hidden="true"></i><br>Partners
                                     </th>
-                                    <th class="rest-header">
+                                    <!-- <th class="rest-header">
 										<i class="fa fa-tags" aria-hidden="true"></i><br>Opportunities
-									</th>
+									</th> -->
 									<th class="rest-header">
 										<i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
 									</th>
@@ -296,8 +296,8 @@
 									<td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox" disabled="disabled"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
-                                    <td><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-                                </ng-template>
+<!--                                     <td><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
+ -->                                </ng-template>
 								<ng-template #enable>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td  *ngIf="contactAccess"><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
@@ -306,8 +306,8 @@
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
 									<td><input type="checkbox"  id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')"></td>
-                                    <td><input type="checkbox"  id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
-                                </ng-template>
+<!--                                     <td><input type="checkbox"  id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
+ -->                                </ng-template>
 								<td *ngIf="teamMember.teamMemberId==secondOrgAdminId">
 								<switch [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue"
 											 [offText]="callActionSwitch.offTextValue"	[onColor]="callActionSwitch.onGreenColorSwitch"
