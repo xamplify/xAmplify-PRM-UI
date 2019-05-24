@@ -860,7 +860,7 @@ showTimeLineView(){
               this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
               this.getEventCampaignByCampaignId(campaignId);
             } else {
-            this.campaignType = 'EMAIL';
+            this.campaignType = 'REGULAR';
           }
         }
         this.getEmailSentCount(this.campaignId);

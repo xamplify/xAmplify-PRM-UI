@@ -32,6 +32,7 @@ import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
 import { EmailLog } from '../models/email-log';
 import { CountryNames } from 'app/common/models/country-names';
+import { CampaignType } from '../models/campaign-type';
 declare var $:any;
 
 @Component({
@@ -151,7 +152,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.hasAllAccess = this.referenceService.hasAllAccess();
             this.isOnlyPartner = this.authenticationService.isOnlyPartner();
             this.closeNotifyParent = new EventEmitter<any>();
-        }
+        } 
      getCampaignById() {
       // if(this.previewCampaignType === 'EVENT'){ this.campaign = new EventCampaign();}
       // else { this.campaign = new Campaign(); }
@@ -176,7 +177,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
             } else {
-              this.campaignType = 'EMAIL';
+              this.campaignType = 'REGULAR';
             }
             this.getEmailSentCount(this.previewCampaignId);
             this.getEmailLogCountByCampaign(this.previewCampaignId);
