@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { AuthenticationService } from "../../core/services/authentication.service";
 import { ReferenceService } from "../../core/services/reference.service";
 import { Pagination } from "../../core/models/pagination";
@@ -6,16 +6,20 @@ import { DashboardService } from "../dashboard.service";
 import { PagerService } from "../../core/services/pager.service";
 import { PaginationComponent } from "../../common/pagination/pagination.component";
 import { Router } from "@angular/router";
+import { VendorInvitation } from '../models/vendor-invitation';
+declare var $, CKEDITOR: any;
 
 @Component({
   selector: "app-vendor-reports",
   templateUrl: "./vendor-reports.component.html",
   styleUrls: ["./vendor-reports.component.css"],
-  providers: [Pagination, PaginationComponent]
+  providers: [Pagination, PaginationComponent, VendorInvitation]
 })
 export class VendorReportsComponent implements OnInit {
   vendorDetails: any;
   loading = false;
+  newEmailIds: string[] = [];
+  vendoorInvitation: VendorInvitation = new VendorInvitation();
 
   constructor(
     public referenseService: ReferenceService,
@@ -25,7 +29,9 @@ export class VendorReportsComponent implements OnInit {
     public pagerService: PagerService,
     public paginationComponent: PaginationComponent,
     private router: Router
-  ) {}
+  ) {
+      CKEDITOR.config.height = '100';
+  }
 
   vendorReports() {
     this.loading = true;
@@ -73,6 +79,54 @@ export class VendorReportsComponent implements OnInit {
   errorHandler(event){
    event.target.src = 'assets/images/default-company.png';
   }
+  
+  openRequestAsVendorModal(){
+      this.vendoorInvitation.message = "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
+
+          + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
+
+          + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
+
+          + "Visit www.xamplify.com to learn more, or feel free to ask me questions about how it works on my end."
+      $( '#request-for-vendor' ).modal( 'show' );
+     
+  }
+  
+  sendRequestForVendorEmail(){
+     // this.loading = true;
+      
+      const tags = this.vendoorInvitation.emailIds;
+      for (let i = 0; i < tags.length; i++) {
+              this.newEmailIds[i] = tags[i]['value'];
+      }
+      
+      this.vendoorInvitation.emailIds = this.newEmailIds;
+   
+      this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
+        .subscribe(
+          data => {
+            console.log("success");
+            this.loading = false;
+            this.closeInvitationModal();
+          },
+          error => console.log(error),
+          () => {
+            console.log("Mail Sending failed");
+            this.loading = false;
+            this.closeInvitationModal();
+          }
+        );
+  }
+  
+  closeInvitationModal() {
+      $( '#request-for-vendor' ).modal( 'toggle' );
+      $( "#request-for-vendor .close" ).click()
+      $( '#request-for-vendor' ).modal( 'hide' );
+      $( 'body' ).removeClass( 'modal-open' );
+      $( '.modal-backdrop fade in' ).remove();
+      $( ".modal-backdrop in" ).css( "display", "none" );
+  }
+  
   ngOnInit() {
     this.vendorReports();
   }

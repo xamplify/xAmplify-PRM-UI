@@ -15,6 +15,7 @@
 				class="fa fa-angle-right"></i></li>
 			<li><a>Your Vendors</a></li>
 		</ul>
+		<button class="btn btn-group green pull-right" style="margin-top: 2px" (click)="openRequestAsVendorModal()">Request For Vendor</button>
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
@@ -49,4 +50,66 @@
 		</div>
   </div>
   <app-scroll-top></app-scroll-top>
+</div>
+
+
+<!--------------Requesting vendor modal----------------->
+
+			
+<div class="modal fade right" id="request-for-vendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <a class="close-circle" data-dismiss="modal">
+          <i class="fa fa-times"></i>
+        </a>
+        <h4 class="modal-title" id="myModalLabel">Send a request email as vendor:</h4>
+      </div>
+			<div class="modal-body">
+				<form class="form-horizontal" autocomplete="off">
+					<div class="form-group">
+						<label class="col-sm-3 labal-css color-css">To<font
+							style="color: red"> <b>*</b>
+						</font>
+						</label>
+						<div class="col-sm-9">
+							<!-- <input type="text" id="subjectLine"
+							[(ngModel)]="vendoorInvitation.emailIds"  [ngModelOptions]="{standalone: true}"
+								placeholder="Enter the Email ids" class="form-control"
+								name="subjectLine" maxlength="200" /> -->
+								<tag-input [(ngModel)]="vendoorInvitation.emailIds"  [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a emailId & press Enter'" [secondaryPlaceholder]="'Add a emailId & press Enter'"
+											 [validators]="validatorsTag" required></tag-input>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-3 labal-css color-css">Email subject<font
+							style="color: red"> <b>*</b>
+						</font>
+						</label>
+						<div class="col-sm-9">
+							<input type="text" id="subjectLine"
+							[(ngModel)]="vendoorInvitation.subject"  [ngModelOptions]="{standalone: true}"
+								placeholder="Subject Line" class="form-control"
+								name="subjectLine" maxlength="200" />
+						</div>
+					</div>
+<div id="ck-editor">
+                      <div  style="margin-left: 1px;">
+                        <label style="cursor: default;" for="days" id="reply-message">Message <b style="color: red">*</b>
+                        </label>
+                      </div>
+                      <div >
+                        <ckeditor name="body" [(ngModel)]="vendoorInvitation.message"  [ngModelOptions]="{standalone: true}"></ckeditor>
+                      </div>
+                    </div>
+				</form>
+			</div>
+
+			<div class="modal-footer" style="border: none">
+				<button class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn green" (click)="sendRequestForVendorEmail()">send</button>
+			</div>
+		</div>
+	</div>
 </div>
