@@ -117,7 +117,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplate.onDestroy = isOnDestroy;
         this.emailTemplate.draft = isOnDestroy;
       
-       
         if (this.model.isRegularUpload == "REGULAR")
         {
           this.emailTemplate.regularTemplate = true;
@@ -136,7 +135,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }else{
             for(var instanceName in CKEDITOR.instances){
                 CKEDITOR.instances[instanceName].updateElement();
-                this.emailTemplate.body =  this.mycontent;
+                this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
             }
         }
         if($.trim(this.emailTemplate.body).length>0){
