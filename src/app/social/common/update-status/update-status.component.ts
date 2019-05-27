@@ -77,6 +77,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isPreviewVideo: boolean = false;
   campaignNames = [];
   events = [];
+
+  rssCategories: any;
+  feeds: any[];
+
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -974,6 +978,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         socialStatus.socialStatusProvider = socialStatusProvider;
         socialStatus.userId = this.userId;
 
+      socialStatus.ogImage = targetSocialStatus.ogImage;
+      socialStatus.ogTitle = targetSocialStatus.ogTitle;
+      socialStatus.ogDescription = targetSocialStatus.ogDescription;
+      socialStatus.validLink = targetSocialStatus.validLink;
+
         return socialStatus;
   }
 
@@ -991,9 +1000,26 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   undoCustomizeEachNetwork() {
     let socialStatusData = this.socialStatusList[0];
     this.socialStatusList = [];
-    this.socialStatusList[0] = socialStatusData;
+    this.socialStatusList[0] = new SocialStatus();
     this.isCustomizeButtonClicked = false;
+    this.selectNone();
     $('html,body').animate({scrollTop: 0}, 'slow');
+  }
+
+  selectAll(){
+    this.isAllSelected = true;
+    this.selectedAccounts = 0;
+    this.socialStatusProviders.forEach(data => {
+        data.selected = false;
+        this.toggleSocialStatusProvider(data);
+    })
+  }
+
+  selectNone(){
+    this.isAllSelected = false;
+    this.selectedAccounts = 0;
+    this.socialStatusList.length = 1;
+    this.socialStatusProviders.forEach(data => data.selected = false);
   }
 
   toggleSelectAll(){
@@ -1035,9 +1061,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   onSelectCountry(countryId){
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
-  cancel() {
-    this._location.back(); // <-- go back to previous location on cancel
-  }
 
   searchContactList(){
     this.contactListsPagination.pageIndex = 1;
@@ -1049,6 +1072,48 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.contactListsPagination.searchKey = null;
     this.loadContactLists(this.contactListsPagination);
     
+  }
+
+// RSS ---------------------------
+
+  openRssModal() {
+    $('#rssModal').modal('show');
+    if(!this.rssCategories){
+    this.socialService.getRSSCategoriesWithChannelCount()
+      .subscribe(
+      data => {
+        this.rssCategories = data.data;
+      },
+      error => console.error(error),
+      () => {
+        this.getFeeds();
+      }
+      );
+    }
+  }
+
+  getFeeds(){
+        this.socialService.getFeeds()
+      .subscribe(
+      data => {
+        this.feeds = data.data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );
+  }
+
+  addToPost(feed: any){
+    this.socialStatusList.forEach(data => {
+      data.statusMessage = feed.link;
+      data.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
+      data.ogTitle = feed.title;
+      data.ogDescription = feed.description;
+      data.validLink = true;
+    });
+    $('#rssModal').modal('hide');
   }
 
 }

@@ -27,4 +27,8 @@ export class SocialStatus {
   
   socialStatusList: Array<SocialStatus> = [];
   selectedAccounts: number = 0;
+
+  ogImage: string;
+	ogTitle: string;
+	ogDescription: string;
 }

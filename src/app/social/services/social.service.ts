@@ -207,6 +207,16 @@ export class SocialService {
                 error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
             return Observable.throw( error );
         }
+    }
+    getRSSCategoriesWithChannelCount() {
+      return this.http.get(this.URL + 'rss/categoriesWithChannelCount?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
+    getFeeds() {
+      return this.http.get(this.URL + 'rss/feeds?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 }
