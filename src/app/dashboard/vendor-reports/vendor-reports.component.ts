@@ -7,19 +7,24 @@ import { PagerService } from "../../core/services/pager.service";
 import { PaginationComponent } from "../../common/pagination/pagination.component";
 import { Router } from "@angular/router";
 import { VendorInvitation } from '../models/vendor-invitation';
+import { RegularExpressions } from '../../common/models/regular-expressions';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 declare var $, CKEDITOR: any;
 
 @Component({
   selector: "app-vendor-reports",
   templateUrl: "./vendor-reports.component.html",
   styleUrls: ["./vendor-reports.component.css"],
-  providers: [Pagination, PaginationComponent, VendorInvitation]
+  providers: [Pagination, PaginationComponent, VendorInvitation, RegularExpressions]
 })
 export class VendorReportsComponent implements OnInit {
   vendorDetails: any;
   loading = false;
   newEmailIds: string[] = [];
+  emailIds = [];
   vendoorInvitation: VendorInvitation = new VendorInvitation();
+  isValidVendorInvitation = false;
+  isError = false;
 
   constructor(
     public referenseService: ReferenceService,
@@ -28,9 +33,10 @@ export class VendorReportsComponent implements OnInit {
     public authenticationService: AuthenticationService,
     public pagerService: PagerService,
     public paginationComponent: PaginationComponent,
-    private router: Router
+    private router: Router,
+    public regularExpressions: RegularExpressions
   ) {
-      CKEDITOR.config.height = '100';
+      CKEDITOR.config.height = '250px';
   }
 
   vendorReports() {
@@ -83,25 +89,47 @@ export class VendorReportsComponent implements OnInit {
   openRequestAsVendorModal(){
       this.vendoorInvitation.message = "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
 
-          + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
+          + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
 
-          + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
+          + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
 
-          + "Visit www.xamplify.com to learn more, or feel free to ask me questions about how it works on my end."
+          + "<br><br>" + "Visit www.xamplify.com to learn more, or feel free to ask me questions about how it works on my end."
       $( '#request-for-vendor' ).modal( 'show' );
      
   }
   
+  validateVendoorInvitation(){
+      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds){
+          this.isValidVendorInvitation = true;
+      }else{
+          this.isValidVendorInvitation = false;
+      }
+  }
+  
+  
+  public validators = [ this.must_be_email ];
+  public errorMessages = {
+      'must_be_email': 'Enter valid email adress!'
+  };
+  private must_be_email(control: FormControl) {        
+      var EMAIL_REGEXP = /^(([a-zA-Z0-9.!#$&'*+\/=?_`{|}~-]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (control.value != "" && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
+          return { "must_be_email": true };
+      }
+      return null;
+  }
+  
   sendRequestForVendorEmail(){
      // this.loading = true;
+      this.isError = false;
       
-      const tags = this.vendoorInvitation.emailIds;
+      const tags = this.emailIds;
       for (let i = 0; i < tags.length; i++) {
               this.newEmailIds[i] = tags[i]['value'];
       }
-      
       this.vendoorInvitation.emailIds = this.newEmailIds;
    
+     if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
         .subscribe(
           data => {
@@ -116,6 +144,9 @@ export class VendorReportsComponent implements OnInit {
             this.closeInvitationModal();
           }
         );
+      }else{
+          this.isError = true;
+      }
   }
   
   closeInvitationModal() {
@@ -125,6 +156,9 @@ export class VendorReportsComponent implements OnInit {
       $( 'body' ).removeClass( 'modal-open' );
       $( '.modal-backdrop fade in' ).remove();
       $( ".modal-backdrop in" ).css( "display", "none" );
+      this.vendoorInvitation.subject = "";
+      this.vendoorInvitation.emailIds = [];
+      this.emailIds = [];
   }
   
   ngOnInit() {

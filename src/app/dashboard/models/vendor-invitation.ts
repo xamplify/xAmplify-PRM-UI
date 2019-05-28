@@ -1,5 +1,5 @@
 export class VendorInvitation {
 emailIds = [];
-subject: string;
-message: string;
+subject: string = "";
+message: string = "";
 }
