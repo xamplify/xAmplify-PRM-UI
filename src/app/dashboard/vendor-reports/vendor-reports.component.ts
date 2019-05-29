@@ -37,6 +37,7 @@ export class VendorReportsComponent implements OnInit {
     public regularExpressions: RegularExpressions
   ) {
       CKEDITOR.config.height = '250px';
+      CKEDITOR.config.baseFloatZIndex = 1E5;
   }
 
   vendorReports() {
