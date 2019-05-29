@@ -78,7 +78,7 @@
 				<a class="close-circle" (click)="closeInvitationModal()" data-dismiss="modal"> <i
 					class="fa fa-times"></i>
 				</a>
-				<h4 class="modal-title" id="myModalLabel">Send a request email
+				<h4 class="modal-title left" id="myModalLabel">Send a request email
 					as vendor in xAmplify:</h4>
 			</div>
 			<div class="modal-body">
@@ -88,7 +88,7 @@
 </div>
 				<form class="form-horizontal" autocomplete="off">
 					<div class="form-group">
-						<label class="col-sm-2 labal-css color-css to-align-css">To<font
+						<label class="col-sm-2 labal-css to-align-css p0">To<font
 							style="color: red"> <b>*</b>
 						</font>
 						</label>
@@ -104,7 +104,7 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-sm-2 labal-css color-css">Email subject<font
+						<label class="col-sm-2 labal-css p0 right">Email subject<font
 							style="color: red"> <b>*</b>
 						</font>
 						</label>
@@ -113,16 +113,16 @@
 								[(ngModel)]="vendoorInvitation.subject"
 								(input)="validateVendoorInvitation()"
 								[ngModelOptions]="{standalone: true}" placeholder="Subject Line"
-								class="form-control" name="subjectLine" maxlength="200" />
+								class="form-control border-css" name="subjectLine" maxlength="200" />
 						</div>
 					</div>
 					<div id="ck-editor">
-						<div>
-							<label style="cursor: default; margin-left: 28px;" for="days" id="reply-message">Message
+						<div class="col-sm-12">
+							<label class="col-sm-2 right" style="cursor: default" for="days" id="reply-message">Message
 								<b style="color: red">*</b>
 							</label>
 						</div>
-						<div>
+						<div class="col-sm-12">
 							<ckeditor name="body" [(ngModel)]="vendoorInvitation.message"
 								[ngModelOptions]="{standalone: true}"
 								(input)="validateVendoorInvitation()"

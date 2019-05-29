@@ -2,3 +2,15 @@
 	margin-top: 13px;
 	text-align: right;
 }
+
+.right{
+	text-align: right;
+}
+.left{
+	text-align: left;
+}
+
+.border-css{
+	border: none !important;
+	border-bottom: 1px solid #e2e2e2 !important;
+}
