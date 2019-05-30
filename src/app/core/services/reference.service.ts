@@ -98,6 +98,7 @@ export class ReferenceService {
     socialCampaign = false;
     eventCampaign = false;
     loadingPreview = false;
+    eventCampaignId: number;
     dealId = 0;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
@@ -1649,9 +1650,15 @@ export class ReferenceService {
               updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
 
           }
-          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+          if(this.campaignType === "EVENT"){
+           if(campaign.nurtureCampaign ||userProfile.id!= this.eventCampaignId){
               updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
-          }
+           }
+         }else{
+             if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+                 updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
+              }
+         }
 
           $("#email-template-content").append(updatedBody);
           $('.modal .modal-body').css('overflow-y', 'auto');
@@ -1679,9 +1686,15 @@ export class ReferenceService {
              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
              updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
          }
-         if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+         if(this.campaignType === "EVENT"){
+             if(campaign.nurtureCampaign ||userProfile.id!= this.eventCampaignId){
+                updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
+             }
+           }else{
+            if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
-         }
+            }
+           }
          return updatedBody;
      }
 

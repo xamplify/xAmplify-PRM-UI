@@ -909,6 +909,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                         if(this.campaignType.includes('VIDEO')){
                             gifPath = this.campaign.campaignVideoFile.gifImagePath;
                         }
+                        
+                        if(this.campaignType.includes('EVENT')){
+                            this.referenceService.campaignType = "EVENT";
+                            this.referenceService.eventCampaignId = this.campaign.userDTO.id;
+                        }
+                        
                         let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
                         $("#email-template-content").append(updatedBody);
                         $('.modal .modal-body').css('overflow-y', 'auto');
@@ -1059,6 +1065,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   }
   closeModalpreview(){
     this.closeNotifyParent.emit(true);
+    this.referenceService.campaignType = "";
+    this.referenceService.eventCampaignId = null;
   }
 
   navigateCampaignAnalytics(campaign: any) {

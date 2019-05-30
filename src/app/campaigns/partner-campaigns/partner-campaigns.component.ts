@@ -221,8 +221,19 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           console.log(result.data.emailTemplateDTO.body)
           result.data.emailTemplateDTO.body = result.data.emailTemplateDTO.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           this.campaignName = result.data.campaign;
+          
           $("#email-template-content").empty();
           $("#email-template-title").empty();
+          
+          let userProfile = this.authenticationService.userProfile;
+          let partnerLogo = userProfile.companyLogo;
+          let partnerCompanyUrl = userProfile.websiteUrl;
+          
+          if(result.data.nurtureCampaign || userProfile.id!=result.data.id){
+              result.data.emailTemplateDTO.body = this.referenceService.replacePartnerLogo(result.data.emailTemplateDTO.body,partnerLogo,partnerCompanyUrl,result.data);
+          }
+          
+          
           $("#email-template-content").append(result.data.emailTemplateDTO.body);
           $('.modal .modal-body').css('overflow-y', 'auto');
           $("#email_template_preivew").modal('show');
