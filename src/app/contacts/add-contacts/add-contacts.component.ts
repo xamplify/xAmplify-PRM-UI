@@ -229,7 +229,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     readFiles( files: any, index = 0 ) {
-        if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+        if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" || files[0].type == "application/octet-stream" ) {
             this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
