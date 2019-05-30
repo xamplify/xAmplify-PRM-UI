@@ -249,7 +249,7 @@
 						</section>
 
 						<section *ngIf="socialStatus.validLink" class="row">
-							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}"></div>
+							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
 							<div class="col-sm-10"><a>{{socialStatus.statusMessage}}</a>
 							<h6 contenteditable="true"><b>{{socialStatus.ogTitle}}</b></h6>
 							<p contenteditable="true">{{socialStatus.ogDescription}}</p>
@@ -263,7 +263,7 @@
 							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-video-camera"></i>
 							</span>
-							<span class="rss" title="RSS Feeds" (click)="openRssModal()"  data-toggle="tooltip" data-placement="top">
+							<span class="rss hidden" title="RSS Feeds" (click)="openRssModal()"  data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-rss-square"></i>
 							</span>
 						</section>
@@ -653,43 +653,44 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
       </div>
-		<div class="modal-body" *ngIf="rssCategories">
+		<div class="modal-body" *ngIf="favouritesResponse">
 			<div class="col-sm-6">
-				<ng-container *ngIf="rssCategories.categories">
-					<ul class="list-group">
-						<li class="list-group-item">All
-							<span class="badge badge-primary badge-pill">{{rssCategories.total_channel_count}}</span>
-						</li>
-						<li class="list-group-item" *ngFor="let category of rssCategories.categories">
-							{{category.title}} 
-							<span class="badge badge-primary badge-pill">{{category.channel_count}}</span>
-							<ng-container *ngIf="category.has_sub_categories">
-								<ul class="list-group">
-									<li class="list-group-item" *ngFor="let subCategory of category.sub_categories">
-										{{subCategory.title}} 
-										<span class="badge badge-primary badge-pill">{{subCategory.channel_count}}</span>
-									</li>
-								</ul>
-							</ng-container>
+				<ng-container *ngIf="favouritesResponse.statusCode === 8100">
+					<h3>My Favourite Channels</h3>
+					<ul>
+						<li *ngFor="let item of favouritesResponse.data.channels">
+							<a href="{{item.link}}">{{item.title}}</a>
 						</li>
 					</ul>
+					<h3>My Favourite Categories</h3>
+					<ul>
+						<li *ngFor="let item of favouritesResponse.data.categories">
+							<p>{{item.title}}</p>
+						</li>
+					</ul>
+					<h3>My Favourite Tags</h3>
 				</ng-container>
 			</div>
-			<div class="col-sm-6">
-				<div *ngFor="let feed of feeds" class="panel panel-default">
-					<div class="panel-body" (click)="addToPost(feed)" style="cursor: pointer">						
-						<div class="col-sm-2">
-							<img class="img-responsive" src="{{feed.thumbnail}}">
-						</div>
-						<div class="col-sm-9">
-							<a href="{{feed.link}}" target="_blank"><b>{{feed.title}}</b></a>
-							<p>{{feed.description}}</p>
-						</div>
-						<div class="col-sm-1">
-							<span class="fa fa-plus-circle" (click)="addToPost(feed)" aria-hidden="true" title="Add to post" data-toggle="tooltip" data-placement="top"></span>
+			<div class="col-sm-6" *ngIf="feedsResponse">
+				<ng-container *ngIf="feedsResponse.statusCode !== 8102">
+					<h2>{{feedsResponse.message}}</h2>
+				</ng-container>
+				<ng-container *ngIf="feedsResponse.statusCode === 8102 && feedsResponse.message === 'RSS FAVOURITE FEEDS FOUND'">
+					<div *ngFor="let feed of feedsResponse.data" class="panel panel-default">
+						<div class="panel-body" (click)="addToPost(feed)" style="cursor: pointer">						
+							<div class="col-sm-2">
+								<img class="img-responsive" src="{{feed.thumbnail}}">
+							</div>
+							<div class="col-sm-9">
+								<a href="{{feed.link}}" target="_blank"><b>{{feed.title}}</b></a>
+								<p>{{feed.description}}</p>
+							</div>
+							<div class="col-sm-1">
+								<span class="fa fa-plus-circle" (click)="addToPost(feed)" aria-hidden="true" title="Add to post" data-toggle="tooltip" data-placement="top"></span>
+							</div>
 						</div>
 					</div>
-				</div>
+				</ng-container>				
 			</div>
 		</div>
       <div class="modal-footer">

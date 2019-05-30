@@ -122,7 +122,6 @@ export class SocialManageComponent implements OnInit, OnDestroy {
 
     onChange() {
         this.socialConnectionsTemp.forEach(data => console.log(data.id + ' - '+ data.active));
-        this.socialConnections.forEach(data => console.log(data.id + ' - '+ data.active));
         let isChanged: boolean;
         for(var i=0; i< this.socialConnections.length; i++){
             if(this.socialConnections[i].active !== this.socialConnectionsTemp[i].active){

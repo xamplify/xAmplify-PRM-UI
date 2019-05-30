@@ -219,4 +219,16 @@ export class SocialService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    getFeedsByUserId(userId: number){
+        return this.http.get(this.URL + `rss/user/${userId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getFavouritesByUserId(userId: number){
+        return this.http.get(this.URL + `rss/user/${userId}/favourites?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

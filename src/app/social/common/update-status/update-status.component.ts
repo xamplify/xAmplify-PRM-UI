@@ -79,7 +79,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   events = [];
 
   rssCategories: any;
-  feeds: any[];
+  feedsResponse: any;
+  favouritesResponse: any;
 
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
@@ -1078,25 +1079,40 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   openRssModal() {
     $('#rssModal').modal('show');
-    if(!this.rssCategories){
-    this.socialService.getRSSCategoriesWithChannelCount()
+    this.getFavouritesByUserId();
+  }
+
+  getFavouritesByUserId(){
+    this.socialService.getFavouritesByUserId(this.userId)
       .subscribe(
       data => {
-        this.rssCategories = data.data;
+        this.favouritesResponse = data;
       },
       error => console.error(error),
       () => {
-        this.getFeeds();
+        this.getFeedsByUserId();
       }
       );
-    }
   }
 
   getFeeds(){
         this.socialService.getFeeds()
       .subscribe(
       data => {
-        this.feeds = data.data;
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );
+  }
+
+    getFeedsByUserId(){
+        this.socialService.getFeedsByUserId(this.userId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
       },
       error => console.error(error),
       () => {
