@@ -89,8 +89,8 @@
 						</a>
 					</div>
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'EMAIL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
-					 *ngIf="(campaignType === 'VIDEO' || campaignType === 'EMAIL' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'REGULAR','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+					 *ngIf="(campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
 								<i class="fa fa-envelope-open"></i>
@@ -107,7 +107,7 @@
 							</div>
 						</a>
 					</div>
-					<div [hidden]="campaignType === 'SOCIAL'" class="pl10 pr10 col-xs-12 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}"
+					<div [hidden]="campaignType === 'SOCIAL'" class="pl10 pr10 col-xs-12 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'REGULAR'}"
 					 *ngIf="campaign.selectedEmailTemplateId==0">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default;">
 							<div class="visual">
@@ -125,7 +125,7 @@
 						</a>
 					</div>
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'REGULAR', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
 								<i class="fa fa-users"></i>
@@ -488,7 +488,7 @@
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
 											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 											<span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
-											<span *ngIf="campaignType==='EMAIL'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
+											<span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
 											<span *ngIf="campaignType === 'EVENT' && isChannelCampaign">PARTNER REDISTRIBUTED CAMPAIGN ANALYTICS</span>
 											<span *ngIf="campaignType === 'EVENT' && !isChannelCampaign">CAMPAIGN ANALYTICS</span>
 										</span>
@@ -546,7 +546,7 @@
 															View</th>
 														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
 															<span *ngIf="campaignType==='VIDEO'">Views</span>
-															<span *ngIf="campaignType==='EMAIL'">Email Opened</span>
+															<span *ngIf="campaignType==='REGULAR'">Email Opened</span>
 															<span *ngIf="campaignType==='SOCIAL'">Redistributed</span>
 														</th>
 													</tr>
@@ -897,7 +897,7 @@
 										</div>
 									</a>
 								</div>
-								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL' ">
+								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ">
 									<a class="text-center">
 										<div><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></div>
 										<div>Views</div>
@@ -906,7 +906,7 @@
 										</div>
 									</a>
 								</div>
-								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='EMAIL' || campaignType==='SOCIAL'">
+								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL'">
 									<a class="text-center">
 										<div><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></div>
 										<div>Time Spent</div>

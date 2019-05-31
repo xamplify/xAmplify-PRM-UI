@@ -278,7 +278,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     readFiles( files: any, index = 0 ) {
         try {
-            if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" || files[0].type == "application/octet-stream") {
+            if ( this.fileUtil.isCSVFile(files[0]) ) {
                 this.selectedAddContactsOption = 2;
                 this.isCsvFileLsitLoading = true;
                 this.isShowUsers = false;
