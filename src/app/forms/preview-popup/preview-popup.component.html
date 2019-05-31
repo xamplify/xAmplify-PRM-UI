@@ -1,0 +1,82 @@
+<div class="modal right " id="form-preview-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title text-center">Form Preview</h4>
+        </div>
+        <div class="modal-body">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="panel panel-info" *ngIf="!formError">
+              <div class="panel-heading">
+                <div class="panel-title">{{form.name}}</div>
+              </div>
+              <div class="panel-body" *ngIf="!formError">
+                <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
+                  <div class="form-group">
+                    <label class="control-label">{{columnInfo.labelName}}
+                      <span class="required" *ngIf="columnInfo.required">*</span>
+                    </label>
+                    <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
+                      <input type="{{columnInfo.labelType}}" class="form-control"
+                        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="50">
+                    </ng-container>
+
+                    <ng-container *ngIf="columnInfo.labelType=='textarea'">
+                      <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+                        maxlength="250"></textarea>
+                    </ng-container>
+                    <!-- ---------------------------Radio Button----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='radio'">
+                      <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                              class="form-check-input">
+                            {{radioButton.name}}
+                          </label>
+                        </div>
+                        <br>
+                      </ng-container>
+                    </ng-container>
+                    <!-- ---------------------------Check Box----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                      <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                              class="form-check-input">
+                            {{checkBox.name}}
+                          </label>
+                        </div>
+                        <br>
+                      </ng-container>
+                    </ng-container>
+                    <!-- ---------------------------DropDown Menu----------------------------- -->
+                    <ng-container *ngIf="columnInfo.labelType=='select'">
+                      <select class="form-control">
+                        <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                          {{dropDownValue.name}}</option>
+                      </select>
+                    </ng-container>
+                  </div>
+                </ng-container>
+                <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right">Submit</button>
+              </div>
+            </div>
+            
+            
+             <div *ngIf="formError">
+				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+			</div>
+			
+			
+        </div>
+        <div class="modal-footer">
+          <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>

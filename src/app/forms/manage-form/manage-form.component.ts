@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -14,51 +14,35 @@ import { UtilService } from '../../core/services/util.service';
 import {Inject} from "@angular/core";
 import {DOCUMENT} from "@angular/platform-browser";
 import { environment } from '../../../environments/environment';
-
+import { SortOption } from '../../core/models/sort-option';
+import {PreviewPopupComponent} from '../preview-popup/preview-popup.component';
 declare var swal, $: any;
 
 @Component({
   selector: 'app-manage-form',
   templateUrl: './manage-form.component.html',
   styleUrls: ['./manage-form.component.css','../add-form/add-form.component.css','../preview/form-preview.component.css'],
-  providers: [Pagination, HttpRequestLoader,ActionsDescription]
+  providers: [Pagination, HttpRequestLoader,ActionsDescription,SortOption],
 })
 export class ManageFormComponent implements OnInit, OnDestroy {
     form:Form = new Form();
     ngxloading = false;
     pagination: Pagination = new Pagination();
-    searchKey = "";
     loggedInUserId = 0;
     customResponse: CustomResponse = new CustomResponse();
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     isListView = false;
     private dom: Document;
     clientUrl = environment.CLIENT_URL;
-
-    sortByDropDown = [
-        { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
-        { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
-        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
-        { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
-    ];
-
-    numberOfItemsPerPage = [
-        { 'name': '12', 'value': '12' },
-        { 'name': '24', 'value': '24' },
-        { 'name': '48', 'value': '48' },
-        { 'name': 'All', 'value': '0' },
-    ]
-    selectedSortedOption: any = this.sortByDropDown[3];
-    itemsSize: any = this.numberOfItemsPerPage[0];
     message = "";
+    
+    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
     constructor( public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public formService: FormService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription ) {
+        public actionsDescription: ActionsDescription,public sortOption:SortOption,private utilService:UtilService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
           
@@ -78,22 +62,22 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     listForms( pagination: Pagination ) {
-        pagination.searchKey = this.searchKey;
         this.referenceService.loading( this.httpRequestLoader, true );
         this.formService.list( pagination ).subscribe(
             ( response: any ) => {
                 const data = response.data;
                 pagination.totalRecords = data.totalRecords;
+                this.sortOption.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, data.forms );
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
-
+    /********************Pagaination&Search Code*****************/
 
     /*************************Sort********************** */
-    getSortedResult( text: any ) {
-        this.selectedSortedOption = text;
+    sortBy( text: any ) {
+        this.sortOption.formsSortOption = text;
         this.getAllFilteredResults( this.pagination );
     }
 
@@ -101,6 +85,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     /*************************Search********************** */
     searchForms() {
         this.getAllFilteredResults( this.pagination );
+    }
+    
+    paginationDropdown(items:any){
+        this.sortOption.itemsSize = items;
+        this.getAllFilteredResults(this.pagination);
     }
 
     /************Page************** */
@@ -111,26 +100,13 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     getAllFilteredResults( pagination: Pagination ) {
         this.pagination.pageIndex = 1;
-        this.pagination.searchKey = this.searchKey;
-        const sortedValue = this.selectedSortedOption.value;
-        if ( sortedValue !== "" ) {
-            const options: string[] = sortedValue.split( "-" );
-            this.pagination.sortcolumn = options[0];
-            this.pagination.sortingOrder = options[1];
-        }
-
-        if ( this.itemsSize.value == 0 ) {
-            this.pagination.maxResults = this.pagination.totalRecords;
-        } else {
-            this.pagination.maxResults = this.itemsSize.value;
-        }
-        this.pagination.pagedItems.length = 0;
+        this.pagination.searchKey = this.sortOption.searchKey;
+        this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
         this.listForms( this.pagination );
     }
-
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
-
-
+    /********************Pagaination&Search Code*****************/
+    
     showMessageOnTop( message ) {
         $( window ).scrollTop( 0 );
         this.customResponse = new CustomResponse( 'SUCCESS', message, true );
@@ -185,25 +161,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     /*****************Preview Form*******************/
     preview(id:number){
-        this.ngxloading = true;
-        this.formService.getById( id )
-        .subscribe(
-        ( data: any ) => {
-            this.ngxloading = false;
-            if(data.statusCode===200){
-                this.form = data.data;
-                $('#form-preview-modal').modal('show');
-            }else{
-                swal("Please Contact Admin!", data.message, "error");
-            }
-           
-        },
-        ( error: string ) => {
-            this.logger.errorPage(error);
-            this.referenceService.showServerError(this.httpRequestLoader);
-            }
-        );
-    }
+        this.previewPopUpComponent.previewForm(id);
+       }
     
     
     edit(id:number){
@@ -257,5 +216,10 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/forms/'+form.alias+'/analytics']);
 
     }
+    
+    
+    ngAfterViewInit() {
+    }
+    
 
 }

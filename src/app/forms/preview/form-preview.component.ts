@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import {FormService} from '../services/form.service';
@@ -12,6 +12,8 @@ import { Processor } from '../../core/models/processor';
 import { ColumnInfo } from '../models/column-info';
 import {FormOption} from '../models/form-option';
 import { CustomResponse } from '../../common/models/custom-response';
+import { filter, pairwise } from 'rxjs/operators';
+
 
 declare var $:any;
 
@@ -38,7 +40,9 @@ export class FormPreviewComponent implements OnInit {
     message: string;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
     private authenticationService:AuthenticationService,private formService:FormService,
-    private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor) { }
+    private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router) {
+      
+  }
 
   ngOnInit() {
       this.processor.set(this.processor);
@@ -56,6 +60,7 @@ export class FormPreviewComponent implements OnInit {
   }
 
   getFormFieldsByAlias(alias: string) {
+    this.ngxLoading = true;
     this.formService.getByAlias(alias)
       .subscribe(
         (response: any) => {
@@ -66,7 +71,7 @@ export class FormPreviewComponent implements OnInit {
             this.hasFormExists = false;
           }
           this.processor.remove(this.processor);
-
+          this.ngxLoading = false;
         },
         (error: string) => {
           this.processor.remove(this.processor);
@@ -110,6 +115,7 @@ export class FormPreviewComponent implements OnInit {
       this.validForm = true;
       const formSubmit = new FormSubmit();
       formSubmit.id = this.form.id;
+      formSubmit.alias = this.alias;
       $.each(formLabelDtos,function(index:number,field:ColumnInfo){
           const formField  = new FormSubmitField();
           formField.id = field.id;
@@ -126,6 +132,8 @@ export class FormPreviewComponent implements OnInit {
           if(response.statusCode==200){
               this.addHeaderMessage(response.message,this.successAlertClass);
               this.formSubmitted = true;
+          }else if(response.statusCode==404){
+              this.addHeaderMessage(response.message,this.errorAlertClass);
           }
         },
         (error: string) => {

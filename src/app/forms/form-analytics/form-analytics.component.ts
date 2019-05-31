@@ -41,7 +41,7 @@ export class FormAnalyticsComponent implements OnInit {
     }
     
     listSubmittedData( pagination: Pagination) {
-       // pagination.searchKey = this.searchKey;
+        pagination.searchKey = this.searchKey;
         this.referenceService.loading( this.httpRequestLoader, true );
         this.formService.getSubmittedFormData( pagination,this.alias ).subscribe(
             ( response: any ) => {
@@ -59,6 +59,13 @@ export class FormAnalyticsComponent implements OnInit {
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
+    search(){
+        this.pagination.pageIndex = 1;
+        this.listSubmittedData(this.pagination);
+    }
+    
+    
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
     
     refreshList(){
         this.listSubmittedData(this.pagination);

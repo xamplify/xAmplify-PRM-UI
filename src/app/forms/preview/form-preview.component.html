@@ -16,9 +16,9 @@
 		
 		<ng-container *ngIf="!formSubmitted">
 			<div class="panel-heading">
-			 <button type="button" class="close-circle" (click)="refreshForm()" data-toggle="tooltip" data-placement="top"  title="Refresh">
+			 <a class="close-circle" (click)="refreshForm()" data-toggle="tooltip" data-placement="top"  title="Refresh">
 						<i class="fa fa-refresh"></i>
-				</button>
+				</a>
 				<div class="panel-title">{{form.name}}</div>
 			</div>
 			<div class="panel-body">

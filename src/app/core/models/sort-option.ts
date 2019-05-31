@@ -72,7 +72,16 @@ export class SortOption {
         { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' },
         { 'name': 'Deals Count(ASC)', 'value': 'count-ASC' },
         { 'name': 'Deals Count(DESC)', 'value': 'count-DESC' }
-         ]
+         ];
+    
+    manageFormsSortOptions = [
+                      { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+                      { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+                      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+                      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+                      { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
+                      { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
+                  ];
    
    
     numberOfItemsPerPage = [
@@ -87,6 +96,7 @@ export class SortOption {
     public leadsSortOption:any = this.leadsSortDropDown[11]; 
     public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[11];    
     public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
+    public formsSortOption: any = this.manageFormsSortOptions[3];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

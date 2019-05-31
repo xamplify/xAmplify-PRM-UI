@@ -17,3 +17,23 @@
 .top-bar-left .title {
   display: none;
 }
+
+#right{
+	float: right;;
+}
+#left{
+	float: left;;
+}
+#search{
+	margin-right: 35px;
+}
+#search-icon{
+	position: relative;
+	right: -11px;
+}
+#search-text{
+	height:34px;
+}
+#circle{
+	margin-top: 4px;
+}
