@@ -165,6 +165,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
 
+            if(url.search('/twitter'))
+                return true;
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{
