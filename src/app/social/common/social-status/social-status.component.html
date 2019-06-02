@@ -41,15 +41,12 @@
 			<ng-container
 				*ngFor="let socialStatusContent of socialStatus.socialStatusContents">
 			<div class="image-wrapper col-xs-6">
-				<img async *ngIf="socialStatusContent.fileType === 'image'"
-					src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-				<video *ngIf="socialStatusContent.fileType == 'video'" width="160"
-					height="80">
-					<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-				</video>
+				<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+				<img async src="{{socialStatusContent.filePath}}" *ngIf="socialStatusContent.fileType == 'video'">
 			</div>
 			</ng-container>
 		</div>
+		<h6 *ngIf="socialStatus.publishStatus === 'FAILURE'" class="col-xs-12 text-danger">{{socialStatus.publishMessage}}</h6>
 	</div>
 	<div class="clearfix"></div>
 </div>

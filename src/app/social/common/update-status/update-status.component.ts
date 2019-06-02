@@ -579,7 +579,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatusProviders = new Array<SocialStatusProvider>();
     for (const i in this.socialConnections) {
       if (this.socialConnections[i].active) {
-        let source = this.socialConnections[i].source;
         const socialStatusProvider = new SocialStatusProvider();
         socialStatusProvider.socialConnection = this.socialConnections[i];
         this.socialStatusProviders.push(socialStatusProvider);
@@ -913,10 +912,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data => {
             if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source){
-              // let socialStatus = new SocialStatus();
-              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              // socialStatus.socialStatusProvider = data.socialStatusProvider;
               let socialStatus = JSON.parse(JSON.stringify(data));
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
               socialStatusProvider.socialStatusList.push(socialStatus);
@@ -925,10 +920,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         } else {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data=> {
-              // let socialStatus = new SocialStatus();
-              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              // socialStatus.socialStatusProvider = data.socialStatusProvider;
               let socialStatus = JSON.parse(JSON.stringify(data));
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
               socialStatusProvider.socialStatusList.push(socialStatus);
@@ -1053,8 +1044,30 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         error => console.log( error ),
         () => {
             this.socialService.socialConnections = this.socialConnections;
-            this.listSocialStatusProviders();
-            $('#manageAccountsModal').modal('hide');
+            
+    for (const i in this.socialConnections) {
+      const ssp = this.socialStatusProviders.find(item => item.socialConnection.id === this.socialConnections[i].id);
+      if (this.socialConnections[i].active) {
+        if(ssp){
+          // do nothing
+        }else{
+          const socialStatusProvider = new SocialStatusProvider();
+          socialStatusProvider.socialConnection = this.socialConnections[i];
+          this.socialStatusProviders.push(socialStatusProvider);          
+        }
+      }else {
+        if(ssp){
+          this.socialStatusProviders = this.socialStatusProviders.filter(item => item !== ssp);
+          if(this.socialStatusList.length == 1){
+            this.socialStatusList[0].socialStatusProvider = null;
+          }else
+            this.socialStatusList = this.socialStatusList.filter(data => data.socialStatusProvider !== ssp)
+        }
+      }
+    }
+
+    this.selectNone();
+    $('#manageAccountsModal').modal('hide');
         } );
 
   }
