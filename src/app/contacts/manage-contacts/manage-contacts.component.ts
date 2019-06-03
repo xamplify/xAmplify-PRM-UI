@@ -1579,13 +1579,15 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         try {
             this.pagination.maxResults = 12;
             this.isListView = !this.referenceService.isGridView;
-            this.loadContactLists( this.pagination );
-            this.contactsCount();
-            this.loadContactListsNames();
             
             if(this.isPartner){
                 this.defaultPartnerList( this.authenticationService.getUserId() );
             }
+            
+            this.loadContactLists( this.pagination );
+            this.contactsCount();
+            this.loadContactListsNames();
+            
             
         }
         catch ( error ) {
