@@ -141,13 +141,20 @@ export class VendorReportsComponent implements OnInit {
               console.log("success");
             
               if(data.statusCode === 200){
-                this.customResponse = new CustomResponse( 'SUCCESS', "Request has been sent successfully.", true );
+                this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
               }else{
                   this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
               }
             
+              $( '#request-for-vendor' ).modal( 'toggle' );
+              $( "#request-for-vendor .close" ).click()
+              $( '#request-for-vendor' ).modal( 'hide' );
+              $( 'body' ).removeClass( 'modal-open' );
+              $( '.modal-backdrop fade in' ).remove();
+              $( ".modal-backdrop in" ).css( "display", "none" );
+              
             this.loading = false;
-            this.closeInvitationModal();
+            //this.closeInvitationModal();
           },
           error => {console.log(error)
             this.loading = false;
