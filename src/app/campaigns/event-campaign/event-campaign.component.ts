@@ -1751,6 +1751,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.isEnableUpdateButton = false;
         }
     }
+    
+    spamCheck() {
+        $("#email_spam_check").modal('show');
+    }
 
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
