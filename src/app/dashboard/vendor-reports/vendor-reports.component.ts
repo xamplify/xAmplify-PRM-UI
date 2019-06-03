@@ -142,7 +142,10 @@ export class VendorReportsComponent implements OnInit {
             
               if(data.statusCode === 200){
                 this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
-              }else{
+              }else if(data.statusCode === 417){
+                this.customResponse = new CustomResponse( 'INFO', "The entered email id is already your vendor.", true );
+              }
+              else{
                   this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
               }
             
