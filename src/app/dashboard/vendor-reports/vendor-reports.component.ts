@@ -98,7 +98,7 @@ export class VendorReportsComponent implements OnInit {
           + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
 
           + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
-      $( '#request-for-vendor' ).modal( 'show' );
+      $( '#requestForVendor' ).modal( 'show' );
      
   }
   
@@ -146,13 +146,7 @@ export class VendorReportsComponent implements OnInit {
                   this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
               }
             
-              $( '#request-for-vendor' ).modal( 'toggle' );
-              $( "#request-for-vendor .close" ).click()
-              $( '#request-for-vendor' ).modal( 'hide' );
-              $( 'body' ).removeClass( 'modal-open' );
-              $( '.modal-backdrop fade in' ).remove();
-              $( ".modal-backdrop in" ).css( "display", "none" );
-              
+              $('#requestForVendor').modal('hide');
             this.loading = false;
             //this.closeInvitationModal();
           },
@@ -172,12 +166,7 @@ export class VendorReportsComponent implements OnInit {
   }
   
   closeInvitationModal() {
-      $( '#request-for-vendor' ).modal( 'toggle' );
-      $( "#request-for-vendor .close" ).click()
-      $( '#request-for-vendor' ).modal( 'hide' );
-      $( 'body' ).removeClass( 'modal-open' );
-      $( '.modal-backdrop fade in' ).remove();
-      $( ".modal-backdrop in" ).css( "display", "none" );
+      $('#requestForVendor').modal('hide');
       this.vendoorInvitation.emailIds = [];
       this.emailIds = [];
   }
