@@ -16,11 +16,14 @@
 				class="fa fa-angle-right"></i></li>
 			<li><a>Your Vendors</a></li>
 		</ul>
-		<button class="btn btn-group green pull-right" style="margin-top: 2px; display: none;"
+		<button class="btn btn-group green pull-right" style="margin-top: 2px;"
 			(click)="openRequestAsVendorModal()">Request For Vendor</button>
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
+		
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		
 			<div class="page-bar" style="padding: 10px; border: 1px solid #CCC;">
 				<div>
 					<div>

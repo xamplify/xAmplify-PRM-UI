@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { VendorInvitation } from '../models/vendor-invitation';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { CustomResponse } from '../../common/models/custom-response';
 declare var $, CKEDITOR: any;
 
 @Component({
@@ -25,6 +26,7 @@ export class VendorReportsComponent implements OnInit {
   vendoorInvitation: VendorInvitation = new VendorInvitation();
   isValidVendorInvitation = false;
   isError = false;
+  customResponse: CustomResponse = new CustomResponse();
 
   constructor(
     public referenseService: ReferenceService,
@@ -122,7 +124,7 @@ export class VendorReportsComponent implements OnInit {
   }
   
   sendRequestForVendorEmail(){
-     // this.loading = true;
+      this.loading = true;
       this.isError = false;
       
       const tags = this.emailIds;
@@ -135,11 +137,22 @@ export class VendorReportsComponent implements OnInit {
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
         .subscribe(
           data => {
-            console.log("success");
+              data = data;
+              console.log("success");
+            
+              if(data.statusCode === 200){
+                this.customResponse = new CustomResponse( 'SUCCESS', "Request has been sent successfully.", true );
+              }else{
+                  this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
+              }
+            
             this.loading = false;
             this.closeInvitationModal();
           },
-          error => console.log(error),
+          error => {console.log(error)
+            this.loading = false;
+            this.closeInvitationModal();
+          },
           () => {
             console.log("Mail Sending failed");
             this.loading = false;
