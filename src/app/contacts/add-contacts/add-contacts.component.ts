@@ -2485,7 +2485,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.getMarketoConatacts = data.data;
 
 
-            this.getMarketoConatacts = data.data;
+           // this.getMarketoConatacts = data.data;
             this.loadingMarketo = false;
             this.selectedAddContactsOption = 6;
             if (this.getMarketoConatacts.length == 0)

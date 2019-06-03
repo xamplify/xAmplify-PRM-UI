@@ -526,6 +526,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.socialPartnerUsers.length = 0;
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
+        this.getGoogleConatacts = null;
         this.pager = [];
         this.pagedItems = [];
         this.paginationType = "";
@@ -2344,6 +2345,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
         }
     }
+    
     saveMarketoContacts()
     {
 
@@ -2356,59 +2358,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         } else
             this.xtremandLogger.error( "AddContactComponent saveMarketoContacts() Contacts Null Error" );
 
-        // try
-        // {
-        //     this.socialPartners.socialNetwork = "MARKETO";
-        //     this.socialPartners.contactName = this.pager.contactListName;
-        //     this.socialPartners.isPartnerUserList = this.isPartner;
-        //     this.socialPartners.contactType = this.contactType;
-        //     this.socialPartners.contacts = this.socialPartnerUsers;
-        //     this.socialPartners.contacts = this.validateMarketoContacts(this.socialPartnerUsers);
-        //     this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
-        //     this.socialPartners.listName = this.pager.contactListName;
-        //     if (this.pager.contactListName != '' && !this.isValidContactName && this.pager.contactListName != ' ')
-        //     {
-        //         this.loading = true;
-        //         if (this.socialPartnerUsers.length > 0)
-        //         {
-        //             this.contactService.saveMarketoContactList(this.socialPartners)
-        //                 .subscribe(
-        //                     data =>
-        //                     {
-        //                         data = data;
-        //                         this.loading = false;
-        //                         this.selectedAddPartnerOption = 9;
-        //                         this.contactService.saveAsSuccessMessage = "add";
-        //                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
-        //                         if (this.isPartner == false)
-        //                         {
-        //                             this.router.navigateByUrl('/home/contacts/manage')
-        //                         } else
-        //                         {
-        //                             this.router.navigateByUrl('home/partners/manage')
-        //                         }
-        //                     },
-
-        //                     (error: any) =>
-        //                     {
-        //                         this.loading = false;
-        //                         this.xtremandLogger.error(error);
-        //                         this.xtremandLogger.errorPage(error);
-        //                     },
-        //                     () => this.xtremandLogger.info("addcontactComponent saveMarketoContact() finished")
-        //                 )
-        //         } else
-        //             this.xtremandLogger.error("AddContactComponent saveMarketoContact() Contacts Null Error");
-        //     }
-        //     else
-        //     {
-        //         this.xtremandLogger.error("AddContactComponent saveMarketoContact() ContactList Name Error");
-        //     }
-        // } catch (error)
-        // {
-        //     this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContact().")
-        // }
     }
+    
     saveMarketoContactSelectedUsers()
     {
 
@@ -2420,64 +2371,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         else {
             this.xtremandLogger.error( "AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error" );
         }
-        // try
-        // {
 
-        //     this.allselectedUsers = this.validateMarketoContacts(this.allselectedUsers);
-        //     this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
-
-        //     if (this.pager.contactListName != '' && !this.isValidContactName && this.pager.contactListName != ' ' && this.allselectedUsers.length != 0)
-        //     {
-        //         console.log(this.allselectedUsers);
-        //         this.loading = true;
-        //         this.partnerLi = new ContactList;
-        //         this.contactListObject.name = this.model.contactListName;
-        //         this.contactListObject.isPartnerUserList = this.isPartner;
-        //         this.socialPartners.socialNetwork = "MARKETO";
-        //         this.socialPartners.contactName = this.pager.contactListName;
-        //         this.socialPartners.isPartnerUserList = this.isPartner;
-        //         this.socialPartners.contactType = this.contactType;
-        //         this.socialPartners.contacts = this.allselectedUsers;
-        //         this.socialPartners.contacts = this.validateMarketoContacts(this.allselectedUsers);
-        //         this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
-        //         this.socialPartners.listName = this.pager.contactListName;
-        //         this.contactService.saveMarketoContactList(this.socialPartners)
-        //             .subscribe(
-        //                 data =>
-        //                 {
-        //                     data = data;
-        //                     this.loading = false;
-        //                     this.selectedAddPartnerOption = 9;
-
-        //                     this.contactService.saveAsSuccessMessage = "add";
-        //                     this.xtremandLogger.info("update Contacts ListUsers:" + data);
-        //                     if (this.isPartner == false)
-        //                     {
-        //                         this.router.navigateByUrl('/home/contacts/manage')
-        //                     } else
-        //                     {
-        //                         this.router.navigateByUrl('home/partners/manage')
-        //                     }
-        //                 },
-
-        //                 (error: any) =>
-        //                 {
-        //                     this.loading = false;
-        //                     this.xtremandLogger.error(error);
-        //                     this.xtremandLogger.errorPage(error);
-        //                 },
-        //                 () => this.xtremandLogger.info("addcontactComponent saveMarketoContactSelectedUsers() finished")
-        //             )
-        //     }
-        //     else
-        //     {
-             
-        //         this.xtremandLogger.error("AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error");
-        //     }
-        // } catch (error)
-        // {
-        //     this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContactSelectedUsers().")
-        // }
     }
 
     authorisedMarketoContacts()
@@ -2493,9 +2387,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.marketoImageBlur = false;
             this.marketoImageNormal = true;
             this.getMarketoConatacts = data.data;
-
+            this.getGoogleConatacts  = data.data;
            
-            this.getMarketoConatacts = data.data;
+            //this.getMarketoConatacts = data.data;
             this.loadingMarketo = false;
            
             if (this.getMarketoConatacts.length == 0)
