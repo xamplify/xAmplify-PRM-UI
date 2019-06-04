@@ -156,8 +156,8 @@ export class VendorReportsComponent implements OnInit {
             this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
           },
           () => {
-            console.log("Mail Sending failed");
-            this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
+           // console.log("Mail Sending failed");
+            //this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
             this.loading = false;
             this.closeInvitationModal();
           }
