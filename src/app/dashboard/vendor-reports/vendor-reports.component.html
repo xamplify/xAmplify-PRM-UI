@@ -21,9 +21,9 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-		
-		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-		
+		<div class="custome-response-css">
+		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		</div>
 			<div class="page-bar" style="padding: 10px; border: 1px solid #CCC;">
 				<div>
 					<div>
@@ -138,7 +138,7 @@
 			<div class="modal-footer" style="border: none">
 				<button class="btn btn-default" (click)="closeInvitationModal()" data-dismiss="modal">Cancel</button>
 				<button type="submit" class="btn green" [disabled]="!isValidVendorInvitation"
-					(click)="sendRequestForVendorEmail()" data-dismiss="modal">send</button>
+					(click)="sendRequestForVendorEmail()">send</button>
 			</div>
 		</div>
 	</div>

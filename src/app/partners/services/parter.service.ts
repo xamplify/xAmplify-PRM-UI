@@ -21,11 +21,19 @@ export class ParterService {
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+    
     getInActivePartnersAnalytics(pagination:Pagination){
         const url = this.URL + 'partner/inactive-partner-analytics?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }
+    
+    getApprovePartnersAnalytics(pagination:Pagination){
+        const url = this.URL + 'partner/approve-partners?access_token=' + this.authenticationService.access_token;
+        return this.httpClient.post( url, pagination )
+            .catch( this.handleError );
+    }
+    
     partnerUserInteractionReports( userId: number, pagination: Pagination ): Observable<any> {
         userId = this.authenticationService.checkLoggedInUserId(userId);
         const url = this.URL + 'partner/campaigns?access_token=' + this.authenticationService.access_token +

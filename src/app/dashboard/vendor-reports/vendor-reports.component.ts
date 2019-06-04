@@ -138,8 +138,6 @@ export class VendorReportsComponent implements OnInit {
         .subscribe(
           data => {
               data = data;
-              console.log("success");
-            
               if(data.statusCode === 200){
                 this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
               }else if(data.statusCode === 417){
@@ -149,16 +147,17 @@ export class VendorReportsComponent implements OnInit {
                   this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
               }
             
-              $('#requestForVendor').modal('hide');
             this.loading = false;
-            //this.closeInvitationModal();
+            this.closeInvitationModal()
           },
           error => {console.log(error)
             this.loading = false;
             this.closeInvitationModal();
+            this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
           },
           () => {
             console.log("Mail Sending failed");
+            this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
             this.loading = false;
             this.closeInvitationModal();
           }

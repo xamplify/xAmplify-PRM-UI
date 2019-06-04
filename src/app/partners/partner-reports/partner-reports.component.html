@@ -24,11 +24,11 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
                   <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
-                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" 
+                  <i *ngIf="selectedTabIndex == 2" class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1" 
                    [ngStyle]="{'color': 2===selectedTabIndex ? '#white' : '#ccc' }">
                  </i>
                 </div>
@@ -41,11 +41,11 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" >
+            <div class="col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex" (click)="goToThroughPartnersDiv()">
                 <div class="visual">
                   <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }"
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 3===selectedTabIndex ? '#white' : '#ccc' }"
                 *ngIf="selectedTabIndex == 3" ></i>
                 </div>
                 <div class="details">
@@ -57,11 +57,11 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToActivePartnersDiv()" >
+            <div class="col-sm-5ths" (click)="goToActivePartnersDiv()" >
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <!-- <i class="fa fa-handshake-o"></i> -->
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 0===selectedTabIndex ? '#white' : '#ccc' }"
                 *ngIf="selectedTabIndex == 0" ></i>
                 </div>
                 <div class="details">
@@ -73,19 +73,36 @@
                 </span>
               </a>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-3" (click)="goToInActivePartnersDiv()">
+            <div class="col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
                   <!-- <i class="fa fa-handshake-o"></i> -->
-                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
                 *ngIf="selectedTabIndex == 1" ></i>
                 </div>
                 <div class="details">
                   <div class="number">{{inActivePartnersCount}}</div>
-                  <div class="desc">Inactive partners</div>
+                  <div class="desc">Inactive Partners</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToInActivePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+                </span>
+              </a>
+            </div>
+            
+            <div class="col-sm-5ths" (click)="goToApprovePartnersDiv()">
+              <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
+                <div class="visual">
+                  <!-- <i class="fa fa-handshake-o"></i> -->
+                  <i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 46px;opacity: 1"  [ngStyle]="{'color': 5===selectedTabIndex ? '#white' : '#ccc' }"
+                *ngIf="selectedTabIndex == 5" ></i>
+                </div>
+                <div class="details">
+                  <div class="number">{{approvePartnersCount}}</div>
+                  <div class="desc">Approve Partners</div>
+                </div>
+                <span id="permhref" class="morePadding">
+                  <a class="more" (click)="goToApprovePartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
                 </span>
               </a>
             </div>
@@ -184,9 +201,6 @@
             <div class="inputs" align="right" style="float: right">
               <div class="portlet-input input-inline input-medium">
                 <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
-                  <!-- <i class="icon-magnifier" (click)="searchInActivePartnerAnalytics()" style="cursor: pointer;"></i>
-                <input type="text" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}" placeholder="search...">
-               -->
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
@@ -230,6 +244,55 @@
       </div>
     </div>
   </div>
+  
+    <!-- --------------------Approve Partners Count-------- -->
+  <div id="approve-partners-div">
+    <div class="row">
+      <div class="col-xs-12 p5">
+        <div class="portlet light">
+          <div class="portlet-title">
+            <div class="caption">
+              <span class="caption-subject font-red-sunglo uppercase">Approve partners</span>
+            </div>
+            <!-- <div class="inputs" align="right" style="float: right">
+              <div class="portlet-input input-inline input-medium">
+                <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
+                  <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
+                    placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
+                  <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="inActivePartnersSearchKey" (click)="inActivePartnersSearchKey=''"></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchInActivePartnerAnalytics()"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+          <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+          <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+            <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
+              <thead>
+                <th class="center-aligned" style="width:50%">partners</th>
+                <th style="text-align: center;">Actions</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of approvePartnersPagination.pagedItems" style="cursor: pointer;">
+                  <td>
+                    <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
+                  </td>
+                  <td style="text-align: center;">
+                   <button type="submit" class="btn green"
+					>Approve</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <app-pagination class="pg8" [pagination]="approvePartnersPagination" [type]="'userInteraction'" (notifyParentDropDown)="approvePartnerDropDownList($event)"
+            (notifyParent)="setApprovePartnesPage($event)"></app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <!-- ------****************Through Partner Div************************** -->
   <div id="redistribute-partners-div" style="display: none;">
     <div class="row">
