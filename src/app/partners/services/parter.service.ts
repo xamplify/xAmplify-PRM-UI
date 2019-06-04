@@ -17,7 +17,7 @@ export class ParterService {
             .catch( this.handleError );
     }
     
-    approveVendorRequest( partnerId: number ): Observable<Object> {
+    approveVendorRequest( partnerId: number ){
         var newUrl = this.URL + "/vendor/approve-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
         return this.httpClient.post( newUrl,"" )
             .map(( response: any ) => response.json() )
