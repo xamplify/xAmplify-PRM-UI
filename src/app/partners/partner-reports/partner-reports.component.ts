@@ -538,7 +538,12 @@ export class PartnerReportsComponent implements OnInit {
               .subscribe(
               ( data: any ) => {
                   data = data;
-                      this.customResponse = new CustomResponse( 'SUCCESS', "Partner Request have been approved successfully.", true );
+                  
+                  if(data.statusCode == 200){
+                      this.customResponse = new CustomResponse( 'SUCCESS', "Partner has been approved successfully.", true );
+                  }else{
+                      this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
+                  }
                       this.getApprovePartnerReports(this.approvePartnersPagination );
               },
               ( error: any ) => {

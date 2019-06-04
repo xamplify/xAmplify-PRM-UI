@@ -18,8 +18,8 @@ export class ParterService {
     }
     
     approveVendorRequest( partnerId: number ): Observable<Object> {
-        var newUrl = this.URL + "/removeUsers?"+ 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
-        return this.httpClient.post( newUrl, partnerId )
+        var newUrl = this.URL + "/vendor/approve-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
+        return this.httpClient.post( newUrl,"" )
             .map(( response: any ) => response.json() )
            .catch( this.handleError);
     }
