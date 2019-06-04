@@ -16,6 +16,14 @@ export class ParterService {
         return this.httpClient.get( url )
             .catch( this.handleError );
     }
+    
+    approveVendorRequest( partnerId: number ): Observable<Object> {
+        var newUrl = this.URL + "/removeUsers?"+ 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token;
+        return this.httpClient.post( newUrl, partnerId )
+            .map(( response: any ) => response.json() )
+           .catch( this.handleError);
+    }
+    
     getActivePartnersAnalytics(pagination:Pagination){
         const url = this.URL + 'partner/active-partner-analytics?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, pagination )

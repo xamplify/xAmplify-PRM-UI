@@ -528,6 +528,28 @@ export class PartnerReportsComponent implements OnInit {
         });
       item.expand = !item.expand;
   }
+  
+  
+  
+  approvePartnerRequest( partnerId: number ) {
+      try {
+          this.xtremandLogger.info( partnerId );
+          this.parterService.approveVendorRequest( partnerId )
+              .subscribe(
+              ( data: any ) => {
+                  data = data;
+                      this.customResponse = new CustomResponse( 'SUCCESS', "Partner Request have been approved successfully.", true );
+                      this.getApprovePartnerReports(this.approvePartnersPagination );
+              },
+              ( error: any ) => {
+                  console.log( error );
+              },
+              () => this.xtremandLogger.info( "Approved successfully." )
+              );
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "partner-report-component.", "approve parter()" );
+      }
+  }
 
 
   ngOnInit() {
