@@ -1561,7 +1561,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.ngxloading = true;
         this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
                 ( data: any ) => {
-                    console.log(data);
                     let body = emailTemplate.body;
                     let self  =this;
                     $.each(data,function(index,value){
@@ -1577,16 +1576,41 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     $("#email-template-title").empty();
                     $("#email-template-title").append(emailTemplateName);
                     $('#email-template-title').prop('title',emailTemplate.name);
-                    let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
-                    $("#htmlContent").append(updatedBody);
-                    $('.modal .modal-body').css('overflow-y', 'auto');
-                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-                    $("#show_email_template_preivew").modal('show');
-                    this.ngxloading = false;
+                    let myMergeTags = this.campaign.myMergeTagsInfo;
+                    
+                    if(this.refService.hasMyMergeTagsExits(body) &&(myMergeTags==undefined || this.campaign.email!=myMergeTags.myEmailId)){
+                        let data = {};
+                        data['emailId'] = this.campaign.email;
+                        this.refService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                                response => {
+                                    if(response.statusCode==200){
+                                        this.campaign.myMergeTagsInfo = response.data;
+                                        this.setMergeTagsInfo(body);
+                                    }
+                                },
+                                error => {
+                                    this.logger.error(error);
+                                    this.setMergeTagsInfo(body);
+                                }
+                            );
+                        
+                    }else{
+                        this.setMergeTagsInfo(body);
+                    }
                 },
                 error => { this.ngxloading = false;this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
     }
+    
+    setMergeTagsInfo(body:string){
+        let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
+        $("#htmlContent").append(updatedBody);
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        $("#show_email_template_preivew").modal('show');
+        this.ngxloading = false;
+    }
+    
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;

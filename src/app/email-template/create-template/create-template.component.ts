@@ -203,6 +203,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         { name: 'Email Id', value: '{{emailId}}' },
         { name: 'Company Name', value: '{{companyName}}' }];
 
+        mergeTags.push( { name: 'My First Name', value: '{{myFirstName}}' } );
+        mergeTags.push( { name: 'My Last Name', value: '{{myLastName}}' } );
+        mergeTags.push( { name: 'My Full Name', value: '{{myFullName}}' } );
+        mergeTags.push( { name: 'My Email Id', value: '{{myEmailId}}' } );
+        mergeTags.push( { name: 'My Contact Number', value: '{{myContactNumber}}' } );
+        mergeTags.push( { name: 'My Company Url', value: '{{myCompanyUrl}}' } );
+        mergeTags.push( { name: 'My Company Contact Number', value: '{{myCompanyContactNumber}}' } );
+        
         if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
             mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );
@@ -215,7 +223,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' } );
             mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' } );
         }
-
+        
+        
+       
         if ( refService.defaultPlayerSettings != null ) {
             var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
             var beeConfig = {

@@ -868,7 +868,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         }
     }
 
-    getEmailTemplatePreview(emailTemplate: EmailTemplate) {
+    getEmailTemplatePreview(campaign: Campaign) {
+        let emailTemplate = campaign.emailTemplate;
         this.ngxloading = true;
         let userId = 0;
         if(this.campaign.nurtureCampaign){
@@ -883,7 +884,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         if(userId!=undefined){
             this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
                     ( data: any ) => {
-                        console.log(data);
                         let body = emailTemplate.body;
                         let self  =this;
                         if(this.campaign.nurtureCampaign){

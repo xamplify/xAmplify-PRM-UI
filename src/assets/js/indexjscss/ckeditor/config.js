@@ -46,6 +46,13 @@ CKEDITOR.editorConfig = function( config ) {
 	                            {'value': '{{fullName}}', 'name': 'Full name'},
 	                            {'value': '{{emailId}}', 'name': 'Email id'},
 	                            {'value': '{{companyName}}', 'name': 'Company name'},
+	                           { 'name': 'My First Name', 'value': '{{myFirstName}}' },
+	                           { 'name': 'My Last Name', 'value': '{{myLastName}}' },
+	                           { 'name': 'My Full Name', 'value': '{{myFullName}}' },
+	                           { 'name': 'My Email Id', 'value': '{{myEmailId}}' },
+	                           { 'name': 'My Contact Number', 'value': '{{myContactNumber}}' },
+	                           { 'name': 'My Company Url', 'value': '{{myCompanyUrl}}' },
+	                           { 'name': 'My Company Contact Number', 'value': '{{myCompanyContactNumber}}' }
 	                        ];
 	                        config.strinsert_button_label = 'Merge Tags';
 	                        config.strinsert_button_title = config.strinsert_button_voice = 'Insert Merge Tag(s)';

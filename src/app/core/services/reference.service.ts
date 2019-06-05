@@ -100,6 +100,7 @@ export class ReferenceService {
     loadingPreview = false;
     eventCampaignId: number;
     dealId = 0;
+    myMergeTagsInfo:any;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -1623,6 +1624,7 @@ export class ReferenceService {
      previewEmailTemplate(emailTemplate: EmailTemplate,campaign:Campaign) {
           const body = emailTemplate.body;
           let userProfile = this.authenticationService.userProfile;
+          console.log(userProfile);
           let partnerLogo = userProfile.companyLogo;
           let partnerCompanyUrl = userProfile.websiteUrl;
           let emailTemplateName = emailTemplate.name;
@@ -1659,12 +1661,38 @@ export class ReferenceService {
                  updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
               }
          }
-
-          $("#email-template-content").append(updatedBody);
-          $('.modal .modal-body').css('overflow-y', 'auto');
-          $("#email_template_preivew").modal('show');
-          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+          /************My Merge Tags Info**********/
+          if(this.router.url.indexOf("/home/campaigns/partner/")>-1 || this.router.url.indexOf("/home/campaigns/re-distribute-campaign")>-1){
+              if(this.hasMyMergeTagsExits(updatedBody)){
+                  let data = {};
+                  data['emailId'] = userProfile.emailId;
+                  this.getMyMergeTagsInfoByEmailId(data).subscribe(
+                          response => {
+                              if(response.statusCode==200){
+                                  updatedBody = this.replaceMyMergeTags(response.data, updatedBody);
+                                  this.showPreviewAfterMergeTags(updatedBody);
+                              }
+                          },
+                          error => {
+                              this.logger.error(error);
+                              this.showPreviewAfterMergeTags(updatedBody);
+                          }
+                      );
+              }
+              
+          }else{
+              updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
+              this.showPreviewAfterMergeTags(updatedBody);
+          }
+          
       }
+     
+     showPreviewAfterMergeTags(updatedBody:string){
+         $("#email-template-content").append(updatedBody);
+         $('.modal .modal-body').css('overflow-y', 'auto');
+         $("#email_template_preivew").modal('show');
+         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+     }
 
 
      showEmailTemplatePreview(campaign:Campaign,campaignType:string,selectedVideoGifPath:string,emailTemplateBody:string){
@@ -1695,6 +1723,21 @@ export class ReferenceService {
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
             }
            }
+         /************My Merge Tags Info**********/
+         updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
+         return updatedBody;
+     }
+     
+     replaceMyMergeTags(myMergeTags:any,updatedBody:string){
+         if(myMergeTags!=undefined && this.hasMyMergeTagsExits(updatedBody)){
+             updatedBody = updatedBody.replace("{{myFirstName}}",myMergeTags.myFirstName);
+             updatedBody = updatedBody.replace("{{myLastName}}",myMergeTags.myLastName);
+             updatedBody = updatedBody.replace("{{myFullName}}",myMergeTags.myFullName);
+             updatedBody = updatedBody.replace("{{myEmailId}}",myMergeTags.myEmailId);
+             updatedBody = updatedBody.replace("{{myContactNumber}}",myMergeTags.myContactNumber);
+             updatedBody = updatedBody.replace("{{myCompanyUrl}}",myMergeTags.myCompanyUrl);
+             updatedBody = updatedBody.replace("{{myCompanyContactNumber}}",myMergeTags.myCompanyContactNumber);
+         }
          return updatedBody;
      }
 
@@ -1705,6 +1748,11 @@ export class ReferenceService {
       }
     }
 
+     hasMyMergeTagsExits(body:string){
+         return body.indexOf("{{myFirstName}}")>-1 || body.indexOf("{{myLastName}}")>-1 || body.indexOf("{{myFullName}}")>-1 ||
+         body.indexOf("{{myEmailId}}")>-1 || body.indexOf("{{myContactNumber}}")>-1 || body.indexOf("{{myCompanyUrl}}")>-1 || body.indexOf("{{myCompanyContactNumber}}")>-1;
+     }
+     
      formatAMPM(date) {
          var hours = date.getHours();
          var minutes = date.getMinutes();
@@ -1738,6 +1786,12 @@ export class ReferenceService {
 
     getCompanyIdByUserId(userId: any) {
        return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    getMyMergeTagsInfoByEmailId(data:any){
+        return this.http.post(this.authenticationService.REST_URL + "campaign/getMyMergeTagsInfo?access_token=" + this.authenticationService.access_token, data)
         .map(this.extractData)
         .catch(this.handleError);
     }
