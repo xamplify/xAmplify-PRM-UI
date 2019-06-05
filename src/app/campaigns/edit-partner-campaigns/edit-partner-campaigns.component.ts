@@ -489,12 +489,35 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                         body = body.replace(value, self.authenticationService.MEDIA_URL+self.campaign.companyLogo);
                     });
                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+this.campaign.companyLogo);
-                    emailTemplate.body = body;
-                    this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
-                    this.ngxloading = false;
+                        if(this.referenceService.hasMyMergeTagsExits(body) && !this.campaign.nurtureCampaign){
+                            let data = {};
+                            data['emailId'] = this.authenticationService.userProfile.emailId;
+                            this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                                    response => {
+                                        if(response.statusCode==200){
+                                            body = this.referenceService.replaceMyMergeTags(response.data, body);
+                                             this.setUpdatedBody(body,emailTemplate);
+                                        }
+                                    },
+                                    error => {
+                                        this.xtremandLogger.error(error);
+                                        this.setUpdatedBody(body,emailTemplate);
+                                    }
+                                );
+                           }else{
+                               this.setUpdatedBody(body,emailTemplate);
+                           }
+                   
                 },
                 error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+this.campaign.parentCampaignUserId+")", error); },
                 () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
+    }
+    
+    
+    setUpdatedBody(body:any,emailTemplate:EmailTemplate){
+        emailTemplate.body = body;
+        this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
+        this.ngxloading = false;
     }
 
 

@@ -921,7 +921,6 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
                         $("#email_template_preivew").modal('show');
                         this.ngxloading = false;
-
                     },
                     error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+userId+")", error); },
                     () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));

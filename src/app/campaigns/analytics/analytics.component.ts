@@ -1576,7 +1576,7 @@ showTimeLineView(){
                   } );
                   body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
                   emailTemplate.body = body;
-                  this.referenceService.previewEmailTemplate( emailTemplate, this.campaign );
+                  this.referenceService.previewEmailTemplate( emailTemplate, this.campaign);
                   this.ngxloading = false;
               },
               error => { this.xtremandLogger.error( "error in getAllCompanyProfileImages(" + userId+ ")", error ); },

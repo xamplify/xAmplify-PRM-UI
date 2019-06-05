@@ -206,15 +206,39 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                   body = body.replace(value, self.authenticationService.MEDIA_URL+campaign.companyLogo);
               });
               body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+campaign.companyLogo);
-              emailTemplate.body = body;
-              this.referenceService.previewEmailTemplate(emailTemplate, campaign);
-              this.ngxloading = false;
+              if(this.referenceService.hasMyMergeTagsExits(body)){
+                  let data = {};
+                  data['emailId'] = this.authenticationService.userProfile.emailId;
+                  this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                          response => {
+                              if(response.statusCode==200){
+                                  body = this.referenceService.replaceMyMergeTags(response.data, body);
+                                  this.setUpdatedBody(body,emailTemplate,campaign);
+                              }
+                          },
+                          error => {
+                              this.xtremandLogger.error(error);
+                              this.setUpdatedBody(body,emailTemplate,campaign);
+                          }
+                      );
+                 }else{
+                     this.setUpdatedBody(body,emailTemplate,campaign);
+                 }
+              
+             
               },
               error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
               () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()")
               );
 
     }
+    
+    setUpdatedBody(body:any,emailTemplate:any,campaign:Campaign){
+        emailTemplate.body = body;
+        this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+        this.ngxloading = false;
+    }
+
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
         (result)=>{

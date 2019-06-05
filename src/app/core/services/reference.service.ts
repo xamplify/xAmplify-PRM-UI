@@ -1624,7 +1624,6 @@ export class ReferenceService {
      previewEmailTemplate(emailTemplate: EmailTemplate,campaign:Campaign) {
           const body = emailTemplate.body;
           let userProfile = this.authenticationService.userProfile;
-          console.log(userProfile);
           let partnerLogo = userProfile.companyLogo;
           let partnerCompanyUrl = userProfile.websiteUrl;
           let emailTemplateName = emailTemplate.name;
@@ -1661,30 +1660,11 @@ export class ReferenceService {
                  updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
               }
          }
-          /************My Merge Tags Info**********/
-          if(this.router.url.indexOf("/home/campaigns/partner/")>-1 || this.router.url.indexOf("/home/campaigns/re-distribute-campaign")>-1){
-              if(this.hasMyMergeTagsExits(updatedBody)){
-                  let data = {};
-                  data['emailId'] = userProfile.emailId;
-                  this.getMyMergeTagsInfoByEmailId(data).subscribe(
-                          response => {
-                              if(response.statusCode==200){
-                                  updatedBody = this.replaceMyMergeTags(response.data, updatedBody);
-                                  this.showPreviewAfterMergeTags(updatedBody);
-                              }
-                          },
-                          error => {
-                              this.logger.error(error);
-                              this.showPreviewAfterMergeTags(updatedBody);
-                          }
-                      );
-              }
-              
-          }else{
-              updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
-              this.showPreviewAfterMergeTags(updatedBody);
-          }
-          
+          updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
+          $("#email-template-content").append(updatedBody);
+          $('.modal .modal-body').css('overflow-y', 'auto');
+          $("#email_template_preivew").modal('show');
+          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
       }
      
      showPreviewAfterMergeTags(updatedBody:string){
