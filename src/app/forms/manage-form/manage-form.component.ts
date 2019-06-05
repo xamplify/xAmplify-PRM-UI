@@ -141,15 +141,25 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.referenceService.goToTop();
         this.formService.delete( form.id )
         .subscribe(
-        ( data: any ) => {
-            if(data.message=="success"){
+        ( response: any ) => {
+            if(response.statusCode==200){
                 document.getElementById( 'formListDiv_' + form.id ).remove();
                 this.referenceService.showInfo( "Form Deleted Successfully", "" );
-                const message =  form.name+ ' deleted successfully';
+                const message =  response.message;
                 this.customResponse = new CustomResponse('SUCCESS',message,true );
                 this.pagination.pageIndex = 1;
                 this.listForms(this.pagination);
-            }else{}
+            }else{
+                console.log(response);
+                
+                let emailTemplateNames = "";
+                $.each(response.data,function(index,value){
+                    emailTemplateNames+= (index+1)+"."+value+"<br><br>";
+                });
+                let message = response.message+"<br><br>"+emailTemplateNames;
+                this.customResponse = new CustomResponse('ERROR',message,true );
+                this.referenceService.loading(this.httpRequestLoader, false);
+            }
 
         },
         ( error: string ) => {

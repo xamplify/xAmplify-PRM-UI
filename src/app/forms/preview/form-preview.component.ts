@@ -69,6 +69,7 @@ export class FormPreviewComponent implements OnInit {
             this.form = response.data;
           } else {
             this.hasFormExists = false;
+            this.addHeaderMessage("Oops! This form does not exists.",this.errorAlertClass);
           }
           this.processor.remove(this.processor);
           this.ngxLoading = false;

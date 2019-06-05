@@ -85,11 +85,11 @@
 							  </td>
 							  <td>
 							  	<input type="text" class="form-control" readonly="readonly" value="{{clientUrl}}f/{{form.alias}}" #userinput>
+							  	<font class="success" id="copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
 							  </td>
 							  <td id="actions-row">
 								 <div class="actions-block override-actions">
-								 
-								 	<a data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput)">
+								 	<a data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
 									  <i class="fa fa-copy"></i>
 									</a>
 									
@@ -128,5 +128,6 @@
       </div>
     </div>
 </div>
+
   <app-preview-popup #previewPopUpComponent></app-preview-popup>
 

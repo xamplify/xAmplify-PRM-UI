@@ -523,10 +523,12 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       this.listForms( this.pagination );
   }
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
-  copyInputMessage(inputElement){
+  copyInputMessage(inputElement,index:number){
+      $('#copied-message-'+index).hide();
       inputElement.select();
       document.execCommand('copy');
       inputElement.setSelectionRange(0, 0);
+      $('#copied-message-'+index).show(500);
     }
   
   preview(id:number){

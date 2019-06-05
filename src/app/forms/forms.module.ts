@@ -9,6 +9,7 @@ import {FormsRoutingModule} from "./forms-routing.module";
 import { AddFormComponent } from './add-form/add-form.component';
 import { ManageFormComponent } from './manage-form/manage-form.component';
 import { FormAnalyticsComponent } from './form-analytics/form-analytics.component';
+import { CampaignFormAnalyticsComponent } from './campaign-form-analytics/campaign-form-analytics.component';
 
 
 
@@ -16,7 +17,7 @@ import { FormAnalyticsComponent } from './form-analytics/form-analytics.componen
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, FormAnalyticsComponent,FormAnalyticsComponent],
+    declarations: [AddFormComponent, ManageFormComponent, FormAnalyticsComponent,FormAnalyticsComponent, CampaignFormAnalyticsComponent],
     providers: [FormService]
 } )
 export class FormsModule { }

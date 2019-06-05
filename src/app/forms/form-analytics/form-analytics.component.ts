@@ -22,6 +22,7 @@ declare var $:any,swal:any ;
 export class FormAnalyticsComponent implements OnInit {
 
     alias:string="";
+    campaignAlias:string = "";
     formName = "";
     pagination: Pagination = new Pagination();
     columns:Array<any> = new Array<any>();
@@ -37,6 +38,7 @@ export class FormAnalyticsComponent implements OnInit {
 
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];
+        this.campaignAlias = this.route.snapshot.params['campaignAlias'];
         this.listSubmittedData(this.pagination);
     }
     

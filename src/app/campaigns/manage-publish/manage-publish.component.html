@@ -161,6 +161,13 @@
 													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
+													
+													<!-- <a *ngIf="authenticationService.module.hasFormAccess" (click)="goToFormAnalytics(campaign.campaignId)"
+													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+														<i class="fa fa-wpforms"></i>
+													</a> -->
+													
+													
 													<!-- <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
