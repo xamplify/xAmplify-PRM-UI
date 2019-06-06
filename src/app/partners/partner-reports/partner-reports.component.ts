@@ -555,6 +555,10 @@ export class PartnerReportsComponent implements OnInit {
           this.xtremandLogger.error( error, "partner-report-component.", "approve parter()" );
       }
   }
+  
+  declinePartnerRequest(){
+      this.customResponse = new CustomResponse( 'SUCCESS', "As you have declined the partner, he will not be added to your master list.", true );
+  }
 
 
   ngOnInit() {
