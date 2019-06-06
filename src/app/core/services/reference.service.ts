@@ -10,6 +10,7 @@ import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Roles } from '../../core/models/roles';
 import { Country } from '../../core/models/country';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { Timezone } from '../../core/models/timezone';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { EmailTemplate } from '../../email-template/models/email-template';
@@ -101,6 +102,7 @@ export class ReferenceService {
     eventCampaignId: number;
     dealId = 0;
     myMergeTagsInfo:any;
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -1710,13 +1712,14 @@ export class ReferenceService {
      
      replaceMyMergeTags(myMergeTags:any,updatedBody:string){
          if(myMergeTags!=undefined && this.hasMyMergeTagsExits(updatedBody)){
-             updatedBody = updatedBody.replace("{{myFirstName}}",myMergeTags.myFirstName);
-             updatedBody = updatedBody.replace("{{myLastName}}",myMergeTags.myLastName);
-             updatedBody = updatedBody.replace("{{myFullName}}",myMergeTags.myFullName);
-             updatedBody = updatedBody.replace("{{myEmailId}}",myMergeTags.myEmailId);
-             updatedBody = updatedBody.replace("{{myContactNumber}}",myMergeTags.myContactNumber);
-             updatedBody = updatedBody.replace("{{myCompanyUrl}}",myMergeTags.myCompanyUrl);
-             updatedBody = updatedBody.replace("{{myCompanyContactNumber}}",myMergeTags.myCompanyContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstName,myMergeTags.myFirstName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderLastName,myMergeTags.myLastName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFullName,myMergeTags.myFullName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailId,myMergeTags.myEmailId);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumber,myMergeTags.myContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompany,myMergeTags.senderCompany);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrl,myMergeTags.myCompanyUrl);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumber,myMergeTags.myCompanyContactNumber);
          }
          return updatedBody;
      }
@@ -1729,8 +1732,9 @@ export class ReferenceService {
     }
 
      hasMyMergeTagsExits(body:string){
-         return body.indexOf("{{myFirstName}}")>-1 || body.indexOf("{{myLastName}}")>-1 || body.indexOf("{{myFullName}}")>-1 ||
-         body.indexOf("{{myEmailId}}")>-1 || body.indexOf("{{myContactNumber}}")>-1 || body.indexOf("{{myCompanyUrl}}")>-1 || body.indexOf("{{myCompanyContactNumber}}")>-1;
+         return body.indexOf(this.senderMergeTag.senderFirstName)>-1 || body.indexOf(this.senderMergeTag.senderLastName)>-1 || body.indexOf(this.senderMergeTag.senderFullName)>-1 ||
+         body.indexOf(this.senderMergeTag.senderEmailId)>-1 || body.indexOf(this.senderMergeTag.senderContactNumber)>-1 || body.indexOf(this.senderMergeTag.senderCompany)>-1 
+         || body.indexOf(this.senderMergeTag.senderCompanyUrl)>-1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber)>-1;
      }
      
      formatAMPM(date) {

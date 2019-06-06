@@ -45,14 +45,14 @@ CKEDITOR.editorConfig = function( config ) {
 	                            {'value': '{{lastName}}', 'name': 'Last name'},
 	                            {'value': '{{fullName}}', 'name': 'Full name'},
 	                            {'value': '{{emailId}}', 'name': 'Email id'},
-	                            {'value': '{{companyName}}', 'name': 'Company name'},
-	                           { 'name': 'My First Name', 'value': '{{myFirstName}}' },
-	                           { 'name': 'My Last Name', 'value': '{{myLastName}}' },
-	                           { 'name': 'My Full Name', 'value': '{{myFullName}}' },
-	                           { 'name': 'My Email Id', 'value': '{{myEmailId}}' },
-	                           { 'name': 'My Contact Number', 'value': '{{myContactNumber}}' },
-	                           { 'name': 'My Company Url', 'value': '{{myCompanyUrl}}' },
-	                           { 'name': 'My Company Contact Number', 'value': '{{myCompanyContactNumber}}' }
+	                           { 'name': 'Sender First Name', 'value': '{{senderFirstName}}' },
+	                           { 'name': 'Sender Last Name', 'value': '{{senderLastName}}' },
+	                           { 'name': 'Sender Full Name', 'value': '{{senderFullName}}' },
+	                           { 'name': 'Sender Email Id', 'value': '{{senderEmailId}}' },
+	                           { 'name': 'Sender Contact Number', 'value': '{{senderContactNumber}}' },
+	                           { 'name': 'Sender Company', 'value': '{{senderCompany}}' },
+	                           { 'name': 'Sender Company Url', 'value': '{{senderCompanyUrl}}' },
+	                           { 'name': 'Sender Company Contact Number', 'value': '{{senderCompanyContactNumber}}' }
 	                        ];
 	                        config.strinsert_button_label = 'Merge Tags';
 	                        config.strinsert_button_title = config.strinsert_button_voice = 'Insert Merge Tag(s)';
