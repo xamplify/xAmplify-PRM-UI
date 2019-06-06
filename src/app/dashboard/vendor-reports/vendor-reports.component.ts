@@ -90,15 +90,24 @@ export class VendorReportsComponent implements OnInit {
   }
   
   openRequestAsVendorModal(){
-      this.vendoorInvitation.subject = "xAmplify - A great new marketing automation platform Referal"
-      this.vendoorInvitation.message = "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
+      this.vendoorInvitation.subject = "Check out xAmplify’s marketing automation platform"
+      this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
 
           + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
 
           + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
 
           + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
-      $( '#requestForVendor' ).modal( 'show' );
+     
+          + "<br><br>" + "Best, " + "<br><br>"
+          
+          + this.authenticationService.user.firstName
+          
+          + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
+          
+          + "<br>" + this.authenticationService.user.companyName
+          
+          $( '#requestForVendor' ).modal( 'show' );
      
   }
   
@@ -113,7 +122,7 @@ export class VendorReportsComponent implements OnInit {
   
   public validators = [ this.must_be_email ];
   public errorMessages = {
-      'must_be_email': 'Enter valid email adress!'
+      'must_be_email': 'Enter a valid email address and press Enter.'
   };
   private must_be_email(control: FormControl) {        
       var EMAIL_REGEXP = /^(([a-zA-Z0-9.!#$&'*+\/=?_`{|}~-]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -141,7 +150,7 @@ export class VendorReportsComponent implements OnInit {
               if(data.statusCode === 200){
                 this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
               }else if(data.statusCode === 417){
-                this.customResponse = new CustomResponse( 'INFO', "The entered email id is already your vendor.", true );
+                this.customResponse = new CustomResponse( 'INFO', "The email address you entered is already your vendor.", true );
               }
               else{
                   this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
@@ -164,6 +173,7 @@ export class VendorReportsComponent implements OnInit {
         );
       }else{
           this.isError = true;
+          this.loading = false;
       }
   }
   

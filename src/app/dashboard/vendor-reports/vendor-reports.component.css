@@ -22,3 +22,11 @@
 >>> .error-message{
 	text-align: left;
 }
+
+>>> input[type="text"] {
+    width: 300px;
+}
+
+.textboxclass {
+width: 97% !important;
+}
