@@ -863,6 +863,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         case 'mpeg':return true;
         case 'vob':return true;
         case 'xvid':return true;
+        case 'mkv':return true;
        }
       }
       return false;
