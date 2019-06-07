@@ -202,7 +202,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         var mergeTags = [{ name: 'First Name', value: '{{firstName}}' },
         { name: 'Last Name', value: '{{lastName}}' },
         { name: 'Full Name', value: '{{fullName}}' },
-        { name: 'Email Id', value: '{{emailId}}' }];
+        { name: 'Email Id', value: '{{emailId}}' },
+        { name: 'Company Name', value: '{{companyName}}' }
+        ];
 
         mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
         mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
