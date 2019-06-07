@@ -24,14 +24,7 @@
 	padding: 5em;
 }
 
-.overlay-main {
-	display: table-cell;
-	text-align: center;
-	vertical-align: middle;
-	display: table-cell;
-	vertical-align: middle;
-	text-align: center;
-}
+.overlay-main{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
 
 .flex {
 	display: flex;

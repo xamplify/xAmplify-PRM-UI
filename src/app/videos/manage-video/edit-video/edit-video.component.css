@@ -281,4 +281,3 @@ border-radius:50%
 .video-processing-message{
   height: 317px !important; position: relative;width: 100%;color: white !important;top: -317px; margin-bottom: -300px;
 }
-.overlay-main{position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}
