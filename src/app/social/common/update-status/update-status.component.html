@@ -656,26 +656,30 @@
 		<div class="modal-body" *ngIf="favouritesResponse">
 			<div class="col-sm-6">
 				<ng-container *ngIf="favouritesResponse.statusCode === 8100">
-					<h3>My Favourite Channels</h3>
-					<ul>
-						<li *ngFor="let item of favouritesResponse.data.channels">
-							<a href="{{item.link}}">{{item.title}}</a>
+					<div class="list-group">
+						<li class="list-group-item"><b>My Favourite Channels</b></li>
+						<a class="list-group-item" 
+							*ngFor="let item of favouritesResponse.data.channels" 
+							(click)="getRSSFeedsByChannel(item.id)">{{item.title}}</a>
+					</div>
+					<div class="list-group">
+						<li class="list-group-item"><b>My Favourite Categories</b></li>
+						<a class="list-group-item" *ngFor="let item of favouritesResponse.data.categories" 
+							(click)="getRSSFeedsByCategory(item.id)">{{item.title}}</a>
+					</div>
+					<div class="list-group">
+						<li class="list-group-item"><b>My Favourite Tags</b></li>
+						<li class="list-group-item">
+							<button *ngFor="let item of favouritesResponse.data.tags" (click)="getRSSFeedsByTag(item.id)">{{item.title}}</button>
 						</li>
-					</ul>
-					<h3>My Favourite Categories</h3>
-					<ul>
-						<li *ngFor="let item of favouritesResponse.data.categories">
-							<p>{{item.title}}</p>
-						</li>
-					</ul>
-					<h3>My Favourite Tags</h3>
+					</div>											
 				</ng-container>
 			</div>
 			<div class="col-sm-6" *ngIf="feedsResponse">
-				<ng-container *ngIf="feedsResponse.statusCode !== 8102">
+				<ng-container *ngIf="!feedsResponse.data">
 					<h2>{{feedsResponse.message}}</h2>
 				</ng-container>
-				<ng-container *ngIf="feedsResponse.statusCode === 8102 && feedsResponse.message === 'RSS FAVOURITE FEEDS FOUND'">
+				<ng-container *ngIf="feedsResponse.data">
 					<div *ngFor="let feed of feedsResponse.data" class="panel panel-default">
 						<div class="panel-body" (click)="addToPost(feed)" style="cursor: pointer">						
 							<div class="col-sm-2">
@@ -683,7 +687,7 @@
 							</div>
 							<div class="col-sm-9">
 								<a href="{{feed.link}}" target="_blank"><b>{{feed.title}}</b></a>
-								<p>{{feed.description}}</p>
+								<p [innerHTML]="feed.description"></p>
 							</div>
 							<div class="col-sm-1">
 								<span class="fa fa-plus-circle" (click)="addToPost(feed)" aria-hidden="true" title="Add to post" data-toggle="tooltip" data-placement="top"></span>

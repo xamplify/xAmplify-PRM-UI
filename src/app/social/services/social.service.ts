@@ -226,6 +226,24 @@ export class SocialService {
         .catch(this.handleError);
     }
 
+    getRSSFeedsByChannel(channelId: number){
+        return this.http.get(this.URL + `rss/channel/${channelId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getRSSFeedsByCategory(categoryId: number){
+        return this.http.get(this.URL + `rss/category/${categoryId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getRSSFeedsByTag(tagId: number){
+        return this.http.get(this.URL + `rss/tag/${tagId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
     getFavouritesByUserId(userId: number){
         return this.http.get(this.URL + `rss/user/${userId}/favourites?access_token=${this.authenticationService.access_token}`)
         .map(this.extractData)

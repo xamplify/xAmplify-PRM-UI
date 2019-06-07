@@ -38,7 +38,7 @@ export class VendorReportsComponent implements OnInit {
     private router: Router,
     public regularExpressions: RegularExpressions
   ) {
-      CKEDITOR.config.height = '250px';
+      CKEDITOR.config.height = '300px';
       CKEDITOR.config.baseFloatZIndex = 1E5;
   }
 
