@@ -1134,6 +1134,45 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       );
   }
 
+  getRSSFeedsByChannel(channelId: number){
+    this.socialService.getRSSFeedsByChannel(channelId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );
+  }
+
+  getRSSFeedsByCategory(categoryId: number){
+    this.socialService.getRSSFeedsByCategory(categoryId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );    
+  }
+
+  getRSSFeedsByTag(tagId: number){
+    this.socialService.getRSSFeedsByTag(tagId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );    
+  }
+
   addToPost(feed: any){
     this.socialStatusList.forEach(data => {
       data.statusMessage = feed.link;
