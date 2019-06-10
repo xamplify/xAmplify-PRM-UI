@@ -136,7 +136,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }else{
             for(var instanceName in CKEDITOR.instances){
                 CKEDITOR.instances[instanceName].updateElement();
-                this.emailTemplate.body =  this.mycontent;
+                this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
             }
         }
         if($.trim(this.emailTemplate.body).length>0){
