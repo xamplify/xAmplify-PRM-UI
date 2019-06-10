@@ -183,6 +183,39 @@ export class VendorReportsComponent implements OnInit {
       this.emailIds = [];
   }
   
+  
+  public onAdding(tag: any){
+      console.log(this.emailIds);
+        const tags = this.emailIds;
+        let newTags = [];
+            for (let i = 0; i < tags.length; i++) {
+               
+                    const tag = tags[i];
+                    if (tag['value'] !== undefined) {
+                         newTags[i] = tag['value'];
+                    } else {
+                        newTags[i] = tag;
+                    }
+            }
+            this.emailIds = newTags;
+            console.log(this.emailIds);
+            const otherTags = newTags.map(v => v.toLowerCase());
+            var uniqueNames = [];
+            $.each(otherTags, function(i, el){
+                if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+            });
+            if(uniqueNames.length< this.emailIds.length) { this.emailIds.pop();}
+    }
+  
+    unique(arr) {
+      var b = {};
+      for (var i=0; i< arr.length; i++) { b[arr[i].toUpperCase()]=arr[i].toLowerCase(); }
+      var c = [];
+      for (var key in b) { c.push(b[key]); }
+      return c;
+    }
+  
+  
   ngOnInit() {
     this.vendorReports();
   }
