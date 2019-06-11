@@ -75,6 +75,10 @@
 	role="dialog" aria-labelledby="myModalLabel" data-backdrop="static"
 	data-keyboard="false">
 	<div class="modal-dialog" role="document">
+	<div class="my-container">
+		<ngx-loading [show]="loading"
+			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	</div>
 		<div class="modal-content">
 			<div class="modal-header">
 				<a class="close-circle" (click)="closeInvitationModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
@@ -88,7 +92,7 @@
 
 			<div class="form-group">
 				<label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
-				<tag-input [(ngModel)]="emailIds" (onAdd)="onAdding($event)" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" 
+				<tag-input [(ngModel)]="emailIds" (onAdd)="onAddingEmailId($event)" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" 
 					(input)="validateVendoorInvitation()" [placeholder]="'dummy@xamplify.com'" [secondaryPlaceholder]="'dummy@xamplify.com'" 
 					[errorMessages]="errorMessages" [validators]="validators" [onTextChangeDebounce]="40"></tag-input>
 				<span id="helpBlock" class="help-block"><b>Note:</b> Enter a vendor’s email address & press Enter</span>

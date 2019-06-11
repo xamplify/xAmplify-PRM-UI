@@ -135,12 +135,7 @@ export class VendorReportsComponent implements OnInit {
   sendRequestForVendorEmail(){
       this.loading = true;
       this.isError = false;
-      
-      const tags = this.emailIds;
-      for (let i = 0; i < tags.length; i++) {
-              this.newEmailIds[i] = tags[i]['value'];
-      }
-      this.vendoorInvitation.emailIds = this.newEmailIds;
+      this.vendoorInvitation.emailIds = this.emailIds;
    
      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
@@ -150,10 +145,10 @@ export class VendorReportsComponent implements OnInit {
               if(data.statusCode === 200){
                 this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
               }else if(data.statusCode === 417){
-                this.customResponse = new CustomResponse( 'INFO', "The email address you entered is already your vendor.", true );
+                this.customResponse = new CustomResponse( 'ERROR', "The email address you entered is already your vendor.", true );
               }
               else{
-                  this.customResponse = new CustomResponse( 'INFO', "Mail sending failed! something went wrong please try after some time.", true );
+                  this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
               }
             
             this.loading = false;
@@ -165,8 +160,6 @@ export class VendorReportsComponent implements OnInit {
             this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
           },
           () => {
-           // console.log("Mail Sending failed");
-            //this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
             this.loading = false;
             this.closeInvitationModal();
           }
@@ -184,37 +177,28 @@ export class VendorReportsComponent implements OnInit {
   }
   
   
-  public onAdding(tag: any){
-      console.log(this.emailIds);
-        const tags = this.emailIds;
-        let newTags = [];
-            for (let i = 0; i < tags.length; i++) {
-               
-                    const tag = tags[i];
-                    if (tag['value'] !== undefined) {
-                         newTags[i] = tag['value'];
-                    } else {
-                        newTags[i] = tag;
-                    }
-            }
-            this.emailIds = newTags;
-            console.log(this.emailIds);
-            const otherTags = newTags.map(v => v.toLowerCase());
-            var uniqueNames = [];
-            $.each(otherTags, function(i, el){
-                if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-            });
-            if(uniqueNames.length< this.emailIds.length) { this.emailIds.pop();}
+  public onAddingEmailId( tag: any ) {
+      console.log( this.emailIds );
+      const emailIds = this.emailIds;
+      let newEmailIds = [];
+      for ( let i = 0; i < emailIds.length; i++ ) {
+          const tag = emailIds[i];
+          if ( tag['value'] !== undefined ) {
+              newEmailIds[i] = tag['value'];
+          } else {
+              newEmailIds[i] = tag;
+          }
+      }
+      this.emailIds = newEmailIds;
+      console.log( this.emailIds );
+      const otherEmailIds = newEmailIds.map( v => v.toLowerCase() );
+      var uniqueEmailids = [];
+      $.each( otherEmailIds, function( i, el ) {
+          if ( $.inArray( el, uniqueEmailids ) === -1 ) uniqueEmailids.push( el );
+      });
+      if ( uniqueEmailids.length < this.emailIds.length ) { this.emailIds.pop(); }
     }
-  
-    unique(arr) {
-      var b = {};
-      for (var i=0; i< arr.length; i++) { b[arr[i].toUpperCase()]=arr[i].toLowerCase(); }
-      var c = [];
-      for (var key in b) { c.push(b[key]); }
-      return c;
-    }
-  
+ 
   
   ngOnInit() {
     this.vendorReports();
