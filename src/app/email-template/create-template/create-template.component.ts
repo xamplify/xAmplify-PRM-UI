@@ -212,8 +212,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
         mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
         mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
-        mergeTags.push( { name: 'Sendor Company Url', value: this.senderMergeTag.senderCompanyUrl} );
-        mergeTags.push( { name: 'Sendor Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
+        mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
+        mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
         
         if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
