@@ -857,7 +857,9 @@ showTimeLineView(){
             this.getSocialCampaignByCampaignId(campaignId);
           } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
-              this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+              if(this.campaign.emailTemplate){
+                this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+              }
               this.getEventCampaignByCampaignId(campaignId);
             } else {
             this.campaignType = 'REGULAR';
