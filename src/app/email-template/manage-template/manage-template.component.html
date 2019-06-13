@@ -144,7 +144,7 @@
 										</ng-container>
 										<h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft">DRAFT</h5>
 										<h5 class="badge badge-secondary m0" *ngIf="emailTemplate.spamScore"
-										[ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10'}"
+										[ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
 										 data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</h5>
 										<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 										<!-- <h5 class="view-banner"
@@ -215,7 +215,7 @@
                 <ng-template #OtherType>{{emailTemplate.emailTemplateType}}</ng-template>
               </span>
               <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore"
-              [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10'}"
+              [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
                data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
 							</h4>
 							<!-- <h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5> -->
