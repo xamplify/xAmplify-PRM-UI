@@ -1623,7 +1623,7 @@ export class ReferenceService {
 
 
 
-     previewEmailTemplate(emailTemplate: EmailTemplate,campaign:Campaign) {
+     previewEmailTemplate(emailTemplate: EmailTemplate,campaign:any) {
           const body = emailTemplate.body;
           let userProfile = this.authenticationService.userProfile;
           let partnerLogo = userProfile.companyLogo;

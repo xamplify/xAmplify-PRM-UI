@@ -23,6 +23,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Tweet } from '../../social/models/tweet';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import { EventCampaign } from '../models/event-campaign';
 declare var $, Highcharts: any;
 
 @Component({
@@ -37,6 +38,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   createdBySelf = false;
   dealButtonText: string="";
   dealId: any;
+  eventCampaign: EventCampaign = new EventCampaign();
 
   public searchKey: string;
 
@@ -809,6 +811,19 @@ showTimeLineView(){
       this.xtremandLogger.error(err);
     }
   }
+  
+  getEventCampaignById(campaignId: number) {
+      try{
+        this.campaignService.getEventCampaignById(campaignId)
+        .subscribe(data => {
+          console.log(data);
+          this.eventCampaign = data.data;
+        },
+        error => console.log(error),
+        () => { }
+        );
+      } catch (err) {  this.xtremandLogger.error(err); }
+    }
 
   getCampaignById(campaignId: number) {
    try{
@@ -860,6 +875,7 @@ showTimeLineView(){
               if(this.campaign.emailTemplate){
                 this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
               }
+              this.getEventCampaignById(campaignId);
               this.getEventCampaignByCampaignId(campaignId);
             } else {
             this.campaignType = 'REGULAR';
@@ -1563,22 +1579,32 @@ showTimeLineView(){
   showEmailTemplatePreview( emailTemplate: any ) {
       try {
           this.ngxloading = true;
+          var tempalteObject;
+          var campaign: any;
+          if(this.campaignType === "EVENT"){
+              tempalteObject = this.eventCampaign.emailTemplateDTO;
+              campaign = this.eventCampaign;
+          }else{
+              tempalteObject = emailTemplate;
+              campaign = this.campaign;
+          }
+          
           let userId = 0;
           if(this.campaign.nurtureCampaign){
               userId = this.campaign.parentCampaignUserId;
           }else{
-              userId =  this.campaign.userId;
+              userId = this.campaign.userId;
           }
           this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
               ( data: any ) => {
-                  let body = emailTemplate.body;
+                  let body = tempalteObject.body;
                   let self = this;
                   $.each( data, function( index, value ) {
-                      body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
+                      body = body.replace( value, self.authenticationService.MEDIA_URL + campaign.companyLogo );
                   } );
-                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
-                  emailTemplate.body = body;
-                  this.referenceService.previewEmailTemplate( emailTemplate, this.campaign);
+                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );
+                  tempalteObject.body = body;
+                  this.referenceService.previewEmailTemplate( tempalteObject, campaign);
                   this.ngxloading = false;
               },
               error => { this.xtremandLogger.error( "error in getAllCompanyProfileImages(" + userId+ ")", error ); },
