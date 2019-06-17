@@ -170,6 +170,15 @@ export class UserService {
             .catch( this.handleError );
     }
 
+    isAddedByOnlyPartner( userId: number ) {
+        return this.http.get( this.URL+ "admin/getSuperiorRole/" + userId + "?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+
+   
+
     resendActivationMail(emailId:string) {
         return this.http.get( this.URL+'/register/resend/activationemail?email='+ emailId )
         .map( this.extractData )

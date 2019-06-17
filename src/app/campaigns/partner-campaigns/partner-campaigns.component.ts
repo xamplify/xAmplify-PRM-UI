@@ -28,7 +28,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     totalRecords = 1;
     searchKey = "";
     campaignSuccessMessage = "";
-    loggedInUserId = 0;
+    superiorId = 0;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -54,14 +54,17 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     isListView = false;
     campaignType:string;
     role = '';
-
     customResponse: CustomResponse = new CustomResponse();
-
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
-        this.loggedInUserId = this.authenticationService.getUserId();
+        let superiorId = parseInt(localStorage.getItem('superiorId'));
+        if(isNaN(superiorId)){
+            this.superiorId = this.authenticationService.getUserId();
+        }else{
+            this.superiorId = superiorId;
+        }
         this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
@@ -94,8 +97,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.filterValue = null;
             pagination.filterKey = null;
         }
-
-        this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
+        
+        
+        this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
           .subscribe(
             data => {
               this.campaigns = data.campaigns;
@@ -283,7 +287,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
         }
         else {
-        const data = { 'campaignId': campaign.campaignId,'userId':this.loggedInUserId }
+        const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
         this.campaignService.getParnterCampaignById(data)
             .subscribe(
                 data => {

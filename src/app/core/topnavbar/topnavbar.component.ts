@@ -139,6 +139,21 @@ export class TopnavbarComponent implements OnInit {
       );
     }catch(error) {this.logger.error('error'+error); }
   }
+
+
+  isAddedByPartner(){
+    if(this.authenticationService.showRoles()=="Team Member"){
+      this.userService.isAddedByOnlyPartner(this.authenticationService.getUserId())
+      .subscribe(
+      data => {
+           this.authenticationService.isPartnerTeamMember=data.onlyPartner;
+      },
+      error => this.logger.log(error),
+      () => this.logger.log('Finished')
+      );
+    }
+  }
+
   onRightClick(event){
     return false;
   }
@@ -146,6 +161,7 @@ export class TopnavbarComponent implements OnInit {
     try{
      this.getUnreadNotificationsCount();
      this.isAddedByVendor();
+     this.isAddedByPartner();
     }catch(error) {this.logger.error('error'+error); }
   }
   lockScreen(){

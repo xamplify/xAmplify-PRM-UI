@@ -208,12 +208,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaign.parentCampaignUserId = this.campaign.userId;
         }
         /****If the loggedin User is Vendor& Partner then show drop down along with team members*****/
-        if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
+       /****if(this.isOrgAdminAndPartner || this.isVendorAndPartner){
             this.listAllTeamMemberEmailIds();
         }else{
             this.setLoggedInUserEmailId();
-        }
+        }***/
 
+        this.listAllTeamMemberEmailIds();
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
 
@@ -478,10 +479,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.videoFile = undefined;
     }
 
-
-    previewEmailTemplate(emailTemplate: EmailTemplate) {
+    previewEmailTemplate(emailTemplate:EmailTemplate){
         this.ngxloading = true;
-        this.emailTemplateService.getAllCompanyProfileImages(this.campaign.parentCampaignUserId).subscribe(
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
                 ( data: any ) => {
                     let body = emailTemplate.body;
                     let self  =this;
@@ -489,30 +489,51 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                         body = body.replace(value, self.authenticationService.MEDIA_URL+self.campaign.companyLogo);
                     });
                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+this.campaign.companyLogo);
-                        if(this.referenceService.hasMyMergeTagsExits(body) && !this.campaign.nurtureCampaign){
-                            let data = {};
-                            data['emailId'] = this.authenticationService.userProfile.emailId;
-                            this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
-                                    response => {
-                                        if(response.statusCode==200){
-                                            body = this.referenceService.replaceMyMergeTags(response.data, body);
-                                             this.setUpdatedBody(body,emailTemplate);
-                                        }
-                                    },
-                                    error => {
-                                        this.xtremandLogger.error(error);
-                                        this.setUpdatedBody(body,emailTemplate);
+                    let emailTemplateName = emailTemplate.name;
+                    if(emailTemplateName.length>50){
+                        emailTemplateName = emailTemplateName.substring(0, 50)+"...";
+                    }
+                    $("#email-template-content").empty();
+                    $("#email-template-title").empty();
+                    $("#email-template-title").append(emailTemplateName);
+                    $('#email-template-title').prop('title',emailTemplate.name);
+                    if(this.referenceService.hasMyMergeTagsExits(body)){
+                        let data = {};
+                        data['emailId'] = this.campaign.email;
+                        this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                                response => {
+                                    if(response.statusCode==200){
+                                        this.campaign.myMergeTagsInfo = response.data;
+                                        this.setMergeTagsInfo(body);
                                     }
-                                );
-                           }else{
-                               this.setUpdatedBody(body,emailTemplate);
-                           }
-                   
+                                },
+                                error => {
+                                    this.xtremandLogger.error(error);
+                                    this.setMergeTagsInfo(body);
+                                }
+                            );
+                        
+                    }else{
+                        this.setMergeTagsInfo(body);
+                    }
                 },
-                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+this.campaign.parentCampaignUserId+")", error); },
+                error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
     }
     
+    setMergeTagsInfo(body:string){
+        let videoGifPath = "";
+        if(this.campaignType=="video"){
+           videoGifPath =  this.campaign.campaignVideoFile.gifImagePath
+        }
+        let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType,videoGifPath, body);
+        $("#email-template-content").append(updatedBody);
+          $('.modal .modal-body').css('overflow-y', 'auto');
+          $("#email_template_preivew").modal('show');
+          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.ngxloading = false;
+    }
+
     
     setUpdatedBody(body:any,emailTemplate:EmailTemplate){
         emailTemplate.body = body;
@@ -942,6 +963,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
         $("#email_template_preivew").modal('show');
     }
+
+
+
 
     getAnchorLinksFromEmailTemplate(body: string) {
        /* body = this.referenceService.replaceCoBrandingDummyUrlByUserProfile(body);

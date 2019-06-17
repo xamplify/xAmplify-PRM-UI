@@ -351,6 +351,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           emailTemplate.name = $.trim($('#templateNameId').val());
       }
       emailTemplate.id = emailTemplateService.emailTemplate.id;
+      emailTemplate.user = new User();
+      emailTemplate.user.userId = this.loggedInUserId;
       this.updateCompanyLogo(emailTemplate);
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {

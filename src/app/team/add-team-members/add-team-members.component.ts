@@ -65,18 +65,21 @@ export class AddTeamMembersComponent implements OnInit {
     allEmailIds:any;
     selectedId:number=0;
     contactAccess:boolean = false;
+    isOnlyPartner:boolean = false;
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
             public authenticationService:AuthenticationService,private pagerService:PagerService,public pagination:Pagination,
             private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
-
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
 
     downloadEmptyCsv(){
-        if(this.contactAccess){
+        if(this.contactAccess && !this.isOnlyPartner){
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
+        }else if(this.isOnlyPartner){
+            window.location.href = this.authenticationService.MEDIA_URL + "team-member-partner.csv";
         }else{
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-vendor.csv";
         }
@@ -92,7 +95,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.listEmailIds();
             this.listAllOrgAdminsEmailIds();
             this.listAllPartnerEmailIds();
-            this.listAllOrgAdminsAndSupervisors();
+            this.listDropDown();
             this.hasContactAccess();
         }
         catch ( error ) {
@@ -100,10 +103,19 @@ export class AddTeamMembersComponent implements OnInit {
         }
     }
 
+    listDropDown(){
+        this.items2 = [];
+        if(!this.isOnlyPartner){
+            this.listAllOrgAdminsAndSupervisors();
+        }else{
+            this.listPartnerAndTeamMembers();
+        }
+    }
+
     hasContactAccess(){
         let isOrgAdmin = this.authenticationService.isOrgAdmin();
         let isVendorAndPartner = this.authenticationService.isVendorPartner();
-        this.contactAccess  = isOrgAdmin || (isVendorAndPartner);
+        this.contactAccess  = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
     }
 
 
@@ -213,6 +225,7 @@ export class AddTeamMembersComponent implements OnInit {
                     this.listEmailIds();
                     this.listAllOrgAdminsEmailIds();
                     this.clearRows();
+                    this.listDropDown();
                 }else{
                     this.showErrorMessageDiv(data.message);
                 }
@@ -252,6 +265,7 @@ export class AddTeamMembersComponent implements OnInit {
                     this.listEmailIds();
                     this.listAllOrgAdminsEmailIds();
                     this.clearRows();
+                    this.listDropDown();
                 }else{
                    this.showErrorMessageDiv(data.message);
                 }
@@ -327,6 +341,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.listAllOrgAdminsEmailIds();
             this.listAllPartnerEmailIds();
             this.clearRows();
+
         },
         error => {this.logger.errorPage(error)},
         () => this.logger.log( "Team member deleted successfully." )
@@ -439,6 +454,7 @@ export class AddTeamMembersComponent implements OnInit {
             if(tableRows==0){
                 this.clearRows();
             }
+           this.listDropDown();
         }catch(error){
             this.showUIError(error);
         }
@@ -470,15 +486,17 @@ export class AddTeamMembersComponent implements OnInit {
 
 
     setAllRoles( team: TeamMember ) {
-        team.video = true;
+        if(!this.isOnlyPartner){
+            team.video = true;
+            team.emailTemplate = true;
+            team.stats = true;
+            team.socialShare = true;
+            team.partners = true;
+        }
         team.campaign = true;
-        team.emailTemplate = true;
-        team.stats = true;
         if(this.contactAccess){
             team.contact = true;
         }
-        team.socialShare = true;
-        team.partners = true;
        // team.opportunity = true;
 
     }
@@ -496,7 +514,7 @@ export class AddTeamMembersComponent implements OnInit {
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
-           if((this.contactAccess && length==7) || (!this.contactAccess && length==6)){
+           if((this.contactAccess && length==7) || (!this.contactAccess && length==6) || (this.isOnlyPartner && length==2)){
                team.all = true;
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
@@ -574,7 +592,7 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-            if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
+            if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8) ||(this.isOnlyPartner && headers.length==4)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
@@ -598,12 +616,13 @@ export class AddTeamMembersComponent implements OnInit {
       };
 
          validateHeaders(headers){
-           if(this.contactAccess){
+           if(this.contactAccess && !this.isOnlyPartner){
                return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
-
-           }else{
+           }else if(this.isOnlyPartner){
+            return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" &&headers[2]=="CONTACTS" && headers[3]=="CAMPAIGN");
+            }
+           else{
                return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="EMAIL" && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS");
-
            }
          }
 
@@ -700,21 +719,28 @@ export class AddTeamMembersComponent implements OnInit {
               if(teamMember.all){
                   this.setAllRoles(teamMember);
               }else{
-                  teamMember.video = this.setDefaultValue(row[2]);
-                  if(this.contactAccess){
-                      teamMember.contact = this.setDefaultValue(row[3]);
-                      teamMember.campaign   =this.setDefaultValue(row[4]);
-                      teamMember.stats = this.setDefaultValue(row[5]);
-                      teamMember.emailTemplate = this.setDefaultValue(row[6]);
-                      teamMember.socialShare = this.setDefaultValue(row[7]);
-                      teamMember.partners = this.setDefaultValue(row[8]);
-                  }else{
-                      teamMember.campaign   =this.setDefaultValue(row[3]);
-                      teamMember.stats = this.setDefaultValue(row[4]);
-                      teamMember.emailTemplate = this.setDefaultValue(row[5]);
-                      teamMember.socialShare = this.setDefaultValue(row[6]);
-                      teamMember.partners = this.setDefaultValue(row[7]);
-                  }
+                if(this.isOnlyPartner){
+                    teamMember.contact = this.setDefaultValue(row[2]);
+                    teamMember.campaign   =this.setDefaultValue(row[3]);
+                }else{
+                    teamMember.video = this.setDefaultValue(row[2]);
+                    if(this.contactAccess){
+                        teamMember.contact = this.setDefaultValue(row[3]);
+                        teamMember.campaign   =this.setDefaultValue(row[4]);
+                        teamMember.stats = this.setDefaultValue(row[5]);
+                        teamMember.emailTemplate = this.setDefaultValue(row[6]);
+                        teamMember.socialShare = this.setDefaultValue(row[7]);
+                        teamMember.partners = this.setDefaultValue(row[8]);
+                    }else{
+                        teamMember.campaign   =this.setDefaultValue(row[3]);
+                        teamMember.stats = this.setDefaultValue(row[4]);
+                        teamMember.emailTemplate = this.setDefaultValue(row[5]);
+                        teamMember.socialShare = this.setDefaultValue(row[6]);
+                        teamMember.partners = this.setDefaultValue(row[7]);
+                    }
+                }
+
+                  
 
               }
               this.teamMembers.push(teamMember);
@@ -793,20 +819,35 @@ export class AddTeamMembersComponent implements OnInit {
       onInputChangedEvent(val: string) {
         this.inputChanged = val;
       }
+
+      listPartnerAndTeamMembers(){
+        this.teamMemberService.listPartnerAndTeamMembers(this.userId)
+        .subscribe(
+        data => {
+            this.setDropDownData(data);
+        },
+        error => this.logger.log( error ),
+        () => this.logger.log( "listPartnerAndTeamMembers() done" )
+        );
+      }
       listAllOrgAdminsAndSupervisors() {
           this.teamMemberService.listAllOrgAdminsAndSupervisors(this.userId)
               .subscribe(
               data => {
-                  let self =this;
-                  $.each(data,function(index,value){
-                      let emailId = data[index].emailId;
-                      let id =  data[index].id;
-                      let obj = {'id':id,'emailId':emailId};
-                      self.items2.push(obj);
-                  });
+                    this.setDropDownData(data);
               },
               error => this.logger.log( error ),
               () => this.logger.log( "listAllOrgAdminsAndSupervisors() done" )
               );
           }
+
+     setDropDownData(data:any){
+        let self =this;
+        $.each(data,function(index,value){
+            let emailId = data[index].emailId;
+            let id =  data[index].id;
+            let obj = {'id':id,'emailId':emailId};
+            self.items2.push(obj);
+        });
+     }     
 }

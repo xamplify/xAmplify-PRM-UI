@@ -49,7 +49,7 @@
 							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</button>
 					</li> -->
-					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
+					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany && !authenticationService.isPartnerTeamMember" style="margin-top: 17px;margin-right: 5px;">
 						<!-- refService.hasCompany -->
 						<button class="btn btn-primary" [routerLink]="['/home/videos']">
 							<span class="hidden-xs">Upload Content</span>

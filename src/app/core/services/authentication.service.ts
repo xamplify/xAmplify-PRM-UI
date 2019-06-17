@@ -37,6 +37,7 @@ export class AuthenticationService {
     module:Module = new Module();
     roleName: Roles= new Roles();
     isAddedByVendor = false;
+    isPartnerTeamMember = false;
     selectedVendorId: number;
     venorMyProfileReport: any;
     constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
@@ -101,6 +102,8 @@ export class AuthenticationService {
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }
+
+ 
     getUserId(): number {
         try{
         let userId;
@@ -164,11 +167,12 @@ export class AuthenticationService {
     isOnlyPartner(){
       try{
         const roleNames = this.getRoles();
-        if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-            return true;
-        }else{
-            return false;
-        }
+            if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+                return true;
+            }else{
+                return false;
+            }
+        
       }catch(error){
         this.xtremandLogger.log('error'+error);
       }
@@ -278,6 +282,7 @@ export class AuthenticationService {
         this.refresh_token = null;
         localStorage.removeItem('currentUser');
         localStorage.removeItem("campaignRouter");
+        localStorage.removeItem("superiorId");
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
         const module = this.module;
@@ -293,6 +298,7 @@ export class AuthenticationService {
         module.hasSocialStatusRole = false;
         module.isVendor = false;
         this.isAddedByVendor = false;
+        this.isPartnerTeamMember = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {

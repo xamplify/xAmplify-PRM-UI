@@ -46,12 +46,16 @@ export class TeamMemberService{
     }
     
     listAllOrgAdminsAndSupervisors(userId:number){
-       
         userId = this.authenticationService.user.id;
-        
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        
         return this.http.get(this.URL + "admin/list-org-all/" + userId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    listPartnerAndTeamMembers(userId:number){
+        userId = this.authenticationService.user.id;
+        return this.http.get(this.URL + "admin/partner-team-members/" + userId + "?access_token=" + this.authenticationService.access_token)
         .map(this.extractData)
         .catch(this.handleError);
     }

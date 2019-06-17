@@ -8,6 +8,10 @@ table td:first-child, table th:first-child { 	text-align: left }
 } */
 .red{ 	color: red !important; }
 
+.left{
+	float: left;
+}
+
 hr {
 	padding: 5px 0;
 	color: #616161;
