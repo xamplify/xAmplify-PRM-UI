@@ -362,32 +362,23 @@ export class AddTeamMembersComponent implements OnInit {
     }
 
 
-    validateEmailId(emailId:string,isTabChangeEvent:boolean){
+    validateEmailId(emailId:string){
         try{
-            this.logger.log($.trim(emailId).length);
             if($.trim(emailId).length>0){
                 this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
                 if(!this.teamMemberUi.validEmailId){
-                    if(isTabChangeEvent){
+                    this.showErrorMessage("Please enter a valid email address");
+                    /*if(isTabChangeEvent){
                       this.showErrorMessage("Please enter a valid email address");
                     }else{
                         this.teamMemberUi.isValidForm = false;
-                    }
+                    }*/
                 }else{
                     /**********Method To Check Whether Org Admin Or Not***********/
-                    if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.logger.log(emailId.toLowerCase()+" is an org admin")
+                    if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1 || this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1 || this.existingEmailIds.indexOf(emailId.toLowerCase())>-1 ){
                         this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
-                    }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
-                    }
-                    else{
-                        if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                            this.showErrorMessage("Sorry, but this person is already a team member for a different account.");
-                        }else{
-                            this.hideErrorMessage();
-                        }
-
+                    }else{
+                        this.hideErrorMessage();
                     }
                 }
             }else{
@@ -669,25 +660,18 @@ export class AddTeamMembersComponent implements OnInit {
                    let emailId = row[0];
                    this.emaillIdDivClass = this.defaultClass;
                    if(!this.referenceService.validateEmailId(emailId)){
-                       this.csvErrors.push(emailId+" at row "+(i+1)+" is invalid.");
+                     //  this.csvErrors.push(emailId+" at row "+(i+1)+" is invalid.");
+                      this.csvErrors.push(emailId+" is invalid email address.");
                    }else{
-                       this.logger.log(duplicateEmailIds);
                        /**********Method To Check Whether Org Admin Or Not***********/
-                       if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
-                           this.csvErrors.push(emailId+" at row "+(i+1)+" is an Org Admin.");
-                       }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
-                           this.csvErrors.push(emailId+" at row "+(i+1)+" is a Partner.");
-                       }else{
-                           /*******************Check If Already Added As A Team Member***************************/
-                           if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                               this.csvErrors.push(emailId+" at row "+(i+1)+" is already added as team member.");
-                           }
+                      if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1 || this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1 ||this.existingEmailIds.indexOf(emailId.toLowerCase())>-1 ){
+                          this.csvErrors.push(emailId+" is already registered with xAmplify and cannot be added as a team member at this time.");
                        }
                    }
                }
           }else{
               for(let d=0;d<duplicateEmailIds.length;d++){
-                  this.csvErrors.push(duplicateEmailIds[d]+" is duplicate row.");
+                  this.csvErrors.push(duplicateEmailIds[d]+" is duplicate email address.");
                   this.isUploadCsv = false;
                   this.isAddTeamMember = false;
               }

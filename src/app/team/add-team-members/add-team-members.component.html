@@ -386,8 +386,8 @@
           </label>
          <div class="form-group col-xs-6 col-sm-10">
             <input type="email" style="border: none" class="form-control padding-mobile"
-            id="emailId" placeholder="Email" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId,false)" (blur)="validateEmailId(team.emailId,true)"
-            placeholder="Email *" autocomplete="off" maxlength="250">
+            id="emailId" placeholder="Email" [(ngModel)]="team.emailId" name="emailId" (input)="validateEmailId(team.emailId)" 
+            placeholder="Email *" autocomplete="off" maxlength="250"><!-- blur)="validateEmailId(team.emailId,true)" -->
           <div class="textCss"></div>
           <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
          </div>
