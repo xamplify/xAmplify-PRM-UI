@@ -116,6 +116,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   contactListDeleteError = false;
   interactiveDataTimeLineViewEnable = false;
   totalCampaignViewsLoader = false;
+  isOnlyPartner = false;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -133,6 +134,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
+      this.isOnlyPartner = this.authenticationService.isOnlyPartner();
       this.campaign = new Campaign();
       this.selectedRow.emailId = "";
       if (this.referenceService.isFromTopNavBar) {
@@ -834,7 +836,7 @@ showTimeLineView(){
       data => {
         this.campaign = data;
         this.isChannelCampaign = data.channelCampaign;
-        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){
+        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId && !this.authenticationService.isPartnerTeamMember &&!this.isOnlyPartner){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
             this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
