@@ -195,12 +195,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
       this.campaignAccess.videoCampaign = video;
       this.campaignAccess.emailCampaign = regular;
       this.campaignAccess.socialCampaign = social;
-      this.campaignAccess.eventCampaign = event
+      this.campaignAccess.eventCampaign = event;
      }
     ngOnInit() {
         try {
           this.refService.manageRouter = true;
-          if(this.authenticationService.isOnlyPartner()) { this.setCampaignAccessValues(true,true,true,true) }
+          if(this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true,true,true,true) }
           else { if(!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes();}}
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;

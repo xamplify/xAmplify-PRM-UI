@@ -75,7 +75,7 @@
         </ul>
       </li>
       <!--&& !authService.isAddedByVendor-->
-      <li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner) && !authService.isAddedByVendor"  [ngClass]="{'active': location.path().includes('contacts')}">
+      <li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner)"  [ngClass]="{'active': location.path().includes('contacts')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('contacts')">
         <i class="fa fa-list-ul"></i>
         <span class="title">Contacts</span>
