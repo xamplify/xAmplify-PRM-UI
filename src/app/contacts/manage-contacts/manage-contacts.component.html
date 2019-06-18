@@ -597,9 +597,12 @@
 										<div class="caption">
 											<i class="fa fa-edit" style="font-size: 18px"></i> <span
 												class="capitalize"
-												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
+												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
+												{{checkingContactTypeName}}s List</span>
+												<span class="capitalize"
+												*ngIf="contactsByType.selectedCategory =='active'">Registered
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='invalid'">Undeliverable
 												{{checkingContactTypeName}}s List</span>
