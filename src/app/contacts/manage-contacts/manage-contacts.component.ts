@@ -1336,7 +1336,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     "Email Id": this.contactsByType.listOfAllContacts[i].emailId,
                     "Address": this.contactsByType.listOfAllContacts[i].address,
                     "City": this.contactsByType.listOfAllContacts[i].city,
+                    "State": this.contactsByType.listOfAllContacts[i].state,
                     "Country": this.contactsByType.listOfAllContacts[i].country,
+                    "Zip Code": this.contactsByType.listOfAllContacts[i].zipCode,
                     "Mobile Number": this.contactsByType.listOfAllContacts[i].mobileNumber,
                     // "Notes": this.contactsByType.listOfAllContacts[i].description
                 }
