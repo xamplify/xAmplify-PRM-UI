@@ -803,7 +803,7 @@
 									<th style="font-size: 12px; font-weight: 500;" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'"><span
 										 [hidden]="rsvpResposeType === 'email not open'">GUESTS
 											<!-- <br><h6 class="m0" style="font-size:9px">( including you )</h6> --></span></th>
-									<th class="text-center-css" *ngIf="rsvpResposeType === 'email not open'">Reminder</th>
+									<th class="text-center-css" *ngIf="!isCancelledEvent && rsvpResposeType === 'email not open'">Reminder</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -822,7 +822,7 @@
 										<h6 *ngIf="rsvpResposeType === 'email open'">{{item.time | date: 'short'}}</h6>
 									</td>
 									<td class="center" *ngIf="rsvpResposeType !== 'email open' && rsvpResposeType != 'invities'">{{item.additionalCount}}</td>
-									<td class="text-center" *ngIf="rsvpResposeType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									<td class="text-center" *ngIf="rsvpResposeType === 'email not open' && isCancelledEvent === false" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
 											<i class="fa fa-bell-o" aria-hidden="true"></i>
 										</a> </td>
 								</tr>
@@ -971,14 +971,14 @@
 												{{emailLog.subject | slice:0:30}} <span *ngIf="emailLog.subject?.length>30">...</span>
 											</span> email opened
 										</span>
-										<span *ngIf="emailLog.actionId == 14">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title
+										<span *ngIf="emailLog.actionId == 14 && campaign.campaignVideoFile">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title
 												| slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video GIF</span>
 										<span *ngIf="emailLog.actionId == 15">
 											Clicked on the URL
 											<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url
 													| slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
 										</span>
-										<span *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10">
+										<span *ngIf="campaign.campaignVideoFile && (emailLog.actionId == 1 || emailLog.actionId == 10)">
 											<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}}
 												<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
 											</span> <span *ngIf="emailLog.actionId == 10">re-</span>played

@@ -39,6 +39,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   dealButtonText: string="";
   dealId: any;
   eventCampaign: EventCampaign = new EventCampaign();
+  isCancelledEvent: boolean = false;
 
   public searchKey: string;
 
@@ -820,6 +821,9 @@ showTimeLineView(){
         .subscribe(data => {
           console.log(data);
           this.eventCampaign = data.data;
+           if(data.data.eventCancellation.cancelled){
+             this.isCancelledEvent = true;
+            }
         },
         error => console.log(error),
         () => { }

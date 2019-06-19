@@ -158,7 +158,7 @@
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
 									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities' && detailType !== 'email not open'"><span>Most Recent</span></th>
 									<th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
-									<th class="text-center-css" *ngIf="detailType === 'email not open'">Reminder</th>
+									<th class="text-center-css" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'">Reminder</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -182,7 +182,7 @@
 									</h6>
 									</td>
 									<td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
-									<td class="text-center" *ngIf="detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									<td class="text-center" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
 									<i class="fa fa-bell-o" aria-hidden="true"></i>
 									</a> </td>
 								</tr>
