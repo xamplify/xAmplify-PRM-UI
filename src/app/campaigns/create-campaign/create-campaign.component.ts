@@ -2623,7 +2623,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                             this.templateError = false;
                             this.loading = false;
-                            alert("Custome Objects are not found")
+                            alert("Custom Objects are not found")
                         }
 
                     }, error =>
