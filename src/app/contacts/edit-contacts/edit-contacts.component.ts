@@ -2546,7 +2546,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     listTeamMembers() {
         try {
             try {
-                alert(this.loggedInUserId);
                 this.teamMemberService.listOrganizationTeamMembers(this.loggedInUserId)
                     .subscribe(
                     data => {
