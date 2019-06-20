@@ -159,7 +159,7 @@ export class TopnavbarComponent implements OnInit {
 
 
   isAddedByPartner(){
-    if(this.authenticationService.showRoles()=="Team Member"){
+    if(this.authenticationService.showRoles()=="Team Member"  || this.authenticationService.showRoles()=="Partner & Team Member" ){
       this.userService.isAddedByOnlyPartner(this.authenticationService.getUserId())
       .subscribe(
       data => {
