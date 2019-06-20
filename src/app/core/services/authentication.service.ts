@@ -143,18 +143,20 @@ export class AuthenticationService {
     showRoles():string{
       try{
         const roleNames = this.getRoles();
-
         /***********Org Admin**************/
         if(roleNames){
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
         const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
+        const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 && 
+        (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.contactsRole)>-1);
         if(roleNames.length===1){   return "User";
         }else{
             if(isOrgAdmin&&isPartner){ return "Orgadmin & Partner";
             }else if(isVendor&&isPartner){ return "Vendor & Partner";
             }else if(isOrgAdmin){  return "Orgadmin";
             }else if(isVendor){ return "Vendor";
+            }else if(isPartnerAndTeamMember){ return "Partner & Team Member";
             }else if(isPartner){  return "Partner";
             }else{  return "Team Member"; }
         }

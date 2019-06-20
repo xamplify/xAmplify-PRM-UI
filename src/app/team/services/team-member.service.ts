@@ -67,6 +67,12 @@ export class TeamMemberService{
             .catch(this.handleError);
     }
     
+    listOrganizationTeamMembers(userId:number) {
+        return this.http.get(this.URL + "admin/listTeamMemberEmailIds/"+userId+"?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     listDisabledTeamMemberEmailIds() {
         return this.http.get(this.URL + "admin/listDisabledTeamMemberEmailIds?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)

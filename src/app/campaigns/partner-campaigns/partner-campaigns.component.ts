@@ -12,7 +12,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { UtilService } from 'app/core/services/util.service';
-declare var $: any;
+declare var $,swal: any;
 
 @Component({
     selector: 'app-partner-campaigns',
@@ -193,9 +193,14 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.getCampaignById( obj )
           .subscribe(
               data => {
-                const emailTemplateId = data.emailTemplate;
+                const emailTemplate = data.emailTemplate;
                 this.campaignName = data.campaignName;
-                this.previewEmailTemplate(emailTemplateId, data)
+                if(emailTemplate!=undefined){
+                    this.previewEmailTemplate(emailTemplate, data);
+                }else{
+                    swal("EmailTemplate Not Found","","error");
+                    this.ngxloading = false;
+                }
               },
               error => { this.xtremandLogger.errorPage( error ) },
               () => console.log()

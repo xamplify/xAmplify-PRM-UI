@@ -363,10 +363,12 @@ export class AddTeamMembersComponent implements OnInit {
 
 
     validateEmailId(emailId:string){
+        console.log(emailId);
         try{
             if($.trim(emailId).length>0){
                 this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
                 if(!this.teamMemberUi.validEmailId){
+                    console.log("372");
                     this.showErrorMessage("Please enter a valid email address");
                     /*if(isTabChangeEvent){
                       this.showErrorMessage("Please enter a valid email address");
@@ -382,6 +384,7 @@ export class AddTeamMembersComponent implements OnInit {
                     }
                 }
             }else{
+                console.log("i am in else");
                 this.teamMemberUi.errorMessage = '';
                 $(".col-md-12 span").text('');
                 this.removeErrorClass();
@@ -738,8 +741,10 @@ export class AddTeamMembersComponent implements OnInit {
       }
       clearForm(){
           this.emaillIdDivClass = this.defaultClass;
-          $(".text-danger").text('');
+         // $(".text-danger").html('');
           this.isAddTeamMember = false;
+          this.teamMemberUi.isValidForm = false;
+          this.teamMemberUi.errorMessage = "";
          // this.clearRows();
           this.closePopup();
       }

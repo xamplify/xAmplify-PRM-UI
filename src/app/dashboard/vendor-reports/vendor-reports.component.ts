@@ -45,10 +45,7 @@ export class VendorReportsComponent implements OnInit {
   vendorReports() {
     this.loading = true;
     this.dashboardService
-      .loadVendorDetails(
-        this.authenticationService.getUserId(),
-        this.pagination
-      )
+      .loadVendorDetails(this.authenticationService.getUserId(),this.pagination)
       .subscribe(
         data => {
           this.vendorDetails = data.data;

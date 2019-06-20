@@ -2042,7 +2042,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     listTeamMembers() {
         try {
-            this.teamMemberService.listTeamMemberEmailIds( )
+            this.teamMemberService.listOrganizationTeamMembers(this.loggedInUserId)
                 .subscribe(
                 data => {
                     console.log( data );
@@ -2140,12 +2140,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.socialContactImage();
-            this.listTeamMembers();
            /* this.listOrgAdmin();*/
             
             $( "#Gfile_preview" ).hide();
             this.socialContactsValue = true;
             this.loggedInUserId = this.authenticationService.getUserId();
+            this.listTeamMembers();
             this.defaultPartnerList( this.loggedInUserId );
             if ( this.contactService.socialProviderName == 'google' ) {
                 this.getGoogleContactsUsers();

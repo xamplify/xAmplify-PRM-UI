@@ -61,7 +61,7 @@ export class DashboardStatsComponent implements OnInit {
   navigateToPartner() {
     if ( !this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount > 0) {
       this.router.navigate(["/home/partners/analytics"]);
-    } else if (this.authenticationService.isOnlyPartner() && this.dashboardReport.vendorsCount > 0)
+    } else if ((this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.isPartner()) && this.dashboardReport.vendorsCount > 0)
     { this.xtremandLogger.log("go to vendors page");
       this.router.navigate(["/home/dashboard/vendors"]); // un comment for vendor page
     } else {
