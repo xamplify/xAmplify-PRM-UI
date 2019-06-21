@@ -53,13 +53,13 @@
 					<button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
 						(click)="openRequestAsVendorModal()">Refer a vendor</button>
 					</li>
-					<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany && !authenticationService.isPartnerTeamMember" style="margin-top: 17px;margin-right: 5px;">
-						<!-- refService.hasCompany -->
+				<!-- 	<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany && !authenticationService.isPartnerTeamMember" style="margin-top: 17px;margin-right: 5px;">
+						refService.hasCompany
 						<button class="btn btn-primary" [routerLink]="['/home/videos']">
 							<span class="hidden-xs">Upload Content</span>
 							<i class="fa fa-upload" data-toggle="tooltip"></i>
 						</button>
-					</li>
+					</li> -->
 					<li style="margin-top: 17px;margin-right: 5px;" 
 					*ngIf="(refService.hasAllAccess() 
 										|| authenticationService.module.hasSocialStatusRole 
