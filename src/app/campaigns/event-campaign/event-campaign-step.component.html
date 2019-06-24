@@ -620,7 +620,7 @@ a.disabled {
                 <div style="padding-top: 12px;padding-right: 16px;">
                 <div class="input-icon pull-right">
                           <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                          placeholder="Search for a list" (keypress)="eventHandlerContact($event.keyCode)">
+                          placeholder="Search for a list" (keypress)="eventHandlerContact($event.keyCode)" style="padding-left:10px !important">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput='';"></button>
                           <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                         </div>

@@ -735,7 +735,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     getCampaignReplies(campaign: Campaign) {
         if(campaign.campaignReplies!=undefined){
             this.replies = campaign.campaignReplies;
-            for(var i=0;i<this.replies.length;i++){
+            for(var i=0;i< this.replies.length;i++){
                 let reply = this.replies[i];
                 if(reply.defaultTemplate){
                     reply.selectedEmailTemplateIdForEdit = reply.selectedEmailTemplateId;
