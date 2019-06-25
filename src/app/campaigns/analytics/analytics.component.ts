@@ -274,7 +274,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   campaignViewsCountBarchart(names, data) {
-   
+  /*   Not calling for event campaign because views count is not coming.
+    if(this.campaignType != 'EVENT'){ */
     this.loading = true;
     const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
@@ -359,7 +360,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        }
     });
     this.loading = false;
-  
+  //  }
   }
 
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
