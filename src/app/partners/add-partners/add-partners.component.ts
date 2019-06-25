@@ -485,6 +485,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                     console.log( "done" )
                                 } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
                                     this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                                }else if(error._body.includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                                 }else{
                                     this.xtremandLogger.errorPage( error );
                                 }

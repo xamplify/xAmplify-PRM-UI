@@ -573,6 +573,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                             } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
                                 this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                            }else if(JSON.parse(error._body).includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
+                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                             }else{
                                 this.xtremandLogger.errorPage( error );
                             }
@@ -731,6 +733,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                         this.customResponse = new CustomResponse( 'ERROR', error._body, true );
 
+                                    }else if(JSON.parse(error._body).includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
+                                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                                     } else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
                                         this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
                                     }else{
@@ -1367,7 +1371,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
                                     this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                                     this.cancelContacts();
-                                }else{
+                                }else if(JSON.parse(error._body).includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
+                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                                    this.cancelContacts();
+                                }
+                                else{
                                    this.xtremandLogger.errorPage( error );
                                 }
                                 this.xtremandLogger.error( error );
