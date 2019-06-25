@@ -274,8 +274,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   campaignViewsCountBarchart(names, data) {
-   if(this.campaignType != 'EVENT'){
-     this.loading = true;
+   
+    this.loading = true;
     const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
     let newChart = Highcharts.chart('campaign-views-barchart', {
@@ -359,7 +359,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        }
     });
     this.loading = false;
-    }
+  
   }
 
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
