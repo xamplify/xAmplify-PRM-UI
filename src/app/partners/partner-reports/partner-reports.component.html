@@ -270,18 +270,22 @@
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
             <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
               <thead>
-                <th class="center-aligned" style="width:50%">partners</th>
+                <th class="center-aligned">partners</th>
+                <th style="text-align: center;">status</th>
                 <th style="text-align: center;">Actions</th>
               </thead>
-              <tbody>
+              <tbody> 
                 <tr *ngFor="let item of approvePartnersPagination.pagedItems" style="cursor: pointer;">
                   <td>
                     <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
                   </td>
+                  <td style="text-align: center;text-transform: capitalize;">
+                   {{item.invitationStatus}}
+                  </td>
                   <td style="text-align: center;">
-                   <button type="submit" class="btn green"
+                   <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
 					(click)="approvePartnerRequest(item.partnerId)">Approve</button>
-					<button type="submit" class="btn green"
+					<button [disabled]="item.invitationStatus == 'approved' || item.invitationStatus == 'declined'" type="submit" class="btn green"
 					(click)="declinePartnerRequest()">Decline</button>
                   </td> 
                 </tr>

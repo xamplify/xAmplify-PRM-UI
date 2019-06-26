@@ -394,8 +394,6 @@ export class PartnerReportsComponent implements OnInit {
                console.log(response);
                if(response.approvePartnesList.length === 0){
                    this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
-               }else {
-                   this.customResponse = new CustomResponse();
                }
                for ( var i in response.approvePartnesList) {
                    response.approvePartnesList[i].contactCompany = response.approvePartnesList[i].partnerCompanyName;
@@ -540,7 +538,7 @@ export class PartnerReportsComponent implements OnInit {
                   data = data;
                   
                   if(data.statusCode == 200){
-                      this.customResponse = new CustomResponse( 'SUCCESS', "Partner has been approved successfully.", true );
+                      this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
                   }else{
                       this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
                   }
