@@ -179,7 +179,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    updateContactList( contactListId: number, users: Array<User> ): Observable<User[]> {
+    updateContactList( contactListId: number, users: Array<User> ): Observable<any> {
         var requestoptions = new RequestOptions( {
             body: users,
         })

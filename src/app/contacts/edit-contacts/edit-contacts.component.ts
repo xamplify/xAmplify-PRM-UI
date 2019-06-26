@@ -560,6 +560,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             } else {
                                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
                             }
+                            
+                            if(data.statusCode == 409){
+                                let emailIds = data.emailAddresses;
+                                let allEmailIds = "";
+                                $.each(emailIds,function(index,emailId){
+                                allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                });
+                                let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                this.customResponse = new CustomResponse( 'ERROR', message, true );
+                            }
+                            
                             this.checkingLoadContactsCount = true;
                             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                             this.cancelContacts();
@@ -572,8 +583,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                 this.customResponse = new CustomResponse( 'ERROR', error._body, true );
                             } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
-                                this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
-                            }else if(JSON.parse(error._body).includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
                                 this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                             }else{
                                 this.xtremandLogger.errorPage( error );
@@ -722,6 +731,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     this.filePrevew = false;
                                     this.isShowUsers = true;
                                     this.removeCsv();
+                                    if(data.statusCode == 409){
+                                        let emailIds = data.emailAddresses;
+                                        let allEmailIds = "";
+                                        $.each(emailIds,function(index,emailId){
+                                        allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                        });
+                                        let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                        this.customResponse = new CustomResponse( 'ERROR', message, true );
+                                    }
                                     this.checkingLoadContactsCount = true;
                                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                                     this.getContactsAssocialteCampaigns();
@@ -733,9 +751,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                         this.customResponse = new CustomResponse( 'ERROR', error._body, true );
 
-                                    }else if(JSON.parse(error._body).includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
-                                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
-                                    } else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
+                                    }else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
                                         this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
                                     }else{
                                        this.xtremandLogger.errorPage( error );
@@ -1347,7 +1363,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                                 });
                                 this.clickBoard = false;
-
                                 if ( !this.isPartner ) {
                                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
                                 } else {
@@ -1358,6 +1373,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 $( "button#upload_csv" ).prop( 'disabled', false );
                                 this.users.length = 0;
                                 this.cancelContacts();
+                                
+                                if(data.statusCode == 409){
+                                    let emailIds = data.emailAddresses;
+                                    let allEmailIds = "";
+                                    $.each(emailIds,function(index,emailId){
+                                    allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                    });
+                                    let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                    this.customResponse = new CustomResponse( 'ERROR', message, true );
+                                }
+
                                 this.checkingLoadContactsCount = true;
                                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                                 this.getContactsAssocialteCampaigns();
@@ -1371,11 +1397,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 } else if(JSON.parse(error._body).includes("email addresses in your contact list that aren't formatted properly")){
                                     this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
                                     this.cancelContacts();
-                                }else if(JSON.parse(error._body).includes("Following email address(es)'s organization(s) have been already added as partner(s)")){
-                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
-                                    this.cancelContacts();
-                                }
-                                else{
+                                }else{
                                    this.xtremandLogger.errorPage( error );
                                 }
                                 this.xtremandLogger.error( error );
