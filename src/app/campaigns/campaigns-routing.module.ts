@@ -15,7 +15,7 @@ import { PreviewPartnersComponent } from './preview-partners/preview-partners.co
 import { CalendarComponent } from './calendar/calendar.component';
 
 export const campaignRoutes: Routes = [
-  { path: "", redirectTo: "select", pathMatch: "full" },
+  { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
   { path: "create", component: CreateCampaignComponent },
   { path: "social", component: SocialCampaignComponent },
