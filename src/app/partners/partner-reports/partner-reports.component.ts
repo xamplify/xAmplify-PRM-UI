@@ -532,6 +532,7 @@ export class PartnerReportsComponent implements OnInit {
   approvePartnerRequest( partnerId: number ) {
       try {
           this.xtremandLogger.info( partnerId );
+          this.referenseService.loading(this.httpRequestLoader, true);
           this.parterService.approveVendorRequest( partnerId )
               .subscribe(
               ( data: any ) => {
@@ -543,9 +544,11 @@ export class PartnerReportsComponent implements OnInit {
                       this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
                   }
                       this.getApprovePartnerReports(this.approvePartnersPagination );
+                      this.referenseService.loading(this.httpRequestLoader, false);
               },
               ( error: any ) => {
                   console.log( error );
+                  this.referenseService.loading(this.httpRequestLoader, false);
               },
               () => this.xtremandLogger.info( "Approved successfully." )
               );
@@ -557,6 +560,7 @@ export class PartnerReportsComponent implements OnInit {
   declinePartnerRequest(partnerId: number){
       try {
           this.xtremandLogger.info( partnerId );
+          this.referenseService.loading(this.httpRequestLoader, true);
           this.parterService.declineVendorRequest( partnerId )
               .subscribe(
               ( data: any ) => {
@@ -568,9 +572,11 @@ export class PartnerReportsComponent implements OnInit {
                       this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
                   }
                       this.getApprovePartnerReports(this.approvePartnersPagination );
+                      this.referenseService.loading(this.httpRequestLoader, false);
               },
               ( error: any ) => {
                   console.log( error );
+                  this.referenseService.loading(this.httpRequestLoader, false);
               },
               () => this.xtremandLogger.info( "Declined successfully." )
               );
