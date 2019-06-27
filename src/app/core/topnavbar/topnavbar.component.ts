@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { SocialService } from '../../social/services/social.service';
@@ -13,7 +13,7 @@ import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { DashboardService } from "../../dashboard/dashboard.service";
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-declare var $, CKEDITOR:any;
+declare var $, CKEDITOR, ckInstance:any;
 
 @Component({
   selector: 'app-topnavbar',
@@ -21,7 +21,7 @@ declare var $, CKEDITOR:any;
   styleUrls: ['./topnavbar.component.css'],
   providers: [Properties, VendorInvitation]
 })
-export class TopnavbarComponent implements OnInit {
+export class TopnavbarComponent implements OnInit,OnDestroy {
   currentUrl: string;
   roleName: Roles = new Roles();
   vendoorInvitation: VendorInvitation = new VendorInvitation();
@@ -40,6 +40,8 @@ export class TopnavbarComponent implements OnInit {
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
     try{
+  //  ckInstance.removeAllListeners();
+     //   CKEDITOR.remove(ckInstance)
         CKEDITOR.config.height = '300px';
         CKEDITOR.config.baseFloatZIndex = 1E5;
         this.currentUrl = this.router.url;
@@ -173,6 +175,9 @@ export class TopnavbarComponent implements OnInit {
 
   onRightClick(event){
     return false;
+  }
+  ngOnDestroy(){
+     
   }
   ngOnInit() {
     try{
@@ -309,6 +314,7 @@ export class TopnavbarComponent implements OnInit {
       });
       if ( uniqueEmailids.length < this.emailIds.length ) { this.emailIds.pop(); }
     }
+  
   
   
   

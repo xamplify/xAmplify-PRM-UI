@@ -574,7 +574,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             this.checkingLoadContactsCount = true;
                             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                             this.cancelContacts();
-                            this.getContactsAssocialteCampaigns();
+                            if(data.statusCode != 409){
+                                this.getContactsAssocialteCampaigns();
+                              }
+                            
                         },
                         ( error: any ) => {
                             this.loading = false;
@@ -742,7 +745,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     }
                                     this.checkingLoadContactsCount = true;
                                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                                    this.getContactsAssocialteCampaigns();
+                                    if(data.statusCode != 409){
+                                        this.getContactsAssocialteCampaigns();
+                                      }
+                                    
                                 },
                                 ( error: any ) => {
                                     this.loading = false;
@@ -1386,7 +1392,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                                 this.checkingLoadContactsCount = true;
                                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                                this.getContactsAssocialteCampaigns();
+                                if(data.statusCode != 409){
+                                    this.getContactsAssocialteCampaigns();
+                                  }
                             },
                             ( error: any ) => {
                                 this.loading = false;

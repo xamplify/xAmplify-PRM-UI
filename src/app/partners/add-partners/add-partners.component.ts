@@ -474,7 +474,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.loadPartnerList( this.pagination );
                                 this.clipBoard = false;
                                 this.cancelPartners();
-                                this.getContactsAssocialteCampaigns();
+                                if(data.statusCode != 409){
+                                  this.getContactsAssocialteCampaigns();
+                                }
                                 this.disableOtherFuctionality = false;
                                 
                                 if(data.statusCode == 409){
