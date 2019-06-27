@@ -286,7 +286,7 @@
                    <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
 					(click)="approvePartnerRequest(item.partnerId)">Approve</button>
 					<button [disabled]="item.invitationStatus == 'approved' || item.invitationStatus == 'declined'" type="submit" class="btn green"
-					(click)="declinePartnerRequest()">Decline</button>
+					(click)="declinePartnerRequest(item.partnerId)">Decline</button>
                   </td> 
                 </tr>
               </tbody>

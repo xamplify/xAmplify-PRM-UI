@@ -554,8 +554,29 @@ export class PartnerReportsComponent implements OnInit {
       }
   }
   
-  declinePartnerRequest(){
-      this.customResponse = new CustomResponse( 'SUCCESS', "As you have declined the partner, he will not be added to your master list.", true );
+  declinePartnerRequest(partnerId: number){
+      try {
+          this.xtremandLogger.info( partnerId );
+          this.parterService.declineVendorRequest( partnerId )
+              .subscribe(
+              ( data: any ) => {
+                  data = data;
+                  
+                  if(data.statusCode == 200){
+                      this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
+                  }else{
+                      this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
+                  }
+                      this.getApprovePartnerReports(this.approvePartnersPagination );
+              },
+              ( error: any ) => {
+                  console.log( error );
+              },
+              () => this.xtremandLogger.info( "Declined successfully." )
+              );
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "partner-report-component.", "Decline Parter()" );
+      } 
   }
 
 
