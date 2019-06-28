@@ -35,15 +35,12 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isValidationMessage = false;
   validationMessage = "";
   isUser = false;
+  isShowCKeditor = false;
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
     try{
-  //  ckInstance.removeAllListeners();
-     //   CKEDITOR.remove(ckInstance)
-        CKEDITOR.config.height = '300px';
-        CKEDITOR.config.baseFloatZIndex = 1E5;
         this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if(userName!=undefined){
@@ -177,7 +174,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     return false;
   }
   ngOnDestroy(){
-     
+    this.isShowCKeditor = false; 
   }
   ngOnInit() {
     try{
@@ -203,6 +200,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   
   
   openRequestAsVendorModal(){
+      this.isShowCKeditor = true;
+      CKEDITOR.config.height = '300px';
+      CKEDITOR.config.baseFloatZIndex = 1E5;
       this.vendoorInvitation.subject = "Check out xAmplify’s marketing automation platform"
       this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
 

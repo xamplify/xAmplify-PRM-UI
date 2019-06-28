@@ -263,7 +263,7 @@
 					[(ngModel)]="vendoorInvitation.subject" (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}" 
 					placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
 				</div>
-				<div class="form-group">
+				<div class="form-group" *ngIf="isShowCKeditor">
 					<label for="subjectLine">Message <span class="text-danger">*</span></label>
 					<ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}" (input)="validateVendoorInvitation()"></ckeditor>
 				</div>
