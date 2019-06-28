@@ -874,8 +874,15 @@
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
 									class="btn btn-success">{{dealButtonText}}</button>
 								</span>
-							<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName}}</span>&nbsp;<span *ngIf="selectedRow?.lastName">{{selectedRow.lastName}}</span></h5>
-							<h6 class="m0">{{selectedRow.emailId}}</h6>
+							<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName | slice:0:20}}</span>
+							<span *ngIf="selectedRow.firstName?.length>20">..</span>
+							&nbsp;
+							<span *ngIf="selectedRow?.lastName">{{selectedRow.lastName | slice:0:20}}</span>
+							<span *ngIf="selectedRow.lastName?.length>20">..</span>
+							</h5>
+							<h6 class="m0">{{selectedRow.emailId | slice:0:35}}
+							<span *ngIf="selectedRow.emailId?.length>35">...</span>
+							</h6>
 						</div>
 						<div class="row mb10">
 							<div class="col-sm-3 col-xs-6">
