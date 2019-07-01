@@ -389,7 +389,7 @@
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
-												<span *ngIf="campaign.launched && !campaign.showCancelButton">Launched</span>
+												<span *ngIf="campaign.launched">Launched</span>
 												<div  class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</div>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
