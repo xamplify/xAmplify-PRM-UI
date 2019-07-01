@@ -673,7 +673,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      validateField(fieldId:string){
          var errorClass = "form-group has-error has-feedback";
          var successClass = "form-group has-success has-feedback";
-         let fieldValue = $.trim($('#'+fieldId).val())
+         let fieldValue = $.trim($('#'+fieldId).val());
          if(fieldId=="campaignName"){
              if(fieldValue.length>0&&this.isValidCampaignName){
                  this.campaignNameDivClass = successClass;
@@ -688,7 +688,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.fromNameDivClass = errorClass;
              }
          }else if(fieldId=="subjectLine"){
-             if(fieldValue.length>0){
+             let value = $.trim($('#subjectLineId').val());
+             if(value.length>0){
                  this.subjectLineDivClass = successClass;
              }else{
                  this.subjectLineDivClass = errorClass;
