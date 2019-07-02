@@ -397,6 +397,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignBarViewsDataInsert(){
       const names = [];
       const views = [];
+      let isShowBarChart: boolean;
+      if( this.campaignType == 'EVENT' && this.isChannelCampaign ){
+          isShowBarChart = false;
+      }else {
+          isShowBarChart = true;
+      }
       for ( let i = 0; i < this.campaignBarViews.length; i++ ) {
           const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
           const lastName = this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
@@ -407,7 +413,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.pagination.totalRecords = this.campaignReport.emailSentCount;
       this.pagination = this.pagerService.getPagedItems( this.pagination, this.campaignBarViews );
       console.log( this.pagination );
-      this.campaignViewsCountBarchart( names, views );
+      if( isShowBarChart ){
+       this.campaignViewsCountBarchart( names, views );
+      }
       this.referenceService.goToTop();
       this.loading = false;
   }
