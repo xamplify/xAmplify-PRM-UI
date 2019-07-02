@@ -27,7 +27,10 @@ export class EmailSpamCheckComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     const simpleChange: SimpleChange = changes.emailTemplate;
     this.currentEmailTemplate = simpleChange.currentValue;
-    this.listEmailSpamScoresByEmailTemplateId(this.currentEmailTemplate.id);
+    if(this.currentEmailTemplate.id){
+      this.listEmailSpamScoresByEmailTemplateId(this.currentEmailTemplate.id);
+    }
+    
   }
 
   listEmailSpamScoresByEmailTemplateId(emailTemplateId: number) {
