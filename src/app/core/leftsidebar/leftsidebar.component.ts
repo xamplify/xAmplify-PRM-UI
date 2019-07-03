@@ -91,24 +91,31 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.orgAdminRole ) > -1 ) {
                     this.authService.module.isOrgAdmin = true;
                 }
-                if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
+                if (roles.indexOf(this.roleName.companyPartnerRole) > -1)
+                {
                     this.pagination.pageIndex = 1;
                     this.pagination.maxResults = 10000;
-                    this.dashBoardService.loadVendorDetails( this.authService.getUserId(), this.pagination ).subscribe( response => {
-                        response.data.forEach( element => {
-                            this.refService.getOrgCampaignTypes( element.companyId ).subscribe( data => {
-                                if ( !this.enableLeadsByVendor ) {
-                                    this.enableLeadsByVendor = data.enableLeads;
+                    this.dashBoardService.loadVendorDetails(this.authService.getUserId(), this.pagination).subscribe(response =>
+                    {
+                        response.data.forEach(element =>
+                        {
+                            this.refService.getOrgCampaignTypes(element.companyId).subscribe(data =>
+                            {
+                                if (!this.authService.module.enableLeadsByVendor)
+                                {
+                                    this.authService.module.enableLeadsByVendor =data.enableLeads;
                                 }
-                                console.log( data )
-                            } );
-                        } );
-                    } )
+                                console.log(data)
+                            });
+                        });
+                    })
                     this.authService.module.isCompanyPartner = true;
                 }
-                if ( roles.indexOf( this.roleName.vendorRole ) > -1 ) {
+                if (roles.indexOf(this.roleName.vendorRole) > -1)
+                {
                     this.authService.module.isVendor = true;
                 }
+            
             }
         } catch ( error ) { console.log( error ); }
     }
