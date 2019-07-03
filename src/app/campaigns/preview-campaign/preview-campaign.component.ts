@@ -131,6 +131,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     saveAsCampaignInfo: any;
     isScheduledCampaignLaunched: boolean;
     isContactListLoader = false;
+    
+    downloadEmailLogList: any;
+    downloadDataList = [];
+    logListName = "";
+    isLoadingDownloadList = false;
+    downloadTypeName = "";
 
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
@@ -438,18 +444,20 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.emailActionTotalList(campaignId, actionType, this.pagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
-        this.totalEmailActionList(campaignId, actionType, this.pagination.totalRecords );
+       // this.totalEmailActionList(campaignId, actionType, this.pagination.totalRecords );
       },
       error => console.log(error),
       () => console.log('emailActionList() completed')  )
     }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
   }
+    
   totalEmailActionList(campaignId: number, actionType: string, totalRecords: number) {
     try{
      this.totalEmailActionListPagination.maxResults = totalRecords;
      this.campaignService.emailActionList(campaignId, actionType, this.totalEmailActionListPagination)
      .subscribe(data => {
       this.campaignReport.totalEmailLogs = data;
+      this.downloadEmailLogs();
       //this.emailActionTotalList(campaignId, actionType, this.pagination.totalRecords);
     },
     error => console.log(error),
@@ -527,7 +535,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             () => { });
     }
     showAnalyticsModal(paginationType:any){
-      // this.downloadTypeName = 'campaignViews';
+      this.downloadTypeName = paginationType;
        this.paginationType = paginationType;
        this.pagination = new Pagination();
        if(paginationType === 'Total Recipients' && this.campaignReport.emailSentCount>0){
@@ -562,6 +570,90 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     previewEmailTemplate(emailTemplate: EmailTemplate){
         this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
     }
+    
+    
+    downloadFuctionality(){
+        this.isLoadingDownloadList = true;
+        if(this.downloadTypeName === 'Total Recipients' && this.campaignReport.emailSentCount>0){
+            this.totalListOfCampaignViews(this.previewCampaignId, this.pagination.totalRecords);
+         } else if(this.downloadTypeName === 'Active Recipients' && this.campaignReport.emailOpenCount>0){
+            this.totalEmailActionList(this.previewCampaignId, 'open', this.pagination.totalRecords);
+         } else if(this.downloadTypeName === 'Clicked URL'  && this.campaignReport.emailClickedCount>0){
+            this.totalEmailActionList(this.previewCampaignId, 'click', this.pagination.totalRecords);
+         } else if(this.downloadTypeName === 'Views'  && this.campaignReport.usersWatchCount>0){
+            this.usersWatchTotalList(this.previewCampaignId, this.pagination.totalRecords);
+         }
+    }
+    
+
+       downloadEmailLogs() {
+           if (this.downloadTypeName === 'Total Recipients') {
+               this.logListName = 'Total_Recipients_Logs.csv';
+               this.downloadEmailLogList = this.totalCampaignViews;
+           }else if(this.downloadTypeName === 'Active Recipients' || this.downloadTypeName === 'Clicked URL'){
+              if(this.downloadTypeName === 'Active Recipients'){
+                this.logListName = 'Active_Recipients_Logs.csv';
+              }else {
+                  this.logListName = 'Clicked_URL_Logs.csv';
+              }
+               this.downloadEmailLogList = this.campaignReport.totalEmailLogs;
+           }else if(this.downloadTypeName === 'Views'){
+               this.logListName = 'Total_Views_Logs.csv';
+               this.downloadEmailLogList = this.campaignReport.totalWatchedList;
+           }
+
+           this.downloadDataList.length = 0;
+           let sentTime = new Date(this.campaign.launchTime);
+           for (let i = 0; i < this.downloadEmailLogList.length; i++) {
+               let date = new Date(this.downloadEmailLogList[i].time);
+               let startTime = new Date(this.downloadEmailLogList[i].startTime);
+               let endTime = new Date(this.downloadEmailLogList[i].endTime);
+               var object = {
+                   "Email Id": this.downloadEmailLogList[i].emailId,
+                   "First Name": this.downloadEmailLogList[i].firstName,
+                   "Last Name": this.downloadEmailLogList[i].lastName,
+               }
+               
+               if (this.downloadTypeName === 'Total Recipients') {
+                   object["Campaign Name"] = this.downloadEmailLogList[i].campaignName;
+                   let campaignSentTime = this.referenceService.formatAMPM(sentTime);
+                   object["Sent Time"] =  sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + campaignSentTime;
+               }
+               if (this.downloadTypeName === 'Active Recipients' || this.downloadTypeName === 'Clicked URL') {
+                   let hours = this.referenceService.formatAMPM(date);
+                   object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+                   
+                   if (this.downloadTypeName === 'Active Recipients'){
+                       object["Subject"] = this.downloadEmailLogList[i].subject;
+                   }
+                   
+                   if (this.downloadTypeName === 'Clicked URL'){
+                       if(this.downloadEmailLogList[i].url == null){
+                           object["Subject"] = 'Clicked on the video thumbnail';
+                       }else{
+                           object["URL"] = this.downloadEmailLogList[i].url;
+                       }
+                   }
+               }
+               
+               if (this.downloadTypeName === 'Views') {
+                   let hours1 = this.referenceService.formatAMPM(startTime);
+                   object["Start Duration"] = startTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours1;
+                   let hours2 = this.referenceService.formatAMPM(endTime);
+                   object["Stop Duration"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours2;
+                   object["Platform"] = this.downloadEmailLogList[i].os;
+                   object["City"] = this.downloadEmailLogList[i].city;
+                   object["State"] = this.downloadEmailLogList[i].state;
+                   object["Country"] = this.downloadEmailLogList[i].country;
+               }
+
+               this.downloadDataList.push(object);
+           }
+           this.referenceService.isDownloadCsvFile = true;
+           this.isLoadingDownloadList = false;
+       }
+    
+    
 
   listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
     this.campaignReport.emailLogs.forEach((element) => {
@@ -598,7 +690,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           this.pagination.totalRecords = this.campaignReport.usersWatchCount;
           this.campaignReport.usersWatchList = data.data;
           this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignReport.usersWatchList);
-          this.usersWatchTotalList(campaignId, this.pagination.totalRecords);
+          //this.usersWatchTotalList(campaignId, this.pagination.totalRecords);
           this.loading = false;
           this.referenceService.loading(this.httpRequestLoader, false);
         },
@@ -614,6 +706,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         .subscribe(
         data => {
           this.campaignReport.totalWatchedList = data.data;
+          this.downloadEmailLogs();
         },
         error => this.xtremandLogger.error(error),
         () => this.xtremandLogger.log('usersWatchTotalList method finished')
@@ -639,14 +732,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
          }
       }catch(error){ this.xtremandLogger.error('error'+error);}
     }
+    
     listCampaignViewsDataInsert(campaignviews: any, campaignId: number){
       this.campaignViews = campaignviews;
       this.pagination.totalRecords = this.campaignReport.emailSentCount;
       this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignViews);
       this.loading = false;
       this.referenceService.loading(this.httpRequestLoader, false);
-      this.totalListOfCampaignViews(campaignId, this.pagination.totalRecords);
+     // this.totalListOfCampaignViews(campaignId, this.pagination.totalRecords);
   }
+    
   totalListOfCampaignViews(campaignId: number, totalRecords: number) {
     try{
         this.totalViewsPatination.maxResults = totalRecords;
@@ -654,6 +749,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.campaignService.listCampaignInteractiveViews(this.totalViewsPatination)
          .subscribe(data => {
              this.totalCampaignViews = data;
+             this.downloadEmailLogs();
              },
          error => console.log(error),
          () => console.log('listCampaignInteractiveViews(): called') )
@@ -661,6 +757,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign)
          .subscribe(data => {
              this.totalCampaignViews = data.campaignviews;
+             this.downloadEmailLogs();
              },
           error => console.log(error),
           () => console.log('listCampaignViews(); called') )
