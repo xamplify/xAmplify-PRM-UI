@@ -49,19 +49,19 @@ export class DashboardStatsComponent implements OnInit {
     } else if (this.authenticationService.isAddedByVendor && !this.authenticationService.isSuperAdmin()) {
       // this.router.navigate(['/home/partners/manage']);
       this.router.navigate(["/home/team/add-team"]);
-    } else if (!this.authenticationService.isVendor() && !this.authenticationService.isSuperAdmin()) {
+    } else if (!this.authenticationService.isVendor() && !this.authenticationService.isSuperAdmin() && this.dashboardReport.totalContacts != 0) {
       this.router.navigate(["/home/contacts/manage"]);
     }
   }
 
   navigateToVendor(){
-    if (this.dashboardReport.vendorsCount > 0)
+    if (this.dashboardReport.vendorsCount != 0)
     { this.router.navigate(["/home/dashboard/vendors"]);   }
   }
   navigateToPartner() {
-    if ( !this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount > 0) {
+    if ( !this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount != 0) {
       this.router.navigate(["/home/partners/analytics"]);
-    } else if ((this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.isPartner()) && this.dashboardReport.vendorsCount > 0)
+    } else if ((this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.isPartner()) && this.dashboardReport.vendorsCount != 0)
     { this.xtremandLogger.log("go to vendors page");
       this.router.navigate(["/home/dashboard/vendors"]); // un comment for vendor page
     } else {
@@ -69,6 +69,36 @@ export class DashboardStatsComponent implements OnInit {
       // this.router.navigate(["/home/partners/analytics"]);
     }
   }
+  
+  goToSocialAccounts(){
+     if(this.dashboardReport.totalSocialAccounts != 0){
+       this.router.navigate(["/home/social/manage/all"]);
+    }
+  }
+  
+  goManageTemplates(){
+      if(this.dashboardReport.toalEmailTemplates != 0){
+        this.router.navigate(["/home/emailtemplates"]);
+     }
+   }
+  
+  goTeamMembers(){
+      if(this.dashboardReport.totalTeamMembers != 0){
+        this.router.navigate(["/home/team/add-team"]);
+     }
+   }
+  
+  goToManageCampaigns(){
+      if(this.dashboardReport.totalCreatedCampaigns != 0){
+        this.router.navigate(["/home/campaigns/manage"]);
+     }
+   }
+  
+  goToManageVideos(){
+      if(this.dashboardReport.totalUploadedvideos != 0){
+        this.router.navigate(["/home/videos/manage"]);
+     }
+   }
 
   ngOnInit() {
     this.dashboardReportsCount();
