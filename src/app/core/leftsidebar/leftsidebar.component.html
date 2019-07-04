@@ -35,14 +35,14 @@
         </ul>
       </li>
 
-      <li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo  && !authService.isOnlyPartner() && !authService.isPartnerTeamMember"  [ngClass]="{'active': location.path().includes('videos')}">
+      <!-- <li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo  && !authService.isOnlyPartner() && !authService.isPartnerTeamMember"  [ngClass]="{'active': location.path().includes('videos')}">
         <a  [routerLink]="['./videos/manage']">
         <i class="fa fa-video-camera"></i>
         <span class="title">Videos</span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-      </li>
+      </li> -->
 
       <li *ngIf="!authService.isPartnerTeamMember &&   authService.module.isVideo   && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos') || location.path().includes('content')}">
         <a href="javascript:;" (click)="openOrCloseTabs('videos')">
@@ -76,7 +76,7 @@
       </li>
       <!--&& !authService.isAddedByVendor-->
       
-      <li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner)"  [ngClass]="{'active': location.path().includes('contacts')}">
+      <li *ngIf="authService.module.isContact || (authService.module.isCompanyPartner && authService.module.isContact)"  [ngClass]="{'active': location.path().includes('contacts')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('contacts')">
         <i class="fa fa-list-ul"></i>
         <span class="title">Contacts</span>
@@ -136,7 +136,7 @@
         </li>
         </ul>
       </li>
-      <li *ngIf="authService.module.isCampaign || authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('campaigns')}">
+      <li *ngIf="authService.module.isCampaign || (authService.module.isCompanyPartner && authService.module.isCampaign)" [ngClass]="{'active': location.path().includes('campaigns')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('campaigns')" >
         <i class="fa fa-bullhorn"></i>
         <span class="title">Campaign </span>
@@ -145,7 +145,7 @@
         </a>
         <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
         <li>
-            <a *ngIf="isOnlyPartner || (authService.isPartnerTeamMember&&authService.module.isCampaign) || authService.module.isCompanyPartner "  [routerLink] ="['./campaigns/partner/all']" >
+            <a *ngIf="isOnlyPartner || (authService.isPartnerTeamMember&&authService.module.isCampaign) || (authService.module.isCompanyPartner && authService.module.isCampaign)"  [routerLink] ="['./campaigns/partner/all']" >
             <i class="fa fa-bullhorn"></i>
             <span class="title">Redistribute Campaign</span>
             </a>

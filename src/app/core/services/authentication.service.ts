@@ -40,6 +40,7 @@ export class AuthenticationService {
     isPartnerTeamMember = false;
     selectedVendorId: number;
     venorMyProfileReport: any;
+    loggedInUserRole:string;
     constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
@@ -177,6 +178,7 @@ export class AuthenticationService {
     }
 
     isOnlyPartner(){
+        /*
       try{
         const roleNames = this.getRoles();
             if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
@@ -188,6 +190,8 @@ export class AuthenticationService {
       }catch(error){
         this.xtremandLogger.log('error'+error);
       }
+    */
+      return this.loggedInUserRole=="Partner" && this.isPartnerTeamMember==false;
     }
 
     isSuperAdmin(){
@@ -311,6 +315,7 @@ export class AuthenticationService {
         module.isVendor = false;
         this.isAddedByVendor = false;
         this.isPartnerTeamMember = false;
+        this.loggedInUserRole = "";
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {

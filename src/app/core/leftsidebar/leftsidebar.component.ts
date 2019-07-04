@@ -6,6 +6,8 @@ import { Roles } from '../../core/models/roles';
 import { ReferenceService } from '../../core/services/reference.service';
 import { DashboardService } from '../../dashboard/dashboard.service';
 import { Pagination } from '../models/pagination';
+import { UserService } from '../services/user.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var window: any;
 
 @Component( {
@@ -29,7 +31,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     changeTemplateCss = false;
     pagination = new Pagination();
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-        , private dashBoardService: DashboardService ) {
+        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger ) {
         console.log( authService.getUserId() );
         this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
             this.refService.getOrgCampaignTypes( response ).subscribe( data => {
@@ -120,7 +122,21 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         } catch ( error ) { console.log( error ); }
     }
     ngOnInit() {
-        this.isOnlyPartner = this.authService.isOnlyPartner();
+      //  this.isOnlyPartner = this.authService.isOnlyPartner();
+        this.userService.getRoles(this.authService.getUserId())
+        .subscribe(
+        response => {
+             if(response.statusCode==200){
+                this.authService.loggedInUserRole = response.data.role;
+                this.authService.isPartnerTeamMember = response.data.partnerTeamMember;
+                this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
+             }else{
+                 this.authService.loggedInUserRole = 'User';
+             }
+        },
+        error => this.logger.errorPage(error),
+        () => this.logger.log('Finished')
+        );
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false ); }

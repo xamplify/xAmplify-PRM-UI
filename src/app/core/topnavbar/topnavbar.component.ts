@@ -157,17 +157,21 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
 
 
-  isAddedByPartner(){
-    if(this.authenticationService.showRoles()=="Team Member"  || this.authenticationService.showRoles()=="Partner & Team Member" ){
-      this.userService.isAddedByOnlyPartner(this.authenticationService.getUserId())
+  
+  getRoles(){
+      this.userService.getRoles(this.authenticationService.getUserId())
       .subscribe(
-      data => {
-           this.authenticationService.isPartnerTeamMember=data.onlyPartner;
+      response => {
+           if(response.statusCode==200){
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+           }else{
+               this.authenticationService.loggedInUserRole = 'User';
+           }
       },
-      error => this.logger.log(error),
+      error => this.logger.errorPage(error),
       () => this.logger.log('Finished')
       );
-    }
   }
 
   onRightClick(event){
@@ -179,8 +183,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   ngOnInit() {
     try{
      this.getUnreadNotificationsCount();
+     this.getRoles();
      this.isAddedByVendor();
-     this.isAddedByPartner();
     }catch(error) {this.logger.error('error'+error); }
   }
   lockScreen(){
