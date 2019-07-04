@@ -384,7 +384,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
+      if(this.router.url!="/login" && isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
        let isDefaultTemplate = this.emailTemplateService.emailTemplate.defaultTemplate;
        let isUserDefined = this.emailTemplateService.emailTemplate.userDefined;
        let isDraft = this.emailTemplateService.emailTemplate.draft;
