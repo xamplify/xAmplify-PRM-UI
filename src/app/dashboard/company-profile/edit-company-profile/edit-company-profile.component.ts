@@ -533,7 +533,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
               },
               error => { this.logger.errorPage(error) },
               () => { this.logger.info("Completed getCompanyProfileByIdNgOnDestroy()");
-              if(!this.isUpdateChaged && this.authenticationService.user.hasCompany && this.router.url!="/" && this.isFormUpdated()) {
+              if(!this.isUpdateChaged && this.authenticationService.user.hasCompany && this.router.url!="/login" && this.isFormUpdated()) {
                 const self = this;
                 swal( {
                     title: 'Are you sure?',

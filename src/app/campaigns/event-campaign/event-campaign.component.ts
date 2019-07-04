@@ -1991,7 +1991,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
-    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
+    if(!this.hasInternalError && this.router.url!=="/login" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
      if(!this.isReloaded){
       if(!this.isLaunched){
           /*if(this.isAdd){

@@ -2216,7 +2216,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         swal.close();
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
             this.model.contactListName = "";
 
             let self = this;

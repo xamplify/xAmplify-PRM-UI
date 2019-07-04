@@ -2109,7 +2109,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;
-        if(!this.hasInternalError && this.router.url!="/"){
+        if(!this.hasInternalError && this.router.url!="/login"){
             if(!this.isReloaded){
                 if(!this.isLaunched){
                     // if(this.isAdd){

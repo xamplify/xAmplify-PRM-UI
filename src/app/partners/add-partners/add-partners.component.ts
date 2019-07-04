@@ -2185,7 +2185,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
 
-        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
+        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
            let self = this;
             swal( {
                 title: 'Are you sure?',

@@ -1757,8 +1757,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     console.log( "MangeContacts deleteContactList success : " + data );
                     $( '#contactListDiv_' + this.selectedContactListId ).remove();
                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-                    this.refresh();
                     this.contactService.deleteUserSucessMessage = true;
+                    this.refresh();
                 },
                 ( error: any ) => {
                     //let body: string = error['_body'];
@@ -2732,7 +2732,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         $( '#filterModal' ).modal( 'hide' );
         $('#saveAsEditModal').modal('hide');
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/login' && !this.isDuplicateEmailId) {
             let self = this;
              swal( {
                  title: 'Are you sure?',
