@@ -67,7 +67,7 @@
              </ng-template>
 					</div>
 					<div class="desc">
-						<span *ngIf="this.authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember; else orgadmin">Vendors</span>
+						<span *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember; else orgadmin">Vendors</span>
 						<ng-template #orgadmin><span>Partner Analytics</span></ng-template>
 					</div>
         </div>

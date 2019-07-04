@@ -59,14 +59,13 @@ export class DashboardStatsComponent implements OnInit {
     { this.router.navigate(["/home/dashboard/vendors"]);   }
   }
   navigateToPartner() {
-    if ( !this.authenticationService.isOnlyPartner() && this.dashboardReport.totalCompanyPartnersCount != 0) {
-      this.router.navigate(["/home/partners/analytics"]);
-    } else if ((this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember || this.authenticationService.isPartner()) && this.dashboardReport.vendorsCount != 0)
-    { this.xtremandLogger.log("go to vendors page");
-      this.router.navigate(["/home/dashboard/vendors"]); // un comment for vendor page
+    if ( (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) && this.dashboardReport.vendorsCount != 0) {
+        this.router.navigate(["/home/dashboard/vendors"]);
+    } else if ( this.dashboardReport.totalCompanyPartnersCount != 0)
+    { this.xtremandLogger.log("go to Partner page");
+    this.router.navigate(["/home/partners/analytics"]);
     } else {
-      this.xtremandLogger.log("go to prtner page");
-      // this.router.navigate(["/home/partners/analytics"]);
+      this.xtremandLogger.log("Do Nothing..");
     }
   }
   
