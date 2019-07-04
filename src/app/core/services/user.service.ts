@@ -170,10 +170,10 @@ export class UserService {
             .catch( this.handleError );
     }
 
-    isAddedByOnlyPartner( userId: number ) {
-        return this.http.get( this.URL+ "admin/getSuperiorRole/" + userId + "?access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    getRoles(userId:number){
+        return this.http.get( this.URL+ "admin/getRolesByUserId/" + userId + "?access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
     }
 
 
@@ -214,7 +214,6 @@ export class UserService {
     }
     private extractData( res: Response ) {
         const body = res.json();
-        console.log(body);
         // return body || {};
         return body;
     }

@@ -14,10 +14,8 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 export class DashboardStatsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
   isAdmin: boolean;
-  isTeamMember = false;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
     public authenticationService: AuthenticationService) {
-    if(this.authenticationService.showRoles() === 'Team Member') { this.isTeamMember = true;}
   }
 
   dashboardReportsCount() {
