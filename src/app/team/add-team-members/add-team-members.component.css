@@ -134,8 +134,9 @@ hr {
 .file-upload{
 	position: absolute;
     top: 0;
-    right: 0;
-    /* margin: 0; */
+    width: 162px;
+    height: 38px;
+    right: 15px;
     opacity: 0;
     -ms-filter: 'alpha(opacity=0)';
     font-size: 200px;
