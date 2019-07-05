@@ -38,11 +38,11 @@
     <div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
       <section class="clearfix">
       <div class="col-xs-6 col-sm-2 hidden-xs">
-          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
+          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;"  *ngIf="!isAddTeamMember && !isUploadCsv">
             <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
             <input type="file" title="" class="file-upload" #fileImportInput  name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
           </div>
-          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="overflow: hidden;position: relative;cursor: not-allowed;" disabled="disabled"
+          <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;cursor: not-allowed;" disabled="disabled"
             *ngIf="isAddTeamMember  || isUploadCsv">
             <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
           </div>
