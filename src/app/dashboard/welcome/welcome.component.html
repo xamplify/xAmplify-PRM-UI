@@ -159,7 +159,8 @@
          </div>
        </div>
        <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign"></div>
-       <div class="flex" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| authenticationService.isOrgAdmin()">
+       <div class="flex" *ngIf="  authenticationService.loggedInUserRole!='Team Member' && (authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| 
+       								authenticationService.isOrgAdmin())">
            <div class="col-sm-6 col-xs-12 block image-block">
              <img src="../../../assets/images/welcome/img-members.png" style="max-width: 100%;height: 202px;margin-top: -10px;">
            </div>
