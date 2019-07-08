@@ -227,3 +227,7 @@ a:hover{ text-decoration:none}
     opacity: 1;
   }
 }
+.star {
+	color: red !important;
+	font-weight: 600;
+}

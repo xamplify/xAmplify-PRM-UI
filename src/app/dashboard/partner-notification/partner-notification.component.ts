@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { ReferenceService } from '../../core/services/reference.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 
@@ -12,9 +13,12 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 export class PartnerNotificationComponent implements OnInit {
   partnerCampaignsCountMap: any;
   loggedInUserId: number;
-  constructor( public authenticationService: AuthenticationService,
+  hasRedistributeAccess:boolean;
+  constructor( public authenticationService: AuthenticationService,public referenceService:ReferenceService,
                private campaignService: CampaignService,
                private xtremandLogger: XtremandLogger  ) { }
+  
+  
     getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
         this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)
             .subscribe(
@@ -25,11 +29,30 @@ export class PartnerNotificationComponent implements OnInit {
                 () => this.xtremandLogger.info('Finished listCampaign()')
             );
     }
+    
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-      if (this.authenticationService.isPartner()) {
-          this.getPartnerCampaignsCountMapGroupByCampaignType(this.loggedInUserId);
-      }
+    if(this.authenticationService.showRoles()=="Team Member" && this.authenticationService.module.isCampaign){
+        this.campaignService.hasRedistributeAccess(this.loggedInUserId)
+        .subscribe(
+            data => {
+                let response = data.data;
+                if(response.hasAccess){
+                    localStorage.setItem('superiorId',response.superiorId);
+                    this.callRedistributedCampaignsDiv(response.superiorId);
+                }
+            },
+            error => { },
+            () => this.xtremandLogger.info('Finished listCampaign()')
+        );
+    }else if(this.authenticationService.isPartner()){
+        this.callRedistributedCampaignsDiv(this.loggedInUserId);
+    }
+  }
+  
+  callRedistributedCampaignsDiv(superiorId:number){
+      this.hasRedistributeAccess = true;
+      this.getPartnerCampaignsCountMapGroupByCampaignType(superiorId);
   }
 
 }

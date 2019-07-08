@@ -191,9 +191,10 @@
           <h4 class="pull-left m10 f-w-600 text-primary">Campaigns</h4>
           <a data-toggle="tooltip" title="Customize campaign report" data-placement="left" style="float: right;">
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
-             *ngIf="hasCampaignRole ||authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
+             *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember) ||authenticationService.isOrgAdmin() || authenticationService.isPartner()
+              || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
-          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="hasCampaignRole && authenticationService.user.hasCompany">Create Campaign</a>
+          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember)  && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
@@ -479,7 +480,7 @@
               <section *ngFor="let socialConnection of socialConnections">
                 <!--  [class.disabled]="!hasSocialStatusRole?true:null" -->
                 <div class="col-xs-12 col-sm-6 col-md-4 p10">
-                  <div class="dashboard-stat2 m0">
+                  <div class="dashboard-stat2 m0" style="height: 130px;">
                     <div class="display">
                       <div class="col-xs-3 p0">
                         <div class="profile-img" [ngStyle]="{'background-image': 'url(' + socialConnection.profileImage + ')'}">

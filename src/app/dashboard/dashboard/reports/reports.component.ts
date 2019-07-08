@@ -254,12 +254,13 @@ export class ReportsComponent implements OnInit {
     this.downloadDataList.length = 0;
     for (let i = 0; i < this.downloadCsvList.length; i++) {
       const date = new Date(this.downloadCsvList[i].date);
+      let hours = this.referenceService.formatAMPM(date);
       const object = {
         'First Name': this.downloadCsvList[i].firstName,
         'Last Name': this.downloadCsvList[i].lastName,
         'Email Id': this.downloadCsvList[i].emailId,
         'Video Title': this.downloadCsvList[i].videoTitle,
-        'Date and Time': date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds()
+        'Date and Time': date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours
       }
       
       this.downloadDataList.push(object);

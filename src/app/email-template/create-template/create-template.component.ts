@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
 import { User } from '../../core/models/user';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { EmailTemplate} from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -20,6 +21,7 @@ declare var BeePlugin,swal,$:any;
 })
 export class CreateTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     loggedInUserId = 0;
     companyProfileImages:string[]=[];
     emailTemplate:EmailTemplate = new EmailTemplate();
@@ -201,8 +203,18 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         { name: 'Last Name', value: '{{lastName}}' },
         { name: 'Full Name', value: '{{fullName}}' },
         { name: 'Email Id', value: '{{emailId}}' },
-        { name: 'Company Name', value: '{{companyName}}' }];
+        { name: 'Company Name', value: '{{companyName}}' }
+        ];
 
+        mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
+        mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
+        mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+        mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
+        mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
+        mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
+        mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
+        mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
+        
         if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
             mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );
@@ -215,7 +227,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' } );
             mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' } );
         }
-
+        
+        
+       
         if ( refService.defaultPlayerSettings != null ) {
             var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
             var beeConfig = {
@@ -337,6 +351,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           emailTemplate.name = $.trim($('#templateNameId').val());
       }
       emailTemplate.id = emailTemplateService.emailTemplate.id;
+      emailTemplate.user = new User();
+      emailTemplate.user.userId = this.loggedInUserId;
       this.updateCompanyLogo(emailTemplate);
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
@@ -368,7 +384,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
+      if(this.router.url!="/login" && isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
        let isDefaultTemplate = this.emailTemplateService.emailTemplate.defaultTemplate;
        let isUserDefined = this.emailTemplateService.emailTemplate.userDefined;
        let isDraft = this.emailTemplateService.emailTemplate.draft;

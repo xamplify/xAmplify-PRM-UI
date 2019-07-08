@@ -124,9 +124,9 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    contactListAssociatedCampaigns(contactListId: number ){
+    contactListAssociatedCampaigns(contactListId: number, pagination: Pagination ){
         this.logger.info( "ContactService ContactListAssociatedCampaigns():  contactListID=" + contactListId );
-        return this._http.get( this.authenticationService.REST_URL + "campaign/launched-campaigns/" + contactListId + "?access_token=" + this.authenticationService.access_token )
+        return this._http.post( this.authenticationService.REST_URL + "campaign/launched-campaigns/" + contactListId + "?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -179,7 +179,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    updateContactList( contactListId: number, users: Array<User> ): Observable<User[]> {
+    updateContactList( contactListId: number, users: Array<User> ): Observable<any> {
         var requestoptions = new RequestOptions( {
             body: users,
         })

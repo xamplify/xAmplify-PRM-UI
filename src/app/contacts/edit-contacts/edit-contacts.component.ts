@@ -146,6 +146,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     newUsersEmails = [];
     newUserDetails = [];
     teamMemberPagination: Pagination = new Pagination();
+    contactAssociatedCampaignPagination: Pagination = new Pagination();
+
     teamMembersList = [];
 /*    orgAdminsList = [];*/
     editingEmailId = '';
@@ -278,7 +280,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     readFiles( files: any, index = 0 ) {
         try {
-            if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+            if ( this.fileUtil.isCSVFile(files[0]) ) {
                 this.selectedAddContactsOption = 2;
                 this.isCsvFileLsitLoading = true;
                 this.isShowUsers = false;
@@ -560,10 +562,24 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                             } else {
                                 this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
                             }
+                            
+                            if(data.statusCode == 409){
+                                let emailIds = data.emailAddresses;
+                                let allEmailIds = "";
+                                $.each(emailIds,function(index,emailId){
+                                allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                });
+                                let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                this.customResponse = new CustomResponse( 'ERROR', message, true );
+                            }
+                            
                             this.checkingLoadContactsCount = true;
                             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                             this.cancelContacts();
-                            this.getContactsAssocialteCampaigns();
+                            if(data.statusCode != 409){
+                                this.getContactsAssocialteCampaigns();
+                              }
+                            
                         },
                         ( error: any ) => {
                             this.loading = false;
@@ -720,9 +736,21 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     this.filePrevew = false;
                                     this.isShowUsers = true;
                                     this.removeCsv();
+                                    if(data.statusCode == 409){
+                                        let emailIds = data.emailAddresses;
+                                        let allEmailIds = "";
+                                        $.each(emailIds,function(index,emailId){
+                                        allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                        });
+                                        let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                        this.customResponse = new CustomResponse( 'ERROR', message, true );
+                                    }
                                     this.checkingLoadContactsCount = true;
                                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                                    this.getContactsAssocialteCampaigns();
+                                    if(data.statusCode != 409){
+                                        this.getContactsAssocialteCampaigns();
+                                      }
+                                    
                                 },
                                 ( error: any ) => {
                                     this.loading = false;
@@ -731,7 +759,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
                                         this.customResponse = new CustomResponse( 'ERROR', error._body, true );
 
-                                    } else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
+                                    }else if(JSON.parse(error._body).message.includes("email addresses in your contact list that aren't formatted properly")){
                                         this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body).message, true );
                                     }else{
                                        this.xtremandLogger.errorPage( error );
@@ -919,7 +947,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.xtremandLogger.info( "allTextLines: " + allTextLines );
         this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
-        for ( var i = 0; i < allTextLines.length; i++ ) {
+        if(this.clipboardTextareaText === ""){
+            $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>" );  
+            isValidData = false;
+        }
+        
+        if(this.clipboardTextareaText != ""){
+         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
             if ( !this.validateEmailAddress( data[4] ) ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
@@ -927,6 +961,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             }
             this.users.length = 0;
             this.pagination.pagedItems.length = 0;
+         }
         }
         if ( isValidData ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -1336,7 +1371,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                                 });
                                 this.clickBoard = false;
-
                                 if ( !this.isPartner ) {
                                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true );
                                 } else {
@@ -1347,9 +1381,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 $( "button#upload_csv" ).prop( 'disabled', false );
                                 this.users.length = 0;
                                 this.cancelContacts();
+                                
+                                if(data.statusCode == 409){
+                                    let emailIds = data.emailAddresses;
+                                    let allEmailIds = "";
+                                    $.each(emailIds,function(index,emailId){
+                                    allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                    });
+                                    let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                    this.customResponse = new CustomResponse( 'ERROR', message, true );
+                                }
+
                                 this.checkingLoadContactsCount = true;
                                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                                this.getContactsAssocialteCampaigns();
+                                if(data.statusCode != 409){
+                                    this.getContactsAssocialteCampaigns();
+                                  }
                             },
                             ( error: any ) => {
                                 this.loading = false;
@@ -1712,8 +1759,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     console.log( "MangeContacts deleteContactList success : " + data );
                     $( '#contactListDiv_' + this.selectedContactListId ).remove();
                     this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-                    this.refresh();
                     this.contactService.deleteUserSucessMessage = true;
+                    this.refresh();
                 },
                 ( error: any ) => {
                     //let body: string = error['_body'];
@@ -2518,10 +2565,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     getContactsAssocialteCampaigns() {
         try {
-            this.contactService.contactListAssociatedCampaigns( this.selectedContactListId )
+            this.contactService.contactListAssociatedCampaigns( this.selectedContactListId, this.contactAssociatedCampaignPagination)
                 .subscribe(
                 data => {
-                    this.contactsByType.contactListAssociatedCampaigns = data;
+                    this.contactsByType.contactListAssociatedCampaigns = data.data;
                     if ( this.contactsByType.contactListAssociatedCampaigns ) {
                         this.openCampaignModal = true;
                     }
@@ -2539,7 +2586,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     listTeamMembers() {
         try {
             try {
-                this.teamMemberService.listTeamMemberEmailIds()
+                this.teamMemberService.listOrganizationTeamMembers(this.loggedInUserId)
                     .subscribe(
                     data => {
                         console.log( data );
@@ -2687,7 +2734,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         $( '#filterModal' ).modal( 'hide' );
         $('#saveAsEditModal').modal('hide');
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/login' && !this.isDuplicateEmailId) {
             let self = this;
              swal( {
                  title: 'Are you sure?',

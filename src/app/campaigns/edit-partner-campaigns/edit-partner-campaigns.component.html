@@ -72,17 +72,16 @@
                   <font style="color: red">
                     <b> * </b>
                   </font>
-                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOrgAdminAndPartner || isVendorAndPartner">
+                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()"><!-- *ngIf="isOrgAdminAndPartner || isVendorAndPartner"-->
                     <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
-						{{teamMember.emailId}}
-					</option>
+						          {{teamMember.emailId}}
+					        </option>
                   </select>
-
-                   <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
+                   <!---<select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
                     <option  [ngValue]="campaign.email" >
-						{{campaign.email}}
-					</option>
-                  </select>
+						        {{campaign.email}}
+					          </option>
+                  </select>--->
                 </div>
                 <div class="form-group" [attr.class]="preHeaderDivClass">
                   <label for="exampleInputPassword1">Pre header</label>
@@ -441,7 +440,7 @@
 		                                    <div class="item__actions">
 		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 		                                        data-toggle="tooltip" data-placement="top"
-		                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(reply.emailTemplate)">
+		                                        title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
 		                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
 		                                       </a>
 		                                      </span>
@@ -572,7 +571,7 @@
 		                                    <div class="item__actions">
 		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 		                                        data-toggle="tooltip" data-placement="top"
-		                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(url.emailTemplate)">
+		                                        title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
 		                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
 		                                       </a>
 		                                      </span>

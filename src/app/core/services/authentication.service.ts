@@ -37,8 +37,10 @@ export class AuthenticationService {
     module:Module = new Module();
     roleName: Roles= new Roles();
     isAddedByVendor = false;
+    isPartnerTeamMember = false;
     selectedVendorId: number;
     venorMyProfileReport: any;
+    loggedInUserRole:string;
     constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
@@ -101,6 +103,8 @@ export class AuthenticationService {
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }
+
+ 
     getUserId(): number {
         try{
         let userId;
@@ -140,20 +144,32 @@ export class AuthenticationService {
     showRoles():string{
       try{
         const roleNames = this.getRoles();
-
         /***********Org Admin**************/
         if(roleNames){
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
         const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
+        const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 && 
+        (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);
         if(roleNames.length===1){   return "User";
-        }else{
-            if(isOrgAdmin&&isPartner){ return "Orgadmin & Partner";
-            }else if(isVendor&&isPartner){ return "Vendor & Partner";
-            }else if(isOrgAdmin){  return "Orgadmin";
-            }else if(isVendor){ return "Vendor";
-            }else if(isPartner){  return "Partner";
-            }else{  return "Team Member"; }
+        } else {
+            if ( isOrgAdmin && isPartner ) {
+                return "Orgadmin & Partner";
+            } else if ( isVendor && isPartner ) {
+                return "Vendor & Partner";
+            } else if ( isOrgAdmin ) {
+                return "Orgadmin";
+            } else if ( isVendor ) {
+                return "Vendor";
+            } else if ( isPartnerAndTeamMember ) {
+                return "Partner & Team Member";
+            } else if (this.isOnlyPartner() ) {
+                return "Partner";
+            } else if(roleNames.length>2 && isPartner) {
+                return "Team Member & Partner";
+            }else{
+                return "Team Member";
+            }
         }
       }
       }catch(error){
@@ -162,16 +178,20 @@ export class AuthenticationService {
     }
 
     isOnlyPartner(){
+        /*
       try{
         const roleNames = this.getRoles();
-        if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-            return true;
-        }else{
-            return false;
-        }
+            if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+                return true;
+            }else{
+                return false;
+            }
+        
       }catch(error){
         this.xtremandLogger.log('error'+error);
       }
+    */
+      return this.loggedInUserRole=="Partner" && this.isPartnerTeamMember==false;
     }
 
     isSuperAdmin(){
@@ -278,6 +298,7 @@ export class AuthenticationService {
         this.refresh_token = null;
         localStorage.removeItem('currentUser');
         localStorage.removeItem("campaignRouter");
+        localStorage.removeItem("superiorId");
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
         const module = this.module;
@@ -293,6 +314,8 @@ export class AuthenticationService {
         module.hasSocialStatusRole = false;
         module.isVendor = false;
         this.isAddedByVendor = false;
+        this.isPartnerTeamMember = false;
+        this.loggedInUserRole = "";
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {

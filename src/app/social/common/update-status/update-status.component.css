@@ -21,8 +21,7 @@ video {
 .update-status-content{
 	position: relative;
     border: 1px solid #ccc;
-    padding: 10px 10px 25px 10px;
-    margin-bottom: 10px;
+    padding: 15px;
 	float: right;
 }
 
@@ -32,15 +31,7 @@ textarea {
 	border: none;
 	padding: 0;
 }
-.add-video {
-	left: 35px;
-}
-.add-photos, .add-video {
-	position: absolute;
-	cursor: pointer;
-	margin: 0;
-}
-.add-photos, .add-video i {color: #357ebd;}
+
 .inline-block {
 	display: inline-block
 }
@@ -437,11 +428,6 @@ body {
 	cursor: hand;
 }
 
-h4 {
-	margin: 0.5em;
-	font-weight: 500;
-}
-
 .profile-picture {
 	height: 125px;
 	width: 125px;
@@ -524,4 +510,11 @@ h4 {
     margin: 0;
     font-weight: 400;
     font-size: 11px;
+}
+.actions-group i {color: #357ebd; margin-right: 7px;cursor: pointer;}
+.fa.fa-rss-square{color: orange !important}
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+border:none;
+outline:none;
 }

@@ -347,9 +347,9 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     }
 
 
-    showTemplateById(id:number,index:number){
-        if(id!=undefined){
-           this.emailTemplateService.getById(id)
+    showTemplateById(template: any){
+        if(template.id!=undefined){
+           this.emailTemplateService.getById(template.id)
            .subscribe(
                (data:any) => {
                 if(this.refService.companyProfileImage!=undefined){
@@ -364,11 +364,11 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
                },
                () => this.logger.info("Got Email Template")
            );
-       }else if(index==14 || index==1 || index==16 || index==24 || index==22){
+       }else if(template.name === 'Upload Regular Template'){
            //This is normal template
            this.emailTemplateService.isRegularUpload = true;
            this.router.navigate(["/home/emailtemplates/upload"]);
-       }else if(index==13 || index==0 || index==15 || index==23 || index==21){
+       }else if(template.name === 'Upload Video Template'){
            //This is video template
            this.emailTemplateService.isRegularUpload = false;
            this.router.navigate(["/home/emailtemplates/upload"]);

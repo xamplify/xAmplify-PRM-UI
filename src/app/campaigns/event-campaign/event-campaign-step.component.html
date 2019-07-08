@@ -38,7 +38,7 @@ a.disabled {
 	<div class="page-bar" [hidden]="loader">
 		<div class="container"
 			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
-			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This event has been concluded.</div>
+			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
 			<div *ngIf="!isPreviewEvent && !reDistributeEvent && !reDistributeEventManage && !isEventUpdate" style="display: flex; padding-top: 1em;">
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
@@ -185,18 +185,55 @@ a.disabled {
 								</span>
 							</div>
 						</div>
-						<div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-              <label class="control-label col-sm-3">Co-Branding Logo</label>
-              <div class="col-sm-9">
-                <switch class="pull-left" [status]="eventCampaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-                  [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
-                  [disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" (statusChange)="setCoBrandingLogo($event)">
-                </switch>
-                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Enable your Partner's logo to be displayed in redistributed campaigns">
-                  <i class="fa fa-question-circle" style="padding: 8px;"></i>
-                </span>
-              </div>
+						<div class="form-group"
+							*ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
+							<label class="control-label col-sm-3">Co-Branding Logo</label>
+							<div class="col-sm-9">
+								<switch class="pull-left"
+									[status]="eventCampaign.enableCoBrandingLogo"
+									[onText]="callActionSwitch.onTextValue"
+									[offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.onDefaultColorSwitch"
+									[size]="callActionSwitch.size"
+									[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate"
+									(statusChange)="setCoBrandingLogo($event)"> </switch>
+								<span style="cursor: pointer; color: #54a7e9;"
+									data-toggle="tooltip" data-placement="top"
+									title="Enable your Partner's logo to be displayed in redistributed campaigns">
+									<i class="fa fa-question-circle" style="padding: 8px;"></i>
+								</span>
+							</div>
 						</div>
+						
+						
+						
+						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads">
+												<label class="control-label col-sm-3">Push Leads To Marketo</label>
+												<div class="col-sm-9">
+													<div class="email-options-checkbox-group email-options-notify">
+														<div class="email-options-checkbox clearfix">
+															<div class="col-sm-1 ui-switch-custom-div">
+															 <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
+															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="falseAction" *ngIf="!eventCampaign.pushToMarketo">
+																</switch>
+																<switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="trueAction" *ngIf="eventCampaign.pushToMarketo">
+																</switch>
+															</div>
+																<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -12px">
+																<span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into Marketo">
+																		<i class="fa fa-question-circle" style="font-size: 18px;float: left;margin: -18px 0 0 0px;"></i>
+																	</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+						
+						
+						
 						<div class="form-group">
 							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
 								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
@@ -583,7 +620,7 @@ a.disabled {
                 <div style="padding-top: 12px;padding-right: 16px;">
                 <div class="input-icon pull-right">
                           <input type="text" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                          placeholder="Search for a list" (keypress)="eventHandlerContact($event.keyCode)">
+                          placeholder="Search for a list" (keypress)="eventHandlerContact($event.keyCode)" style="padding-left:10px !important">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:5px;" *ngIf="contactSearchInput" (click)="contactSearchInput='';"></button>
                           <button type="submit" class="search-box-item-click" style="padding:4px !important;" (click)="searchContactList()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                         </div>
@@ -1195,6 +1232,7 @@ a.disabled {
                 <button type="submit" *ngIf="checkLaunchOption=='NOW'" class="btn green" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'NOW')">Launch</button>
                 <button type="submit" *ngIf="checkLaunchOption=='SCHEDULE'" class="btn green" style="width: 10em;" (click)="scheduleCampaign()">Schedule</button>
                 <button type="submit" *ngIf="checkLaunchOption=='SAVE'"  class="btn green" style="width: 10em;" (click)="createEventCampaign(eventCampaign, 'SAVE')">Save</button>
+                <button type="button" class="btn green" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
               </div>
             </div>
            <!--  ****Test email template**** -->
@@ -1273,3 +1311,97 @@ a.disabled {
       </div>
     </div>
   </div>
+  
+<!--      Span check modal popup    -->
+  
+  	<div class="modal right fade" id="email_spam_check" *ngIf="eventCampaign.emailTemplate">
+		<div class="modal-dialog modal-lg modal-template" style="width: 65% !important;right:0">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+					<h4 class="modal-title">Email Spam Check</h4>
+				</div>
+				<div class="modal-body">
+					<app-email-spam-check *ngIf="eventCampaign.emailTemplate" [emailTemplate] = "eventCampaign.emailTemplate"></app-email-spam-check>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<!--   -------Marketo authentication------	 -->
+
+<div class="modal right fade" id="templateRetrieve" tabindex="-1"
+	role="dialog" aria-labelledby="templateRetrieve" data-keyboard="false"
+	data-backdrop="static">
+	<div class="modal-dialog template-modal" role="document"
+		style="width: 50%">
+		<ngx-loading [show]="loadingMarketo"
+			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="closeMarketoModal()"
+					id="closeButton"><i class="fa fa-times"></i></a>
+				<h4 class="modal-title" id="templateRetrieve">Marketo
+					integration with xAmplify</h4>
+			</div>
+			<div>
+				<img src="assets/images/crm/Mark-amplify.png"
+					style="margin: 30px 30% 0; width: 50%; text-align: center;">
+			</div>
+			<div class="modal-body" style="padding: 39px;">
+				<form class="form-horizontal" autocomplete="off">
+					<div *ngIf="templateError" class="alert alert-danger">
+						<span>{{templateError}}</span>
+					</div>
+					<div *ngIf="templateSuccessMsg" class="alert alert-success">
+						<span>{{templateSuccessMsg}}</span>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="email">Client
+							Id:</label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control" id="email"
+								placeholder="Client Id" autocomplete="nope"
+								[(ngModel)]="clientId" [ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('email')">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="pwd">Secret Id:</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" id="pwd"
+								placeholder="Secret Id" autocomplete="new-password"
+								[(ngModel)]="secretId" [ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('pwd')">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-sm-3" for="instance">Marketo
+							Instance:</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="instance"
+								placeholder="Marketo Instance" [(ngModel)]="marketoInstance"
+								[ngModelOptions]="{standalone: true}"
+								(input)="validateModelForm('instance')">
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<div style="text-align: right;">
+					<button class="btn btn-default" (click)="clearValues()">Clear</button>
+
+					<button [attr.class]="marketoButtonClass"
+						[disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance"
+						(click)="submitMarketoCredentials()">Submit</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

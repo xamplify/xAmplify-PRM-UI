@@ -597,9 +597,12 @@
 										<div class="caption">
 											<i class="fa fa-edit" style="font-size: 18px"></i> <span
 												class="capitalize"
-												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
+												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
+												{{checkingContactTypeName}}s List</span>
+												<span class="capitalize"
+												*ngIf="contactsByType.selectedCategory =='active'">Registered
 												{{checkingContactTypeName}}s List</span> <span class="capitalize"
 												*ngIf="contactsByType.selectedCategory =='invalid'">Undeliverable
 												{{checkingContactTypeName}}s List</span>
@@ -694,17 +697,17 @@
 														<span *ngIf="!contact.emailCategory"><b>-</b></span>
 														</td>
 
-														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
-														<span *ngIf="contact.vertical?.length>17">...</span>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+														<span *ngIf="contact.vertical?.length>14">..</span>
 														</td>
-														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.region}}">{{contact.region | slice:0:17}}
-														<span *ngIf="contact.region?.length>17">...</span>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.region}}">{{contact.region | slice:0:14}}
+														<span *ngIf="contact.region?.length>14">..</span>
 														</td>
-														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:17}}
-														<span *ngIf="contact.partnerType?.length>17">...</span>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
+														<span *ngIf="contact.partnerType?.length>14">..</span>
 														</td>
-														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:17}}
-														<span *ngIf="contact.category?.length>17">...</span>
+														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:14}}
+														<span *ngIf="contact.category?.length>14">..</span>
 														</td>
 														<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
@@ -793,7 +796,7 @@
 																<td class='pt10 pb10 bold'>Address: </td>
 																<td align="center" class="hidden-xs">
 																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																	<h5 class='mb0'>
+																	<h5 class='m0'>
 																		{{contact.city}}<span
 																			*ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
 																	</h5>

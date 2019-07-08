@@ -77,6 +77,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isPreviewVideo: boolean = false;
   campaignNames = [];
   events = [];
+
+  rssCategories: any;
+  feedsResponse: any;
+  favouritesResponse: any;
+
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
@@ -574,7 +579,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatusProviders = new Array<SocialStatusProvider>();
     for (const i in this.socialConnections) {
       if (this.socialConnections[i].active) {
-        let source = this.socialConnections[i].source;
         const socialStatusProvider = new SocialStatusProvider();
         socialStatusProvider.socialConnection = this.socialConnections[i];
         this.socialStatusProviders.push(socialStatusProvider);
@@ -908,10 +912,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data => {
             if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source){
-              // let socialStatus = new SocialStatus();
-              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              // socialStatus.socialStatusProvider = data.socialStatusProvider;
               let socialStatus = JSON.parse(JSON.stringify(data));
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
               socialStatusProvider.socialStatusList.push(socialStatus);
@@ -920,10 +920,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         } else {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data=> {
-              // let socialStatus = new SocialStatus();
-              // socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              // data.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-              // socialStatus.socialStatusProvider = data.socialStatusProvider;
               let socialStatus = JSON.parse(JSON.stringify(data));
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
               socialStatusProvider.socialStatusList.push(socialStatus);
@@ -974,6 +970,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         socialStatus.socialStatusProvider = socialStatusProvider;
         socialStatus.userId = this.userId;
 
+      socialStatus.ogImage = targetSocialStatus.ogImage;
+      socialStatus.ogTitle = targetSocialStatus.ogTitle;
+      socialStatus.ogDescription = targetSocialStatus.ogDescription;
+      socialStatus.validLink = targetSocialStatus.validLink;
+
         return socialStatus;
   }
 
@@ -991,9 +992,26 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   undoCustomizeEachNetwork() {
     let socialStatusData = this.socialStatusList[0];
     this.socialStatusList = [];
-    this.socialStatusList[0] = socialStatusData;
+    this.socialStatusList[0] = new SocialStatus();
     this.isCustomizeButtonClicked = false;
+    this.selectNone();
     $('html,body').animate({scrollTop: 0}, 'slow');
+  }
+
+  selectAll(){
+    this.isAllSelected = true;
+    this.selectedAccounts = 0;
+    this.socialStatusProviders.forEach(data => {
+        data.selected = false;
+        this.toggleSocialStatusProvider(data);
+    })
+  }
+
+  selectNone(){
+    this.isAllSelected = false;
+    this.selectedAccounts = 0;
+    this.socialStatusList.length = 1;
+    this.socialStatusProviders.forEach(data => data.selected = false);
   }
 
   toggleSelectAll(){
@@ -1026,17 +1044,36 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         error => console.log( error ),
         () => {
             this.socialService.socialConnections = this.socialConnections;
-            this.listSocialStatusProviders();
-            $('#manageAccountsModal').modal('hide');
+            
+    for (const i in this.socialConnections) {
+      const ssp = this.socialStatusProviders.find(item => item.socialConnection.id === this.socialConnections[i].id);
+      if (this.socialConnections[i].active) {
+        if(ssp){
+          // do nothing
+        }else{
+          const socialStatusProvider = new SocialStatusProvider();
+          socialStatusProvider.socialConnection = this.socialConnections[i];
+          this.socialStatusProviders.push(socialStatusProvider);          
+        }
+      }else {
+        if(ssp){
+          this.socialStatusProviders = this.socialStatusProviders.filter(item => item !== ssp);
+          if(this.socialStatusList.length == 1){
+            this.socialStatusList[0].socialStatusProvider = null;
+          }else
+            this.socialStatusList = this.socialStatusList.filter(data => data.socialStatusProvider !== ssp)
+        }
+      }
+    }
+
+    this.selectNone();
+    $('#manageAccountsModal').modal('hide');
         } );
 
   }
 
   onSelectCountry(countryId){
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
-  }
-  cancel() {
-    this._location.back(); // <-- go back to previous location on cancel
   }
 
   searchContactList(){
@@ -1049,6 +1086,102 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.contactListsPagination.searchKey = null;
     this.loadContactLists(this.contactListsPagination);
     
+  }
+
+// RSS ---------------------------
+
+  openRssModal() {
+    $('#rssModal').modal('show');
+    this.getFavouritesByUserId();
+  }
+
+  getFavouritesByUserId(){
+    this.socialService.getFavouritesByUserId(this.userId)
+      .subscribe(
+      data => {
+        this.favouritesResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        this.getFeedsByUserId();
+      }
+      );
+  }
+
+  getFeeds(){
+        this.socialService.getFeeds()
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );
+  }
+
+    getFeedsByUserId(){
+        this.socialService.getFeedsByUserId(this.userId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );
+  }
+
+  getRSSFeedsByChannel(channelId: number){
+    this.socialService.getRSSFeedsByChannel(channelId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );
+  }
+
+  getRSSFeedsByCategory(categoryId: number){
+    this.socialService.getRSSFeedsByCategory(categoryId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );    
+  }
+
+  getRSSFeedsByTag(tagId: number){
+    this.socialService.getRSSFeedsByTag(tagId)
+      .subscribe(
+      data => {
+        this.feedsResponse = data;
+      },
+      error => console.error(error),
+      () => {
+        // do nothing
+      }
+      );    
+  }
+
+  addToPost(feed: any){
+    this.socialStatusList.forEach(data => {
+      data.statusMessage = feed.link;
+      data.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
+      data.ogTitle = feed.title;
+      data.ogDescription = feed.description;
+      data.validLink = true;
+    });
+    $('#rssModal').modal('hide');
   }
 
 }
