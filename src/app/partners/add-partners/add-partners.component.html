@@ -98,6 +98,11 @@ img:hover {
 									(change)="fileChange(input)" accept=".csv" #input
 									[disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
 										</div>
+										<div>
+										<a (click)="downloadEmptyCsv()">
+										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download Csv File</b>
+										</a>
+										</div>
                   </div>
                   </ng-container>
 
@@ -142,6 +147,7 @@ img:hover {
                     <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
 									</div>
+									<div style="padding-bottom: 19px;"></div>
 								</div>
 								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
