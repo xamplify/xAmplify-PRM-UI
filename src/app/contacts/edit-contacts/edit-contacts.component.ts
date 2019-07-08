@@ -146,6 +146,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     newUsersEmails = [];
     newUserDetails = [];
     teamMemberPagination: Pagination = new Pagination();
+    contactAssociatedCampaignPagination: Pagination = new Pagination();
+
     teamMembersList = [];
 /*    orgAdminsList = [];*/
     editingEmailId = '';
@@ -2563,10 +2565,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
     getContactsAssocialteCampaigns() {
         try {
-            this.contactService.contactListAssociatedCampaigns( this.selectedContactListId )
+            this.contactService.contactListAssociatedCampaigns( this.selectedContactListId, this.contactAssociatedCampaignPagination)
                 .subscribe(
                 data => {
-                    this.contactsByType.contactListAssociatedCampaigns = data;
+                    this.contactsByType.contactListAssociatedCampaigns = data.data;
                     if ( this.contactsByType.contactListAssociatedCampaigns ) {
                         this.openCampaignModal = true;
                     }

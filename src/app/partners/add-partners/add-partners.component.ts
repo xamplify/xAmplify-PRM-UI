@@ -92,6 +92,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isCompanyDetails = false;
     allPartnersPagination: Pagination = new Pagination();
     teamMemberPagination: Pagination = new Pagination();
+    contactAssociatedCampaignPagination: Pagination = new Pagination();
     pageSize: number = 12;
     contactListAssociatedCampaignsList: any;
     editingEmailId = '';
@@ -2035,10 +2036,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     getContactsAssocialteCampaigns() {
         try {
-            this.contactService.contactListAssociatedCampaigns( this.partnerListId )
+            this.contactService.contactListAssociatedCampaigns( this.partnerListId, this.contactAssociatedCampaignPagination )
                 .subscribe(
                 data => {
-                    this.contactListAssociatedCampaignsList = data;
+                    this.contactListAssociatedCampaignsList = data.data;
                     if ( this.contactListAssociatedCampaignsList ) {
                         this.openCampaignModal = true;
                     }

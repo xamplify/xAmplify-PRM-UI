@@ -14,8 +14,12 @@
 				<table class='table tgrid'>
 					<thead>
 						<tr>
-							<th class='text-center'
-								style="font-weight: 400; font-size: 12px;">SELECT</th>
+							<!-- <th class='text-center'
+								style="font-weight: 400; font-size: 12px;">SELECT</th> -->
+								<th class='text-center' style="width:10%"><input
+									 type="checkbox" name="all"
+									 [(ngModel)]="isHeaderCheckBoxChecked"
+									 (change)="checkAll($event)" id="checkAllExistingLists" /></th>
 							<th class='text-center'
 								style="font-weight: 400; font-size: 12px;">CAMPAIGN NAME</th>
 							<th class='text-center'
@@ -29,9 +33,12 @@
 					<tbody>
 						<ng-container>
 						<tr class='row_{{i}}'
-							*ngFor="let campaign of associatedCampaignDetails;let i = index">
+							*ngFor="let campaign of contactsByType.contactListAssociatedCampaigns;let i = index">
 							<td align="center"><input type="checkbox"
 								id="{{campaign.campaignId}}"
+								lang="{{campaign.campaignId}}" name="associatedContactList[]"
+								value="{{campaign.campaignId}}"
+								
 								[checked]="selectedCampaignIds.indexOf(campaign.campaignId)>-1"
 								(click)="selectedContactLisAssociatedCampaignIds(campaign.campaignId,$event)"></td>
 							<td align="center" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
@@ -48,6 +55,8 @@
 						</ng-container>
 					</tbody>
 				</table>
+				<app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)"
+				(notifyParentDropDown)="onChangePaginationDropDown($event)"></app-pagination>
 			</div>
 			<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 			<div class="modal-footer">
