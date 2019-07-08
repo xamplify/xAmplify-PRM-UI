@@ -77,6 +77,14 @@ export class DashboardService {
             .catch(this.handleError);
 
     }
+    
+    sendVendorInvitation(userId: number, vendorInvitation: any) {
+        const url = this.authenticationService.REST_URL+ 'partner/vendor-invitation/'+ userId + '?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, vendorInvitation)
+            .map(this.extractData)
+            .catch(this.handleError);
+
+    }
 
     getCountryViewsDetails() {
         const url = this.authenticationService.REST_URL + 'dashboard/countrywise_users_count?userId=' + this.authenticationService.user.id +

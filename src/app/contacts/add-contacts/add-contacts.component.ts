@@ -229,7 +229,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     readFiles( files: any, index = 0 ) {
-        if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+        //files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" || 
+        if ( this.fileUtil.isCSVFile(files[0]) ) {
             this.isListLoader = true;
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
             this.selectedAddContactsOption = 2;
@@ -346,7 +347,13 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.xtremandLogger.info( "allTextLines: " + allTextLines );
         this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
-        for ( var i = 0; i < allTextLines.length; i++ ) {
+        if(this.clipboardTextareaText === ""){
+            $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>" );  
+            isValidData = false;
+        }
+        
+        if(this.clipboardTextareaText != ""){
+         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
             if ( !this.validateEmailAddress( data[4] ) ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
@@ -354,6 +361,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             this.clipboardUsers.length = 0;
             this.contacts.length = 0;
+         }
         }
         if ( isValidData ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -2208,7 +2216,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         swal.close();
         $( '#settingSocialNetwork' ).modal( 'hide' );
 
-        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
+        if ( this.selectedAddContactsOption !=8 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
             this.model.contactListName = "";
 
             let self = this;
@@ -2477,7 +2485,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.getMarketoConatacts = data.data;
 
 
-            this.getMarketoConatacts = data.data;
+           // this.getMarketoConatacts = data.data;
             this.loadingMarketo = false;
             this.selectedAddContactsOption = 6;
             if (this.getMarketoConatacts.length == 0)

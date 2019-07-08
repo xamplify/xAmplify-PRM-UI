@@ -23,6 +23,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Tweet } from '../../social/models/tweet';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import { EventCampaign } from '../models/event-campaign';
 declare var $, Highcharts: any;
 
 @Component({
@@ -37,6 +38,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   createdBySelf = false;
   dealButtonText: string="";
   dealId: any;
+  eventCampaign: EventCampaign = new EventCampaign();
+  isCancelledEvent: boolean = false;
 
   public searchKey: string;
 
@@ -114,6 +117,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   contactListDeleteError = false;
   interactiveDataTimeLineViewEnable = false;
   totalCampaignViewsLoader = false;
+  isOnlyPartner = false;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -131,6 +135,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
+      this.isOnlyPartner = this.authenticationService.isOnlyPartner();
       this.campaign = new Campaign();
       this.selectedRow.emailId = "";
       if (this.referenceService.isFromTopNavBar) {
@@ -269,8 +274,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
   campaignViewsCountBarchart(names, data) {
-   if(this.campaignType != 'EVENT'){
-     this.loading = true;
+  /*   Not calling for event campaign because views count is not coming.
+    if(this.campaignType != 'EVENT'){ */
+    this.loading = true;
     const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
     let newChart = Highcharts.chart('campaign-views-barchart', {
@@ -354,7 +360,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        }
     });
     this.loading = false;
-    }
+  //  }
   }
 
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
@@ -391,6 +397,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignBarViewsDataInsert(){
       const names = [];
       const views = [];
+      let isShowBarChart: boolean;
+      if( this.campaignType == 'EVENT' && this.isChannelCampaign ){
+          isShowBarChart = false;
+      }else {
+          isShowBarChart = true;
+      }
       for ( let i = 0; i < this.campaignBarViews.length; i++ ) {
           const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
           const lastName = this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
@@ -401,7 +413,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.pagination.totalRecords = this.campaignReport.emailSentCount;
       this.pagination = this.pagerService.getPagedItems( this.pagination, this.campaignBarViews );
       console.log( this.pagination );
-      this.campaignViewsCountBarchart( names, views );
+      if( isShowBarChart ){
+       this.campaignViewsCountBarchart( names, views );
+      }
       this.referenceService.goToTop();
       this.loading = false;
   }
@@ -809,6 +823,22 @@ showTimeLineView(){
       this.xtremandLogger.error(err);
     }
   }
+  
+  getEventCampaignById(campaignId: number) {
+      try{
+        this.campaignService.getEventCampaignById(campaignId)
+        .subscribe(data => {
+          console.log(data);
+          this.eventCampaign = data.data;
+           if(data.data.eventCancellation.cancelled){
+             this.isCancelledEvent = true;
+            }
+        },
+        error => console.log(error),
+        () => { }
+        );
+      } catch (err) {  this.xtremandLogger.error(err); }
+    }
 
   getCampaignById(campaignId: number) {
    try{
@@ -819,7 +849,7 @@ showTimeLineView(){
       data => {
         this.campaign = data;
         this.isChannelCampaign = data.channelCampaign;
-        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){
+        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId && !this.authenticationService.isPartnerTeamMember &&!this.isOnlyPartner){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
             this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
@@ -857,10 +887,13 @@ showTimeLineView(){
             this.getSocialCampaignByCampaignId(campaignId);
           } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
-              this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+              if(this.campaign.emailTemplate){
+                this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+              }
+              this.getEventCampaignById(campaignId);
               this.getEventCampaignByCampaignId(campaignId);
             } else {
-            this.campaignType = 'EMAIL';
+            this.campaignType = 'REGULAR';
           }
         }
         this.getEmailSentCount(this.campaignId);
@@ -1561,22 +1594,32 @@ showTimeLineView(){
   showEmailTemplatePreview( emailTemplate: any ) {
       try {
           this.ngxloading = true;
+          var tempalteObject;
+          var campaign: any;
+          if(this.campaignType === "EVENT"){
+              tempalteObject = this.eventCampaign.emailTemplateDTO;
+              campaign = this.eventCampaign;
+          }else{
+              tempalteObject = emailTemplate;
+              campaign = this.campaign;
+          }
+          
           let userId = 0;
           if(this.campaign.nurtureCampaign){
               userId = this.campaign.parentCampaignUserId;
           }else{
-              userId =  this.campaign.userId;
+              userId = this.campaign.userId;
           }
           this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
               ( data: any ) => {
-                  let body = emailTemplate.body;
+                  let body = tempalteObject.body;
                   let self = this;
                   $.each( data, function( index, value ) {
-                      body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
+                      body = body.replace( value, self.authenticationService.MEDIA_URL + campaign.companyLogo );
                   } );
-                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
-                  emailTemplate.body = body;
-                  this.referenceService.previewEmailTemplate( emailTemplate, this.campaign );
+                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );
+                  tempalteObject.body = body;
+                  this.referenceService.previewEmailTemplate( tempalteObject, campaign);
                   this.ngxloading = false;
               },
               error => { this.xtremandLogger.error( "error in getAllCompanyProfileImages(" + userId+ ")", error ); },

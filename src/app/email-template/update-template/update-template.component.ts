@@ -8,6 +8,8 @@ import { EmailTemplate} from '../models/email-template';
 import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { User } from '../../core/models/user';
+
 declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR,swal:any;
 
 @Component({
@@ -35,13 +37,14 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     coBrandingLogo: boolean = false;
     mycontent: string;
     emailTemplateTypes = ["VIDEO","REGULAR"];
+    loggedInUserId = 0;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,public refService:ReferenceService,
             public callActionSwitch: CallActionSwitch) {
         logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
-        
+        this.loggedInUserId = this.authenticationService.getUserId();
         if(this.emailTemplateService.emailTemplate==undefined){
             this.router.navigate(["/home/emailtemplates/select"]);
         }
@@ -116,8 +119,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplate.createdBy = this.emailTemplateService.emailTemplate.createdBy;
         this.emailTemplate.onDestroy = isOnDestroy;
         this.emailTemplate.draft = isOnDestroy;
-      
-       
         if (this.model.isRegularUpload == "REGULAR")
         {
           this.emailTemplate.regularTemplate = true;
@@ -136,10 +137,12 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }else{
             for(var instanceName in CKEDITOR.instances){
                 CKEDITOR.instances[instanceName].updateElement();
-                this.emailTemplate.body =  this.mycontent;
+                this.emailTemplate.body =  CKEDITOR.instances[instanceName].getData();
             }
         }
         if($.trim(this.emailTemplate.body).length>0){
+            this.emailTemplate.user = new User();
+            this.emailTemplate.user.userId = this.loggedInUserId;
             console.log(this.emailTemplate);
             this.emailTemplateService.update(this.emailTemplate)
             .subscribe(

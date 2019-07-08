@@ -1,12 +1,13 @@
 <style>
 .disabled {
-   pointer-events: none;
-   cursor: default;
+	pointer-events: none;
+	cursor: default;
 }
 </style>
 <div class="page-content">
-<div class="my-container">
-		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+	<div class="my-container">
+		<ngx-loading [show]="loading"
+			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -18,35 +19,51 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="page-bar" style="padding:10px;border: 1px solid #CCC;">
-			<div>
+		<div class="custome-response-css">
+		  <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		</div>
+			<div class="page-bar" style="padding: 10px; border: 1px solid #CCC;">
 				<div>
-					<div class="row">
-						<div class="col-xs-12 col-sm-4 col-md-4" *ngFor="let vendorReport of vendorDetails">
-							<a class="dashboard-stat dashboard-stat-lighter dashboard-stat blue" [class.disabled]="!vendorReport.campaignsCount" (click)="navigateToVendorCampaigns(vendorReport)">
-								<div class="visual">
-									<img style="width: 100px; height: 66px;" src="{{vendorReport.companyLogo}}" (error)="errorHandler($event)">
-									<!-- <i class="fa fa-users"></i> -->
-								</div>
-								<div class="details">
-									<div class="number">{{vendorReport.campaignsCount}}</div>
-									<div [title]="vendorReport.companyName" class="desc">{{vendorReport.companyName | slice:0:25}}<span *ngIf="vendorReport.companyName?.length>25">..</span></div>
-								</div> <span id="permhref" class="morePadding"> <a class="more">
-										Detailed view <i class="m-icon-swapright m-icon-white"></i>
+					<div>
+						<div class="row">
+							<div class="col-xs-12 col-sm-4 col-md-4"
+								*ngFor="let vendorReport of vendorDetails">
+								<a
+									class="dashboard-stat dashboard-stat-lighter dashboard-stat blue"
+									[class.disabled]="!vendorReport.campaignsCount"
+									(click)="navigateToVendorCampaigns(vendorReport)">
+									<div class="visual">
+										<img style="width: 100px; height: 66px;"
+											src="{{vendorReport.companyLogo}}"
+											(error)="errorHandler($event)">
+										<!-- <i class="fa fa-users"></i> -->
+									</div>
+									<div class="details">
+										<div class="number">{{vendorReport.campaignsCount}}</div>
+										<div [title]="vendorReport.companyName" class="desc">
+											{{vendorReport.companyName | slice:0:25}}<span
+												*ngIf="vendorReport.companyName?.length>25">..</span>
+										</div>
+									</div> <span id="permhref" class="morePadding"> <a
+										class="more"> Detailed view <i
+											class="m-icon-swapright m-icon-white"></i>
+									</a>
+								</span>
 								</a>
-							</span>
-							</a>
+							</div>
 						</div>
+
+						<app-pagination [pagination]="pagination" [type]="'vendorReports'"
+							(notifyParent)="setPage($event)"
+							(notifyParentDropDown)="onChangeAllVendors($event)"></app-pagination>
+
 					</div>
-
-					<app-pagination [pagination]="pagination" [type]="'vendorReports'"
-						(notifyParent)="setPage($event)"
-						(notifyParentDropDown)="onChangeAllVendors($event)"></app-pagination>
-
 				</div>
 			</div>
-			</div>
 		</div>
-  </div>
-  <app-scroll-top></app-scroll-top>
+	</div>
+	<app-scroll-top></app-scroll-top>
 </div>
+
+
+

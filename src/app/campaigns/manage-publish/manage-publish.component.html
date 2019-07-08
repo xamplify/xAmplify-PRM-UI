@@ -153,7 +153,7 @@
 												</a>
 
 
-													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
 													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
@@ -312,7 +312,7 @@
                           </ng-container>
                           <ng-container *ngIf="campaign.launched">
                             <li>
-                              <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+                              <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
                                 data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports">
                                 <i class="fa fa-line-chart"></i> Campaign Analytics
                               </a>
@@ -389,7 +389,7 @@
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
-												<span *ngIf="campaign.launched && campaign.showCancelButton">Launched</span>
+												<span *ngIf="campaign.launched">Launched</span>
 												<div  class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</div>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
@@ -415,7 +415,7 @@
 														<i style="color: white">{{campaign.redistributedCount}}</i>
 													</a>
 
-													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
                          								 (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>

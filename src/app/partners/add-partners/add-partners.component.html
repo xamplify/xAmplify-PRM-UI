@@ -98,6 +98,11 @@ img:hover {
 									(change)="fileChange(input)" accept=".csv" #input
 									[disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
 										</div>
+										<div style="margin-top: 5px;">
+										<a (click)="downloadEmptyCsv()">
+										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download Csv File</b>
+										</a>
+										</div>
                   </div>
                   </ng-container>
 
@@ -142,6 +147,7 @@ img:hover {
                     <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
 									</div>
+									<div style="padding-bottom: 22px;"></div>
 								</div>
 								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
 									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
@@ -457,17 +463,17 @@ img:hover {
 													</h5>
 													<h6 class='mt0'>{{newContact.contactCompany}}</h6>
 												</td> -->
-												<td class="hidden-xs">{{newContact.vertical | slice:0:20}}
-												<span *ngIf="newContact.vertical?.length>20">...</span>
+												<td class="hidden-xs">{{newContact.vertical | slice:0:15}}
+												<span *ngIf="newContact.vertical?.length>15">...</span>
 												 </td>
-												<td class="hidden-xs">{{newContact.region | slice:0:20}} 
-												<span *ngIf="newContact.region?.length>20">...</span>
+												<td class="hidden-xs">{{newContact.region | slice:0:15}} 
+												<span *ngIf="newContact.region?.length>15">...</span>
 												</td>
-												<td class="hidden-xs">{{newContact.partnerType | slice:0:20}}
-												<span *ngIf="newContact.partnerType?.length>20">...</span>
+												<td class="hidden-xs">{{newContact.partnerType | slice:0:15}}
+												<span *ngIf="newContact.partnerType?.length>15">...</span>
 												 </td>
-												<td class="hidden-xs hidden-sm">{{newContact.category | slice:0:20}}
-												<span *ngIf="newContact.category?.length>20">...</span>
+												<td class="hidden-xs hidden-sm">{{newContact.category | slice:0:15}}
+												<span *ngIf="newContact.category?.length>15">...</span>
 												 </td>
 												<td class="hidden-xs">
 													<h5 *ngIf="newContact?.address" class='mb0'>{{newContact.address}}</h5>
@@ -616,17 +622,17 @@ img:hover {
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
 												</td> -->
-												<td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:17}}
-												<span *ngIf="contact.vertical?.length>17">...</span>
+												<td class="hidden-xs white-space-transform" title="{{contact.vertical}}">{{contact.vertical | slice:0:14}}
+												<span *ngIf="contact.vertical?.length>14">..</span>
 												</td>
-												<td class="hidden-xs white-space-transform" title="{{contact.region}}">{{contact.region | slice:0:17}}
-												<span *ngIf="contact.region?.length>17">...</span>
+												<td class="hidden-xs white-space-transform" title="{{contact.region}}">{{contact.region | slice:0:14}}
+												<span *ngIf="contact.region?.length>14">..</span>
 												</td>
-												<td class="hidden-xs white-space-transform"  title="{{contact.partnerType}}">{{contact.partnerType | slice:0:17}}
-												<span *ngIf="contact.partnerType?.length>17">...</span>
+												<td class="hidden-xs white-space-transform"  title="{{contact.partnerType}}">{{contact.partnerType | slice:0:14}}
+												<span *ngIf="contact.partnerType?.length>14">..</span>
 												</td>
-												<td class="hidden-xs hidden-sm white-space-transform" title="{{contact.category}}">{{contact.category | slice:0:17}}
-												<span *ngIf="contact.category?.length>17">...</span>
+												<td class="hidden-xs hidden-sm white-space-transform" title="{{contact.category}}">{{contact.category | slice:0:14}}
+												<span *ngIf="contact.category?.length>14">..</span>
 												</td>
 												<!-- <td class="hidden-xs">
 													<h5 class='mb0' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:20}}
@@ -705,7 +711,7 @@ img:hover {
 																<td class='pt10 pb10 bold'>Address: </td>
 																<td align="center">
 																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																	<h5 class='mb0'>
+																	<h5 class='m0'>
 																		{{contact.city}}<span
 																			*ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
 																	</h5>

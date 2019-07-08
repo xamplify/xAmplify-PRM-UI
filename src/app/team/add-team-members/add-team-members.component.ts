@@ -65,18 +65,21 @@ export class AddTeamMembersComponent implements OnInit {
     allEmailIds:any;
     selectedId:number=0;
     contactAccess:boolean = false;
+    isOnlyPartner:boolean = false;
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
             public authenticationService:AuthenticationService,private pagerService:PagerService,public pagination:Pagination,
             private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
-
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
 
     downloadEmptyCsv(){
-        if(this.contactAccess){
+        if(this.contactAccess && !this.isOnlyPartner){
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-list.csv";
+        }else if(this.isOnlyPartner){
+            window.location.href = this.authenticationService.MEDIA_URL + "team-member-partner.csv";
         }else{
             window.location.href = this.authenticationService.MEDIA_URL + "team-member-vendor.csv";
         }
@@ -92,7 +95,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.listEmailIds();
             this.listAllOrgAdminsEmailIds();
             this.listAllPartnerEmailIds();
-            this.listAllOrgAdminsAndSupervisors();
+            this.listDropDown();
             this.hasContactAccess();
         }
         catch ( error ) {
@@ -100,10 +103,19 @@ export class AddTeamMembersComponent implements OnInit {
         }
     }
 
+    listDropDown(){
+        this.items2 = [];
+        if(!this.isOnlyPartner){
+            this.listAllOrgAdminsAndSupervisors();
+        }else{
+            this.listPartnerAndTeamMembers();
+        }
+    }
+
     hasContactAccess(){
         let isOrgAdmin = this.authenticationService.isOrgAdmin();
         let isVendorAndPartner = this.authenticationService.isVendorPartner();
-        this.contactAccess  = isOrgAdmin || (isVendorAndPartner);
+        this.contactAccess  = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
     }
 
 
@@ -213,6 +225,7 @@ export class AddTeamMembersComponent implements OnInit {
                     this.listEmailIds();
                     this.listAllOrgAdminsEmailIds();
                     this.clearRows();
+                    this.listDropDown();
                 }else{
                     this.showErrorMessageDiv(data.message);
                 }
@@ -252,6 +265,7 @@ export class AddTeamMembersComponent implements OnInit {
                     this.listEmailIds();
                     this.listAllOrgAdminsEmailIds();
                     this.clearRows();
+                    this.listDropDown();
                 }else{
                    this.showErrorMessageDiv(data.message);
                 }
@@ -327,6 +341,7 @@ export class AddTeamMembersComponent implements OnInit {
             this.listAllOrgAdminsEmailIds();
             this.listAllPartnerEmailIds();
             this.clearRows();
+
         },
         error => {this.logger.errorPage(error)},
         () => this.logger.log( "Team member deleted successfully." )
@@ -347,35 +362,29 @@ export class AddTeamMembersComponent implements OnInit {
     }
 
 
-    validateEmailId(emailId:string,isTabChangeEvent:boolean){
+    validateEmailId(emailId:string){
+        console.log(emailId);
         try{
-            this.logger.log($.trim(emailId).length);
             if($.trim(emailId).length>0){
                 this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
                 if(!this.teamMemberUi.validEmailId){
-                    if(isTabChangeEvent){
+                    console.log("372");
+                    this.showErrorMessage("Please enter a valid email address");
+                    /*if(isTabChangeEvent){
                       this.showErrorMessage("Please enter a valid email address");
                     }else{
                         this.teamMemberUi.isValidForm = false;
-                    }
+                    }*/
                 }else{
                     /**********Method To Check Whether Org Admin Or Not***********/
-                    if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.logger.log(emailId.toLowerCase()+" is an org admin")
+                    if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1 || this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1 || this.existingEmailIds.indexOf(emailId.toLowerCase())>-1 ){
                         this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
-                    }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
-                        this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
-                    }
-                    else{
-                        if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                            this.showErrorMessage("Sorry, but this person is already a team member for a different account.");
-                        }else{
-                            this.hideErrorMessage();
-                        }
-
+                    }else{
+                        this.hideErrorMessage();
                     }
                 }
             }else{
+                console.log("i am in else");
                 this.teamMemberUi.errorMessage = '';
                 $(".col-md-12 span").text('');
                 this.removeErrorClass();
@@ -439,6 +448,7 @@ export class AddTeamMembersComponent implements OnInit {
             if(tableRows==0){
                 this.clearRows();
             }
+           this.listDropDown();
         }catch(error){
             this.showUIError(error);
         }
@@ -470,16 +480,18 @@ export class AddTeamMembersComponent implements OnInit {
 
 
     setAllRoles( team: TeamMember ) {
-        team.video = true;
+        if(!this.isOnlyPartner){
+            team.video = true;
+            team.emailTemplate = true;
+            team.stats = true;
+            team.socialShare = true;
+            team.partners = true;
+        }
         team.campaign = true;
-        team.emailTemplate = true;
-        team.stats = true;
         if(this.contactAccess){
             team.contact = true;
         }
-        team.socialShare = true;
-        team.partners = true;
-        team.opportunity = true;
+       // team.opportunity = true;
 
     }
     removeAllRoles(team:TeamMember){
@@ -490,13 +502,13 @@ export class AddTeamMembersComponent implements OnInit {
         team.contact = false;
         team.socialShare = false;
         team.partners = false;
-        team.opportunity = false;
+       // team.opportunity = false;
     }
 
     countCheckedCheckBoxesLength(team:TeamMember,index:number,tableId:string){
        try{
            let length = $('#'+tableId+' .module-checkbox-'+index+':checked').length;
-           if((this.contactAccess && length==7) || (!this.contactAccess && length==6)){
+           if((this.contactAccess && length==7) || (!this.contactAccess && length==6) || (this.isOnlyPartner && length==2)){
                team.all = true;
                $('#'+tableId+' #role-checkbox-'+index).prop("disabled",true);
            }else{
@@ -574,8 +586,7 @@ export class AddTeamMembersComponent implements OnInit {
             let headersRow = this.fileUtil
                 .getHeaderArray(csvRecordsArray);
             let headers = headersRow[0].split(',');
-
-            if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8)){
+            if((this.contactAccess && headers.length==9)  || (!this.contactAccess && headers.length==8) ||(this.isOnlyPartner && headers.length==4)){
                 if(this.validateHeaders(headers)){
                     this.readCsvData(csvRecordsArray,headersRow.length);
                 }else{
@@ -599,12 +610,13 @@ export class AddTeamMembersComponent implements OnInit {
       };
 
          validateHeaders(headers){
-           if(this.contactAccess){
+           if(this.contactAccess && !this.isOnlyPartner){
                return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
-
-           }else{
+           }else if(this.isOnlyPartner){
+            return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" &&headers[2]=="CONTACTS" && headers[3]=="CAMPAIGN");
+            }
+           else{
                return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="EMAIL" && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS");
-
            }
          }
 
@@ -651,25 +663,18 @@ export class AddTeamMembersComponent implements OnInit {
                    let emailId = row[0];
                    this.emaillIdDivClass = this.defaultClass;
                    if(!this.referenceService.validateEmailId(emailId)){
-                       this.csvErrors.push(emailId+" at row "+(i+1)+" is invalid.");
+                     //  this.csvErrors.push(emailId+" at row "+(i+1)+" is invalid.");
+                      this.csvErrors.push(emailId+" is invalid email address.");
                    }else{
-                       this.logger.log(duplicateEmailIds);
                        /**********Method To Check Whether Org Admin Or Not***********/
-                       if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1){
-                           this.csvErrors.push(emailId+" at row "+(i+1)+" is an Org Admin.");
-                       }else if(this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1){
-                           this.csvErrors.push(emailId+" at row "+(i+1)+" is a Partner.");
-                       }else{
-                           /*******************Check If Already Added As A Team Member***************************/
-                           if(this.existingEmailIds.indexOf(emailId.toLowerCase())>-1){
-                               this.csvErrors.push(emailId+" at row "+(i+1)+" is already added as team member.");
-                           }
+                      if(this.orgAdminEmailIds.indexOf(emailId.toLowerCase())>-1 || this.partnerEmailIds.indexOf(emailId.toLowerCase())>-1 ||this.existingEmailIds.indexOf(emailId.toLowerCase())>-1 ){
+                          this.csvErrors.push(emailId+" is already registered with xAmplify and cannot be added as a team member at this time.");
                        }
                    }
                }
           }else{
               for(let d=0;d<duplicateEmailIds.length;d++){
-                  this.csvErrors.push(duplicateEmailIds[d]+" is duplicate row.");
+                  this.csvErrors.push(duplicateEmailIds[d]+" is duplicate email address.");
                   this.isUploadCsv = false;
                   this.isAddTeamMember = false;
               }
@@ -701,21 +706,28 @@ export class AddTeamMembersComponent implements OnInit {
               if(teamMember.all){
                   this.setAllRoles(teamMember);
               }else{
-                  teamMember.video = this.setDefaultValue(row[2]);
-                  if(this.contactAccess){
-                      teamMember.contact = this.setDefaultValue(row[3]);
-                      teamMember.campaign   =this.setDefaultValue(row[4]);
-                      teamMember.stats = this.setDefaultValue(row[5]);
-                      teamMember.emailTemplate = this.setDefaultValue(row[6]);
-                      teamMember.socialShare = this.setDefaultValue(row[7]);
-                      teamMember.partners = this.setDefaultValue(row[8]);
-                  }else{
-                      teamMember.campaign   =this.setDefaultValue(row[3]);
-                      teamMember.stats = this.setDefaultValue(row[4]);
-                      teamMember.emailTemplate = this.setDefaultValue(row[5]);
-                      teamMember.socialShare = this.setDefaultValue(row[6]);
-                      teamMember.partners = this.setDefaultValue(row[7]);
-                  }
+                if(this.isOnlyPartner){
+                    teamMember.contact = this.setDefaultValue(row[2]);
+                    teamMember.campaign   =this.setDefaultValue(row[3]);
+                }else{
+                    teamMember.video = this.setDefaultValue(row[2]);
+                    if(this.contactAccess){
+                        teamMember.contact = this.setDefaultValue(row[3]);
+                        teamMember.campaign   =this.setDefaultValue(row[4]);
+                        teamMember.stats = this.setDefaultValue(row[5]);
+                        teamMember.emailTemplate = this.setDefaultValue(row[6]);
+                        teamMember.socialShare = this.setDefaultValue(row[7]);
+                        teamMember.partners = this.setDefaultValue(row[8]);
+                    }else{
+                        teamMember.campaign   =this.setDefaultValue(row[3]);
+                        teamMember.stats = this.setDefaultValue(row[4]);
+                        teamMember.emailTemplate = this.setDefaultValue(row[5]);
+                        teamMember.socialShare = this.setDefaultValue(row[6]);
+                        teamMember.partners = this.setDefaultValue(row[7]);
+                    }
+                }
+
+                  
 
               }
               this.teamMembers.push(teamMember);
@@ -729,8 +741,10 @@ export class AddTeamMembersComponent implements OnInit {
       }
       clearForm(){
           this.emaillIdDivClass = this.defaultClass;
-          $(".text-danger").text('');
+         // $(".text-danger").html('');
           this.isAddTeamMember = false;
+          this.teamMemberUi.isValidForm = false;
+          this.teamMemberUi.errorMessage = "";
          // this.clearRows();
           this.closePopup();
       }
@@ -794,20 +808,35 @@ export class AddTeamMembersComponent implements OnInit {
       onInputChangedEvent(val: string) {
         this.inputChanged = val;
       }
+
+      listPartnerAndTeamMembers(){
+        this.teamMemberService.listPartnerAndTeamMembers(this.userId)
+        .subscribe(
+        data => {
+            this.setDropDownData(data);
+        },
+        error => this.logger.log( error ),
+        () => this.logger.log( "listPartnerAndTeamMembers() done" )
+        );
+      }
       listAllOrgAdminsAndSupervisors() {
           this.teamMemberService.listAllOrgAdminsAndSupervisors(this.userId)
               .subscribe(
               data => {
-                  let self =this;
-                  $.each(data,function(index,value){
-                      let emailId = data[index].emailId;
-                      let id =  data[index].id;
-                      let obj = {'id':id,'emailId':emailId};
-                      self.items2.push(obj);
-                  });
+                    this.setDropDownData(data);
               },
               error => this.logger.log( error ),
               () => this.logger.log( "listAllOrgAdminsAndSupervisors() done" )
               );
           }
+
+     setDropDownData(data:any){
+        let self =this;
+        $.each(data,function(index,value){
+            let emailId = data[index].emailId;
+            let id =  data[index].id;
+            let obj = {'id':id,'emailId':emailId};
+            self.items2.push(obj);
+        });
+     }     
 }

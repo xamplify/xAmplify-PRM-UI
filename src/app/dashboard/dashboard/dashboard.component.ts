@@ -886,9 +886,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 "Email Id": this.dashboardReport.downloadEmailLogList[i].emailId,
                 "First Name": this.dashboardReport.downloadEmailLogList[i].firstName,
                 "Last Name": this.dashboardReport.downloadEmailLogList[i].lastName,
-                "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),
+               /* "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),*/
                /* "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName*/
             }
+            
+            let hours = this.referenceService.formatAMPM(date);
+            object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+            
             if (this.paginationType == 'open') {
                 object["Company Name"] = this.dashboardReport.downloadEmailLogList[i].companyName;
                 object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;

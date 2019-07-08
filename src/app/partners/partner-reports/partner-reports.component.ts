@@ -37,6 +37,7 @@ export class PartnerReportsComponent implements OnInit {
   campaignInteractionPagination: Pagination = new Pagination();
   activePartnersPagination:Pagination = new Pagination();
   inActivePartnersPagination:Pagination = new Pagination();
+  approvePartnersPagination:Pagination = new Pagination();
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   activeParnterHttpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   campaignUserInteractionHttpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
@@ -48,6 +49,7 @@ export class PartnerReportsComponent implements OnInit {
   partnerCampaignUISearchKey:string = "";
   inActivePartnersCount:number = 0;
   activePartnersCount:number = 0;
+  approvePartnersCount:number = 0;
   isListView = false;
   customResponse: CustomResponse = new CustomResponse();
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
@@ -100,6 +102,7 @@ export class PartnerReportsComponent implements OnInit {
         this.throughPartnerCampaignsCount = data.throughPartnerCampaignsCount;
         this.inActivePartnersCount = data.inActivePartnersCount;
         this.activePartnersCount = data.activePartnersCount;
+        this.approvePartnersCount = data.approvePartners;
         const campaignData = [];
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
@@ -219,6 +222,8 @@ export class PartnerReportsComponent implements OnInit {
       // this.listRedistributedThroughPartnerCampaigns(this.pagination);
       $('#active-partner-div').show();
       $("#redistribute-partners-div").hide();
+      $('#approve-partners-div').hide();
+      this.getActivePartnerReports();
   }
 
   /****************************Through Partner Analytics**************************/
@@ -230,6 +235,7 @@ export class PartnerReportsComponent implements OnInit {
       $('#inactive-partners-div').hide()
       $("#through-partner-div").show();
       $("#redistribute-partners-div").hide();
+      $('#approve-partners-div').hide();
       this.throughPartnerCampaignPagination.throughPartnerAnalytics = true;
       this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
   }
@@ -244,6 +250,7 @@ export class PartnerReportsComponent implements OnInit {
       $('#inactive-partners-div').hide()
       $("#through-partner-div").hide();
       $("#redistribute-partners-div").show();
+      $('#approve-partners-div').hide();
       this.listRedistributedThroughPartnerCampaigns(this.pagination);
       // this.throughPartnerCampaignPagination.reDistributedPartnerAnalytics = true;
       // this.listThroughPartnerCampaigns(this.throughPartnerCampaignPagination);
@@ -356,8 +363,47 @@ export class PartnerReportsComponent implements OnInit {
       $('#active-partner-div').hide();
       $('#inactive-partners-div').show();
       $("#redistribute-partners-div").hide();
+      $('#approve-partners-div').hide();
       this.inActivePartnersPagination.maxResults = 12;
       this.getInActivePartnerReports(this.inActivePartnersPagination);
+  }
+  
+  goToApprovePartnersDiv(){
+      this.sortOption = new SortOption();
+      this.selectedTabIndex = 5;
+      this.httpRequestLoader = new HttpRequestLoader();
+      $('#through-partner-div').hide();
+      $('#active-partner-div').hide();
+      $('#inactive-partners-div').hide();
+      $("#redistribute-partners-div").hide();
+      $('#approve-partners-div').show();
+      this.approvePartnersPagination.maxResults = 12;
+      this.getApprovePartnerReports(this.approvePartnersPagination);
+  }
+  
+  getApprovePartnerReports(pagination:Pagination){
+      this.referenseService.loading(this.httpRequestLoader, true);
+      pagination.userId =this.loggedInUserId;
+      if(this.authenticationService.isSuperAdmin()){
+          pagination.userId = this.authenticationService.checkLoggedInUserId(pagination.userId);
+      }
+      console.log(pagination);
+      this.parterService.getApprovePartnersAnalytics(pagination).subscribe(
+              (response: any) => {
+               pagination.totalRecords = response.totalRecords;
+               console.log(response);
+               if(response.approvePartnesList.length === 0){
+                   this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
+               }
+               for ( var i in response.approvePartnesList) {
+                   response.approvePartnesList[i].contactCompany = response.approvePartnesList[i].partnerCompanyName;
+               }
+               pagination = this.pagerService.getPagedItems(pagination, response.approvePartnesList);
+               this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              (error: any) => {
+                  this.xtremandLogger.errorPage(error)
+              });
   }
 
   getInActivePartnerReports(pagination:Pagination){
@@ -395,6 +441,15 @@ export class PartnerReportsComponent implements OnInit {
           this.referenseService.showError( error, "setInActivePartnesPage", "partner-reports.component.ts" )
       }
   }
+  
+  setApprovePartnesPage( event:any) {
+      try {
+          this.approvePartnersPagination.pageIndex = event.page;
+          this.getApprovePartnerReports(this.approvePartnersPagination);
+      } catch ( error ) {
+          this.referenseService.showError( error, "setApprovePartnesPage", "partner-reports.component.ts" )
+      }
+  }
 
 
   searchInActivePartnerAnalytics(){
@@ -405,6 +460,11 @@ export class PartnerReportsComponent implements OnInit {
   inActivePartnerDropDownList(event){
       this.inActivePartnersPagination = event;
       this.getInActivePartnerReports(this.inActivePartnersPagination);
+  }
+  
+  approvePartnerDropDownList(event){
+      this.approvePartnersPagination = event;
+      this.getApprovePartnerReports(this.approvePartnersPagination);
   }
 
   sendPartnerReminder(item:any){
@@ -465,6 +525,64 @@ export class PartnerReportsComponent implements OnInit {
           }
         });
       item.expand = !item.expand;
+  }
+  
+  
+  
+  approvePartnerRequest( partnerId: number ) {
+      try {
+          this.xtremandLogger.info( partnerId );
+          this.referenseService.loading(this.httpRequestLoader, true);
+          this.parterService.approveVendorRequest( partnerId )
+              .subscribe(
+              ( data: any ) => {
+                  data = data;
+                  
+                  if(data.statusCode == 200){
+                      this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
+                  }else{
+                      this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
+                  }
+                      this.getApprovePartnerReports(this.approvePartnersPagination );
+                      this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              ( error: any ) => {
+                  console.log( error );
+                  this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              () => this.xtremandLogger.info( "Approved successfully." )
+              );
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "partner-report-component.", "approve parter()" );
+      }
+  }
+  
+  declinePartnerRequest(partnerId: number){
+      try {
+          this.xtremandLogger.info( partnerId );
+          this.referenseService.loading(this.httpRequestLoader, true);
+          this.parterService.declineVendorRequest( partnerId )
+              .subscribe(
+              ( data: any ) => {
+                  data = data;
+                  
+                  if(data.statusCode == 200){
+                      this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
+                  }else{
+                      this.customResponse = new CustomResponse( 'ERROR', "Something went wrong, Please try after some time.", true );
+                  }
+                      this.getApprovePartnerReports(this.approvePartnersPagination );
+                      this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              ( error: any ) => {
+                  console.log( error );
+                  this.referenseService.loading(this.httpRequestLoader, false);
+              },
+              () => this.xtremandLogger.info( "Declined successfully." )
+              );
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "partner-report-component.", "Decline Parter()" );
+      } 
   }
 
 

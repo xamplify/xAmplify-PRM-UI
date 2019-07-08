@@ -275,6 +275,12 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    hasRedistributeAccess(userId: number) {
+        return this.http.get(this.URL + `campaign/checkRedistibuteAccess/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     /*  listPartnerCampaigns(userId: number, campaignType: string){
           return this.http.get(this.URL+`campaign/partner-campaigns/${userId}?campaignType=${campaignType}&access_token=${this.authenticationService.access_token}`)

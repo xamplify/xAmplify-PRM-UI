@@ -126,9 +126,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     contactsPagination:Pagination = new Pagination();
     campaignContactLists: Array<ContactList>;
     numberOfContactsPerPage = [
-                               {'name':'10','value':'10'},
-                               {'name':'20','value':'20'},
-                               {'name':'30','value':'30'},
+                               {'name':'12','value':'12'},
+                               {'name':'24','value':'24'},
+                               {'name':'48','value':'48'},
                                {'name':'All','value':'0'},
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
@@ -464,7 +464,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     getCampaignUrls(campaign:Campaign){
         if(campaign.campaignUrls!=undefined){
             this.urls = campaign.campaignUrls;
-            for(var i=0;i<this.urls.length;i++){
+            for(var i=0;i< this.urls.length;i++){
                 let url = this.urls[i];
                 if(url.defaultTemplate){
                     url.selectedEmailTemplateIdForEdit = url.selectedEmailTemplateId;
@@ -673,7 +673,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      validateField(fieldId:string){
          var errorClass = "form-group has-error has-feedback";
          var successClass = "form-group has-success has-feedback";
-         let fieldValue = $.trim($('#'+fieldId).val())
+         let fieldValue = $.trim($('#'+fieldId).val());
          if(fieldId=="campaignName"){
              if(fieldValue.length>0&&this.isValidCampaignName){
                  this.campaignNameDivClass = successClass;
@@ -688,7 +688,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.fromNameDivClass = errorClass;
              }
          }else if(fieldId=="subjectLine"){
-             if(fieldValue.length>0){
+             let value = $.trim($('#subjectLineId').val());
+             if(value.length>0){
                  this.subjectLineDivClass = successClass;
              }else{
                  this.subjectLineDivClass = errorClass;
@@ -1561,7 +1562,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.ngxloading = true;
         this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
                 ( data: any ) => {
-                    console.log(data);
                     let body = emailTemplate.body;
                     let self  =this;
                     $.each(data,function(index,value){
@@ -1577,16 +1577,41 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     $("#email-template-title").empty();
                     $("#email-template-title").append(emailTemplateName);
                     $('#email-template-title').prop('title',emailTemplate.name);
-                    let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
-                    $("#htmlContent").append(updatedBody);
-                    $('.modal .modal-body').css('overflow-y', 'auto');
-                    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-                    $("#show_email_template_preivew").modal('show');
-                    this.ngxloading = false;
+                    let myMergeTags = this.campaign.myMergeTagsInfo;
+                    
+                    if(this.refService.hasMyMergeTagsExits(body) &&(myMergeTags==undefined || this.campaign.email!=myMergeTags.myEmailId)){
+                        let data = {};
+                        data['emailId'] = this.campaign.email;
+                        this.refService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                                response => {
+                                    if(response.statusCode==200){
+                                        this.campaign.myMergeTagsInfo = response.data;
+                                        this.setMergeTagsInfo(body);
+                                    }
+                                },
+                                error => {
+                                    this.logger.error(error);
+                                    this.setMergeTagsInfo(body);
+                                }
+                            );
+                        
+                    }else{
+                        this.setMergeTagsInfo(body);
+                    }
                 },
                 error => { this.ngxloading = false;this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
     }
+    
+    setMergeTagsInfo(body:string){
+        let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
+        $("#htmlContent").append(updatedBody);
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        $("#show_email_template_preivew").modal('show');
+        this.ngxloading = false;
+    }
+    
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
@@ -1869,7 +1894,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     getRepliesData(){
-        for(var i=0;i<this.replies.length;i++){
+        for(var i=0;i< this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
@@ -1949,7 +1974,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     getOnClickData(){
-        for(var i=0;i<this.urls.length;i++){
+        for(var i=0;i< this.urls.length;i++){
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
@@ -2084,7 +2109,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;
-        if(!this.hasInternalError && this.router.url!="/"){
+        if(!this.hasInternalError && this.router.url!="/login"){
             if(!this.isReloaded){
                 if(!this.isLaunched){
                     // if(this.isAdd){
@@ -2106,7 +2131,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                 /*self.getRepliesData();
                                 self.getOnClickData();*/
                         },function (dismiss) {
-                            if (dismiss == 'No') {
+                            if (dismiss == 'cancel') {
                                 self.reInitialize();
                             }
                         })
@@ -2599,7 +2624,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                             this.templateError = false;
                             this.loading = false;
-                            alert("Custome Objects are not found")
+                            alert("Custom Objects are not found")
                         }
 
                     }, error =>

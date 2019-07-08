@@ -17,10 +17,14 @@ td, th {
         <div [style.background]="name.color" class="td-css"></div>
     </td>
     <td>
-        <h6 *ngIf="name.firstName!=='null'" class="bold m0">{{name.firstName}}
-            <span *ngIf="name.lastName!=='null'"> {{name.lastName}}</span>
+        <h6 *ngIf="name.firstName!=='null'" class="bold m0">{{name.firstName | slice:0:16}}
+        <span *ngIf="name.firstName.lenght>16">..</span>
+            <span *ngIf="name.lastName!=='null'"> {{name.lastName | slice:0:12}}</span>
+            <span *ngIf="name.lastName.lenght>12">..</span>
         </h6>
-        <h6 class="m0">{{name.emailId}}</h6>
+        <h6 class="m0" title="{{name.emailId}}">{{name.emailId | slice:0:28}}
+        <span *ngIf="name.emailId.lenght>28">..</span>
+        </h6>
     </td>
 </tr>
 </table>
