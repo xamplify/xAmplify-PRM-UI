@@ -99,11 +99,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
         this.daySort = this.sortDates[3];
         this.referenceService.daySortValue = this.daySort.value;
-
         this.heatMapSort = this.sortHeatMapValues[4];
         this.xtremandLogger.info('dashboard constructor');
         this.utilService.setRouterLocalStorage('dashboard');
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+       // this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        //.isOnlyPartner = this.authenticationService.hasOnlyPartnerRole;
     }
 
     genderDemographics(userId: number) {

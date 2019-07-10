@@ -165,6 +165,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
            if(response.statusCode==200){
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+              this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole =="Partner" && this.authenticationService.isPartnerTeamMember==false;
            }else{
                this.authenticationService.loggedInUserRole = 'User';
            }

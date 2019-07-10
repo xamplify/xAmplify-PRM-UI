@@ -41,6 +41,7 @@ export class AuthenticationService {
     selectedVendorId: number;
     venorMyProfileReport: any;
     loggedInUserRole:string;
+    hasOnlyPartnerRole = false;
     constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
@@ -263,7 +264,7 @@ export class AuthenticationService {
     isOrgAdminPartner(){
       try{
         const roleNames = this.getRoles();
-        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember){
             return true;
         }else{
             return false;
@@ -273,8 +274,8 @@ export class AuthenticationService {
     isVendorPartner(){
       try{
       const roleNames = this.getRoles();
-      if(roleNames && (roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-        return true;
+      if(roleNames && ( (roleNames.indexOf(this.roleName.vendorRole)>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember){
+          return true;
       }else{
           return false;
       }

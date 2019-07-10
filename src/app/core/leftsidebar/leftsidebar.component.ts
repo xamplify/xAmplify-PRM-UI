@@ -130,6 +130,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 this.authService.loggedInUserRole = response.data.role;
                 this.authService.isPartnerTeamMember = response.data.partnerTeamMember;
                 this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
+                this.authService.hasOnlyPartnerRole = this.isOnlyPartner;
              }else{
                  this.authService.loggedInUserRole = 'User';
              }
