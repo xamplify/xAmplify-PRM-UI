@@ -107,9 +107,9 @@ export class ReferenceService {
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
-        this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
-        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
-        this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
+        this.videoTag = "<img src=\""+authenticationService.imagesHost+"xtremand-video.gif\">";
+        this.coBrandingTag = "<img src=\""+authenticationService.imagesHost+"co-branding.png\">";
+        this.coBrandingImageTag = "img src=\""+authenticationService.imagesHost+"co-branding.png\"";
     }
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();

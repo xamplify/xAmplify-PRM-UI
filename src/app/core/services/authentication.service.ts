@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { EnvService } from 'app/env.service';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -22,8 +23,8 @@ export class AuthenticationService {
     refresh_token: string;
     expires_in: number;
     logged_in_time: Date;
-    APP_URL = environment.CLIENT_URL;
-    SERVER_URL = environment.SERVER_URL;
+    APP_URL: any;
+    SERVER_URL: any;
     REST_URL: string;
     MEDIA_URL: string;
     SHARE_URL: string;
@@ -42,11 +43,22 @@ export class AuthenticationService {
     venorMyProfileReport: any;
     loggedInUserRole:string;
     hasOnlyPartnerRole = false;
-    constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
+    
+    clientId: any;
+    clientSecret: any;
+    imagesHost: any;
+    
+    constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
+        this.SERVER_URL = this.envService.SERVER_URL;
+        this.APP_URL = this.envService.CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
+        
+        this.clientId = this.envService.clientId;
+        this.clientSecret = this.envService.clientSecret;
+        this.imagesHost = this.envService.imagesHost;
     }
 
     getOptions(): RequestOptions {
@@ -319,7 +331,7 @@ export class AuthenticationService {
         this.loggedInUserRole = "";
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
-            if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {
+            if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {
                 window.location.href = 'https://www.xamplify.com/';
             } else {
                 this.router.navigate( ['/'] )

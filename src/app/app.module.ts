@@ -51,6 +51,7 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
+import { EnvServiceProvider } from './env.service.provider';
 
 
 @NgModule({
@@ -67,7 +68,7 @@ import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider],
     bootstrap: [AppComponent]
 
 })
