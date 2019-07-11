@@ -30,6 +30,8 @@ export class FormAnalyticsComponent implements OnInit {
     statusCode:number = 200;
     selectedSortedOption:any;
     searchKey = "";
+    campaignForms = false;
+    routerLink = "/home/forms/manage";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService,public formService:FormService, 
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,
@@ -39,13 +41,18 @@ export class FormAnalyticsComponent implements OnInit {
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];
         this.campaignAlias = this.route.snapshot.params['campaignAlias'];
+        if(this.campaignAlias!=undefined){
+            this.pagination.campaignId = parseInt(this.campaignAlias);
+            this.campaignForms = true;
+            this.routerLink = "/home/forms/cf/"+this.pagination.campaignId;
+        }
         this.listSubmittedData(this.pagination);
     }
     
     listSubmittedData( pagination: Pagination) {
         pagination.searchKey = this.searchKey;
         this.referenceService.loading( this.httpRequestLoader, true );
-        this.formService.getSubmittedFormData( pagination,this.alias ).subscribe(
+        this.formService.getFormAnalytics( pagination,this.alias,false ).subscribe(
             ( response: any ) => {
                 const data = response.data;
                 this.statusCode = response.statusCode;

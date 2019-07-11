@@ -6,3 +6,11 @@
 #actions-row{
 	width: 20%
 }
+
+#min-width{
+	min-width: 145px;
+}
+
+#right-corner{
+	float: right;
+}

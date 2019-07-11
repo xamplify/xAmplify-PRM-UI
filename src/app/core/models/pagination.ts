@@ -2,6 +2,7 @@ import { EmailTemplateType } from '../../email-template/models/email-template-ty
 import { Criteria } from '../../contacts/models/criteria';
 
 export class Pagination {
+    
 	pageIndex = 1;
 	maxResults = 12;
 	sortcolumn: string = null;
@@ -32,4 +33,6 @@ export class Pagination {
 	isListView:boolean = false;
 	dealStatus:string = null;
 	showDraftContent=false;
+	campaignForm = false;
+	
 }

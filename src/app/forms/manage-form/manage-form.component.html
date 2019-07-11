@@ -6,13 +6,17 @@
         <i class="fa fa-angle-right"></i></li>
       <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a
           [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
-      <li style="color: #808080">Manage Forms</li>
+          <ng-container *ngIf="pagination.campaignForm">
+          	       <li>
+          	       <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
+          </ng-container>
+            <li style="color: #808080">Manage Forms</li>
     </ul>
   </div>
   <div style="position: relative; top: -10px">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="statusCode==200">
     <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="col-md-12">
       <div class="portlet light clearfix" style="min-height: 644px;">
@@ -66,7 +70,8 @@
                     <th class="visible-xs" colspan="1" style="width: 45%">Email Template List</th>
                     <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form Details</th>
                     <th class="hidden-xs text-center">Created On</th>
-                    <th class="text-center" style="min-width: 145px;">Actions</th>
+                    <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width">Actions</th>
+                    <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,17 +98,17 @@
                     </td>
                     <td id="actions-row">
                       <div class="actions-block override-actions">
-                        <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
+                        <a *ngIf="!pagination.campaignForm" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
                         <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                           <i class="fa fa-eye"></i>
                         </a>
-                        <a id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
+                        <a *ngIf="!pagination.campaignForm" id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
                           title="Delete">
                           <i class="fa fa-trash-o"></i>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
+                        <a *ngIf="!pagination.campaignForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
                           <i class="fa fa-clipboard"></i>
                         </a>
                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip"
@@ -144,16 +149,16 @@
                 </h6>
               </div>
               <div class="bar">
-                <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
+                <a *ngIf="!pagination.campaignForm" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                   <i class="fa fa-pencil-square-o"></i>
                 </a>
                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)"> 
                 	<i class="fa fa-eye"></i>
                 </a>
-                <a (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete">
+                <a *ngIf="!pagination.campaignForm" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete">
                   <i class="fa fa-trash-o"></i>
                 </a>
-                <a data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
+                <a *ngIf="!pagination.campaignForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
                   <i class="fa fa-clipboard"></i>
                 </a>
                 <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics">
@@ -202,4 +207,14 @@
   </div>
   <app-scroll-top></app-scroll-top>
   <app-preview-popup #previewPopUpComponent></app-preview-popup>
+  
+  
+  <div class="col-xs-12 p5" *ngIf="statusCode==403">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Access Denied</h4>
+				</strong>
+			</div>
+		</div>
+  
 </div>

@@ -6,11 +6,15 @@
 				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
-			<li>
-				<a [routerLink]="['/home/forms/manage']">Manage Forms</a><i class="fa fa-angle-right"></i>
+			<li *ngIf="campaignForms">
+				<a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a>Analytics</a>
+				<a routerLink="{{routerLink}}">Manage Forms</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li>
+				<a>Analytics</a> 
 			</li>
 		</ul>
 	</div>
@@ -22,7 +26,7 @@
 						<span class="caption-subject font-red-sunglo uppercase">{{formName}}</span>
 					</div>
 					<div class="inputs" align="right" style="float: right">
-						<a class="close-circle" [routerLink]="['/home/forms/manage']" data-toggle="tooltip" data-placement="top"
+						<a class="close-circle" routerLink="{{routerLink}}" data-toggle="tooltip" data-placement="top"
 							title="Close">
 							<i class="fa fa-times"></i>
 						</a>

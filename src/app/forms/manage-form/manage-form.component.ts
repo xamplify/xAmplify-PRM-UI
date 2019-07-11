@@ -1,5 +1,7 @@
-import { Component, OnInit, OnDestroy,ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,AfterViewInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
@@ -35,17 +37,17 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     private dom: Document;
     clientUrl = environment.CLIENT_URL;
     message = "";
-    
+    campaignId = 0;
+    statusCode = 200;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
     constructor( public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public formService: FormService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription,public sortOption:SortOption,private utilService:UtilService) {
+        public actionsDescription: ActionsDescription,public sortOption:SortOption,private utilService:UtilService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
-          
         if ( this.referenceService.isCreated ) {
             this.message = "Form created successfully";
             this.showMessageOnTop( this.message );
@@ -57,6 +59,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.campaignId = this.route.snapshot.params['alias'];
+        if(this.campaignId!=undefined){
+            this.pagination.campaignId = this.campaignId;
+            this.pagination.campaignForm = true;
+        }
         this.listForms( this.pagination );
     }
 
@@ -66,9 +73,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.formService.list( pagination ).subscribe(
             ( response: any ) => {
                 const data = response.data;
-                pagination.totalRecords = data.totalRecords;
-                this.sortOption.totalRecords = data.totalRecords;
-                pagination = this.pagerService.getPagedItems( pagination, data.forms );
+                this.statusCode = response.statusCode;
+                if(this.statusCode==200){
+                    pagination.totalRecords = data.totalRecords;
+                    this.sortOption.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems( pagination, data.forms );
+                }
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
@@ -223,7 +233,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
     
     goToAnalytics(form:Form){
-        this.router.navigate(['/home/forms/'+form.alias+'/analytics']);
+        if(this.pagination.campaignForm){
+            this.router.navigate(['/home/forms/'+form.alias+'/'+this.campaignId+'/analytics']);
+        }else{
+            this.router.navigate(['/home/forms/'+form.alias+'/analytics']);
+        }
 
     }
     
