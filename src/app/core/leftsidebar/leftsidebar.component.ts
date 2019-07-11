@@ -36,6 +36,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
             this.refService.getOrgCampaignTypes( response ).subscribe( data => {
                 this.enableLeads = data.enableLeads;
+                this.authService.module.enableLeadsByVendor = data.enableLeads;
                 console.log( data )
             } );
 
@@ -93,7 +94,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.orgAdminRole ) > -1 ) {
                     this.authService.module.isOrgAdmin = true;
                 }
-                if (roles.indexOf(this.roleName.companyPartnerRole) > -1)
+                if (!this.enableLeads && roles.indexOf(this.roleName.companyPartnerRole) > -1)
                 {
                     this.pagination.pageIndex = 1;
                     this.pagination.maxResults = 10000;
