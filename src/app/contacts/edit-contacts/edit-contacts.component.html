@@ -246,7 +246,7 @@
                         </div>
                         </ng-container>
 											</div>
-							 	<div class="col-sm-12 col-md-6 p0" *ngIf="selectedAddContactsOption === 8" style="margin-top: 10px;">
+							 	<div class="col-sm-12 col-md-6 p0" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; margin-left: 50px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -262,7 +262,7 @@
 										class="fa fa-times" aria-hidden="true"
 										style="color: red; margin-left: -12px;"></i>
 								</div>
-								<div class="btn-group pull-right" *ngIf="showEditContactData">
+								<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8" >
 									<div class="inputs" align="right" style="float: right">
 
 										<div class="inputs" align="right" style="float: right">
