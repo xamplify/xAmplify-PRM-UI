@@ -168,10 +168,10 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleErrorDelete);
     }
-    saveCalltoActionUser(user: User) {
+    saveCalltoActionUser(user: User, id) {
         console.log(user);
         try {
-            const url = this.URL + 'user/save-call-action-user';
+            const url = this.URL + id+'/user/save-call-action-user';
             return this.httpClient.post(url, user).catch(this.handleError);
         } catch (error) { console.log(error); }
     }
@@ -191,7 +191,7 @@ export class VideoFileService {
     }
     logEmbedVideoActions(xtremandLog: XtremandLog) {
         xtremandLog.campaignId = 0;
-        xtremandLog.userId = 0;
+       // xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
             if (xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime; }
