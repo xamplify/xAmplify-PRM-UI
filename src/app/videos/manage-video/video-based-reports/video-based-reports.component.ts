@@ -455,7 +455,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             subscribe(
             data => {
                 console.log(data);
-                data.data.forEach((element) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
+                data.data.forEach((element) => { if(element.time){ element.time = new Date(element.utcTimeString);} });
                 this.videoLeadsDetails = data.data;
                 this.videoLeadsDetailsPagination.totalRecords = data.totalRecords;
                 this.videoLeadsDetailsPagination = this.pagerService.getPagedItems(this.videoLeadsDetailsPagination, this.videoLeadsDetails);
