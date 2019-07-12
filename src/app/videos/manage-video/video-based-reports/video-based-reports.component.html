@@ -200,6 +200,67 @@
 		</div>
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<!-- BEGIN PORTLET-->
+		<div class="portlet light">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp uppercase">video leads</span>
+				</div>
+      <!--   <div class="panel-title pull-right">
+					<span style="float:right; font-size: 13px;">
+					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
+						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
+					</select>
+				</span>
+				</div> -->
+			</div>
+			<div class="portlet-body">
+          <div class="alert alert-info" *ngIf="videoLeadsDetailsPagination.pagedItems?.length == 0">
+            No data available
+         </div>
+					
+					<div class="table-responsive" *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0">
+						<table class="table tgrid">
+							<thead>
+								<tr>
+									<th class="center text-uppercase headerCss">NAME</th>
+									<th class="center text-uppercase headerCss">date and time</th>
+                  					<th class="center text-uppercase headerCss">location</th>
+                 					 <th class="center text-uppercase headerCss">device</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of videoLeadsDetails">
+									<td>
+										<app-user-info  [userInfo]="item"> </app-user-info>
+									</td>
+									<td class="center">
+									<app-timestamp [dateAndTime]="item.date"> </app-timestamp>
+									</td>
+                           <td class="center">
+                           <app-location  [userLocation]="item"> </app-location>
+                        </td>
+                         <td class="center">
+									<app-platform [userPlatform]="item"> </app-platform>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<!--pager here  -->
+						<app-pagination *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'videoLeads'" (notifyParent)="setPage($event)"
+						(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+					</div>
+					
+			
+      </div>
+		</div>
+		<!-- END PORTLET-->
+	</div>
+	</div>
 <!--  model popup for donut video based report page  -->
 <div class="modal right fade" id="usersMinutesModelPopup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog modal-lg video-modal" role="document" >

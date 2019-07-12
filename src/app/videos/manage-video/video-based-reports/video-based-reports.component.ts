@@ -60,6 +60,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     nonApplicableUsersViews: any;
     videoPlayedPagination: Pagination = new Pagination();
     reportsPagination: Pagination = new Pagination();
+    
+    videoLeadsDetails: any;
+    videoLeadsDetailsPagination: Pagination = new Pagination();
     countryCode: string;
     downloadTypeName = '';
     downloadCsvList: any;
@@ -445,20 +448,45 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
+    
+    videoLeadsList() {
+        this.paginationType = 'videoLeads';
+        this.videoBaseReportService.videoLeadsList(this.selectedVideo.id, this.videoLeadsDetailsPagination).
+            subscribe(
+            data => {
+                console.log(data);
+                data.data.forEach((element) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
+                this.videoLeadsDetails = data.data;
+                this.videoLeadsDetailsPagination.totalRecords = data.totalRecords;
+                this.videoLeadsDetailsPagination = this.pagerService.getPagedItems(this.videoLeadsDetailsPagination, this.videoLeadsDetails);
+                console.log(this.videoLeadsDetailsPagination);
+            },
+            error => {
+                this.xtremandLogger.error(error);
+                //this.xtremandLogger.errorPage(error);
+            }
+            );
+    }
+    
     setPage(event: any) {
         this.paginationType = event.type;
         if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; }
+        else if(this.paginationType === 'videoLeads'){ this.videoLeadsDetailsPagination.pageIndex = event.page; }
         else { this.pagination.pageIndex = event.page; }
         this.callPaginationMethods();
     }
     paginationDropdown(pagination:Pagination){
         if(this.paginationType === 'videoPlayed'){this.videoPlayedPagination = pagination; }
+        else if(this.paginationType === 'videoLeads'){ this.videoLeadsDetailsPagination = pagination; }
         else { this.pagination = pagination; }
         this.callPaginationMethods();
     }
     callPaginationMethods(){
         if (this.paginationType === 'userMinutesWatched') {
             this.clickedMinutesWatched(this.userId);
+        }
+        else if (this.paginationType === 'videoLeads') {
+            this.videoLeadsList();
         }
         else if (this.paginationType === 'watchedFully') {
             this.watchedFullyDetailReport();
@@ -748,6 +776,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
         this.nonApplicableUsersMinutesWatched();
+        this.videoLeadsList();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');
