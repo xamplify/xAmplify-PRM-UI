@@ -132,7 +132,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     marketoImageBlur: boolean = false;
     marketoImageNormal: boolean = false;
 
-
+    paginatedSelectedIds = [];
 
 
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
@@ -1123,6 +1123,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setPage( page: number ) {
         try {
+            
+            this.paginatedSelectedIds = [];
+            
             if ( page < 1 || page > this.pager.totalPages ) {
                 return;
             }
@@ -1142,6 +1145,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.isHeaderCheckBoxChecked = true;
                 } else {
                     this.isHeaderCheckBoxChecked = false;
+                }
+                
+                for(let i=0; i< items.length; i++){
+                    if(items){
+                        this.paginatedSelectedIds.push(items[i]);  
+                    }
                 }
             }
         } catch ( error ) {
@@ -1268,6 +1277,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             $( '[name="campaignContact[]"]:checked' ).each( function() {
                 var id = $( this ).val();
                 self.selectedContactListIds.push( parseInt( id ) );
+                self.paginatedSelectedIds.push( parseInt( id ) );
+                
                 console.log( self.selectedContactListIds );
                 $( '#ContactListTable_' + id ).addClass( 'contact-list-selected' );
                 for ( var i = 0; i < self.pagedItems.length; i++ ) {
@@ -1282,13 +1293,16 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.allselectedUsers = this.removeDuplicates( this.allselectedUsers, 'emailId' );
             this.selectedContactListIds = this.referenceService.removeDuplicates( this.selectedContactListIds );
+            this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
         } else {
             $( '[name="campaignContact[]"]' ).prop( 'checked', false );
             $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );
             if ( this.pager.maxResults == this.pager.totalItems ) {
                 this.selectedContactListIds = [];
+                this.paginatedSelectedIds = [];
                 this.allselectedUsers.length = 0;
             } else {
+                this.paginatedSelectedIds = [];
                 let paginationIdsArray = new Array;
                 for ( let j = 0; j < this.pagedItems.length; j++ ) {
                     var paginationEmail = this.pagedItems[j].emailId;
@@ -1312,6 +1326,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         if ( isChecked ) {
             $( '#row_' + contactId ).addClass( 'contact-list-selected' );
             this.selectedContactListIds.push( contactId );
+            this.paginatedSelectedIds.push( contactId );
             var object = {
                 "emailId": email,
                 "firstName": firstName,
@@ -1322,9 +1337,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             $( '#row_' + contactId ).removeClass( 'contact-list-selected' );
             this.selectedContactListIds.splice( $.inArray( contactId, this.selectedContactListIds ), 1 );
+            this.paginatedSelectedIds.splice( $.inArray( contactId, this.paginatedSelectedIds ), 1 );
             this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
         }
-        if ( this.selectedContactListIds.length == this.pagedItems.length ) {
+        if ( this.paginatedSelectedIds.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
         } else {
             this.isHeaderCheckBoxChecked = false;
@@ -2648,6 +2664,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         {
             $('#row_' + user.id).addClass('contact-list-selected');
             this.selectedContactListIds.push(user.id);
+            this.paginatedSelectedIds.push( user.id );
             var object = {
                 "id": user.id,
                 "email": user.emailId,
@@ -2668,9 +2685,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
+            this.paginatedSelectedIds.splice($.inArray(user.id, this.paginatedSelectedIds), 1);
             this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
         }
-        if (this.selectedContactListIds.length == this.pagedItems.length)
+        if (this.paginatedSelectedIds.length == this.pagedItems.length)
         {
             this.isHeaderCheckBoxChecked = true;
         } else
@@ -2691,6 +2709,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 var id = $(this).val();
                 self.selectedContactListIds.push(parseInt(id));
+                self.paginatedSelectedIds.push(parseInt(id));
                 console.log(self.selectedContactListIds);
                 $('#ContactListTable_' + id).addClass('contact-list-selected');
                 for (var i = 0; i < self.pagedItems.length; i++)
@@ -2716,6 +2735,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'email');
             this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
+            this.paginatedSelectedIds = this.referenceService.removeDuplicates(this.paginatedSelectedIds);
         } else
         {
             $('[name="campaignContact[]"]').prop('checked', false);
@@ -2723,9 +2743,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             if (this.pager.maxResults == this.pager.totalItems)
             {
                 this.selectedContactListIds = [];
+                this.paginatedSelectedIds = [];
                 this.allselectedUsers.length = 0;
             } else
             {
+                this.paginatedSelectedIds = [];
                 let paginationIdsArray = new Array;
                 for (let j = 0; j < this.pagedItems.length; j++)
                 {
