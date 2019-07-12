@@ -166,7 +166,7 @@
         </ul>
       </li>
 
-      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor || isOnlyPartner" [ngClass]="{'active': location.path().includes('team')}">
+      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor || isOnlyPartner || authService.hasOnlyPartnerRole" [ngClass]="{'active': location.path().includes('team')}">
         <a  [routerLink]="['./team/add-team']" >
         <i class="fa fa-users"></i>
         <span class="title">Team</span>
@@ -175,8 +175,6 @@
         </a>
 
       </li>
-
-
       <!-- ------Deal Registration------ -->
       <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && authService.module.enableLeads) 
       || (authService.module.isVendor && authService.module.enableLeads) || 

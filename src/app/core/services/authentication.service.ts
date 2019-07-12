@@ -329,6 +329,7 @@ export class AuthenticationService {
         this.isAddedByVendor = false;
         this.isPartnerTeamMember = false;
         this.loggedInUserRole = "";
+        this.hasOnlyPartnerRole = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {
