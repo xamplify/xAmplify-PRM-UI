@@ -179,7 +179,7 @@
       <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && authService.module.enableLeads) 
       || (authService.module.isVendor && authService.module.enableLeads) || 
       (isOnlyPartner && authService.module.enableLeadsByVendor) || 
-      (this.authService.module.isCompanyPartner  && authService.module.enableLeadsByVendor) 
+      (authService.module.isCompanyPartner  && authService.module.enableLeadsByVendor) 
       ||(authService.module.hasOpportunityRole && authService.module.enableLeads)" 
       [ngClass]="{'active': location.path().includes('deals')}">
         <a   [routerLink]="['./deals/manage']">
