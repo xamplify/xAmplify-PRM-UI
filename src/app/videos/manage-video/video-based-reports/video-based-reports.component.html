@@ -227,7 +227,7 @@
 						<table class="table tgrid">
 							<thead>
 								<tr>
-									<th class="center text-uppercase headerCss">NAME</th>
+									<th class="center text-uppercase headerCss width30">NAME</th>
 									<th class="center text-uppercase headerCss">date and time</th>
                   					<th class="center text-uppercase headerCss">location</th>
                  					 <th class="center text-uppercase headerCss">device</th>
@@ -251,7 +251,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<app-pagination *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'videoLeads'" (notifyParent)="setPage($event)"
+						<app-pagination *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0" [pagination]="videoLeadsDetailsPagination" [type]="'videoLeads'" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 					

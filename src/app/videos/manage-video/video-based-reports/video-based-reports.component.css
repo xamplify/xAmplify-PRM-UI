@@ -4,6 +4,9 @@ padding: 2px 5px;
 #newPlayerVideo {
 width: auto;
 }
+.width30{
+	width:30%;
+}
 
 .videoTitle {
 word-break: break-all;
