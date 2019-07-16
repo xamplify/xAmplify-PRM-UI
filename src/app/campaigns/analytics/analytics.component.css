@@ -11,6 +11,11 @@ a.disabled {
 	cursor: not-allowed;
 }
 
+.cancel-alert-class{
+	margin-left: 10px;
+    margin-right: 10px;
+}
+
 .heatmap {
 	min-width: 100%;
 	background: rgba(0, 166, 232, 0.5);
