@@ -69,7 +69,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     errorMessage:string;
     callToActionErrorMessage: any;
     isCallToActionError = false;
-    
+
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
         public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public referService: ReferenceService,
@@ -206,7 +206,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             this.callAction.isOverlay = false;
         } else { this.callAction.isOverlay = true; }
     }
-    
+
     play360Video() {
         this.is360Value = true;
         console.log('Loaded 360 Video');
@@ -455,7 +455,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         // $('#videoId').css('height', window.innerHeight);
         this.setVideoIdHeightWidth();
     }
-    
+
     playNormalVideo() {
         $('.p-video').remove();
         this.videoUtilService.normalVideoJsFiles();
@@ -465,7 +465,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';  // need to remove it
-        
+
        //this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         this.setVideoIdHeightWidth();
@@ -817,16 +817,21 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
          if (this.videoJSplayer) {
              if (this.callAction.videoOverlaySubmit === 'PLAY') {
                  this.videoJSplayer.play();
-             } else { this.videoJSplayer.pause(); } 
+             } else { this.videoJSplayer.pause(); }
       }
     }
     saveCallToActionUserForm() {
         this.xtremandLogger.debug(this.callAction.email_id);
-        this.user.emailId = this.toLowerString(this.callAction.email_id);
-        this.user.firstName = this.callAction.firstName;
-        this.user.lastName = this.callAction.lastName;
-        this.xtremandLogger.debug(this.user);
-        this.videoFileService.saveCalltoActionUser(this.user, this.embedVideoFile.id)
+        // this.user.emailId = this.toLowerString(this.callAction.email_id);
+        // this.user.firstName = this.callAction.firstName;
+        // this.user.lastName = this.callAction.lastName;
+        // this.xtremandLogger.debug(this.user);
+        const emailLogReport = {
+          'emailId': this.toLowerString(this.callAction.email_id),'firstName': this.callAction.firstName,
+          'lastName': this.callAction.lastName, 'sessionId': this.sessionId
+        };
+        this.xtremandLogger.debug(emailLogReport);
+        this.videoFileService.saveCalltoActionUser(emailLogReport, this.embedVideoFile.id)
             .subscribe((result: any) => {
                this.xtremandLogger.info('Save user Form call to acton is successfull' + result);
                 if(result.statusCode === 200){

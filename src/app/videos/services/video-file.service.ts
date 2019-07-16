@@ -168,11 +168,11 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleErrorDelete);
     }
-    saveCalltoActionUser(user: User, id) {
-        console.log(user);
+    saveCalltoActionUser(emailLogReport, id) {
+        console.log(emailLogReport);
         try {
             const url = this.URL + id+'/user/save-call-action-user';
-            return this.httpClient.post(url, user).catch(this.handleError);
+            return this.httpClient.post(url, emailLogReport).catch(this.handleError);
         } catch (error) { console.log(error); }
     }
     showCampaignVideo(emailLog: any) {
