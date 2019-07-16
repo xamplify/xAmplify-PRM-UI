@@ -398,6 +398,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse('SUCCESS', "Event has been cancelled successfully", true);
                 console.log("Event Successfully cancelled");
                 this.cancelEventMessage = "";
+                this.listCampaign(this.pagination);
                 this.isloading = false;
               },
               error => { $('#cancelEventModal').modal('hide'); this.logger.errorPage(error) },
