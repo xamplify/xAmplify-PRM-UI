@@ -67,6 +67,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     logoImageUrlPath: string;
     logoLink: string;
     errorMessage:string;
+    callToActionErrorMessage: any;
+    isCallToActionError = false;
     
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
@@ -216,6 +218,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         const player360 = this;
         this.videoJSplayer = videojs('videoId', {
@@ -463,7 +466,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';  // need to remove it
         
-       // this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
+       this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         this.setVideoIdHeightWidth();
         $('.video-js .vjs-tech').css('width', '100%');
@@ -825,10 +828,15 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.debug(this.user);
         this.videoFileService.saveCalltoActionUser(this.user, this.embedVideoFile.id)
             .subscribe((result: any) => {
-                this.xtremandLogger.info('Save user Form call to acton is successfull' + result);
+               this.xtremandLogger.info('Save user Form call to acton is successfull' + result);
+                if(result.statusCode === 200){
                 this.xtremandLog.userId = result.id;
                 this.playVideoJs();
                 this.videoJSplayer.play();
+               }else if(result.statusCode === 409){
+            	   this.isCallToActionError = true;
+            	   this.callToActionErrorMessage = result.errorMessage;
+               }
                // this.referService.shareUserId = result.id;
                 },
               (error: any) => {
