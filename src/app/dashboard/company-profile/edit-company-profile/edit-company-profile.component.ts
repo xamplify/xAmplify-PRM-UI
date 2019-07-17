@@ -311,6 +311,24 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
     }
+    
+    defaultPartnerList() {
+        try {
+            this.companyProfileService.defaultPartnerList( this.loggedInUserId )
+                .subscribe(
+                ( data: any ) => {
+                    console.log( data );
+                },
+                error => console.error( error ),
+                () => {
+                    console.log( 'loadContacts() finished' );
+                }
+                );
+        } catch ( error ) {
+            console.error( error, "addPartnerComponent", "default PartnerList" );
+        }
+    }
+
 
     save() {
         this.ngxloading = true;
@@ -337,6 +355,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                         if(this.message==='Company Profile Info Added Successfully') {
                           this.message = 'Company Profile saved successfully';
                           this.formUpdated = false;
+                          this.defaultPartnerList();
                         }
                         $('#info').hide();
                         $('#edit-sucess').show(600);

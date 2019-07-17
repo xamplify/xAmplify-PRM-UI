@@ -16,6 +16,12 @@ export class CompanyProfileService {
         .map(this.extractData)
         .catch(this.handleError);
    }
+    
+    defaultPartnerList(userId: number){
+        return this.http.get( this.URL + `default-partner-list/${userId}?access_token=${this.authenticationService.access_token}` )
+        .map( this.extractData )
+        .catch( this.handleError );
+   }
 
     save(companyProfile:CompanyProfile,userId:number){
         return this.http.post(this.URL+"company-profile/save/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
