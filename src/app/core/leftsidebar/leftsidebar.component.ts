@@ -94,6 +94,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.orgAdminRole ) > -1 ) {
                     this.authService.module.isOrgAdmin = true;
                 }
+                
+                if (roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.allRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorRole ) > -1 ) {
+                        this.authService.module.isAddingPartnersAccess = true;
+                    }
+                
                 if (!this.enableLeads && roles.indexOf(this.roleName.companyPartnerRole) > -1)
                 {
                     this.pagination.pageIndex = 1;
