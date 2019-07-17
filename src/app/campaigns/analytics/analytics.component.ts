@@ -367,7 +367,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     try{
     this.loading = true;
     this.paginationType = 'viewsBarChart';
-
+    pagination.maxResults = 8;
     if ( this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess ) {
         pagination.campaignId = campaignId;
         pagination.campaignType = this.campaignType;

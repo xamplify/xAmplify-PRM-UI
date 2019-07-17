@@ -55,7 +55,7 @@
 					</div>
 					<div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
 						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-						This Event has canceled.
+						The event has been cancelled.
 					</div>
 					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}"
 					 *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
@@ -867,7 +867,9 @@
 					<div id="campaign-views-barchart" style="width: 100%; max-width: 100%; height: 260px; margin: 0 auto"></div>
 					<div>
 						<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'"
-						 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						 (notifyParent)="setPage($event)" [isDropdown]="true"></app-pagination>
+			<!-- 		 This code is for pagination dropdown
+					 (notifyParentDropDown)="paginationDropdown($event)" -->
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6">
