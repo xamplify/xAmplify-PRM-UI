@@ -326,6 +326,7 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+        module.isAddingPartnersAccess = false;
         this.isAddedByVendor = false;
         this.isPartnerTeamMember = false;
         this.loggedInUserRole = "";
