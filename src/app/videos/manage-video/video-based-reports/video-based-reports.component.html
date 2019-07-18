@@ -210,6 +210,14 @@
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp uppercase">video leads</span>
 				</div>
+				<div class="btn-group pull-right" style="margin-top: 8px; cursor:pointer; color: #7d8c98">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-right: 15px; float:right;">
+					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+				</span>
+					<ul class="dropdown-menu pull-right">
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
+					</ul>
+				</div>
       <!--   <div class="panel-title pull-right">
 					<span style="float:right; font-size: 13px;">
 					<select style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="selectedCampaignWatchedUsers($event.value)">
@@ -219,6 +227,11 @@
 				</div> -->
 			</div>
 			<div class="portlet-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
           <div class="alert alert-info" *ngIf="videoLeadsDetailsPagination.pagedItems?.length == 0">
             No data available
          </div>
@@ -277,11 +290,16 @@
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
 				<div class="row">
 					<div class="table-responsive" style="padding: 0px 7px;">
 						<table class="table tgrid">
@@ -322,7 +340,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
 			</div>
 		</div>
 	</div>
@@ -346,11 +364,16 @@
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
 				<div class="row">
 					<div *ngIf="watchedFullyReportData?.length < 1" class="col-md-9 alert alert-info m0" style="width: 98%;position: relative;right: -10px;">
 						<strong>No records found</strong>
@@ -394,7 +417,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
 			</div>
 		</div>
 	</div>
@@ -410,18 +433,23 @@
 					aria-label="Close" >
 					<span aria-hidden="true">&times;</span>
 				</button> -->
-				<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
+				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 align="center" class="m0">Total Minutes Watched By Top Recipients</h4>
 				<div class="btn-group pull-right" style="margin-top: 10px; cursor:pointer; color: #7d8c98; margin-right:-15px;">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -24px;margin-right: 21px; float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body clearfix">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
 				<div class="table-responsive">
 					<table class="table tgrid">
 						<thead>
@@ -454,7 +482,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
 			</div>
 		</div>
 	</div>
@@ -476,10 +504,15 @@
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 							<ul class="dropdown-menu pull-right lowercase">
-								<li><a id="delete_button" (click)="downloadTypeName = 'playedDuration'; downloadLogs()"> Export To Excel </a></li>
+								<li><a id="delete_button" (click)="downloadTypeName = 'playedDuration'; downloadFunctionality()"> Export To Excel </a></li>
 							</ul>
 						</div>
 					</div>
+					<div class="alert alert-info flex" *ngIf="isLoadingDownloadList && isVideoPlayedDurationDownload">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
 						<table class="table tgrid" id="sample_editable_1">
 							<thead>
@@ -523,10 +556,15 @@
 						     <i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				            </span>
 							<ul class="dropdown-menu pull-right">
-								<li><a id="delete_button" (click)="downloadTypeName = 'skippedDuration'; downloadLogs()"> Export To Excel </a></li>
+								<li><a id="delete_button" (click)="downloadTypeName = 'skippedDuration'; downloadFunctionality()"> Export To Excel </a></li>
 							</ul>
 						</div>
 					</div>
+					<div class="alert alert-info flex" *ngIf="isLoadingDownloadList && !isVideoPlayedDurationDownload">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
 					<div class="table-responsive" style="padding: 11px; margin: -3px;">
 						<table class="table tgrid" id="sample_editable_1">
 							<thead>
@@ -564,7 +602,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="clearPaginationValues()">Close</button>
 			</div>
 		</div>
 	</div>
@@ -583,11 +621,16 @@
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body clearfix">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					<div class="loader"
+						style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+				</div>
 				<div class="table-responsive">
 					<table class="table tgrid">
 						<thead>
