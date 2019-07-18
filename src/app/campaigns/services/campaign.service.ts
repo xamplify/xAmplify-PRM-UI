@@ -621,4 +621,12 @@ export class CampaignService {
           .map(this.extractData)
           .catch(this.handleError);
   }
+  
+  
+  listAutoResponseAnalytics(pagination:Pagination) {
+      var url =this.URL+"autoResponse/analytics?access_token="+this.authenticationService.access_token;
+      return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);   
+  }
 }

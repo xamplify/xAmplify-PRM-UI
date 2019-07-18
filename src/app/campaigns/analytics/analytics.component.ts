@@ -24,7 +24,7 @@ import { Tweet } from '../../social/models/tweet';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { EventCampaign } from '../models/event-campaign';
-declare var $, Highcharts: any;
+declare var $, Highcharts,swal: any;
 
 @Component({
   selector: 'app-analytics',
@@ -69,6 +69,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userWatchedReportPagination: Pagination = new Pagination();
   rsvpDetailAnalyticsPagination: Pagination = new Pagination();
   sentEmailOpenPagination: Pagination = new Pagination();
+  autoResponseAnalyticsPagination:Pagination = new Pagination();
+
 
   socialCampaign: SocialCampaign = new SocialCampaign();
   redistributedAccounts = new Set<number>();
@@ -113,6 +115,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   isOpenNotificationModal = false;
   selectedEmailNotOpenUserId: any;
   httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  autoResponeAnalyticsLoader:HttpRequestLoader = new HttpRequestLoader();
   hasClientError = false;
   contactListDeleteError = false;
   interactiveDataTimeLineViewEnable = false;
@@ -1774,4 +1777,48 @@ showTimeLineView(){
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
   }
+  
+  showAutoResponseAnalytics(campaign:any,selectedIndex:number){
+      this.autoResponseAnalyticsPagination = new Pagination();
+      $.each(this.campaignViews,function(index,row){
+          if(selectedIndex!=index){
+              row.expanded = false;
+          }
+      });
+      campaign.expanded = !campaign.expanded;
+      if(campaign.expanded){
+          this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination, campaign);
+      }
+  }
+  
+  
+  listAutoResponseAnalytics(pagination:Pagination,campaign:any){
+      this.referenceService.loading(this.autoResponeAnalyticsLoader, true);
+      this.autoResponseAnalyticsPagination.campaignId = campaign.campaignId;
+      this.autoResponseAnalyticsPagination.userId = campaign.userId;
+      this.campaignService.listAutoResponseAnalytics(pagination)
+      .subscribe(
+          response => {
+              let data = response.data;
+              pagination.totalRecords = data.totalRecords;
+              let analyticsList = data.data;
+              $.each(analyticsList,function(index,autoResponse){
+                  autoResponse.displayTime = new Date(autoResponse.sentTimeUtcString);
+             });
+              pagination = this.pagerService.getPagedItems(pagination,analyticsList);
+              this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
+          },
+          error => {
+              swal("Oops! Something went wrong", "Please try after sometime", "error");
+              this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
+          },
+          () => this.xtremandLogger.info("Finished showAutoResponseAnalytics()")
+      );
+  }
+  
+  setAutoResponsesPage( event: any,campaign:any ) {
+      this.autoResponseAnalyticsPagination.pageIndex = event.page;
+      this.listAutoResponseAnalytics( this.autoResponseAnalyticsPagination,campaign );
+      }
+  
 }

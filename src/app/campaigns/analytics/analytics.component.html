@@ -553,10 +553,13 @@
 															<span *ngIf="campaignType==='REGULAR'">Email Opened</span>
 															<span *ngIf="campaignType==='SOCIAL'">Redistributed</span>
 														</th>
+														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaign.dipCampaign">
+															Auto Responses
+														</th>
 													</tr>
 												</thead>
 												<tbody>
-													<ng-container *ngFor="let item of campaignViewsPagination.pagedItems">
+													<ng-container *ngFor="let item of campaignViewsPagination.pagedItems;let i=index">
 														<tr (click)="userTimeline(item);">
 															<td>
 																<app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
@@ -624,7 +627,51 @@
 																	</ng-container>
 																</ng-container>
 															</td>
+															<td *ngIf="campaign.dipCampaign">
+										                      <div class="actions-block" id="align-center" (click)="$event.stopPropagation()">
+										                      	<font class="circled-number" *ngIf="item.autoResponsesCount==0" style="margin-right: 50px;cursor: not-allowed">{{item.autoResponsesCount}}</font>
+										                       <font class="circled-number" *ngIf="item.autoResponsesCount>0">{{item.autoResponsesCount}}</font>
+										                        <a *ngIf="item.autoResponsesCount>0" (click)="$event.stopPropagation();showAutoResponseAnalytics(item,i)"   data-toggle="tooltip" data-placement="top" title="View Auto Response Analytics">
+ 										                          <i class="fa" [ngClass]="{'fa-plus': !item.expanded, 'fa-minus': item.expanded}"></i>
+										                        </a>
+										                      </div>
+                   											 </td>
 														</tr>
+														<tr [ngClass]="{'hidden': !item.expanded}" id="autoresponse-tr">
+														 	 <td colspan="5">
+														 	 	 <table class="table tgrid table-condensed" id="autoresponse-analytics">
+											                        <thead>
+											                          <tr>
+											                            <th  class="center-aligned">Auto Response Type</th>
+											                            <th class="center-aligned">Subject</th>
+											                            <th class="center-aligned">Reply In X Days</th>
+											                            <th class="center-aligned">Reply Time</th>
+											                            <th class="center-aligned">Sent Time</th>
+											                          </tr>
+											                        </thead>
+											                        <tbody>
+											                         <app-auto-response-loader  *ngIf="autoResponeAnalyticsLoader.isLoading"></app-auto-response-loader>
+											                         <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+											                        	<tr  *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
+											                        		<td class="center-aligned">{{autoResponseAnalytics.autoResponseType}}</td>
+												                        	<td class="center-aligned">{{autoResponseAnalytics.subject}}</td>
+												                        	<td class="center-aligned">{{autoResponseAnalytics.replyInDays}}</td>
+												                        	<td class="center-aligned">{{autoResponseAnalytics.replyTimeString}}</td>
+												                        	<td class="center-aligned">
+												                        		<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime"> </app-timestamp>
+                        														<span *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
+												                        	</td>
+											                        	</tr>
+											                        	</ng-container>
+														 	 		</tbody>
+														 	 		</table>
+														 	 		 <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
+																			<app-pagination [pagination]="autoResponseAnalyticsPagination"
+																				(notifyParent)="setAutoResponsesPage($event,item)"
+																				(notifyParentDropDown)="listAutoResponseAnalytics($event,item)" [hidden]="autoResponeAnalyticsLoader.isLoading"></app-pagination>
+																		</div>
+														 	 </td>
+														 </tr>
 													</ng-container>
 												</tbody>
 											</table>

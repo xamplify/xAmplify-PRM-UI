@@ -620,3 +620,18 @@ tr>td>h6 {
     font-size: 13px !important;
     position: absolute !important;
 }
+
+#align-center{
+	margin-right: 80px;
+}
+
+.center-aligned{
+	text-align: center;
+}
+
+#autoresponse-analytics{
+	background-color:#f1f1f15e;
+}
+#autoresponse-tr{
+	background-color: #d3d3d317
+}
