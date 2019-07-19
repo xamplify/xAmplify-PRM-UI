@@ -52,7 +52,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignViews: any;
   campaignTotalViewsData: any;
   campaignBarViews: any;
-  emailLogs: any;
+  emailLogs = [];
   emailLogDetails: any;
   totalEmailLogs: any;
   campaignReport: CampaignReport = new CampaignReport;
@@ -650,6 +650,28 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
   }
 
+  listautoResponseAnalyticsByCampaignAndUser(campaignId: number, userId: number){
+    try{
+      this.loading = true;
+      let json = {"pageIndex":1,"maxResults":120, "userId":userId,"campaignId":campaignId};
+      this.campaignService.listautoResponseAnalyticsByCampaignAndUser(json)
+       .subscribe( result => {
+         const response = result.data.data;
+        response.forEach((element, index) => {
+           element.time = new Date(element.sentTimeUtcString); 
+           console.log(element);
+        });
+        this.emailLogs.push(...response);
+        this.loading =false;
+        
+       },
+      error => console.log(error),
+      () => {
+        this.emailLogs.sort((b, a) => new Date(b.time).getTime() - new Date(a.time).getTime());
+      } )
+    }catch(error) {this.xtremandLogger.error('Error in analytics page listautoResponseAnalyticsByCampaignAndUser'+error); }
+  }
+
   listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
     try{
       this.loading = true;
@@ -657,12 +679,15 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        .subscribe( data => {
         data.forEach((element, index) => {
          if(element.time) { element.time = new Date(element.utcTimeString); }});
-        this.emailLogs = data;
+         this.emailLogs = data;
         this.loading =false;
         console.log(data);
        },
       error => console.log(error),
-      () => { this.count(); } )
+      () => {
+        this.count();
+        this.listautoResponseAnalyticsByCampaignAndUser(campaignId, userId);
+      } )
     }catch(error) {this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser'+error); }
   }
 

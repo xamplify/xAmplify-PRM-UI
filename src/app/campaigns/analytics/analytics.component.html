@@ -1016,6 +1016,7 @@
 								<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 								<img *ngIf="emailLog.actionId == 15" alt="clicked" src="assets/images/clicked.png">
 								<img *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10" alt="watched" src="assets/images/video.png">
+								<img *ngIf="emailLog.autoResponseType" src="assets/images/closed-env.png">
 							</div>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
@@ -1042,7 +1043,11 @@
 											<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}}
 												<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
 											</span> <span *ngIf="emailLog.actionId == 10">re-</span>played
-										</span><app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
+										</span>
+										<span *ngIf="emailLog.autoResponseType">
+											<h5>Email sent for the auto response: <b>{{emailLog.autoResponseType}}</b></h5>
+											<h6>Subject Line: <b>{{emailLog.subject}}</b></h6>
+										</span>
 									</h5>
 									<span *ngIf="emailLog.countryCode">
 										<h6>
