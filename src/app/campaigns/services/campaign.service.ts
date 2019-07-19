@@ -214,6 +214,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listautoResponseAnalyticsByCampaignAndUser(json: any){
+ return this.http.post(this.URL + 'autoResponse/analytics?access_token=' + this.authenticationService.access_token, json)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
         return this.http.get(this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
             .map(this.extractData)
