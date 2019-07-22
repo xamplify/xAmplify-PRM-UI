@@ -121,6 +121,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   interactiveDataTimeLineViewEnable = false;
   totalCampaignViewsLoader = false;
   isOnlyPartner = false;
+  isLoadingDownloadList = false;
+  actionType = '';
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -167,6 +169,11 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }else{
         pagination.searchKey = null;
     }
+    if ( this.downloadTypeName != 'sentEmails' ) {
+        this.downloadTypeName = 'campaignViews';
+    }else{
+        this.downloadTypeName = 'sentEmails';
+    }
 
   //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
     if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess){
@@ -187,7 +194,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           error => console.log(error),
           () => console.log('listCampaignViews(); called') )
        }
-    this.listTotalCampaignViews(campaignId);
     }catch(error){ this.xtremandLogger.error('error'+error);}
   }
 
@@ -428,6 +434,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'coutrywiseUsers';
+      this.downloadTypeName = 'worldMap';
     this.countryCode = countryCode.toUpperCase();
     this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
       .subscribe(
@@ -436,7 +443,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         this.worldMapUserData = data.data;
         this.pagination.totalRecords = data.totalRecords;
         this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
-        this.getCampaignUsersWatchedTotalInfo(countryCode, this.pagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
         $('#worldMapModal').modal('show');
@@ -509,7 +515,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         });
         $('#usersWatchListModal').modal();
         this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
-        this.usersWatchTotalList(campaignId, this.usersWatchListPagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
       },
@@ -623,6 +628,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'emailAction';
+      this.downloadTypeName = 'emailAction';
+      this.actionType = actionType;
       this.campaignService.emailActionList(campaignId, actionType, pagination)
        .subscribe(data => {
          data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
@@ -641,7 +648,6 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
             this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
         }
         this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
-        this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
       },
@@ -1333,6 +1339,7 @@ showTimeLineView(){
     this.loading = true;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.paginationType = 'donutCampaign';
+    this.downloadTypeName = 'donut';
     this.donultModelpopupTitle = timePeriod;
     this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.pagination).
       subscribe(
@@ -1349,7 +1356,6 @@ showTimeLineView(){
           this.pagination.totalRecords = this.campaignReport.lifetimeViewsCount;
         }
         this.pagination = this.pagerService.getPagedItems(this.pagination, this.donutCampaignViews);
-        this.totalCampaignViewsDonut(timePeriod,this.pagination.totalRecords);
         this.loading = false;
         this.referenceService.loading(this.httpRequestLoader, false);
         $('#donutModelPopup').modal('show');
@@ -1363,14 +1369,12 @@ showTimeLineView(){
 
   totalCampaignViewsDonut(timePeriod: string, totalRecords: number) {
     try{
-    this.loading = true;
     this.emailLogPagination.maxResults = totalRecords;
-    this.downloadTypeName = 'donut';
     this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.emailLogPagination).
       subscribe(
       (data: any) => {
         this.totalListOfemailLog = data;
-        this.loading = false;
+        this.downloadEmailLogs();
       },
       error => this.xtremandLogger.error(error),
       () => {this.xtremandLogger.log('total campaigns views donut method finished'); });
@@ -1379,15 +1383,12 @@ showTimeLineView(){
 
   emailActionTotalList(campaignId: number, actionType: string, totalRecords: number) {
     try{
-    this.loading = true;
      this.emailLogPagination.maxResults = totalRecords;
-    this.downloadTypeName = 'emailAction';
     this.campaignService.emailActionList(campaignId, actionType, this.emailLogPagination)
       .subscribe(
       data => {
         this.campaignReport.totalEmailActionList = data;
-        this.campaignReport.emailActionType = actionType;
-        this.loading =false;
+        this.downloadEmailLogs();
       },
       error => console.log(error),
       () => console.log()
@@ -1397,14 +1398,12 @@ showTimeLineView(){
 
   usersWatchTotalList(campaignId: number, totalRecords: number) {
     try{
-     this.loading = true;
      this.userWatchedReportPagination.maxResults = totalRecords;
-     this.downloadTypeName = 'usersWatchedList';
      this.campaignService.usersWatchList(campaignId, this.userWatchedReportPagination)
       .subscribe(
       data => {
         this.campaignReport.totalWatchedList = data.data;
-        this.loading = false;
+        this.downloadEmailLogs();
       },
       error => this.xtremandLogger.error(error),
       () => this.xtremandLogger.log('usersWatchTotalList method finished')
@@ -1414,14 +1413,12 @@ showTimeLineView(){
 
   listTotalCampaignViews(campaignId: number) {
     try{
-        if ( this.downloadTypeName != 'sentEmails' ) {
-            this.downloadTypeName = 'campaignViews';
-      }
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination,  this.isChannelCampaign)
       .subscribe(
       data => {
         this.campaignTotalViewsData = data.campaignviews;
+        this.downloadEmailLogs();
       },
       error => console.log(error),
       () => console.log()
@@ -1431,16 +1428,13 @@ showTimeLineView(){
 
   getCampaignUsersWatchedTotalInfo(countryCode, totalRecord: number) {
     try{
-    this.loading = true;
-    this.downloadTypeName = 'worldMap';
-    this.countryCode = countryCode.toUpperCase();
     this.campaignsWorldMapPagination.maxResults = totalRecord;
     this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
       .subscribe(
       (data: any) => {
         console.log(data);
         this.worldMapUserTotalData = data.data;
-        this.loading = false;
+        this.downloadEmailLogs();
       },
       error => this.xtremandLogger.error('error'+error),
       () => console.log('finished')
@@ -1448,6 +1442,23 @@ showTimeLineView(){
     }catch(error){this.xtremandLogger.error('error'+error); }
   }
 
+  downloadFunctionality(){
+      this.isLoadingDownloadList = true;
+      if (this.downloadTypeName === 'donut') {
+         this.totalCampaignViewsDonut(this.donultModelpopupTitle,this.pagination.totalRecords);
+      } else if (this.downloadTypeName === 'emailAction') {
+         this.emailActionTotalList(this.campaignId, this.actionType, this.emailActionListPagination.totalRecords);
+      }else if (this.downloadTypeName === 'usersWatchedList') {
+         this.usersWatchTotalList(this.campaignId, this.usersWatchListPagination.totalRecords);
+      }else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
+          this.listTotalCampaignViews(this.campaignId);
+      }else if (this.downloadTypeName === 'worldMap') {
+          this.getCampaignUsersWatchedTotalInfo(this.countryCode, this.pagination.totalRecords);
+      }else if(this.downloadTypeName === 'rsvp'){
+          this.downloadEmailLogs();
+      }
+  }
+  
   downloadEmailLogs() {
     try{
     this.loading = true;
@@ -1616,6 +1627,7 @@ showTimeLineView(){
 
     this.referenceService.isDownloadCsvFile = true;
     this.loading = false;
+    this.isLoadingDownloadList = false;
     }catch(error){this.xtremandLogger.error('error'+error); }
   }
 

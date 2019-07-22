@@ -519,11 +519,16 @@
 											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 										</span>
 										<ul class="dropdown-menu pull-right">
-											<li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadEmailLogs()"> Export To Excel </a></li>
+											<li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()"> Export To Excel </a></li>
 										</ul>
 									</div>
 								</div>
 								<div class="portlet-body clearfix">
+								<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					             <div class="loader"
+									style="margin-right: 10px; width: 25px; height: 25px;"></div>
+									<h4 class="m5">Please wait while we process your request.</h4>
+								</div>
 									<div *ngIf="campaignViewsPagination.pagedItems?.length === 0" class="alert alert-info">
 										<strong>No Records Found.</strong>
 									</div>
@@ -1090,11 +1095,16 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="row">
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1188,11 +1198,16 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="row">
 					<div class="table-responsive">
 						<div *ngIf="campaignReport.emailActionType" class="inputs" align="right" style="float: right;margin-bottom: 10px;">
@@ -1317,7 +1332,7 @@
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
@@ -1379,7 +1394,7 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px;"></i>
 					</span>
 					<ul class="dropdown-menu pull-right" style="margin-top:30px">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 				<div class="col-xs-1">
@@ -1388,6 +1403,11 @@
 			<!-- </div> -->
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="row">
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1461,12 +1481,17 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 
 			</div>
 			<div class="modal-body clearfix">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<!-- <div class="row"> -->
 				<div class="table-responsive">
 					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1543,7 +1568,7 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px;"></i>
 					</span>
 					<ul class="dropdown-menu pull-right" style="margin-top:30px">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 				<div class="col-xs-1">
@@ -1552,6 +1577,11 @@
 				
 			</div>
 			<div class="modal-body clearfix">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="table-responsive">
 					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 					<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
