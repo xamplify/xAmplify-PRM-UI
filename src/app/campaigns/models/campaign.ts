@@ -62,4 +62,5 @@ export class Campaign {
     userLists:any;
     parentCampaignUserId:number = 0;
     companyLogo:string = "";
+    formsCount:number = 0;
 }

@@ -20,7 +20,7 @@ declare var $:any,swal:any ;
   providers: [Pagination, HttpRequestLoader]
 })
 export class FormAnalyticsComponent implements OnInit {
-
+    loggedInUserId: number=0;
     alias:string="";
     campaignAlias:string = "";
     formName = "";
@@ -36,7 +36,10 @@ export class FormAnalyticsComponent implements OnInit {
         public authenticationService: AuthenticationService,public formService:FormService, 
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,
         public logger: XtremandLogger
-           ) { }
+    ) {
+        this.loggedInUserId = this.authenticationService.getUserId();
+        this.pagination.userId = this.loggedInUserId;
+           }
 
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];

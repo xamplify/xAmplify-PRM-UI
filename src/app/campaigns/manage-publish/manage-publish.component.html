@@ -162,7 +162,7 @@
 														<i class="fa fa-line-chart"></i>
 													</a>
 													
-													<a *ngIf="authenticationService.module.hasFormAccess" (click)="goToFormAnalytics(campaign.campaignId)"
+													<a *ngIf="campaign.formsCount>0" (click)="goToFormAnalytics(campaign.campaignId)"
 													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
 														<i class="fa fa-wpforms"></i>
 													</a>
@@ -372,7 +372,7 @@
 											</h4>
 											<h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
 											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
-											<h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h6>
+											<h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By<b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h6>
 											<h6>
 											<span>
 												<span *ngIf="campaign.launched">Launched On</span>
@@ -419,7 +419,10 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
-
+												<a *ngIf="campaign.formsCount>0" (click)="goToFormAnalytics(campaign.campaignId)"
+													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+														<i class="fa fa-wpforms"></i>
+												</a>
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
