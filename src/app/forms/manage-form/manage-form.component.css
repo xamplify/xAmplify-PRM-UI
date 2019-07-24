@@ -14,3 +14,11 @@
 #right-corner{
 	float: right;
 }
+
+#notification{
+	background-color: red;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
+}
