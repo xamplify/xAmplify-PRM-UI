@@ -405,8 +405,12 @@
                         </div>
 		                   	</td>
                             <td class="text-center">
-                              <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                              <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
                                 data-placement="top" title="Campaign Based Reports" class='circled-number'>
+                                <i class="fa fa-line-chart"></i>
+                              </a>
+                              <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                                data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
                                 <i class="fa fa-line-chart"></i>
                               </a>
                               <a *ngIf="redistributedCampaign.formsCount>0" data-rel="fancybox-button" routerLink="/home/forms/cf/{{redistributedCampaign.campaignId}}" data-toggle="tooltip" 

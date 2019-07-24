@@ -11,3 +11,7 @@ cursor: default;
 	-ms-filter: blur(1px);
 	filter: blur(1px);
 }
+
+#left-float{
+	float: left;
+}
