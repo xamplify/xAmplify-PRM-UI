@@ -16,9 +16,33 @@
 }
 
 #notification{
-	background-color: red;
+	background-color: #ed1c24;
     color: white;
     margin-bottom: 25px;
     margin-left: -25px;
     margin-top: -5px;
+}
+#notification-list{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 36px;
+    margin-left: -23px;
+    margin-top: -2px;
+}
+
+#disabled-icon{
+border: none;
+margin: 0px 15px 0 0;
+cursor: default;
+}
+
+ .blur {
+	-webkit-filter: blur(1px);
+	-moz-filter: blur(1px);
+	-o-filter: blur(1px);
+	-ms-filter: blur(1px);
+	filter: blur(1px);
+}
+.cursor{
+	cursor: not-allowed;
 }

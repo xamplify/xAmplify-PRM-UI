@@ -409,9 +409,14 @@
                                 data-placement="top" title="Campaign Based Reports" class='circled-number'>
                                 <i class="fa fa-line-chart"></i>
                               </a>
+                              <a *ngIf="redistributedCampaign.formsCount>0" data-rel="fancybox-button" routerLink="/home/forms/cf/{{redistributedCampaign.campaignId}}" data-toggle="tooltip" 
+                                data-placement="top" title="Form Analytics" class='circled-number'>
+                                <i class="fa fa-wpforms"></i>
+                              </a>
                               <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
                                 <img src="../assets/images/disabled-icon.png">
                               </a>
+                              
                             </td>
                           </tr>
                         </tbody>
