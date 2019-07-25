@@ -79,7 +79,7 @@ export class DashboardService {
     }
     
     sendVendorInvitation(userId: number, vendorInvitation: any) {
-        const url = this.authenticationService.REST_URL+ 'partner/vendor-invitation/'+ userId + '?access_token=' + this.authenticationService.access_token;
+        const url = this.authenticationService.REST_URL+ 'partnership/vendor-invitation/'+ userId + '?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vendorInvitation)
             .map(this.extractData)
             .catch(this.handleError);
@@ -93,6 +93,7 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
     getCampaignsHeatMapDetails(limit: any) {
         const url = this.authenticationService.REST_URL + 'dashboard/heatmap-data?userId=' + this.authenticationService.user.id +
             '&access_token=' + this.authenticationService.access_token+'&limit='+limit;

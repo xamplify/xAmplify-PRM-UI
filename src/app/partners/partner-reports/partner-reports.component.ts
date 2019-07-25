@@ -102,7 +102,7 @@ export class PartnerReportsComponent implements OnInit {
         this.throughPartnerCampaignsCount = data.throughPartnerCampaignsCount;
         this.inActivePartnersCount = data.inActivePartnersCount;
         this.activePartnersCount = data.activePartnersCount;
-        this.approvePartnersCount = data.approvePartners;
+        this.approvePartnersCount = data.approvePartnersCount;
         const campaignData = [];
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
