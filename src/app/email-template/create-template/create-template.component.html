@@ -18,7 +18,12 @@
                         <a>Create Template</a>
                      </li>
                   </ul>
-                  <button *ngIf="authenticationService.module.hasFormAccess && loadTemplate" class="btn btn-primary btn-xs" id="right"  (click)="showForms()">Show Forms</button>
+                  <button *ngIf="authenticationService.module.hasFormAccess && loadTemplate" class="btn btn-danger" id="right"  (click)="showForms()">
+                  		Show Forms
+                  </button>
+                  <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your email templates">
+                  	<i class="fa fa-plus-circle"></i>
+				  </button> -->
                   <div id="bee-plugin-container"></div>
                </div>
             </div>

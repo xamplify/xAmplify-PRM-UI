@@ -165,6 +165,7 @@
 													<a *ngIf="campaign.formsCount>0" (click)="goToFormAnalytics(campaign.campaignId)"
 													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
 														<i class="fa fa-wpforms"></i>
+														<span class="badge" id="notification">{{campaign.formsCount}}</span>
 													</a>
 													
 													
@@ -419,10 +420,13 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
-												<a *ngIf="campaign.formsCount>0" (click)="goToFormAnalytics(campaign.campaignId)"
+												<ng-container *ngIf="campaign.formsCount>0" >
+													<a (click)="goToFormAnalytics(campaign.campaignId)"
 													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
 														<i class="fa fa-wpforms"></i>
-												</a>
+													</a>
+													<span class="badge" id="notification-list">{{campaign.formsCount}}</span>
+												</ng-container>
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">

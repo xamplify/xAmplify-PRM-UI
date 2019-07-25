@@ -19,7 +19,8 @@
 }
 
 #right{
-	float: right;;
+	float: right;
+	margin-bottom: 10px;
 }
 #left{
 	float: left;;

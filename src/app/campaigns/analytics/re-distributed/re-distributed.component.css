@@ -14,4 +14,10 @@ cursor: default;
 
 #left-float{
 	float: left;
+}#notification{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
 }
