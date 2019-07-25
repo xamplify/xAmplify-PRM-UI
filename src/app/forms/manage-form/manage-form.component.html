@@ -111,13 +111,7 @@
                         <a *ngIf="!pagination.campaignForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
                           <i class="fa fa-clipboard"></i>
                         </a>
-                        
-                        <a  data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip"  data-placement="top" title="Form Analytics">
-	                          	<i class="fa fa-line-chart"></i>
-	                           <span class="badge" id="notification">{{form.count}}</span>
-	                        </a>
-                        
-                        <!-- <ng-container *ngIf="form.campaignForm&&!form.dataShare">
+                        <ng-container *ngIf="form.campaignForm&&!form.dataShare">
 	                        <a  class="cursor">
 	                          <i class="fa fa-line-chart"></i>
 	                           <span class="badge" id="notification">{{form.count}}</span>
@@ -126,12 +120,12 @@
 	                        	<img src="../assets/images/disabled-icon.png">
 	                     	</a>
                         </ng-container>
-                       <ng-container *ngIf="!form.campaignForm&&!form.dataShare">
+                       <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm">
 	                       	 <a  data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip"  data-placement="top" title="Form Analytics">
 	                          	<i class="fa fa-line-chart"></i>
 	                           <span class="badge" id="notification">{{form.count}}</span>
 	                        </a>
-                       </ng-container> -->
+                       </ng-container>
                       </div>
                     </td>
                   </tr>
@@ -178,13 +172,7 @@
                 <a *ngIf="!pagination.campaignForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
                   <i class="fa fa-clipboard"></i>
                 </a>
-                
-               <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics">
-                  <i class="fa fa-line-chart"></i>
-                </a>
-                <span class="badge" id="notification-list">{{form.count}}</span>
-                
-             <!--    <ng-container *ngIf="form.campaignForm&&!form.dataShare">
+                <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                  <a class="cursor">
                   <i class="fa fa-line-chart"></i>
                 </a>
@@ -193,13 +181,12 @@
                       <img src="../assets/images/disabled-icon.png">
                   </a>
                 </ng-container>
-                 <ng-container *ngIf="!form.campaignForm&&!form.dataShare">
+                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm">
                 	 <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics">
                   <i class="fa fa-line-chart"></i>
                 </a>
                  <span class="badge" id="notification-list">{{form.count}}</span>
-                </ng-container> -->
-               
+                </ng-container>
               </div>
             </div>
           </div>
