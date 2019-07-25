@@ -400,7 +400,7 @@ data-backdrop="static">
       </div>
 
       </div>
-      <div class="modal-footer" *ngIf="!deleteCampaignAlert">
+      <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
         <div class="actions-block text-center m10" *ngIf="campaign">
           <ng-container *ngIf="campaign.launched">
             <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0"

@@ -588,10 +588,10 @@ export class PartnerReportsComponent implements OnInit {
 
   ngOnInit() {
       if(this.loggedInUserId>0){
+        this.partnerReportData();
         this.paginationType = 'userInteraction';
         this.homeComponent.getVideoDefaultSettings();
         this.campaignInteractionPagination.maxResults = 10;
-        this.partnerReportData();
         this.partnerUserInteractionReports();
        /* this.getActivePartnerReports();*/
         this.goToReDistributedPartnersDiv()
