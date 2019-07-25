@@ -6,6 +6,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import {FormService} from '../services/form.service';
 import { Form } from '../models/form';
+import { ColumnInfo } from '../models/column-info';
 import { CustomResponse } from '../../common/models/custom-response';
 
 declare var swal, $: any;
@@ -20,7 +21,7 @@ export class PreviewPopupComponent implements OnInit {
     ngxloading = false;
     formError = false;
     customResponse:CustomResponse = new CustomResponse();
-
+    columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
    constructor(private formService:FormService,public logger:XtremandLogger) {
    }
 
@@ -52,6 +53,13 @@ export class PreviewPopupComponent implements OnInit {
       $('#form-preview-modal').modal('show');
   }
   
-  
+  formPreviewBeforeSave(columnInfos:Array<ColumnInfo>,form:Form){
+      this.ngxloading = true;
+      this.form = form;
+      this.form.formLabelDTOs = columnInfos;
+      this.formError = false;
+      this.ngxloading =false;
+      $('#form-preview-modal').modal('show');
+  }
 
 }

@@ -12,6 +12,7 @@
             <div class="panel panel-info" *ngIf="!formError">
               <div class="panel-heading">
                 <div class="panel-title">{{form.name}}</div>
+                <h5>{{form.description}}</h5>
               </div>
               <div class="panel-body" *ngIf="!formError">
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">

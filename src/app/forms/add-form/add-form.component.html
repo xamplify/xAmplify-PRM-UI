@@ -82,7 +82,8 @@
                       <i class="icon-globe theme-font hide"></i>
                       <span class="caption-subject font-blue-madison bold uppercase">Create Form</span>
                     </div>
-                    <a  data-toggle="tooltip" [attr.data-original-title]="toolTip"  id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
+                    <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip"  id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
+                  	 <a class="close-circle" data-toggle="tooltip" title="Preview"  id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
                   </div>
                   <div class="portlet-body clearfix" id="create-from-div">
                     <div class="tab-content">
@@ -323,9 +324,12 @@
 		           	<input type="text" class="form-control" [(ngModel)]="form.name" id="formName"  placeholder="Enter Form Name" maxlength="50"  (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
 					<span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
 	          	</div>
+	          	<div class="form-group">	
+	          		<textarea class="form-control" placeholder="Description"  [(ngModel)]="form.description" id="description" maxlength="255" ></textarea>
+	          	</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" style="float:right">Continue</button>
+				<button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
 			</div>
 		</div>
 	</div>
@@ -336,7 +340,7 @@
             <feGaussianBlur in="SourceGraphic" stdDeviation="3"></feGaussianBlur>
         </filter>
     </svg>
-  
+    <app-preview-popup #previewPopUpComponent></app-preview-popup>
 </div><!-- -End Of page-content -->
 
 

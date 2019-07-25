@@ -4,6 +4,7 @@ export class Form {
     id:number;
     name = "";
     alias = "";
+    description = "";
     formLabelDTOs: Array<ColumnInfo> = new Array<ColumnInfo>();
     isValid = false;    
     createdBy:number;

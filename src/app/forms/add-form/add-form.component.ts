@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
 import { CustomResponse } from '../../common/models/custom-response';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import {PreviewPopupComponent} from '../preview-popup/preview-popup.component';
 
 declare var $:any,swal:any ;
 
@@ -38,7 +39,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         { 'labelName': 'Checkboxes', 'labelType': 'checkbox', 'value': 'Field' },
         { 'labelName': 'Drop-down menu', 'labelType': 'select', 'value': 'Field' }
     ];
-    formTitle = "Add Form Name";
+    formTitle = "Add Form Details";
     form: Form = new Form();
     formNameClass="valid-form-name";
     columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
@@ -64,6 +65,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     existingFormName = "";
     isFullScreenView = false;
     toolTip = "Maximize";
+    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
         public authenticationService:AuthenticationService,public formService:FormService,
         private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch) {
@@ -76,7 +78,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         
         if(this.formService.form!==undefined){
             this.isAdd = false;
-            this.formTitle = "Edit Form Name";
+            this.formTitle = "Edit Form Details";
             this.buttonName = "Update";
             this.existingFormName = this.formService.form.name.toLowerCase();
             this.form = this.formService.form;
@@ -610,6 +612,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#complete-form-div').removeClass("col-md-12");
         $('#complete-form-div').addClass("col-md-4");
         this.toolTip = "Maximize";
+     }
+     
+     previewForm(){
+         this.previewPopUpComponent.formPreviewBeforeSave(this.columnInfos,this.form);
      }
      
      ngOnDestroy() {

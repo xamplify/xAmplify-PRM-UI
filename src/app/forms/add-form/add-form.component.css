@@ -216,3 +216,9 @@ LEGEND {
 #full-screen{
 	float: right;
 }
+#preview-form{
+	margin-right: 8px;
+}
+#eye{
+	margin-left: -1px;
+}
