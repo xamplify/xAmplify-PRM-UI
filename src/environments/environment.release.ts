@@ -10,6 +10,6 @@ export const environment = {
   imagesHost: "https://xamp.io/vod/images/",
 
 
- // CLIENT_URL: "https://release.xamplify.io/", // xamplify client app server
- // SERVER_URL: "https://xamplify.co/" // xamplify backend production server
+  CLIENT_URL: "https://release.xamplify.io/", // xamplify client app server
+  SERVER_URL: "https://release.xamp.io/" // xamplify backend production server
 };

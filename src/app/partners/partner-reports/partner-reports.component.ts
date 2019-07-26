@@ -102,7 +102,7 @@ export class PartnerReportsComponent implements OnInit {
         this.throughPartnerCampaignsCount = data.throughPartnerCampaignsCount;
         this.inActivePartnersCount = data.inActivePartnersCount;
         this.activePartnersCount = data.activePartnersCount;
-        this.approvePartnersCount = data.approvePartners;
+        this.approvePartnersCount = data.approvePartnersCount;
         const campaignData = [];
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.VIDEO);
         campaignData.push(data.partnersLaunchedCampaignsByCampaignType.SOCIAL);
@@ -392,13 +392,13 @@ export class PartnerReportsComponent implements OnInit {
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
-               if(response.approvePartnesList.length === 0){
+               if(response.approvePartnerList.length === 0){
                    this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
                }
-               for ( var i in response.approvePartnesList) {
-                   response.approvePartnesList[i].contactCompany = response.approvePartnesList[i].partnerCompanyName;
+               for ( var i in response.approvePartnerList) {
+                   response.approvePartnerList[i].contactCompany = response.approvePartnerList[i].partnerCompanyName;
                }
-               pagination = this.pagerService.getPagedItems(pagination, response.approvePartnesList);
+               pagination = this.pagerService.getPagedItems(pagination, response.approvePartnerList);
                this.referenseService.loading(this.httpRequestLoader, false);
               },
               (error: any) => {
@@ -588,10 +588,10 @@ export class PartnerReportsComponent implements OnInit {
 
   ngOnInit() {
       if(this.loggedInUserId>0){
+        this.partnerReportData();
         this.paginationType = 'userInteraction';
         this.homeComponent.getVideoDefaultSettings();
         this.campaignInteractionPagination.maxResults = 10;
-        this.partnerReportData();
         this.partnerUserInteractionReports();
        /* this.getActivePartnerReports();*/
         this.goToReDistributedPartnersDiv()

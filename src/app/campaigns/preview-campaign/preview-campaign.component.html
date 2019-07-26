@@ -368,19 +368,19 @@ data-backdrop="static">
           <fieldset *ngIf="previewCampaignType !== 'SOCIAL'">
             <legend>Analytics</legend>
             <div >
-              <div (click)="showAnalyticsModal('Total Recipients')" class="text-center" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
+              <div (click)="showAnalyticsModal('Total Recipients')" class="text-center p0" [class.pointer]="campaignReport.emailSentCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
                 <h1>{{campaignReport.emailSentCount}}</h1>
                 <h5>Total Recipients</h5>
               </div>
-              <div (click)="showAnalyticsModal('Active Recipients')" class="text-center"  [class.pointer]="campaignReport.emailOpenCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+              <div (click)="showAnalyticsModal('Active Recipients')" class="text-center p0"  [class.pointer]="campaignReport.emailOpenCount>0" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
                 <h1>{{campaignReport.emailOpenCount}}</h1>
                 <h5>Active Recipients</h5>
               </div>
-              <div (click)="showAnalyticsModal('Clicked URL')" class="text-center"  [class.pointer]="campaignReport.emailClickedCount>0" [ngClass]="{'hidden': campaignType === 'SOCIAL', 'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
+              <div (click)="showAnalyticsModal('Clicked URL')" class="text-center p0"  [class.pointer]="campaignReport.emailClickedCount>0" [ngClass]="{'hidden': campaignType === 'SOCIAL', 'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
                 <h1>{{campaignReport.emailClickedCount}}</h1>
                 <h5>Clicked URL</h5>
               </div>
-              <div (click)="showAnalyticsModal('Views')" class="col-xs-6 col-sm-3 text-center" [class.pointer]="campaignReport.usersWatchCount>0" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
+              <div (click)="showAnalyticsModal('Views')" class="col-xs-6 col-sm-3 text-center p0" [class.pointer]="campaignReport.usersWatchCount>0" *ngIf="campaignType === 'VIDEO'" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
                 <h1>{{campaignReport.usersWatchCount}}</h1>
                 <h5>Views</h5>
               </div>
@@ -400,7 +400,7 @@ data-backdrop="static">
       </div>
 
       </div>
-      <div class="modal-footer" *ngIf="!deleteCampaignAlert">
+      <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
         <div class="actions-block text-center m10" *ngIf="campaign">
           <ng-container *ngIf="campaign.launched">
             <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0"

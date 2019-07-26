@@ -18,13 +18,13 @@ export class ParterService {
     }
     
     approveVendorRequest( partnerId: number ){
-        var newUrl = this.URL + "/vendor/approve-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.URL + "partnership/approve-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
         return this.httpClient.post( newUrl, "")
         .catch( this.handleError );
     }
     
     declineVendorRequest( partnerId: number ){
-        var newUrl = this.URL + "/vendor/decline-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.URL + "partnership/decline-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
         return this.httpClient.post( newUrl, "")
         .catch( this.handleError );
     }
@@ -42,7 +42,7 @@ export class ParterService {
     }
     
     getApprovePartnersAnalytics(pagination:Pagination){
-        const url = this.URL + 'partner/approve-partners?access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'partnership/approve-partners?access_token=' + this.authenticationService.access_token;
         return this.httpClient.post( url, pagination )
             .catch( this.handleError );
     }

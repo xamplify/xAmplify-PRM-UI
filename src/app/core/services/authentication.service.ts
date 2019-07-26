@@ -162,8 +162,8 @@ export class AuthenticationService {
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
         const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
-        const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 && 
-        (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);
+       /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 && 
+        (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if(roleNames.length===1){   return "User";
         } else {
             if ( isOrgAdmin && isPartner ) {
@@ -174,15 +174,15 @@ export class AuthenticationService {
                 return "Orgadmin";
             } else if ( isVendor ) {
                 return "Vendor";
-            } else if ( isPartnerAndTeamMember ) {
-                return "Partner & Team Member";
             } else if (this.isOnlyPartner() ) {
                 return "Partner";
-            } else if(roleNames.length>2 && isPartner) {
-                return "Team Member & Partner";
-            }else{
+            } else{
                 return "Team Member";
-            }
+            } /*else if ( isPartnerAndTeamMember ) {
+                return "Partner & Team Member";
+            }  else if(roleNames.length>2 && isPartner) {
+                return "Team Member & Partner";
+            }*/
         }
       }
       }catch(error){
