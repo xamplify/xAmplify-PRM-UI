@@ -54,14 +54,14 @@
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
 						<div class="flex" *ngIf="callAction.isFistNameChecked==true">
 							<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
-							 class="form-control text-box m21" placeholder="First Name">
+							 class="form-control text-box m21" placeholder="First Name" maxlength="200">
 							<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
-							 placeholder="Last Name">
-						</div>
+							 placeholder="Last Name" maxlength="200">
+						</div> 
 						<div class="flex m02">
 							<div class="w-8">
 								<input type="text" name="email_id" [(ngModel)]="callAction.email_id" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box"
-								 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel">
+								 placeholder="Email Address" pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})+$" #email_id="ngModel" maxlength="200">
 							</div>
 							<div class="w-4">
 								<button type="button" id="playorsubmit" class="btn play-button text-box" [disabled]="callAction.isOverlay==true"

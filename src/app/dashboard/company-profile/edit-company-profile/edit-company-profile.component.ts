@@ -312,6 +312,37 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.getAllCompanyProfileNames();
     }
     
+    getUserByUserName( userName: string ) {
+        try{
+           this.authenticationService.getUserByUserName( userName )
+              .subscribe(
+              data => {
+                console.log('logged in user profile info:');
+                console.log(data);
+                this.authenticationService.user = data;
+                this.authenticationService.userProfile = data;
+                
+                const currentUser = localStorage.getItem( 'currentUser' );
+                const userToken = {
+                        'userName': userName,
+                        'userId': data.id,
+                        'accessToken': JSON.parse( currentUser )['accessToken'],
+                        'refreshToken': JSON.parse( currentUser )['refreshToken'],
+                        'expiresIn':  JSON.parse( currentUser )['expiresIn'],
+                        'hasCompany': data.hasCompany,
+                        'roles': data.roles
+                    };
+                    localStorage.clear();
+                    localStorage.setItem('currentUser', JSON.stringify(userToken));
+                
+              },
+              error => {console.log( error ); this.router.navigate(['/su'])},
+              () => { }
+              );
+          }catch(error){ console.log('error'+error); }
+      }
+    
+    
     save() {
         this.ngxloading = true;
         this.refService.goToTop();
@@ -334,6 +365,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                     data => {
                         this.isUpdateChaged = true;
                         this.message = data.message;
+                        this.getUserByUserName(this.authenticationService.user.emailId);
                         if(this.message==='Company Profile Info Added Successfully') {
                           this.message = 'Company Profile saved successfully';
                           this.formUpdated = false;
