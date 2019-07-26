@@ -1713,14 +1713,14 @@ export class ReferenceService {
      
      replaceMyMergeTags(myMergeTags:any,updatedBody:string){
          if(myMergeTags!=undefined && this.hasMyMergeTagsExits(updatedBody)){
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstName,myMergeTags.myFirstName);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderLastName,myMergeTags.myLastName);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderFullName,myMergeTags.myFullName);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailId,myMergeTags.myEmailId);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumber,myMergeTags.myContactNumber);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompany,myMergeTags.senderCompany);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrl,myMergeTags.myCompanyUrl);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumber,myMergeTags.myCompanyContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstNameGlobal,myMergeTags.myFirstName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderLastNameGlobal,myMergeTags.myLastName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFullNameGlobal,myMergeTags.myFullName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailIdGlobal,myMergeTags.myEmailId);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumberGlobal,myMergeTags.myContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal,myMergeTags.senderCompany);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal,myMergeTags.myCompanyContactNumber);
          }
          return updatedBody;
      }
