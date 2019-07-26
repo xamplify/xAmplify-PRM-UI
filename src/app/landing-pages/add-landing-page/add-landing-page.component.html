@@ -1,0 +1,55 @@
+<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i> 
+				<a [routerLink]="referenceService.homeRouter">Home</a> 
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li><a>Create Landing Pages</a></li>
+		</ul>
+	</div>
+		<div class="row">
+		<div class="col-md-12">
+			<div class="portlet light">
+				<div class="portlet-title m0">
+					<div class="row">
+						<div class="colxs-12 col-sm-3" id="right">
+							<div class="portlet-input input-inline input-small" id="right">
+									<div class="input-icon right" id="right">
+										<!-- <i class="icon-magnifier"></i> -->
+										<input type="text" class="form-control" [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+										<button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchLandingPages();"></button>
+										<button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search"></i></button>
+									</div>
+								</div>
+						</div>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="row">
+						<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
+						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+							<div class="grid-box">
+								<img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="Not Found" id="auto-height">
+								<h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
+								<div class="bar">
+									<a data-toggle="tooltip" data-placement="top" title="Create Landing Page" (click)="showLandingPage(landingPage.id)">
+										<i class="fa fa-plus-circle"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						
+					</div>
+				</div>
+			</div>
+			<!-- END PAGE CONTENT-->
+		</div>
+	</div>
+	<app-scroll-top></app-scroll-top>
+	
+	
+</div>

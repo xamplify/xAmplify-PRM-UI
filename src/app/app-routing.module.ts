@@ -58,6 +58,7 @@ export const routes: Routes = [
           { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
           { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
           { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
+          { path: 'landing-pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
           { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
@@ -83,6 +84,7 @@ export const routes: Routes = [
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'rsvp/:alias', component: RsvpComponent },
     {path: 'f/:alias', component:FormPreviewComponent},
+    {path: 'l/:alias', component:FormPreviewComponent},
     { path: '**', component: PageNotFoundComponent},
 ];
 

@@ -18,6 +18,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     teamBaseUrl = 'team';
     opportunityBaseUrl = 'deals';
     formBaseUrl = 'forms';
+    landingPagesUrl = 'landing-pages';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService) { }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -88,33 +89,38 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const roles = this.authenticationService.user.roles.map(function(a) {return a.roleName;});
         if(url.indexOf(this.emailTemplateBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
-        }
+        }else
         if(url.indexOf(this.contactBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.contactBaseUrl);
-        }
+        }else
         if(url.indexOf(this.partnerBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.partnerBaseUrl);
-        }
+        }else
         if(url.indexOf(this.videoBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.videoBaseUrl);
-        }
+        }else
         if(url.indexOf(this.campaignBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.campaignBaseUrl);
-        }
+        }else
         if(url.indexOf(this.teamBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.teamBaseUrl);
-        }
+        }else
         if(url.indexOf(this.socialBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);
-        }
+        }else
         if(url.indexOf(this.upgradeBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.upgradeBaseUrl);
-        }
+        }else
         if(url.indexOf(this.opportunityBaseUrl)>-1){
           return this.authorizeUrl(roles, url, this.opportunityBaseUrl);
-      }
+      }else
         if(url.indexOf(this.formBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.formBaseUrl);
+        }else
+        if(url.indexOf(this.formBaseUrl)>-1){
+            return this.authorizeUrl(roles, url, this.formBaseUrl);
+        }else if(url.indexOf(this.landingPagesUrl)>-1){
+            return this.authorizeUrl(roles, url, this.landingPagesUrl);
         }
       }catch(error){ console.log('error'+error);}
     }
@@ -124,35 +130,37 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         let role = "";
         if(urlType===this.emailTemplateBaseUrl){
             role = this.roles.emailTemplateRole;
-        }
+        }else
         if(urlType===this.contactBaseUrl){
             role = this.roles.contactsRole;
-        }
+        }else
         if(urlType === this.partnerBaseUrl){
             role = this.roles.partnersRole;
-        }
+        }else
         if(urlType===this.videoBaseUrl){
             role = this.roles.videRole;
-        }
+        }else
         if(urlType===this.campaignBaseUrl){
             role = this.roles.campaignRole;
-        }
+        }else
         if(urlType===this.teamBaseUrl){
             role = this.roles.orgAdminRole;
-        }
+        }else
         if(urlType===this.socialBaseUrl){
             role = this.roles.socialShare;
-        }
+        }else
         if(urlType===this.upgradeBaseUrl){
             role = this.roles.orgAdminRole;
-        }
+        }else
         if(urlType===this.opportunityBaseUrl){
           role = this.roles.opportunityRole;
-      }
-        if(urlType===this.formBaseUrl){
+        } else if ( urlType === this.formBaseUrl ) {
             role = this.roles.formRole;
         }
-        if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
+        else if ( urlType === this.landingPagesUrl ) {
+            role = this.roles.landingPageRole;
+        }
+      else  if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
         const isVendor =  roles.indexOf(this.roles.vendorRole)>-1;
@@ -176,7 +184,22 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }else{
                 return this.goToAccessDenied();
             }
-        }else{
+        }else if(urlType==this.landingPagesUrl){
+            let hasLandingPageAccess = false;
+            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            if(campaignAccessDto!=undefined){
+                hasLandingPageAccess = campaignAccessDto.landingPage;
+            }
+            let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
+            if(hasLandingPageAccess && hasRole){
+                return true;
+            }else{
+                return this.goToAccessDenied();
+            }
+        
+        }
+        else{
             /*********only vendor********/
             if(isVendor && !isPartner){
                 return this.checkVendorAccessUrls(url, urlType);

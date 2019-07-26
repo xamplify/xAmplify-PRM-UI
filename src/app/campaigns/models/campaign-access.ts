@@ -6,5 +6,6 @@ export class CampaignAccess {
   smsCampaign = false;
   leads = false;
   formBuilder = false;
+  landingPage = false;
   companyId = 0;
 }

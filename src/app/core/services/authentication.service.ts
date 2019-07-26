@@ -294,6 +294,7 @@ export class AuthenticationService {
         module.hasSocialStatusRole = false;
         module.isVendor = false;
         module.hasFormAccess = false;
+        module.hasLandingPageAccess = false;
         this.isAddedByVendor = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {

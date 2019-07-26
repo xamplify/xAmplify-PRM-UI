@@ -14,4 +14,5 @@ export class Roles {
   superAdminRole = 'ROLE_SUPER_ADMIN';
   opportunityRole = 'ROLE_OPPORTUNITY';
   formRole = 'ROLE_FORM';
+  landingPageRole = 'ROLE_LANDING_PAGE';
 }

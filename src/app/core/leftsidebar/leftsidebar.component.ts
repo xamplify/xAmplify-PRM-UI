@@ -115,13 +115,17 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                             roles.indexOf( this.roleName.vendorRole ) > -1 ) && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
                         }
+                        /**********Landing Page**************/
+                        if ( ( roles.indexOf( this.roleName.landingPageRole ) > -1 ||
+                                roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                                roles.indexOf( this.roleName.allRole ) > -1 ||
+                                roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPage) {
+                                this.authService.module.hasLandingPageAccess = true;
+                            }
 
                     } );
-
+                    /**********Landing Page************/    
                 } )
-                
-                /*************Form Creation Role****************/
-                
                 
             }
         } catch ( error ) { console.log( error ); }

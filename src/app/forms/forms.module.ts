@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from "../shared/shared.module";
 import { ErrorPagesModule } from "../error-pages/error-pages.module";
 import { CommonComponentModule } from "../common/common.module";
+/************Form Related*************/
 import { FormService } from './services/form.service';
 import {FormsRoutingModule} from "./forms-routing.module";
-
 import { AddFormComponent } from './add-form/add-form.component';
 import { ManageFormComponent } from './manage-form/manage-form.component';
 import { FormAnalyticsComponent } from './form-analytics/form-analytics.component';

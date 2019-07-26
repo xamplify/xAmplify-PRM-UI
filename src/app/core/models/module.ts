@@ -12,5 +12,6 @@ export class Module {
     isCompanyPartner:boolean = false;
     isVendor:boolean = false;
     hasFormAccess:boolean = false;
+    hasLandingPageAccess:boolean = false;
 
 }
