@@ -60,6 +60,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     nonApplicableUsersViews: any;
     videoPlayedPagination: Pagination = new Pagination();
     reportsPagination: Pagination = new Pagination();
+    
+    videoLeadsDetails: any;
+    videoLeadsTotalListDetails: any;
+    videoLeadsDetailsPagination: Pagination = new Pagination();
     countryCode: string;
     downloadTypeName = '';
     downloadCsvList: any;
@@ -76,6 +80,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     videoPlayedSkipedInfo:any;
     logListName = "";
     videoTotalViews: number;
+    isLoadingDownloadList = false;
+    isVideoPlayedDurationDownload = false;
 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -331,6 +337,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     watchedFullyDetailReport() {
         this.paginationType = 'watchedFully';
+        this.downloadTypeName = 'watchedFully';
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -342,24 +349,25 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
                 // if (this.watchedFullyReportData.length > 0) {
                 $('#watchedFullyModelPopup').modal('show');
-                this.watchedFullyTotalReport(this.pagination.totalRecords);
+                //this.watchedFullyTotalReport(this.pagination.totalRecords);
                 // }
             },
             (err: any) => { console.log(err); })
     }
     totalMinutesWatchedByMostUsers() {
+        this.downloadTypeName = 'minetesWatched';
         this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
             (result: any) => {
                 console.log(result);
                 result.forEach((element, index) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
                 this.totalUsersWatched = result;
-                this.downloadTypeName = 'minetesWatched'
                 if (this.totalUsersWatched.length > 0) {
                     $('#totalwatchedUsersModelPopup').modal('show');
                 }
             },
             (err: any) => { console.log(err); })
     }
+    
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -425,6 +433,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     clickedMinutesWatched(userId: any) {
         this.paginationType = 'userMinutesWatched';
+        this.downloadTypeName = 'clickedMenetsWatched';
         console.log(this.dropdownValue + 'and inner data' + this.minutesinnerSort);
         this.userId = userId;
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.pagination).
@@ -437,7 +446,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
                 console.log(this.pagination);
                 $('#usersMinutesModelPopup').modal('show');
-                this.clickedMinutesWatchedTotalList(userId, this.pagination.totalRecords);
+               // this.clickedMinutesWatchedTotalList(userId, this.pagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -445,20 +454,62 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
+    
+    videoLeadsList() {
+        this.paginationType = 'videoLeads';
+        this.downloadTypeName = 'videoLeads';
+        this.videoBaseReportService.videoLeadsList(this.selectedVideo.id, this.videoLeadsDetailsPagination).
+            subscribe(
+            data => {
+                console.log(data);
+                data.data.forEach((element) => { if(element.time){ element.time = new Date(element.utcTimeString);} });
+                this.videoLeadsDetails = data.data;
+                this.videoLeadsDetailsPagination.totalRecords = data.totalRecords;
+                this.videoLeadsDetailsPagination = this.pagerService.getPagedItems(this.videoLeadsDetailsPagination, this.videoLeadsDetails);
+                console.log(this.videoLeadsDetailsPagination);
+                //this.videoLeadsTotalList();
+            },
+            error => {
+                this.xtremandLogger.error(error);
+                //this.xtremandLogger.errorPage(error);
+            }
+            );
+    }
+    
+    videoLeadsTotalList() {
+        this.videoLeadsDetailsPagination.maxResults = this.videoLeadsDetailsPagination.totalRecords;
+        this.videoBaseReportService.videoLeadsList(this.selectedVideo.id, this.videoLeadsDetailsPagination).
+            subscribe(
+            data => {
+                data.data.forEach((element) => { if(element.time){ element.time = new Date(element.utcTimeString);} });
+                this.videoLeadsTotalListDetails = data.data;
+                this.downloadLogs();
+            },
+            error => {
+                this.xtremandLogger.error(error);
+            }
+            );
+    }
+    
     setPage(event: any) {
         this.paginationType = event.type;
         if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; }
+        else if(this.paginationType === 'videoLeads'){ this.videoLeadsDetailsPagination.pageIndex = event.page; }
         else { this.pagination.pageIndex = event.page; }
         this.callPaginationMethods();
     }
     paginationDropdown(pagination:Pagination){
         if(this.paginationType === 'videoPlayed'){this.videoPlayedPagination = pagination; }
+        else if(this.paginationType === 'videoLeads'){ this.videoLeadsDetailsPagination = pagination; }
         else { this.pagination = pagination; }
         this.callPaginationMethods();
     }
     callPaginationMethods(){
         if (this.paginationType === 'userMinutesWatched') {
             this.clickedMinutesWatched(this.userId);
+        }
+        else if (this.paginationType === 'videoLeads') {
+            this.videoLeadsList();
         }
         else if (this.paginationType === 'watchedFully') {
             this.watchedFullyDetailReport();
@@ -480,6 +531,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoPlayedPagination.maxResults = 12;
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
+        this.downloadTypeName = 'videoLeads';
     }
     getVideoPlayedSkippedInfo() {
         this.videoBaseReportService.getVideoPlayedSkippedInfo(this.selectedVideo.id).subscribe(
@@ -496,6 +548,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoSkippedDurationInfo() {
         this.paginationType = 'videoSkipped';
+        this.downloadTypeName = 'skippedDuration';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -506,7 +559,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.videoSkippedDuration = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoSkippedDuration);
-                this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
+                //this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -516,6 +569,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoPlayedDurationInfo() {
         this.paginationType = 'videoPlayed';
+        this.downloadTypeName = 'playedDuration';
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.videoPlayedPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -526,7 +580,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.videoPlayedDuration = result.data;
                 this.videoPlayedPagination.totalRecords = result.totalRecords;
                 this.videoPlayedPagination = this.pagerService.getPagedItems(this.videoPlayedPagination, this.videoPlayedDuration);
-                this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
+                //this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -563,7 +617,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 if (this.worldMapCampaignUsersInfo.length > 0) {
                     $('#worldMapModal').modal('show');
                 }
-                this.getCampaignCoutryViewsDetailsTotalReport(countryCode, this.pagination.totalRecords);
+                //this.getCampaignCoutryViewsDetailsTotalReport(countryCode, this.pagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -574,12 +628,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     getCampaignCoutryViewsDetailsTotalReport(countryCode: string, totalRecords: number) {
         this.countryCode = countryCode.toUpperCase();
         this.reportsPagination.maxResults = totalRecords;
-        this.downloadTypeName = 'worldMapData';
         this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id, this.countryCode, this.reportsPagination).
             subscribe(
             (result: any) => {
                 console.log(result);
                 this.worldMapCampaignUsersTotalData = result.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -594,19 +648,20 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             (result: any) => {
                 console.log(result);
                 this.watchedFullyTotalReportList = result.data;
+                this.downloadLogs();
             },
             (err: any) => { console.log(err); })
     }
 
     clickedMinutesWatchedTotalList(userId: any, totalRecord: number) {
         this.reportsPagination.maxResults = totalRecord;
-        this.downloadTypeName = 'clickedMenetsWatched';
         this.userId = userId;
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.reportsPagination).
             subscribe(
             data => {
                 console.log(data);
                 this.userMinutesWatchedTotalList = data.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.errorPage(error);
@@ -616,11 +671,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     videoSkippedDurationTotalInfo(totalRecords: number) {
         this.reportsPagination.maxResults = totalRecords;
-        // this.downloadTypeName = 'skippedDuration';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);
                 this.videoSkippedDurationTotalList = result.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -629,17 +684,39 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoPlayedDurationTotalInfo(totalRecords: number) {
         this.reportsPagination.maxResults = totalRecords;
-        //this.downloadTypeName = 'playedDuration';
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);
                 this.videoPlayedDurationTotalList = result.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.error(error);
-                //  this.xtremandLogger.errorPage(error);
             }
         );
+    }
+    
+    downloadFunctionality(){
+        this.isLoadingDownloadList = true;
+        if (this.downloadTypeName === 'minetesWatched') {
+            this.downloadLogs();
+        } else if (this.downloadTypeName === 'watchedFully') {
+            this.watchedFullyTotalReport(this.pagination.totalRecords);
+        } else if (this.downloadTypeName === 'worldMapData') {
+            this.getCampaignCoutryViewsDetailsTotalReport(this.countryCode, this.pagination.totalRecords);
+        } else if (this.downloadTypeName === 'clickedMenetsWatched') {
+            this.clickedMinutesWatchedTotalList(this.userId, this.pagination.totalRecords);
+        }
+        else if (this.downloadTypeName === 'playedDuration') {
+            this.isVideoPlayedDurationDownload = true;
+            this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
+        }
+        else if (this.downloadTypeName === 'skippedDuration') {
+            this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
+        }else if (this.downloadTypeName === 'videoLeads') {
+            this.videoLeadsTotalList();
+        }
+        
     }
 
     downloadLogs() {
@@ -663,6 +740,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         else if (this.downloadTypeName === 'skippedDuration') {
             this.logListName = 'Skipped_Duration_logs.csv';
             this.downloadCsvList = this.videoSkippedDurationTotalList;
+        }else if (this.downloadTypeName === 'videoLeads') {
+            this.logListName = 'Video_leads_logs.csv';
+            this.downloadCsvList = this.videoLeadsTotalListDetails;
         }
 
         this.downloadDataList.length = 0;
@@ -727,9 +807,20 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["End Time"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
                 object["Device"] = this.downloadCsvList[i].device;
             }
+            else if (this.downloadTypeName === 'videoLeads') {
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                let hours = this.referenceService.formatAMPM(time);
+                object["Date & Time"] = time.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+                object["City"] = this.downloadCsvList[i].city;
+                object["State"] = this.downloadCsvList[i].state;
+                object["Country"] = this.downloadCsvList[i].country;
+                object["Device"] = this.downloadCsvList[i].os;
+            }
             this.downloadDataList.push(object);
         }
         this.referenceService.isDownloadCsvFile = true;
+        this.isLoadingDownloadList = false;
+        this.isVideoPlayedDurationDownload = false;
     }
     clickedTrellisChart(){
        this.totalMinutesWatchedByMostUsers();
@@ -748,6 +839,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
         this.nonApplicableUsersMinutesWatched();
+        this.videoLeadsList();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');

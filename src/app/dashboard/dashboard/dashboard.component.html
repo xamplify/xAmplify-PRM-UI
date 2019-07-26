@@ -191,10 +191,11 @@
           <h4 class="pull-left m10 f-w-600 text-primary">Campaigns</h4>
           <a data-toggle="tooltip" title="Customize campaign report" data-placement="left" style="float: right;">
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
-             *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember) ||authenticationService.isOrgAdmin() || authenticationService.isPartner()
-              || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
-          </a>
-          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember)  && authenticationService.user.hasCompany">Create Campaign</a>
+             *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole) ||
+             authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
+          </a> 
+          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white"
+           *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
@@ -235,7 +236,8 @@
             </div>
           </section>
           <section>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() )">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+             *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()) && (!authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)">
               <div class="portlet light border-radius-0">
                 <div class="portlet-body">
                   <div class="text-center" style="margin: 1.3em 0.5em;">
@@ -469,7 +471,8 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) || 
+    			authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
       <div class="clearfix" *ngIf="socialConnections?.length > 0">
         <div class="portlet light shadow">
           <div class="portlet-title">

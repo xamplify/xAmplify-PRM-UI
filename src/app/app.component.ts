@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationCancel, Event, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { EnvService } from 'app/env.service';
 
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 declare var QuickSidebar, $: any;
@@ -11,7 +12,7 @@ declare var QuickSidebar, $: any;
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-    constructor(private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
+    constructor(public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
         // logger.level = logger.Level.LOG;
     }
     ngOnInit() {

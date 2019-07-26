@@ -12,6 +12,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination} from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { CustomResponse } from '../../common/models/custom-response';
+import { UserService } from "app/core/services/user.service";
 
 declare var $:any ;
 
@@ -69,7 +70,7 @@ export class AddTeamMembersComponent implements OnInit {
     /**********Constructor**********/
     constructor( public logger: XtremandLogger,public referenceService:ReferenceService,private teamMemberService:TeamMemberService,
             public authenticationService:AuthenticationService,private pagerService:PagerService,public pagination:Pagination,
-            private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch) {
+            private fileUtil:FileUtil,public callActionSwitch: CallActionSwitch,public userService: UserService) {
         this.team = new TeamMember();
         this.userId = this.authenticationService.getUserId();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
@@ -115,7 +116,22 @@ export class AddTeamMembersComponent implements OnInit {
     hasContactAccess(){
         let isOrgAdmin = this.authenticationService.isOrgAdmin();
         let isVendorAndPartner = this.authenticationService.isVendorPartner();
-        this.contactAccess  = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
+        this.userService.getRoles(this.authenticationService.getUserId())
+        .subscribe(
+        response => {
+             if(response.statusCode==200){
+                this.authenticationService.loggedInUserRole = response.data.role;
+                this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+                this.isOnlyPartner = this.authenticationService.loggedInUserRole =="Partner" && this.authenticationService.isPartnerTeamMember==false;
+                this.authenticationService.hasOnlyPartnerRole = this.isOnlyPartner;
+                this.contactAccess  = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
+             }else{
+                 this.authenticationService.loggedInUserRole = 'User';
+             }
+        },
+        error => this.logger.errorPage(error),
+        () => this.logger.log('Finished')
+        );
     }
 
 

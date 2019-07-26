@@ -79,7 +79,7 @@
     <div *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" 
     [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember || authenticationService.isOrgAdmin()), 
           'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isPartnerTeamMember || authenticationService.isOrgAdminPartner())}">
-			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="goToManageVideos()" [class.disabled]="true">
+			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="goToManageVideos()">
 				<div class="visual">
           <!-- <i class="fa fa-cloud-upload"></i> -->
           <img src="assets/images/white15.png" class="img-dash">

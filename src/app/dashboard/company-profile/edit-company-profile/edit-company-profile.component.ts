@@ -311,7 +311,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
     }
-
+    
     save() {
         this.ngxloading = true;
         this.refService.goToTop();

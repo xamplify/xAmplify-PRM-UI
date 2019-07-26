@@ -38,7 +38,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     isMinTimeOver:boolean = false;
     constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
-    console.log('client Id: '+environment.clientId+'and secret id: '+environment.clientSecret);
+    console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);
     
     
     if ( emailTemplateService.emailTemplate != undefined ) {
@@ -263,7 +263,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             request(
                 'POST',
                 'https://auth.getbee.io/apiauth',
-                'grant_type=password&client_id=' + environment.clientId + '&client_secret=' + environment.clientSecret + '',
+                'grant_type=password&client_id=' + authenticationService.clientId + '&client_secret=' + authenticationService.clientSecret + '',
                 'application/x-www-form-urlencoded',
                 function( token: any ) {
                     BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {

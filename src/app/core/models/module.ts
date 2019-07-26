@@ -14,7 +14,5 @@ export class Module {
     enableLeadsByVendor = false;
     enableLeads = false;
     isOnlyPartner = false;
-
-
-
+    isAddingPartnersAccess = false;
 }

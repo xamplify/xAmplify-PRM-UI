@@ -47,6 +47,10 @@
 			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('share')}">
 				<form #f="ngForm" novalidate>
 					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
+					<div class="alert alert-danger alert-dismissible" *ngIf="isCallToActionError">
+ 					 <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="isCallToActionError = false" >&times;</a>
+  						{{callToActionErrorMessage}}
+					</div>
 						<h2 class="upper-text-heading upperText">{{upperTextValue}}</h2>
 						<div class="flex" *ngIf="callAction.isFistNameChecked==true">
 							<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
@@ -92,7 +96,7 @@
 			  <!-- <share-buttons (closed)="sharedSuccess()" [exclude]="['reddit']" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
 		      <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareUrl" [image]="imgURL" [title]="title" [description]="description"></share-buttons> -->
 		     <!-- <share-buttons (popUpClosed)="sharedSuccess()" [url]="'https://aravindu.com/embed/'+shortnerUrlAlias"></share-buttons> -->
-			 <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareShortUrl"></share-buttons>
+			 <share-buttons (popUpClosed)="sharedSuccess()" [url]="shareShortUrl" [google]= "false" ></share-buttons>
 
 			</div>
 			<!-- 2 modal popup end here-->

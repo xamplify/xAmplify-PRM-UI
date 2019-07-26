@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { EnvService } from 'app/env.service';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -22,8 +23,8 @@ export class AuthenticationService {
     refresh_token: string;
     expires_in: number;
     logged_in_time: Date;
-    APP_URL = environment.CLIENT_URL;
-    SERVER_URL = environment.SERVER_URL;
+    APP_URL: any;
+    SERVER_URL: any;
     REST_URL: string;
     MEDIA_URL: string;
     SHARE_URL: string;
@@ -41,11 +42,23 @@ export class AuthenticationService {
     selectedVendorId: number;
     venorMyProfileReport: any;
     loggedInUserRole:string;
-    constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
+    hasOnlyPartnerRole = false;
+    
+    clientId: any;
+    clientSecret: any;
+    imagesHost: any;
+    
+    constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
+        this.SERVER_URL = this.envService.SERVER_URL;
+        this.APP_URL = this.envService.CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
+        
+        this.clientId = this.envService.clientId;
+        this.clientSecret = this.envService.clientSecret;
+        this.imagesHost = this.envService.imagesHost;
     }
 
     getOptions(): RequestOptions {
@@ -263,7 +276,7 @@ export class AuthenticationService {
     isOrgAdminPartner(){
       try{
         const roleNames = this.getRoles();
-        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember){
             return true;
         }else{
             return false;
@@ -273,8 +286,8 @@ export class AuthenticationService {
     isVendorPartner(){
       try{
       const roleNames = this.getRoles();
-      if(roleNames && (roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-        return true;
+      if(roleNames && ( (roleNames.indexOf(this.roleName.vendorRole)>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember){
+          return true;
       }else{
           return false;
       }
@@ -313,12 +326,14 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+        module.isAddingPartnersAccess = false;
         this.isAddedByVendor = false;
         this.isPartnerTeamMember = false;
         this.loggedInUserRole = "";
+        this.hasOnlyPartnerRole = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
-            if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {
+            if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {
                 window.location.href = 'https://www.xamplify.com/';
             } else {
                 this.router.navigate( ['/'] )
