@@ -392,13 +392,13 @@ export class PartnerReportsComponent implements OnInit {
               (response: any) => {
                pagination.totalRecords = response.totalRecords;
                console.log(response);
-               if(response.approvePartnesList.length === 0){
+               if(response.approvePartnerList.length === 0){
                    this.customResponse = new CustomResponse( 'INFO','No Partner(s) found', true );
                }
-               for ( var i in response.approvePartnesList) {
-                   response.approvePartnesList[i].contactCompany = response.approvePartnesList[i].partnerCompanyName;
+               for ( var i in response.approvePartnerList) {
+                   response.approvePartnerList[i].contactCompany = response.approvePartnerList[i].partnerCompanyName;
                }
-               pagination = this.pagerService.getPagedItems(pagination, response.approvePartnesList);
+               pagination = this.pagerService.getPagedItems(pagination, response.approvePartnerList);
                this.referenseService.loading(this.httpRequestLoader, false);
               },
               (error: any) => {
