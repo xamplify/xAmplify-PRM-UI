@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy,ViewChild,AfterViewInit,Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import {FormService} from '../services/form.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { Form } from '../models/form';
@@ -17,6 +15,7 @@ import {Inject} from "@angular/core";
 import {DOCUMENT} from "@angular/platform-browser";
 import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
+import {FormService} from '../services/form.service';
 import {PreviewPopupComponent} from '../preview-popup/preview-popup.component';
 declare var swal, $: any;
 

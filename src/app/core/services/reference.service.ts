@@ -30,6 +30,8 @@ export class ReferenceService {
     campaignSuccessMessage = "";
     isCreated = false;
     isUpdated = false;
+    isLandingPageCreated = false;
+    isLandingPageUpdated = false;
     errorPrepender = "Error In";
     campaignVideoFile: SaveVideoFile;
     videoTitles: string[];

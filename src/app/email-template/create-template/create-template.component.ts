@@ -1,10 +1,6 @@
 import { Component, OnInit,OnDestroy,ViewChild,AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { EmailTemplateService } from '../services/email-template.service';
-import { User } from '../../core/models/user';
-import { EmailTemplate} from '../models/email-template';
-import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -17,7 +13,11 @@ import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.component';
-
+import { User } from '../../core/models/user';
+/**********Email Template**************/
+import { EmailTemplateService } from '../services/email-template.service';
+import { EmailTemplate} from '../models/email-template';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 declare var BeePlugin,swal,$:any;
 
 @Component({
