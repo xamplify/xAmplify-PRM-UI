@@ -245,7 +245,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     saveLandingPage(isOnDestroy:boolean){
         swal.close();
         this.referenceService.startLoader(this.httpRequestLoader);
-        this.landingPage.name = self.name;
+        this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
         console.log(this.landingPage);
         this.landingPageService.save(this.landingPage) .subscribe(
