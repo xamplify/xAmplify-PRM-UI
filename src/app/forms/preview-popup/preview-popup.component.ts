@@ -8,13 +8,16 @@ import {FormService} from '../services/form.service';
 import { Form } from '../models/form';
 import { ColumnInfo } from '../models/column-info';
 import { CustomResponse } from '../../common/models/custom-response';
-
+import { Pagination } from '../../core/models/pagination';
+import { PagerService } from '../../core/services/pager.service';
+import { SortOption } from '../../core/models/sort-option';
+import { UtilService } from '../../core/services/util.service';
 declare var swal, $: any;
 @Component({
   selector: 'app-preview-popup',
   templateUrl: './preview-popup.component.html',
   styleUrls: ['./preview-popup.component.css'],
-  providers: [HttpRequestLoader]
+  providers: [HttpRequestLoader,Pagination,SortOption]
 })
 export class PreviewPopupComponent implements OnInit {
     form:Form = new Form();
@@ -22,13 +25,91 @@ export class PreviewPopupComponent implements OnInit {
     formError = false;
     customResponse:CustomResponse = new CustomResponse();
     columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
-   constructor(private formService:FormService,public logger:XtremandLogger) {
+    formsError:boolean = false;
+    pagination:Pagination = new Pagination();
+    formsLoader:HttpRequestLoader = new HttpRequestLoader();
+   constructor(private formService:FormService,public logger:XtremandLogger,private authenticationService:AuthenticationService,
+           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService) {
    }
 
   ngOnInit() {
   }
   
   
+  
+  
+  
+  
+  /************List Available Forms******************/
+  showForms(){
+      this.formsError = false;
+      this.customResponse = new CustomResponse();
+      this.pagination.userId = this.authenticationService.getUserId();;
+      this.listForms(this.pagination);
+  }
+  
+  listForms( pagination: Pagination ) {
+      this.referenceService.loading( this.formsLoader, true );
+      this.formService.list( pagination ).subscribe(
+          ( response: any ) => {
+              const data = response.data;
+              pagination.totalRecords = data.totalRecords;
+              this.sortOption.totalRecords = data.totalRecords;
+              pagination = this.pagerService.getPagedItems( pagination, data.forms );
+              this.referenceService.loading( this.formsLoader, false );
+              $('#forms-list').modal('show');
+          },
+          ( error: any ) => { 
+              this.formsError = true;
+              this.customResponse = new CustomResponse('ERROR','Unable to get forms.Please Contact Admin.',true );
+          } );
+      $('#forms-list').modal('show');
+     
+  }
+  
+  /********************Pagaination&Search Code*****************/
+
+  /*************************Sort********************** */
+  sortBy( text: any ) {
+      this.sortOption.formsSortOption = text;
+      this.getAllFilteredResults( this.pagination );
+  }
+
+
+  /*************************Search********************** */
+  searchForms() {
+      this.getAllFilteredResults( this.pagination );
+  }
+  
+  paginationDropdown(items:any){
+      this.sortOption.itemsSize = items;
+      this.getAllFilteredResults(this.pagination);
+  }
+
+  /************Page************** */
+  setPage( event: any ) {
+      this.pagination.pageIndex = event.page;
+      this.listForms( this.pagination );
+  }
+
+  getAllFilteredResults( pagination: Pagination ) {
+      this.pagination.pageIndex = 1;
+      this.pagination.searchKey = this.sortOption.searchKey;
+      this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
+      this.listForms( this.pagination );
+  }
+  
+  eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
+  
+  copyInputMessage(inputElement,index:number){
+      $('#copied-message-'+index).hide();
+      inputElement.select();
+      document.execCommand('copy');
+      inputElement.setSelectionRange(0, 0);
+      $('#copied-message-'+index).show(500);
+    }
+  
+
   /*****************Preview Form*******************/
   previewForm(id:number){
       this.customResponse = new CustomResponse();
