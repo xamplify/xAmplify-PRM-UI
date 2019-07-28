@@ -116,7 +116,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     /***********Preview Email Template*********************/
     showPreview(landingPage:LandingPage){
         this.ngxloading = true;
-       // this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.getHtmlContent(landingPage.id).subscribe(
                 ( response: any ) => {
                     if(response.statusCode==200){
@@ -136,6 +135,59 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     //this.referenceService.loading( this.httpRequestLoader, false );
                 },
                 ( error: any ) => { this.logger.errorPage( error ); } );
+    }
+    
+    
+    /***********Delete**************/
+    confirmDelete(landingPage:LandingPage){
+        try {
+            let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "You won’t be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then( function() {
+                self.deleteById(landingPage);
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
+        } catch ( error ) {
+            this.logger.error(this.referenceService.errorPrepender+" confirmDelete():"+error);
+            this.referenceService.showServerError(this.httpRequestLoader);
+        }
+    }
+    
+
+    editLandingPage(id:number){
+        this.landingPageService.id = id;
+        this.router.navigate(["/home/landing-pages/add"]);
+      }
+    
+    deleteById(landingPage:LandingPage){
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.goToTop();
+        this.landingPageService.deletebById( landingPage.id )
+        .subscribe(
+        ( response: any ) => {
+            if(response.statusCode==200){
+                $('#landingPageListDiv_'+landingPage.id).remove();
+                let message = landingPage.name+" deleted successfully";
+                this.customResponse = new CustomResponse('SUCCESS',message,true );
+                this.pagination.pageIndex = 1;
+                this.listLandingPages(this.pagination);
+            }
+
+        },
+        ( error: string ) => {
+            this.logger.errorPage(error);
+            this.referenceService.showServerError(this.httpRequestLoader);
+            }
+        );
     }
     
     

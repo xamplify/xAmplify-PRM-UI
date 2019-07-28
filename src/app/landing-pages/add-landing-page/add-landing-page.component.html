@@ -1,5 +1,5 @@
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
-   <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+  <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
    <ng-container *ngIf="!httpRequestLoader.isLoading">
       <div class="row">
          <div class="col-xs-12">
@@ -15,7 +15,8 @@
                         <i class="fa fa-angle-right"></i>
                      </li>
                      <li>
-                        <a>Create Landing Page</a>
+                        <a *ngIf="defaultLandingPage">Create Landing Page</a>
+                        <a *ngIf="!defaultLandingPage">Edit Landing Page</a>
                      </li>
                   </ul>
                  <!--  <button *ngIf="authenticationService.module.hasFormAccess && loadTemplate" class="btn btn-danger" id="right"  (click)="showForms()">

@@ -38,27 +38,29 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
     name = "";
+    id = 0;
+    defaultLandingPage = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     constructor(private landingPageService:LandingPageService,private router:Router, private logger:XtremandLogger,
             private authenticationService:AuthenticationService,public referenceService:ReferenceService,private location:Location,
             private formService:FormService,public pagerService:PagerService,public sortOption:SortOption,public utilService:UtilService) {
-        let id = this.landingPageService.id;
-        if(id>0){
+        this.id = this.landingPageService.id;
+        if(this.id>0){
             var names: any = [];
             let self = this;
             self.loggedInUserId = this.authenticationService.getUserId();
             this.referenceService.loading( this.httpRequestLoader, true );
-            
             landingPageService.getAvailableNames( self.loggedInUserId ).subscribe(
                     ( data: any ) => { names = data; },
                     error => { this.logger.error( "error in getAvailableNames(" + self.loggedInUserId + ")", error ); },
                     () => this.logger.info( "Finished getAvailableNames()" ) );
             
-            this.landingPageService.getById(id).subscribe(
+            this.landingPageService.getById(this.id).subscribe(
                     ( response: any ) => {
                         if(response.statusCode==200){
                             let landingPage = response.data;
                             let defaultLandingPage = landingPage.defaultLandingPage;
+                            this.defaultLandingPage = defaultLandingPage;
                             this.landingPage = new LandingPage();
                             this.landingPage.thumbnailPath = landingPage.thumbnailPath;
                             var request = function( method, url, data, type, callback ) {
@@ -83,8 +85,8 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                             var title = "Add Landing Page Name";
                             var landingPageName = "";
                             if ( !defaultLandingPage ) {
-                                landingPageName = "Existing Name";
-                                title = "Update Template Name";
+                                landingPageName = landingPage.name;
+                                title = "Update Landing Page Name";
                             }
                             var save = function( jsonContent: string, htmlContent: string ) {
                                 self.landingPage.htmlBody = htmlContent;
@@ -99,8 +101,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                             self.clickedButtonName = "UPDATE";
                                             self.referenceService.startLoader( self.httpRequestLoader );
                                             swal.close();
-                                           // self.emailTemplate.draft = false;
-                                           // self.updateEmailTemplate( self.emailTemplate, emailTemplateService, false );
+                                            self.updateLandingPage(false);
                                         } ) ).append( self.createButton( 'Cancel', function() {
                                             self.clickedButtonName = "CANCEL";
                                             swal.close();
@@ -132,11 +133,13 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                     self.name = value;
                                     if ( value.length > 0 ) {
                                         if ( ! defaultLandingPage){
-                                            if ( names.indexOf( value.toLocaleLowerCase() ) > -1 && landingPage.name.toLowerCase() != value.toLowerCase() ) {
+                                            if ( names.indexOf( value.toLocaleLowerCase() ) > -1 && landingPage.name.toLocaleLowerCase() != value.toLocaleLowerCase() ) {
                                                 $( '#save,#update,#save-as' ).attr( 'disabled', 'disabled' );
                                                 $( '#templateNameSpanError' ).text( 'Duplicate Name' );
                                             } else if ( value.toLocaleLowerCase() == landingPage.name.toLocaleLowerCase() ) {
+                                                $( '#templateNameSpanError' ).empty();
                                                 $( '#save,#save-as' ).attr( 'disabled', 'disabled' );
+                                                $( '#update' ).removeAttr( 'disabled' );
                                             }
                                             else {
                                                 $( '#templateNameSpanError' ).empty();
@@ -146,7 +149,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                             if ( names.indexOf( value.toLocaleLowerCase() ) > -1 ) {
                                                 $( '#save,#update,#save-as' ).attr( 'disabled', 'disabled' );
                                                 $( '#templateNameSpanError' ).text( 'Duplicate Name' );
-                                                console.log( value );
                                             } else {
                                                 $( '#templateNameSpanError' ).empty();
                                                 $( '#save,#update,#save-as' ).removeAttr( 'disabled' );
@@ -207,19 +209,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                                     let jsonBody = JSON.parse(landingPage.jsonBody);
                                                     bee.load( jsonBody );
                                                     bee.start( jsonBody );
-                                                   /* if ( emailTemplateService.emailTemplate != undefined ) {
-                                                        var body = emailTemplateService.emailTemplate.jsonBody;
-                                                        $.each( self.companyProfileImages, function( index, value ) {
-                                                            body = body.replace( value, self.authenticationService.MEDIA_URL + self.refService.companyProfileImage );
-                                                        } );
-                                                        body = body.replace( "https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.refService.companyProfileImage );
-                                                        self.emailTemplate.jsonBody = body;
-                                                        var jsonBody = JSON.parse( body );
-                                                        bee.load( jsonBody );
-                                                        bee.start( jsonBody );
-                                                    } else {
-                                                        bee.start( template );
-                                                    }*/
                                                     self.loadTemplate = true;
                                                 } );
                                         } );
@@ -247,12 +236,35 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
-        console.log(this.landingPage);
         this.landingPageService.save(this.landingPage) .subscribe(
                 data => {
                     this.referenceService.stopLoader(this.httpRequestLoader);
                     if(!isOnDestroy){
                         this.referenceService.isCreated = true;
+                        this.router.navigate(["/home/landing-pages/manage"]);
+                    }else{
+                        this.landingPageService.goToManage();
+                    }
+                },
+                error => {
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                    this.logger.errorPage(error)
+                    },
+                () => console.log( "Email Template Saved" )
+                );
+    }
+    
+    updateLandingPage(isDestroy:boolean){
+        swal.close();
+        this.referenceService.startLoader(this.httpRequestLoader);
+        this.landingPage.name = this.name;
+        this.landingPage.id = this.id;
+        this.landingPage.userId = this.loggedInUserId;
+        this.landingPageService.update(this.landingPage) .subscribe(
+                data => {
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                    if(!isDestroy){
+                        this.referenceService.isUpdated = true;
                         this.router.navigate(["/home/landing-pages/manage"]);
                     }else{
                         this.landingPageService.goToManage();

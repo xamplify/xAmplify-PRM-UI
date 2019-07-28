@@ -43,6 +43,12 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
+    deletebById( id: number ): Observable<any> {
+        return this.http.get( this.URL + "delete/" + id + "?access_token=" + this.authenticationService.access_token, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     getHtmlContent( id: number ): Observable<any> {
         return this.http.get( this.URL + "getHtmlBodyById/" + id + "?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
@@ -51,6 +57,12 @@ export class LandingPageService {
     
     save( landingPage:LandingPage): Observable<any> {
         return this.http.post( this.URL + "save?access_token=" + this.authenticationService.access_token,landingPage)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    update( landingPage:LandingPage): Observable<any> {
+        return this.http.post( this.URL + "update?access_token=" + this.authenticationService.access_token,landingPage)
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -55,20 +55,7 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
   showLandingPage(id:number){
       this.landingPageService.id = id;
       this.router.navigate(["/home/landing-pages/add"]);
-      /*
-      this.referenceService.loading( this.httpRequestLoader, true );
-      this.landingPageService.getById(id).subscribe(
-              ( response: any ) => {
-                  if(response.statusCode==200){
-                      this.landingPageService.jsonBody = response.message;
-                      this.router.navigate(["/home/landing-pages/add"]);
-                  }else{
-                      swal("Please Contact Admin!", "No Landing Page Found", "error");
-                  }
-                  this.referenceService.loading( this.httpRequestLoader, false );
-              },
-              ( error: any ) => { this.logger.errorPage( error ); } );
-  */}
+    }
   ngOnDestroy() {
    }
 }

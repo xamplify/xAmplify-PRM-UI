@@ -49,11 +49,11 @@
 						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 						<ng-container *ngIf="!httpRequestLoader.isLoading">
 							<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-							<div class="grid-box">
+							<div class="grid-box" id="landingPageListDiv_{{landingPage.id}}">
 								<img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="Not Found" id="auto-height">
 								<h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
 								<div class="bar">
-									<a data-toggle="tooltip" data-placement="top" title="Edit">
+									<a data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
@@ -62,7 +62,7 @@
 									<a data-toggle="tooltip" data-placement="top" title="Copy Link">
 										<i class="fa fa-clipboard"></i>
 									</a>
-									<a data-toggle="tooltip" class="delete" data-placement="top" title="Delete" >
+									<a data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)" >
 										<i class="fa fa-trash-o"></i>
 									</a>
 								</div>

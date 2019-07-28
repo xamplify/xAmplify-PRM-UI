@@ -161,7 +161,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 this.listForms(this.pagination);
             }else{
                 console.log(response);
-                
                 let emailTemplateNames = "";
                 $.each(response.data,function(index,value){
                     emailTemplateNames+= (index+1)+"."+value+"<br><br>";
