@@ -59,7 +59,7 @@
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
 										<i class="fa fa-eye"></i>
 									</a>
-									<a data-toggle="tooltip" data-placement="top" title="Copy Link">
+									<a data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showLandingPageLink(landingPage)">
 										<i class="fa fa-clipboard"></i>
 									</a>
 									<a data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)" >
@@ -102,5 +102,29 @@
 			</div>
 		</div>
 	</div>
+	
+	  <!-- ----------------------Copy Link Modal------------------- -->
+  <div class="modal right " id="landing-page-url-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title text-center">DIRECT LINK OF YOUR LANDING PAGE</h4>
+        </div>
+        <div class="modal-body">
+          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+          </app-response-message>
+          <input type="text" class="form-control" readonly="readonly" value="{{clientUrl}}l/{{landingPage?.alias}}" #userinput>
+        </div>
+        <div class="modal-footer">
+          <!-- <a class="btn btn-info" href="{{clientUrl}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
+          <a class="btn btn-primary" (click)="copyInputMessage(userinput)">Copy Link</a>
+          <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
 	<app-scroll-top></app-scroll-top>
 </div>

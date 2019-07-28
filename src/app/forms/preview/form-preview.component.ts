@@ -2,18 +2,17 @@ import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { ActivatedRoute,Router,NavigationStart, NavigationEnd  } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import {FormService} from '../services/form.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { Processor } from '../../core/models/processor';
+import { CustomResponse } from '../../common/models/custom-response';
+import { filter, pairwise } from 'rxjs/operators';
+import {FormService} from '../services/form.service';
 import { Form } from '../models/form';
 import { FormSubmit } from '../models/form-submit';
 import { FormSubmitField } from '../models/form-submit-field';
-import { Processor } from '../../core/models/processor';
 import { ColumnInfo } from '../models/column-info';
 import {FormOption} from '../models/form-option';
-import { CustomResponse } from '../../common/models/custom-response';
-import { filter, pairwise } from 'rxjs/operators';
-
 
 declare var $:any;
 

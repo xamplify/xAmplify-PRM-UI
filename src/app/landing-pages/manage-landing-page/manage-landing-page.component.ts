@@ -189,6 +189,21 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             }
         );
     }
+    /*********Copy The Link */
+    copyInputMessage(inputElement){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+      }
+
+    showLandingPageLink(landingPage:LandingPage){
+          this.landingPage = landingPage;
+          this.copiedLinkCustomResponse = new CustomResponse();
+          $('#landing-page-url-modal').modal('show');
+      }
+
     
     
     ngOnDestroy() {

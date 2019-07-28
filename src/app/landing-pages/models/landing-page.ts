@@ -7,4 +7,5 @@ export class LandingPage {
     jsonBody:string;
     htmlBody:string;
     userId:number;
+    alias:string;
 }
