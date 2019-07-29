@@ -34,5 +34,7 @@ export class Pagination {
 	dealStatus:string = null;
 	showDraftContent=false;
 	campaignForm = false;
+	landingPageId = 0;
+	landingPageForm = false;
 	
 }

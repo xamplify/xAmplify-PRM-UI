@@ -10,6 +10,10 @@
           	       <li>
           	       <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
           </ng-container>
+          <ng-container *ngIf="pagination.landingPageForm">
+          	       <li>
+          	       <a [routerLink]="['/home/landing-pages/manage']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+          </ng-container>
             <li style="color: #808080">Manage Forms</li>
     </ul>
   </div>
@@ -115,7 +119,7 @@
 	                        	<img src="../assets/images/disabled-icon.png">
 	                     	</a>
                         </ng-container>
-                       <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm">
+                       <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                        	 <a  data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip"  data-placement="top" title="Form Analytics">
                           	<i class="fa fa-line-chart"></i>
                            <span class="badge" id="notification">{{form.count}}</span>
@@ -180,7 +184,7 @@
                       <img src="../assets/images/disabled-icon.png">
                   </a>
                 </ng-container>
-                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm">
+                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                 	 <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
                   <i class="fa fa-line-chart"></i>
                 </a>

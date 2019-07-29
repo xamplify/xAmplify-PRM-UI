@@ -19,9 +19,7 @@
                         <a *ngIf="!defaultLandingPage">Edit Landing Page</a>
                      </li>
                   </ul>
-                 <!--  <button *ngIf="authenticationService.module.hasFormAccess && loadTemplate" class="btn btn-danger" id="right"  (click)="showForms()">
-                  		Show Forms
-                  </button> -->
+                       <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
                   <div id="bee-plugin-container"></div>
                </div>
             </div>
@@ -131,6 +129,3 @@
       </div>
     </div>
 </div>
-
-  <app-preview-popup #previewPopUpComponent></app-preview-popup>
-

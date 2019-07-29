@@ -30,7 +30,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     landingPage:LandingPage = new LandingPage();
     loggedInUserId = 0;
     clickedButtonName = "";
-    loadTemplate = false;
     isAdd:boolean;
     isMinTimeOver:boolean = false;
     pagination:Pagination = new Pagination();
@@ -40,6 +39,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     name = "";
     id = 0;
     defaultLandingPage = false;
+    loadLandingPage= false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     constructor(private landingPageService:LandingPageService,private router:Router, private logger:XtremandLogger,
             private authenticationService:AuthenticationService,public referenceService:ReferenceService,private location:Location,
@@ -209,7 +209,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                                     let jsonBody = JSON.parse(landingPage.jsonBody);
                                                     bee.load( jsonBody );
                                                     bee.start( jsonBody );
-                                                    self.loadTemplate = true;
+                                                    self.loadLandingPage = true;
                                                 } );
                                         } );
                                     } );

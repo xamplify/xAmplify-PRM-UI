@@ -204,6 +204,10 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
           $('#landing-page-url-modal').modal('show');
       }
 
+    goToFormAnalytics(id:number){
+        this.router.navigate(['/home/forms/lf/'+id]);
+    }
+
     
     
     ngOnDestroy() {

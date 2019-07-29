@@ -37,6 +37,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     clientUrl = environment.CLIENT_URL;
     message = "";
     campaignId = 0;
+    landingPageId = 0;
     statusCode = 200;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
@@ -59,9 +60,13 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.campaignId = this.route.snapshot.params['alias'];
+        this.landingPageId = this.route.snapshot.params['landingPageId'];
         if(this.campaignId!=undefined){
             this.pagination.campaignId = this.campaignId;
             this.pagination.campaignForm = true;
+        }else if(this.landingPageId>0){
+            this.pagination.landingPageId = this.landingPageId;
+            this.pagination.landingPageForm = true;
         }
         this.listForms( this.pagination );
     }
@@ -234,6 +239,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     goToAnalytics(form:Form){
         if(this.pagination.campaignForm){
             this.router.navigate(['/home/forms/'+form.alias+'/'+this.campaignId+'/analytics']);
+        }else if(this.pagination.landingPageForm){
+            this.router.navigate(['/home/forms/lf/'+form.alias+'/'+this.landingPageId+'/analytics']);
         }else{
             this.router.navigate(['/home/forms/'+form.alias+'/analytics']);
         }

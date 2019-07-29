@@ -5,6 +5,8 @@ import { AddFormComponent } from './add-form/add-form.component';
 import { ManageFormComponent } from './manage-form/manage-form.component';
 import { FormAnalyticsComponent } from './form-analytics/form-analytics.component';
 import { CampaignFormAnalyticsComponent } from './campaign-form-analytics/campaign-form-analytics.component';
+import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics/landing-page-form-analytics.component';
+import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
 
 export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
@@ -13,7 +15,9 @@ export const routes: Routes = [
     { path: "manage", component: ManageFormComponent },
     { path: ":alias/analytics", component: FormAnalyticsComponent},
     { path: ":alias/:campaignAlias/analytics", component: FormAnalyticsComponent},
-    {path: "cf/:alias",component:CampaignFormAnalyticsComponent}
+    { path: "lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
+    {path: "cf/:alias",component:CampaignFormAnalyticsComponent},
+    {path: "lf/:landingPageId",component:LandingPageFormsComponent}
 ];
 
 @NgModule( {

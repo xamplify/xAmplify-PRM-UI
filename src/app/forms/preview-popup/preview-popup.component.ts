@@ -12,6 +12,7 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
+import { environment } from 'environments/environment';
 declare var swal, $: any;
 @Component({
   selector: 'app-preview-popup',
@@ -28,6 +29,7 @@ export class PreviewPopupComponent implements OnInit {
     formsError:boolean = false;
     pagination:Pagination = new Pagination();
     formsLoader:HttpRequestLoader = new HttpRequestLoader();
+    clientUrl = environment.CLIENT_URL;
    constructor(private formService:FormService,public logger:XtremandLogger,private authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService) {
    }

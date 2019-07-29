@@ -62,6 +62,12 @@
 									<a data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showLandingPageLink(landingPage)">
 										<i class="fa fa-clipboard"></i>
 									</a>
+									<ng-container *ngIf="landingPage.formsCount>0">
+										<a data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
+										<i class="fa fa-wpforms"></i>
+									</a>
+									</ng-container>
+									<span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
 									<a data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)" >
 										<i class="fa fa-trash-o"></i>
 									</a>

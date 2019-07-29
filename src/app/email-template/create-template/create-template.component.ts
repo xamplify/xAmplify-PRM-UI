@@ -44,7 +44,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     isAdd:boolean;
     isMinTimeOver:boolean = false;
     pagination:Pagination = new Pagination();
-    clientUrl = environment.CLIENT_URL;
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
@@ -463,10 +462,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       else{
           return $('<input type="submit" class="btn btn-primary" value="'+text+'">').on('click', cb);
       }
-  }
-  
-  preview(id:number){
-      this.previewPopUpComponent.previewForm(id);
   }
   
   ngAfterViewInit() {
