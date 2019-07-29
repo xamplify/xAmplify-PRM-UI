@@ -43,6 +43,9 @@ export class DefaultPageComponent implements OnInit {
         }
         else if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard/welcome']);
+        }
+        else if(this.authenticationService.isOnlyUser()){
+            this.router.navigate(['/home/dashboard/welcome']);
         }else{
             this.router.navigate(['/home/dashboard/add-company-profile']);
         }
@@ -54,6 +57,9 @@ export class DefaultPageComponent implements OnInit {
         }
         else if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard']);
+        }
+        else if(this.authenticationService.isOnlyUser()){
+            this.router.navigate(['/home/dashboard/dashboard']);
         }else{
             this.router.navigate(['/home/dashboard/add-company-profile']);
         }

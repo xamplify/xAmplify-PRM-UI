@@ -206,6 +206,20 @@ export class AuthenticationService {
     */
       return this.loggedInUserRole=="Partner" && this.isPartnerTeamMember==false;
     }
+    
+    isOnlyUser(){
+        try{
+          const roleNames = this.getRoles();
+          if(roleNames && roleNames.length === 1 && (roleNames.indexOf('ROLE_USER')>-1)){
+              return true;
+          }else{
+              return false;
+          }
+        }catch(error){
+          this.xtremandLogger.log('error'+error);
+        }
+      }
+
 
     isSuperAdmin(){
         try{

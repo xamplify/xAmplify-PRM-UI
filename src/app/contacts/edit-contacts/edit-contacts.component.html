@@ -212,7 +212,7 @@
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
+											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -246,7 +246,7 @@
                         </div>
                         </ng-container>
 											</div>
-							 	<div class="col-sm-12 col-md-6 p0" style="margin-top: 10px;">
+							 	<div class="col-sm-12 col-md-6 p0 pull-right" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; margin-left: 50px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -586,7 +586,7 @@
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
 															<!-- <th class='text-center'>MORE</th> -->
-														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
+														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -715,13 +715,13 @@
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
 															</td>
-															<td align="center" *ngIf="!clickBoard">
+															<td align="center" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 															<!-- <button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button> -->
-															<div class="actions-block override-actions" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
+															<div class="actions-block override-actions">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
