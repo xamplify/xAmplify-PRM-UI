@@ -92,6 +92,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                 self.landingPage.htmlBody = htmlContent;
                                 self.landingPage.jsonBody = jsonContent;
                                 if ( !defaultLandingPage ) {
+                                    self.name = landingPageName;
                                     var buttons = $( '<div>' )
                                         .append( ' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' )
                                         .append( self.createButton( 'Save As', function() {
