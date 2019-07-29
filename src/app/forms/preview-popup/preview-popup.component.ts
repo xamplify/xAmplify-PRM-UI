@@ -30,11 +30,15 @@ export class PreviewPopupComponent implements OnInit {
     pagination:Pagination = new Pagination();
     formsLoader:HttpRequestLoader = new HttpRequestLoader();
     clientUrl = environment.CLIENT_URL;
+    showButton = false;
    constructor(private formService:FormService,public logger:XtremandLogger,private authenticationService:AuthenticationService,
-           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService) {
+           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
    }
 
   ngOnInit() {
+      if(this.router.url=="/home/emailtemplates/create" || this.router.url=="/home/landing-pages/add"){
+          this.showButton = true;
+      }
   }
   
   
