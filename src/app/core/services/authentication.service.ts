@@ -39,6 +39,7 @@ export class AuthenticationService {
     roleName: Roles= new Roles();
     isAddedByVendor = false;
     isPartnerTeamMember = false;
+    superiorRole = '';
     selectedVendorId: number;
     venorMyProfileReport: any;
     loggedInUserRole:string;

@@ -15,4 +15,5 @@ export class Module {
     enableLeads = false;
     isOnlyPartner = false;
     isAddingPartnersAccess = false;
+    isReDistribution = false;
 }

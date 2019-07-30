@@ -54,6 +54,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
                     this.authService.module.isCampaign = true;
                     // this.isCampaign = true;
+                    if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner' || this.authService.superiorRole === 'Partner'))
+                            || this.authService.module.isCompanyPartner){
+                        this.authService.module.isReDistribution = true;
+                    }
                 }
                 if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
@@ -144,6 +148,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
              if(response.statusCode==200){
                 this.authService.loggedInUserRole = response.data.role;
                 this.authService.isPartnerTeamMember = response.data.partnerTeamMember;
+                this.authService.superiorRole = response.data.superiorRole;
                 this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
              }else{
                  this.authService.loggedInUserRole = 'User';
