@@ -318,7 +318,7 @@
 													<td *ngIf="!authenticationService.isSuperAdmin()">
 														<div class="actions-block override-actions" *ngIf="contactList.emailValidationInd">
 															<a
-																*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
+																*ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_edit}}"> <i
@@ -420,7 +420,7 @@
 											<div class="bar"
 												*ngIf="!authenticationService.isSuperAdmin() && contactList.emailValidationInd">
 												<a [class.disabled]="!contactList.emailValidationInd"
-													*ngIf="(hasAllAccess || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
+													*ngIf="(hasAllAccess || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList)"
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_edit}}"
