@@ -9,12 +9,13 @@ import {LandingPagesRoutingModule} from "./landing-pages-routing.module";
 import { AddLandingPageComponent } from './add-landing-page/add-landing-page.component';
 import { SelectLandingPageComponent } from './select-landing-page/select-landing-page.component';
 import { ManageLandingPageComponent } from './manage-landing-page/manage-landing-page.component';
+import { LandingPageAnalyticsComponent } from './landing-page-analytics/landing-page-analytics.component';
 
 @NgModule( {
     imports: [
         CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LandingPagesRoutingModule
     ],
-    declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent],
+    declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent, LandingPageAnalyticsComponent],
     providers: [LandingPageService]
 })
 export class LandingPagesModule { }

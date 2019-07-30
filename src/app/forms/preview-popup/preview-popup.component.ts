@@ -31,7 +31,7 @@ export class PreviewPopupComponent implements OnInit {
     formsLoader:HttpRequestLoader = new HttpRequestLoader();
     clientUrl = environment.CLIENT_URL;
     showButton = false;
-   constructor(private formService:FormService,public logger:XtremandLogger,private authenticationService:AuthenticationService,
+   constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
    }
 

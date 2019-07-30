@@ -152,6 +152,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
     
     deleteById(form:Form){
+        this.customResponse = new CustomResponse();
         this.referenceService.loading(this.httpRequestLoader, true);
         this.referenceService.goToTop();
         this.formService.delete( form.id )
@@ -165,7 +166,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 this.pagination.pageIndex = 1;
                 this.listForms(this.pagination);
             }else{
-                console.log(response);
                 let emailTemplateNames = "";
                 $.each(response.data,function(index,value){
                     emailTemplateNames+= (index+1)+"."+value+"<br><br>";

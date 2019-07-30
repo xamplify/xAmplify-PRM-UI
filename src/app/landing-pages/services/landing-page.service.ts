@@ -10,6 +10,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { LandingPage } from '../models/landing-page';
 import { Router } from '@angular/router';
+import { LandingPageAnalytics } from '../models/landing-page-analytics';
 
 @Injectable()
 export class LandingPageService {
@@ -27,6 +28,12 @@ export class LandingPageService {
 
     list( pagination: Pagination ): Observable<any> {
         return this.http.post( this.URL + "list?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    listAnalytics( pagination: Pagination ): Observable<any> {
+        return this.http.post( this.URL + "analytics/list?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -57,6 +64,12 @@ export class LandingPageService {
     
     getHtmlContentByAlias( alias: string ) {
         return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    saveAnalytics( landingPageAnalytics: LandingPageAnalytics ): Observable<any> {
+        return this.http.post( this.authenticationService.REST_URL + "save/landingPageAnalytics", landingPageAnalytics )
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -8,4 +8,6 @@ export class LandingPage {
     htmlBody:string;
     userId:number;
     alias:string;
+    imageName:string;
+    analyticsCount:number;
 }

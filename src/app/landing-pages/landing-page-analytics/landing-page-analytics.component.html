@@ -1,0 +1,124 @@
+<div class="page-content">
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li *ngIf="!authenticationService.isSuperAdmin()">
+        <i class="fa fa-home"></i>
+        <a [routerLink]="referenceService.homeRouter">Home</a>
+        <i class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="authenticationService.isSuperAdmin()">
+      	<i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+      <li>
+       <li>
+      		<a [routerLink]="['/home/landing-pages/manage']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+      	</li>
+      <li>
+        <a>Landing Page Analytics</a>
+      </li>
+    </ul>
+  </div>
+<div class="row">
+          <div class="col-xs-12 p5">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="caption">
+                  <span class="caption-subject font-red-sunglo uppercase">Landing Page Analytics</span>
+                </div>
+             	<div class="inputs" align="right" style="float: right">
+            	<div class="portlet-input input-inline input-small">
+             <!--  <div class="input-icon right" style="position: relative;margin: -12px 0 0 0;">
+                <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." 
+                		(keypress)="eventHandler($event.keyCode)">
+                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLandingPageAnalytics();"></button>
+                <button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search"></i></button>
+              </div> -->
+            </div>
+          	</div>
+              </div>
+               <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+              <div class="portlet-body"  *ngIf="!httpRequestLoader.isLoading">
+              	<table class="table tgrid">
+              		<thead>
+              			<tr>
+              				<th>Operating System</th>
+              				<th>City</th>
+              				<th>State</th>
+              				<th>Zip</th>
+              				<th>Country</th>
+              				<th>Country Code</th>
+              				<th>Internet Provider</th>
+              				<th>IP Address</th>
+              				<th>Latitude</th>
+              				<th>Longitude</th>
+              				<th>Timezone</th>
+              				<th>Opened Time</th>
+              				<th>Device Type</th>
+              			</tr>
+              		</thead>
+              		 <tbody>
+                    <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
+                      <td>{{item.os}}</td>
+                      <td>{{item.city}}</td>
+                      <td>{{item.state}}</td>
+                      <td>{{item.zip}}</td>
+                      <td>{{item.country}}</td>
+                      <td>{{item.countryCode}}</td>
+                      <td>{{item.isp}}</td>
+                      <td>{{item.ipAddress}}</td>
+                      <td>{{item.latitude}}</td>
+                       <td>{{item.longitude}}</td>
+                       <td>{{item.timezone}}</td>
+                       <td>
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.openedTime"> </app-timestamp>
+                       </td>
+                        <td>{{item.deviceType}}</td>
+                    </tr>
+                  </tbody>
+              	</table>
+              
+                <!-- <table class="table tgrid">
+                  <thead>
+                  <tr>
+                    <th>partner Company Name</th>
+                    <th style="float: left;margin-left: 70px;">Partners</th>
+                    <th class="center-aligned">Campaign Name</th>
+                     <th class="center-aligned">Redistributed On</th>
+                    <th class="center">Analytics</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
+                      <td><app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info></td>
+                      <td>{{item.campaignName}}</td>
+                       <td>
+                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.redistributedOn"> </app-timestamp>
+                       </td>
+                      <td>
+                      <div class="actions-block override-actions" id="left-float">
+                       <a data-rel="fancybox-button" (click)="goToCampaignAnalytics(item)" data-toggle="tooltip" data-placement="top" title="Campaign Based Reports" class='mr5'>
+							<i class="fa fa-line-chart"></i>
+						</a>
+						<a routerLink="/home/forms/cf/{{item.campaignId}}" *ngIf="item.formsCount>0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+							<i class="fa fa-wpforms"></i>
+							 <span class="badge" id="notification">{{item.formsCount}}</span>
+						</a>
+						 <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!item.dataShare">
+                        	<img src="../assets/images/disabled-icon.png">
+                     	</a>
+                     	</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table> -->
+              </div>
+               <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+						(notifyParentDropDown)="listLandingPageAnalytics($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+				</div>
+		        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+		          <strong>No Analytics Found.</strong>
+		        </div>
+            </div>
+          </div>
+        </div>
+</div>

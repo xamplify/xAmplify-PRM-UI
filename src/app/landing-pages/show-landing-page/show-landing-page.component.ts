@@ -8,6 +8,10 @@ import { Processor } from '../../core/models/processor';
 import { CustomResponse } from '../../common/models/custom-response';
 import { filter, pairwise } from 'rxjs/operators';
 import { LandingPageService } from '../services/landing-page.service';
+import { UtilService } from '../../core/services/util.service';
+import { LandingPageAnalytics } from '../models/landing-page-analytics';
+import { Ng2DeviceService } from 'ng2-device-detector';
+
 
 declare var $:any;
 @Component({
@@ -18,6 +22,7 @@ declare var $:any;
 
 })
 export class ShowLandingPageComponent implements OnInit {
+    deviceInfo: any;
     hasLandingPage=true;
     ngxLoading = false;
     customResponse: CustomResponse = new CustomResponse();
@@ -28,7 +33,8 @@ export class ShowLandingPageComponent implements OnInit {
     show: boolean;
     message: string;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
-          private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router) { }
+          private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
+          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService) { }
 
   ngOnInit() {
       this.processor.set(this.processor);
@@ -36,6 +42,54 @@ export class ShowLandingPageComponent implements OnInit {
       this.getHtmlBodyAlias(this.alias);
   }
 
+  
+  getLocationDetails(){
+      this.utilService.getJSONLocation()
+      .subscribe(
+        (response: any) => {
+            let landingPageAnalytics = new LandingPageAnalytics();
+            this.deviceInfo = this.deviceService.getDeviceInfo();
+            if (this.deviceInfo.device === 'unknown') {
+                this.deviceInfo.device = 'computer';
+            }
+            landingPageAnalytics.openedTime =new Date();
+            landingPageAnalytics.deviceType = this.deviceInfo.device;
+            landingPageAnalytics.os = this.deviceInfo.os;
+            landingPageAnalytics.city = response.city;
+            landingPageAnalytics.country = response.country;
+            landingPageAnalytics.isp = response.isp;
+            landingPageAnalytics.ipAddress = response.query;
+            landingPageAnalytics.state = response.regionName;
+            landingPageAnalytics.zip = response.zip;
+            landingPageAnalytics.latitude = response.lat;
+            landingPageAnalytics.longitude = response.lon;
+            landingPageAnalytics.countryCode = response.countryCode;
+            landingPageAnalytics.timezone = response.timezone;
+            landingPageAnalytics.landingPageAlias = this.alias;
+            console.log(landingPageAnalytics);
+            this.saveAnalytics(landingPageAnalytics);
+
+        },
+        (error: string) => {
+            this.logger.error( "Error In Fetching Location Details" ); 
+        }
+      );
+  }
+  
+  
+  saveAnalytics(landingPageAnalytics:LandingPageAnalytics){
+      this.landingPageService.saveAnalytics(landingPageAnalytics)
+      .subscribe(
+        (data: any) => {
+        },
+        (error: string) => {
+            this.logger.error( "Error In saving Location Details",error); 
+        }
+      );
+      
+  }
+  
+  
   
   getHtmlBodyAlias(alias:string){
       this.ngxLoading = true;
@@ -45,6 +99,7 @@ export class ShowLandingPageComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasLandingPage = true;
             document.getElementById('landing-page-html-body').innerHTML = response.message;
+            this.getLocationDetails();
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);

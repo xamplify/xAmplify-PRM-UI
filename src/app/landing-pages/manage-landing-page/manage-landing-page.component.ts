@@ -64,6 +64,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.landingPageService.list( pagination ).subscribe(
             ( response: any ) => {
                 const data = response.data;
+                console.log(data);
                 this.statusCode = response.statusCode;
                 if(this.statusCode==200){
                     pagination.totalRecords = data.totalRecords;
@@ -206,6 +207,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     goToFormAnalytics(id:number){
         this.router.navigate(['/home/forms/lf/'+id]);
+    }
+    goToLandingPageAnalytics(id:number){
+        this.router.navigate(['/home/landing-pages/'+id+'/analytics']);
     }
 
     
