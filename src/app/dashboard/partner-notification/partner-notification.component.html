@@ -26,7 +26,7 @@
       <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalSocialCampaign}}</span></h3>
     </a>
   </div>
-  <div class="col-xs-12 col-sm-3">
+  <div class="col-xs-12 col-sm-3" *ngIf="referenceService.eventCampaign">
       <a class="btn-success btn-block notification-box" [routerLink]="['/home/campaigns/partner/event']">
         <span><i class="fa fa-calendar"></i></span>
         <h4>Event campaigns</h4>
