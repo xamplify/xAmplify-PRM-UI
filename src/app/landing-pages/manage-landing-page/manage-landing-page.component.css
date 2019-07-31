@@ -107,7 +107,6 @@ h1 {
 
 .grid-box img {
 	margin: 0 auto;
-	height: 98px;
 }
 
 @media screen and (max-width:600px) {
@@ -181,5 +180,8 @@ h1 {
     margin-top: -2px;
 }
 #max-height{
-	max-height: 375px;
+	bottom:25px;
+}
+.grid-box.height{
+	height: 450px;
 }

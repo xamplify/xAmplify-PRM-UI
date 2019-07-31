@@ -9,7 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { LandingPageService } from '../services/landing-page.service';
 import { LandingPageAnalytics } from '../models/landing-page-analytics';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-
+declare var  $: any;
 
 @Component({
   selector: 'app-landing-page-analytics',
@@ -41,6 +41,10 @@ export class LandingPageAnalyticsComponent implements OnInit {
                 const data = response.data;
                 pagination.totalRecords = data.totalRecords;
                 this.sortOption.totalRecords = data.totalRecords;
+                $.each(data.landingPageAnalytics,function(index,analytics){
+                    console.log(analytics.openedTimeInString);
+                    analytics.displayTime = new Date(analytics.openedTimeInString);
+               });
                 pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
                 this.referenceService.loading( this.httpRequestLoader, false );
             },

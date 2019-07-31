@@ -107,7 +107,6 @@ h1 {
 
 .grid-box img {
 	margin: 0 auto;
-	height: 98px;
 }
 
 @media screen and (max-width:600px) {
@@ -138,7 +137,6 @@ h1 {
 }
 
 #auto-height {
-	height: auto;
 	margin-top: -12px;
 }
 
@@ -147,4 +145,19 @@ h1 {
 }
 .input-icon.right{
 	width: 200px;
+}
+#max-height{
+	bottom:25px;
+}
+.grid-box.height{
+	height: 450px;
+}
+#right-margin{
+	margin-right: 56px;
+}
+#search-div{
+	margin-right: 10px;
+}
+#icon{
+	position: relative;right: -11px;
 }

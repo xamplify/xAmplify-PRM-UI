@@ -48,8 +48,8 @@
 						<app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
 						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 						<ng-container *ngIf="!httpRequestLoader.isLoading">
-							<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-							<div  class="grid-box" id="landingPageListDiv_{{landingPage.id}}">
+							<div id="max-height" class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
+							<div   class="grid-box height" id="landingPageListDiv_{{landingPage.id}}">
 								<img class="img-responsive center-block" src="assets/images/Landing-Pages/{{landingPage.imageName}}" alt="Not Found" id="auto-height">
 								<h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
 								<div class="bar">
@@ -86,7 +86,7 @@
 						</ng-container>
 					</div>
 				</div>
-				  <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+				  <div *ngIf="pagination.pagedItems.length !== 0">
 					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="listLandingPages($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 				</div>
