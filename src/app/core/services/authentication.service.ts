@@ -327,6 +327,7 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         localStorage.removeItem("campaignRouter");
         localStorage.removeItem("superiorId");
+        localStorage.clear();
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
         const module = this.module;
@@ -346,6 +347,7 @@ export class AuthenticationService {
         this.isPartnerTeamMember = false;
         this.loggedInUserRole = "";
         this.hasOnlyPartnerRole = false;
+        module.isOnlyPartner = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {

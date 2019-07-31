@@ -142,21 +142,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     }
     ngOnInit() {
       //  this.isOnlyPartner = this.authService.isOnlyPartner();
-        this.userService.getRoles(this.authService.getUserId())
-        .subscribe(
-        response => {
-             if(response.statusCode==200){
-                this.authService.loggedInUserRole = response.data.role;
-                this.authService.isPartnerTeamMember = response.data.partnerTeamMember;
-                this.authService.superiorRole = response.data.superiorRole;
-                this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
-             }else{
-                 this.authService.loggedInUserRole = 'User';
-             }
-        },
-        error => this.logger.errorPage(error),
-        () => this.logger.log('Finished')
-        );
+        this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false ); }

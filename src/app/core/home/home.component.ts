@@ -119,8 +119,26 @@ export class HomeComponent implements OnInit {
         this.referenceService.eventCampaign = data.event
       });
     }
+  
+  getTeamMembersDetails(){
+      this.userService.getRoles(this.authenticationService.getUserId())
+      .subscribe(
+      response => {
+           if(response.statusCode==200){
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+              this.authenticationService.superiorRole = response.data.superiorRole;
+           }else{
+               this.authenticationService.loggedInUserRole = 'User';
+           }
+      },
+      () => this.xtremandLogger.log('Finished')
+      );
+  }
+  
   ngOnInit() {
-    try {
+   
+      try {
       const roleNames = this.authenticationService.getRoles();
       if (
         this.referenceService.defaulgVideoMethodCalled === false &&
@@ -132,5 +150,6 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       this.xtremandLogger.error("error" + error);
     }
+    this.getTeamMembersDetails();
   }
 }
