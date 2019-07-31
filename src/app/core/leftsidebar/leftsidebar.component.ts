@@ -128,7 +128,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 {
                     this.refService.getOrgCampaignTypes(element.companyId).subscribe(data =>
                     {
-                        if (data.enableLeads)
+                        if (!this.authService.module.enableLeads)
                         {
                             this.authService.module.enableLeads = data.enableLeads;
                             return ;
