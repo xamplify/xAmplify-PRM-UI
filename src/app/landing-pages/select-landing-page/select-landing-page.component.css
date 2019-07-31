@@ -149,11 +149,11 @@ h1 {
 #max-height{
 	bottom:25px;
 }
-.grid-box.height{
-	height: 450px;
+#height{
+	height: 485px;
 }
 #right-margin{
-	margin-right: 56px;
+	margin-right: 70px;
 }
 #search-div{
 	margin-right: 10px;
