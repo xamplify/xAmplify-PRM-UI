@@ -22,10 +22,12 @@ export class LandingPageAnalyticsComponent implements OnInit {
     landingPageId: number = 0;
     pagination: Pagination = new Pagination();
     ngxloading = false;
-    loggedInUserId = 0;
+    statusCode:number = 200;
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, 
-        public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,public logger: XtremandLogger,public sortOption:SortOption ) { }
+        public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,public logger: XtremandLogger,public sortOption:SortOption ) {
+        this.pagination.userId = this.authenticationService.getUserId();
+    }
 
     ngOnInit() {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
@@ -37,15 +39,18 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.listAnalytics( pagination ).subscribe(
             ( response: any ) => {
-                console.log(response);
-                const data = response.data;
-                pagination.totalRecords = data.totalRecords;
-                this.sortOption.totalRecords = data.totalRecords;
-                $.each(data.landingPageAnalytics,function(index,analytics){
-                    console.log(analytics.openedTimeInString);
-                    analytics.displayTime = new Date(analytics.openedTimeInString);
-               });
-                pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
+                this.statusCode = response.statusCode;
+                if(this.statusCode==200){
+                    const data = response.data;
+                    pagination.totalRecords = data.totalRecords;
+                    this.sortOption.totalRecords = data.totalRecords;
+                    $.each(data.landingPageAnalytics,function(index,analytics){
+                        console.log(analytics.openedTimeInString);
+                        analytics.displayTime = new Date(analytics.openedTimeInString);
+                   });
+                    pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
+                }
+                
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );

@@ -17,8 +17,8 @@
       </li>
     </ul>
   </div>
-<div class="row">
-          <div class="col-xs-12 p5">
+<div class="row" id="responsive">
+          <div class="col-xs-12 p5" *ngIf="statusCode==200">
             <div class="portlet light">
               <div class="portlet-title">
                 <div class="caption">
@@ -85,5 +85,22 @@
 		        </div>
             </div>
           </div>
+          
+          <div class="col-xs-12 p5" *ngIf="statusCode==404">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Landing Page does not exists</h4>
+				</strong>
+			</div>
+		</div>
+
+
+		<div class="col-xs-12 p5" *ngIf="statusCode==403">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Access Denied</h4>
+				</strong>
+			</div>
+		</div>
         </div>
 </div>
