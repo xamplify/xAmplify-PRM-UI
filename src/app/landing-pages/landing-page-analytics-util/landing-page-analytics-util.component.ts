@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,Input } from '@angular/core';
 import {ActivatedRoute,Router} from '@angular/router';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
@@ -12,37 +12,31 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var  $: any;
 
 @Component({
-  selector: 'app-landing-page-analytics',
-  templateUrl: './landing-page-analytics.component.html',
-  styleUrls: ['./landing-page-analytics.component.css'],
+  selector: 'app-landing-page-analytics-util',
+  templateUrl: './landing-page-analytics-util.component.html',
+  styleUrls: ['./landing-page-analytics-util.component.css'],
   providers: [Pagination,HttpRequestLoader,SortOption]
 })
-export class LandingPageAnalyticsComponent implements OnInit {
+export class LandingPageAnalyticsUtilComponent implements OnInit {
 
     landingPageId: number = 0;
-    pagination: Pagination = new Pagination();
-    countryPagination:Pagination = new Pagination();
+    pagination: Pagination;
+    ngxloading = false;
     statusCode:number = 200;
     viewsStatusCode:number = 200;
     landingPageViewsData:any;
     data:any;
-    landingPageAnalyticsContext:any;
-    countryViewsAnalyticsContext:any;
-    isPopupOpened = false;
+    @Input() map;
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
-        public httpRequestLoader: HttpRequestLoader,public countryViewsLoader:HttpRequestLoader, 
+        public httpRequestLoader: HttpRequestLoader, 
         public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,public logger: XtremandLogger,public sortOption:SortOption ) {
-        this.pagination.userId = this.authenticationService.getUserId();
     }
 
     ngOnInit() {
-        this.landingPageId = this.route.snapshot.params['landingPageId'];
-        this.pagination.campaignId = this.landingPageId;
-        this.pagination.loader = this.httpRequestLoader;
+        this.pagination = this.map.get("pagination");
+        console.log(this.pagination);
         this.listAnalytics( this.pagination,"");
-        this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
         this.getViews();
-        
     }
     
     getViews(){
@@ -58,12 +52,14 @@ export class LandingPageAnalyticsComponent implements OnInit {
     }
     
     listAnalytics(pagination:Pagination,countryCode:string){
-        this.referenceService.loading( pagination.loader, true );
+        $( window ).scrollTop( 0 );
+        this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.listAnalytics( pagination,countryCode ).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;
                 if(this.statusCode==200){
                     const data = response.data;
+                    console.log(data);
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
                     $.each(data.landingPageAnalytics,function(index,analytics){
@@ -76,7 +72,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
                 }
                 
-                this.referenceService.loading(pagination.loader, false );
+                this.referenceService.loading( this.httpRequestLoader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     
@@ -85,49 +81,42 @@ export class LandingPageAnalyticsComponent implements OnInit {
     /********************Pagaination&Search Code*****************/
 
     /*************************Sort********************** */
-    sortBy( text: any,loader:HttpRequestLoader ) {
+    sortBy( text: any ) {
         this.sortOption.formsSortOption = text;
-        this.getAllFilteredResults( this.pagination,loader );
+        this.getAllFilteredResults( this.pagination );
     }
 
 
     /*************************Search********************** */
-    search(loader:HttpRequestLoader) {
-        this.getAllFilteredResults( this.pagination,loader );
+    search() {
+        this.getAllFilteredResults( this.pagination );
     }
     
-    paginationDropdown(items:any,loader:HttpRequestLoader){
+    paginationDropdown(items:any){
         this.sortOption.itemsSize = items;
-        this.getAllFilteredResults(this.pagination,loader);
+        this.getAllFilteredResults(this.pagination);
     }
 
     /************Page************** */
-    setPage( event: any,loader:HttpRequestLoader ) {
-        $( window ).scrollTop( 0 );
+    setPage( event: any ) {
         this.pagination.pageIndex = event.page;
-        this.listAnalytics( this.pagination,"");
+        this.listAnalytics( this.pagination,"" );
     }
 
-    getAllFilteredResults( pagination: Pagination,loader:HttpRequestLoader ) {
+    getAllFilteredResults( pagination: Pagination ) {
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.sortOption.searchKey;
        // this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
-        this.listAnalytics( this.pagination,"");
+        this.listAnalytics( this.pagination,"" );
     }
-  //  eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(loader:HttpRequestLoader); } }
-    refreshList(loader:HttpRequestLoader){
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+    refreshList(){
         this.listAnalytics(this.pagination,"");
     }
     
     
-    getViewsByCountryCode(countryCode:any,loader:HttpRequestLoader){
-        this.isPopupOpened = true;
-        this.countryPagination.campaignId = this.landingPageId;
-        this.countryPagination.userId = this.authenticationService.getUserId();
-        this.countryPagination.loader = this.countryViewsLoader;
-        this.listAnalytics( this.countryPagination,countryCode);
-        this.countryViewsAnalyticsContext = {'analyticsData':this.countryPagination};
-        $('#country-views-modal').modal('show');
+    getViewsByCountryCode(countryCode:any){
+        this.listAnalytics( this.pagination,countryCode);
     }
 
 }

@@ -1,5 +1,6 @@
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { Criteria } from '../../contacts/models/criteria';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 export class Pagination {
     
@@ -36,5 +37,6 @@ export class Pagination {
 	campaignForm = false;
 	landingPageId = 0;
 	landingPageForm = false;
+	loader:HttpRequestLoader = new HttpRequestLoader();
 	
 }

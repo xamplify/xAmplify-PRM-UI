@@ -18,7 +18,40 @@
     </ul>
   </div>
 <div class="row" id="responsive">
-		<div class="col-xs-12" *ngIf="statusCode==200">
+			<ng-container  *ngTemplateOutlet="estimateTemplate;context:landingPageAnalyticsContext"></ng-container>
+           <div class="col-xs-6" *ngIf="viewsStatusCode==200">
+            <div class="portlet light">
+              <div class="portlet-title">
+                <div class="caption">
+                  <i class="fa fa-globe"></i>
+                  <span class="caption-subject">Landing Page Statistics</span>
+                </div>
+              </div>
+              <div class="portlet-body">
+                <app-worldmap *ngIf="landingPageViewsData" [worldMapData]='landingPageViewsData' (notifyParent)="getViewsByCountryCode($event)"></app-worldmap>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 p5" *ngIf="statusCode==404">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Landing Page does not exists</h4>
+				</strong>
+			</div>
+		</div>
+
+		<div class="col-xs-12 p5" *ngIf="statusCode==403">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Access Denied</h4>
+				</strong>
+			</div>
+		</div>
+        </div>
+</div>
+<ng-template #estimateTemplate let-xtreme="analyticsData">
+	<ng-container *ngIf="xtreme!=null">
+		<div class="col-xs-12">
             <div class="portlet light">
               <div class="portlet-title">
 					<div class="caption">
@@ -47,8 +80,8 @@
 					</div>
 				</div>
               
-               <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-              <div class="portlet-body"  *ngIf="!httpRequestLoader.isLoading">
+               <app-list-loader  *ngIf="xtreme.loader.isLoading"></app-list-loader>
+              <div class="portlet-body"  *ngIf="!xtreme.loader.isLoading">
               	<table class="table tgrid">
               		<thead>
               			<tr>
@@ -58,7 +91,7 @@
               			</tr>
               		</thead>
               		 <tbody>
-                    <tr *ngFor="let item of pagination.pagedItems" style="cursor: pointer;">
+                    <tr *ngFor="let item of xtreme?.pagedItems" style="cursor: pointer;">
                     <td>
                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.displayTime"> </app-timestamp>
                     </td>
@@ -72,44 +105,29 @@
                   </tbody>
               	</table>
               </div>
-               <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-						(notifyParentDropDown)="listAnalytics($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+               <div *ngIf="xtreme?.pagedItems.length !== 0" class="pg8">
+					<app-pagination [pagination]="xtreme" (notifyParent)="setPage($event,xtreme.loader)"
+						(notifyParentDropDown)="listAnalytics($event,xtreme.loader)" [hidden]="xtreme.loader.isLoading"></app-pagination>
 				</div>
-		        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+		        <div *ngIf="xtreme?.totalRecords==0 && !xtreme.loader.isLoading" class="alert alert-info">
 		          <strong>No Analytics Found.</strong>
 		        </div>
             </div>
           </div>
-          
-          
-           <div class="col-xs-6" *ngIf="viewsStatusCode==200">
-            <div class="portlet light">
-              <div class="portlet-title">
-                <div class="caption">
-                  <i class="fa fa-globe"></i>
-                  <span class="caption-subject">Landing Page Statistics</span>
-                </div>
-              </div>
-              <div class="portlet-body">
-                <app-worldmap *ngIf="landingPageViewsData" [worldMapData]='landingPageViewsData' (notifyParent)="clickWorldMapReports($event)"></app-worldmap>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-12 p5" *ngIf="statusCode==404">
-			<div class="alert alert-danger">
-				<strong>
-					<h4>Landing Page does not exists</h4>
-				</strong>
-			</div>
-		</div>
-
-		<div class="col-xs-12 p5" *ngIf="statusCode==403">
-			<div class="alert alert-danger">
-				<strong>
-					<h4>Access Denied</h4>
-				</strong>
-			</div>
-		</div>
+          </ng-container>
+          </ng-template>
+ <div class="modal right " id="country-views-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title text-center">Landing Page Analytics</h4>
         </div>
-</div>
+        <div class="modal-body">
+        <ng-container 
+  				 *ngTemplateOutlet="estimateTemplate;context:countryViewsAnalyticsContext">
+		</ng-container>
+        </div></div></div></div>   
+ 

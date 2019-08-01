@@ -11,7 +11,7 @@ import { Pagination } from '../../core/models/pagination';
 import { LandingPage } from '../models/landing-page';
 import { Router } from '@angular/router';
 import { LandingPageAnalytics } from '../models/landing-page-analytics';
-
+declare var  $: any;
 @Injectable()
 export class LandingPageService {
 
@@ -32,8 +32,12 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    listAnalytics( pagination: Pagination ): Observable<any> {
-        return this.http.post( this.URL + "analytics/list?access_token=" + this.authenticationService.access_token, pagination )
+    listAnalytics( pagination: Pagination,countryCode:string ): Observable<any> {
+        let url = this.URL + "analytics/list?";
+        if($.trim(countryCode).length>0){
+            url = this.URL + "analytics/list?countryCode="+countryCode+"&";
+        }
+        return this.http.post(url+"access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
