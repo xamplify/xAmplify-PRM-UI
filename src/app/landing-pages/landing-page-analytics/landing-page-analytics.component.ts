@@ -23,6 +23,9 @@ export class LandingPageAnalyticsComponent implements OnInit {
     pagination: Pagination = new Pagination();
     ngxloading = false;
     statusCode:number = 200;
+    viewsStatusCode:number = 200;
+    landingPageViewsData:any;
+    data:any;
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, 
         public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,public logger: XtremandLogger,public sortOption:SortOption ) {
@@ -33,9 +36,24 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.pagination.campaignId = this.landingPageId;
         this.listAnalytics( this.pagination );
+        this.getViews();
+        
+    }
+    
+    getViews(){
+        this.landingPageService.getViews(this.landingPageId,this.pagination.userId).subscribe(
+            ( response: any ) => {
+                this.viewsStatusCode = response.statusCode;
+                if(this.viewsStatusCode==200){
+                    this.landingPageViewsData = response.data;
+                }
+                this.referenceService.loading( this.httpRequestLoader, false );
+            },
+            ( error: any ) => { this.logger.errorPage( error ); } );
     }
     
     listAnalytics(pagination:Pagination){
+        $( window ).scrollTop( 0 );
         this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.listAnalytics( pagination ).subscribe(
             ( response: any ) => {
@@ -45,8 +63,11 @@ export class LandingPageAnalyticsComponent implements OnInit {
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
                     $.each(data.landingPageAnalytics,function(index,analytics){
-                        console.log(analytics.openedTimeInString);
-                        analytics.displayTime = new Date(analytics.openedTimeInString);
+                        if($.trim(analytics.openedTimeInString).length>0){
+                            analytics.displayTime = new Date(analytics.openedTimeInString);
+                        }else{
+                            analytics.displayTime = new Date();
+                        }
                    });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
                 }
@@ -55,6 +76,42 @@ export class LandingPageAnalyticsComponent implements OnInit {
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     
+    }
+    
+    /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy( text: any ) {
+        this.sortOption.formsSortOption = text;
+        this.getAllFilteredResults( this.pagination );
+    }
+
+
+    /*************************Search********************** */
+    search() {
+        this.getAllFilteredResults( this.pagination );
+    }
+    
+    paginationDropdown(items:any){
+        this.sortOption.itemsSize = items;
+        this.getAllFilteredResults(this.pagination);
+    }
+
+    /************Page************** */
+    setPage( event: any ) {
+        this.pagination.pageIndex = event.page;
+        this.listAnalytics( this.pagination );
+    }
+
+    getAllFilteredResults( pagination: Pagination ) {
+        this.pagination.pageIndex = 1;
+        this.pagination.searchKey = this.sortOption.searchKey;
+       // this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
+        this.listAnalytics( this.pagination );
+    }
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+    refreshList(){
+        this.listAnalytics(this.pagination);
     }
 
 }
