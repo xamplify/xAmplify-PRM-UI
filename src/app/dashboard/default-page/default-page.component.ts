@@ -33,8 +33,14 @@ export class DefaultPageComponent implements OnInit {
        }
     }
    checkDefaultPage(defaultPage:string){
-    if (defaultPage === 'welcome' || defaultPage==='WELCOME') {  this.goToWelcomePage();
-    } else {  this.goToDashBoard();  }
+    if(!this.authenticationService.isOnlyUser()){
+      if (defaultPage === 'welcome' || defaultPage==='WELCOME') {
+        this.goToWelcomePage();
+    } else { 
+        this.goToDashBoard();  }
+     }else{
+         this.router.navigate(['/home/dashboard/dashboard']);
+     }
    }
 
     goToWelcomePage(){

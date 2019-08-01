@@ -294,7 +294,6 @@ export class CampaignService {
               .catch(this.handleError);
       }*/
 
-
     listPartnerCampaigns(pagination: Pagination, userId: number) {
         var url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
