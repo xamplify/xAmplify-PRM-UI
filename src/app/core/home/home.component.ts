@@ -156,6 +156,12 @@ export class HomeComponent implements OnInit {
       },
       () => {
           this.xtremandLogger.log('Finished');
+         }
+      );
+  }
+  
+  ngOnInit() {
+      try {
           const roleNames = this.authenticationService.getRoles();
           if (
             this.referenceService.defaulgVideoMethodCalled === false &&
@@ -163,12 +169,8 @@ export class HomeComponent implements OnInit {
           ) {
             this.getVideoDefaultSettings();
             this.referenceService.defaulgVideoMethodCalled = true;
-          }}
-      );
-  }
-  
-  ngOnInit() {
-      try {
+          }
+          
           this.getTeamMembersDetails();
        } catch (error) {
          this.xtremandLogger.error("error" + error);
