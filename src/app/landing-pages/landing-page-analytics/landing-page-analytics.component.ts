@@ -28,9 +28,10 @@ export class LandingPageAnalyticsComponent implements OnInit {
     data:any;
     landingPageAnalyticsContext:any;
     countryViewsAnalyticsContext:any;
-    isPopupOpened = false;
+    httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    countryViewsLoader:HttpRequestLoader = new HttpRequestLoader();
+    countryCode:string = "";
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
-        public httpRequestLoader: HttpRequestLoader,public countryViewsLoader:HttpRequestLoader, 
         public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,public logger: XtremandLogger,public sortOption:SortOption ) {
         this.pagination.userId = this.authenticationService.getUserId();
     }
@@ -39,7 +40,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.pagination.campaignId = this.landingPageId;
         this.pagination.loader = this.httpRequestLoader;
-        this.listAnalytics( this.pagination,"");
+        this.listAnalytics(this.pagination);
         this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
         this.getViews();
         
@@ -57,9 +58,9 @@ export class LandingPageAnalyticsComponent implements OnInit {
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
     
-    listAnalytics(pagination:Pagination,countryCode:string){
+    listAnalytics(pagination:Pagination){
         this.referenceService.loading( pagination.loader, true );
-        this.landingPageService.listAnalytics( pagination,countryCode ).subscribe(
+        this.landingPageService.listAnalytics( pagination,this.countryCode ).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;
                 if(this.statusCode==200){
@@ -75,7 +76,6 @@ export class LandingPageAnalyticsComponent implements OnInit {
                    });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
                 }
-                
                 this.referenceService.loading(pagination.loader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
@@ -85,49 +85,54 @@ export class LandingPageAnalyticsComponent implements OnInit {
     /********************Pagaination&Search Code*****************/
 
     /*************************Sort********************** */
-    sortBy( text: any,loader:HttpRequestLoader ) {
+    sortBy( text: any,pagination:Pagination ) {
         this.sortOption.formsSortOption = text;
-        this.getAllFilteredResults( this.pagination,loader );
+        this.getAllFilteredResults(pagination);
     }
 
 
     /*************************Search********************** */
-    search(loader:HttpRequestLoader) {
-        this.getAllFilteredResults( this.pagination,loader );
+    search(pagination:Pagination) {
+        this.getAllFilteredResults(pagination);
     }
     
-    paginationDropdown(items:any,loader:HttpRequestLoader){
+    paginationDropdown(items:any,pagination:Pagination){
         this.sortOption.itemsSize = items;
-        this.getAllFilteredResults(this.pagination,loader);
+        this.getAllFilteredResults(pagination);
     }
 
     /************Page************** */
-    setPage( event: any,loader:HttpRequestLoader ) {
+    setPage( event: any,pagination:Pagination) {
         $( window ).scrollTop( 0 );
-        this.pagination.pageIndex = event.page;
-        this.listAnalytics( this.pagination,"");
+        pagination.pageIndex = event.page;
+        this.listAnalytics(pagination);
     }
 
-    getAllFilteredResults( pagination: Pagination,loader:HttpRequestLoader ) {
-        this.pagination.pageIndex = 1;
-        this.pagination.searchKey = this.sortOption.searchKey;
+    getAllFilteredResults( pagination: Pagination) {
+        pagination.pageIndex = 1;
+        pagination.searchKey = this.sortOption.searchKey;
        // this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
-        this.listAnalytics( this.pagination,"");
+        this.listAnalytics(pagination);
     }
   //  eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(loader:HttpRequestLoader); } }
-    refreshList(loader:HttpRequestLoader){
-        this.listAnalytics(this.pagination,"");
+    refreshList(pagination:Pagination){
+        this.listAnalytics(pagination);
     }
     
     
     getViewsByCountryCode(countryCode:any,loader:HttpRequestLoader){
-        this.isPopupOpened = true;
         this.countryPagination.campaignId = this.landingPageId;
         this.countryPagination.userId = this.authenticationService.getUserId();
         this.countryPagination.loader = this.countryViewsLoader;
-        this.listAnalytics( this.countryPagination,countryCode);
+        this.countryCode = countryCode;
+        this.listAnalytics(this.countryPagination);
         this.countryViewsAnalyticsContext = {'analyticsData':this.countryPagination};
         $('#country-views-modal').modal('show');
+    }
+    closeModal(){
+        this.countryPagination = new Pagination();
+        this.countryCode = "";
+        $('#country-views-modal').modal('hide');
     }
 
 }
