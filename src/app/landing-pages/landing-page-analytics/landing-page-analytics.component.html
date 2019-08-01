@@ -58,7 +58,7 @@
 						<span class="caption-subject font-red-sunglo uppercase">Landing Page Analytics</span>
 					</div>
 					<div class="inputs" align="right">
-						<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+						<a class="close-circle" (click)="refreshList(xtreme)" data-toggle="tooltip" data-placement="top" title="Refresh">
 							<i class="fa fa-refresh margin"></i>
 						</a>
 						<!-- <div style="float: left;">
@@ -106,8 +106,8 @@
               	</table>
               </div>
                <div *ngIf="xtreme?.pagedItems.length !== 0" class="pg8">
-					<app-pagination [pagination]="xtreme" (notifyParent)="setPage($event,xtreme.loader)"
-						(notifyParentDropDown)="listAnalytics($event,xtreme.loader)" [hidden]="xtreme.loader.isLoading"></app-pagination>
+					<app-pagination [pagination]="xtreme" (notifyParent)="setPage($event,xtreme)"
+						(notifyParentDropDown)="listAnalytics($event)" [hidden]="xtreme.loader.isLoading"></app-pagination>
 				</div>
 		        <div *ngIf="xtreme?.totalRecords==0 && !xtreme.loader.isLoading" class="alert alert-info">
 		          <strong>No Analytics Found.</strong>
@@ -120,7 +120,7 @@
     <div class="modal-dialog modal-lg" style="width: 75%;right:0">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close-circle" data-dismiss="modal">
+          <button type="button" class="close-circle" (click)="closeModal()">
             <i class="fa fa-times"></i>
           </button>
           <h4 class="modal-title text-center">Landing Page Analytics</h4>
