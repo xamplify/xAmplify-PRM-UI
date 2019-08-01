@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationCancel, Event, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
 import { EnvService } from 'app/env.service';
+import { UserService } from "./core/services/user.service";
+import { AuthenticationService } from "./core/services/authentication.service";
 
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 declare var QuickSidebar, $: any;
@@ -12,11 +14,29 @@ declare var QuickSidebar, $: any;
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-    constructor(public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
+    constructor(public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
         // logger.level = logger.Level.LOG;
     }
+    
+    getTeamMembersDetails(){
+        this.userService.getRoles(this.authenticationService.getUserId())
+        .subscribe(
+        response => {
+             if(response.statusCode==200){
+                this.authenticationService.loggedInUserRole = response.data.role;
+                this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+                this.authenticationService.superiorRole = response.data.superiorRole;
+             }else{
+                 this.authenticationService.loggedInUserRole = 'User';
+             }
+        },
+        () => console.log('Finished')
+        );
+    }
+    
     ngOnInit() {
         QuickSidebar.init();
+       // this.getTeamMembersDetails();
         // reloading the same url with in the application
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;

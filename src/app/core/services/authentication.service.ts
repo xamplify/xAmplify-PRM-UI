@@ -44,6 +44,8 @@ export class AuthenticationService {
     venorMyProfileReport: any;
     loggedInUserRole:string;
     hasOnlyPartnerRole = false;
+    isShowCampaign = false;
+    isShowRedistribution = false;
     
     clientId: any;
     clientSecret: any;
@@ -348,6 +350,7 @@ export class AuthenticationService {
         this.loggedInUserRole = "";
         this.hasOnlyPartnerRole = false;
         module.isOnlyPartner = false;
+        module.isReDistribution = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {

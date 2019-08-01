@@ -175,6 +175,12 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    getHomeRoles(uRl){
+        const url = this.URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
 
    

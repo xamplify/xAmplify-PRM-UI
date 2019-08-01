@@ -46,6 +46,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     updateLeftSideBar( location: Location ) {
         this.location = location;
         try {
+            
             const roles = this.authService.getRoles();
             if ( roles ) {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
@@ -143,6 +144,19 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     ngOnInit() {
       //  this.isOnlyPartner = this.authService.isOnlyPartner();
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
+        this.userService.getRoles(this.authService.getUserId())
+        .subscribe(
+        response => {
+             if(response.statusCode==200){
+                this.authService.loggedInUserRole = response.data.role;
+                this.authService.isPartnerTeamMember = response.data.partnerTeamMember;
+                this.authService.superiorRole = response.data.superiorRole;
+             }else{
+                 this.authService.loggedInUserRole = 'User';
+             }
+        },
+        () => console.log('Finished')
+        );
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false ); }

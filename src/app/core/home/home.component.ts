@@ -6,6 +6,8 @@ import { UserService } from "../services/user.service";
 import { AuthenticationService } from "../services/authentication.service";
 import { VideoUtilService } from "../../videos/services/video-util.service";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { Roles } from '../../core/models/roles';
+
 
 declare var $: any;
 
@@ -16,6 +18,7 @@ declare var $: any;
 })
 export class HomeComponent implements OnInit {
   public refcategories: any;
+  roleName: Roles = new Roles();
   public currentUser = JSON.parse(localStorage.getItem("currentUser"));
   constructor(
     public referenceService: ReferenceService,
@@ -121,35 +124,54 @@ export class HomeComponent implements OnInit {
     }
   
   getTeamMembersDetails(){
-      this.userService.getRoles(this.authenticationService.getUserId())
+      
+      const currentUser = localStorage.getItem('currentUser');
+      const userId = JSON.parse(currentUser)['userId'];
+      const token = JSON.parse(currentUser)['accessToken'];
+      const url = "admin/getRolesByUserId/" + userId + "?access_token=" + token;
+      this.userService.getHomeRoles(url)
       .subscribe(
       response => {
            if(response.statusCode==200){
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
               this.authenticationService.superiorRole = response.data.superiorRole;
+              const roles = this.authenticationService.getRoles();
+              if ( roles ) {
+                  if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
+                      roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                      roles.indexOf( this.roleName.vendorRole ) > -1 ||
+                      roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
+                      this.authenticationService.isShowCampaign = true;
+                      // this.isCampaign = true;
+                      if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner' || this.authenticationService.superiorRole === 'Partner'))
+                              || this.authenticationService.module.isCompanyPartner){
+                          this.authenticationService.isShowRedistribution = true;
+                      }
+                  }
            }else{
                this.authenticationService.loggedInUserRole = 'User';
            }
+           }
       },
-      () => this.xtremandLogger.log('Finished')
+      () => {
+          this.xtremandLogger.log('Finished');
+          const roleNames = this.authenticationService.getRoles();
+          if (
+            this.referenceService.defaulgVideoMethodCalled === false &&
+            (roleNames.length > 1 && this.authenticationService.hasCompany())
+          ) {
+            this.getVideoDefaultSettings();
+            this.referenceService.defaulgVideoMethodCalled = true;
+          }}
       );
   }
   
   ngOnInit() {
-   
       try {
-      const roleNames = this.authenticationService.getRoles();
-      if (
-        this.referenceService.defaulgVideoMethodCalled === false &&
-        (roleNames.length > 1 && this.authenticationService.hasCompany())
-      ) {
-        this.getVideoDefaultSettings();
-        this.referenceService.defaulgVideoMethodCalled = true;
-      }
-    } catch (error) {
-      this.xtremandLogger.error("error" + error);
-    }
-    this.getTeamMembersDetails();
+          this.getTeamMembersDetails();
+       } catch (error) {
+         this.xtremandLogger.error("error" + error);
+       }  
   }
 }
