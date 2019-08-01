@@ -265,7 +265,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
               if(data.statusCode === 200){
                 this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
               }else if(data.statusCode === 417){
-                this.customResponse = new CustomResponse( 'ERROR', "The email address you entered is already your vendor.", true );
+                this.customResponse = new CustomResponse( 'ERROR', data.data[0].message, true );
+            	  
               }
               else{
                   this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
