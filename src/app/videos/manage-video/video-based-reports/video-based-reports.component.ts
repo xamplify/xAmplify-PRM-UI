@@ -60,7 +60,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     nonApplicableUsersViews: any;
     videoPlayedPagination: Pagination = new Pagination();
     reportsPagination: Pagination = new Pagination();
-    
+
     videoLeadsDetails: any;
     videoLeadsTotalListDetails: any;
     videoLeadsDetailsPagination: Pagination = new Pagination();
@@ -93,7 +93,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUtilService.selectedVideo = this.selectedVideo;
         if (category.includes('Q')) { category = category.substring(1, category.length); }
         this.videoUtilService.timePeriodValue = category;
-        this.router.navigate(['./home/videos/manage/reports']);
+        this.router.navigate(['./home/content/videos/reports']);
     }
 
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
@@ -367,7 +367,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             },
             (err: any) => { console.log(err); })
     }
-    
+
     defaultVideoSettings() {
         console.log('default settings called');
         $('.video-js').css('color', this.selectedVideo.playerColor);
@@ -454,7 +454,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
-    
+
     videoLeadsList() {
         this.paginationType = 'videoLeads';
         this.downloadTypeName = 'videoLeads';
@@ -475,7 +475,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
-    
+
     videoLeadsTotalList() {
         this.videoLeadsDetailsPagination.maxResults = this.videoLeadsDetailsPagination.totalRecords;
         this.videoBaseReportService.videoLeadsList(this.selectedVideo.id, this.videoLeadsDetailsPagination).
@@ -490,7 +490,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
-    
+
     setPage(event: any) {
         this.paginationType = event.type;
         if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; }
@@ -695,7 +695,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
         );
     }
-    
+
     downloadFunctionality(){
         this.isLoadingDownloadList = true;
         if (this.downloadTypeName === 'minetesWatched') {
@@ -716,7 +716,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         }else if (this.downloadTypeName === 'videoLeads') {
             this.videoLeadsTotalList();
         }
-        
+
     }
 
     downloadLogs() {

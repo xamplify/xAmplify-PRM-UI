@@ -16,7 +16,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
 
 import { AppComponent } from './app.component';
-// import { Logger, Options } from 'angular2-logger/core';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';

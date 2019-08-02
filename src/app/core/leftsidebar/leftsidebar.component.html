@@ -12,10 +12,10 @@
         <span class="selected"></span>
         </a>
       </li>
-      
-  <!--     below code removed 
+
+  <!--     below code removed
        !authService.isPartnerTeamMember &&  -->
-       
+
       <li  *ngIf="authService.user.hasCompany && authService.module.isPartner" [ngClass]="{'active': location.path().includes('partners')}">
         <a href="javascript:;" (click)="openOrCloseTabs('partners')">
         <i class="fa fa-handshake-o"></i>
@@ -48,8 +48,8 @@
         </a>
       </li> -->
 <!-- removed !authService.isPartnerTeamMember &&   && !authService.isOnlyPartner()  -->
-      <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('videos') || location.path().includes('content')}">
-        <a href="javascript:;" (click)="openOrCloseTabs('videos')">
+      <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('content') || location.path().includes('content')}">
+        <a href="javascript:;" (click)="openOrCloseTabs('content')">
           <i class="fa fa-cloud-upload" aria-hidden="true"></i>
         <span class="title">Content</span>
         <span class="arrow "></span>
@@ -57,21 +57,21 @@
         </a>
         <ul class="sub-menu" [ngStyle]="{'display': videos? 'block': 'none' }">
         <li>
-          <a  [routerLink]="['./videos']">
+          <a  [routerLink]="['./content']">
             <!-- <i class="fa fa-file-video-o"></i> -->
             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
             <span class="title">Upload Content</span>
           </a>
         </li>
         <li>
-            <a [routerLink]="['./videos/manage']">
+            <a [routerLink]="['./content/videos']">
              <!-- <i class="fa fa-list"></i> -->
              <i class="fa fa-file-video-o"></i>
              <span class="title">Manage Videos</span>
             </a>
         </li>
         <li>
-          <a [routerLink]="['./content']">
+          <a [routerLink]="['./content/manage']">
            <i class="fa fa-list"></i>
            <span class="title">Manage Content</span>
           </a>
@@ -79,7 +79,7 @@
         </ul>
       </li>
       <!--&& !authService.isAddedByVendor-->
-      
+
       <li *ngIf="authService.user.hasCompany && authService.module.isContact"  [ngClass]="{'active': location.path().includes('contacts')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('contacts')">
         <i class="fa fa-list-ul"></i>
@@ -110,7 +110,7 @@
         <span class="selected"></span>
         </a>
       </li> -->
-     
+
       <li *ngIf="authService.user.hasCompany && authService.module.isEmailTemplate" [ngClass]="{'active':location.path().includes('emailtemplate')}">
         <a class="hidden-xs" [ngClass]="{'emailTempCss': changeTemplateCss && refService.isSidebarClosed}" (mouseover)="changeTemplateCss=true" (mouseout)="changeTemplateCss=false" (click)="openOrCloseTabs('emailtemplates')" >
         <i class="fa fa-envelope"></i>
@@ -153,12 +153,12 @@
             <span class="title">Redistribute Campaign</span>
             </a>
           <li>
-          <li>  
+          <li>
             <a *ngIf="authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember)"  [routerLink] ="['./campaigns/select']" >
             <i class="fa fa-bullhorn"></i>
             <span class="title">Create Campaign</span>
             </a>
-            
+
           </li>
           <li>
             <a  [routerLink] ="['./campaigns/manage']">
@@ -181,7 +181,7 @@
 
 
       <!-- ------Deal Registration------ -->
-      <li *ngIf="authService.user.hasCompany && authService.enableLeads" 
+      <li *ngIf="authService.user.hasCompany && authService.enableLeads"
       [ngClass]="{'active': location.path().includes('deals')}">
         <a   [routerLink]="['./deals/manage']">
         <i class="fa fa-tags"></i>

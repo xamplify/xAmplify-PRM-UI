@@ -66,34 +66,34 @@ export class DashboardStatsComponent implements OnInit {
       this.xtremandLogger.log("Do Nothing..");
     }
   }
-  
+
   goToSocialAccounts(){
      if(this.dashboardReport.totalSocialAccounts != 0){
        this.router.navigate(["/home/social/manage/all"]);
     }
   }
-  
+
   goManageTemplates(){
       if(this.dashboardReport.toalEmailTemplates != 0){
         this.router.navigate(["/home/emailtemplates"]);
      }
    }
-  
+
   goTeamMembers(){
       if(this.dashboardReport.totalTeamMembers != 0){
         this.router.navigate(["/home/team/add-team"]);
      }
    }
-  
+
   goToManageCampaigns(){
       if(this.dashboardReport.totalCreatedCampaigns != 0){
         this.router.navigate(["/home/campaigns/manage"]);
      }
    }
-  
+
   goToManageVideos(){
       if(this.dashboardReport.totalUploadedvideos != 0){
-        this.router.navigate(["/home/videos/manage"]);
+        this.router.navigate(["/home/content/videos"]);
      }
    }
 

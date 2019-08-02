@@ -7,7 +7,7 @@ import { Roles } from './core/models/roles';
 export class AuthGuard implements CanActivate, CanActivateChild {
     roles: Roles = new Roles();
     emailTemplateBaseUrl = "emailtemplates";
-    videoBaseUrl = "videos";
+    videoBaseUrl = "content";
     socialBaseUrl = 'social';
     contactBaseUrl ='contacts';
     partnerBaseUrl = 'partners';
@@ -38,14 +38,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ this.router.navigateByUrl('/home/dashboard') }
-            else if(!this.authenticationService.user.hasCompany && url === "/home/dashboard") {
-              this.goToAccessDenied();
+            else if(!this.authenticationService.user.hasCompany) {
+              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile") ){
+                return true;
+              } else { this.goToAccessDenied();  }
             }
-            else if(url.indexOf("/dashboard")< 0 && url.indexOf("/content")< 0 ){
+            else if(url.indexOf("/dashboard")< 0){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
-                    if(this.authenticationService.hasCompany()){
+                    if(this.authenticationService.user.hasCompany){
                         return true;
                     }else{
                         this.goToAccessDenied();
@@ -151,6 +153,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         const isPartner = roles.indexOf(this.roles.companyPartnerRole)>-1;
         const orgAdmin =  roles.indexOf(this.roles.orgAdminRole)>-1;
         const isSuperAdmin =  roles.indexOf(this.roles.superAdminRole)>-1;
+        const userAccount =  roles.indexOf(this.roles.userRole)>-1;
         if(isSuperAdmin){
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
@@ -165,8 +168,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
 
-            if(url.search('/twitter'))
-                return true;
+            if(url.search('/twitter')) { return true; }
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{
@@ -189,7 +191,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     checkPartnerAccessUrls(url:string,urlType:string):boolean{
       try{
            if(this.authenticationService.user.hasCompany && (url.includes('/home/deals') || url.includes('/home/campaigns/re-distribute-campaign')
-              || !(url.includes('/home/videos') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select')
+              || !(url.includes('/home/content') || url.includes('/home/campaigns/create') || url.includes('/home/campaigns/select')
                       || url.includes('/home/emailtemplates') || url.includes('/home/partners/add')
                       || url.includes('/home/partners/manage')))){
                 return true;

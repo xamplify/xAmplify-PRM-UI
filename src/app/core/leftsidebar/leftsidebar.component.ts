@@ -46,7 +46,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     updateLeftSideBar( location: Location ) {
         this.location = location;
         try {
-            
+
             const roles = this.authService.getRoles();
             if ( roles ) {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
@@ -91,33 +91,33 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.hasOpportunityRole = true;
                 }
-                
+
                 if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 &&
                         roles.indexOf( this.roleName.orgAdminRole ) < 0 &&
                         roles.indexOf( this.roleName.vendorRole ) < 0 ) {
                         this.authService.module.isOnlyPartner = true;
                     }
-                
+
                 if ( roles.indexOf( this.roleName.orgAdminRole ) > -1 ) {
                     this.authService.module.isOrgAdmin = true;
                 }
-                
+
                 if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
                     this.authService.isCompanyPartner = true;
                 }
-                
+
                 if (roles.indexOf(this.roleName.vendorRole) > -1)
                  {
                     this.authService.module.isVendor = true;
                 }
-                
+
                 //enable leads block
                 //this.checkEnableLeadsForPartner();
-               
+
             }
         } catch ( error ) { console.log( error ); }
     }
-    
+
      /*checkEnableLeadsForPartner(){
         if (!this.authService.module.enableLeads && ( this.authService.module.isCompanyPartner || this.authService.isPartnerTeamMember ) )
         {
@@ -134,7 +134,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                             this.authService.module.enableLeads = data.enableLeads;
                             return ;
                         }
-                        
+
                         console.log(data)
                     });
                 });
@@ -179,8 +179,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
                 this.clearSubMenuValues( false, this.campaigns, false, false, false );
             }
-            else if ( urlType === 'videos' ) {
-                this.videos = this.router.url.includes( 'videos' ) ? true : ( this.videos = !this.videos );
+            else if ( urlType === 'content' ) {
+                this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
                 this.clearSubMenuValues( false, false, this.videos, false, false );
             }
         }
