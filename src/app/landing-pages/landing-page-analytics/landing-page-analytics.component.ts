@@ -11,7 +11,7 @@ import { LandingPageAnalytics } from '../models/landing-page-analytics';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
 
-declare var  $: any;
+declare var  $,swal: any;
 
 @Component({
   selector: 'app-landing-page-analytics',
@@ -142,6 +142,8 @@ export class LandingPageAnalyticsComponent implements OnInit {
     }
   //  eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(loader:HttpRequestLoader); } }
     refreshList(pagination:Pagination){
+        pagination.pageIndex = 1;
+        pagination.searchKey = "";
         this.listAnalytics(pagination);
     }
     
@@ -161,8 +163,8 @@ export class LandingPageAnalyticsComponent implements OnInit {
         $('#country-views-modal').modal('hide');
     }
     
-    filterByValue(value:string){
-        alert(value);
+    viewInDetail(value:any){
+        swal("Work In Progress!", "", "info");
     }
 
 }
