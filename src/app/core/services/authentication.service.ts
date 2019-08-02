@@ -46,6 +46,8 @@ export class AuthenticationService {
     hasOnlyPartnerRole = false;
     isShowCampaign = false;
     isShowRedistribution = false;
+    enableLeads = false;
+    isCompanyPartner = false;
     
     clientId: any;
     clientSecret: any;

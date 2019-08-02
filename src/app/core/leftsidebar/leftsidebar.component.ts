@@ -33,13 +33,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger ) {
         console.log( authService.getUserId() );
-        this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
+      /*  this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
             this.refService.getOrgCampaignTypes( response ).subscribe( data => {
                 this.authService.module.enableLeads = data.enableLeads;
                 console.log( data )
             } );
 
-        } )
+        } )*/
         this.updateLeftSideBar( location );
     }
 
@@ -56,7 +56,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isCampaign = true;
                     // this.isCampaign = true;
                     if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner' || this.authService.superiorRole === 'Partner'))
-                            || this.authService.module.isCompanyPartner){
+                            || this.authService.isCompanyPartner){
                         this.authService.module.isReDistribution = true;
                     }
                 }
@@ -103,7 +103,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 }
                 
                 if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
-                    this.authService.module.isCompanyPartner = true;
+                    this.authService.isCompanyPartner = true;
                 }
                 
                 if (roles.indexOf(this.roleName.vendorRole) > -1)
@@ -112,13 +112,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 }
                 
                 //enable leads block
-                this.checkEnableLeadsForPartner();
+                //this.checkEnableLeadsForPartner();
                
             }
         } catch ( error ) { console.log( error ); }
     }
     
-     checkEnableLeadsForPartner(){
+     /*checkEnableLeadsForPartner(){
         if (!this.authService.module.enableLeads && ( this.authService.module.isCompanyPartner || this.authService.isPartnerTeamMember ) )
         {
             this.pagination.pageIndex = 1;
@@ -140,11 +140,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 });
             })
         }
-    }
+    }*/
     ngOnInit() {
       //  this.isOnlyPartner = this.authService.isOnlyPartner();
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
-        this.userService.getRoles(this.authService.getUserId())
+/*        this.userService.getRoles(this.authService.getUserId())
         .subscribe(
         response => {
              if(response.statusCode==200){
@@ -156,7 +156,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
              }
         },
         () => console.log('Finished')
-        );
+        );*/
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false ); }

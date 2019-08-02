@@ -7,10 +7,12 @@ import { AuthenticationService } from '../services/authentication.service';
 import { ReferenceService } from './reference.service';
 import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
+import { Pagination } from '../models/pagination';
 
 @Injectable()
 export class UserService {
     private token: string;
+    pagination: Pagination;
 
     loggedInUserData: User;
 
@@ -181,9 +183,14 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    
+    loadVendorDetails(uRl, pagination: Pagination) {
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
 
-
-   
+    }
 
     resendActivationMail(emailId:string) {
         return this.http.get( this.URL+'/register/resend/activationemail?email='+ emailId )

@@ -1768,11 +1768,25 @@ export class ReferenceService {
           .map(this.extractData)
           .catch(this.handleError);
     }
+    
+    getHomeOrgCampaignTypes( uRl ) {
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
 
     getCompanyIdByUserId(userId: any) {
        return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
         .map(this.extractData)
         .catch(this.handleError);
+    }
+    
+    getHomeCompanyIdByUserId(uRl){
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
     }
     
     getMyMergeTagsInfoByEmailId(data:any){

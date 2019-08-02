@@ -7,6 +7,7 @@ import { AuthenticationService } from "../services/authentication.service";
 import { VideoUtilService } from "../../videos/services/video-util.service";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { Roles } from '../../core/models/roles';
+import { Pagination } from '../../core/models/pagination';
 
 
 declare var $: any;
@@ -18,8 +19,11 @@ declare var $: any;
 })
 export class HomeComponent implements OnInit {
   public refcategories: any;
+  pagination: Pagination
   roleName: Roles = new Roles();
   public currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  userId: any;
+  token: any;
   constructor(
     public referenceService: ReferenceService,
     public userService: UserService,
@@ -124,11 +128,7 @@ export class HomeComponent implements OnInit {
     }
   
   getTeamMembersDetails(){
-      
-      const currentUser = localStorage.getItem('currentUser');
-      const userId = JSON.parse(currentUser)['userId'];
-      const token = JSON.parse(currentUser)['accessToken'];
-      const url = "admin/getRolesByUserId/" + userId + "?access_token=" + token;
+      const url = "admin/getRolesByUserId/" + this.userId + "?access_token=" + this.token;
       this.userService.getHomeRoles(url)
       .subscribe(
       response => {
@@ -138,6 +138,11 @@ export class HomeComponent implements OnInit {
               this.authenticationService.superiorRole = response.data.superiorRole;
               const roles = this.authenticationService.getRoles();
               if ( roles ) {
+                  
+                  if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
+                      this.authenticationService.isCompanyPartner = true;
+                  }
+                  
                   if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                       roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                       roles.indexOf( this.roleName.vendorRole ) > -1 ||
@@ -145,9 +150,10 @@ export class HomeComponent implements OnInit {
                       this.authenticationService.isShowCampaign = true;
                       // this.isCampaign = true;
                       if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner' || this.authenticationService.superiorRole === 'Partner'))
-                              || this.authenticationService.module.isCompanyPartner){
+                              || this.authenticationService.isCompanyPartner){
                           this.authenticationService.isShowRedistribution = true;
                       }
+                      
                   }
            }else{
                this.authenticationService.loggedInUserRole = 'User';
@@ -160,18 +166,64 @@ export class HomeComponent implements OnInit {
       );
   }
   
+  checkEnableLeads(){
+      const url = "admin/get-company-id/" + this.userId + "?access_token=" + this.token;
+      this.referenceService.getHomeCompanyIdByUserId( url )
+      .subscribe( response => {
+          const campaignUrl = "campaign/access/" + response + "?access_token=" + this.token;
+          this.referenceService.getHomeOrgCampaignTypes( campaignUrl )
+          .subscribe( data => {
+              this.authenticationService.enableLeads = data.enableLeads;
+              
+              this.checkEnableLeadsForPartner();
+              
+              console.log( data )
+          } );
+
+      } )
+  }
+  
+  checkEnableLeadsForPartner(){
+      if (!this.authenticationService.enableLeads && ( this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember ) )
+      {
+          this.pagination = new Pagination();
+          this.pagination.pageIndex = 1;
+          this.pagination.maxResults = 10000;
+          const url = "vendor/details?access_token=" + this.token + '&partnerId=' + this.userId;
+          this.userService.loadVendorDetails(url, this.pagination).subscribe(response =>
+          {
+              response.data.forEach(element =>
+              {
+                  this.referenceService.getOrgCampaignTypes(element.companyId).subscribe(data =>
+                  {
+                      if (!this.authenticationService.enableLeads)
+                      {
+                          this.authenticationService.enableLeads = data.enableLeads;
+                          return ;
+                      }
+                      
+                      console.log(data)
+                  });
+              });
+          })
+      }
+  }
+ 
+  
   ngOnInit() {
       try {
-          const roleNames = this.authenticationService.getRoles();
+          this.userId = this.currentUser['userId'];
+          this.token = this.currentUser['accessToken'];
+          const roleNames = this.currentUser['roles'];
           if (
             this.referenceService.defaulgVideoMethodCalled === false &&
             (roleNames.length > 1 && this.authenticationService.hasCompany())
           ) {
             this.getVideoDefaultSettings();
             this.referenceService.defaulgVideoMethodCalled = true;
+            this.getTeamMembersDetails();
+            this.checkEnableLeads()
           }
-          
-          this.getTeamMembersDetails();
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  

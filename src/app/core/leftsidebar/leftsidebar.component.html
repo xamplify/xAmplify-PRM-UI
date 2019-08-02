@@ -181,7 +181,7 @@
 
 
       <!-- ------Deal Registration------ -->
-      <li *ngIf="authService.user.hasCompany && authService.module.enableLeads" 
+      <li *ngIf="authService.user.hasCompany && authService.enableLeads" 
       [ngClass]="{'active': location.path().includes('deals')}">
         <a   [routerLink]="['./deals/manage']">
         <i class="fa fa-tags"></i>
