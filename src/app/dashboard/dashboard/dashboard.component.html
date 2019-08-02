@@ -78,7 +78,7 @@
         <h4 class="text-primary f-w-600 m10">{{properties.APP_WELCOME_MESSAGE}}</h4>
       </div>
     </div>
-    
+
     <div class="row">
       <div class="clearfix"></div>
       <div class="page-bar portlet light border-radius-0" style="margin: 14px;margin-top: 1px;">
@@ -88,7 +88,7 @@
 			  </div>
         </div>
         </div>
-  
+
   </div>
   <div class="page-content" *ngIf="!authenticationService.isOnlyUser()">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -211,7 +211,7 @@
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
              *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole) ||
              authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
-          </a> 
+          </a>
           <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white"
            *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
@@ -379,7 +379,7 @@
                       <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[2].value || referenceService.daySortValue===sortHeatMapValues[3].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="14 Days">
                         <i class="fa fa-question-circle stats"></i>
                       </span>
-                      <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[3].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="12 Days">
+                      <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[3].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="21 Days">
                         <i class="fa fa-question-circle stats"></i>
                       </span>
                       <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[2].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="Current Month">
@@ -489,7 +489,7 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) || 
+    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) ||
     			authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
       <div class="clearfix" *ngIf="socialConnections?.length > 0">
         <div class="portlet light shadow">
