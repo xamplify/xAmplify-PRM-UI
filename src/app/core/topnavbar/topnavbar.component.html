@@ -49,7 +49,7 @@
 							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</button>
 					</li> -->
-					<li *ngIf="authenticationService.user.hasCompany">
+					<li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
 					<button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
 						(click)="openRequestAsVendorModal()">Refer a vendor</button>
 					</li>
@@ -65,7 +65,7 @@
 										|| authenticationService.module.hasSocialStatusRole 
 										|| authenticationService.module.isOrgAdmin 
 										|| authenticationService.module.isVendor 
-										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
+										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
 						<!-- *ngIf="refService.hasCompany" -->
 						<button class="btn btn-primary" [routerLink]="['/home/social/update-status']">
 							<span class="hidden-xs">Update Status</span>
@@ -74,7 +74,7 @@
 					</li>
 					<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
 
-					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany">
+					<li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar" *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
 						<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<i class="icon-bell" style="color: #0095da;"></i>
 							<span *ngIf="userService.unreadNotificationsCount>0" class="badge badge-default" style="background-color: #ed1c24 !important;">{{userService.unreadNotificationsCount}}</span>

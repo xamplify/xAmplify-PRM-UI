@@ -206,6 +206,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     generatHeatMap(heatMapData, heatMapId) {
         const self = this;
+        if(heatMapData.length != 0){
         const data = heatMapData;
         this.xtremandLogger.log(data);
         Highcharts.chart(heatMapId, {
@@ -252,9 +253,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 text: ' '
             },
             legend: {
-                enabled: false
+                enabled: false 
             }
         });
+        }
     }
     generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
         const charts = [],

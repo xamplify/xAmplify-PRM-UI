@@ -39,7 +39,7 @@ export class DefaultPageComponent implements OnInit {
     } else { 
         this.goToDashBoard();  }
      }else{
-         this.router.navigate(['/home/dashboard/dashboard']);
+         this.router.navigate(['/home/dashboard']);
      }
    }
 

@@ -527,7 +527,30 @@ export class PartnerReportsComponent implements OnInit {
       item.expand = !item.expand;
   }
   
-  
+  showApprovePartnerSweetAlert( partnerId: number ) {
+      try {
+          this.xtremandLogger.info( "PartnerId in sweetAlert() " + partnerId );
+          let self = this;
+          swal( {
+              title: 'Are you sure?',
+              text: "You won't be able to undo this action!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#54a7e9',
+              cancelButtonColor: '#999',
+              confirmButtonText: 'Yes, approve it!'
+
+          }).then( function( myData: any ) {
+              console.log( "Partner ReportPage showAlert then()" + myData );
+              self.approvePartnerRequest( partnerId );
+          }, function( dismiss: any ) {
+              console.log( 'you clicked on option' + dismiss );
+          });
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "PartnerReport Page", "ApprovePartnerAlert()" );
+      }
+  }
+
   
   approvePartnerRequest( partnerId: number ) {
       try {
@@ -554,6 +577,30 @@ export class PartnerReportsComponent implements OnInit {
               );
       } catch ( error ) {
           this.xtremandLogger.error( error, "partner-report-component.", "approve parter()" );
+      }
+  }
+  
+  showDeclinePartnerSweetAlert( partnerId: number ) {
+      try {
+          this.xtremandLogger.info( "PartnerId decline partner in sweetAlert() " + partnerId );
+          let self = this;
+          swal( {
+              title: 'Are you sure?',
+              text: "You won't be able to undo this action!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#54a7e9',
+              cancelButtonColor: '#999',
+              confirmButtonText: 'Yes, approve it!'
+
+          }).then( function( myData: any ) {
+              console.log( "Partner ReportPage showAlert then()" + myData );
+              self.declinePartnerRequest( partnerId );
+          }, function( dismiss: any ) {
+              console.log( 'you clicked on option' + dismiss );
+          });
+      } catch ( error ) {
+          this.xtremandLogger.error( error, "PartnerReport Page", "DeclinePartnerAlert()" );
       }
   }
   

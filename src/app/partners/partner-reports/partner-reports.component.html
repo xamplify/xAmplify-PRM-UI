@@ -284,9 +284,9 @@
                   </td>
                   <td style="text-align: center;">
                    <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
-					(click)="approvePartnerRequest(item.partnerId)">Approve</button>
+					(click)="showApprovePartnerSweetAlert(item.partnerId)">Approve</button>
 					<button [disabled]="item.invitationStatus == 'approved' || item.invitationStatus == 'declined'" type="submit" class="btn green"
-					(click)="declinePartnerRequest(item.partnerId)">Decline</button>
+					(click)="showDeclinePartnerSweetAlert(item.partnerId)">Decline</button>
                   </td> 
                 </tr>
               </tbody>
