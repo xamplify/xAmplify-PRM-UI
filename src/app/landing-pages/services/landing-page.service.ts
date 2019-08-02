@@ -47,6 +47,12 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    getBarCharViews(timePeriod:string,landingPage:number, userId: number ): Observable<any> {
+        return this.http.get( this.URL + "analytics/barchart-views/"+timePeriod+"/"+landingPage+"/"+userId+"?access_token=" + this.authenticationService.access_token,"")
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     getAvailableNames( userId: number ) {
         return this.http.get( this.URL + "/listAvailableNames/" + userId + "?access_token=" + this.authenticationService.access_token, "" )

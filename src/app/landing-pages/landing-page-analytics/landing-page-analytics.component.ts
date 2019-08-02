@@ -9,6 +9,8 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { LandingPageService } from '../services/landing-page.service';
 import { LandingPageAnalytics } from '../models/landing-page-analytics';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { VideoUtilService } from '../../videos/services/video-util.service';
+
 declare var  $: any;
 
 @Component({
@@ -18,12 +20,14 @@ declare var  $: any;
   providers: [Pagination,HttpRequestLoader,SortOption]
 })
 export class LandingPageAnalyticsComponent implements OnInit {
+    daySort: { 'name': string; 'value': string; };
 
     landingPageId: number = 0;
     pagination: Pagination = new Pagination();
     countryPagination:Pagination = new Pagination();
     statusCode:number = 200;
     viewsStatusCode:number = 200;
+    barChartStatusCode:number = 200;
     landingPageViewsData:any;
     data:any;
     landingPageAnalyticsContext:any;
@@ -31,8 +35,12 @@ export class LandingPageAnalyticsComponent implements OnInit {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     countryViewsLoader:HttpRequestLoader = new HttpRequestLoader();
     countryCode:string = "";
+    barChartData:any;
+    barChartErrorMessage:string;
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
-        public pagerService: PagerService, public authenticationService: AuthenticationService, public router: Router,public logger: XtremandLogger,public sortOption:SortOption ) {
+        public pagerService: PagerService, public authenticationService: AuthenticationService, 
+        public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
+        this.daySort = this.videoUtilService.sortMonthDates[3];
         this.pagination.userId = this.authenticationService.getUserId();
     }
 
@@ -42,18 +50,36 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.pagination.loader = this.httpRequestLoader;
         this.listAnalytics(this.pagination);
         this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
-        this.getViews();
+        this.getCountryViews();
+        this.getBarChartAnalytics(this.videoUtilService.sortMonthDates[3].value);
         
     }
     
-    getViews(){
+    getBarChartAnalytics(timePeriod:string){
+        this.barChartErrorMessage = "";
+        this.barChartData  = undefined;
+        if (timePeriod !== undefined) {
+            this.videoUtilService.timePeriod = timePeriod;
+            this.landingPageService.getBarCharViews(timePeriod,this.landingPageId,this.pagination.userId).subscribe(
+                    ( response: any ) => {
+                        this.barChartStatusCode = response.statusCode;
+                        if(this.barChartStatusCode==200){
+                            this.barChartData = response.data;
+                        }
+                    },
+                    ( error: any ) => {  this.barChartErrorMessage="OOps! Unable to load bar chart." } );
+            
+        }
+       
+    }
+    
+    getCountryViews(){
         this.landingPageService.getViews(this.landingPageId,this.pagination.userId).subscribe(
             ( response: any ) => {
                 this.viewsStatusCode = response.statusCode;
                 if(this.viewsStatusCode==200){
                     this.landingPageViewsData = response.data;
                 }
-                this.referenceService.loading( this.httpRequestLoader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
@@ -133,6 +159,10 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.countryPagination = new Pagination();
         this.countryCode = "";
         $('#country-views-modal').modal('hide');
+    }
+    
+    filterByValue(value:string){
+        alert(value);
     }
 
 }

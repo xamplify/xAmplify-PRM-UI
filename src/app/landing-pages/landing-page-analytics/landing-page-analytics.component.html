@@ -32,6 +32,44 @@
               </div>
             </div>
           </div>
+          
+       <div class="col-xs-12 col-sm-6 p5">
+		<!-- BEGIN PORTLET-->
+		<div class="portlet light">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp uppercase">Landing Page Views</span>
+				</div>
+       		 <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
+					<span style="float:right; font-size: 13px;">
+					<select class="form-control" style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="getBarChartAnalytics($event.value)">
+						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
+					</select>
+				</span>
+			</div>
+			</div>
+			<div class="portlet-body">
+				<ng-container *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
+					<app-bar-chart *ngIf="barChartData?.views?.length>0" [viewsBarData]="barChartData" (notifyParent)="selectedCategoryValue($event)"></app-bar-chart>
+       			 	<div *ngIf="barChartData?.views?.length ==0" style="max-width: 100%;text-align: center;">
+						<span style="position: absolute;top: 195px;left: 220px;">No data available</span>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="barChartErrorMessage?.length>0">
+					<div class="alert alert-danger">
+						<strong>{{barChartErrorMessage}}</strong>
+					</div>
+				</ng-container>
+      		</div>
+		</div>
+		<!-- END PORTLET-->
+	</div>
+          
+          
+          
+          
+          
           <div class="col-xs-12 p5" *ngIf="statusCode==404">
 			<div class="alert alert-danger">
 				<strong>
