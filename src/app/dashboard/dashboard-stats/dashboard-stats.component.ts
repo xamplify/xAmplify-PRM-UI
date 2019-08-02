@@ -14,7 +14,6 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 export class DashboardStatsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
   isAdmin: boolean;
-  isShowVendorTab = false;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
     public authenticationService: AuthenticationService) {
   }
@@ -100,8 +99,5 @@ export class DashboardStatsComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardReportsCount();
-    if(!this.authenticationService.isOnlyPartner() && !this.authenticationService.isPartnerTeamMember && this.authenticationService.superiorRole != 'OrgAdmin' && this.authenticationService.superiorRole != 'Vendor'){
-        this.isShowVendorTab = true;
-    }
   }
 }

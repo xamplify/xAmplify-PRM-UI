@@ -100,7 +100,7 @@
 			</a>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" 
-     *ngIf="isShowVendorTab">
+     *ngIf="(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()) && (!authenticationService.isPartnerTeamMember)">
       <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToVendor()" >
         <div class="visual">
           <i class="fa fa-smile-o"></i>
@@ -136,7 +136,7 @@
     </div>
 
     <div *ngIf="this.authenticationService.loggedInUserRole!='Team Member'" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':
-      (authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner() || authenticationService.isOrgAdmin() || isShowVendorTab), 
+      (authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner() || authenticationService.isOrgAdmin()), 
       'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}" >
 			<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="goToSocialAccounts()">
 				<div class="visual">
