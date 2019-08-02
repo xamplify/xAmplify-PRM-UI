@@ -252,14 +252,14 @@
         <a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
         <h4 class="modal-title" id="cropLogoImage">Please add your company logo</h4>
 			</div>
-			<div class="modal-body">
+      <div class="modal-body" style="overflow-y: unset !important;">
           <div style="position: relative;top: -5px;width: 118px;"
             class="btn green fileinput-button-css" *ngIf="!imageChangedEvent"><span>Select image</span>
             <input style="height: 36px;"  title=" "  id="custom-input" type="file" (change)="filenewChangeEvent($event)">
           </div>
           <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
           <div>
-          <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
           <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper> -->
         <div [hidden]="!imageChangedEvent"><image-cropper
           [imageChangedEvent]="imageChangedEvent"
