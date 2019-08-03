@@ -38,8 +38,9 @@ export class LandingPageAnalyticsComponent implements OnInit {
     barChartViewsLoader:HttpRequestLoader = new HttpRequestLoader();
     countryCode:string = "";
     barChartData:any;
-    barChartErrorMessage:string;
+    barChartErrorMessage:string="";
     barChartPopUp:boolean =false;
+    barChartFilterErrorMessage:string="";
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
@@ -167,6 +168,8 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.barChartPagination = new Pagination();
         this.countryCode = "";
         this.barChartPopUp = false;
+        this.barChartFilterErrorMessage = "";
+        this.barChartErrorMessage ="";
         $('#country-views-modal').modal('hide');
     }
     
@@ -200,9 +203,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
                 }
                 this.referenceService.loading(pagination.loader, false );
             },
-            ( error: any ) => { this.logger.errorPage( error ); } );
-    
-    
+            ( error: any ) => {  this.barChartFilterErrorMessage="OOps! Unable to load bar chart for "+this.videoUtilService.timePeriod } );
     }
 
 }

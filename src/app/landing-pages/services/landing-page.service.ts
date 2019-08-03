@@ -42,7 +42,7 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    listBarChartAnalytics( pagination: Pagination,timePeriod:string,value:number ): Observable<any> {
+    listBarChartAnalytics( pagination: Pagination,timePeriod:string,value:any ): Observable<any> {
         let url = this.URL + "analytics/bar-chart-filter-views/"+timePeriod+"/"+value+"?";
         return this.http.post(url+"access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )

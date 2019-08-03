@@ -165,18 +165,24 @@
           	</ng-container>
         </div>
         <div class="modal-body">
+        
+        <ng-container *ngIf="barChartPopUp && barChartFilterErrorMessage?.length>0">
+        		<div class="alert alert-danger">
+						<strong>{{barChartFilterErrorMessage}}</strong>
+					</div>
+        </ng-container>
+        
         <ng-container *ngIf="!barChartPopUp">
         	 <ng-container 
   				 *ngTemplateOutlet="estimateTemplate;context:countryViewsAnalyticsContext">
 		</ng-container>
         </ng-container>
         
-        <ng-container *ngIf="barChartPopUp">
+        <ng-container *ngIf="barChartPopUp && barChartFilterErrorMessage?.length==0">
         	 <ng-container 
   				 *ngTemplateOutlet="estimateTemplate;context:barChartViewsAnalyticsContext">
 		</ng-container>
         </ng-container>
-       
         </div>
       </div>
     </div>
