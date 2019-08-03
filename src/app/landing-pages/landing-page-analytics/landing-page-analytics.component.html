@@ -39,7 +39,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp">Landing Page Views</span>
+					<span class="caption-subject font-green-sharp uppercase">Landing Page Views</span>
 				</div>
        		 <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
 					<span id="font" class="right">
@@ -89,7 +89,7 @@
             <div class="portlet light">
               <div class="portlet-title">
 					<div class="caption">
-						<span class="caption-subject font-red-sunglo">Landing Page Statistics</span>
+						<span class="caption-subject font-red-sunglo uppercase">Landing Page Statistics</span>
 					</div>
 					<!-- <div class="inputs" align="right">
 						<a class="close-circle" (click)="refreshList(xtreme)" data-toggle="tooltip" data-placement="top" title="Refresh">
@@ -157,11 +157,28 @@
           <button type="button" class="close-circle" (click)="closeModal()">
             <i class="fa fa-times"></i>
           </button>
-          <h4 class="modal-title text-center">Landing Page Statistics By Country</h4>
+          	<ng-container *ngIf="barChartPopUp">
+          		 <h4 class="modal-title text-center uppercase">Landing Page Statistics By {{videoUtilService.timePeriod}}</h4>
+          	</ng-container>
+          	<ng-container *ngIf="!barChartPopUp">
+          		 <h4 class="modal-title text-center uppercase">Landing Page Statistics By Country</h4>
+          	</ng-container>
         </div>
         <div class="modal-body">
-        <ng-container 
+        <ng-container *ngIf="!barChartPopUp">
+        	 <ng-container 
   				 *ngTemplateOutlet="estimateTemplate;context:countryViewsAnalyticsContext">
 		</ng-container>
-        </div></div></div></div>   
+        </ng-container>
+        
+        <ng-container *ngIf="barChartPopUp">
+        	 <ng-container 
+  				 *ngTemplateOutlet="estimateTemplate;context:barChartViewsAnalyticsContext">
+		</ng-container>
+        </ng-container>
+       
+        </div>
+      </div>
+    </div>
+ </div>   
  

@@ -21,10 +21,10 @@ declare var  $,swal: any;
 })
 export class LandingPageAnalyticsComponent implements OnInit {
     daySort: { 'name': string; 'value': string; };
-
     landingPageId: number = 0;
     pagination: Pagination = new Pagination();
     countryPagination:Pagination = new Pagination();
+    barChartPagination:Pagination = new Pagination();
     statusCode:number = 200;
     viewsStatusCode:number = 200;
     barChartStatusCode:number = 200;
@@ -32,11 +32,14 @@ export class LandingPageAnalyticsComponent implements OnInit {
     data:any;
     landingPageAnalyticsContext:any;
     countryViewsAnalyticsContext:any;
+    barChartViewsAnalyticsContext:any;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     countryViewsLoader:HttpRequestLoader = new HttpRequestLoader();
+    barChartViewsLoader:HttpRequestLoader = new HttpRequestLoader();
     countryCode:string = "";
     barChartData:any;
     barChartErrorMessage:string;
+    barChartPopUp:boolean =false;
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
@@ -140,6 +143,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
        // this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
         this.listAnalytics(pagination);
     }
+    
   //  eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(loader:HttpRequestLoader); } }
     refreshList(pagination:Pagination){
         pagination.pageIndex = 1;
@@ -149,8 +153,9 @@ export class LandingPageAnalyticsComponent implements OnInit {
     
     
     getViewsByCountryCode(countryCode:any,loader:HttpRequestLoader){
+        this.barChartPopUp = false;
         $('#country-views-modal').modal('show');
-        this.countryPagination.campaignId = this.landingPageId;
+        this.countryPagination.landingPageId = this.landingPageId;
         this.countryPagination.userId = this.authenticationService.getUserId();
         this.countryPagination.loader = this.countryViewsLoader;
         this.countryCode = countryCode;
@@ -159,12 +164,45 @@ export class LandingPageAnalyticsComponent implements OnInit {
     }
     closeModal(){
         this.countryPagination = new Pagination();
+        this.barChartPagination = new Pagination();
         this.countryCode = "";
+        this.barChartPopUp = false;
         $('#country-views-modal').modal('hide');
     }
     
     viewInDetail(value:any){
-        swal("Work In Progress!", "", "info");
+        this.barChartPopUp = true;
+        $('#country-views-modal').modal('show');
+        this.barChartPagination.landingPageId = this.landingPageId;
+        this.barChartPagination.userId = this.authenticationService.getUserId();
+        this.barChartPagination.loader = this.barChartViewsLoader;
+        this.listBarChartAnalytics(this.barChartPagination, this.videoUtilService.timePeriod, value);
+        this.barChartViewsAnalyticsContext = {'analyticsData':this.barChartPagination};
+    }
+    
+    listBarChartAnalytics(pagination:Pagination,timePeriod:string,filterValue:any){
+        this.referenceService.loading( pagination.loader, true );
+        this.landingPageService.listBarChartAnalytics( pagination,timePeriod,filterValue).subscribe(
+            ( response: any ) => {
+                this.statusCode = response.statusCode;
+                if(this.statusCode==200){
+                    const data = response.data;
+                    pagination.totalRecords = data.totalRecords;
+                    this.sortOption.totalRecords = data.totalRecords;
+                    $.each(data.landingPageAnalytics,function(index,analytics){
+                        if($.trim(analytics.openedTimeInString).length>0){
+                            analytics.displayTime = new Date(analytics.openedTimeInString);
+                        }else{
+                            analytics.displayTime = new Date();
+                        }
+                   });
+                    pagination = this.pagerService.getPagedItems(pagination, data.landingPageAnalytics);
+                }
+                this.referenceService.loading(pagination.loader, false );
+            },
+            ( error: any ) => { this.logger.errorPage( error ); } );
+    
+    
     }
 
 }

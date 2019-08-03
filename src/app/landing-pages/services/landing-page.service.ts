@@ -42,6 +42,13 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
+    listBarChartAnalytics( pagination: Pagination,timePeriod:string,value:number ): Observable<any> {
+        let url = this.URL + "analytics/bar-chart-filter-views/"+timePeriod+"/"+value+"?";
+        return this.http.post(url+"access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     getViews(landingPage:number, userId: number ): Observable<any> {
         return this.http.get( this.URL + "analytics/get-views/"+landingPage+"/"+userId+"?access_token=" + this.authenticationService.access_token,"")
             .map( this.extractData )
