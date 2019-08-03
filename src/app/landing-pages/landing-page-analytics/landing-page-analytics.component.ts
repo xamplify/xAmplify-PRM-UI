@@ -46,7 +46,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
 
     ngOnInit() {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
-        this.pagination.campaignId = this.landingPageId;
+        this.pagination.landingPageId = this.landingPageId;
         this.pagination.loader = this.httpRequestLoader;
         this.listAnalytics(this.pagination);
         this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
@@ -149,13 +149,13 @@ export class LandingPageAnalyticsComponent implements OnInit {
     
     
     getViewsByCountryCode(countryCode:any,loader:HttpRequestLoader){
+        $('#country-views-modal').modal('show');
         this.countryPagination.campaignId = this.landingPageId;
         this.countryPagination.userId = this.authenticationService.getUserId();
         this.countryPagination.loader = this.countryViewsLoader;
         this.countryCode = countryCode;
         this.listAnalytics(this.countryPagination);
         this.countryViewsAnalyticsContext = {'analyticsData':this.countryPagination};
-        $('#country-views-modal').modal('show');
     }
     closeModal(){
         this.countryPagination = new Pagination();
