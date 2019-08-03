@@ -49,7 +49,7 @@
 				</span>
 			</div>
 			</div>
-			<div class="portlet-body">
+			<div class="portlet-body" id="min-height">
 				<ng-container *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
 					<app-bar-chart *ngIf="barChartData?.views?.length>0" [viewsBarData]="barChartData" (notifyParent)="viewInDetail($event)"></app-bar-chart>
        			 	<div *ngIf="barChartData?.views?.length ==0" style="max-width: 100%;text-align: center;">

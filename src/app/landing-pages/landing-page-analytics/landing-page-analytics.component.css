@@ -54,3 +54,7 @@
 	top: 195px;
 	left: 220px;
 }
+
+#min-height{
+	min-height: 308px;
+}
