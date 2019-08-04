@@ -78,9 +78,6 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   campaignNames = [];
   events = [];
 
-  rssCategories: any;
-  feedsResponse: any;
-  favouritesResponse: any;
 
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties:Properties,
@@ -1092,86 +1089,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   openRssModal() {
     $('#rssModal').modal('show');
-    this.getFavouritesByUserId();
   }
 
-  getFavouritesByUserId(){
-    this.socialService.getFavouritesByUserId(this.userId)
-      .subscribe(
-      data => {
-        this.favouritesResponse = data;
-      },
-      error => console.error(error),
-      () => {
-        this.getFeedsByUserId();
-      }
-      );
-  }
-
-  getFeeds(){
-        this.socialService.getFeeds()
-      .subscribe(
-      data => {
-        this.feedsResponse = data;
-      },
-      error => console.error(error),
-      () => {
-        // do nothing
-      }
-      );
-  }
-
-    getFeedsByUserId(){
-        this.socialService.getFeedsByUserId(this.userId)
-      .subscribe(
-      data => {
-        this.feedsResponse = data;
-      },
-      error => console.error(error),
-      () => {
-        // do nothing
-      }
-      );
-  }
-
-  getRSSFeedsByChannel(channelId: number){
-    this.socialService.getRSSFeedsByChannel(channelId)
-      .subscribe(
-      data => {
-        this.feedsResponse = data;
-      },
-      error => console.error(error),
-      () => {
-        // do nothing
-      }
-      );
-  }
-
-  getRSSFeedsByCategory(categoryId: number){
-    this.socialService.getRSSFeedsByCategory(categoryId)
-      .subscribe(
-      data => {
-        this.feedsResponse = data;
-      },
-      error => console.error(error),
-      () => {
-        // do nothing
-      }
-      );    
-  }
-
-  getRSSFeedsByTag(tagId: number){
-    this.socialService.getRSSFeedsByTag(tagId)
-      .subscribe(
-      data => {
-        this.feedsResponse = data;
-      },
-      error => console.error(error),
-      () => {
-        // do nothing
-      }
-      );    
-  }
 
   addToPost(feed: any){
     this.socialStatusList.forEach(data => {

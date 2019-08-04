@@ -653,49 +653,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
       </div>
-		<div class="modal-body" *ngIf="favouritesResponse">
-			<div class="col-sm-6">
-				<ng-container *ngIf="favouritesResponse.statusCode === 8100">
-					<div class="list-group">
-						<li class="list-group-item"><b>My Favourite Channels</b></li>
-						<a class="list-group-item" 
-							*ngFor="let item of favouritesResponse.data.channels" 
-							(click)="getRSSFeedsByChannel(item.id)">{{item.title}}</a>
-					</div>
-					<div class="list-group">
-						<li class="list-group-item"><b>My Favourite Categories</b></li>
-						<a class="list-group-item" *ngFor="let item of favouritesResponse.data.categories" 
-							(click)="getRSSFeedsByCategory(item.id)">{{item.title}}</a>
-					</div>
-					<div class="list-group">
-						<li class="list-group-item"><b>My Favourite Tags</b></li>
-						<li class="list-group-item">
-							<button *ngFor="let item of favouritesResponse.data.tags" (click)="getRSSFeedsByTag(item.id)">{{item.title}}</button>
-						</li>
-					</div>											
-				</ng-container>
-			</div>
-			<div class="col-sm-6" *ngIf="feedsResponse">
-				<ng-container *ngIf="!feedsResponse.data">
-					<h2>{{feedsResponse.message}}</h2>
-				</ng-container>
-				<ng-container *ngIf="feedsResponse.data">
-					<div *ngFor="let feed of feedsResponse.data" class="panel panel-default">
-						<div class="panel-body" (click)="addToPost(feed)" style="cursor: pointer">						
-							<div class="col-sm-2">
-								<img class="img-responsive" src="{{feed.thumbnail}}">
-							</div>
-							<div class="col-sm-9">
-								<a href="{{feed.link}}" target="_blank"><b>{{feed.title}}</b></a>
-								<p [innerHTML]="feed.description"></p>
-							</div>
-							<div class="col-sm-1">
-								<span class="fa fa-plus-circle" (click)="addToPost(feed)" aria-hidden="true" title="Add to post" data-toggle="tooltip" data-placement="top"></span>
-							</div>
-						</div>
-					</div>
-				</ng-container>				
-			</div>
+		<div class="modal-body">
+			<app-rss></app-rss>
 		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
