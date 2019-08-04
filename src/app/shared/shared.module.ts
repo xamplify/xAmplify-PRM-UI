@@ -24,17 +24,18 @@ import { SocialLoaderComponent } from '../social/common/social-loader/social-loa
 import { CommonComponentModule } from '../common/common.module';
 import { NgxCurrencyModule } from "ngx-currency";
 import { ImageCropperModule } from 'ng2-img-cropper';
+import { RssModule } from '../social/rss/rss.module';
 
 @NgModule({
-        imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
+        imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, 
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule ],
+                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule, RssModule],
         declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent,CountLoaderComponent],
-        exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
+        exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule, 
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule ,LoaderComponent, TimepickerModule,
-                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent,NgxCurrencyModule,CountLoaderComponent
-                ],
+                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, 
+                  SocialLoaderComponent,NgxCurrencyModule,CountLoaderComponent, RssModule],
         providers: [],
 })
 
