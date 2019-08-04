@@ -1,0 +1,47 @@
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li><i class="fa fa-home"></i> <a routerLink="/home/dashboard/default">Home</a><i class="fa fa-angle-right"></i></li>
+      <li><i class="fa fa-rss"></i>RSS</li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-lg-12">
+      <div class="page-bar page-bar-shadow">
+        <div class="portlet light">
+          <div class="portlet-body">
+            <div class="row">
+              <app-left-nav></app-left-nav>
+              <div class="col-sm-10">
+                <div class="row">
+                  <div class="col-sm-6 col-xs-12">
+                    <h1 class="heading">{{feedsResponse?.data.title}}</h1>
+                  </div>
+                  <div class="col-sm-6 col-xs-12">
+                    <h1 class="heading" style="text-align: center">
+                    <a data-toggle="tooltip" data-placement="bottom" title="View"><i class="fa fa-list p10" aria-hidden="true"></i></a>
+                    <a (click)="getFeedsByCollectionAlias()" data-toggle="tooltip" data-placement="bottom" title="Refresh"><i class="fa fa-refresh p10" aria-hidden="true"></i></a>                    
+                    <div class="btn-group">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
+                        <i class="fa fa-ellipsis-h p10" aria-hidden="true"></i>
+                      </a> 
+                      <ul class="dropdown-menu pull-right">
+                          <li><a (click)="renameCollectionDialog()">Rename</a></li>
+                          <li><a (click)="deleteCollectionDialog()">Delete</a></li>
+                      </ul>
+                    </div>
+                    </h1>
+                  </div>
+                </div>
+                <app-rss-loader *ngIf="loading"></app-rss-loader>
+                <div *ngFor="let feed of feedsResponse?.data.feeds">
+                  <app-feed [feed]="feed"></app-feed>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
