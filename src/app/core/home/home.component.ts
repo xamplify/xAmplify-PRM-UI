@@ -141,14 +141,13 @@ export class HomeComponent implements OnInit {
                   
                   if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
                       this.authenticationService.isCompanyPartner = true;
-                  }
+                  } 
                   
                   if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                       roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                       roles.indexOf( this.roleName.vendorRole ) > -1 ||
                       roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
                       this.authenticationService.isShowCampaign = true;
-                      // this.isCampaign = true;
                       if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner' || this.authenticationService.superiorRole === 'Partner'))
                               || this.authenticationService.isCompanyPartner){
                           this.authenticationService.isShowRedistribution = true;

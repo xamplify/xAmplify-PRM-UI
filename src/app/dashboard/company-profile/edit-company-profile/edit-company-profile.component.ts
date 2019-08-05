@@ -412,6 +412,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                                 };
                                 localStorage.setItem('currentUser', JSON.stringify(userToken));
                                 self.homeComponent.getVideoDefaultSettings();
+                                self.homeComponent.getTeamMembersDetails();
                             }
 
                         }, 3000);
