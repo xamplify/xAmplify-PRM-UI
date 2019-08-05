@@ -206,7 +206,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     generatHeatMap(heatMapData, heatMapId) {
         const self = this;
-        if(heatMapData.length != 0){
+        if(true){
         const data = heatMapData;
         this.xtremandLogger.log(data);
         Highcharts.chart(heatMapId, {
@@ -253,7 +253,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 text: ' '
             },
             legend: {
-                enabled: false 
+                enabled: false
             }
         });
         }
@@ -752,13 +752,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
                 subscribe(result => {
                     this.xtremandLogger.log(result.heatMapData);
-                    this.heatMapData = result.heatMapData;
-                    this.heatMapData.forEach(element => {
-                      element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
-                      if(element.launchTime) { element.launchTime = this.convertDateFormat(element.launchTime); }
-                    });
-                    if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
-                    } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
+                    if(result){
+                      this.heatMapData = result.heatMapData;
+                      this.heatMapData.forEach(element => {
+                        element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
+                        if(element.launchTime) { element.launchTime = this.convertDateFormat(element.launchTime); }
+                      });
+                      if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
+                      } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
+                    } else { this.heatMapData = [];}
                   },
                     (error: any) => {
                         this.xtremandLogger.error(error);
@@ -891,10 +893,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                /* "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),*/
                /* "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName*/
             }
-            
+
             let hours = this.referenceService.formatAMPM(date);
             object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-            
+
             if (this.paginationType == 'open') {
                 object["Company Name"] = this.dashboardReport.downloadEmailLogList[i].companyName;
                 object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;

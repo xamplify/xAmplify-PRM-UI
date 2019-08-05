@@ -36,7 +36,7 @@ export const routes: Routes = [
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     /*{ path: '', component: IntroComponent},*/
     { path: '', redirectTo:'login', pathMatch: 'full'},
-    { path: 'home', redirectTo:'', pathMatch: 'full'},
+    { path: 'home', redirectTo:'home/dashboard', pathMatch: 'full'},
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard],
       children: [
           { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
