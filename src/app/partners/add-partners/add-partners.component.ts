@@ -489,6 +489,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 	let message = data.errorMessage+"<br><br>"+allEmailIds;
                                 	this.customResponse = new CustomResponse( 'ERROR', message, true );
                                 }
+                                
+                                if(data.statusCode == 417){
+                                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+                                }
                             },
                             ( error: any ) => {
                                 let body: string = error['_body'];
