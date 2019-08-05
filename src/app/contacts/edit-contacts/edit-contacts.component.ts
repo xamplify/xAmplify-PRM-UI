@@ -573,10 +573,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                 this.customResponse = new CustomResponse( 'ERROR', message, true );
                             }
                             
+                            if(data.statusCode == 417){
+                                this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+                            }
+                            
                             this.checkingLoadContactsCount = true;
                             this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                             this.cancelContacts();
-                            if(data.statusCode != 409){
+                            if(data.statusCode == 200){
                                 this.getContactsAssocialteCampaigns();
                               }
                             
@@ -745,9 +749,16 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                         let message = data.errorMessage+"<br><br>"+allEmailIds;
                                         this.customResponse = new CustomResponse( 'ERROR', message, true );
                                     }
+                                    
+                                    if(data.statusCode == 417){
+                                        this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+                                    }
+                                    
                                     this.checkingLoadContactsCount = true;
                                     this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                                    if(data.statusCode != 409){
+                                    
+                                    
+                                    if(data.statusCode == 200){
                                         this.getContactsAssocialteCampaigns();
                                       }
                                     
@@ -1391,10 +1402,14 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                     let message = data.errorMessage+"<br><br>"+allEmailIds;
                                     this.customResponse = new CustomResponse( 'ERROR', message, true );
                                 }
+                                
+                                if(data.statusCode == 417){
+                                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+                                }
 
                                 this.checkingLoadContactsCount = true;
                                 this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
-                                if(data.statusCode != 409){
+                                if(data.statusCode == 200){
                                     this.getContactsAssocialteCampaigns();
                                   }
                             },
