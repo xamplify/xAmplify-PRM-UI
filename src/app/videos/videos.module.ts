@@ -11,12 +11,12 @@ import { PlayVideoComponent } from './manage-video/play-video/play-video.compone
 import { VideoBasedReportsComponent } from './manage-video/video-based-reports/video-based-reports.component';
 import { VideoBaseReportService } from './services/video-base-report.service';
 import { ChartReportComponent } from './manage-video/video-based-reports/chart-report/chart-report.component';
-import { ContentManagementModule } from 'app/content-management/content-management.module';
+import { ContentManageComponent } from './content-manage/content-manage.component';
 
 @NgModule({
-  imports: [SharedModule, VideosRoutingModule, CommonComponentModule, ContentManagementModule],
+  imports: [SharedModule, VideosRoutingModule, CommonComponentModule],
   declarations: [ManageVideoComponent, UploadVideoComponent,
-    EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent, ChartReportComponent],
+    EditVideoComponent, PlayVideoComponent, VideoBasedReportsComponent, ChartReportComponent, ContentManageComponent],
   providers: [VideoBaseReportService]
 
 })

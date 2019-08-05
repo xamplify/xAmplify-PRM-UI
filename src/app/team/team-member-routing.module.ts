@@ -3,7 +3,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { AddTeamMembersComponent } from "./add-team-members/add-team-members.component";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "manageteam", pathMatch: "full" },
+  { path: "", redirectTo: "add-team", pathMatch: "full" },
   { path: "add-team", component: AddTeamMembersComponent }
 ];
 
