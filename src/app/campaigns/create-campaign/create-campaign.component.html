@@ -77,20 +77,38 @@
 					</div>
 					<div *ngIf="!isCampaignDetailsFormValid||!isVideo||!isContactList" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
 						<div class="cenetered-block">
-							<span>
+							<ng-container *ngIf="campaignType=='landingPage'">
+								<span>
+								<i class="fa fa-wpforms"></i>
+							</span>
+							<h5 class="hidden-xs">Landing Page</h5>
+							</ng-container>
+							
+							<ng-container *ngIf="campaignType!='landingPage'">
+								<span>
 								<i class="fa fa-envelope"></i>
 							</span>
 							<h5 class="hidden-xs">Email Template</h5>
+							</ng-container>
 						</div>
 					</div>
 
 					<div id="step5" *ngIf="isCampaignDetailsFormValid  && isVideo  && isContactList" [attr.class]="emailTemplateTabClass" [ngStyle]="{ 'width': width }"
 					 (click)="resetActive($event, 80, 'step-5');">
 						<div class="cenetered-block">
-							<span>
+							<ng-container *ngIf="campaignType=='landingPage'">
+								<span>
+								<i class="fa fa-wpforms"></i>
+							</span>
+							<h5 class="hidden-xs">Landing Page</h5>
+							</ng-container>
+							
+							<ng-container *ngIf="campaignType!='landingPage'">
+								<span>
 								<i class="fa fa-envelope"></i>
 							</span>
 							<h5 class="hidden-xs">Email Template</h5>
+							</ng-container>
 						</div>
 					</div>
 

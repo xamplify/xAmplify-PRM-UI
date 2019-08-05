@@ -117,10 +117,8 @@ export class SelectCampaignTypeComponent implements OnInit{
      }
      
      createLandingPageCampaign(){
-         swal("Work In Progress","","info");
-         return false;
-        // this.refService.selectedCampaignType = "landingPage";
-         //this.router.navigate(["/home/campaigns/create"]);
+         this.refService.selectedCampaignType = "landingPage";
+         this.router.navigate(["/home/campaigns/create"]);
      }
 
 
