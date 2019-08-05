@@ -45,3 +45,40 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModalLabel">Rename Collection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+<div class="alert alert-dismissible m0" role="alert" *ngIf="renameCollectionTitleResponse" 
+      [ngClass]="{'alert-success': renameCollectionTitleResponse.statusCode === 8114,
+	                'alert-danger': renameCollectionTitleResponse.statusCode !== 8114}">
+							<div class="pull-right">
+								<i class="fa fa-times-circle" aria-hidden="true" (click)="renameCollectionTitleResponse = null"></i>
+							</div>
+							<h4>
+							<i class="fa" 
+                [ngClass]="{
+									'fa-check-circle-o': renameCollectionTitleResponse.statusCode === 8114,
+	                'fa-exclamation-circle': renameCollectionTitleResponse.statusCode !== 8114}"></i>
+							<span class="ml10 f-w-600">{{renameCollectionTitleResponse.message}}</span>
+							</h4>
+					</div>
+        <input type="text" class="form-control" id="title"
+                   name="title" placeholder="Enter title" 
+                   value={{collectionTitle}} [(ngModel)]="collectionTitle">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="renameCollection()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

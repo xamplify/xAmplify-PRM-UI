@@ -7,7 +7,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
   styleUrls: ['../rss/rss.component.css', './left-nav.component.css']
 })
 export class LeftNavComponent implements OnInit {
-  @Input('refresh') refresh: boolean;
+  @Input('refreshTime') refreshTime: Date;
   constructor(public rssService: RssService, private authenticationService: AuthenticationService) { }
   loggedInUserId: number = this.authenticationService.getUserId();
   ngOnInit() {
@@ -17,7 +17,7 @@ export class LeftNavComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
 
-        let currentValue = changes.refresh.currentValue;
+        let currentValue = changes.refreshTime.currentValue;
         if(currentValue)
           this.getCollections();
   }

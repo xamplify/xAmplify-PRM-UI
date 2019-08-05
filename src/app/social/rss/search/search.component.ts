@@ -14,8 +14,7 @@ export class SearchComponent implements OnInit {
   searchResponse: any;
   userId: number;
   loading = false;
-  refreshLeftNav: boolean;
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private rssService: RssService, private authenticationService: AuthenticationService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, public rssService: RssService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.userId = this.authenticationService.getUserId();
@@ -45,27 +44,26 @@ export class SearchComponent implements OnInit {
     );
   }
 
-  followSource(collectionName: string, sourceId: number){
-    debugger;
-    if(this.rssService.collectionsResponse.data){
+  followSource(collectionName: string, sourceId: number) {
+    if (this.rssService.collectionsResponse.data) {
       let collection = this.rssService.collectionsResponse.data.find(obj => {
         return obj.title === collectionName
       });
-      let req =  {"userId": this.userId, "sourceId": sourceId, "collectionId": collection.id};
+      let req = { "userId": this.userId, "sourceId": sourceId, "collectionId": collection.id };
       this.addSourceToCollection(req);
     } else {
       this.createCollection(collectionName, sourceId);
     }
   }
 
-  createCollection(collectionName: string, sourceId: number){
-    let requestBody = {"userId": this.userId, "title": collectionName};
+  createCollection(collectionName: string, sourceId: number) {
+    let requestBody = { "userId": this.userId, "title": collectionName };
     this.rssService.createCollection(requestBody).subscribe(
       data => {
-        if(data.statusCode === 8111){
-          let req =  {"userId": this.userId, "sourceId": sourceId, "collectionId": data.data.id};
+        if (data.statusCode === 8111) {
+          let req = { "userId": this.userId, "sourceId": sourceId, "collectionId": data.data.id };
           this.addSourceToCollection(req);
-      }
+        }
 
       },
       error => console.log(error),
@@ -73,30 +71,30 @@ export class SearchComponent implements OnInit {
     );
   }
 
-  addSourceToCollection(req: any){
+  addSourceToCollection(req: any) {
     this.rssService.addSourceToCollection(req).subscribe(
       data => {
         // do nothing
-        this.refreshLeftNav = true;
+        this.rssService.refreshTime = new Date();
       },
       error => console.log(error),
       () => this.loading = false
     );
   }
 
-  removeSourceFromCollection(sourceId: number, collectionId: number){
-    let req =  {"userId": this.userId, "companySourceId": sourceId, "collectionId": collectionId};
+  removeSourceFromCollection(sourceId: number, collectionId: number) {
+    let req = { "userId": this.userId, "companySourceId": sourceId, "collectionId": collectionId };
     this.rssService.removeSourceFromCollection(req).subscribe(
       data => {
         // do nothing
-        this.refreshLeftNav = true;
+        this.rssService.refreshTime = new Date();
       },
       error => console.log(error),
       () => this.loading = false
     );
   }
 
-  clearSearch(){
+  clearSearch() {
     this.router.navigate(['/home/rss/discover']);
   }
 

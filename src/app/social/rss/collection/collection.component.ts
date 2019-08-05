@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RssService } from '../../services/rss.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 
-declare var swal: any;
+declare var swal, $: any;
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -14,6 +14,8 @@ export class CollectionComponent implements OnInit {
   alias: string;
   loading = false;
   userId: number;
+  collectionTitle: string;
+  renameCollectionTitleResponse: any;
   constructor(private router: Router, private route: ActivatedRoute, private rssService: RssService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -31,7 +33,9 @@ export class CollectionComponent implements OnInit {
     );
   }
 renameCollectionDialog(){
-
+    this.collectionTitle = this.feedsResponse.data.title;
+    this.renameCollectionTitleResponse = null;
+    $('#renameModal').modal('show');
 }
 deleteCollectionDialog(){
   const self = this;
@@ -55,10 +59,17 @@ deleteCollectionDialog(){
     let requestBody = {
       "id":this.feedsResponse.data.id,
       "userId": this.userId,
-      "title": this.feedsResponse.data.title
+      "title": this.collectionTitle
     };
     this.rssService.renameCollection(requestBody).subscribe(
-      data => this.feedsResponse = data,
+      data => {
+        this.renameCollectionTitleResponse = data;
+        if (data.statusCode === 8114) {
+          this.feedsResponse.data.title = this.collectionTitle;
+        } else {
+
+        }
+      },
       error => console.log(error),
       () => this.loading = false
     );

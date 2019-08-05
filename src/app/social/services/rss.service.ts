@@ -14,6 +14,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 export class RssService {
     URL = this.authenticationService.REST_URL;
     collectionsResponse: any;
+    refreshTime: Date;
 
     constructor(private http: Http, private router: Router, private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
     }

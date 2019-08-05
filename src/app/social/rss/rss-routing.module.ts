@@ -8,7 +8,8 @@ import { SourceComponent } from './source/source.component';
 import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
-    { path: '', component: RssComponent },
+    { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+    { path: 'welcome', component: RssComponent },
     { path: 'discover', component: DiscoverComponent },
     { path: 'collections/:alias', component: CollectionComponent },
     { path: 'sources/:alias', component: SourceComponent },

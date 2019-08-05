@@ -11,11 +11,11 @@
         <div class="portlet light">
           <div class="portlet-body">
             <div class="row">
-              <app-left-nav></app-left-nav>
+              <app-left-nav [refreshTime]="rssService.refreshTime"></app-left-nav>
               <div class="col-sm-10">
                 <div class="row">
                   <div class="col-sm-6 col-xs-12">
-                    <h1 class="heading">{{feedsResponse?.data.title}}</h1>
+                    <h1 class="heading">{{feedsResponse?.data.customTitle}}</h1>
                   </div>
                   <div class="col-sm-6 col-xs-12">
                     <h1 class="heading" style="text-align: center">
@@ -52,15 +52,29 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="renameModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="renameModalLabel">Rename Source</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!--<input type="text" class="form-control" id="title"
+<div class="alert alert-dismissible m0" role="alert" *ngIf="renameSourceTitleResponse" 
+      [ngClass]="{'alert-success': renameSourceTitleResponse.statusCode === 8114,
+	                'alert-danger': renameSourceTitleResponse.statusCode !== 8114}">
+							<div class="pull-right">
+								<i class="fa fa-times-circle" aria-hidden="true" (click)="renameSourceTitleResponse = null"></i>
+							</div>
+							<h4>
+							<i class="fa" 
+                [ngClass]="{
+									'fa-check-circle-o': renameSourceTitleResponse.statusCode === 8114,
+	                'fa-exclamation-circle': renameSourceTitleResponse.statusCode !== 8114}"></i>
+							<span class="ml10 f-w-600">{{renameSourceTitleResponse.message}}</span>
+							</h4>
+					</div>
+        <input type="text" class="form-control" id="title"
                    name="title" placeholder="Enter title" 
-                   value={{feedsResponse?.data.title}} [(ngModel)]="feedsResponse?.data.title">-->
+                   value={{sourceTitle}} [(ngModel)]="sourceTitle">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
