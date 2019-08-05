@@ -103,7 +103,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.teamBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.teamBaseUrl);
         }
-        if(url.indexOf(this.socialBaseUrl)>-1 || url.indexOf('twitter')>-1 ){
+        if(url.indexOf(this.socialBaseUrl)>-1 || url.indexOf('twitter')>-1 || url.indexOf('rss')>-1){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);
         }
         if(url.indexOf(this.upgradeBaseUrl)>-1){
@@ -136,7 +136,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType===this.teamBaseUrl){
             role = this.roles.orgAdminRole;
         }
-        if(urlType===this.socialBaseUrl || url.includes('twitter')){
+        if(urlType===this.socialBaseUrl || url.includes('twitter') || url.includes('rss')){
             role = this.roles.socialShare;
         }
         if(urlType===this.upgradeBaseUrl){
@@ -168,7 +168,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
 
-            if(url.search('/twitter')) { return true; }
+            if(url.search('/twitter') || url.search('/rss'))
+                return true;
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{

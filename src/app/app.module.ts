@@ -20,7 +20,7 @@ import { SocialLoginComponent } from './social/common/social-login/social-login.
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
-
+import { RssService } from './social/services/rss.service';
 import { TwitterService } from './social/services/twitter.service';
 import { FacebookService } from './social/services/facebook.service';
 import { SocialService } from './social/services/social.service';
@@ -65,7 +65,7 @@ import { EnvServiceProvider } from './env.service.provider';
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
-        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
+        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider],
     bootstrap: [AppComponent]
