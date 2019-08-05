@@ -13,5 +13,6 @@ export class Module {
     isVendor:boolean = false;
     hasFormAccess:boolean = false;
     hasLandingPageAccess:boolean = false;
+    hasLandingPageCampaignAccess:boolean = false;
 
 }

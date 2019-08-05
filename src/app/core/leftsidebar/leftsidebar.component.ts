@@ -109,20 +109,18 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.enableLeads = data.enableLeads;
                         this.formAccess = data.form;
                         /**********Form**************/
-                        if ( ( roles.indexOf( this.roleName.formRole ) > -1 ||
-                            roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                            roles.indexOf( this.roleName.allRole ) > -1 ||
-                            roles.indexOf( this.roleName.vendorRole ) > -1 ) && this.formAccess ) {
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
                         }
                         /**********Landing Page**************/
-                        if ( ( roles.indexOf( this.roleName.landingPageRole ) > -1 ||
-                                roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                                roles.indexOf( this.roleName.allRole ) > -1 ||
-                                roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPage) {
-                                this.authService.module.hasLandingPageAccess = true;
-                            }
-
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPage ) {
+                            this.authService.module.hasLandingPageAccess = true;
+                        }
+                       /*************Landing Page Campaign*************/ 
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPageCampaign ) {
+                            this.authService.module.hasLandingPageCampaignAccess = true;
+                        }
+                        
                     } );
                     /**********Landing Page************/    
                 } )

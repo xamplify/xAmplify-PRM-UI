@@ -7,5 +7,6 @@ export class CampaignAccess {
   leads = false;
   formBuilder = false;
   landingPage = false;
+  landingPageCampaign = false;
   companyId = 0;
 }

@@ -9,7 +9,7 @@ import { UserService } from 'app/core/services/user.service';
 import { CampaignAccess } from '../models/campaign-access';
 import { HomeComponent } from 'app/core/home/home.component';
 
-declare var Metronic, Layout , Demo,TableManaged:any;
+declare var Metronic, Layout , Demo,TableManaged,swal:any;
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
@@ -62,7 +62,8 @@ export class SelectCampaignTypeComponent implements OnInit{
         this.campaignAccess.emailCampaign = data.regular;
         this.campaignAccess.socialCampaign = data.social;
         this.campaignAccess.eventCampaign = data.event
-         this.campaignAccess.smsCampaign = data.sms;
+        this.campaignAccess.smsCampaign = data.sms;
+        this.campaignAccess.landingPageCampaign = data.landingPageCampaign;
         this.refService.smsCampaign = data.sms;
         this.cssClassChange();
       });
@@ -113,6 +114,13 @@ export class SelectCampaignTypeComponent implements OnInit{
      createSMS_Campaign(){
       this.refService.selectedCampaignType = "sms";
       this.router.navigate(["/home/campaigns/create"]);
+     }
+     
+     createLandingPageCampaign(){
+         swal("Work In Progress","","info");
+         return false;
+        // this.refService.selectedCampaignType = "landingPage";
+         //this.router.navigate(["/home/campaigns/create"]);
      }
 
 
