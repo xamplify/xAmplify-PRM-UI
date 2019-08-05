@@ -45,7 +45,7 @@
         </a>
         <ul class="sub-menu" [ngStyle]="{'display': videos? 'block': 'none' }">
         <li>
-          <a  [routerLink]="['./content/upload']">
+          <a  [routerLink]="['/home/content/upload']">
             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
             <span class="title">Upload Content</span>
           </a>
@@ -103,7 +103,7 @@
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-        <a class="visible-xs" [routerLink]="['./emailtemplates']" >
+        <a class="visible-xs" [routerLink]="['./emailtemplates/select']" >
             <i class="fa fa-envelope"></i>
             <span class="title">Email Templates</span>
             <span class="arrow "></span>
@@ -117,7 +117,7 @@
           </a>
         </li>
         <li>
-          <a [routerLink]="['./emailtemplates']">
+          <a [routerLink]="['./emailtemplates/manage']">
             <i class="fa fa-list"></i>
             <span class="title">Manage Email Templates</span>
           </a>
