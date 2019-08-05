@@ -7,8 +7,8 @@ import { ChartReportComponent } from "./manage-video/video-based-reports/chart-r
 import { ContentManagementComponent } from "app/content-management/content-management.component";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "upload", pathMatch: "full" },
-  { path: "upload", component: UploadVideoComponent },
+  { path: '', redirectTo: 'upload', pathMatch: 'full' },
+  { path: 'upload', component: UploadVideoComponent },
   { path: "videos", component: ManageVideoComponent },
   { path: "manage", component: ContentManagementComponent },
   { path: "videos/reports", component: ChartReportComponent }

@@ -9,6 +9,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     emailTemplateBaseUrl = "emailtemplates";
     videoBaseUrl = "content";
     socialBaseUrl = 'social';
+    twitterBaseUrl = 'twitter';
+    rssBaseUrl = 'rss';
     contactBaseUrl ='contacts';
     partnerBaseUrl = 'partners';
     campaignBaseUrl = 'campaigns';
@@ -103,8 +105,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.teamBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.teamBaseUrl);
         }
-        if(url.indexOf(this.socialBaseUrl)>-1 || url.indexOf('twitter')>-1 || url.indexOf('rss')>-1){
+        if(url.indexOf(this.socialBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.socialBaseUrl);
+        }
+        if(url.indexOf(this.twitterBaseUrl)>-1){
+          return this.authorizeUrl(roles, url, this.twitterBaseUrl);
+        }
+        if(url.indexOf(this.rssBaseUrl)>-1){
+          return this.authorizeUrl(roles, url, this.rssBaseUrl);
         }
         if(url.indexOf(this.upgradeBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.upgradeBaseUrl);
@@ -136,8 +144,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType===this.teamBaseUrl){
             role = this.roles.orgAdminRole;
         }
-        if(urlType===this.socialBaseUrl || url.includes('twitter') || url.includes('rss')){
+        if(urlType===this.socialBaseUrl){
             role = this.roles.socialShare;
+        }
+        if(urlType===this.twitterBaseUrl){
+          role = this.roles.socialShare;
+        }
+        if(urlType===this.rssBaseUrl){
+          role = this.roles.socialShare;
         }
         if(urlType===this.upgradeBaseUrl){
             role = this.roles.orgAdminRole;
@@ -168,8 +182,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
 
-            if(url.search('/twitter') || url.search('/rss'))
-                return true;
+            // if(url.search('/twitter') || url.search('/rss'))
+            //     return true;
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{
