@@ -323,6 +323,20 @@ export class AuthenticationService {
          }
        } catch(error){  this.xtremandLogger.log('error'+error);}
      }
+    
+    hasAllAccess() {
+        try{
+        const roles = this.getRoles();
+        if(roles) {
+        if (roles && roles.indexOf('ROLE_ALL') > -1 || roles.indexOf('ROLE_ORG_ADMIN') > -1) {
+             return true;
+         } else {
+             return false;
+         }
+       }
+       }catch(error){console.log('error'+error);}
+     }
+    
     logout(): void {
         this.xtremandLogger.log('Logout');
         // clear token remove user from local storage to log user out
