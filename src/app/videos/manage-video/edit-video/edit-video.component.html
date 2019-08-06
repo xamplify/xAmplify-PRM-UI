@@ -66,9 +66,9 @@
 							<h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2>
 							<div class="flex" style="padding:0.5%" *ngIf="callAction.isFistNameChecked">
 								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
-								 class="form-control text-box m21" placeholder="First Name">
+								 class="form-control text-box m21" placeholder="First Name" maxlength="20">
 								<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
-								 placeholder="Last Name">
+								 placeholder="Last Name" maxlength="20">
 							</div>
 							<div class="flex m02">
 								<div class="w-8">
