@@ -389,7 +389,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                  this.fromNameDivClass = errorClass;
              }
          }else if(fieldId=="subjectLine"){
-             if(fieldValue.length>0){
+             if(this.campaign.subjectLine.length>0){
                  this.subjectLineDivClass = successClass;
              }else{
                  this.subjectLineDivClass = errorClass;
@@ -512,7 +512,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                                     this.setMergeTagsInfo(body);
                                 }
                             );
-                        
+
                     }else{
                         this.setMergeTagsInfo(body);
                     }
@@ -520,7 +520,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                 error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
     }
-    
+
     setMergeTagsInfo(body:string){
         let videoGifPath = "";
         if(this.campaignType=="video"){
@@ -534,7 +534,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.ngxloading = false;
     }
 
-    
+
     setUpdatedBody(body:any,emailTemplate:EmailTemplate){
         emailTemplate.body = body;
         this.referenceService.previewEmailTemplate(emailTemplate, this.campaign);
@@ -752,7 +752,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             $('#'+url.divId).addClass('portlet light dashboard-stat2 border-error');
             $('#click-message-'+url.divId).css('color','red');
         }
-    
+
     }
 
     validateOnClickReplyInDays(url:Url){
