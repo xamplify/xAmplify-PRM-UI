@@ -53,7 +53,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
                 console.log(data);
                 refService.userDefaultPage = data.userDefaultPage;
                 const loggedInUser = data;
-                if (loggedInUser.firstName != null) {
+                if (loggedInUser.firstName) {
                   this.model.displayName = loggedInUser.firstName;
                   refService.topNavBarUserDetails.displayName = loggedInUser.firstName;
                 } else {
