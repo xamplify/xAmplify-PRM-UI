@@ -8,6 +8,8 @@ import { VideoUtilService } from "../../videos/services/video-util.service";
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { Roles } from '../../core/models/roles';
 import { Pagination } from '../../core/models/pagination';
+import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
+import { TeamMember } from "app/team/models/team-member";
 
 
 declare var $: any;
@@ -27,6 +29,7 @@ export class HomeComponent implements OnInit {
   constructor(
     public referenceService: ReferenceService,
     public userService: UserService,
+    public dealsService:DealRegistrationService,
     public xtremandLogger: XtremandLogger,
     private router: Router,
     public authenticationService: AuthenticationService,
@@ -133,10 +136,13 @@ export class HomeComponent implements OnInit {
       .subscribe(
       response => {
            if(response.statusCode==200){
+             console.log(response)
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
               this.authenticationService.superiorRole = response.data.superiorRole;
               const roles = this.authenticationService.getRoles();
+              this.checkEnableLeads()
+
               if ( roles ) {
                   
                   if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
@@ -166,6 +172,8 @@ export class HomeComponent implements OnInit {
   }
   
   checkEnableLeads(){
+    console.log(this.authenticationService.loggedInUserRole != "Team Member")
+    if(this.authenticationService.loggedInUserRole != "Team Member"){
       const url = "admin/get-company-id/" + this.userId + "?access_token=" + this.token;
       this.referenceService.getHomeCompanyIdByUserId( url )
       .subscribe( response => {
@@ -173,38 +181,60 @@ export class HomeComponent implements OnInit {
           this.referenceService.getHomeOrgCampaignTypes( campaignUrl )
           .subscribe( data => {
               this.authenticationService.enableLeads = data.enableLeads;
-              
-              this.checkEnableLeadsForPartner();
+             if(!this.authenticationService.enableLeads){
+                this.checkEnableLeadsForPartner();
+             }
+            
               
               console.log( data )
           } );
 
       } )
+    }else if(this.authenticationService.superiorRole.includes("Vendor")){
+       
+          try {
+            this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+              (result: any) => {
+                if (result !== "") {  this.referenceService.companyId = result;
+                  this.dealsService.getVendorLeadServices(this.authenticationService.user.id,this.referenceService.companyId).subscribe(response=>{
+                    console.log(response)
+                    this.authenticationService.enableLeads =response.data;
+                    if(!this.authenticationService.enableLeads){
+                      this.checkEnableLeadsForPartner();
+                   }
+                  })
+                }
+              }, (error: any) => { this.xtremandLogger.log(error); }
+            );
+          } catch (error) { this.xtremandLogger.log(error);  } 
+       
+    }else{
+      if(!this.authenticationService.enableLeads){
+        this.checkEnableLeadsForPartner();
+      }
+    }
+    
+      
   }
   
   checkEnableLeadsForPartner(){
+
       if (!this.authenticationService.enableLeads && ( this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember ) )
       {
-          this.pagination = new Pagination();
-          this.pagination.pageIndex = 1;
-          this.pagination.maxResults = 10000;
-          const url = "vendor/details?access_token=" + this.token + '&partnerId=' + this.userId;
-          this.userService.loadVendorDetails(url, this.pagination).subscribe(response =>
-          {
-              response.data.forEach(element =>
-              {
-                  this.referenceService.getOrgCampaignTypes(element.companyId).subscribe(data =>
-                  {
-                      if (!this.authenticationService.enableLeads)
-                      {
-                          this.authenticationService.enableLeads = data.enableLeads;
-                          return ;
-                      }
-                      
-                      console.log(data)
-                  });
-              });
-          })
+
+        try {
+          this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+            (result: any) => {
+              if (result !== "") {  this.referenceService.companyId = result;
+                this.dealsService.getPartnerLeadServices(this.authenticationService.user.id,this.referenceService.companyId).subscribe(response=>{
+                  console.log(response)
+                  this.authenticationService.enableLeads =response.data;
+                })
+              }
+            }, (error: any) => { this.xtremandLogger.log(error); }
+          );
+        } catch (error) { this.xtremandLogger.log(error);  } 
+         
       }
   }
  
@@ -221,7 +251,7 @@ export class HomeComponent implements OnInit {
             this.getVideoDefaultSettings();
             this.referenceService.defaulgVideoMethodCalled = true;
             this.getTeamMembersDetails();
-            this.checkEnableLeads()
+
           }
        } catch (error) {
          this.xtremandLogger.error("error" + error);

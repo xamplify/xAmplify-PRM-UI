@@ -97,6 +97,7 @@ export class ManageDealsComponent implements OnInit
     enableLeads = false;
 
     customResponse: CustomResponse;
+    superiorId: number =0;
    
 
     @ViewChild(ManagePartnersComponent)
@@ -113,8 +114,28 @@ export class ManageDealsComponent implements OnInit
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
         public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService)
     {
-
         this.loggedInUserId = this.authenticationService.getUserId();
+
+        if(this.authenticationService.loggedInUserRole == "Team Member"){
+            dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
+                console.log(response)
+                this.superiorId = response;
+                this.init();
+            });
+        }else{
+            this.superiorId = this.authenticationService.getUserId();
+            this.init();
+        };
+
+
+    }
+
+    ngOnInit()
+    {
+       
+
+    }
+    init(){
         this.isListView = !this.referenceService.isGridView;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         const roles = this.authenticationService.getRoles();
@@ -125,12 +146,13 @@ export class ManageDealsComponent implements OnInit
                     roles.indexOf(this.roleName.vendorRole)>-1) {
                     this.isVendor = true;
                 }
-                if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+                if(this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember){
                     this.isCompanyPartner = true;
                 }
             }
-            referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response=>{
-                referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+            this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response=>{
+                console.log(this.superiorId)
+                this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
                     this.enableLeads = data.enableLeads;
                     console.log(data)
                     if(!this.isOnlyPartner){
@@ -141,20 +163,7 @@ export class ManageDealsComponent implements OnInit
                 });
             })
         
-        console.log(authenticationService.getRoles())
-        
-        // if(!this.isOnlyPartner){
-        //     this.showVendor();
-        // }else{
-        //     this.showPartner();
-        // }
-
-    }
-
-    ngOnInit()
-    {
-       
-
+        console.log(this.authenticationService.getRoles())
     }
     switchVersions()
     {
@@ -190,7 +199,7 @@ export class ManageDealsComponent implements OnInit
             this.campaignsPagination = new Pagination();
             this.campaignsPaginationByDeals = new Pagination();
             this.isPartner = true;
-            this.partner = this.loggedInUserId;
+            this.partner = this.superiorId;
             this.isCampaignByLeads = true;
             this.isCampaignByDeals = false;
             this.campaingnList = true;
@@ -252,7 +261,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalLeadsLoader = true;
-            this.dealRegistrationService.getTotalLeads(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalLeads(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalLeads = data.data;
@@ -275,7 +284,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalLeadsLoader = true;
-            this.dealRegistrationService.getTotalLeadsByPartner(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalLeadsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalLeads = data.data;
@@ -299,7 +308,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalDealsLoader = true;
-            this.dealRegistrationService.getTotalDeals(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalDeals(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalDeals = data.data;
@@ -323,7 +332,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalDealsLoader = true;
-            this.dealRegistrationService.getTotalDealsByPartner(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalDealsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalDeals = data.data;
@@ -347,7 +356,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"opened").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
                     this.openedDeals = data.data;
@@ -371,7 +380,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.dealsOnHoldLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"hold").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
                     this.dealsOnHold = data.data;
@@ -396,7 +405,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"closed").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
                     this.closedDeals = data.data;
@@ -422,7 +431,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"approved").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
                     this.approvedDeals = data.data;
@@ -446,7 +455,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"approved").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
                     this.approvedDeals = data.data;
@@ -470,7 +479,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"rejected").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
                  
@@ -495,7 +504,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.rejectedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"rejected").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
                     this.rejectedDeals = data.data;
@@ -520,7 +529,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"opened").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
                     console.log(data)
@@ -545,7 +554,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.dealsOnHoldLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"hold").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
                     this.dealsOnHold = data.data;
@@ -570,7 +579,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"closed").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
                     this.closedDeals = data.data;
@@ -593,7 +602,7 @@ export class ManageDealsComponent implements OnInit
     listCampaigns(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaigns(pagination)
             .subscribe(
@@ -621,7 +630,7 @@ export class ManageDealsComponent implements OnInit
     listCampaignsByDeals(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsByDeals(pagination)
             .subscribe(
@@ -647,7 +656,7 @@ export class ManageDealsComponent implements OnInit
     listCampaignsByPartner(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsByPartner(pagination)
             .subscribe(
@@ -676,7 +685,7 @@ export class ManageDealsComponent implements OnInit
     listCampaignsDealsByPartner(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsDealsByPartner(pagination)
             .subscribe(
@@ -809,7 +818,7 @@ export class ManageDealsComponent implements OnInit
         } else
         {
 
-            this.dealRegistrationService.getCampaignPartnerById(this.loggedInUserId).subscribe(data =>
+            this.dealRegistrationService.getCampaignPartnerById(this.superiorId).subscribe(data =>
             {
                 this.selectedCampaignId = campaign.id;
                 
@@ -918,7 +927,7 @@ export class ManageDealsComponent implements OnInit
         {
 
             this.selectedDealId = deal.dealId;
-            this.dealRegistrationService.getDealById(deal.dealId,this.loggedInUserId).subscribe(dealNew =>
+            this.dealRegistrationService.getDealById(deal.dealId,this.superiorId).subscribe(dealNew =>
             {
                 this.selectedDeal = dealNew.data;
 
@@ -969,7 +978,7 @@ export class ManageDealsComponent implements OnInit
     {
 
 
-        this.dealRegistrationService.getDealById(item,this.loggedInUserId).subscribe(deal =>
+        this.dealRegistrationService.getDealById(item,this.superiorId).subscribe(deal =>
         {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
@@ -1058,7 +1067,7 @@ export class ManageDealsComponent implements OnInit
     getDealInfo(item: any)
     {
 
-        this.dealRegistrationService.getDealById(item,this.loggedInUserId).subscribe(deal =>
+        this.dealRegistrationService.getDealById(item,this.superiorId).subscribe(deal =>
         {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;

@@ -759,12 +759,10 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
    /****************Deal Registration***************************/
   getDealState(campaignViews:any){
-    console.log(campaignViews);
-
-      if(campaignViews.userId!=null && campaignViews.campaignId!=null){
-        const obj = {"campaignId":campaignViews.campaignId};
-          this.campaignService.getCampaignById(obj).subscribe(data=>{
-            console.log(data)
+    if(campaignViews.userId!=null && campaignViews.campaignId!=null){
+      const obj = {"campaignId":campaignViews.campaignId};
+        this.campaignService.getCampaignById(obj).subscribe(data=>{
+        
             if(data.nurtureCampaign){
               this.campaignService.getCampaignById({"campaignId":data.parentCampaignId}).subscribe(parent_campaign=>{
                 console.log(parent_campaign)
@@ -776,9 +774,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
               })
               },error=>console.log(error))
             }else{
-              if(data.userId == this.authenticationService.getUserId()){
-                this.createdBySelf = true;
-                console.log( this.createdBySelf )
+              if(this.authenticationService.loggedInUserRole != "Team Member"){
+                if(data.userId == this.authenticationService.getUserId()){
+                  this.createdBySelf = true;
+                  console.log( this.createdBySelf )
+                }
+              }else{
+                this.dealRegService.getSuperorId(this.authenticationService.getUserId()).subscribe(response=>{
+                  if(response.includes(data.userId)){
+                    this.createdBySelf = true;
+                    console.log( this.createdBySelf )
+                  }
+                })
               }
               this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response=>{
                 this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
@@ -787,17 +794,21 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                 });
             })
             }
-          },error=>console.log(error))
+          
+        })
+      }
+
+      this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
+        this.dealId = data;
+        if(data == -1)
+            this.dealButtonText = "Register Lead"
+        else
+            this.dealButtonText = "Update Lead"
+       })
 
 
-            this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
-              this.dealId = data;
-              if(data == -1)
-                  this.dealButtonText = "Register Lead"
-              else
-                  this.dealButtonText = "Update Lead"
-             })
-        }
+
+
   }
 
    showDealRegistrationForm(){
