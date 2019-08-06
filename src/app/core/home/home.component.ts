@@ -159,6 +159,16 @@ export class HomeComponent implements OnInit {
                           this.authenticationService.isShowRedistribution = true;
                       }
                       
+                      if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
+                              roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                              roles.indexOf( this.roleName.companyPartnerRole ) > -1 ||
+                              (roles.indexOf( this.roleName.allRole ) > -1 && 
+                               (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner') 
+                              ))
+                          {
+                              this.authenticationService.isShowContact = true;
+                          }
+                      
                   }
            }else{
                this.authenticationService.loggedInUserRole = 'User';

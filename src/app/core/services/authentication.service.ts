@@ -48,6 +48,7 @@ export class AuthenticationService {
     isShowRedistribution = false;
     enableLeads = false;
     isCompanyPartner = false;
+    isShowContact = false;
     
     clientId: any;
     clientSecret: any;
