@@ -107,3 +107,10 @@ white-space: pre-wrap;       /* css-3 */
 .cb-logo{
 	background-color: black;
 }
+.my-drop-zone {
+  width :auto;
+  border-radius: 0;
+  border: dotted 3px lightgray;
+  min-height: 186px;
+  }
+.sizewidth { width: 50% !important;}
