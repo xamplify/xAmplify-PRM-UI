@@ -42,12 +42,12 @@ export class DashboardStatsComponent implements OnInit {
   }
 
   navigateToManageContacts() {
-    if (this.authenticationService.isVendor() || this.authenticationService.isSuperAdmin()) {
+    if (this.authenticationService.isVendor() || this.authenticationService.isSuperAdmin() && this.dashboardReport.totalTeamMembers != 0 ) {
       this.router.navigate(["/home/team/add-team"]);
-    } else if (this.authenticationService.isAddedByVendor && !this.authenticationService.isSuperAdmin()) {
+    } else if (this.authenticationService.isAddedByVendor && !this.authenticationService.isSuperAdmin() && this.dashboardReport.totalTeamMembers != 0 ) {
       // this.router.navigate(['/home/partners/manage']);
       this.router.navigate(["/home/team/add-team"]);
-    } else if (!this.authenticationService.isVendor() && !this.authenticationService.isSuperAdmin() && this.dashboardReport.totalContacts != 0) {
+    } else if (!this.authenticationService.isVendor() && !this.authenticationService.isSuperAdmin() && this.dashboardReport.totalContacts != 0 ) {
       this.router.navigate(["/home/contacts/manage"]);
     }
   }
