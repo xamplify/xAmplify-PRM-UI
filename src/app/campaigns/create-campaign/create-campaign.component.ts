@@ -33,6 +33,8 @@ import { Country } from '../../core/models/country';
 import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -40,7 +42,7 @@ var moment = require('moment-timezone');
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader,CallActionSwitch,Properties]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -239,24 +241,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     enableSmsText: boolean;
     smsTextDivClass: string;
 
+    /************Landing Page Variables***************** */
+    landingPageSearchInput:string = "";
+    landingPagePagination:Pagination = new Pagination();
+    landingPageLoader:HttpRequestLoader = new HttpRequestLoader();
+    landingPageId:number = 0;
+    selectedLandingPageRow:number = 0;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
                 public authenticationService:AuthenticationService,private pagerService:PagerService,
                 public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
-                public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties
+                public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
+                private landingPageService:LandingPageService
             ){
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
-                        console.log(data)
                         this.enableLeads = data.enableLeads;
-                        console.log(this.enableLeads);
-
                     });
                 })
  				authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
-                    console.log(response);
                    this.enableSMS = response.data;
                 })
         this.logger.info("create-campaign-component constructor loaded");
@@ -546,11 +551,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.loadPartnerVideos(this.channelVideosPagination);
         if(this.isAdd){
            this.loadContacts();
-            if(this.isOnlyPartner){
-                this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
+            /************Load Email Templates If Campaign Type is 'regular/video' *******************/
+            if(this.campaignType=='landingPage'){
+                this.listLandingPages(this.landingPagePagination);
             }else{
-                this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
+                if(this.isOnlyPartner){
+                    this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
+                }else{
+                    this.loadEmailTemplates(this.emailTemplatesPagination);//Loading Email Templates
+                }
+    
             }
+
         }else{
             this.loadContacts();
         }
@@ -2789,5 +2801,18 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#templateRetrieve").modal('hide');
     }
 
+    /***********Landing Page*************************/
+    listLandingPages( pagination: Pagination ) {
+        this.refService.loading( this.landingPageLoader, true );
+        pagination.userId = this.loggedInUserId;
+        this.landingPageService.list( pagination ).subscribe(
+            ( response: any ) => {
+                const data = response.data;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                this.refService.loading( this.landingPageLoader, false );
+            },
+            ( error: any ) => { this.logger.errorPage( error ); } );
+    }
 
 }

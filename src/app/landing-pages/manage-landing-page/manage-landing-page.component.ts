@@ -16,6 +16,7 @@ import {DOCUMENT} from "@angular/platform-browser";
 import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
+import {PreviewLandingPageComponent} from '../preview-landing-page/preview-landing-page.component';
 declare var swal, $: any;
 @Component({
   selector: 'app-manage-landing-page',
@@ -37,6 +38,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     message = "";
     campaignId = 0;
     statusCode = 200;
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor( public referenceService: ReferenceService,
             public httpRequestLoader: HttpRequestLoader, public pagerService:
                 PagerService, public authenticationService: AuthenticationService,
@@ -115,28 +117,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     }
     
     /***********Preview Email Template*********************/
-    showPreview(landingPage:LandingPage){
-        this.ngxloading = true;
-        this.landingPageService.getHtmlContent(landingPage.id).subscribe(
-                ( response: any ) => {
-                    if(response.statusCode==200){
-                        let title = "#landing-page-title";
-                        let htmlContent = "#htmlContent";
-                        $(htmlContent).empty();
-                        $(title).empty();
-                        $(title).append(landingPage.name);
-                        $(title).prop('title',landingPage.name);
-                        $(htmlContent).append(response.message);
-                        $('.modal .modal-body').css('overflow-y', 'auto');
-                        $("#landing-page-preview").modal('show');
-                        this.ngxloading = false;
-                    }else{
-                        swal("Please Contact Admin!", "No Landing Page Found", "error");
-                    }
-                    //this.referenceService.loading( this.httpRequestLoader, false );
-                },
-                ( error: any ) => { this.logger.errorPage( error ); } );
-    }
+    showPreview( landingPage: LandingPage ) {
+        this.previewLandingPageComponent.showPreview(landingPage);
+      }
     
     
     /***********Delete**************/

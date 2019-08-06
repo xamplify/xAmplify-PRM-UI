@@ -760,8 +760,8 @@
 						</div>
 					</div>
 				</div>
-				<!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
-        <div class="row setup-content step hiddenStepInfo" id="step-5">
+		<!-- -------------------------------------Email Template Tab--------------------------------------------------------- -->
+        <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType!='landingPage'">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <!-- <br> -->
             <!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
@@ -798,9 +798,7 @@
                     <div class="row pb10" id="user_list_table_view">
                       <div class="portlet-body">
                         <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
-
                           <div class="mix-grid">
-
                         <ng-container *ngIf="showSelectedEmailTemplate"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="!isAdd && isCampaignDraftEmailTemplate && emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1 ">
                           <ul class="content__list">
@@ -809,7 +807,7 @@
                               <div class="flex-row" (click)="setEmailTemplate(campaign.emailTemplate)">
                                 <div class="item__select-box-wrapper">
                                   <span class="select-box"> <label>
-                                    <input (click)="setEmailTemplate(emailTemplate)"  type="checkbox" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
+                                    <input  type="checkbox" *ngIf="emailTemplateId!=selectedEmailTemplateRow" (click)="setEmailTemplate(campaign.emailTemplate)">
                                   	 <input type="checkbox" checked="checked" *ngIf="emailTemplateId==selectedEmailTemplateRow">
                                   </label>
                                   </span>
@@ -831,12 +829,12 @@
                                           [dateAndTime]="campaign?.emailTemplate?.createdDate">
                                         </app-timestamp></span>
                                     </span>
-                                    <ng-container *ngIf="emailTemplate?.type?.toLocaleString()!='PARTNER'">
+                                    <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
                                       <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
                                           <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
                                       </span>
                                     </ng-container>
-                                    <ng-container *ngIf="emailTemplate?.type?.toLocaleString()=='PARTNER'">
+                                    <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
                                       <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
                                           <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
                                         </span>
@@ -844,7 +842,7 @@
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
-                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
+                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(campaign.emailTemplate)"> <!-- (click)="preview(file)"  -->
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                        </a>
                                       </span>
@@ -894,7 +892,7 @@
                             </ng-container>
                             <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                               <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                  <b>By</b><span>{{emailTemplate.vendorName|slice:0:12}}<span *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
+                                  <b>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
                               </span>
                             </ng-container>
                             <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
@@ -936,8 +934,153 @@
         </div>
             </div>
           </div>
-				<!-- End of step 5 -->
-				<!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
+	<!-- End of step 5 -->
+
+<!-- -------------------------------------Landing Page Tab--------------------------------------------------------- -->
+<div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
+            <div class="col-xs-12 text-center" style="margin-top: 10px;">
+              <div class="portlet light">
+                <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
+                   <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
+                   placeholder="Search for a landing page" (keypress)="eventHandler($event.keyCode, 'landingPage')">
+                   <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput=''"></button>
+                   <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
+                </div>
+                <div class="portlet-body">
+                <div class="row">
+                <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                 <div class="col-xs-12">
+                  <app-loader *ngIf="landingPageLoader.isLoading"></app-loader>
+                  <app-error-pages *ngIf="landingPageLoader.isServerError"></app-error-pages>
+                  <ng-container *ngIf=" landingPagePagination.totalRecords > 0 && !landingPageLoader.isLoading && !landingPageLoader.isServerError">
+                    <div class="row pb10" id="user_list_table_view">
+                      <div class="portlet-body">
+                        <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
+                          <div class="mix-grid">
+                        <ng-container ><!--*ngIf="showSelectedEmailTemplate" !hideCoBrandedEmailTemplate -->
+                          <div  *ngIf="!isAdd && landingPagePagination.totalRecords>0 && landingPagePagination.pageIndex==1 ">
+                          <ul class="content__list">
+                            <li class="list__item" [class.list__item--selected]="landingPageId === selectedLandingPageRow">
+                              <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
+                              <div class="flex-row" (click)="setLandingPage(campaign.landingPage)">
+                                <div class="item__select-box-wrapper">
+                                  <span class="select-box"> <label>
+                                    <input  type="checkbox" *ngIf="landingPageId!=selectedLandingPageRow" (click)="setLandingPage(campaign.landingPage)">
+                                  	 <input type="checkbox" checked="checked" *ngIf="landingPageId==selectedLandingPageRow">
+                                  </label>
+                                  </span>
+                                   <span class="ng-scope"> <a
+                                    class="item__preview item__preview--image img-container custom"
+                                    target="_BLANK"> <img
+                                      class="thumb ng-scope" style="width:103px !important" src="assets/images/Landing-Pages/{{campaign.landingPage.imageName}}">
+                                  </a> <a href="javascript:;"> </a>
+                                  </span>
+                                </div>
+                                <div class="item__content">
+                                  <div class="flex-row">
+                                    <span class="item__name" style="float:left"
+                                      [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b><b *ngIf="campaign.landingPage?.name?.length>15">...</b>
+                                    </span>
+                                    <span lass="item__name" title="created on" style="float:left">
+                                        <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
+                                        <span><app-timestamp [isOnlyDate]="true"
+                                          [dateAndTime]="campaign?.landingPage?.createdDateInString">
+                                        </app-timestamp></span>
+                                    </span>
+                                      <span style="float:left"  title="{{campaign.landingPage.createdUser}}">
+                                          <b>By:</b> <span>{{campaign.landingPage.createdUser|slice:0:12}}<span *ngIf="campaign.landingPage.createdUser?.length>12">...</span></span>
+                                      </span>
+                                    <div class="item__actions">
+                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign.landingPage)"> <!-- (click)="preview(file)"  -->
+                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                       </a>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="clearfix"></div>
+                              </div>
+                            </li>
+                          </ul>
+                      </div>
+                    </ng-container>
+                    <ul class="content__list" *ngFor="let landingPage of landingPagePagination.pagedItems ;let i =index">
+                    <li *ngIf="emailTemplateId!=emailTemplate.id" class="list__item" [class.list__item--selected]="emailTemplate.id === selectedEmailTemplateRow">
+                      <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
+                      <div class="flex-row" (click)="setLandingPage(landingPage)">
+                        <div class="item__select-box-wrapper">
+                          <span class="select-box"> <label>
+                            <input (click)="setLandingPage(landingPage)"  type="checkbox">
+                          </label>
+                          </span>
+                          <!-- [checked]="selectedFileIds.indexOf(file.id)>-1" -->
+                           <span class="ng-scope"> <a
+                            class="item__preview item__preview--image img-container custom"
+                            target="_BLANK"> <img
+                              class="thumb ng-scope" style="width: 103px !important" src="assets/images/Landing-Pages/{{landingPage.imageName}}">
+                          </a> <a href="javascript:;"> </a>
+                          </span>
+                        </div>
+                        <div class="item__content">
+                          <div class="flex-row">
+                            <span class="item__name" style="float:left"
+                              [title]="landingPage.name"><b>{{landingPage.name |slice:0:17}}</b><b *ngIf="landingPage?.name?.length>15">...</b>
+                            </span>
+                           <br>
+                            <span lass="item__name" title="created on" style="float:left">
+                                <!-- <b *ngIf="emailTemplate.createdDate">Created On:</b>{{emailTemplate.createdDate}} -->
+                                <span><app-timestamp [isOnlyDate]="true"
+                                  [dateAndTime]="landingPage.createdDateInString">
+                                </app-timestamp></span>
+                            </span>
+                           <br>
+                              <span  style="float:left" title="{{landingPage.createdUser}}">
+                                  <b>By:</b><span>{{landingPage.createdUser|slice:0:12}}<span *ngIf="landingPage.createdUser?.length>12">...</span></span>
+                              </span>
+                            <div class="item__actions">
+                              <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
+                                title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                  <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
+                               </a>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                    </li>
+                   </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div *ngIf="emailTemplatesPagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
+            <strong>No co-branded email templates found</strong>
+          </div>
+           <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
+            <strong>No email templates found</strong>
+          </div>
+          <div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
+            <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
+            (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
+          </div>
+          <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
+          <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]=" campaignType != 'sms'  && !isEmailTemplate"
+            title="Please Select Email Template">Next</button>
+          </div>
+          </form>
+          </div>
+        </div>
+        </div>
+            </div>
+          </div>
+	<!-- End of step 5 -->
+	<!-- -------------------------------------Launch Tab--------------------------------------------------------- -->
 				<div class="row setup-content step hiddenStepInfo" id="step-6">
 				 <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="alert alert-danger error-div" *ngIf="invalidScheduleTime" id="invalidScheduleTimeDiv">

@@ -2,7 +2,7 @@
 <div class="page-content">
 <div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> 
+			<li><i class="fa fa-home"></i>  
 				<a [routerLink]="referenceService.homeRouter">Home</a> 
 				<i class="fa fa-angle-right"></i>
 			</li>
@@ -98,26 +98,6 @@
 			<!-- END PAGE CONTENT-->
 		</div>
 	</div>
-	<!-- -----------------------Preview------------------- -->
-		<div class="modal right" id="landing-page-preview">
-		<div class="modal-dialog modal-lg modal-template" style="right:0">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close-circle" data-dismiss="modal" (click)="landingPage = null" aria-hidden="true">
-						<i class="fa fa-times"></i>
-					</button>
-					<h4 class="modal-title" id="landing-page-title" style="text-align: center;"></h4>
-				</div>
-				<div class="modal-body">
-					<div id="htmlContent"></div>
-				</div>
-				<div class="modal-footer">
-					<a href="javascript:void(0)" data-dismiss="modal" (click)="landingPage = null" class="btn btn-default" style="float: right">Close</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	
 	  <!-- ----------------------Copy Link Modal------------------- -->
   <div class="modal right " id="landing-page-url-modal" data-backdrop="static">
     <div class="modal-dialog modal-lg" style="width: 75%;right:0">
@@ -141,5 +121,6 @@
       </div>
     </div>
   </div>
+  <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 	<app-scroll-top></app-scroll-top>
 </div>
