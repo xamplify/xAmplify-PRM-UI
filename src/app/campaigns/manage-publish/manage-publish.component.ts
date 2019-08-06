@@ -169,7 +169,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchCampaigns(); } }
     checkLastElement(i:any){
-      if(i === (this.pagination.pagedItems.length-1) || i === this.pagination.pagedItems.length-2) { this.isLastElement = true;} else { this.isLastElement = false;}
+      if(this.pagination.pagedItems.length >2 && (i === (this.pagination.pagedItems.length-1) || i === this.pagination.pagedItems.length-2)) { this.isLastElement = true;} else { this.isLastElement = false;}
     }
     getOrgCampaignTypes(){
       this.refService.getOrgCampaignTypes( this.refService.companyId).subscribe(

@@ -427,11 +427,11 @@
 												</div>
 
 												<!--<div [ngClass]="{'hidden': !campaign.expand}">
-												
+
 												   <td class="row" colspan="8" *ngIf="partnerList"  style="width: 100%;">
 														   <app-manage-partners [campaignId]="campaign.id" (leadObj)="showLeads($event)"></app-manage-partners>
 												   </td>
-											  
+
 										   </div> -->
 											</div>
 										</div>
@@ -446,7 +446,7 @@
 						<!-- --------------------Pagination0-------------------- -->
 						<div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
 							<div *ngIf="campaignsPagination.pagedItems.length !== 0" style="padding: 0 13px;">
-								<app-pagination [pagination]="campaignsPagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
+								<app-pagination class="pg8" [pagination]="campaignsPagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
 								 (notifyParentDropDown)="listThroughPartnerCampaigns($event)"></app-pagination>
 								<select class="form-control" style="float: right; width: auto;" [(ngModel)]="sortOption.itemsSize" (ngModelChange)="changeSize($event)">
 									<option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
@@ -490,15 +490,15 @@
 
 	<div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
 		<div class="modal-content">
-		
+
 			<div class="modal-body">
 				<section >
 
-					
+
 						<a (click)="disableDealRegistrationForm()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 							<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
 						<app-add-leads [campaign]="selectedCampaign" [lead]="user" [dealId]="selectedDealId" [parent]="isVendor"></app-add-leads>
-					
+
 				</section>
 			</div>
 		</div>
