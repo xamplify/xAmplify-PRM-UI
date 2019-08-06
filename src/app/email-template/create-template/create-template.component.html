@@ -11,11 +11,15 @@
                         <a [routerLink]="refService.homeRouter">Home</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
-                     <li><a [routerLink]="['../../emailtemplates/select']">Select Templates</a>
+                     <li *ngIf="emailTemplateService.isNewTemplate"><a [routerLink]="['../../emailtemplates/select']">Select Templates</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
+                     <li *ngIf="!emailTemplateService.isNewTemplate"><a [routerLink]="['../../emailtemplates/manage']">Manage Templates</a>
+                      <i class="fa fa-angle-right"></i>
+                   </li>
                      <li>
-                        <a>Create Template</a>
+                        <a><span *ngIf="emailTemplateService.isNewTemplate; else Other">Create</span>
+                          <ng-template #Other>Update</ng-template> Template</a>
                      </li>
                   </ul>
                   <div id="bee-plugin-container"></div>

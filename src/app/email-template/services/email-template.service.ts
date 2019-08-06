@@ -20,7 +20,7 @@ export class EmailTemplateService {
     isRegularUpload:boolean;
     URL = this.authenticationService.REST_URL;
     MARKETO_URL = this.authenticationService.REST_URL;
-
+    isNewTemplate = false;
     constructor( private http: Http,  private authenticationService: AuthenticationService,
     		 private refService:ReferenceService,private router:Router) {
        }
