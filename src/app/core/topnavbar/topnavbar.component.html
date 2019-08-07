@@ -253,7 +253,7 @@
 			<div class="form-group">
 				<label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
 				<tag-input [(ngModel)]="emailIds" (onAdd)="onAddingEmailId($event)" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" 
-					(input)="validateVendoorInvitation()" [placeholder]="'dummy@xamplify.com'" [secondaryPlaceholder]="'dummy@xamplify.com'" 
+					(input)="validateVendoorInvitation()" [placeholder]="'Email'" [secondaryPlaceholder]="'Email'" 
 					[errorMessages]="errorMessages" [validators]="validators" [onTextChangeDebounce]="40"></tag-input>
 				<span id="helpBlock" class="help-block"><b>Note:</b> Enter a vendor’s email address & press Enter</span>
 			</div>

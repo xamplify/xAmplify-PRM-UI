@@ -492,11 +492,19 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        this.contactListsPagination.filterKey = 'isPartnerUserList';
     }
 
-    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
+    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner' ){
       if(!this.eventCampaign.channelCampaign){
         this.contactListsPagination.filterValue = false;
         this.contactListsPagination.filterKey = null;
         this.showContactType = true;
+      }else{
+          if(this.reDistributeEvent || this.reDistributeEventManage){
+              this.contactListsPagination.filterValue = false;
+          }else{
+          this.contactListsPagination.filterValue = true;
+          }
+          this.showContactType = false;
+          this.contactListsPagination.filterKey = 'isPartnerUserList';
       }
      }
        this.contactListMethod(this.contactListsPagination);
