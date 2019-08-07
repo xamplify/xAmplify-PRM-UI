@@ -12,16 +12,12 @@ import { DealAnalyticsComponent } from './deal-analytics/deal-analytics.componen
 import { CampaignService } from '../campaigns/services/campaign.service';
 import { ManageCommentsComponent } from './manage-comments/manage-comments.component';
 import { EmailTemplateService } from '../email-template/services/email-template.service';
-
-
-
-
+import { SharedRssModule } from 'app/shared/shared-rss.module';
 
 @NgModule({
-  imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule ],
+  imports: [ CommonComponentModule,DealRegistrationRoutingModule , SharedModule,CommonModule,CampaignsModule , SharedRssModule],
   declarations: [ ManageDealsComponent, ManagePartnersComponent, ManageLeadsComponent, DealAnalyticsComponent, ManageCommentsComponent],
   providers:[DealRegistrationService,CampaignService,EmailTemplateService],
   exports:[]
 })
 export class DealRegistrationModule { }
- 
