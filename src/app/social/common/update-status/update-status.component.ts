@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
@@ -11,7 +11,7 @@ import { SocialConnection } from '../../models/social-connection';
 import { SocialStatusContent } from '../../models/social-status-content';
 import { SocialStatusProvider } from '../../models/social-status-provider';
 
-import { ContactList} from '../../../contacts/models/contact-list';
+import { ContactList } from '../../../contacts/models/contact-list';
 import { CustomResponse } from '../../../core/models/custom-response';
 import { ResponseType } from '../../../core/models/response-type';
 
@@ -34,7 +34,7 @@ declare var $, flatpickr, videojs, swal: any;
   selector: 'app-update-status',
   templateUrl: './update-status.component.html',
   styleUrls: ['./update-status.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
-  providers: [PagerService, Pagination, CallActionSwitch,Properties]
+  providers: [PagerService, Pagination, CallActionSwitch, Properties]
 })
 export class UpdateStatusComponent implements OnInit, OnDestroy {
   @Input('isSocialCampaign') isSocialCampaign = false;
@@ -45,7 +45,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   videoJSplayer: any;
   selectedVideo: SaveVideoFile;
   userId: number;
-  isCampaignNameExist:boolean;
+  isCampaignNameExist: boolean;
   isRedirectEnabled: boolean;
   socialCampaign = new SocialCampaign();
   socialStatus = new SocialStatus();
@@ -71,8 +71,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   contactsPagination: Pagination = new Pagination();
   videosPagination: Pagination = new Pagination();
   paginationType: string;
-  location:any;
-  channelCampaign: boolean;
+  location: any;
   isEditSocialStatus: boolean = false;
   isPreviewVideo: boolean = false;
   campaignNames = [];
@@ -80,12 +79,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 
   constructor(private _location: Location, public socialService: SocialService,
-    private videoFileService: VideoFileService, public properties:Properties,
+    private videoFileService: VideoFileService, public properties: Properties,
     public authenticationService: AuthenticationService, private contactService: ContactService,
     private pagerService: PagerService, private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
-    public referenceService:ReferenceService,public campaignService:CampaignService){
-    this.channelCampaign = true;
+    public referenceService: ReferenceService, public campaignService: CampaignService) {
+    this.socialCampaign.channelCampaign = true;
     this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
@@ -100,27 +99,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatusResponse = [];
     this.customResponse.statusArray = [];
   }
-  changeChannelCampaign(){
-    this.channelCampaign = !this.channelCampaign;
+  changeChannelCampaign() {
+    this.socialCampaign.channelCampaign = !this.socialCampaign.channelCampaign;
     this.contactListsPagination.maxResults = 12;
-    if(!this.channelCampaign){
+    if (!this.socialCampaign.channelCampaign) {
       this.loadAllContactLists(this.contactListsPagination);
     } else {
       this.loadContactLists(this.contactListsPagination);
     }
   }
-  loadAllContactLists(contactListsPagination:Pagination){
-    this.paginationType = 'loadAllContacts';
-    contactListsPagination.filterKey = null;
-    contactListsPagination.filterValue = null;
-    this.contactService.loadAllContacts(this.userId,contactListsPagination).subscribe(data=>{
-      contactListsPagination.totalRecords = data.totalRecords;
-      contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
-    },
-    error=> {
-      console.log(error);
-    });
-  }
+
   setCustomResponse(type: ResponseType, statusText: string) {
     this.customResponse.type = type;
     this.customResponse.statusText = statusText;
@@ -133,7 +121,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     const rgba = this.videoUtilService.transparancyControllBarColor(videoFile.controllerColor, videoFile.transparency);
     $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
   }
-  previewVideo(videoFile: SaveVideoFile) {    
+  previewVideo(videoFile: SaveVideoFile) {
     this.resetCustomResponse();
     this.selectedVideo = videoFile;
     this.posterImage = videoFile.imagePath;
@@ -141,87 +129,88 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
     this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
     if (this.selectedVideo.is360video) {
-         this.play360video(this.selectedVideo);
+      this.play360video(this.selectedVideo);
     } else {
-          $('#newPlayerVideo').empty();
-          $('#videoId').remove();
-          $('.p-video').remove();
-          this.videoUtilService.normalVideoJsFiles();
-          const str = '<video id="videoId"  poster=' + this.posterImage + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
-          $('#newPlayerVideo').append(str);
-          this.videoUrl = this.selectedVideo.videoPath;
-          this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-          this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-          $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-          $('#videoId').css('height', '315px');
-          $('#videoId').css('width', '100%');
-          $('.video-js .vjs-tech').css('width', '100%');
-          $('.video-js .vjs-tech').css('height', '100%');
-          const self = this;
-          const overrideNativevalue = true;
-          this.videoJSplayer = videojs('videoId',  {
-            autoplay : true,
-            html5: {
-              hls: {
-                  overrideNative: overrideNativevalue
-              },
-              nativeVideoTracks: !overrideNativevalue,
-              nativeAudioTracks: !overrideNativevalue,
-              nativeTextTracks: !overrideNativevalue
-              } }  );
-      }
-      this.videoControllColors(videoFile);
-    $('#list-videos-table > tbody > tr').click(function() {
+      $('#newPlayerVideo').empty();
+      $('#videoId').remove();
+      $('.p-video').remove();
+      this.videoUtilService.normalVideoJsFiles();
+      const str = '<video id="videoId"  poster=' + this.posterImage + ' preload="none"  autoplay= "false" class="video-js vjs-default-skin" controls></video>';
+      $('#newPlayerVideo').append(str);
+      this.videoUrl = this.selectedVideo.videoPath;
+      this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+      this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+      $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
+      $('#videoId').css('height', '315px');
+      $('#videoId').css('width', '100%');
+      $('.video-js .vjs-tech').css('width', '100%');
+      $('.video-js .vjs-tech').css('height', '100%');
+      const self = this;
+      const overrideNativevalue = true;
+      this.videoJSplayer = videojs('videoId', {
+        autoplay: true,
+        html5: {
+          hls: {
+            overrideNative: overrideNativevalue
+          },
+          nativeVideoTracks: !overrideNativevalue,
+          nativeAudioTracks: !overrideNativevalue,
+          nativeTextTracks: !overrideNativevalue
+        }
+      });
+    }
+    this.videoControllColors(videoFile);
+    $('#list-videos-table > tbody > tr').click(function () {
       $('input[type=radio]', this).attr('checked', 'checked');
     }
     );
-    }
-     play360video(videoFile) {
-        this.resetCustomResponse();
-        $('#newPlayerVideo').empty();
-        $('.h-video').remove();
-        this.videoUtilService.player360VideoJsFiles();
-        const str = '<video id=videoId  poster=' + this.posterImage + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-        $('#newPlayerVideo').append(str);
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
-        const player = videojs('videoId', { autoplay : false, });
-        const self = this;
-        player.panorama({
-            autoMobileOrientation: true,
-            clickAndDrag: true,
-            clickToToggle: true,
-            callback: function () {
-                player.ready(function () {
-                  player.play();
-                  $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.selectedVideo.playerColor + '!important');
-                });
-            }
+  }
+  play360video(videoFile) {
+    this.resetCustomResponse();
+    $('#newPlayerVideo').empty();
+    $('.h-video').remove();
+    this.videoUtilService.player360VideoJsFiles();
+    const str = '<video id=videoId  poster=' + this.posterImage + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
+    $('#newPlayerVideo').append(str);
+    this.videoUrl = this.selectedVideo.videoPath;
+    this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
+    this.videoUrl = this.videoUrl + '.mp4?access_token=' + this.authenticationService.access_token;
+    $('#newPlayerVideo video').append('<source src="' + this.videoUrl + '" type="video/mp4">');
+    const player = videojs('videoId', { autoplay: false, });
+    const self = this;
+    player.panorama({
+      autoMobileOrientation: true,
+      clickAndDrag: true,
+      clickToToggle: true,
+      callback: function () {
+        player.ready(function () {
+          player.play();
+          $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + self.selectedVideo.playerColor + '!important');
         });
-        this.videoControllColors(videoFile);
-        $('#videoId').css('width', '100%');
-        $('#videoId').css('height', '315px');
-    }
+      }
+    });
+    this.videoControllColors(videoFile);
+    $('#videoId').css('width', '100%');
+    $('#videoId').css('height', '315px');
+  }
 
-    selectVideo(videoFile: SaveVideoFile){
-      this.selectedVideo = videoFile;
-    }
+  selectVideo(videoFile: SaveVideoFile) {
+    this.selectedVideo = videoFile;
+  }
 
-     addVideo() {
-       this.resetCustomResponse();
-       this.socialStatus.statusMessage = this.selectedVideo.title;
-       const socialStatusContent: SocialStatusContent = new SocialStatusContent();
-       socialStatusContent.videoId = this.selectedVideo.id;
-       socialStatusContent.fileName = this.selectedVideo.title;
-       socialStatusContent.fileType = 'video';
-       socialStatusContent.filePath = this.selectedVideo.gifImagePath;
-       this.socialStatus.socialStatusContents = [];
-       this.socialStatus.socialStatusContents[0] = (socialStatusContent);
-       $('#listVideosModal').modal('hide');
-      //  this.videoJSplayer.dispose();
-     }
+  addVideo() {
+    this.resetCustomResponse();
+    this.socialStatus.statusMessage = this.selectedVideo.title;
+    const socialStatusContent: SocialStatusContent = new SocialStatusContent();
+    socialStatusContent.videoId = this.selectedVideo.id;
+    socialStatusContent.fileName = this.selectedVideo.title;
+    socialStatusContent.fileType = 'video';
+    socialStatusContent.filePath = this.selectedVideo.gifImagePath;
+    this.socialStatus.socialStatusContents = [];
+    this.socialStatus.socialStatusContents[0] = (socialStatusContent);
+    $('#listVideosModal').modal('hide');
+    //  this.videoJSplayer.dispose();
+  }
 
   removeItem(socialStatus: SocialStatus, socialStatusContent: SocialStatusContent) {
     this.resetCustomResponse();
@@ -247,8 +236,8 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.setCustomResponse(ResponseType.Warning, 'Accepted image size is less than 3MB');
           this.customResponse.statusArray.push('The Uploaded Image: ' + file.name + ' size is ' + Math.round(file.size / 1024 / 1024 * 100) / 100 + ' MB');
           return false;
-        } 
-        if(!file.type.startsWith("image")){
+        }
+        if (!file.type.startsWith("image")) {
           this.setCustomResponse(ResponseType.Warning, "We can't quite use that type of file. Could you try one of the following instead: JPG, JPEG, GIF, PNG?");
           return false;
         }
@@ -298,70 +287,71 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   validate() {
     let isValid = true;
     this.socialStatusList.forEach(data => {
-      if(!data.statusMessage && data.socialStatusContents.length === 0){
-        this.setCustomResponse( ResponseType.Warning, 'Status can not be empty' );
-          isValid = false;
-          return false;
+      if (!data.statusMessage && data.socialStatusContents.length === 0) {
+        this.setCustomResponse(ResponseType.Warning, 'Status can not be empty');
+        isValid = false;
+        return false;
       }
     })
-    if(isValid)
+    if (isValid)
       return this.isSocialCampaign ? this.isValidSocialCampaign() : this.isValidUpdateStatus();
   }
 
   isSocialAccountsSelected() {
-      if ( this.selectedAccounts < 1 ) {
-          this.setCustomResponse( ResponseType.Warning, 'Please select the accounts to post the status.' );
-          return false;
-      } else {
-          return true;
-      }
+    if (this.selectedAccounts < 1) {
+      this.setCustomResponse(ResponseType.Warning, 'Please select the accounts to post the status.');
+      return false;
+    } else {
+      return true;
+    }
   }
 
   isValidSocialCampaign() {
     this.validateCampaignName(this.socialCampaign.campaignName);
-      let isValid = true;
-      isValid = this.isSocialAccountsSelected();
+    let isValid = true;
+    isValid = this.isSocialAccountsSelected();
 
-      if ( !this.socialCampaign.campaignName ) {
-          isValid = false;
-          this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
-      } else if(this.isCampaignNameExist) {
-          isValid = false;
-          this.setCustomResponse( ResponseType.Warning, 'Please provide another campaign name' );
-      }
-      else if ( this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner() ) {
-          isValid = false;
-          this.setCustomResponse( ResponseType.Warning, 'Please select one or more Partner lists.' );
-      }
-      return isValid;
+    if (!this.socialCampaign.campaignName) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
+    } else if (this.isCampaignNameExist) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please provide another campaign name');
+    }
+    else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner()) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please select one or more recipient lists.');
+    }
+    return isValid;
   }
 
   isValidUpdateStatus() {
     return this.isSocialAccountsSelected();
   }
 
-  isValidredistributeSocialCampaign(){
+  isValidredistributeSocialCampaign() {
     let isValid = true;
     isValid = this.isSocialAccountsSelected();
-    if ( !this.socialCampaign.campaignName ) {
+    if (!this.socialCampaign.campaignName) {
       isValid = false;
-      this.setCustomResponse( ResponseType.Warning, 'Please provide campaign name' );
+      this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
     }
     return isValid;
   }
 
-  redistributeSocialCampaign(){
+  redistributeSocialCampaign() {
     this.resetCustomResponse();
     this.socialCampaign.socialStatusProviderList = [];
     this.socialCampaign.userId = this.userId;
-    
+
     this.socialCampaign.parentCampaignId = this.socialCampaign.campaignId;
     this.socialCampaign.campaignId = null;
+    this.socialCampaign.channelCampaign = false;
     this.socialStatusProviders.forEach(data => {
-      if(data.selected)
+      if (data.selected)
         this.socialCampaign.socialStatusProviderList.push(data)
     });
-    if(this.isValidredistributeSocialCampaign()){
+    if (this.isValidredistributeSocialCampaign()) {
       this.loading = true;
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
@@ -369,9 +359,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           this.socialCampaign.campaignName = null;
           this.socialStatusResponse = data.socialStatusList;
           if (data.publishStatus !== 'FAILURE') {
-            let message =  this.socialCampaign.shareNow ? 'redistributed':'scheduled';
+            let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
             this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-            
+
             this.isRedirectEnabled = true;
             setTimeout(() => {
               this.redirect();
@@ -418,9 +408,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         data => {
           this.socialCampaign.campaignName = null;
           this.socialStatusResponse = data.socialStatusList;
-          
+
           if (data.publishStatus !== 'FAILURE') {
-            let message = this.socialCampaign.shareNow ? 'launched':'scheduled';
+            let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
             this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
             this.isRedirectEnabled = true;
             setTimeout(() => {
@@ -496,11 +486,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       isValid = false;
       this.setCustomResponse(ResponseType.Warning, 'Please select schedule date and time');
     }
-    if(isValid){
+    if (isValid) {
       this.socialCampaign.shareNow = false;
       this.socialCampaign.scheduledTimeInString = this.scheduledTimeInString;
       this.socialCampaign.timeZone = $('#timezoneId option:selected').val();
-      
+
       this.socialStatusList.forEach(data => {
         data.shareNow = false;
         data.scheduledTimeInString = this.scheduledTimeInString;
@@ -542,7 +532,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.setCustomResponse(ResponseType.Error, error)
       },
-      () =>  this.loading = false
+      () => this.loading = false
       );
   }
 
@@ -600,7 +590,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   editSocialStatus(socialStatus: SocialStatus) {
     this.resetCustomResponse();
     $('#fc-event-' + socialStatus.id).modal('hide');
-    $('html,body').animate({scrollTop: 0}, 'slow');
+    $('html,body').animate({ scrollTop: 0 }, 'slow');
     this.initializeSocialStatus();
     this.isEditSocialStatus = true;
     socialStatus.shareNow = true;
@@ -610,7 +600,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.toggleSelectAll();
   }
 
-  showScheduleOption(divId: string) {$('#' + divId).removeClass('hidden'); $('#post-actions-button-group').addClass('hidden');}
+  showScheduleOption(divId: string) { $('#' + divId).removeClass('hidden'); $('#post-actions-button-group').addClass('hidden'); }
   hideScheduleOption(divId: string) {
     $('#' + divId).addClass('hidden');
     $('#post-actions-button-group').removeClass('hidden');
@@ -620,7 +610,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   videoPlayListSource(videoUrl: string) {
     this.videoUrl = videoUrl;
     const self = this;
-    this.videoJSplayer.playlist([{sources: [{src: self.videoUrl, type: 'application/x-mpegURL'}]}]);
+    this.videoJSplayer.playlist([{ sources: [{ src: self.videoUrl, type: 'application/x-mpegURL' }] }]);
   }
 
   /*****************LOAD VIDEOS WITH PAGINATION START *****************/
@@ -637,20 +627,35 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           // this.previewVideo(videosPagination.pagedItems[0]);
         }
       });
-      () => console.log('listVideos() completed:')
+    () => console.log('listVideos() completed:')
   }
 
   /*****************LOAD VIDEOS WITH PAGINATION END *****************/
 
   /*****************LOAD CONTACTLISTS WITH PAGINATION START *****************/
+  loadAllContactLists(contactListsPagination: Pagination) {
+    contactListsPagination.isLoading = true;
+    this.paginationType = 'loadAllContacts';
+    contactListsPagination.filterKey = null;
+    contactListsPagination.filterValue = null;
+    this.contactService.loadAllContacts(this.userId, contactListsPagination).subscribe(data => {
+      contactListsPagination.totalRecords = data.totalRecords;
+      contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+    },
+      error => {
+        console.log(error);
+      },
+      () => contactListsPagination.isLoading = false
+    );
+  }
 
   loadContactLists(contactListsPagination: Pagination) {
+    contactListsPagination.filterValue = true;
+    contactListsPagination.filterKey = "isPartnerUserList";
     contactListsPagination.isLoading = true;
     this.paginationType = 'updatestatuscontactlists';
-     if(this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false;}
-    //  this.contactListsPagination.filterKey = 'isPartnerUserList';
-    //  this.contactListsPagination.filterValue = this.socialCampaign.isPartner; /// if its true normal contacts wil come, partner contacts for false
-     this.contactService.loadContactLists(contactListsPagination)
+    if (this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false; }
+    this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
       (data: any) => {
         contactListsPagination.totalRecords = data.totalRecords;
@@ -686,34 +691,34 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     );
   }
 
-  setPage(event:any){
-   if(event.type ==='updatestatuscontacts'){
-    this.contactsPagination.pageIndex = event.page;
-    this.loadContacts(this.previewContactList, this.contactsPagination);
-   }
-   else if(event.type === 'updatestatuscontactlists' && this.paginationType !== 'loadAllContacts'){
-    this.contactListsPagination.pageIndex = event.page;
-    this.loadContactLists(this.contactListsPagination);
-   }
-   else if(event.type === 'updatestatuscontactlists' && this.paginationType === 'loadAllContacts'){
-    this.contactListsPagination.pageIndex = event.page;
-    this.loadAllContactLists(this.contactListsPagination);
-   }
-   else if(event.type ==='updatestatusvideos'){
-    this.videosPagination.pageIndex = event.page;
-    this.listVideos(this.videosPagination);
-   }
+  setPage(event: any) {
+    if (event.type === 'updatestatuscontacts') {
+      this.contactsPagination.pageIndex = event.page;
+      this.loadContacts(this.previewContactList, this.contactsPagination);
+    }
+    else if (event.type === 'updatestatuscontactlists' && this.paginationType !== 'loadAllContacts') {
+      this.contactListsPagination.pageIndex = event.page;
+      this.loadContactLists(this.contactListsPagination);
+    }
+    else if (event.type === 'updatestatuscontactlists' && this.paginationType === 'loadAllContacts') {
+      this.contactListsPagination.pageIndex = event.page;
+      this.loadAllContactLists(this.contactListsPagination);
+    }
+    else if (event.type === 'updatestatusvideos') {
+      this.videosPagination.pageIndex = event.page;
+      this.listVideos(this.videosPagination);
+    }
   }
-  paginationDropDown(pagination: Pagination){
-    if(this.paginationType ==='updatestatuscontacts'){ this.loadContacts(this.previewContactList, pagination);}
-    else if(this.paginationType === 'updatestatuscontactlists'){ this.loadContactLists(pagination); }
-    else if(this.paginationType ==='updatestatusvideos'){ this.listVideos(pagination);}
-    else if(this.paginationType==='loadAllContacts') {this.loadAllContactLists(pagination) }
+  paginationDropDown(pagination: Pagination) {
+    if (this.paginationType === 'updatestatuscontacts') { this.loadContacts(this.previewContactList, pagination); }
+    else if (this.paginationType === 'updatestatuscontactlists') { this.loadContactLists(pagination); }
+    else if (this.paginationType === 'updatestatusvideos') { this.listVideos(pagination); }
+    else if (this.paginationType === 'loadAllContacts') { this.loadAllContactLists(pagination) }
   }
-  closeModal(){
+  closeModal() {
     this.paginationType = 'updatestatuscontactlists';
-    this.contactsPagination =  new Pagination();
-    this.videosPagination =  new Pagination();
+    this.contactsPagination = new Pagination();
+    this.videosPagination = new Pagination();
   }
   /*****************LOAD CONTACTS BY CONTACT LIST ID WITH PAGINATION END *****************/
 
@@ -726,37 +731,37 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         right: 'month,agendaWeek,agendaDay'
       },
       views: {
-        listDay: {buttonText: 'list day'},
-        listWeek: {buttonText: 'list week'}
+        listDay: { buttonText: 'list day' },
+        listWeek: { buttonText: 'list week' }
       },
       defaultView: 'month',
       timeFormat: 'h:mm a',
       timezone: 'local',
       eventOrder: "-start",
       eventLimit: true,
-      viewRender: function(view: any, element: any){
+      viewRender: function (view: any, element: any) {
         self.listEvents();
       },
-      eventRender: function(event: any, element: any) {
+      eventRender: function (event: any, element: any) {
         element.find('.fc-time').addClass('fc-time-title mr5');
         element.find('.fc-title').addClass('fc-time-title ml5');
         element.find('.fc-time-title').wrapAll('<div class="fc-right-block col-xs-11 flex pull-right p0 mr-10"></div>');
 
         const socialStatusProvider = event.data.socialStatusProvider;
         let str = '';
-          if ('FACEBOOK' === socialStatusProvider.socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-facebook white p-10"></i>';
-            element.css('background', '#3b5998');
-          } else if ('TWITTER' === socialStatusProvider.socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-twitter  white p-10"></i>';
-            element.css('background', '#1da1f2');
-          } else if ('GOOGLE' === socialStatusProvider.socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-google  white p-10"></i>';
-            element.css('background', '#d95535');
-          } else if ('LINKEDIN' === socialStatusProvider.socialConnection.source) {
-            str += '<i class="fa fa-social pull-right fa-linkedin  white p-10"></i>';
-            element.css('background', '#007bb5');
-          }
+        if ('FACEBOOK' === socialStatusProvider.socialConnection.source) {
+          str += '<i class="fa fa-social pull-right fa-facebook white p-10"></i>';
+          element.css('background', '#3b5998');
+        } else if ('TWITTER' === socialStatusProvider.socialConnection.source) {
+          str += '<i class="fa fa-social pull-right fa-twitter  white p-10"></i>';
+          element.css('background', '#1da1f2');
+        } else if ('GOOGLE' === socialStatusProvider.socialConnection.source) {
+          str += '<i class="fa fa-social pull-right fa-google  white p-10"></i>';
+          element.css('background', '#d95535');
+        } else if ('LINKEDIN' === socialStatusProvider.socialConnection.source) {
+          str += '<i class="fa fa-social pull-right fa-linkedin  white p-10"></i>';
+          element.css('background', '#007bb5');
+        }
 
         element.find('.fc-right-block')
           .after($(`<div id = ${event.id} class="fc-left-block col-xs-1 p0"> ${str} </div>`));
@@ -770,9 +775,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           }
         });
       },
-      eventClick: function(event) {
-       self.editSocialStatus(event.data.socialStatus);
-    }
+      eventClick: function (event) {
+        self.editSocialStatus(event.data.socialStatus);
+      }
     });
   }
 
@@ -795,16 +800,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
           this.socialStatusDtos.push(socialStatusDto);
 
-            let event: any = {id: socialStatus.id+'-'+socialStatusDto.socialStatusProvider.id, 
-            title: socialStatus.statusMessage.substring(0, 10), 
-            start: socialStatus.scheduledTime, 
-            data: socialStatusDto, 
-            editable: false, 
-            allDay: false}; 
+          let event: any = {
+            id: socialStatus.id + '-' + socialStatusDto.socialStatusProvider.id,
+            title: socialStatus.statusMessage.substring(0, 10),
+            start: socialStatus.scheduledTime,
+            data: socialStatusDto,
+            editable: false,
+            allDay: false
+          };
           // $('#calendar').fullCalendar('renderEvent', event, true);
           this.events.push(event);
         }
-        $('#calendar').fullCalendar('addEventSource', this.events); 
+        $('#calendar').fullCalendar('addEventSource', this.events);
       },
       error => console.log(error),
       () => {
@@ -849,14 +856,16 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
-  loadCampaignNames(userId:number){
+  loadCampaignNames(userId: number) {
     this.campaignService.getCampaignNames(userId).subscribe(data => { this.campaignNames.push(data); },
-    error => console.log( error ), () => console.log( "Campaign Names Loaded" ) );
+      error => console.log(error), () => console.log("Campaign Names Loaded"));
   }
 
-  validateCampaignName(campaignName:string){
+  validateCampaignName(campaignName: string) {
+    if (campaignName === undefined)
+      return false;
     const lowerCaseCampaignName = $.trim(campaignName.toLowerCase()); //Remove all spaces
-    this.isCampaignNameExist = this.campaignNames[0].includes(lowerCaseCampaignName) ? true: false;
+    this.isCampaignNameExist = this.campaignNames[0].includes(lowerCaseCampaignName) ? true : false;
   }
 
   ngOnInit() {
@@ -871,13 +880,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.constructCalendar();
     // $('#schedule-later-div').hide();
 
-    if ( this.isSocialCampaign ) {
+    if (this.isSocialCampaign) {
       this.socialCampaign.isPartner = this.authenticationService.isOnlyPartner() ? false : true;
-        if(this.alias) {
-          this.getSocialCampaign(this.alias);
-        }
-        this.loadContactLists( this.contactListsPagination );
-        this.loadCampaignNames(this.userId);
+      if (this.alias) {
+        this.getSocialCampaign(this.alias);
+      }
+      this.loadContactLists(this.contactListsPagination);
+      this.loadCampaignNames(this.userId);
     }
   }
 
@@ -908,7 +917,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         if (likeSocialAccount >= 1) {
           socialStatusProvider.socialStatusList = [];
           this.socialCampaign.socialStatusList.forEach(data => {
-            if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source){
+            if (data.socialStatusProvider.socialConnection.source === socialStatusProvider.socialConnection.source) {
               let socialStatus = JSON.parse(JSON.stringify(data));
               socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
               socialStatusProvider.socialStatusList.push(socialStatus);
@@ -916,10 +925,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           })
         } else {
           socialStatusProvider.socialStatusList = [];
-          this.socialCampaign.socialStatusList.forEach(data=> {
-              let socialStatus = JSON.parse(JSON.stringify(data));
-              socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
-              socialStatusProvider.socialStatusList.push(socialStatus);
+          this.socialCampaign.socialStatusList.forEach(data => {
+            let socialStatus = JSON.parse(JSON.stringify(data));
+            socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? data.statusMessage.substring(0, 280) : data.statusMessage;
+            socialStatusProvider.socialStatusList.push(socialStatus);
           })
         }
         socialStatusProvider.socialStatusList[0].selected = true;
@@ -956,30 +965,30 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       }
     }
 
-  this.isAllSelected = (this.selectedAccounts === this.socialStatusProviders.length) ? true: false;
+    this.isAllSelected = (this.selectedAccounts === this.socialStatusProviders.length) ? true : false;
   }
 
-  copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider){
-        let socialStatus = new SocialStatus();
+  copyContent(targetSocialStatus: SocialStatus, socialStatusProvider: SocialStatusProvider) {
+    let socialStatus = new SocialStatus();
 
-        socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? targetSocialStatus.statusMessage.substring(0, 280) : targetSocialStatus.statusMessage;
-        targetSocialStatus.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
-        socialStatus.socialStatusProvider = socialStatusProvider;
-        socialStatus.userId = this.userId;
+    socialStatus.statusMessage = socialStatusProvider.socialConnection.source === 'TWITTER' ? targetSocialStatus.statusMessage.substring(0, 280) : targetSocialStatus.statusMessage;
+    targetSocialStatus.socialStatusContents.forEach(data => socialStatus.socialStatusContents.push(data));
+    socialStatus.socialStatusProvider = socialStatusProvider;
+    socialStatus.userId = this.userId;
 
-      socialStatus.ogImage = targetSocialStatus.ogImage;
-      socialStatus.ogTitle = targetSocialStatus.ogTitle;
-      socialStatus.ogDescription = targetSocialStatus.ogDescription;
-      socialStatus.validLink = targetSocialStatus.validLink;
+    socialStatus.ogImage = targetSocialStatus.ogImage;
+    socialStatus.ogTitle = targetSocialStatus.ogTitle;
+    socialStatus.ogDescription = targetSocialStatus.ogDescription;
+    socialStatus.validLink = targetSocialStatus.validLink;
 
-        return socialStatus;
+    return socialStatus;
   }
 
   customizeEachNetwork() {
     let socialStatusData = this.socialStatusList[0];
     this.socialStatusList = [];
     this.socialStatusProviders.forEach(data => {
-      if(data.selected){
+      if (data.selected) {
         this.socialStatusList.push(this.copyContent(socialStatusData, data));
       }
     })
@@ -992,34 +1001,34 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatusList[0] = new SocialStatus();
     this.isCustomizeButtonClicked = false;
     this.selectNone();
-    $('html,body').animate({scrollTop: 0}, 'slow');
+    $('html,body').animate({ scrollTop: 0 }, 'slow');
   }
 
-  selectAll(){
+  selectAll() {
     this.isAllSelected = true;
     this.selectedAccounts = 0;
     this.socialStatusProviders.forEach(data => {
-        data.selected = false;
-        this.toggleSocialStatusProvider(data);
+      data.selected = false;
+      this.toggleSocialStatusProvider(data);
     })
   }
 
-  selectNone(){
+  selectNone() {
     this.isAllSelected = false;
     this.selectedAccounts = 0;
     this.socialStatusList.length = 1;
     this.socialStatusProviders.forEach(data => data.selected = false);
   }
 
-  toggleSelectAll(){
-    this.isAllSelected = ! this.isAllSelected;
+  toggleSelectAll() {
+    this.isAllSelected = !this.isAllSelected;
     this.selectedAccounts = 0;
-    if(this.isAllSelected){
+    if (this.isAllSelected) {
       this.socialStatusProviders.forEach(data => {
-          data.selected = false;
-          this.toggleSocialStatusProvider(data);
+        data.selected = false;
+        this.toggleSocialStatusProvider(data);
       })
-    }else {
+    } else {
       this.socialStatusList.length = 1;
       this.socialStatusProviders.forEach(data => data.selected = false);
     }
@@ -1030,69 +1039,69 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     return regexp.test(s);
   }
 
-  dismissMessage(socialStatus: SocialStatus){
+  dismissMessage(socialStatus: SocialStatus) {
     this.socialStatusResponse = this.socialStatusResponse.filter(item => item !== socialStatus);
   }
 
   save() {
-    this.socialService.saveAccounts( this.socialConnections )
-        .subscribe(
-        result => {},
-        error => console.log( error ),
-        () => {
-            this.socialService.socialConnections = this.socialConnections;
-            
-    for (const i in this.socialConnections) {
-      const ssp = this.socialStatusProviders.find(item => item.socialConnection.id === this.socialConnections[i].id);
-      if (this.socialConnections[i].active) {
-        if(ssp){
-          // do nothing
-        }else{
-          const socialStatusProvider = new SocialStatusProvider();
-          socialStatusProvider.socialConnection = this.socialConnections[i];
-          this.socialStatusProviders.push(socialStatusProvider);          
-        }
-      }else {
-        if(ssp){
-          this.socialStatusProviders = this.socialStatusProviders.filter(item => item !== ssp);
-          if(this.socialStatusList.length == 1){
-            this.socialStatusList[0].socialStatusProvider = null;
-          }else
-            this.socialStatusList = this.socialStatusList.filter(data => data.socialStatusProvider !== ssp)
-        }
-      }
-    }
+    this.socialService.saveAccounts(this.socialConnections)
+      .subscribe(
+      result => { },
+      error => console.log(error),
+      () => {
+        this.socialService.socialConnections = this.socialConnections;
 
-    this.selectNone();
-    $('#manageAccountsModal').modal('hide');
-        } );
+        for (const i in this.socialConnections) {
+          const ssp = this.socialStatusProviders.find(item => item.socialConnection.id === this.socialConnections[i].id);
+          if (this.socialConnections[i].active) {
+            if (ssp) {
+              // do nothing
+            } else {
+              const socialStatusProvider = new SocialStatusProvider();
+              socialStatusProvider.socialConnection = this.socialConnections[i];
+              this.socialStatusProviders.push(socialStatusProvider);
+            }
+          } else {
+            if (ssp) {
+              this.socialStatusProviders = this.socialStatusProviders.filter(item => item !== ssp);
+              if (this.socialStatusList.length == 1) {
+                this.socialStatusList[0].socialStatusProvider = null;
+              } else
+                this.socialStatusList = this.socialStatusList.filter(data => data.socialStatusProvider !== ssp)
+            }
+          }
+        }
+
+        this.selectNone();
+        $('#manageAccountsModal').modal('hide');
+      });
 
   }
 
-  onSelectCountry(countryId){
+  onSelectCountry(countryId) {
     this.timezones = this.referenceService.getTimeZonesByCountryId(countryId);
   }
 
-  searchContactList(){
+  searchContactList() {
     this.contactListsPagination.pageIndex = 1;
     this.loadContactLists(this.contactListsPagination);
   }
 
-  resetSearchContactList(){
+  resetSearchContactList() {
     this.contactListsPagination.pageIndex = 1;
     this.contactListsPagination.searchKey = null;
     this.loadContactLists(this.contactListsPagination);
-    
+
   }
 
-// RSS ---------------------------
+  // RSS ---------------------------
 
   openRssModal() {
     $('#rssModal').modal('show');
   }
 
 
-  addToPost(feed: any){
+  addToPost(feed: any) {
     this.socialStatusList.forEach(data => {
       data.statusMessage = feed.link;
       data.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
