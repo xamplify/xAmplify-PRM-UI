@@ -10,10 +10,17 @@ import { FeedComponent } from '../social/rss/feed/feed.component';
 import { RssLoaderComponent } from '../social/rss/rss-loader/rss-loader.component';
 import { SearchComponent } from '../social/rss/search/search.component';
 
+import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
+import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
+import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
+import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
+
 @NgModule({
         imports: [SharedModule],
-        declarations: [RssComponent, DiscoverComponent, LeftNavComponent, CollectionComponent, SourceComponent, FeedComponent, RssLoaderComponent, SearchComponent],
-        exports: [RssComponent, DiscoverComponent, LeftNavComponent, CollectionComponent, SourceComponent, FeedComponent, RssLoaderComponent, SearchComponent],
+        declarations: [RssComponent, DiscoverComponent, LeftNavComponent, CollectionComponent, SourceComponent, FeedComponent, RssLoaderComponent, SearchComponent
+        ,UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
+        exports: [RssComponent, DiscoverComponent, LeftNavComponent, CollectionComponent, SourceComponent, FeedComponent, RssLoaderComponent, SearchComponent
+          ,UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         providers: [],
 })
 
