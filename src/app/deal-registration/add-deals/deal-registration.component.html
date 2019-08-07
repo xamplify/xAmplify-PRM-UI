@@ -371,7 +371,8 @@
         </div>
         <hr>
         <div class="pull-right" *ngIf="!isVendor">
-          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="submitButtonText.length >0">{{submitButtonText}}</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
       </form>

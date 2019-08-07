@@ -137,9 +137,11 @@ export class ManageDealsComponent implements OnInit
     }
     init(){
         this.isListView = !this.referenceService.isGridView;
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+       
         const roles = this.authenticationService.getRoles();
         if(roles!==undefined){
+            if(this.authenticationService.loggedInUserRole != "Team Member"){
+                this.isOnlyPartner = this.authenticationService.isOnlyPartner();
             if (
                     roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                     roles.indexOf(this.roleName.allRole) > -1 ||
@@ -149,6 +151,18 @@ export class ManageDealsComponent implements OnInit
                 if(this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember){
                     this.isCompanyPartner = true;
                 }
+            }else{
+                if(!this.authenticationService.superiorRole.includes("Vendor") 
+                && this.authenticationService.superiorRole.includes("Partner")) {
+                        this.isOnlyPartner = true;
+                }
+                if(this.authenticationService.superiorRole.includes("Vendor")) {
+                    this.isVendor = true;
+                }
+                if(this.authenticationService.superiorRole.includes("Partner")) {
+                    this.isCompanyPartner = true;
+                }
+            }
             }
             this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response=>{
                 console.log(this.superiorId)
