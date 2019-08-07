@@ -22,7 +22,7 @@ declare var Metronic, Layout, Demo, TableManaged, $, CKEDITOR: any;
 })
 export class UploadMarketoEmailTemplateComponent implements OnInit
 {
-  
+
 
   customResponse: CustomResponse = new CustomResponse();
   public isDisable: boolean = false;
@@ -80,11 +80,11 @@ export class UploadMarketoEmailTemplateComponent implements OnInit
         let body  = emailTemplateService.emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
         this.model.content = body;
         this.model.templateName = emailTemplateService.emailTemplate.name;
-      //  this.model.isDraft = 
-        
+      //  this.model.isDraft =
+
     }
 
-    
+
     if ($.trim(this.model.templateName).length > 0 )
     {
       this.isValidTemplateName = true;
@@ -97,9 +97,9 @@ export class UploadMarketoEmailTemplateComponent implements OnInit
     this.model.isRegularUpload ="REGULAR";
     //this.validateType();
     this.mycontent = this.model.content;
-    
 
-   
+
+
     this.refService.stopLoader(this.httpRequestLoader);
 
   }
@@ -126,22 +126,22 @@ export class UploadMarketoEmailTemplateComponent implements OnInit
     {
       this.isValidTemplateName = true;
       this.disableButton = false;
-      $("#templateName").attr('style', 'border-left: 5px solid #42A948');
+      $("#templateName").attr('style', 'border-left: 1px solid #42A948');
       if (this.availableTemplateNames.length > 0)
       {
         if (this.availableTemplateNames.indexOf($.trim(value.toLocaleLowerCase())) > -1)
         {
           this.duplicateTemplateName = true;
-          $("#templateName").attr('style', 'border-left: 5px solid #a94442');
+          $("#templateName").attr('style', 'border-left: 1px solid #a94442');
         } else
         {
-          $("#templateName").attr('style', 'border-left: 5px solid #42A948');
+          $("#templateName").attr('style', 'border-left: 1px solid #42A948');
           this.duplicateTemplateName = false;
         }
       }
     } else
     {
-      $("#templateName").attr('style', 'border-left: 5px solid #a94442');
+      $("#templateName").attr('style', 'border-left: 1px solid #a94442');
       this.isValidTemplateName = false;
       this.disableButton = true;
     }
@@ -172,19 +172,19 @@ export class UploadMarketoEmailTemplateComponent implements OnInit
     let fieldValue= $("#isRegularUpload").val();
     if (fieldValue !=null && fieldValue != undefined &&  fieldValue.length > 0 && fieldValue!= "Select Type")
     {
-      
+
       this.isValidType = true;
       this.emailTemplateTypeClass = "form-group has-success has-feedback";
-      $("#isRegularUpload").attr('style', 'border-left: 5px solid #42A948');
+      $("#isRegularUpload").attr('style', 'border-left: 1px solid #42A948');
     } else
     {
-     
+
       this.isValidType = false;
       this.emailTemplateTypeClass = "form-group has-error has-feedback";
-      $("#isRegularUpload").attr('style', 'border-left: 5px solid #a94442');
-      
+      $("#isRegularUpload").attr('style', 'border-left: 1px solid #a94442');
+
     }
-   
+
   }
 
   save()
@@ -367,24 +367,24 @@ export class UploadMarketoEmailTemplateComponent implements OnInit
   }
   setVideoGif(event)
   {
-   
+
     let body = this.getCkEditorData();
     if (event == 'VIDEO')
     {
-     
+
       if (body.indexOf(this.videoTag) < 0)
       {
         this.mycontent = "<img src=\"https://aravindu.com/vod/images/xtremand-video.gif\" />".concat(body);
       }
-     
+
     } else
     {
-      
+
       this.mycontent = body.replace("<img src=\"https://aravindu.com/vod/images/xtremand-video.gif\" />", "").
       replace("<p>< /></p>", "").
       replace("< />", "").replace("<p>&lt;&gt;</p>", "").replace("<>", "");
-      
-     
+
+
     }
 
   }
