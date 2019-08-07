@@ -112,7 +112,7 @@
 						</div>
 					</div>
 
-					<div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate" [attr.class]="disableTabClass"
+					<div *ngIf="!isCampaignDetailsFormValid  || !isVideo || !isContactList  || !isEmailTemplate || !isLandingPage" [attr.class]="disableTabClass"
 					 [ngStyle]="{ 'width': width }">
 						<div class="cenetered-block">
 							<span>
@@ -122,7 +122,7 @@
 						</div>
 					</div>
 
-					<div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  &&isEmailTemplate" [attr.class]="launchCampaignTabClass"
+					<div id="step6" *ngIf="isCampaignDetailsFormValid  && isVideo && isContactList  && isEmailTemplate && isLandingPage" [attr.class]="launchCampaignTabClass"
 					 [ngStyle]="{ 'width': width }" (click)="resetActive($event, 100, 'step-6');addUserEmailIds();">
 						<div class="cenetered-block">
 							<span>
@@ -938,7 +938,6 @@
 
 <!-- -------------------------------------Landing Page Tab--------------------------------------------------------- -->
 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
-        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
             <div class="col-xs-12 text-center" style="margin-top: 10px;">
               <div class="portlet light">
@@ -982,13 +981,15 @@
                                   <div class="flex-row">
                                     <span class="item__name" style="float:left"
                                       [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b><b *ngIf="campaign.landingPage?.name?.length>15">...</b>
-                                    </span>
+									</span>
+									<br>
                                     <span lass="item__name" title="created on" style="float:left">
                                         <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
                                           [dateAndTime]="campaign?.landingPage?.createdDateInString">
                                         </app-timestamp></span>
-                                    </span>
+									</span>
+									<br>
                                       <span style="float:left"  title="{{campaign.landingPage.createdUser}}">
                                           <b>By:</b> <span>{{campaign.landingPage.createdUser|slice:0:12}}<span *ngIf="campaign.landingPage.createdUser?.length>12">...</span></span>
                                       </span>
@@ -1009,7 +1010,7 @@
                       </div>
                     </ng-container>
                     <ul class="content__list" *ngFor="let landingPage of landingPagePagination.pagedItems ;let i =index">
-                    <li *ngIf="emailTemplateId!=emailTemplate.id" class="list__item" [class.list__item--selected]="emailTemplate.id === selectedEmailTemplateRow">
+                    <li *ngIf="landingPageId!=landingPage.id" class="list__item" [class.list__item--selected]="landingPage.id === selectedLandingPageRow">
                       <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
                       <div class="flex-row" (click)="setLandingPage(landingPage)">
                         <div class="item__select-box-wrapper">
@@ -1032,7 +1033,6 @@
                             </span>
                            <br>
                             <span lass="item__name" title="created on" style="float:left">
-                                <!-- <b *ngIf="emailTemplate.createdDate">Created On:</b>{{emailTemplate.createdDate}} -->
                                 <span><app-timestamp [isOnlyDate]="true"
                                   [dateAndTime]="landingPage.createdDateInString">
                                 </app-timestamp></span>
@@ -1043,7 +1043,7 @@
                               </span>
                             <div class="item__actions">
                               <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
-                                title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                title="Preview" (click)="$event.stopPropagation();showLandingPagePreview(landingPage)">
                                   <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                </a>
                               </span>
@@ -1059,19 +1059,19 @@
               </div>
             </div>
           </ng-container>
-          <div *ngIf="emailTemplatesPagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
+          <div *ngIf="landingPagePagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
             <strong>No co-branded email templates found</strong>
           </div>
-           <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
+           <div *ngIf="landingPagePagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
             <strong>No email templates found</strong>
           </div>
-          <div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
-            <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'"
+          <div style="text-align:left;" [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
+            <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'"
             (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
           </div>
           <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
-          <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]=" campaignType != 'sms'  && !isEmailTemplate"
-            title="Please Select Email Template">Next</button>
+          <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage"
+            title="Please Select Landing Page">Next</button>
           </div>
           </form>
           </div>
@@ -1159,7 +1159,14 @@
               <div class="pricing hover-effect" [hidden]="campaignType=='video'">
                 <div class="pricing-head">
                   <h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span></h4>
-                  <h4><img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+                  <h4>
+					  <ng-container *ngIf="campaignType=='regular'">
+						<img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
+					  </ng-container>
+					  <ng-container *ngIf="campaignType=='landingPage'">
+							<img style="margin: 0 auto;height: 106px;" alt="Landing Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
+						  </ng-container>	
+					</h4>
                 </div>
               </div>
               <h5 id="description"></h5>
@@ -1203,21 +1210,37 @@
 							<tr>
 								<td width="25%">
 								<div class="icon-border">
-									<i class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
+									<i *ngIf="campaignType == 'video' || campaignType == 'regular'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
+									<i *ngIf="campaignType == 'landingPage'" class="fa fa-wpforms fa-2x icon-position" aria-hidden="true"></i>
 								</div>
 									<ng-container class="h4-text" *ngIf="campaignType == 'video'">Email Template</ng-container>
 									<ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template</ng-container>
+									<ng-container class="h4-text" *ngIf="campaignType == 'landingPage'">Landing Page</ng-container>
 								</td>
 								<td width="55%">
-									<a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
-										<ng-container *ngIf="emailTemplate.name?.length>50">
-											{{emailTemplate.name | slice:0:50}}...
-										</ng-container>
-										<ng-container *ngIf="emailTemplate.name?.length<=50">
-											{{emailTemplate.name}}
-										</ng-container>
-									</a>
+									<ng-container *ngIf="campaignType == 'video' || campaignType == 'regular'">
+											<a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
+													<ng-container *ngIf="emailTemplate.name?.length>50">
+														{{emailTemplate.name | slice:0:50}}...
+													</ng-container>
+													<ng-container *ngIf="emailTemplate.name?.length<=50">
+														{{emailTemplate.name}}
+													</ng-container>
+												</a>
+									</ng-container>
+									<ng-container *ngIf="campaignType == 'landingPage'">
+											<a (click)="showLandingPagePreview(landingPage)" title="{{landingPage?.name}}">
+													<ng-container *ngIf="landingPage?.name?.length>50">
+														{{landingPage?.name | slice:0:50}}...
+													</ng-container>
+													<ng-container *ngIf="landingPage?.name?.length<=50">
+														{{landingPage.name}}
+													</ng-container>
+												</a>
+									</ng-container>
 								</td>
+
+
 								<td style="text-align: right" width="20%">
 									<a class="btn btn-primary btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a>
 								</td>
@@ -1875,3 +1898,4 @@ data-backdrop="static">
 	 </div>
  </div>
 </div>
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>

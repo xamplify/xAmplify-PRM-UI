@@ -1,5 +1,6 @@
 import { SaveVideoFile } from '../../videos/models/save-video-file';
 import { EmailTemplate } from '../../email-template/models/email-template';
+import {LandingPage} from '../../landing-pages/models/landing-page';
 import { Reply } from './campaign-reply';
 import { Url } from './campaign-url';
 import { SocialStatus } from '../../social/models/social-status';
@@ -44,6 +45,7 @@ export class Campaign {
     updatedTime: Date;
     updatedBy: number;
     campaignType: CampaignType;
+    campaignTypeInString:string="";
     countryId:number = 0;
     country:string = "";
     timeZoneId: any;
@@ -63,4 +65,6 @@ export class Campaign {
     parentCampaignUserId:number = 0;
     companyLogo:string = "";
     formsCount:number = 0;
+    landingPageId:number = 0;
+    landingPage:LandingPage = new LandingPage();
 }

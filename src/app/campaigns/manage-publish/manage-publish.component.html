@@ -83,6 +83,9 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
 											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
+													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
+												</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
@@ -281,6 +284,9 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
 											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
+													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
+												</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
                       </ng-container>

@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy} from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
@@ -34,6 +34,8 @@ import { Timezone } from '../../core/models/timezone';
 import { Roles } from '../../core/models/roles';
 import { Properties } from '../../common/models/properties';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { LandingPage } from '../../landing-pages/models/landing-page';
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -247,6 +249,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     landingPageLoader:HttpRequestLoader = new HttpRequestLoader();
     landingPageId:number = 0;
     selectedLandingPageRow:number = 0;
+    isLandingPage:boolean =false;
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    landingPage: LandingPage = new LandingPage();
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -306,12 +311,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaign = this.campaignService.campaign;
             this.userListDTOObj = this.campaignService.campaign.userLists;
             if(this.userListDTOObj===undefined){ this.userListDTOObj = [];}
-            if(this.campaign.regularEmail){
+            if(this.campaign.campaignTypeInString=="REGULAR"){
                 this.campaignType = 'regular';
                 this.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-            }else{
+            }else if(this.campaign.campaignTypeInString=="VIDEO"){
                 this.campaignType = 'video';
                 this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
+            }else if(this.campaign.campaignTypeInString=="LANDINGPAGE"){
+                this.campaignType = 'landingPage'
             }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
@@ -362,19 +369,37 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.emailTemplateId = selectedTemplateId;
                 this.selectedEmailTemplateRow = selectedTemplateId;
                 this.isEmailTemplate = true;
+                this.isLandingPage = true;
                 this.isCampaignDraftEmailTemplate = true;
                 this.selectedTemplateBody = this.campaign.emailTemplate.body;
                 this.emailTemplate = this.campaign.emailTemplate;
             }
-            if(this.isOnlyPartner){
-                this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
-            }else{
-                if(this.campaign.enableCoBrandingLogo){
-                    this.loadRegularOrVideoCoBrandedTemplates();
+            if(this.campaignType!="landingPage"){
+                if(this.isOnlyPartner){
+                    this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
                 }else{
-                    this.loadEmailTemplates(this.emailTemplatesPagination);
+                    if(this.campaign.enableCoBrandingLogo){
+                        this.loadRegularOrVideoCoBrandedTemplates();
+                    }else{
+                        this.loadEmailTemplates(this.emailTemplatesPagination);
+                    }
                 }
             }
+           /*****************Landing Page**************************/ 
+           let selectedLandingPageId = this.campaignService.campaign.landingPageId;
+            if(this.campaignType=="landingPage"){
+                if(selectedLandingPageId>0){
+                    this.emailTemplateTabClass = this.successTabClass;
+                    this.landingPageId = selectedLandingPageId;
+                    this.selectedLandingPageRow = selectedLandingPageId;
+                    this.isEmailTemplate = true;
+                    this.isLandingPage = true;
+                    this.isVideo = true;
+                    this.landingPage = this.campaign.landingPage;
+                }
+                this.listLandingPages(this.landingPagePagination);            
+            }
+
           /************Launch Campaign**********************/
             if(this.campaignService.campaign.campaignScheduleType=="SCHEDULE"){
                 this.campaign.scheduleCampaign  = this.sheduleCampaignValues[1];
@@ -532,6 +557,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  if(selectedTemplateId>0){
                      this.emailTemplateId = selectedTemplateId;
                      this.isEmailTemplate = true;
+                     this.isLandingPage = true;
                      this.isCampaignDraftEmailTemplate = true;
                  }
 
@@ -543,6 +569,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.isVideo = true;
              $('#videoTab').hide();
              this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
+             if(this.campaignType=="landingPage"){
+                 this.isEmailTemplate = true;
+             }else if(this.campaignType=="landingPage"){
+                 this.isLandingPage = true;
+             }
          }
 
 
@@ -1845,6 +1876,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             campaignType = CampaignType.VIDEO;
         }else if("sms" == this.campaignType){
             campaignType = CampaignType.SMS;
+        }else if("landingPage"==this.campaignType){
+            campaignType = CampaignType.LANDINGPAGE;
         }
         let country = $.trim($('#countryName option:selected').text());
 
@@ -1900,7 +1933,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'nurtureCampaign':false,
             'pushToMarketo':this.pushToMarketo,
             'smsService':this.smsService,
-            'smsText':this.smsText
+            'smsText':this.smsText,
+            'landingPageId':this.selectedLandingPageRow
         };
         console.log(data);
         return data;
@@ -2815,4 +2849,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
 
+    showLandingPagePreview(landingPage:LandingPage){
+        this.previewLandingPageComponent.showPreview(landingPage);
+    }
+
+    setLandingPage(landingPage:LandingPage){
+        this.selectedLandingPageRow = landingPage.id;
+        this.isLandingPage = true;
+        this.isEmailTemplate = true;
+        this.landingPage = landingPage;
+    }
 }

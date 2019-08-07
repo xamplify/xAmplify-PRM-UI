@@ -11,13 +11,11 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { LandingPage } from '../models/landing-page';
 import { UtilService } from '../../core/services/util.service';
-import {Inject} from "@angular/core";
-import {DOCUMENT} from "@angular/platform-browser";
 import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import {PreviewLandingPageComponent} from '../preview-landing-page/preview-landing-page.component';
-declare var swal, $: any;
+declare var swal:any, $: any;
 @Component({
   selector: 'app-manage-landing-page',
   templateUrl: './manage-landing-page.component.html',

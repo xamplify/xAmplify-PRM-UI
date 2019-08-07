@@ -10,4 +10,6 @@ export class LandingPage {
     alias:string;
     imageName:string;
     analyticsCount:number;
+    createdUser:string;
+    createdDateInString:string;
 }

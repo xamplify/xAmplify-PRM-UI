@@ -22,12 +22,12 @@ export class PreviewLandingPageComponent implements OnInit {
       this.loading = true;
       let htmlContent = "#landingPage-html-content";
       $(htmlContent).empty();
+      let title = "#landing-page-preview-title";
+      $(title).empty();
       $("#landing-page-preview-modal").modal('show');
       this.landingPageService.getHtmlContent(landingPage.id).subscribe(
               ( response: any ) => {
                   if(response.statusCode==200){
-                      let title = "#landing-page-preview-title";
-                      $(title).empty();
                       $(title).append(landingPage.name);
                       $(title).prop('title',landingPage.name);
                       $(htmlContent).append(response.message);

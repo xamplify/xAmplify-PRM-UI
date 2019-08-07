@@ -11,13 +11,12 @@ import { SelectLandingPageComponent } from './select-landing-page/select-landing
 import { ManageLandingPageComponent } from './manage-landing-page/manage-landing-page.component';
 import { LandingPageAnalyticsComponent } from './landing-page-analytics/landing-page-analytics.component';
 import { LandingPageAnalyticsUtilComponent } from './landing-page-analytics-util/landing-page-analytics-util.component';
-import { PreviewLandingPageComponent } from './preview-landing-page/preview-landing-page.component';
 
 @NgModule( {
     imports: [
         CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, LandingPagesRoutingModule
     ],
-    declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent, LandingPageAnalyticsComponent, LandingPageAnalyticsUtilComponent, PreviewLandingPageComponent],
+    declarations: [AddLandingPageComponent, SelectLandingPageComponent, ManageLandingPageComponent, LandingPageAnalyticsComponent, LandingPageAnalyticsUtilComponent],
     providers: [LandingPageService]
 })
 export class LandingPagesModule { }

@@ -51,13 +51,12 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
-import {FormPreviewComponent} from './forms/preview/form-preview.component';
-import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
 import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
 import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
 import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
-
+import {FormPreviewComponent} from './forms/preview/form-preview.component';
+import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
         CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
