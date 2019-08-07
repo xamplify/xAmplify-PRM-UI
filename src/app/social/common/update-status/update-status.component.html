@@ -115,7 +115,7 @@
 							<section *ngIf="!alias">
 								<switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-									(statusChange)="changeChannelCampaign()">
+									(statusChange)="socialCampaign.channelCampaign = !socialCampaign.channelCampaign">
 								</switch>
 								<h5 class="control-label font-purple-intense pr10 inline">Through Partner</h5>
 							</section>
@@ -433,11 +433,14 @@
 						</div>
 					</div>
 
-					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0 && !contactListsPagination.isLoading">
 						<div class='alert alert-info' role='alert'>
 							<h4 class='m0'>You have not added any contact lists yet. Please add at least one list to your account</h4>
 						</div>
 						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
+					</section>
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0 &&contactListsPagination.isLoading">
+						<app-list-loader></app-list-loader>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length > 0">
 						<ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>

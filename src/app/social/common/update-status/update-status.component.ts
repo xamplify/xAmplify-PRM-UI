@@ -318,9 +318,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       isValid = false;
       this.setCustomResponse(ResponseType.Warning, 'Please provide another campaign name');
     }
-    else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0 && !this.authenticationService.isOnlyPartner()) {
+    else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0) {
       isValid = false;
-      this.setCustomResponse(ResponseType.Warning, 'Please select one or more recipient lists.');
+      this.setCustomResponse(ResponseType.Warning, 'Please select one or more partner lists.');
     }
     return isValid;
   }
@@ -335,6 +335,9 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     if (!this.socialCampaign.campaignName) {
       isValid = false;
       this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
+    } else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0) {
+      isValid = false;
+      this.setCustomResponse(ResponseType.Warning, 'Please select one or more contact lists.');
     }
     return isValid;
   }
@@ -650,7 +653,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   }
 
   loadContactLists(contactListsPagination: Pagination) {
-    contactListsPagination.filterValue = true;
+    contactListsPagination.filterValue = (this.alias === undefined) ? true : false;
     contactListsPagination.filterKey = "isPartnerUserList";
     contactListsPagination.isLoading = true;
     this.paginationType = 'updatestatuscontactlists';
