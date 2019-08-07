@@ -200,7 +200,7 @@ export class HomeComponent implements OnInit {
           } );
 
       } )
-    }else if(this.authenticationService.superiorRole.includes("Vendor")){
+    }else if(this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")){
        
           try {
             this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
@@ -229,7 +229,7 @@ export class HomeComponent implements OnInit {
   
   checkEnableLeadsForPartner(){
 
-      if (!this.authenticationService.enableLeads && ( this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember ) )
+      if (!this.authenticationService.enableLeads && ( this.authenticationService.isCompanyPartner || (this.authenticationService.loggedInUserRole == "Team Member" && this.authenticationService.superiorRole.includes("Partner")) ) )
       {
 
         try {
