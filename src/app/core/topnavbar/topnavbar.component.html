@@ -188,7 +188,7 @@
 								<a [routerLink]="['/home/dashboard']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
 							</li>
-							<li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany">
+							<li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
 								<a [routerLink]="['/home/dashboard/welcome']">
 								<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
 							</li>
