@@ -1,29 +1,16 @@
-<style>
-	.disabled{
-		pointer-events: none;
-	}
-	</style>
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
 		<div class="portlet light" style="position:relative">
-				<!-- <div id="overLayImage"></div>
-				<div id="overlay-logo"  class="video-js "  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
-					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="logoDescriptionUrl===null">
-					  <img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive" >
-					</a>
-				</div> -->
-      <!-- <div id="newPlayerVideo"></div> -->
       <app-video-play *ngIf="selectedVideo" [videoFile]="selectedVideo" [videoWidth]="'550px'" [videoHeight]="'315px'" [isPreview]="true" [isVideoBaseReport]="true"></app-video-play>
-
 			<div>
 				<div>
 					<h4 class="videoTitle" title="{{selectedVideo.title}}">{{selectedVideo.title | slice:0:50}}<span *ngIf="selectedVideo.title?.length>50">...</span></h4>
-					<h5 align="justify" style="word-break: break-all;">{{selectedVideo.description}}</h5>
+					<h5  style="word-break: break-all;">{{selectedVideo.description}}</h5>
 				</div>
 				<div class="row">
 					<div class="col-xs-12">
-						<h6> <b>Uploaded on :</b> {{selectedVideo.uploadedDate}}</h6>
-						<h6> <b>Category :</b> {{selectedVideo.category.name}}</h6>
+						<h6> <strong>Uploaded on :</strong> {{selectedVideo.uploadedDate}}</h6>
+						<h6> <strong>Category :</strong> {{selectedVideo.category.name}}</h6>
 					</div>
 				</div>
 			</div>
@@ -35,7 +22,6 @@
 				<div class="caption">
 					<i class="icon-equalizer font-purple-plum hide"></i>
 					<span class="caption-subject font-red-sunglo uppercase">Viewer Stats</span>
-          <!-- <span class="caption-helper">Details regarding campaign recipients who have watched your videos</span> -->
           <span class="tooltip-css"  data-toggle="tooltip" data-placement="bottom"  title="Details regarding campaign recipients who have watched your videos">
             <i class="fa fa-question-circle circle-custome-css" ></i>
         </span>
@@ -498,13 +484,13 @@
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 				<h4 class="modal-title" style="text-align: center">Viewing Trend Details</h4>
 			</div>
-			<div class="modal-body clearfix">
+			<div class="modal-body clearfix" style="overflow-x: hidden;">
 				<div class="row">
 					<div style="text-align: center;font-size: 13px;">VIDEO PLAYED DURATION
 						<div class="btn-group pull-right" style="margin-top: 4px; cursor:pointer; color: #7d8c98">
 							<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; margin-top: -7px;margin-right: 21px; float:right;">
-					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
-				</span>
+                <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+              </span>
 							<ul class="dropdown-menu pull-right lowercase">
 								<li><a id="delete_button" (click)="downloadTypeName = 'playedDuration'; downloadFunctionality()"> Export To Excel </a></li>
 							</ul>

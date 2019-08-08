@@ -40,6 +40,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   validationMessage = "";
   isUser = false;
   isShowCKeditor = false;
+  invalidTagError = false;
   @ViewChild('tagInput')
   tagInput: SourceTagInput;
   public validators = [ this.must_be_email.bind(this) ];
@@ -117,13 +118,16 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     }
     return null;
   }
-  private beforeAdd(tag: string) {
+  private beforeAdd(tag: any) {
+    let isPaste = false;
+    if(tag['value']) {  isPaste = true; tag = tag.value;}
     if (!this.validateEmail(tag)) {
       if (!this.addFirstAttemptFailed) {
         this.addFirstAttemptFailed = true;
-        this.tagInput.setInputValue(tag);
+        if(!isPaste) { this.tagInput.setInputValue(tag); }
       }
-      return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag))));
+      if(isPaste) {  return Observable.throw(this.errorMessages['must_be_email']); }
+      else { return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
     }
     this.addFirstAttemptFailed = false;
     return Observable.of(tag);

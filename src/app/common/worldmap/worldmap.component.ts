@@ -11,7 +11,7 @@ export class WorldmapComponent implements OnInit {
   @Input() worldMapData: any;
   @Output() notifyParent: EventEmitter<any>;
   worldmapMessage: string;
-  titleName = 'Recipients';
+  titleName = 'Views';
 
   constructor(public router:Router) {
     this.notifyParent = new EventEmitter<any>();

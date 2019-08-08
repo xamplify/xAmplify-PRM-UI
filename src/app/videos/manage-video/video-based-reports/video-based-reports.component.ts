@@ -11,28 +11,16 @@ import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../../core/models/pagination';
 import { SaveVideoFile } from '../../models/save-video-file';
 
-declare var videojs, $, QuickSidebar, Highcharts: any;
+declare var  $, QuickSidebar, Highcharts: any;
 
 @Component({
     selector: 'app-video-based-report',
     templateUrl: './video-based-reports.component.html',
-    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
+    styleUrls: ['./video-based-reports.component.css', ],
     providers: [Pagination]
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
-    videoJSplayer: any;
-    videoUrl: string;
-    is360Value: boolean;
-    overLayValue: string;
-    posterImagePath: string;
-    isFistNameChecked: boolean;
-    firstName: string;
-    lastName: string;
-    isOverlay: boolean;
-    videoOverlaySubmit: string;
-    isSkipChecked: boolean;
-    isPlay: boolean;
     categories: any;
     watchedFully: number;
     minutesWatchedUsers: number;
@@ -73,9 +61,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     worldMapdataReport: any;
     viewsBarData: any;
     trellisBarChartData: any;
-    logoDescriptionUrl: any;
-    brandLogoUrl:any;
-    fullScreenMode: boolean;
     paginationType:string;
     videoPlayedSkipedInfo:any;
     logListName = "";
@@ -319,20 +304,19 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             });
     }
     selectedCampaignWatchedUsers(timePeriod) {
-        this.viewsBarData = undefined;
-        if (timePeriod !== undefined) {
-            this.videoUtilService.timePeriod = timePeriod;
-            this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
-                .subscribe((result: any) => {
-                    console.log(result);
-                    this.videoUtilService.videoViewsData = result;
-                    this.viewsBarData = result;
-                    // this.monthlyViewsBarCharts(result.dates, result.views);
-                },
-                (error: any) => {
-                    this.xtremandLogger.error(error);
-                    this.xtremandLogger.errorPage(error);
-                });
+      this.viewsBarData = undefined;
+      if (timePeriod !== undefined) {
+        this.videoUtilService.timePeriod = timePeriod;
+        this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
+            .subscribe((result: any) => {
+                console.log(result);
+                this.videoUtilService.videoViewsData = result;
+                this.viewsBarData = result;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            });
         }
     }
     watchedFullyDetailReport() {
@@ -366,30 +350,6 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 }
             },
             (err: any) => { console.log(err); })
-    }
-
-    defaultVideoSettings() {
-        console.log('default settings called');
-        $('.video-js').css('color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.selectedVideo.controllerColor + '!important');
-        if (this.selectedVideo.allowFullscreen === false) {
-            $('.video-js .vjs-fullscreen-control').hide();
-        } else {
-            $('.video-js .vjs-fullscreen-control').show();
-        }
-    }
-    defaultVideoControllers() {
-        if (this.selectedVideo.enableVideoController === false) {
-            $('.video-js .vjs-control-bar').hide();
-        } else { $('.video-js .vjs-control-bar').show(); }
-    }
-    transperancyControllBar(value: any) {
-        const color: any = this.selectedVideo.controllerColor;
-        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     getCampaignVideoCountriesAndViews(alias: any) {
         try {
@@ -826,15 +786,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
        this.totalMinutesWatchedByMostUsers();
     }
     ngOnInit() {
-        this.logoDescriptionUrl = this.selectedVideo.brandingLogoDescUri;
-        this.brandLogoUrl = this.selectedVideo.brandingLogoUri;
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
         this.selectedCampaignWatchedUsers(this.videoUtilService.sortMonthDates[3].value);
         this.selectedSortByValue(this.minutesSort.value);
-        this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
@@ -843,220 +800,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');
-        $('#newPlayerVideo').empty();
-        if (this.selectedVideo.is360video !== true) {
-            this.is360Value = false;
-            this.playNormalVideo();
-        } else {
-            this.play360Video();
-        }
-        this.defaultVideoSettings();
-        this.transperancyControllBar(this.selectedVideo.transparency);
-        if (this.selectedVideo.enableVideoController === false) {
-            this.defaultVideoControllers();
-        }
     } // ng After view closed
-    playNormalVideo() {
-        $('.p-video').remove();
-        this.videoUtilService.normalVideoJsFiles();
-        this.is360Value = false;
-        const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" controls></video>';
-        $('#newPlayerVideo').append(str);
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '315px');
-        $('#videoId').css('width', 'auto');
-        $('.video-js .vjs-tech').css('width', '100%');
-        $('.video-js .vjs-tech').css('height', '100%');
-        const self = this;
-        const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
-        console.log(overrideNativeValue);
-        this.videoJSplayer = videojs('videoId', {
-            html5: {
-                hls: {
-                    overrideNative: overrideNativeValue
-                },
-                nativeVideoTracks: !overrideNativeValue,
-                nativeAudioTracks: !overrideNativeValue,
-                nativeTextTracks: !overrideNativeValue
-            }
-        }, function () {
-            const player = this;
-            const document: any = window.document;
-            const isValid = self.overLayValue;
-            this.ready(function () {
-                $('#overLayImage').append($('#overlay-logo').show());
-                $('.video-js .vjs-tech').css('width', '100%');
-                $('.video-js .vjs-tech').css('height', '100%');
-                player.pause();
-            });
-            this.on('ended', function () {
-                console.log('video done');
-            });
-            player.on('fullscreenchange', function () {
-                const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                if (event === 'FullscreenOn') {
-                    $('.vjs-tech').css('width', '100%');
-                    $('.vjs-tech').css('height', '100%');
-                    self.fullScreenMode = true;
-                    $('#videoId').append($('#overlay-logo').show());
-                } else if (event === 'FullscreenOff') {
-                    $('#videoId').css('width', 'auto');
-                    $('#videoId').css('height', '315px');
-                    self.fullScreenMode = false;
-                }
-            });
-            this.on('contextmenu', function (e) {
-                e.preventDefault();
-            });
-            this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
-                enableFullscreen: false, enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function (event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function (e: any) { return (e.which === 83); },
-                        handler: function (player: any, options: any, e: any) {
-                            if (player.paused()) { player.play(); } else { player.pause(); }
-                        }
-                    },
-                    complexKey: {
-                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableMute) { player.muted(!player.muted()); }
-                        }
-                    },
-                    numbersKey: {
-                        key: function (event: any) {
-                            return ((event.which > 47 && event.which < 59) ||
-                                (event.which > 95 && event.which < 106));
-                        },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                let sub = 48;
-                                if (event.which > 95) { sub = 96; }
-                                const number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
-                            }
-                        }
-                    },
-                    emptyHotkey: {},
-                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
-                    withoutHandler: { key: function (e: any) { return true; } },
-                    malformedKey: {
-                        key: function () { console.log(' The Key function must return a boolean.'); },
-                        handler: function (player: any, options: any, event: any) { }
-                    }
-                }
-            });
-        });
-    }
-    play360Video() {
-        this.is360Value = true;
-        this.xtremandLogger.log('Loaded 360 Video');
-        $('.h-video').remove();
-        this.videoUtilService.player360VideoJsFiles();
-        this.videoUtilService.video360withm3u8();
-        const str = '<video id=videoId poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-        $('#newPlayerVideo').append(str);
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '315px');
-        $('#videoId').css('width', 'auto');
-        const newValue = this;
-        const player = videojs('videoId').ready(function () {
-            this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
-                enableFullscreen: false, enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function (event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function (e: any) { return (e.which === 83); },
-                        handler: function (player: any, options: any, e: any) {
-                            if (player.paused()) { player.play(); } else { player.pause(); }
-                        }
-                    },
-                    complexKey: {
-                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableMute) { player.muted(!player.muted()); }
-                        }
-                    },
-                    numbersKey: {
-                        key: function (event: any) {
-                            return ((event.which > 47 && event.which < 59) ||
-                                (event.which > 95 && event.which < 106));
-                        },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                let sub = 48;
-                                if (event.which > 95) { sub = 96; }
-                                const number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
-                            }
-                        }
-                    },
-                    emptyHotkey: {},
-                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
-                    withoutHandler: { key: function (e: any) { return true; } },
-                    malformedKey: {
-                        key: function () { console.log(' The Key function must return a boolean.'); },
-                        handler: function (player: any, options: any, event: any) { }
-                    }
-                }
-            });
-        });
-        player.panorama({
-            autoMobileOrientation: true,
-            clickAndDrag: true,
-            clickToToggle: true,
-            callback: function () {
-                const isValid = newValue.overLayValue;
-                const document: any = window.document;
-                player.ready(function () {
-                    $('#overLayImage').append($('#overlay-logo').show());
-                    player.pause();
-                    $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + newValue.selectedVideo.playerColor + '!important');
-                });
-                player.on('fullscreenchange', function () {
-                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                    if (event === 'FullscreenOn') {
-                        $('.vjs-tech').css('width', '100%');
-                        $('.vjs-tech').css('height', '100%');
-                        newValue.fullScreenMode = true;
-                        $('#videoId').append($('#overlay-logo').show());
-                    } else if (event === 'FullscreenOff') {
-                        $('#videoId').css('width', 'auto');
-                        $('#videoId').css('height', '315px');
-                        newValue.fullScreenMode = false;
-                    }
-                });
-            }
-        });
-        $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '315px');
-    }
     ngOnDestroy() {
         this.xtremandLogger.log('Deinit - Destroyed Component');
-        if (this.is360Value !== true) {
-            this.videoJSplayer.dispose();
-        } else if (this.videoJSplayer) {
-            this.videoJSplayer.dispose();
-        } else { }
-        $('.h-video').remove();
-        $('.p-video').remove();
         $('#watchedFullyModelPopup').modal('hide');
         $('#totalwatchedUsersModelPopup').modal('hide');
         $('#usersMinutesModelPopup').modal('hide');

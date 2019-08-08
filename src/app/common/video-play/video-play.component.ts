@@ -8,7 +8,7 @@ declare var $, videojs:any;
 @Component({
   selector: 'app-video-play',
   templateUrl: './video-play.component.html',
-  styleUrls: ['./video-play.component.css']
+  styleUrls: ['./video-play.component.css', '../../../assets/css/video-css/video-js.custom.css']
 })
 export class VideoPlayComponent implements OnInit, OnDestroy {
  @Input() videoFile: SaveVideoFile;
