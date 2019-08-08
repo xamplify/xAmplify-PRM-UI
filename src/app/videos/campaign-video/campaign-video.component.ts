@@ -215,6 +215,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             '<img id="image" style="position:absolute;top:10px;float: right;left: 413px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
+                            updatedBody = updatedBody.replace('javascript:void(0) target="_blank" tabindex="-1">', '');
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             checkVideoTag = 'beeTemplate';
