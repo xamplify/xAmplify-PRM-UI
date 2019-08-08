@@ -49,7 +49,7 @@ export class AdminReportComponent implements OnInit {
 
                ];
     public sortOption: any = this.sortOptions[0];
-    
+    top10RecentUsers: any[];
     
     
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
@@ -92,7 +92,23 @@ public authenticationService: AuthenticationService, public router:Router) {
       }
   }
   
+  listTop10RecentUsers(){
+      try {
+          this.isListLoading = true;
+          this.dashboardService.listTop10RecentUsers()
+              .subscribe(
+              ( data: any ) => {
+                  this.top10RecentUsers = data;
+              },
+              error => console.error( error ),
+              () => console.info( "vendors reports() finished" )
+              )
+      } catch ( error ) {
+          console.error( error, "adminReportComponent", "loadingAllVendors()" );
+      }
   
+
+  }
   getVendorsDetails() {
       try {
           this.isListLoading = true;
@@ -207,6 +223,7 @@ public authenticationService: AuthenticationService, public router:Router) {
 
   ngOnInit() {
       this.getVendorsDetails();
+      this.listTop10RecentUsers();
   }
   
   changeStatus(report:any){

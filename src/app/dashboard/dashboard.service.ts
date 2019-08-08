@@ -168,6 +168,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    listTop10RecentUsers(){
+        const url = `${this.authenticationService.REST_URL}superadmin/top10?access_token=${this.authenticationService.access_token}`;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     getVendorsCompanyProfile(vendorId: any) {
         const url = this.authenticationService.REST_URL+ 'admin/company-profile/get/'+ vendorId + '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
