@@ -75,6 +75,9 @@
 	-ms-filter: blur(1px);
 	filter: blur(1px);
 }
+.disabled{
+	pointer-events: none;
+}
 
 #disabled-icon{
 border: none;

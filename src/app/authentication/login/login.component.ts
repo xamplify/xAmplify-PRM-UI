@@ -137,9 +137,34 @@ export class LoginComponent implements OnInit, OnDestroy {
     } catch(error){ console.log('error'+error);}
     }
 
+    cleaningLeftSidebar(){
+        const module = this.authenticationService.module;
+        module.isOrgAdmin = false;
+        this.authenticationService.isShowContact = false;
+        module.isContact = false;
+        module.isPartner = false;
+        module.isEmailTemplate = false;
+        module.isCampaign = false;
+        module.isStats = false;
+        module.isVideo = false;
+        module.hasVideoRole = false;
+        module.isCompanyPartner = false;
+        module.hasSocialStatusRole = false;
+        module.isVendor = false;
+        module.isAddingPartnersAccess = false;
+        this.authenticationService.isAddedByVendor = false;
+        this.authenticationService.isPartnerTeamMember = false;
+        this.authenticationService.loggedInUserRole = "";
+        this.authenticationService.hasOnlyPartnerRole = false;
+        module.isOnlyPartner = false;
+        module.isReDistribution = false;
+        this.authenticationService.isShowRedistribution = false;
+    }
+    
     ngOnInit() {
      try{
      this.mainLoader = true;
+     this.cleaningLeftSidebar();
      this.authenticationService.navigateToDashboardIfUserExists();
      setTimeout(()=>{  this.mainLoader = false;},900);
      }catch(error){this.xtremandLogger.error('error'+error)}

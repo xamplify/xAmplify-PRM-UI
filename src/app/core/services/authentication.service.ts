@@ -352,6 +352,7 @@ export class AuthenticationService {
         this.isCompanyAdded = false;
         const module = this.module;
         module.isOrgAdmin = false;
+        this.isShowContact = false;
         module.isContact = false;
         module.isPartner = false;
         module.isEmailTemplate = false;
@@ -369,6 +370,7 @@ export class AuthenticationService {
         this.hasOnlyPartnerRole = false;
         module.isOnlyPartner = false;
         module.isReDistribution = false;
+        this.isShowRedistribution = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {

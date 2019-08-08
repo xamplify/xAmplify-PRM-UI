@@ -157,6 +157,8 @@ export class HomeComponent implements OnInit {
                       if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner' || this.authenticationService.superiorRole === 'Partner'))
                               || this.authenticationService.isCompanyPartner){
                           this.authenticationService.isShowRedistribution = true;
+                      }else{
+                          this.authenticationService.isShowRedistribution = false;
                       }
                       
                       if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
