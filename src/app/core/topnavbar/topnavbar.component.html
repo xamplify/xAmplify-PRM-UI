@@ -60,11 +60,11 @@
 							<i class="fa fa-upload" data-toggle="tooltip"></i>
 						</button>
 					</li> -->
-					<li style="margin-top: 17px;margin-right: 5px;" 
-					*ngIf="(refService.hasAllAccess() 
-										|| authenticationService.module.hasSocialStatusRole 
-										|| authenticationService.module.isOrgAdmin 
-										|| authenticationService.module.isVendor 
+					<li style="margin-top: 17px;margin-right: 5px;"
+					*ngIf="(refService.hasAllAccess()
+										|| authenticationService.module.hasSocialStatusRole
+										|| authenticationService.module.isOrgAdmin
+										|| authenticationService.module.isVendor
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
 						<!-- *ngIf="refService.hasCompany" -->
 						<button class="btn btn-primary" [routerLink]="['/home/social/update-status']">
@@ -175,10 +175,10 @@
 									class="fa fa-building-o"></i> Company Profile
 							</a>
 							</li>
-							<li *ngIf="(refService.hasAllAccess() 
-										|| authenticationService.module.hasSocialStatusRole 
-										|| authenticationService.module.isOrgAdmin 
-										|| authenticationService.module.isVendor 
+							<li *ngIf="(refService.hasAllAccess()
+										|| authenticationService.module.hasSocialStatusRole
+										|| authenticationService.module.isOrgAdmin
+										|| authenticationService.module.isVendor
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
 								<a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
 							</li>
@@ -227,7 +227,6 @@
 <!-- END HEADER -->
 <div class="clearfix"></div>
 
-
 <!--Requesting vendor modal-->
 
 <div class="modal fade right" id="requestForVendor" tabindex="-1"
@@ -252,15 +251,36 @@
 
 			<div class="form-group">
 				<label for="exampleInputEmail1">To <span class="text-danger">*</span></label>
-				<tag-input [(ngModel)]="emailIds" (onAdd)="onAddingEmailId($event)" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" 
-					(input)="validateVendoorInvitation()" [placeholder]="'Email'" [secondaryPlaceholder]="'Email'" 
+      <!--
+        <tag-input [(ngModel)]="emailIds" (onAdd)="onAddingEmailId($event)" [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'"
+					(input)="validateVendoorInvitation()" [placeholder]="'Email'" [secondaryPlaceholder]="'Email'"
 					[errorMessages]="errorMessages" [validators]="validators" [onTextChangeDebounce]="40"></tag-input>
-				<span id="helpBlock" class="help-block"><b>Note:</b> Enter a vendor’s email address & press Enter</span>
+        <span id="helpBlock" class="help-block"><b>Note:</b> Enter a vendor’s email address & press Enter</span>
+         -->
+       <tag-input [(ngModel)]='emailIds'
+              #tagInput
+              name="emails"
+              #email="ngModel"
+              [errorMessages]="errorMessages"
+              [validators]="validators"
+              [separatorKeyCodes]="[32,188,186,13,9]"
+              [placeholder]="'Add email'"
+              [secondaryPlaceholder]="'Enter email address(es)'"
+              [clearOnBlur]="true"
+              [addOnPaste]="true"
+              [addOnBlur]="true"
+              [pasteSplitPattern]="splitPattern"
+              [onAdding]="onAddedFunc"
+              theme='bootstrap'
+              required >
+      </tag-input>
+
+
 			</div>
 				<div class="form-group">
 				<label for="subjectLine">Email subject <span class="text-danger">*</span></label>
 				<input type="text" id="subjectLine"
-					[(ngModel)]="vendoorInvitation.subject" (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}" 
+					[(ngModel)]="vendoorInvitation.subject" (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}"
 					placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
 				</div>
 				<div class="form-group" *ngIf="isShowCKeditor">
@@ -283,15 +303,14 @@
 				<span class="text" id='responseMessage'
 				[innerHTML]="customResponse.responseMessage"></span>
 		</h4>
-	</div>
-</div>
-			 </div>
-			</div>
-
-			<div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
-				<button class="btn btn-default" (click)="closeInvitationModal()" data-dismiss="modal">Cancel</button>
-				<button type="submit" class="btn green" [disabled]="!isValidVendorInvitation" (click)="sendRequestForVendorEmail()">Send</button>
-			</div>
+      </div>
+    </div>
+    </div>
+  </div>
+    <div class="modal-footer" style="border: none" *ngIf="!isValidationMessage">
+      <button class="btn btn-default" (click)="closeInvitationModal()" data-dismiss="modal">Cancel</button>
+      <button type="submit" class="btn green" [disabled]="emailIds.length ==0" (click)="sendRequestForVendorEmail()">Send</button>
+    </div>
 		</div>
 	</div>
 </div>

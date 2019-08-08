@@ -6,13 +6,15 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-6 p5">
 		<div class="portlet light" style="position:relative">
-				<div id="overLayImage"></div>
-				<div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
+				<!-- <div id="overLayImage"></div>
+				<div id="overlay-logo"  class="video-js "  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
 					<a [href]="logoDescriptionUrl" target="_blank"  [class.disabled]="logoDescriptionUrl===null">
 					  <img *ngIf="brandLogoUrl" [src]="authenticationService.MEDIA_URL + brandLogoUrl" class="img-responsive" >
 					</a>
-				</div>
-			<div id="newPlayerVideo"></div>
+				</div> -->
+      <!-- <div id="newPlayerVideo"></div> -->
+      <app-video-play *ngIf="selectedVideo" [videoFile]="selectedVideo" [videoWidth]="'550px'" [videoHeight]="'315px'" [isPreview]="true" [isVideoBaseReport]="true"></app-video-play>
+
 			<div>
 				<div>
 					<h4 class="videoTitle" title="{{selectedVideo.title}}">{{selectedVideo.title | slice:0:50}}<span *ngIf="selectedVideo.title?.length>50">...</span></h4>
@@ -235,7 +237,7 @@
           <div class="alert alert-info" *ngIf="videoLeadsDetailsPagination.pagedItems?.length == 0">
             No data available
          </div>
-					
+
 					<div class="table-responsive" *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0">
 						<table class="table tgrid">
 							<thead>
@@ -267,8 +269,8 @@
 						<app-pagination *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0" [pagination]="videoLeadsDetailsPagination" [type]="'videoLeads'" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
-					
-			
+
+
       </div>
 		</div>
 		<!-- END PORTLET-->

@@ -1,0 +1,21 @@
+.logoCss{
+  position: absolute;
+  width: 91px;
+  height: 1px;
+  right: 15px;
+  top: 15px;
+  background: transparent;
+  z-index: 99;
+}
+.logoFullscreen{
+  position: absolute;
+  top: 15px;
+  width: 91px;
+  /* height: 58px;
+  right: 17px; */
+  background: transparent;
+  z-index: 99;
+  height: 58px;
+  right: 17px;
+}
+

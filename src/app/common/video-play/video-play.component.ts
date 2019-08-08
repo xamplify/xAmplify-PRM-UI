@@ -17,6 +17,10 @@ export class VideoPlayComponent implements OnInit, OnDestroy {
  @Input() isPreview: boolean;
  @Output() notifyVideoParent: EventEmitter<any>;
  videoJSplayer:any;
+ fullScreenMode = false;
+ brandLogoUrl: any;
+ logoDescriptionUrl: any;
+ @Input() isVideoBaseReport: boolean;
  constructor(public videoUtilService:VideoUtilService , public referenceService: ReferenceService, public authenticationService:AuthenticationService) { }
 
 videoControllColors( videoFile: SaveVideoFile ) {
@@ -37,6 +41,8 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
     const fullImagePath = videoFile.imagePath;
     let videoPath = videoFile.videoPath;
     const is360 = videoFile.is360video;
+    this.brandLogoUrl = videoFile.brandingLogoUri;
+    this.logoDescriptionUrl = videoFile.brandingLogoDescUri;
     $( "#" + divId ).empty();
     $( "#" + titleId ).empty();
     $( 'head' ).append( '<link href="assets/js/indexjscss/video-hls-player/video-hls-js.css" class="v-video" rel="stylesheet">' );
@@ -54,15 +60,32 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         $( "#" + divId + " video").append('<source src=' + videoUrl + ' type="application/x-mpegURL">');
         let player = videojs( 'videoId' );
         let isPreview = this.isPreview;
+        const newValue = this;
         player.panorama( {
             autoMobileOrientation: true,
             clickAndDrag: true,
             clickToToggle: true,
             callback: function() {
+              const document: any = window.document;
                 player.ready(function () {
+                  $('#overLayImage').append($('#overlay-logo').show());
                  if(isPreview) { $('.vjs-big-play-button').css('display', 'block');}
                  else { this.play(); }
                 });
+                player.on('fullscreenchange', function () {
+                  const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+                  const event = state ? 'FullscreenOn' : 'FullscreenOff';
+                  if (event === 'FullscreenOn') {
+                      $('.vjs-tech').css('width', '100%');
+                      $('.vjs-tech').css('height', '100%');
+                      newValue.fullScreenMode = true;
+                      $('#videoId').append($('#overlay-logo').show());
+                  } else if (event === 'FullscreenOff') {
+                      $('#videoId').css('width', 'auto');
+                      $('#videoId').css('height', '315px');
+                      newValue.fullScreenMode = false;
+                   }
+               });
                 videoSelf.videoControllColors( videoFile );
             }
         } );
@@ -87,6 +110,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
         const document: any = window.document;
         const width = this.videoWidth;
         let isPreview = this.isPreview;
+        const self = this;
         const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
         this.videoJSplayer = videojs( "videoId", {
           "controls": true,
@@ -101,6 +125,7 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
             },
             function () {
               this.ready(function () {
+                $('#overLayImage').append($('#overlay-logo').show());
                 // if(this.isPreview) { $('.vjs-big-play-button').css('display', 'block');}
                 // else { this.play(); }
               } )}
@@ -113,8 +138,11 @@ appendVideoData( videoFile: SaveVideoFile, divId: string, titleId: string ) {
                 if ( event === "FullscreenOn" ) {
                     $( ".vjs-tech" ).css( "width", "100%" );
                     $( ".vjs-tech" ).css( "height", "100%" );
+                    self.fullScreenMode = true;
+                    $('#videoId').append($('#overlay-logo').show());
                 } else if ( event === "FullscreenOff" ) {
                   $( "#videoId" ).css( "width", width); // expected 550px
+                  self.fullScreenMode = false;
                 }
             } );
         }
