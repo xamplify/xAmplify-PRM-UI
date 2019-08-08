@@ -18,6 +18,7 @@ import { User } from '../../core/models/user';
 import { isNumber } from 'util';
 import { Roles } from '../../core/models/roles';
 import { CustomResponse } from '../../common/models/custom-response';
+import { UserService } from 'app/core/services/user.service';
 
 
 
@@ -112,20 +113,32 @@ export class ManageDealsComponent implements OnInit
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
-        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService)
+        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService,userService:UserService)
     {
         this.loggedInUserId = this.authenticationService.getUserId();
-
-        if(this.authenticationService.loggedInUserRole == "Team Member"){
-            dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
-                console.log(response)
-                this.superiorId = response;
+        const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+      userService.getHomeRoles(url)
+      .subscribe(
+      response => {
+           if(response.statusCode==200){
+             console.log(response)
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+              this.authenticationService.superiorRole = response.data.superiorRole;
+              if(this.authenticationService.loggedInUserRole == "Team Member"){
+            
+                dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
+                    console.log(response)
+                    this.superiorId = response;
+                    this.init();
+                });
+            }else{
+                this.superiorId = this.authenticationService.getUserId();
                 this.init();
-            });
-        }else{
-            this.superiorId = this.authenticationService.getUserId();
-            this.init();
-        };
+            };
+           }
+        })
+        
 
 
     }
