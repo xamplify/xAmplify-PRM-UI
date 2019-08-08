@@ -132,7 +132,8 @@
                 </a>
                 <a *ngIf="isPartner" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="Comments" style="margin-top: 10px">
                    
-                 <button class="btn btn-primary">{{item.dealButtonText}}</button>
+                  <button class="btn btn-primary" *ngIf="item.deal" >Update Deal</button>
+                  <button class="btn btn-primary" *ngIf="!item.deal" >Register Deal</button> 
                    
               
               </a>
