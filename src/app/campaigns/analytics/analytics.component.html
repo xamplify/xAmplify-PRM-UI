@@ -652,6 +652,7 @@
 											                            <th class="center-aligned">Reply In X Days</th>
 											                            <th class="center-aligned">Reply Time</th>
 											                            <th class="center-aligned">Sent Time</th>
+											                            <th class="center-aligned">Opened Time</th>
 											                          </tr>
 											                        </thead>
 											                        <tbody>
@@ -665,6 +666,13 @@
 												                        	<td class="center-aligned">
 												                        		<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime"> </app-timestamp>
                         														<span *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
+												                        	</td>
+												                        	<td class="center-aligned" *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
+												                        		<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.openedTime"> </app-timestamp>
+                        														<span *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
+												                        	</td>
+												                        	<td class="center-aligned" *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
+												                        		-
 												                        	</td>
 											                        	</tr>
 											                        	</ng-container>

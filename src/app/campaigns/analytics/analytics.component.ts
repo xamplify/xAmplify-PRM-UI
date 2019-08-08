@@ -1852,6 +1852,9 @@ showTimeLineView(){
               let analyticsList = data.data;
               $.each(analyticsList,function(index,autoResponse){
                   autoResponse.displayTime = new Date(autoResponse.sentTimeUtcString);
+                  if(autoResponse.openedTimeUtcString!="-"){
+                      autoResponse.openedTime = new Date(autoResponse.openedTimeUtcString);
+                  }
              });
               pagination = this.pagerService.getPagedItems(pagination,analyticsList);
               this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
