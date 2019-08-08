@@ -35,7 +35,7 @@
                       <td>
                         <app-user-info [userInfo]="data" [isCompanyInfo]="true"></app-user-info>
                       </td>
-                      <td>{{data.dateReg | date:'mediumDate'}}</td>
+                      <td>{{data.dateReg | date:'mediumDate'}} {{data.dateReg | date:'shortTime'}}</td>
 					  <td align="center">
                         <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(data)"><i class="fa fa-building-o" style="font-size: 20px;"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(data)"><i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
@@ -69,7 +69,7 @@
                       <td>
                         <app-user-info [userInfo]="data" [isCompanyInfo]="true"></app-user-info>
                       </td>
-                      <td>{{data.dateLastNav | date:'medium'}}</td>
+                      <td>{{data.dateLastNav | date:'mediumDate'}} {{data.dateLastNav | date:'shortTime'}} </td>
 					  <td align="center">
                         <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(data)"><i class="fa fa-building-o" style="font-size: 20px;"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(data)"><i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
