@@ -252,7 +252,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<app-pagination *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0" [pagination]="videoLeadsDetailsPagination" [type]="'videoLeads'" (notifyParent)="setPage($event)"
+						<app-pagination class="pg8" *ngIf="videoLeadsDetailsPagination.pagedItems?.length > 0" [pagination]="videoLeadsDetailsPagination" [type]="'videoLeads'" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 
@@ -322,7 +322,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'userMinutesWatched'" (notifyParent)="setPage($event)"
+						<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'userMinutesWatched'" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
@@ -400,7 +400,7 @@
 							</tbody>
 						</table>
 						<!--pager here  -->
-						<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'watchedFully'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'watchedFully'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -533,7 +533,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<app-pagination *ngIf="videoPlayedPagination.pagedItems?.length > 0" [pagination]="videoPlayedPagination" [type]="'videoPlayed'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<app-pagination class="pg8" *ngIf="videoPlayedPagination.pagedItems?.length > 0" [pagination]="videoPlayedPagination" [type]="'videoPlayed'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 				<div class="row">
@@ -585,7 +585,7 @@
 								</tr>
 							</tbody>
 						</table>
-						<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'videoSkipped'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'videoSkipped'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 					</div>
 				</div>
 			</div>
@@ -657,7 +657,7 @@
 							</tr>
 						</tbody>
 					</table>
-					<app-pagination *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'coutrywiseUsers'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+					<app-pagination  class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'coutrywiseUsers'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
 			<div class="modal-footer">
