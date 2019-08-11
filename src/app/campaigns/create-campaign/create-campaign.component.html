@@ -943,7 +943,7 @@
               <div class="portlet light">
                 <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
                    <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                   placeholder="Search for a landing page" (keypress)="eventHandler($event.keyCode, 'landingPage')">
+                   placeholder="Search for a landing page" (keypress)="eventHandler($event.keyCode, 'landingPages')">
                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput=''"></button>
                    <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                 </div>
@@ -958,7 +958,7 @@
                       <div class="portlet-body">
                         <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
                           <div class="mix-grid">
-                        <ng-container ><!--*ngIf="showSelectedEmailTemplate" !hideCoBrandedEmailTemplate -->
+                        <ng-container *ngIf="showLandingPage"><!--*ngIf="showSelectedEmailTemplate" !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="!isAdd && landingPagePagination.totalRecords>0 && landingPagePagination.pageIndex==1 ">
                           <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="landingPageId === selectedLandingPageRow">
@@ -1059,15 +1059,12 @@
               </div>
             </div>
           </ng-container>
-          <div *ngIf="landingPagePagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
-            <strong>No co-branded email templates found</strong>
-          </div>
-           <div *ngIf="landingPagePagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
-            <strong>No email templates found</strong>
+           <div *ngIf="landingPagePagination.totalRecords==0 &&!landingPageLoader.isLoading" class="alert alert-info">
+            <strong>No landing pages found</strong>
           </div>
           <div style="text-align:left;" [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
             <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'"
-            (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="loadPaginationDropdownTemplates($event)"></app-pagination>
+            (notifyParent)="setPagePagination($event)"  (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
           </div>
           <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
           <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage"

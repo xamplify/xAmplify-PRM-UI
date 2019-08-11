@@ -252,6 +252,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     isLandingPage:boolean =false;
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     landingPage: LandingPage = new LandingPage();
+    showLandingPage: boolean;
+    filtereLandingPageIds: Array<number>;
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -533,6 +536,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(event===13 && type==='channel'){ this.searchChannelVideo();}
       if(event===13 && type==='contact'){ this.searchContactList();}
       if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
+      if(event===13 && type==='landingPages'){ this.searchLandingPage();}
   }
   eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
   eventUrlHandler(keyCode: any, url:any) {  if (keyCode === 13) {  this.searchClickEmailTemplate(url); } }
@@ -663,6 +667,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else if(module=="partner-videos"){
             this.channelVideosPagination.pageIndex  = pageIndex;
             this.loadPartnerVideos(this.channelVideosPagination);
+        }else if(module=="landingPages"){
+            this.landingPagePagination.pageIndex  = pageIndex;
+            this.listLandingPages(this.landingPagePagination);
         }
 
     }
@@ -2844,6 +2851,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 const data = response.data;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                this.filterLandingPagesForEditCampaign();
                 this.refService.loading( this.landingPageLoader, false );
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
@@ -2858,5 +2866,28 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.isLandingPage = true;
         this.isEmailTemplate = true;
         this.landingPage = landingPage;
+    }
+
+    searchLandingPage(){
+        this.landingPagePagination.pageIndex = 1;
+        this.landingPagePagination.searchKey = this.landingPageSearchInput;
+        this.listLandingPages(this.landingPagePagination);
+    }
+
+    filterLandingPagesForEditCampaign(){
+        if(this.landingPagePagination.searchKey==null){
+            if(this.landingPagePagination.pageIndex==1){
+                this.showLandingPage=true;
+            }else{
+                this.showLandingPage=false;
+            }
+        }else{
+            this.filtereLandingPageIds = this.landingPagePagination.pagedItems.map(function(a) {return a.id;});
+            if(this.filtereLandingPageIds.indexOf(this.landingPageId)>-1){
+                this.showLandingPage=true;
+            }else{
+                this.showLandingPage=false;
+            }
+        }
     }
 }
