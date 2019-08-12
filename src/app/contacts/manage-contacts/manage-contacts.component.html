@@ -329,11 +329,11 @@
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_info}}"> <i
 																class="fa fa-info"></i>
-															</a> <a data-toggle="tooltip" data-placement="top"
+															</a> <a [class.disabled]="contactList.noOfContacts == 0" data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_saveAs}}"
 																(click)="saveAsNewList(contactList.id,contactList.name)">
 																<i class="fa fa-files-o"></i>
-															</a> <a
+															</a> <a [class.disabled]="contactList.noOfContacts == 0"
 																(click)="downloadContactList(contactList.id, contactList.name)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_download}}"
@@ -436,11 +436,11 @@
 												</a> <a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_saveAs}}"
 													(click)="saveAsNewList(contactList.id,contactList.name)"
-													[class.disabled]="!contactList.emailValidationInd"
+													[class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
 													data-rel="fancybox-button" style="left: 60%;"> <i
 													class="fa fa-files-o" aria-hidden="true"
 													style="color: white;"></i>
-												</a> <a [class.disabled]="!contactList.emailValidationInd"
+												</a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
 													(click)="downloadContactList(contactList.id, contactList.name)"
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_download}}"

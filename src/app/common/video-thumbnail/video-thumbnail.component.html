@@ -7,8 +7,8 @@
 
 <div class="title-div">
   <a (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
-    <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 32}}
-      <span *ngIf="videoFile?.title?.length>32">..</span>
+    <h4 (click)="titleClickVideo(videoFile)" data-toggle="tooltip" data-placement="top" [title]="videoFile?.title" class='mt5 mb5 f-w-500'>{{videoFile.title | slice: 0: 23}}
+      <span *ngIf="videoFile?.title?.length>23">..</span>
     </h4>
     <span *ngIf="!authenticationService.isOnlyPartner()"  (click)="titleClickVideo(videoFile)">
       <h5 data-toggle="tooltip" data-placement="top"  [title]="videoFile.uploadedUserName" *ngIf="videoFileService.videoType !== 'partnerVideos'" class='m0'>By {{videoFile.uploadedUserName | slice:0:20}}
