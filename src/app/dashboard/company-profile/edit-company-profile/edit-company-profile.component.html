@@ -98,7 +98,7 @@
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group" [attr.class]="companyNameDivClass">
 								<label class="control-label">Company Name <font	style="color: #f55d7a"><b>*</b></font></label>
-									<input type="text"		id="companyName" name="companyName" placeholder="Company Name"	class="form-control" [(ngModel)]="companyProfile.companyName"
+									<input type="text" id="companyName" name="companyName" placeholder="Company Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.companyName"
 									(input)="validateEmptySpace('companyName')"	(blur)="validateNames(companyProfile.companyName)" />
 								<span *ngIf="companyNameError" style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 							</div>
@@ -106,7 +106,7 @@
 							<div class="form-group" [attr.class]="companyProfileNameDivClass">
 								<label class="control-label">Company Profile Name <font style="color: #f55d7a"><b>*</b></font></label>
 								<ng-container *ngIf="companyProfile.isAdd">
-									 <input	type="text" id="companyProfileName"	placeholder="Company Profile Name" class="form-control"name="companyProfileName"[(ngModel)]="companyProfile.companyProfileName"
+									 <input	type="text" id="companyProfileName"	placeholder="Company Profile Name" maxlength="240" class="form-control"name="companyProfileName"[(ngModel)]="companyProfile.companyProfileName"
 										(input)="validateEmptySpace('companyProfileName')"	(blur)="validateProfileNames(companyProfile.companyProfileName)" />
 									<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 								</ng-container>
@@ -116,13 +116,13 @@
 
 							<div class="form-group" [attr.class]="emailIdDivClass">
 								<label class="control-label"> Company Email</label>
-								 <input type="email"	id="emailId" name="emailId" placeholder="Email Id"	class="form-control" [(ngModel)]="companyProfile.emailId" (input)="validatePattern('emailId')" (blur)="validatePattern('emailId')" />
+								 <input type="email"	id="emailId" name="emailId" placeholder="Email Id"	class="form-control" maxlength="240" [(ngModel)]="companyProfile.emailId" (input)="validatePattern('emailId')" (blur)="validatePattern('emailId')" />
 								 <span	*ngIf="emailIdError" style="color: #f55d7a">{{emailIdErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" [attr.class]="tagLineDivClass">
 								<label class="control-label">Tag Line</label>
-									<input type="text" id="tagLine" name="tagLine" placeholder="Tag Line" class="form-control" [(ngModel)]="companyProfile.tagLine" />
+									<input type="text" id="tagLine" name="tagLine" placeholder="Tag Line" class="form-control" maxlength="240" [(ngModel)]="companyProfile.tagLine" />
 									<span	*ngIf="tagLineError" style="color: #f55d7a">{{tagLineErrorMessage}}</span>
 							</div>
 
@@ -136,7 +136,7 @@
 
 							<div class="form-group" [attr.class]="websiteDivClass">
 								<label class="control-label">Company Url <font style="color: #f55d7a"><b>*</b></font></label>
-								 <input type="text"	id="website" name="website" placeholder="WebSite" class="form-control" [(ngModel)]="companyProfile.website" (input)="validatePattern('website')"	(blur)="validatePattern('website')" />
+								 <input type="text"	id="website" name="website" placeholder="WebSite" maxlength="240" class="form-control" [(ngModel)]="companyProfile.website" (input)="validatePattern('website')"	(blur)="validatePattern('website')" />
 								<span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
 							</div>
 
@@ -166,21 +166,21 @@
 								<div id="collapse1" class="panel-collapse collapse">
                     <div class="form-group">
                         <label class="control-label">Street</label>
-                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="Street" class="form-control"/>
+                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="Street" maxlength="240" class="form-control"/>
                       </div>
 									<div class="form-group" [attr.class]="cityDivClass">
 										<label class="control-label">City</label>
-										<input type="text" id="city"	name="city" placeholder="City" class="form-control" [(ngModel)]="companyProfile.city" (input)="validatePattern('city')" (blur)="validatePattern('city')" />
+										<input type="text" id="city"	name="city" placeholder="City" class="form-control" maxlength="240" [(ngModel)]="companyProfile.city" (input)="validatePattern('city')" (blur)="validatePattern('city')" />
 										<span *ngIf="cityError" style="color: #f55d7a">{{cityErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="stateDivClass">
 										<label class="control-label">State</label>
-										<input type="text" id="state"	name="state" placeholder="State" class="form-control" [(ngModel)]="companyProfile.state" (input)="validatePattern('state')" (blur)="validatePattern('state')" />
+										<input type="text" id="state"	name="state" placeholder="State" class="form-control" maxlength="240" [(ngModel)]="companyProfile.state" (input)="validatePattern('state')" (blur)="validatePattern('state')" />
 										<span *ngIf="stateError" style="color: #f55d7a">{{stateErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="zipDivClass">
 										<label class="control-label">Zip</label>
-										<input type="text" id="zip" name="zip" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
+										<input type="text" id="zip" name="zip" maxlength="50" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
 										<span *ngIf="zipError"  style="color: #f55d7a">{{zipErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="countryDivClass">
