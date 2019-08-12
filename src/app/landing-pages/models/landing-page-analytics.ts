@@ -16,4 +16,6 @@ export class LandingPageAnalytics {
     timezone:string;
     openedTime:Date=new Date();
     openedTimeInString:string;
+    campaignId:number;
+    userId:number;
 }

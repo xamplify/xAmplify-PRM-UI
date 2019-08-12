@@ -39,11 +39,15 @@ export class ShowLandingPageComponent implements OnInit {
   ngOnInit() {
       this.processor.set(this.processor);
       this.alias = this.route.snapshot.params['alias'];
-      this.getHtmlBodyAlias(this.alias);
+      if(this.router.url.includes("/showCampaignLandingPage/")){
+          this.getHtmlBodyCampaignLandingPageAlias(this.alias);
+      }else{
+          this.getHtmlBodyAlias(this.alias);
+      }
   }
 
   
-  getLocationDetails(){
+  getLocationDetails(campaignId:number,userId:number,alias:string){
       this.utilService.getJSONLocation()
       .subscribe(
         (response: any) => {
@@ -65,8 +69,9 @@ export class ShowLandingPageComponent implements OnInit {
             landingPageAnalytics.longitude = response.lon;
             landingPageAnalytics.countryCode = response.countryCode;
             landingPageAnalytics.timezone = response.timezone;
-            landingPageAnalytics.landingPageAlias = this.alias;
-            console.log(landingPageAnalytics);
+            landingPageAnalytics.landingPageAlias = alias;
+            landingPageAnalytics.campaignId = campaignId;
+            landingPageAnalytics.userId = userId;
             this.saveAnalytics(landingPageAnalytics);
 
         },
@@ -99,10 +104,39 @@ export class ShowLandingPageComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasLandingPage = true;
             document.getElementById('landing-page-html-body').innerHTML = response.message;
-            this.getLocationDetails();
+            this.getLocationDetails(null,null,this.alias);
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);
+          }
+          this.processor.remove(this.processor);
+          this.ngxLoading = false;
+        },
+        (error: string) => {
+          this.processor.remove(this.processor);
+          this.logger.errorPage(error);
+          this.referenceService.showServerError(this.httpRequestLoader);
+        }
+      );
+  }
+  
+  
+  getHtmlBodyCampaignLandingPageAlias(alias:string){
+      this.ngxLoading = true;
+      this.landingPageService.getHtmlContentByCampaignLandingPageAlias(alias)
+      .subscribe(
+        (response: any) => {
+          if (response.statusCode === 200) {
+            this.hasLandingPage = true;
+            let data = response.data;
+            document.getElementById('landing-page-html-body').innerHTML = data.body;
+            let campaignId = data.campaignId;
+            let userId = data.userId;
+            let alias = data.landingPageAlias;
+            this.getLocationDetails(campaignId,userId,alias);
+          } else {
+            this.hasLandingPage = false;
+            this.addHeaderMessage("Oops! This is invalid link.",this.errorAlertClass);
           }
           this.processor.remove(this.processor);
           this.ngxLoading = false;

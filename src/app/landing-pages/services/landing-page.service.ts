@@ -91,6 +91,12 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
+    getHtmlContentByCampaignLandingPageAlias( alias: string ) {
+        return this.http.get( this.authenticationService.REST_URL + "/getCampaignLandingPageContent/" + alias, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     saveAnalytics( landingPageAnalytics: LandingPageAnalytics ): Observable<any> {
         return this.http.post( this.authenticationService.REST_URL + "save/landingPageAnalytics", landingPageAnalytics )
             .map( this.extractData )

@@ -86,6 +86,7 @@ export const routes: Routes = [
     { path: 'rsvp/:alias', component: RsvpComponent },
     {path: 'f/:alias', component:FormPreviewComponent},
     {path: 'l/:alias', component:ShowLandingPageComponent},
+    {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
     { path: '**', component: PageNotFoundComponent},
 ];
 
