@@ -759,6 +759,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
    /****************Deal Registration***************************/
   getDealState(campaignViews:any){
+    console.log(campaignViews)
     if(campaignViews.userId!=null && campaignViews.campaignId!=null){
       const obj = {"campaignId":campaignViews.campaignId};
         this.campaignService.getCampaignById(obj).subscribe(data=>{

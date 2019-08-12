@@ -232,7 +232,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             .subscribe(
                 data =>
                 {
-
+                    console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
@@ -261,7 +261,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             .subscribe(
                 data =>
                 {
-
+                    console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
@@ -439,7 +439,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             .subscribe(
                 data =>
                 {
-
+                    console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);

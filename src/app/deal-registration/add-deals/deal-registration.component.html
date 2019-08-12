@@ -220,7 +220,7 @@
 
             <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}" id="dealType"
               (input)="validateField('dealType',false)" [disabled]="isVendor" *ngIf="dealTypes.length > 0">
-              <option [value]="'null'">-- Select Dealtype --</option>
+              <option [value]="'null'">-- Select Deal Type --</option>
 
               <option *ngFor="let dt of dealTypes" [value]="dt.dealType" [selected]="dealRegistration.dealType == dt.dealType">{{dt.dealType}}</option>
             </select>
@@ -229,7 +229,7 @@
               <option [value]="null" [selected]="dealRegistration.dealType != 'New Customer'
               || dealRegistration.dealType == 'New Product'
               || dealRegistration.dealType == 'Upgrade'
-              || dealRegistration.dealType == 'Services'">-- Select Dealtype --</option>
+              || dealRegistration.dealType == 'Services'">-- Select Deal Type --</option>
               <option [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
               <option [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
               <option [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>

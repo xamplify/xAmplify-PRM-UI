@@ -70,6 +70,7 @@
                 <h5 style="font-weight: 600; color: #676767;">
                   <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
                   </app-timestamp>
+                  
                 </h5>
               </td>
               <td *ngIf="filter.length > 0 && item.partner != null">
@@ -83,7 +84,8 @@
                   <span *ngIf="item.partner.emailId?.length>30">...</span>
                 </h6>
                 <h5 style="font-weight: 600; color: #676767;">
-                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
+                 
+                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.dealCreatedTime">
                   </app-timestamp>
                 </h5>
               </td>

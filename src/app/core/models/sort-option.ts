@@ -57,8 +57,28 @@ export class SortOption {
         { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
       ];
     
-    
-    dealCampaignsSortDropDown = [
+      leadCampaignsSortDropDown = [
+
+        { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
+        { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
+       
+        { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'Lead Count(ASC)', 'value': 'count-ASC' },
+        { 'name': 'Lead Count(DESC)', 'value': 'count-DESC' }
+         ]
+         dealCampaignsSortDropDown = [
+
+          { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
+          { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
+         
+          { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
+          { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
+          { 'name': 'Deal Count(ASC)', 'value': 'count-ASC' },
+          { 'name': 'Deal Count(DESC)', 'value': 'count-DESC' }
+           ]
+           
+    dealCampaignsSortDropDownOld = [
 
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Name(Z-A)', 'value': 'campaign-DESC' },
