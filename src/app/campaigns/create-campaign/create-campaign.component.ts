@@ -575,7 +575,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
              if(this.campaignType=="landingPage"){
                  this.isEmailTemplate = true;
-             }else if(this.campaignType=="landingPage"){
+             }else if(this.campaignType=="emailTemplate"){
                  this.isLandingPage = true;
              }
          }

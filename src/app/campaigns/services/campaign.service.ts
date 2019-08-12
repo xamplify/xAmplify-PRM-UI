@@ -20,6 +20,7 @@ export class CampaignService {
     componentName: string = "campaign.service.ts";
     URL = this.authenticationService.REST_URL;
     reDistributeEvent = false;
+    loading = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
@@ -501,7 +502,7 @@ export class CampaignService {
 
 
 
-    addEmailId(campaign: Campaign, selectedEmailTemplateId: number, nurtureCampaign: boolean) {
+    addEmailId(campaign: Campaign, selectedEmailTemplateId: number, selectedLandingPageId :number, nurtureCampaign: boolean) {
         try {
             var self = this;
             swal({
@@ -520,7 +521,8 @@ export class CampaignService {
                 allowOutsideClick: false,
 
             }).then(function (email: string) {
-                self.setData(email, campaign, selectedEmailTemplateId, nurtureCampaign);
+                self.loading = true;
+               self.setData(email, campaign, selectedEmailTemplateId,selectedLandingPageId, nurtureCampaign);
             }, function (dismiss: any) {
                 console.log('you clicked on option' + dismiss);
             });
@@ -531,7 +533,7 @@ export class CampaignService {
     }
 
 
-    setData(emailId: string, campaign: Campaign, selectedEmailTemplateId: number, nutrureCampaign: boolean) {
+    setData(emailId: string, campaign: Campaign, selectedEmailTemplateId: number,selectedLandingPageId:number, nutrureCampaign: boolean) {
         try {
             let data: Object = {};
             data['campaignName'] = campaign.campaignName;
@@ -540,21 +542,29 @@ export class CampaignService {
             data['subjectLine'] = campaign.subjectLine;
             data['nurtureCampaign'] = nutrureCampaign;
             data['preHeader'] = campaign.preHeader;
-            data['selectedEmailTemplateId'] = selectedEmailTemplateId;
+            if(campaign.campaignTypeInString=='LANDINGPAGE'){
+                data['landingPageId'] = selectedLandingPageId;
+            }else{
+                data['selectedEmailTemplateId'] = selectedEmailTemplateId;
+            }
+            data['campaignTypeInString'] = campaign.campaignTypeInString;
             data['testEmailId'] = emailId;
             data['userId'] = campaign.userId;
             data['selectedVideoId'] = campaign.selectedVideoId;
             data['parentCampaignId'] = campaign.parentCampaignId;
+            console.log(data);
             this.sendTestEmail(data)
                 .subscribe(
                 data => {
                     if (data.statusCode === 2017) {
                         swal("Mail Sent Successfully", "", "success");
+                        this.loading = false;
                     }
                 },
                 error => {
                     this.logger.error("error in setData()", error);
                     swal("Unable to send email", "", "error");
+                    this.loading = false;
                 },
                 () => this.logger.info("Finished setData()")
                 );
