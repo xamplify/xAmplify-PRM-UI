@@ -160,7 +160,7 @@
 													<div class="email-options-checkbox-group email-options-notify">
 														<div class="email-options-checkbox clearfix">
 															<div class="col-sm-1 ui-switch-custom-div">
-															<switch [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
+															<switch [disabled]="isLandingPageSwitch" [status]="campaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
 																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
 																 (statusChange)="setChannelCampaign($event)" >
 																</switch>

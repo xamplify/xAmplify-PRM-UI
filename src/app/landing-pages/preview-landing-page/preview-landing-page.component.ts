@@ -31,7 +31,6 @@ export class PreviewLandingPageComponent implements OnInit {
                       $(title).append(landingPage.name);
                       $(title).prop('title',landingPage.name);
                       $(htmlContent).append(response.message);
-                      $('.modal .modal-body').css('overflow-y', 'auto');
                       this.loading = false;
                   }else{
                       swal("Please Contact Admin!", "No Landing Page Found", "error");

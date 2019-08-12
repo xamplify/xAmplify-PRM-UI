@@ -64,7 +64,7 @@ data-backdrop="static">
             <div [hidden]="!campaign.campaignVideoFile" class="col-xs-6 p0" >
                 <app-video-play *ngIf="campaign?.campaignVideoFile" [isPreview]="true" [videoFile]="campaign.campaignVideoFile" [videoWidth]="'280px'" [videoHeight]="'165px'"></app-video-play>
             </div>
-            <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT')" class="col-xs-6" >
+            <div *ngIf="(previewCampaignType==='REGULAR' || previewCampaignType==='EVENT' ||  previewCampaignType==='LANDINGPAGE')" class="col-xs-6" >
                 <div class="portlet light clearfix" style="padding:0px">
                   <div class="p0">
                       <div class="pricing hover-effect">
@@ -72,6 +72,8 @@ data-backdrop="static">
                             <h4>
                               <img *ngIf="previewCampaignType==='REGULAR'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive"
                                src="assets/images/regular-email.png">
+                                <img *ngIf="previewCampaignType==='LANDINGPAGE'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive"
+                               src="assets/images/landing-page.png">
                                <img *ngIf="previewCampaignType==='EVENT'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive"
                                src="assets/images/event-campaign.png">
                               </h4>
@@ -81,6 +83,8 @@ data-backdrop="static">
                   </div>
                 </div>
             </div>
+            
+            <ng-container *ngIf="previewCampaignType!=='LANDINGPAGE'">
             <div *ngIf="!campaign.emailTemplate?.id" class="col-xs-6 p0" style="margin-top: 60px; text-align: center;">
             <p style="color: #ff3a3a;">No Template found</p>
             </div>
@@ -128,6 +132,54 @@ data-backdrop="static">
                   </li>
                 </ul>
             </div>
+            </ng-container>
+            
+            
+           <ng-container *ngIf="previewCampaignType==='LANDINGPAGE'">
+            <div *ngIf="!campaign.landingPage?.id" class="col-xs-6 p0" style="margin-top: 60px; text-align: center;">
+            <p style="color: #ff3a3a;">No Landing Page found</p>
+            </div>
+            <div *ngIf="campaign.landingPage?.id" class="col-xs-6 p0">
+              <ul  class="content__list" >
+                  <li class="list__item" style="width:auto !important;float:none;margin-right: -29px;margin-top: -13px;" [class.list__item--selected]="true">
+                    <div class="flex-row">
+                      <div class="item__select-box-wrapper">
+                        <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
+                        <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
+                          target="_BLANK"> <img class="thumb ng-scope" style="width:98px !important" src="assets/images/Landing-Pages/{{campaign.landingPage.imageName}}">
+                          </a>
+                        </span>
+                      </div>
+                      <div class="item__content">
+                        <div class="flex-row">
+                          <span class="item__name"
+                            [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b><b *ngIf="campaign.landingPage?.name?.length>15">...</b>
+                          </span>
+                          <span lass="item__name" title="created on" style="float:left">
+                          <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.landingPage?.createdDateInString"></app-timestamp></span>
+                          </span>
+                          <ng-container>
+                            <span style="float:left"  title="{{campaign.landingPage.createdUser}}">
+                                <b>By:</b> <span>{{campaign.landingPage.createdUser|slice:0:12}}<span *ngIf="campaign.landingPage.createdUser?.length>12">...</span></span>
+                            </span>
+                          </ng-container>
+                          <div class="item__actions">
+                            <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                              data-toggle="tooltip" data-placement="top"
+                              title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign.landingPage)"> <!-- (click)="preview(file)"  -->
+                                <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                             </a>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </li>
+                </ul>
+            </div>
+            </ng-container>
+            
           </div>
 
           </fieldset>
@@ -721,3 +773,4 @@ data-backdrop="static">
 		</div>
 	</div>
 </div>
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>

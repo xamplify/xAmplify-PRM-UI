@@ -254,7 +254,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     landingPage: LandingPage = new LandingPage();
     showLandingPage: boolean;
     filtereLandingPageIds: Array<number>;
-
+    isLandingPageSwitch = false;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -321,7 +321,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.campaignType = 'video';
                 this.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
             }else if(this.campaign.campaignTypeInString=="LANDINGPAGE"){
-                this.campaignType = 'landingPage'
+                this.campaignType = 'landingPage';
+                this.isLandingPageSwitch = true;
             }
             this.partnerVideoSelected = this.campaign.partnerVideoSelected;
             this.getCampaignReplies(this.campaign);
@@ -575,8 +576,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.lauchTabPreivewDivClass = "col-xs-12 col-sm-12 col-md-7 col-lg-7";
              if(this.campaignType=="landingPage"){
                  this.isEmailTemplate = true;
+                 this.isLandingPageSwitch = true;
              }else if(this.campaignType=="emailTemplate"){
                  this.isLandingPage = true;
+                 this.isLandingPageSwitch = false;
              }
          }
 
@@ -1790,6 +1793,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     setEmailTemplateData(emailTemplate:EmailTemplate){
         this.selectedEmailTemplateRow = emailTemplate.id;
         this.isEmailTemplate = true;
+        this.isLandingPage = true;
         this.selectedTemplateBody = emailTemplate.body;
         this.emailTemplate = emailTemplate;
     }
