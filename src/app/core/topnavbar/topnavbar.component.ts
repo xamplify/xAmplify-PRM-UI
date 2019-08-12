@@ -205,6 +205,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
   ngOnDestroy(){
     this.isShowCKeditor = false;
+    $('#requestForVendor').modal('hide');
   }
   ngOnInit() {
     try{
