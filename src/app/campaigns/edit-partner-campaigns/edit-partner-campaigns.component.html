@@ -647,7 +647,7 @@
 
               <div class="portlet-title border-none">
                 <div class="col-xs-12 center-block pt20 text-center">
-                  <button type="button" class="btn green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,true)"
+                  <button type="button" class="btn green" [disabled]="!isCampaignDetailsFormValid" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateId,0,true)"
                     style="width:10em">Send Test Email</button>
                   <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid || !isCampaignDetailsFormValid" style="width:10em">{{buttonName}}</button>
                 </div>

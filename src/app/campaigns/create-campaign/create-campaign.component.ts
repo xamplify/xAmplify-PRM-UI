@@ -577,6 +577,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              if(this.campaignType=="landingPage"){
                  this.isEmailTemplate = true;
                  this.isLandingPageSwitch = true;
+                 this.campaign.campaignTypeInString = "LANDINGPAGE";
              }else if(this.campaignType=="emailTemplate"){
                  this.isLandingPage = true;
                  this.isLandingPageSwitch = false;

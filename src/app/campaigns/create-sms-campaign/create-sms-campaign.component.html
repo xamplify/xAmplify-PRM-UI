@@ -1174,7 +1174,7 @@
 										<div class="portlet-title border-none">
 											<div class="col-xs-12 center-block">
 												<button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;">Previous</button>
-												<button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,false)" style="width: 10em;">Send Test Email</button>
+												<button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,0,false)" style="width: 10em;">Send Test Email</button>
 												<button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid"  style="width: 10em;">{{buttonName}}</button>
 											</div>
 										</div>
