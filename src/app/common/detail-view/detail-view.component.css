@@ -2,3 +2,6 @@
   text-align: center;
   font-size: 12px; font-weight: 500;
 }
+.disabled{
+	pointer-events: none;
+}
