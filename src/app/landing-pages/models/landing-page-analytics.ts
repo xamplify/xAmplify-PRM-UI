@@ -18,4 +18,6 @@ export class LandingPageAnalytics {
     openedTimeInString:string;
     campaignId:number;
     userId:number;
+    url:string;
+    formId:number;
 }

@@ -40,13 +40,41 @@ export class ShowLandingPageComponent implements OnInit {
       this.alias = this.route.snapshot.params['alias'];
       if(this.router.url.includes("/showCampaignLandingPage/")){
           this.getHtmlBodyCampaignLandingPageAlias(this.alias);
-      }else{
+      }else if(this.router.url.includes("/clpl/")){
+          this.redirectToOriginalUrl(this.alias);
+      }
+      else{
           this.getHtmlBodyAlias(this.alias);
       }
   }
+  redirectToOriginalUrl(alias: any) {
+    this.landingPageService.getOriginalUrlByAlias(alias)
+    .subscribe(
+      (response: any) => {
+        if (response.statusCode === 200) {
+          let data = response.data;
+          let campaignId = data.campaignId;
+          let userId = data.userId;
+          let url = data.url;
+          let landingPageAlias = data.landingPageAlias;
+          this.getLocationDetails(campaignId,userId,landingPageAlias,url);
+        } else {
+          this.hasLandingPage = false;
+          this.addHeaderMessage("Oops! This link does not exists.",this.errorAlertClass);
+        }
+        this.processor.remove(this.processor);
+      },
+      (error: string) => {
+        this.processor.remove(this.processor);
+        this.hasLandingPage = false;
+        this.addHeaderMessage("Oops! Something went wrong.Please try after sometime",this.errorAlertClass);
+      }
+    );
+   
+  }
 
   
-  getLocationDetails(campaignId:number,userId:number,alias:string){
+  getLocationDetails(campaignId:number,userId:number,alias:string,url:string){
       this.utilService.getJSONLocation()
       .subscribe(
         (response: any) => {
@@ -71,7 +99,16 @@ export class ShowLandingPageComponent implements OnInit {
             landingPageAnalytics.landingPageAlias = alias;
             landingPageAnalytics.campaignId = campaignId;
             landingPageAnalytics.userId = userId;
+            if(url!=null){
+              landingPageAnalytics.url = url;
+            }
             this.saveAnalytics(landingPageAnalytics);
+            if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
+              window.location.href = url;
+            } else if (url && !(url.startsWith("http://") || url.startsWith("https://"))) {
+              url = 'http://'+ url;
+              window.location.href = url;
+            }
 
         },
         (error: string) => {
@@ -102,7 +139,7 @@ export class ShowLandingPageComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasLandingPage = true;
             document.getElementById('landing-page-html-body').innerHTML = response.message;
-            this.getLocationDetails(null,null,this.alias);
+            this.getLocationDetails(null,null,this.alias,null);
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);
@@ -111,8 +148,8 @@ export class ShowLandingPageComponent implements OnInit {
         },
         (error: string) => {
           this.processor.remove(this.processor);
-          this.logger.errorPage(error);
-          this.referenceService.showServerError(this.httpRequestLoader);
+          this.hasLandingPage = false;
+          this.addHeaderMessage("Oops! Something went wrong.Please try after sometime",this.errorAlertClass);
         }
       );
   }
@@ -129,7 +166,7 @@ export class ShowLandingPageComponent implements OnInit {
             let campaignId = data.campaignId;
             let userId = data.userId;
             let alias = data.landingPageAlias;
-            this.getLocationDetails(campaignId,userId,alias);
+            this.getLocationDetails(campaignId,userId,alias,null);
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This is invalid link.",this.errorAlertClass);
@@ -140,8 +177,6 @@ export class ShowLandingPageComponent implements OnInit {
           this.processor.remove(this.processor);
           this.hasLandingPage = false;
           this.addHeaderMessage("Oops! Something went wrong.Please try after sometime",this.errorAlertClass);
-        //  this.logger.errorPage(error);
-          //this.referenceService.showServerError(this.httpRequestLoader);
         }
       );
   }

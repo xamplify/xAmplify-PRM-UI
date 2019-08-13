@@ -96,6 +96,12 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    getOriginalUrlByAlias( alias: string ) {
+        return this.http.get( this.authenticationService.REST_URL + "/getOriginalLinkByAlias/" + alias, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
     
     saveAnalytics( landingPageAnalytics: LandingPageAnalytics ): Observable<any> {
         return this.http.post( this.authenticationService.REST_URL + "save/landingPageAnalytics", landingPageAnalytics )
