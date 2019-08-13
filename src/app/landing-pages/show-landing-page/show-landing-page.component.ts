@@ -24,7 +24,6 @@ declare var $:any;
 export class ShowLandingPageComponent implements OnInit {
     deviceInfo: any;
     hasLandingPage=true;
-    ngxLoading = false;
     customResponse: CustomResponse = new CustomResponse();
     alias: any;
     alertClass ="";
@@ -97,7 +96,6 @@ export class ShowLandingPageComponent implements OnInit {
   
   
   getHtmlBodyAlias(alias:string){
-      this.ngxLoading = true;
       this.landingPageService.getHtmlContentByAlias(alias)
       .subscribe(
         (response: any) => {
@@ -110,7 +108,6 @@ export class ShowLandingPageComponent implements OnInit {
             this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);
           }
           this.processor.remove(this.processor);
-          this.ngxLoading = false;
         },
         (error: string) => {
           this.processor.remove(this.processor);
@@ -122,7 +119,6 @@ export class ShowLandingPageComponent implements OnInit {
   
   
   getHtmlBodyCampaignLandingPageAlias(alias:string){
-      this.ngxLoading = true;
       this.landingPageService.getHtmlContentByCampaignLandingPageAlias(alias)
       .subscribe(
         (response: any) => {
@@ -139,19 +135,19 @@ export class ShowLandingPageComponent implements OnInit {
             this.addHeaderMessage("Oops! This is invalid link.",this.errorAlertClass);
           }
           this.processor.remove(this.processor);
-          this.ngxLoading = false;
         },
         (error: string) => {
           this.processor.remove(this.processor);
-          this.logger.errorPage(error);
-          this.referenceService.showServerError(this.httpRequestLoader);
+          this.hasLandingPage = false;
+          this.addHeaderMessage("Oops! Something went wrong.Please try after sometime",this.errorAlertClass);
+        //  this.logger.errorPage(error);
+          //this.referenceService.showServerError(this.httpRequestLoader);
         }
       );
   }
   
 
   addHeaderMessage(message:string,divAlertClass:string){
-      this.ngxLoading = false;
       this.show = true;
       this.message = message;
       this.alertClass = divAlertClass;
