@@ -48,7 +48,7 @@
           <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
             <tr>
               <td>
-                <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"></app-user-info>
+                <app-user-info [userInfo]="item" [isCompanyInfo]="true"></app-user-info>
               </td>
 
               <td class="re-distributed-count" title="{{item.dealTitle}}" *ngIf="pageText != 'TOTAL LEADS'">{{item.dealTitle | slice:0:20}}
@@ -134,8 +134,8 @@
                 </a>
                 <a *ngIf="isPartner" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="Comments" style="margin-top: 10px">
                    
-                  <button class="btn btn-primary" *ngIf="item.deal" >Update Deal</button>
-                  <button class="btn btn-primary" *ngIf="!item.deal" >Register Deal</button> 
+                  <button class="btn btn-primary register_deal" *ngIf="item.deal" >Update Deal</button>
+                  <button class="btn btn-primary register_deal" *ngIf="!item.deal" >Register Deal</button> 
                    
               
               </a>

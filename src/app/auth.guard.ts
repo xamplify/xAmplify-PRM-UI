@@ -179,7 +179,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.checkPartnerAccessUrls(url, urlType)
         }
         else{
-            const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.companyPartnerRole)>-1
+            const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1 || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
 
             // if(url.search('/twitter') || url.search('/rss'))
@@ -196,7 +196,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     checkVendorAccessUrls(url:string,urlType:string):boolean{
       try{
       if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany
-                && url.indexOf("/"+this.contactBaseUrl+"/")<0){
+                && url.indexOf("/"+this.contactBaseUrl+"/")< 0){
             return true;
         }else{
             return this.goToAccessDenied();
