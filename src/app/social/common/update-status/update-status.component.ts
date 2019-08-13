@@ -350,6 +350,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialCampaign.parentCampaignId = this.socialCampaign.campaignId;
     this.socialCampaign.campaignId = null;
     this.socialCampaign.channelCampaign = false;
+    this.socialCampaign.nurtureCampaign = true;
     this.socialStatusProviders.forEach(data => {
       if (data.selected)
         this.socialCampaign.socialStatusProviderList.push(data)
@@ -397,6 +398,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   createSocialCampaign() {
     this.resetCustomResponse();
     this.socialCampaign.socialCampaign = this.isSocialCampaign;
+    this.socialCampaign.nurtureCampaign = false;
     $('html, body').animate({
       scrollTop: $('#us-right').offset().top
     }, 500);
