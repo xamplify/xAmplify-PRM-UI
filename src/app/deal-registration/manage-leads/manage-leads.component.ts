@@ -693,7 +693,10 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         }
         let sortedValue = this.sortOption.selectedSortedOption.value;
         this.setSortColumns(pagination, sortedValue);
-        this.listLeadsBasedOnFilters();
+        if (!this.isPartner)
+            this.listLeadsBasedOnFilters();
+        else
+            this.listLeadsBasedOnFiltersByPartner();
 
     }
 

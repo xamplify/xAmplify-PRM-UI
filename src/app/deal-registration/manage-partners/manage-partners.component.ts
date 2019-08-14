@@ -137,7 +137,10 @@ export class ManagePartnersComponent implements OnInit
         }
         let sortedValue = this.sortOption.selectedSortedOption.value;
         this.setSortColumns(pagination, sortedValue);
-        this.listCampaignPartners(pagination);
+        if (this.isCampaignByLeads)
+            this.listCampaignPartners(this.pagination);
+        else
+            this.listCampaignPartnersByDeals(this.pagination);
 
     }
 

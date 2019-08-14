@@ -764,15 +764,22 @@ export class ManageDealsComponent implements OnInit
         let sortedValue = this.sortOption.selectedSortedOption.value;
         this.setSortColumns(pagination, sortedValue);
         if(this.isVendorVersion){
-            if(this.isCampaignByLeads)
+            if(this.isCampaignByLeads){
             this.listCampaigns(pagination);
-            else
-            this.listCampaignsByDeals(this.campaignsPaginationByDeals);
+            }
+            else{
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.listCampaignsByDeals(this.campaignsPaginationByDeals);
+            }
         }else{
-            if(this.isCampaignByLeads)
-            this.listCampaignsByPartner(this.campaignsPagination);
-            else
-            this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+            if(this.isCampaignByLeads){
+                this.listCampaignsByPartner(this.campaignsPagination);
+            }
+            else{
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+
+                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+            }
         }
 
     }
@@ -821,8 +828,33 @@ export class ManageDealsComponent implements OnInit
     /********Pages Navigation***********/
     navigatePages(event: any)
     {
-        this.campaignsPagination.pageIndex = event.page;
-        this.listCampaigns(this.campaignsPagination);
+       
+       
+        if(this.isVendorVersion){
+            if(this.isCampaignByLeads){
+                this.campaignsPagination.pageIndex = event.page;
+                this.campaignsPagination.searchKey = this.sortOption.searchKey;
+                this.listCampaigns(this.campaignsPagination);
+            }
+            else{
+                this.campaignsPaginationByDeals.pageIndex = event.page;
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.listCampaignsByDeals(this.campaignsPaginationByDeals);
+            }
+        }else{
+            if(this.isCampaignByLeads){
+                this.campaignsPagination.pageIndex = event.page;
+                this.campaignsPagination.searchKey = this.sortOption.searchKey;
+                this.listCampaignsByPartner(this.campaignsPagination);
+            }
+            else{
+                this.campaignsPaginationByDeals.pageIndex = event.page;
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+            }
+        }
+        
+       
     }
     /*****Dropdown**********/
     changeSize(items: any, type: any)
