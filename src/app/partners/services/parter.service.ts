@@ -17,15 +17,15 @@ export class ParterService {
             .catch( this.handleError );
     }
     
-    approveVendorRequest( partnerId: number ){
+    approveVendorRequest( partnerId: number, vendorInvitation: any ){
         var newUrl = this.URL + "partnership/approve-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
-        return this.httpClient.post( newUrl, "")
+        return this.httpClient.post( newUrl, vendorInvitation)
         .catch( this.handleError );
     }
     
-    declineVendorRequest( partnerId: number ){
+    declineVendorRequest( partnerId: number, vendorInvitation: any ){
         var newUrl = this.URL + "partnership/decline-partner/"+ this.authenticationService.getUserId() +"/"+ partnerId + "?access_token=" + this.authenticationService.access_token;
-        return this.httpClient.post( newUrl, "")
+        return this.httpClient.post( newUrl, vendorInvitation)
         .catch( this.handleError );
     }
     

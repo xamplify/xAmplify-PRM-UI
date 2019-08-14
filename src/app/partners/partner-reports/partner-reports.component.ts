@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -14,7 +14,8 @@ import { User } from '../../core/models/user';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
-declare var $,swal, Highcharts: any;
+import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
+declare var $,swal, Highcharts, CKEDITOR: any;
 
 @Component({
   selector: 'app-partner-reports',
@@ -22,7 +23,7 @@ declare var $,swal, Highcharts: any;
   styleUrls: ['./partner-reports.component.css'],
   providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption, ListLoaderValue]
 })
-export class PartnerReportsComponent implements OnInit {
+export class PartnerReportsComponent implements OnInit, OnDestroy {
   worldMapdataReport: any;
   companyId: number;
   paginationType: string;
@@ -51,7 +52,13 @@ export class PartnerReportsComponent implements OnInit {
   activePartnersCount:number = 0;
   approvePartnersCount:number = 0;
   isListView = false;
+  isShowCKeditor = false;
+  partnerId: number;
+  isValidRequest = false;
+  requestText: string;
+  isError = false;
   customResponse: CustomResponse = new CustomResponse();
+  vendoorInvitation: VendorInvitation = new VendorInvitation();
   constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService, public pagination: Pagination,
     public referenseService: ReferenceService, public parterService: ParterService, public pagerService: PagerService,
     public homeComponent: HomeComponent,public xtremandLogger:XtremandLogger,public campaignService:CampaignService,public sortOption:SortOption,
@@ -527,7 +534,7 @@ export class PartnerReportsComponent implements OnInit {
       item.expand = !item.expand;
   }
   
-  showApprovePartnerSweetAlert( partnerId: number ) {
+  /*showApprovePartnerSweetAlert( partnerId: number ) {
       try {
           this.xtremandLogger.info( "PartnerId in sweetAlert() " + partnerId );
           let self = this;
@@ -549,18 +556,20 @@ export class PartnerReportsComponent implements OnInit {
       } catch ( error ) {
           this.xtremandLogger.error( error, "PartnerReport Page", "ApprovePartnerAlert()" );
       }
-  }
+  }*/
 
   
-  approvePartnerRequest( partnerId: number ) {
+  approvePartnerRequest() {
       try {
-          this.xtremandLogger.info( partnerId );
+          this.isError = false;
+          this.xtremandLogger.info( this.partnerId );
+          if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
           this.referenseService.loading(this.httpRequestLoader, true);
-          this.parterService.approveVendorRequest( partnerId )
+          this.parterService.approveVendorRequest( this.partnerId, this.vendoorInvitation )
               .subscribe(
               ( data: any ) => {
                   data = data;
-                  
+                  this.closeRequestModal();
                   if(data.statusCode == 200){
                       this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
                   }else{
@@ -575,12 +584,15 @@ export class PartnerReportsComponent implements OnInit {
               },
               () => this.xtremandLogger.info( "Approved successfully." )
               );
+          }else{
+              this.isError = true;
+          }
       } catch ( error ) {
           this.xtremandLogger.error( error, "partner-report-component.", "approve parter()" );
       }
   }
   
-  showDeclinePartnerSweetAlert( partnerId: number ) {
+  /*showDeclinePartnerSweetAlert( partnerId: number ) {
       try {
           this.xtremandLogger.info( "PartnerId decline partner in sweetAlert() " + partnerId );
           let self = this;
@@ -602,17 +614,19 @@ export class PartnerReportsComponent implements OnInit {
       } catch ( error ) {
           this.xtremandLogger.error( error, "PartnerReport Page", "DeclinePartnerAlert()" );
       }
-  }
+  }*/
   
-  declinePartnerRequest(partnerId: number){
+  declinePartnerRequest(){
       try {
-          this.xtremandLogger.info( partnerId );
+          this.isError = false;
+          this.xtremandLogger.info( this.partnerId );
+          if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
           this.referenseService.loading(this.httpRequestLoader, true);
-          this.parterService.declineVendorRequest( partnerId )
+          this.parterService.declineVendorRequest( this.partnerId, this.vendoorInvitation )
               .subscribe(
               ( data: any ) => {
                   data = data;
-                  
+                  this.closeRequestModal();
                   if(data.statusCode == 200){
                       this.customResponse = new CustomResponse( 'SUCCESS', data.message, true );
                   }else{
@@ -627,9 +641,54 @@ export class PartnerReportsComponent implements OnInit {
               },
               () => this.xtremandLogger.info( "Declined successfully." )
               );
+          }else{
+              this.isError = true;
+          }
       } catch ( error ) {
           this.xtremandLogger.error( error, "partner-report-component.", "Decline Parter()" );
       } 
+  }
+  
+  approveAndDeclineRequest(partnerId: number){
+      this.partnerId = partnerId;
+      this.isShowCKeditor = true;
+      CKEDITOR.config.height = '300px';
+      CKEDITOR.config.baseFloatZIndex = 1E5;
+      if(this.requestText == 'Approve'){
+          this.vendoorInvitation.subject = "Approve request has been accepted"; 
+      }else{
+          this.vendoorInvitation.subject = "Your request has been Declined"
+      }
+      this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
+
+          + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
+
+          + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
+
+          + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
+
+          + "<br><br>" + "Best, " + "<br><br>"
+
+          + this.authenticationService.user.firstName
+
+          + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
+
+          + "<br>" + this.authenticationService.user.companyName
+
+          $( '#approve-decline-modal' ).modal( 'show' );
+  }
+  
+  validateRequest(){
+      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ")){
+          this.isValidRequest = true;
+      }else{
+          this.isValidRequest = false;
+      }
+  }
+  
+  closeRequestModal(){
+      this.isShowCKeditor = false;
+      $('#approve-decline-modal').modal('hide');
   }
 
 
@@ -649,5 +708,10 @@ export class PartnerReportsComponent implements OnInit {
     }
 
   }
+  
+  ngOnDestroy(){
+      this.isShowCKeditor = false;
+      $('#approve-decline-modal').modal('hide');
+    }
 
 }

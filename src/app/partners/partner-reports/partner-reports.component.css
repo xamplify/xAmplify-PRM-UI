@@ -23,6 +23,7 @@
 	text-align: center;
 	padding: 2px;
 }
+.text-danger {color: red !important;}
 
 .campaign-type {
 	min-width: 310px;
