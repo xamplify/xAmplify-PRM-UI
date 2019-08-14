@@ -248,6 +248,7 @@ export class ManageDealsComponent implements OnInit
 
     showCampaigns()
     {
+        this.clearPagination();
         if(this.isVendorVersion)
             this.listCampaigns(this.campaignsPagination);
         
@@ -266,6 +267,7 @@ export class ManageDealsComponent implements OnInit
     }
     showCampaignsByDeals()
     {
+        this.clearPagination();
         if(this.isVendorVersion)
             this.listCampaignsByDeals(this.campaignsPaginationByDeals);
         
@@ -1223,6 +1225,11 @@ export class ManageDealsComponent implements OnInit
     {
         this.hasClientErrors = true;
         this.xtremandLogger.showClientErrors(this.componentName, methodName, error);
+    }
+
+    clearPagination(){
+        this.campaignsPagination = new Pagination();
+            this.campaignsPaginationByDeals = new Pagination();
     }
 
 }
