@@ -320,26 +320,13 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
     else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0) {
       isValid = false;
-      this.setCustomResponse(ResponseType.Warning, 'Please select one or more partner lists.');
+      this.setCustomResponse(ResponseType.Warning, 'Please select one or more recipient lists.');
     }
     return isValid;
   }
 
   isValidUpdateStatus() {
     return this.isSocialAccountsSelected();
-  }
-
-  isValidredistributeSocialCampaign() {
-    let isValid = true;
-    isValid = this.isSocialAccountsSelected();
-    if (!this.socialCampaign.campaignName) {
-      isValid = false;
-      this.setCustomResponse(ResponseType.Warning, 'Please provide campaign name');
-    } else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0) {
-      isValid = false;
-      this.setCustomResponse(ResponseType.Warning, 'Please select one or more contact lists.');
-    }
-    return isValid;
   }
 
   redistributeSocialCampaign() {
@@ -355,7 +342,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       if (data.selected)
         this.socialCampaign.socialStatusProviderList.push(data)
     });
-    if (this.isValidredistributeSocialCampaign()) {
+    if (this.isValidSocialCampaign()) {
       this.loading = true;
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
