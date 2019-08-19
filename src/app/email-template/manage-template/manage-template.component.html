@@ -131,15 +131,18 @@
 										<h6>
 											Shared By <b>{{emailTemplate.vendorName}}</b>
 										</h6>
-										<h6>
-											From <b>{{emailTemplate.vendorOrganizationName}}</b>
+										<h6 title="{{emailTemplate.vendorOrganizationName}}">
+											From <b>{{emailTemplate.vendorOrganizationName | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.vendorOrganizationName?.length > 25">..</span>
 										</h6>
 										</ng-container> <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-										<h6>
-											Created By <b>{{emailTemplate.createdBy}}</b>
+										<h6 title="{{emailTemplate.createdBy}}">
+											Created By <b>{{emailTemplate.createdBy | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.createdBy?.length > 25">..</span>
 										</h6>
-										<h6>
-											From <b>{{emailTemplate.companyName}}</b>
+										<h6  title="{{emailTemplate.companyName}}">
+											From <b>{{emailTemplate.companyName | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.companyName?.length > 25">..</span>
 										</h6>
 										</ng-container>
 										<h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft">DRAFT</h5>
