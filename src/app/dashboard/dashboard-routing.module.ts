@@ -16,6 +16,7 @@ import { ReportsComponent } from "./dashboard/reports/reports.component";
 import { NotificationsComponent } from "../core/notifications/notifications.component";
 import { VendorReportsComponent } from "./vendor-reports/vendor-reports.component";
 import { AdminReportComponent } from './admin-report/admin-report.component';
+import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -33,7 +34,8 @@ const routes: Routes = [
   { path: "reports", component: ReportsComponent },
   { path: "notifications", component: NotificationsComponent },
   { path: 'vendors',component:VendorReportsComponent},
-  { path: 'admin-report',component:AdminReportComponent}
+  { path: 'admin-report',component:AdminReportComponent},
+  { path: 'vendor-request',component:VendorRequestReportComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
