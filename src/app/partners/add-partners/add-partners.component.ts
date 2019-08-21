@@ -269,8 +269,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.isEmailExist = true;
                     this.existedEmailIds.push(emailId);
                     break;
-                } else {
-                    this.isEmailExist = false;
                 }
             }
         }
