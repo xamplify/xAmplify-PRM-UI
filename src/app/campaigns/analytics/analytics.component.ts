@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
@@ -23,13 +23,17 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Tweet } from '../../social/models/tweet';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPage } from '../../landing-pages/models/landing-page';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+
 declare var $, Highcharts: any;
 
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css', './timeline.css'],
-  providers: [Pagination,HttpRequestLoader]
+  providers: [Pagination,HttpRequestLoader,LandingPageService]
 })
 export class AnalyticsComponent implements OnInit , OnDestroy{
  isDealRegistration:boolean=false;
@@ -123,10 +127,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                 ];
   selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
   tweets: Array<Tweet> = new Array<Tweet>();
-  
   smsLogs:any;
   smsService: boolean;
  isSmsServiceAnalytics = false;
+ @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+
+
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -885,7 +891,9 @@ showTimeLineView(){
               this.getEventCampaignByCampaignId(campaignId);
             } else if (campaignType.includes('SMS')) {
               this.campaignType = 'SMS';
-            } else {
+            }else if (campaignType.includes('LANDINGPAGE')) {
+                this.campaignType = 'LANDINGPAGE';
+            }else {
             this.campaignType = 'EMAIL';
           }
         }
@@ -1928,4 +1936,8 @@ showTimeLineView(){
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
   }
+
+  showLandingPagePreview(landingPage:LandingPage){
+    this.previewLandingPageComponent.showPreview(landingPage);
+}
 }

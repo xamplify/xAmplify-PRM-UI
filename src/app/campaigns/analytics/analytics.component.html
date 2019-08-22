@@ -146,9 +146,45 @@
 						</div>
 					</a>
 				</div>
-				<div [hidden]="campaignType === 'SOCIAL'"
+
+
+				<div class="pl10 pr10 col-xs-12"
+					[ngClass]="{'col-sm-6': campaignType === 'LANDINGPAGE','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+					*ngIf="(campaignType === 'LANDINGPAGE') && campaign.landingPageId>0">
+					<a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+						<div class="visual">
+							<i class="fa fa-envelope-open"></i>
+						</div>
+						<div class="camp-details">
+							<div class="camp-title">Landing Page Info</div>
+							<div class="camp-number">
+								<b class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
+									| slice: 0: 25}}</b> <span
+									*ngIf="campaign.landingPage.name?.length>25">...</span>
+							</div>
+							<div class="camp-desc" *ngIf="isDataShare">
+								<span>Click for preview</span>
+							</div>
+						</div>
+						<div class="actions-block override-actions" id="landing-page-icons">
+						<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showLandingPagePreview(campaign.landingPage)">
+							<i class="fa fa-eye"></i>
+						</a>
+
+						<a data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+								<i class="fa fa-wpforms"></i>
+							</a>
+
+						<a data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+							<i class="fa fa-line-chart"></i>
+						</a>
+						</div>
+					</a>
+				</div>
+
+				<div [hidden]="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'"
 					class="pl10 pr10 col-xs-12 blur"
-					[ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'EMAIL'}"
+					[ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': (campaignType === 'EMAIL' ||campaignType === 'EVENT' )}"
 					*ngIf="campaign.selectedEmailTemplateId==0">
 					<a class="dashboard-stat dashboard-stat-lighter blue-soft"
 						style="cursor: default;">
@@ -168,7 +204,7 @@
 				</div>
 
 				<div class="pl10 pr10 col-xs-12"
-					[ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'EMAIL', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+					[ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': (campaignType === 'EMAIL' || campaignType === 'LANDINGPAGE'), 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 					<a class="dashboard-stat dashboard-stat-lighter green-soft"
 						(click)="showContactListModal()"
 						[class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
@@ -2702,3 +2738,4 @@
 		</div>
 	</div>
 </div>
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
