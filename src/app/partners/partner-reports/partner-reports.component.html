@@ -796,8 +796,8 @@
 	data-keyboard="false">
 	<div class="modal-dialog" role="document">
 	<div class="my-container">
-		<ngx-loading [show]="loading"
-			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		<!-- <ngx-loading [show]="loading"
+			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 	</div>
 		<div class="modal-content">
 			<div class="modal-header">
@@ -806,7 +806,7 @@
 				<h4 class="modal-title left" id="myModalLabel" *ngIf="requestText == 'Decline'">Decline vendor request and send an email.</h4>
 			</div>
 			<div class="modal-body">
-			<div *ngIf="!isValidationMessage">
+			<div>
 			   <div *ngIf="isError" class="alert alert-danger alert-dismissible left">
 			   <a (click)="isError = false" class="close" data-dismiss="alert" aria-label="close"></a>
 			   Please complete the required fields.
