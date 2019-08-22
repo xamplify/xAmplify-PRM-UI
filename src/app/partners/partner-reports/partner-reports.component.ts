@@ -656,16 +656,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       CKEDITOR.config.baseFloatZIndex = 1E5;
       if(this.requestText == 'Approve'){
           this.vendoorInvitation.subject = "Approve request has been accepted"; 
-      }else{
-          this.vendoorInvitation.subject = "Your request has been Declined"
-      }
-      this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
-
-          + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
-
-          + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
-
-          + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
+          this.vendoorInvitation.message = "Hi There," + "<br><br>" + "You are approved as a partner Now you can add contacts and redistribute the campaigns."
 
           + "<br><br>" + "Best, " + "<br><br>"
 
@@ -674,7 +665,19 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
           + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
 
           + "<br>" + this.authenticationService.user.companyName
+      }else{
+          this.vendoorInvitation.subject = "Your request has been Declined"
+          
+              this.vendoorInvitation.message = "Hi There," + "<br><br>" + "We are regret to inform you that we can not make a partnership. Sorry for the inconvenience."
 
+              + "<br><br>" + "Best, " + "<br><br>"
+
+              + this.authenticationService.user.firstName
+
+              + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
+
+              + "<br>" + this.authenticationService.user.companyName
+      }
           $( '#approve-decline-modal' ).modal( 'show' );
   }
   
