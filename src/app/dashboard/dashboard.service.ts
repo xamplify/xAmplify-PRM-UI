@@ -64,6 +64,12 @@ export class DashboardService {
             .catch(this.handleError);
     }
     
+    loadRequestedVendorsCount(userId:any) {
+        return this.http.get( this.authenticationService.REST_URL + "partnership/vendor-invitations/count/"+ userId + "?&access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     listOfVendorRequestLogs(pagination: Pagination) {
         const url = this.authenticationService.REST_URL + "partnership/vendor-invitation/analytics?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)

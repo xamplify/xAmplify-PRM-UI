@@ -649,16 +649,18 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       } 
   }
   
-  approveAndDeclineRequest(partnerId: number){
+  approveAndDeclineRequest(partnerId: number, partnerFirstName: any){
       this.partnerId = partnerId;
       this.isShowCKeditor = true;
       CKEDITOR.config.height = '300px';
       CKEDITOR.config.baseFloatZIndex = 1E5;
       if(this.requestText == 'Approve'){
-          this.vendoorInvitation.subject = "Approve request has been accepted"; 
-          this.vendoorInvitation.message = "Hi There," + "<br><br>" + "You are approved as a partner Now you can add contacts and redistribute the campaigns."
+          this.vendoorInvitation.subject = "Welcome to my xAmplify Network"; 
+          this.vendoorInvitation.message = "Hi " + partnerFirstName + ",<br><br>" + "You are approved as a partner Now you can add contacts and redistribute the campaigns."
 
-          + "<br><br>" + "Best, " + "<br><br>"
+          + "<br><br>" + "Be sure to keep an eye out for future campaigns. And if you have any questions or would like to discuss this partnership in more detail, please feel free to contact me."
+          + "<br><br>"
+          + "Looking forward to working with you," + "<br><br>"
 
           + this.authenticationService.user.firstName
 
@@ -666,11 +668,12 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
 
           + "<br>" + this.authenticationService.user.companyName
       }else{
-          this.vendoorInvitation.subject = "Your request has been Declined"
+          this.vendoorInvitation.subject = "Your xAmplify request has been declined"
           
-              this.vendoorInvitation.message = "Hi There," + "<br><br>" + "We are regret to inform you that we can not make a partnership. Sorry for the inconvenience."
+              this.vendoorInvitation.message = "Hi " + partnerFirstName + ",<br><br>" + "While I appreciate your request to join our xAmplify network, I regret to inform you that we have opted to decline your request at this time"
+              + "I apologize for the inconvenience, but perhaps we will have the opportunity to work together in the near future."
 
-              + "<br><br>" + "Best, " + "<br><br>"
+              + "<br><br>" + "Best regards," + "<br><br>"
 
               + this.authenticationService.user.firstName
 
