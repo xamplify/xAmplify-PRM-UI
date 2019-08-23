@@ -726,10 +726,14 @@
 															</h5> <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6>
 														</td> -->
 														<td class="text-center hidden-xs" *ngIf="!isPartner">
-															<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-															<h5 class='mb0'>
-																{{contact.city}}<span
-																	*ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state}}
+															<h5 *ngIf="contact?.address" title="{{contact.address}}" class='mb0'>{{contact.address | slice:0:30}}
+															<span *ngIf="contact.address?.length>30">..</span>
+															</h5>
+															<h5 class='mb0' title="{{contact.city}}">
+																{{contact.city | slice:0:15}}
+																<span *ngIf="contact.city?.length>15">..</span>
+																<span *ngIf="contact?.city && contact.state">,&nbsp;</span>{{contact.state | slice:0:15}}
+																<span *ngIf="contact.state?.length>15">..</span>
 															</h5>
 															<h5 *ngIf="contact?.zipCode || contact.country"
 																class='mt0'>

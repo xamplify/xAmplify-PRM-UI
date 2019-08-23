@@ -697,8 +697,14 @@
 																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
 															<td align="center" class="hidden-xs" *ngIf="!isPartner">
-																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address | slice:0:30}}
+																<span *ngIf="contact.address?.length>30">..</span>
+																</h5>
+																<h5 class='mb0'>{{contact.city | slice:0:15}}
+																<span *ngIf="contact.city?.length>15">..</span>
+																<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state | slice:0:15}}
+																<span *ngIf="contact.state?.length>15">..</span>
+																</h5>
 																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
 															<!-- <td align="center">
@@ -949,8 +955,14 @@
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
 												<td class="hidden-xs" *ngIf="!isPartner">
-													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-													<h5 class='mb0'>{{allcontacts.city}}<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}</h5>
+													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address  | slice:0:30}}
+													<span *ngIf="allcontacts.address?.length>30">..</span>
+													</h5>
+													<h5 class='mb0'>{{allcontacts.city | slice:0:15}}
+													<span *ngIf="allcontacts.city?.length>15">..</span>
+													<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state | slice:0:15}}
+													<span *ngIf="allcontacts.state?.length>15">..</span>
+													</h5>
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
