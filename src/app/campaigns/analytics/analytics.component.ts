@@ -1557,7 +1557,17 @@ showTimeLineView(){
                 object["Response Type"] = this.downloadCsvList[i].rsvpMap.responseType;
                 object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
             }
-        }else{
+        }else if(this.campaignType === 'SOCIAL'){
+            
+            if(latestView != null){
+                let lastviewHours = this.referenceService.formatAMPM(latestView);
+                object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+            }else{
+                object["Latest View"] = ' ';
+            }
+            
+            object["Redistributed Count"] = this.downloadCsvList[i].viewsCount;
+        } else{
          let hours = this.referenceService.formatAMPM(sentTime);
         object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
 
