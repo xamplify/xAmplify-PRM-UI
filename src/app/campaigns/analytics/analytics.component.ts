@@ -1022,7 +1022,7 @@ showTimeLineView(){
 
   getRsvpInvitiesDetails(){
       try{
-      this.loading = true;
+      //this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "invities";
@@ -1082,7 +1082,7 @@ showTimeLineView(){
 
   getRsvpEmailOpenDetails(){
       try{
-      this.loading = true;
+     // this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       //this.rsvpDetailAnalyticsPagination = new Pagination();
@@ -1135,7 +1135,7 @@ showTimeLineView(){
 
   getRsvpEmailNotOpenDetails(){
       try{
-      this.loading = true;
+      //this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       //this.rsvpDetailAnalyticsPagination = new Pagination();
@@ -1208,7 +1208,7 @@ showTimeLineView(){
 
   getRsvpDetails(responseType: any){
       try{
-          this.loading = true;
+          //this.loading = true;
           this.referenceService.detailViewIsLoading = true;
           this.downloadTypeName = 'rsvp';
           this.paginationType = responseType;
