@@ -155,8 +155,9 @@
 									</td>
 									<td class="hidden-xs text-center"
 										*ngIf="!authenticationService.isVendor()">
-										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'">
-											<b>{{emailTemplate.vendorOrganizationName}}</b>
+										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'" title="{{emailTemplate.vendorOrganizationName}}">
+											<b>{{emailTemplate.vendorOrganizationName | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.vendorOrganizationName?.length > 25">..</span>
 										</h5>
 										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'">
 											<b>-</b>
@@ -255,8 +256,8 @@
 									<b *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</b>
 								</h6>
 								<h6 title="{{emailTemplate.vendorOrganizationName}}">
-									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.vendorOrganizationName|slice:0:17}}..</b>
-									<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.vendorOrganizationName}}</b>
+									From <b>{{emailTemplate.vendorOrganizationName | slice:0:20}}</b>
+									<span *ngIf="emailTemplate.vendorOrganizationName?.length>20">..</span>
 								</h6>
 								</ng-container>
 
