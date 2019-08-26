@@ -619,7 +619,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       }else{ this.loadEmailTemplates(this.emailTemplatesPagination); }
     }
     setPagePagination(event:any){ this.setPage(event.page, event.type);}
-    loadPaginationDropdownTemplates(event:Pagination){ this.emailTemplatesLoad();}
+    loadPaginationDropdownTemplates(event:Pagination){
+        this.emailTemplatesPagination = event;
+        this.emailTemplatesLoad();
+    }
     /*************************************************************Campaign Details***************************************************************************************/
     isValidEmail:boolean = false;
     isValidCampaignName:boolean = true;
@@ -1382,7 +1385,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             pagination.campaignDefaultTemplate = false;
             pagination.isEmailTemplateSearchedFromCampaign = true;
         }
-        pagination.maxResults = 12;
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
@@ -1406,7 +1408,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         pagination.campaignDefaultTemplate = false;
         pagination.isEmailTemplateSearchedFromCampaign = true;
-        pagination.maxResults = 12;
         this.emailTemplateService.listTemplatesForVideo(pagination,this.loggedInUserId,this.campaign.selectedVideoId)
         .subscribe(
             (data:any) => {
