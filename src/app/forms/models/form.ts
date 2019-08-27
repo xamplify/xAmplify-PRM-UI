@@ -11,4 +11,7 @@ export class Form {
     createdBy:number;
     updatedBy:number;
     analyticsType:GeoLocationAnalyticsType;
+    landingPageId:number;
+    userId:number;
+    campaignId:number;
 }

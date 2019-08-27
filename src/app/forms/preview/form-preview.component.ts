@@ -112,6 +112,7 @@ export class FormPreviewComponent implements OnInit {
             geoLocationAnalytics.countryCode = response.countryCode;
             geoLocationAnalytics.timezone = response.timezone;
             geoLocationAnalytics.formId = form.id;
+            geoLocationAnalytics.landingPageId = form.landingPageId;
             geoLocationAnalytics.analyticsType = form.analyticsType;
             this.saveAnalytics(geoLocationAnalytics);
         },

@@ -57,7 +57,7 @@ export class ShowLandingPageComponent implements OnInit {
           let userId = data.userId;
           let url = data.url;
           let landingPageAlias = data.landingPageAlias;
-          this.getLocationDetails(campaignId,userId,landingPageAlias,url);
+          //this.getLocationDetails(campaignId,userId,landingPageAlias,url);
         } else {
           this.hasLandingPage = false;
           this.addHeaderMessage("Oops! This link does not exists.",this.errorAlertClass);
