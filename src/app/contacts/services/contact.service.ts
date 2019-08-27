@@ -444,7 +444,7 @@ export class ContactService {
 
     /**MARKETO */
 
-    saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
+    /*saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,
@@ -458,7 +458,7 @@ export class ContactService {
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
             .catch( this.handleError );
-    }
+    }*/
     checkMarketoCredentials(userId: number) {
         return this._http.get(this.authenticationService.REST_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)

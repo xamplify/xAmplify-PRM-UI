@@ -339,7 +339,7 @@
 																title="{{actionsDescription.contact_list_download}}"
 																data-rel="fancybox-button"> <i
 																class="fa fa-download"></i>
-															</a> <span *ngIf="contactList.synchronisedList == true">
+															</a> <span *ngIf="contactList.synchronisedList == true && contactList.socialNetwork != 'MARKETO'">
 																<a data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_synchronize}}"
 																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"

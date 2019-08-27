@@ -1836,8 +1836,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getSalesforceConatactList.contacts[i].emailId ) ) {
                                 socialContact.emailId = this.getSalesforceConatactList.contacts[i].emailId.trim();
-                                socialContact.firstName = this.getSalesforceConatactList.contacts[i];
-                                socialContact.lastName = this.getSalesforceConatactList.contacts[i];
+                                socialContact.firstName = this.getSalesforceConatactList.contacts[i].firstName;
+                                socialContact.lastName = this.getSalesforceConatactList.contacts[i].lastName;
                                 this.socialContactUsers.push( socialContact );
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -2429,24 +2429,14 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         try
         {
 
-            this.allselectedUsers = this.validateMarketoContacts(this.allselectedUsers);
+            this.allselectedUsers = this.validateSocialContacts(this.allselectedUsers);
             this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
 
             if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0)
             {
                 console.log(this.allselectedUsers);
                 this.loading = true;
-                this.contactListObject = new ContactList;
-                this.contactListObject.name = this.model.contactListName;
-                this.contactListObject.isPartnerUserList = this.isPartner;
-                this.socialContact.socialNetwork = "";
-                this.socialContact.contactName = this.model.contactListName;
-                this.socialContact.isPartnerUserList = this.isPartner;
-                this.socialContact.contactType =  "CONTACT";
-                this.socialContact.contacts = this.validateMarketoContacts(this.allselectedUsers);
-                this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
-                this.socialContact.listName = this.model.contactListName;
-                this.contactService.saveMarketoContactList(this.socialContact)
+                this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
                     .subscribe(
                         data =>
                         {
@@ -2666,7 +2656,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.paginatedSelectedIds.push( user.id );
             var object = {
                 "id": user.id,
-                "email": user.emailId,
+                "emailId": user.emailId,
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "country": user.country,
@@ -2716,7 +2706,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     var object = {
 
                         "id": self.pagedItems[i].id,
-                        "email": self.pagedItems[i].emailId,
+                        "emailId": self.pagedItems[i].emailId,
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                         "country": self.pagedItems[i].country,
