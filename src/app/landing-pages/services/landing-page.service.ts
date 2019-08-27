@@ -10,7 +10,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { LandingPage } from '../models/landing-page';
 import { Router } from '@angular/router';
-import { LandingPageAnalytics } from '../models/landing-page-analytics';
+import { GeoLocationAnalytics } from "../../util/geo-location-analytics";
 declare var  $: any;
 @Injectable()
 export class LandingPageService {
@@ -103,8 +103,8 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    saveAnalytics( landingPageAnalytics: LandingPageAnalytics ): Observable<any> {
-        return this.http.post( this.authenticationService.REST_URL + "save/landingPageAnalytics", landingPageAnalytics )
+    saveAnalytics( geoLocationAnalytics: GeoLocationAnalytics ): Observable<any> {
+        return this.http.post( this.authenticationService.REST_URL + "save/geoLocationAnalytics", geoLocationAnalytics )
             .map( this.extractData )
             .catch( this.handleError );
     }

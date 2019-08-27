@@ -7,8 +7,8 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SortOption } from '../../core/models/sort-option';
 import { ReferenceService } from '../../core/services/reference.service';
 import { LandingPageService } from '../services/landing-page.service';
-import { LandingPageAnalytics } from '../models/landing-page-analytics';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+
 declare var  $: any;
 
 @Component({

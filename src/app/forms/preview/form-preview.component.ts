@@ -13,6 +13,10 @@ import { FormSubmit } from '../models/form-submit';
 import { FormSubmitField } from '../models/form-submit-field';
 import { ColumnInfo } from '../models/column-info';
 import {FormOption} from '../models/form-option';
+import { UtilService } from '../../core/services/util.service';
+import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
+import { Ng2DeviceService } from 'ng2-device-detector';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 
 declare var $:any;
 
@@ -21,10 +25,11 @@ declare var $:any;
   selector: 'app-form-preview',
   templateUrl: './form-preview.component.html',
   styleUrls: ['./form-preview.component.css','../../../assets/css/loader.css'],
-  providers: [HttpRequestLoader,FormService,Processor],
+  providers: [HttpRequestLoader,FormService,Processor,LandingPageService],
 })
 export class FormPreviewComponent implements OnInit {
-  ngxLoading = false;
+    deviceInfo: any;
+    ngxLoading = false;
     customResponse: CustomResponse = new CustomResponse();
     alias: any;
     form:Form = new Form();
@@ -39,7 +44,8 @@ export class FormPreviewComponent implements OnInit {
     message: string;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
     private authenticationService:AuthenticationService,private formService:FormService,
-    private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router) {
+    private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
+    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,private utilService:UtilService) {
       
   }
 
@@ -66,6 +72,7 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
+            this.saveLocationDetails(this.form);
           } else {
             this.hasFormExists = false;
             this.addHeaderMessage("Oops! This form does not exists.",this.errorAlertClass);
@@ -81,6 +88,51 @@ export class FormPreviewComponent implements OnInit {
       );
 
   }
+  
+  saveLocationDetails(form:Form){
+      this.utilService.getJSONLocation()
+      .subscribe(
+        (response: any) => {
+            let geoLocationAnalytics = new GeoLocationAnalytics();
+            this.deviceInfo = this.deviceService.getDeviceInfo();
+            if (this.deviceInfo.device === 'unknown') {
+                this.deviceInfo.device = 'computer';
+            }
+            geoLocationAnalytics.openedTime =new Date();
+            geoLocationAnalytics.deviceType = this.deviceInfo.device;
+            geoLocationAnalytics.os = this.deviceInfo.os;
+            geoLocationAnalytics.city = response.city;
+            geoLocationAnalytics.country = response.country;
+            geoLocationAnalytics.isp = response.isp;
+            geoLocationAnalytics.ipAddress = response.query;
+            geoLocationAnalytics.state = response.regionName;
+            geoLocationAnalytics.zip = response.zip;
+            geoLocationAnalytics.latitude = response.lat;
+            geoLocationAnalytics.longitude = response.lon;
+            geoLocationAnalytics.countryCode = response.countryCode;
+            geoLocationAnalytics.timezone = response.timezone;
+            geoLocationAnalytics.formId = form.id;
+            geoLocationAnalytics.analyticsType = form.analyticsType;
+            this.saveAnalytics(geoLocationAnalytics);
+        },
+        (error: string) => {
+            this.logger.error( "Error In Fetching Location Details" ); 
+        }
+      );
+  }
+  
+  saveAnalytics(geoLocationAnalytics:GeoLocationAnalytics){
+      this.landingPageService.saveAnalytics(geoLocationAnalytics)
+      .subscribe(
+        (data: any) => {
+        },
+        (error: string) => {
+            this.logger.error( "Error In saving Location Details",error); 
+        }
+      );
+      
+  }
+  
   
   validateEmail(columnInfo:ColumnInfo){
       if(columnInfo.labelType=='email'){

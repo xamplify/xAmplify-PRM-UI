@@ -1,4 +1,5 @@
 import {ColumnInfo} from './column-info';
+import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
 
 export class Form {
     id:number;
@@ -9,4 +10,5 @@ export class Form {
     isValid = false;    
     createdBy:number;
     updatedBy:number;
+    analyticsType:GeoLocationAnalyticsType;
 }

@@ -9,8 +9,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { filter, pairwise } from 'rxjs/operators';
 import { LandingPageService } from '../services/landing-page.service';
 import { UtilService } from '../../core/services/util.service';
-import { LandingPageAnalytics } from '../models/landing-page-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
+import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 
 
 declare var $:any;
@@ -78,7 +78,7 @@ export class ShowLandingPageComponent implements OnInit {
       this.utilService.getJSONLocation()
       .subscribe(
         (response: any) => {
-            let landingPageAnalytics = new LandingPageAnalytics();
+            let landingPageAnalytics = new GeoLocationAnalytics();
             this.deviceInfo = this.deviceService.getDeviceInfo();
             if (this.deviceInfo.device === 'unknown') {
                 this.deviceInfo.device = 'computer';
@@ -118,8 +118,8 @@ export class ShowLandingPageComponent implements OnInit {
   }
   
   
-  saveAnalytics(landingPageAnalytics:LandingPageAnalytics){
-      this.landingPageService.saveAnalytics(landingPageAnalytics)
+  saveAnalytics(geoLocationAnalytics:GeoLocationAnalytics){
+      this.landingPageService.saveAnalytics(geoLocationAnalytics)
       .subscribe(
         (data: any) => {
         },
