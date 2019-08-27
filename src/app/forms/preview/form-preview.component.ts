@@ -114,6 +114,8 @@ export class FormPreviewComponent implements OnInit {
             geoLocationAnalytics.formId = form.id;
             geoLocationAnalytics.landingPageId = form.landingPageId;
             geoLocationAnalytics.analyticsType = form.analyticsType;
+            geoLocationAnalytics.campaignId = form.campaignId;
+            geoLocationAnalytics.userId = form.userId;
             this.saveAnalytics(geoLocationAnalytics);
         },
         (error: string) => {

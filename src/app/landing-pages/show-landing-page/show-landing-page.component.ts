@@ -11,6 +11,7 @@ import { LandingPageService } from '../services/landing-page.service';
 import { UtilService } from '../../core/services/util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
+import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
 
 
 declare var $:any;
@@ -57,7 +58,7 @@ export class ShowLandingPageComponent implements OnInit {
           let userId = data.userId;
           let url = data.url;
           let landingPageAlias = data.landingPageAlias;
-          //this.getLocationDetails(campaignId,userId,landingPageAlias,url);
+          this.getLocationDetails(campaignId,userId,landingPageAlias,url,data.analyticsType,data.analyticsTypeString,data.formId);
         } else {
           this.hasLandingPage = false;
           this.addHeaderMessage("Oops! This link does not exists.",this.errorAlertClass);
@@ -74,7 +75,7 @@ export class ShowLandingPageComponent implements OnInit {
   }
 
   
-  getLocationDetails(campaignId:number,userId:number,alias:string,url:string){
+  getLocationDetails(campaignId:number,userId:number,alias:string,url:string,analyticsType:GeoLocationAnalyticsType,analyticsTypeString:string,formId:number){
       this.utilService.getJSONLocation()
       .subscribe(
         (response: any) => {
@@ -99,16 +100,25 @@ export class ShowLandingPageComponent implements OnInit {
             landingPageAnalytics.landingPageAlias = alias;
             landingPageAnalytics.campaignId = campaignId;
             landingPageAnalytics.userId = userId;
+            landingPageAnalytics.analyticsType = analyticsType;
+            if(analyticsTypeString=="CAMPAIGN_LANDING_PAGE_FORM" && formId>0){
+                landingPageAnalytics.formId = formId;
+            }
             if(url!=null){
               landingPageAnalytics.url = url;
             }
             this.saveAnalytics(landingPageAnalytics);
-            if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
-              window.location.href = url;
-            } else if (url && !(url.startsWith("http://") || url.startsWith("https://"))) {
-              url = 'http://'+ url;
-              window.location.href = url;
+            if(analyticsTypeString!="CAMPAIGN_LANDING_PAGE_FORM"){
+                if (url && (url.startsWith("http://") || url.startsWith("https://"))) {
+                    window.location.href = url;
+                  } else if (url && !(url.startsWith("http://") || url.startsWith("https://"))) {
+                    url = 'http://'+ url;
+                    window.location.href = url;
+                  }
+            }else{
+                alert("dont do anything");
             }
+            
 
         },
         (error: string) => {
@@ -139,7 +149,7 @@ export class ShowLandingPageComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasLandingPage = true;
             document.getElementById('landing-page-html-body').innerHTML = response.message;
-            this.getLocationDetails(null,null,this.alias,null);
+            this.getLocationDetails(null,null,this.alias,null,response.data,null,0);
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);
@@ -166,7 +176,8 @@ export class ShowLandingPageComponent implements OnInit {
             let campaignId = data.campaignId;
             let userId = data.userId;
             let alias = data.landingPageAlias;
-            this.getLocationDetails(campaignId,userId,alias,null);
+            let analyticsType = data.analyticsType;
+            this.getLocationDetails(campaignId,userId,alias,null,analyticsType,data.analyticsTypeString,0);
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This is invalid link.",this.errorAlertClass);
