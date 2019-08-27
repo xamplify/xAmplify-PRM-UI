@@ -2375,9 +2375,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.socialContact.socialNetwork = "MARKETO";
             this.socialContact.contactName = this.model.contactListName;
             this.socialContact.isPartnerUserList = this.isPartner;
-            this.socialContact.contactType = this.contactType;
-            this.socialContact.contacts = this.socialContactUsers;
-            this.socialContact.contacts = this.validateMarketoContacts(this.socialContactUsers);
+            this.socialContact.contactType = "CONTACT";
+           // this.socialContact.contacts = this.socialContactUsers;
+            this.socialContact.contacts = this.validateSocialContacts(this.socialContactUsers);
             this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
             this.socialContact.listName = this.model.contactListName;
             if (this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ')
@@ -2385,7 +2385,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.loading = true;
                 if (this.socialContactUsers.length > 0)
                 {
-                    this.contactService.saveMarketoContactList(this.socialContact)
+                    this.contactService.saveSocialContactList(this.socialContact)
                         .subscribe(
                             data =>
                             {
@@ -2439,11 +2439,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.contactListObject = new ContactList;
                 this.contactListObject.name = this.model.contactListName;
                 this.contactListObject.isPartnerUserList = this.isPartner;
-                this.socialContact.socialNetwork = "MARKETO";
+                this.socialContact.socialNetwork = "";
                 this.socialContact.contactName = this.model.contactListName;
                 this.socialContact.isPartnerUserList = this.isPartner;
-                this.socialContact.contactType = this.contactType;
-                this.socialContact.contacts = this.allselectedUsers;
+                this.socialContact.contactType =  "CONTACT";
                 this.socialContact.contacts = this.validateMarketoContacts(this.allselectedUsers);
                 this.model.contactListName = this.model.contactListName.replace(/\s\s+/g, ' ');
                 this.socialContact.listName = this.model.contactListName;
