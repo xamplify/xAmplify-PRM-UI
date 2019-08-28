@@ -116,7 +116,8 @@ export class ShowLandingPageComponent implements OnInit {
                     window.location.href = url;
                   }
             }else{
-                alert("dont do anything");
+                let updatedFormUrl  = this.router.url.replace("/clpl/","/f/");
+                window.location.href = updatedFormUrl;
             }
             
 
