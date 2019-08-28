@@ -2348,7 +2348,8 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
                 this.loading = true;
                 if ( this.socialContactUsers.length > 0 ) {
-                    this.contactService.saveSocialContactList( this.socialContact )
+                    //this.contactService.saveSocialContactList( this.socialContact )
+                    this.contactService.saveMarketoContactList( this.socialContact )
                         .subscribe(
                         data => {
                             data = data;
