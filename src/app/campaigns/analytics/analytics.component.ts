@@ -838,6 +838,7 @@ showTimeLineView(){
       .subscribe(
       data => {
         this.campaign = data;
+        alert(this.campaign.formsCount);
         this.smsService = data.smsService;
         this.isChannelCampaign = data.channelCampaign;
         if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId){

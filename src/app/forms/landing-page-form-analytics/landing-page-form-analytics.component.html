@@ -51,8 +51,10 @@
 						</div>
 					</div>
 				</div>
+				
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+				<div class="alert alert-danger" *ngIf="httpRequestLoader.isServerError"><strong>Oops!Something went wrong.Please try after sometime.</strong></div>
+				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
 					<table class="table tgrid">
 						<thead>
 							<tr>
@@ -97,7 +99,7 @@
 					</table>
 				</div>
 
-				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+				<div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isServerError" class="pg8">
 					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
 						(notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 				</div>

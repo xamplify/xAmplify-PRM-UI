@@ -68,7 +68,10 @@ listSubmittedData( pagination: Pagination) {
             }
             this.referenceService.loading( this.httpRequestLoader, false );
         },
-        ( error: any ) => { this.logger.errorPage( error ); } );
+        ( error: any ) => { 
+            this.httpRequestLoader.isServerError = true;
+            this.httpRequestLoader.isLoading = false;
+        } );
 }
 search(){
     this.pagination.pageIndex = 1;
