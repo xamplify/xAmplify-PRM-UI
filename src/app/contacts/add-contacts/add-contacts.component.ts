@@ -2334,15 +2334,31 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
         }
     }
+    
+    validateMarketoContacts(socialUsers: any)   
+    {   
+        let users = []; 
+        for (let i = 0; i < socialUsers.length; i++)    
+        {   
+            if (socialUsers[i].email !== null && this.validateEmailAddress(socialUsers[i].email))   
+            {   
+                let email = socialUsers[i].email.toLowerCase(); 
+                socialUsers[i].email = email;   
+                users.push(socialUsers[i]); 
+            }   
+        }   
+        return users;   
+    }
+    
     saveMarketoContacts() {
 
         try {
-            this.socialContact.socialNetwork = "MARKETO";
+           /* this.socialContact.socialNetwork = "MARKETO";
             this.socialContact.contactName = this.model.contactListName;
             this.socialContact.isPartnerUserList = this.isPartner;
             this.socialContact.contactType = "CONTACT";
             // this.socialContact.contacts = this.socialContactUsers;
-            this.socialContact.contacts = this.validateSocialContacts( this.socialContactUsers );
+*/            this.socialContact.contacts = this.validateMarketoContacts( this.socialContactUsers );
             this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
             this.socialContact.listName = this.model.contactListName;
             if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
@@ -2445,9 +2461,9 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 for ( var i = 0; i < this.getMarketoConatacts.length; i++ ) {
                     let socialContact = new SocialContact();
                     let user = new User();
-                    socialContact.id = i;
+                    socialContact.id = i; 
                     if ( this.validateEmailAddress( this.getMarketoConatacts[i].email ) ) {
-                        socialContact.emailId = this.getMarketoConatacts[i].email;
+                        socialContact.email = this.getMarketoConatacts[i].email;
                         socialContact.firstName = this.getMarketoConatacts[i].firstName;
                         socialContact.lastName = this.getMarketoConatacts[i].lastName;
 

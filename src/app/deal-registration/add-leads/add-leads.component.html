@@ -109,14 +109,14 @@
 
 
             <div class="form-group" [attr.class]="leadStreet" style="margin-bottom: 20px">
-              <label class="control-label">Lead Address
+              <label class="control-label">Address
 
               </label>
               <textarea type="text" maxlength="100"  class="form-control" name="leadstreet" [(ngModel)]=" dealRegistration.leadStreet"
                 [ngModelOptions]="{standalone: true}" id="leadStreet" [disabled]="parent"></textarea>
             </div>
             <div class="form-group" [attr.class]="leadCity" style="margin-bottom: 20px">
-              <label class="control-label">Lead City
+              <label class="control-label">City
 
               </label>
               <input type="text" maxlength="100" name="city"  class="form-control" [(ngModel)]=" dealRegistration.leadCity"
@@ -124,14 +124,14 @@
             </div>
 
             <div class="form-group" [attr.class]="leadState" style="margin-bottom: 20px">
-              <label class="control-label">Lead State/Province
+              <label class="control-label">State/Province
 
               </label>
               <input type="text" maxlength="100" class="form-control" name="lead state" [(ngModel)]=" dealRegistration.leadState"
                 [ngModelOptions]="{standalone: true}" id="leadState" [disabled]="parent"/>
             </div>
             <div class="form-group" [attr.class]="leadPostalCode" style="margin-bottom: 20px">
-              <label class="control-label">Lead Postal Code
+              <label class="control-label">Postal Code
 
               </label>
               <input type="text" maxlength="10" name="companyName"  class="form-control" [(ngModel)]=" dealRegistration.postalCode"
@@ -139,7 +139,7 @@
             </div>
 
             <div class="form-group" [attr.class]="country" style="margin-bottom: 20px">
-              <label class="control-label">Lead Country
+              <label class="control-label">Country
 
               </label>
               <select class="form-control"  [(ngModel)]="dealRegistration.leadCountry" [ngModelOptions]="{standalone: true}"
