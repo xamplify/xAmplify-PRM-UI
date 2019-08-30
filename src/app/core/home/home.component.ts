@@ -98,15 +98,7 @@ export class HomeComponent implements OnInit {
     }
   }
   saveVideoBrandLog(companyLogoPath, logoLink) {
-    try {
-      this.userService.saveBrandLogo(companyLogoPath, logoLink,this.authenticationService.user.id)
-        .subscribe( (data: any) => {
-            if (data !== undefined) { this.xtremandLogger.log("logo updated successfully");}
-          },
-          error => { this.xtremandLogger.error("error" + error); });
-    } catch (error) {
-      this.xtremandLogger.error("error" + error);
-    }
+    console.log("");
   }
   getCompanyId() {
     try {

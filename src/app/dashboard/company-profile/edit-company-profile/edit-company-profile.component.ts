@@ -263,17 +263,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
     errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
     saveVideoBrandLog() {
-      const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
-      if(logoLink && this.companyLogoImageUrlPath && this.loggedInUserId){
-      this.userService.saveBrandLogo(this.companyLogoImageUrlPath, logoLink, this.loggedInUserId)
-        .subscribe(
-          (data: any) => {
-            console.log(data);
-            if (data !== undefined) { console.log('logo updated successfully');
-            } else { this.ngxloading = false; }
-         },
-        (error) => { this.ngxloading = false; console.log(error); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true);});
-      }
+     console.log("");
     }
 
     geoLocation(){
