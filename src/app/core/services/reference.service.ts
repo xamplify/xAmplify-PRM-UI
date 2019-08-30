@@ -102,6 +102,9 @@ export class ReferenceService {
     eventCampaignId: number;
     dealId = 0;
     myMergeTagsInfo:any;
+    
+    eventCampaignTabAccess: boolean = false;
+    
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     superiorId:number = 0;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
