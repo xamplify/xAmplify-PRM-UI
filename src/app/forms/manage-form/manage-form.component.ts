@@ -38,6 +38,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     message = "";
     campaignId = 0;
     landingPageId = 0;
+    landingPageCampaignId = 0;
     statusCode = 200;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
@@ -61,14 +62,18 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.campaignId = this.route.snapshot.params['alias'];
         this.landingPageId = this.route.snapshot.params['landingPageId'];
+        this.landingPageCampaignId  = this.route.snapshot.params['landingPageCampaignId'];
         if(this.campaignId!=undefined){
             this.pagination.campaignId = this.campaignId;
             this.pagination.campaignForm = true;
         }else if(this.landingPageId>0){
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.landingPageForm = true;
+        }else if(this.landingPageCampaignId>0){
+            this.pagination.campaignId = this.landingPageCampaignId;
+            this.pagination.landingPageCampaignForm = true;
         }
-        this.listForms( this.pagination );
+        this.listForms(this.pagination);
     }
 
 
@@ -242,6 +247,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     goToAnalytics(form:Form){
         if(this.pagination.campaignForm){
             this.router.navigate(['/home/forms/'+form.alias+'/'+this.campaignId+'/analytics']);
+        }else if(this.pagination.landingPageCampaignForm){
+            this.router.navigate(['/home/forms/'+form.alias+'/'+this.landingPageCampaignId+'/analytics']);
         }else if(this.pagination.landingPageForm){
             this.router.navigate(['/home/forms/lf/'+form.alias+'/'+this.landingPageId+'/analytics']);
         }else{
@@ -249,7 +256,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }
 
     }
-    
+    goToCampaignAnalytics(){
+        this.router.navigate(['home/campaigns/'+this.landingPageCampaignId+'/details']);
+    }
     
     ngAfterViewInit() {
     }

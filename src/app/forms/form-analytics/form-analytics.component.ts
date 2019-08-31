@@ -9,6 +9,8 @@ import {FormService} from '../services/form.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import {SubmittedFormRow} from '../models/submitted-form-row';
 import {SubmittedFormData} from '../models/submitted-form-data';
+import { Router } from '@angular/router';
+
 declare var $:any,swal:any ;
 
 
@@ -34,7 +36,7 @@ export class FormAnalyticsComponent implements OnInit {
     routerLink = "/home/forms/manage";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService,public formService:FormService, 
-        public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,
+        public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,public router: Router,
         public logger: XtremandLogger
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -47,7 +49,8 @@ export class FormAnalyticsComponent implements OnInit {
         if(this.campaignAlias!=undefined){
             this.pagination.campaignId = parseInt(this.campaignAlias);
             this.campaignForms = true;
-            this.routerLink = "/home/forms/cf/"+this.pagination.campaignId;
+            //this.routerLink = "/home/forms/cf/"+this.pagination.campaignId;
+             this.routerLink = "/home/forms/clpf/"+this.pagination.campaignId;
         }
         this.listSubmittedData(this.pagination);
     }
@@ -106,6 +109,10 @@ export class FormAnalyticsComponent implements OnInit {
     
     getSortedResult(text: any){
         console.log(text);
+    }
+    
+    goToCampaignAnalytics(){
+        this.router.navigate(['home/campaigns/'+parseInt(this.campaignAlias)+'/details']);
     }
 
 }

@@ -12,6 +12,7 @@ import { FormAnalyticsComponent } from './form-analytics/form-analytics.componen
 import { CampaignFormAnalyticsComponent } from './campaign-form-analytics/campaign-form-analytics.component';
 import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics/landing-page-form-analytics.component';
 import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
+import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms/campaign-landing-page-forms.component';
 
 
 
@@ -19,7 +20,7 @@ import { LandingPageFormsComponent } from './landing-page-forms/landing-page-for
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, FormAnalyticsComponent,FormAnalyticsComponent, CampaignFormAnalyticsComponent, LandingPageFormAnalyticsComponent, LandingPageFormsComponent],
+    declarations: [AddFormComponent, ManageFormComponent, FormAnalyticsComponent,FormAnalyticsComponent, CampaignFormAnalyticsComponent, LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent],
     providers: [FormService]
 } )
 export class FormsModule { }
