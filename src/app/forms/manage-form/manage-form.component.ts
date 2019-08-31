@@ -73,6 +73,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     listForms( pagination: Pagination ) {
+        this.customResponse = new CustomResponse();
         this.referenceService.loading( this.httpRequestLoader, true );
         this.formService.list( pagination ).subscribe(
             ( response: any ) => {
@@ -86,7 +87,9 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
-            ( error: any ) => { this.logger.errorPage( error ); } );
+            ( error: any ) => { 
+               this.logger.errorPage(error);
+            } );
     }
     /********************Pagaination&Search Code*****************/
 
@@ -177,8 +180,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
         },
         ( error: string ) => {
-            this.logger.errorPage(error);
-            this.referenceService.showServerError(this.httpRequestLoader);
+            this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+            this.customResponse = new CustomResponse('ERROR',this.httpRequestLoader.message,true);
             }
         );
     }

@@ -60,6 +60,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     
     
     listLandingPages( pagination: Pagination ) {
+        this.customResponse = new CustomResponse();
         this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.list( pagination ).subscribe(
             ( response: any ) => {
@@ -166,8 +167,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
         },
         ( error: string ) => {
-            this.logger.errorPage(error);
-            this.referenceService.showServerError(this.httpRequestLoader);
+            this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+            this.customResponse = new CustomResponse('ERROR',this.httpRequestLoader.message,true);
             }
         );
     }

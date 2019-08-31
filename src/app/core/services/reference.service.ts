@@ -182,6 +182,12 @@ export class ReferenceService {
     loading(httpRequestLoader: HttpRequestLoader, isLoading: boolean) {
         httpRequestLoader.isLoading = isLoading;
         httpRequestLoader.isServerError = false;
+        httpRequestLoader.message = "";
+    }
+    showServerErrorMessage(httpRequestLoader: HttpRequestLoader){
+        httpRequestLoader.isLoading = false;
+        httpRequestLoader.isServerError = true;
+        httpRequestLoader.message = "Oops!There is some technical error,Please try after sometime";
     }
     isPlayVideoLoading(loading:boolean){
       return this.isPlayVideo = loading;

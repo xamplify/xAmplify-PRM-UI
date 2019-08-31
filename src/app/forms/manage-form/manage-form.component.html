@@ -63,9 +63,8 @@
 
         <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
         <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-        <app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
         <section [hidden]="!isListView">
-          <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+          <ng-container *ngIf="!httpRequestLoader.isLoading">
             <div class="table-responsive">
               <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
                 <thead>

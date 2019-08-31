@@ -9,7 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { LandingPageService } from '../services/landing-page.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { VideoUtilService } from '../../videos/services/video-util.service';
-
+import {LandingPageAnalyticsPostDto} from '../../landing-pages/models/landing-page-analytics-post-dto';
 declare var  $,swal: any;
 
 @Component({
@@ -40,6 +40,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     barChartErrorMessage:string="";
     barChartPopUp:boolean =false;
     barChartFilterErrorMessage:string="";
+    landingPageAnalyticsPostDto:LandingPageAnalyticsPostDto = new LandingPageAnalyticsPostDto();
     constructor( public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
@@ -50,6 +51,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     ngOnInit() {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.pagination.landingPageId = this.landingPageId;
+        this.landingPageAnalyticsPostDto.analyticsTypeString = "Campaign&LandingPage";
         this.pagination.loader = this.httpRequestLoader;
         this.listAnalytics(this.pagination);
         this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
@@ -63,7 +65,10 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.barChartData  = undefined;
         if (timePeriod !== undefined) {
             this.videoUtilService.timePeriod = timePeriod;
-            this.landingPageService.getBarCharViews(timePeriod,this.landingPageId,this.pagination.userId).subscribe(
+            this.landingPageAnalyticsPostDto.timePeriod = timePeriod;
+            this.landingPageAnalyticsPostDto.landingPageId = this.landingPageId;
+            this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
+            this.landingPageService.getBarCharViews(this.landingPageAnalyticsPostDto).subscribe(
                     ( response: any ) => {
                         this.barChartStatusCode = response.statusCode;
                         if(this.barChartStatusCode==200){
@@ -71,7 +76,6 @@ export class LandingPageAnalyticsComponent implements OnInit {
                         }
                     },
                     ( error: any ) => {  this.barChartErrorMessage="OOps! Unable to load bar chart." } );
-            
         }
        
     }
@@ -184,7 +188,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     
     listBarChartAnalytics(pagination:Pagination,timePeriod:string,filterValue:any){
         this.referenceService.loading( pagination.loader, true );
-        this.landingPageService.listBarChartAnalytics( pagination,timePeriod,filterValue).subscribe(
+        this.landingPageService.listBarChartAnalytics(pagination,timePeriod,filterValue,this.landingPageAnalyticsPostDto.analyticsTypeString).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;
                 if(this.statusCode==200){

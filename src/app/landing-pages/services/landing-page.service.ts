@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { LandingPage } from '../models/landing-page';
+import {LandingPageAnalyticsPostDto} from '../models/landing-page-analytics-post-dto';
 import { Router } from '@angular/router';
 import { GeoLocationAnalytics } from "../../util/geo-location-analytics";
 declare var  $: any;
@@ -42,9 +43,9 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    listBarChartAnalytics( pagination: Pagination,timePeriod:string,value:any ): Observable<any> {
-        let url = this.URL + "analytics/bar-chart-filter-views/"+timePeriod+"/"+value+"?";
-        return this.http.post(url+"access_token=" + this.authenticationService.access_token, pagination )
+    listBarChartAnalytics(pagination: Pagination,timePeriod:string,value:any,analyticsType:string): Observable<any> {
+        let url = this.URL + "analytics/bar-chart-filter-views/"+timePeriod+"/"+value +"/"+analyticsType+"?";
+        return this.http.post(url+"access_token=" + this.authenticationService.access_token,pagination)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -55,8 +56,8 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getBarCharViews(timePeriod:string,landingPage:number, userId: number ): Observable<any> {
-        return this.http.get( this.URL + "analytics/barchart-views/"+timePeriod+"/"+landingPage+"/"+userId+"?access_token=" + this.authenticationService.access_token,"")
+    getBarCharViews(landingPageAnalyticsDto:LandingPageAnalyticsPostDto): Observable<any> {
+        return this.http.post( this.URL + "analytics/barchart-views?access_token=" + this.authenticationService.access_token,landingPageAnalyticsDto)
             .map( this.extractData )
             .catch( this.handleError );
     }
