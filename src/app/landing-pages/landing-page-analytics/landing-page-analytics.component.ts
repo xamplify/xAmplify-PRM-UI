@@ -21,6 +21,7 @@ declare var  $,swal: any;
 export class LandingPageAnalyticsComponent implements OnInit {
     daySort: { 'name': string; 'value': string; };
     landingPageId: number = 0;
+    campaignId:number = 0;
     pagination: Pagination = new Pagination();
     countryPagination:Pagination = new Pagination();
     barChartPagination:Pagination = new Pagination();
@@ -50,14 +51,26 @@ export class LandingPageAnalyticsComponent implements OnInit {
 
     ngOnInit() {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
-        this.pagination.landingPageId = this.landingPageId;
-        this.landingPageAnalyticsPostDto.analyticsTypeString = "Campaign&LandingPage";
+        this.campaignId = this.route.snapshot.params['campaignId'];
+        if(this.campaignId!=undefined){
+            this.pagination.campaignId = this.campaignId;
+            this.landingPageId = 0;
+            this.pagination.landingPageId = 0;
+            this.landingPageAnalyticsPostDto.analyticsTypeString = "Campaign";
+            this.landingPageAnalyticsPostDto.campaignId = this.campaignId;
+            this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
+        }else{
+            this.pagination.landingPageId = this.landingPageId;
+            this.pagination.campaignId = 0;
+            this.landingPageAnalyticsPostDto.analyticsTypeString = "Campaign&LandingPage";
+            this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
+            this.landingPageAnalyticsPostDto.landingPageId = this.landingPageId;
+        }
         this.pagination.loader = this.httpRequestLoader;
         this.listAnalytics(this.pagination);
         this.landingPageAnalyticsContext = {'analyticsData':this.pagination};
         this.getCountryViews();
         this.getBarChartAnalytics(this.videoUtilService.sortMonthDates[3].value);
-        
     }
     
     getBarChartAnalytics(timePeriod:string){
@@ -68,6 +81,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.landingPageAnalyticsPostDto.timePeriod = timePeriod;
             this.landingPageAnalyticsPostDto.landingPageId = this.landingPageId;
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
+            this.landingPageAnalyticsPostDto.campaignId = this.campaignId;
             this.landingPageService.getBarCharViews(this.landingPageAnalyticsPostDto).subscribe(
                     ( response: any ) => {
                         this.barChartStatusCode = response.statusCode;
@@ -81,7 +95,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     }
     
     getCountryViews(){
-        this.landingPageService.getViews(this.landingPageId,this.pagination.userId).subscribe(
+        this.landingPageService.getCountryViewershipMapData(this.landingPageAnalyticsPostDto).subscribe(
             ( response: any ) => {
                 this.viewsStatusCode = response.statusCode;
                 if(this.viewsStatusCode==200){
@@ -111,7 +125,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
                 }
                 this.referenceService.loading(pagination.loader, false );
             },
-            ( error: any ) => { this.logger.errorPage( error ); } );
+            ( error: any ) => {this.closeModal();this.logger.errorPage( error ); } );
     
     }
     
@@ -160,6 +174,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.barChartPopUp = false;
         $('#country-views-modal').modal('show');
         this.countryPagination.landingPageId = this.landingPageId;
+        this.countryPagination.campaignId = this.campaignId;
         this.countryPagination.userId = this.authenticationService.getUserId();
         this.countryPagination.loader = this.countryViewsLoader;
         this.countryCode = countryCode;
@@ -182,6 +197,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.barChartPagination.landingPageId = this.landingPageId;
         this.barChartPagination.userId = this.authenticationService.getUserId();
         this.barChartPagination.loader = this.barChartViewsLoader;
+        this.barChartPagination.campaignId = this.campaignId;
         this.listBarChartAnalytics(this.barChartPagination, this.videoUtilService.timePeriod, value);
         this.barChartViewsAnalyticsContext = {'analyticsData':this.barChartPagination};
     }

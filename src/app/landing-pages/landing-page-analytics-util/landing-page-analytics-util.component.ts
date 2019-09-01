@@ -34,13 +34,13 @@ export class LandingPageAnalyticsUtilComponent implements OnInit {
 
     ngOnInit() {
         this.pagination = this.map.get("pagination");
-        console.log(this.pagination);
         this.listAnalytics( this.pagination,"");
         this.getViews();
     }
     
     getViews(){
-        this.landingPageService.getViews(this.landingPageId,this.pagination.userId).subscribe(
+        alert("jere in component");
+       /* this.landingPageService.getCountryViewershipMapData(this.landingPageId,this.pagination.userId).subscribe(
             ( response: any ) => {
                 this.viewsStatusCode = response.statusCode;
                 if(this.viewsStatusCode==200){
@@ -48,7 +48,7 @@ export class LandingPageAnalyticsUtilComponent implements OnInit {
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
-            ( error: any ) => { this.logger.errorPage( error ); } );
+            ( error: any ) => { this.logger.errorPage( error ); } );*/
     }
     
     listAnalytics(pagination:Pagination,countryCode:string){

@@ -50,8 +50,8 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getViews(landingPage:number, userId: number ): Observable<any> {
-        return this.http.get( this.URL + "analytics/get-views/"+landingPage+"/"+userId+"?access_token=" + this.authenticationService.access_token,"")
+    getCountryViewershipMapData(landingPageAnalyticsDto:LandingPageAnalyticsPostDto): Observable<any> {
+        return this.http.post( this.URL + "analytics/get-country-views?access_token=" + this.authenticationService.access_token,landingPageAnalyticsDto)
             .map( this.extractData )
             .catch( this.handleError );
     }

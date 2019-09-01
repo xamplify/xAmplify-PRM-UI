@@ -12,6 +12,7 @@ export const routes: Routes = [
     { path: "add", component: AddLandingPageComponent },
     { path: "manage", component: ManageLandingPageComponent },
     { path: ":landingPageId/analytics", component: LandingPageAnalyticsComponent },
+    { path: ":campaignId/campaign/analytics", component: LandingPageAnalyticsComponent },
     ];
 @NgModule( {
     imports: [RouterModule.forChild( routes )],

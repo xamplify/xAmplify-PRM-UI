@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
 import { CampaignReport } from '../models/campaign-report';
@@ -136,7 +136,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
-    public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService,private dealRegService:DealRegistrationService) {
+    public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService,private dealRegService:DealRegistrationService,public router:Router) {
       try{
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
@@ -1936,8 +1936,11 @@ showTimeLineView(){
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
   }
-
   showLandingPagePreview(landingPage:LandingPage){
     this.previewLandingPageComponent.showPreview(landingPage);
 }
+  goToCampaignLandingPageAnalytics(campaignId:number){
+      this.router.navigate(['home/landing-pages/'+campaignId+'/campaign/analytics']);
+  }
+  
 }
