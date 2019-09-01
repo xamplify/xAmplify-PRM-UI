@@ -39,7 +39,6 @@ export class LandingPageAnalyticsUtilComponent implements OnInit {
     }
     
     getViews(){
-        alert("jere in component");
        /* this.landingPageService.getCountryViewershipMapData(this.landingPageId,this.pagination.userId).subscribe(
             ( response: any ) => {
                 this.viewsStatusCode = response.statusCode;
