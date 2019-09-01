@@ -225,4 +225,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
             ( error: any ) => {  this.barChartFilterErrorMessage="OOps! Unable to load bar chart for "+this.videoUtilService.timePeriod } );
     }
 
+    goToCampaignAnalytics(){
+        this.router.navigate(['home/campaigns/'+this.campaignId+'/details']);
+    }
 }
