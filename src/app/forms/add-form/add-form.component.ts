@@ -549,7 +549,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
      }
      
      save(form:Form){
-         console.log(form);
          this.formService.saveForm(form)
          .subscribe(
          (result:any) => {
@@ -559,11 +558,15 @@ export class AddFormComponent implements OnInit, OnDestroy {
              this.referenceService.isCreated = true;
              this.router.navigate(["/home/forms/manage"]);
             }
-            
          },
          (error:string) => {
              this.ngxloading = false;
-             this.logger.errorPage(error);
+             let message = JSON.parse(error['_body']).message;
+             if(message=="duplicate name"){
+                 this.customResponse = new CustomResponse( 'ERROR', "Formname Already Exists", true );
+             }else{
+                 this.customResponse = new CustomResponse( 'ERROR', this.referenceService.serverErrorMessage, true );
+             }
          });
      
      }
@@ -583,7 +586,12 @@ export class AddFormComponent implements OnInit, OnDestroy {
          },
          (error:string) => {
              this.ngxloading = false;
-             this.logger.errorPage(error);
+             let message = JSON.parse(error['_body']).message;
+             if(message=="duplicate name"){
+                 this.customResponse = new CustomResponse( 'ERROR', "Formname Already Exists", true );
+             }else{
+                 this.customResponse = new CustomResponse( 'ERROR', this.referenceService.serverErrorMessage, true );
+             }
          });
      
      }

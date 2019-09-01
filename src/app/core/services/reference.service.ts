@@ -102,7 +102,7 @@ export class ReferenceService {
     loadingPreview = false;
     dealId = 0;
     smsCampaign = false;
-    
+    serverErrorMessage = 'Oops!There is some technical error,Please try after sometime';
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
@@ -187,7 +187,7 @@ export class ReferenceService {
     showServerErrorMessage(httpRequestLoader: HttpRequestLoader){
         httpRequestLoader.isLoading = false;
         httpRequestLoader.isServerError = true;
-        httpRequestLoader.message = "Oops!There is some technical error,Please try after sometime";
+        httpRequestLoader.message = this.serverErrorMessage;
     }
     isPlayVideoLoading(loading:boolean){
       return this.isPlayVideo = loading;
