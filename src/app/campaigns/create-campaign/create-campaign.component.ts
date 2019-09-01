@@ -838,16 +838,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         });
     }
     setCoBrandingLogo(event:any){
-        this.campaign.enableCoBrandingLogo = event;
-        let isRegularCoBranding = this.campaign.emailTemplate!=undefined &&this.campaign.emailTemplate.regularCoBrandingTemplate;
-        let isVideoCoBranding =  this.campaign.emailTemplate!=undefined &&  this.campaign.emailTemplate.videoCoBrandingTemplate;
-        /*if(!this.campaign.enableCoBrandingLogo || isRegularCoBranding || isVideoCoBranding){
-            this.hideCoBrandedEmailTemplate = true;
-        }else{
-            this.hideCoBrandedEmailTemplate = false;
-        }*/
-        this.removeTemplateAndAutoResponse();
-        this.filterCoBrandedTemplates(event);
+        if(!this.isLandingPageSwitch){
+            this.campaign.enableCoBrandingLogo = event;
+            let isRegularCoBranding = this.campaign.emailTemplate!=undefined &&this.campaign.emailTemplate.regularCoBrandingTemplate;
+            let isVideoCoBranding =  this.campaign.emailTemplate!=undefined &&  this.campaign.emailTemplate.videoCoBrandingTemplate;
+            /*if(!this.campaign.enableCoBrandingLogo || isRegularCoBranding || isVideoCoBranding){
+                this.hideCoBrandedEmailTemplate = true;
+            }else{
+                this.hideCoBrandedEmailTemplate = false;
+            }*/
+            this.removeTemplateAndAutoResponse();
+            this.filterCoBrandedTemplates(event);
+        }
+        
+       
     }
 
     removeTemplateAndAutoResponse(){
