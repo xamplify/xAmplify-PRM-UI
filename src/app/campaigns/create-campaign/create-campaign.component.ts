@@ -730,7 +730,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                  this.isValidCampaignName = true;
              }
          }else{
-             console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
              if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
                  this.isValidCampaignName = false;
              }else{
@@ -2875,6 +2874,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.isLandingPage = true;
         this.isEmailTemplate = true;
         this.landingPage = landingPage;
+        /*this.emailTemplateHrefLinks = [];
+        this.getAnchorLinksFromEmailTemplate(landingPage.htmlBody);
+        if(this.emailTemplateHrefLinks.length == 0){
+            this.urls = [];
+        }*/
     }
 
     searchLandingPage(){
