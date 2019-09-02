@@ -96,7 +96,7 @@
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
 											</ng-container>
                     					</td>
-                     <td>
+                     					<td>
 											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:36}}
 													<span *ngIf="campaign.campaignName?.length>36">...</span>
 											</h4>
