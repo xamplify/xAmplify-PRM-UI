@@ -30,6 +30,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     enableLeadsByVendor = false;
     changeTemplateCss = false;
     pagination = new Pagination();
+    formAccess = false;
+    forms: any;
+    landingPages:any;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger ) {
         console.log( authService.getUserId() );
@@ -110,6 +113,43 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                  {
                     this.authService.module.isVendor = true;
                 }
+                
+                if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
+                    this.pagination.pageIndex = 1;
+                    this.pagination.maxResults = 10000;
+                    this.dashBoardService.loadVendorDetails( this.authService.getUserId(), this.pagination ).subscribe( response => {
+                        response.data.forEach( element => {
+                            this.refService.getOrgCampaignTypes( element.companyId ).subscribe( data => {
+                                if ( !this.enableLeadsByVendor ) {
+                                    this.enableLeadsByVendor = data.enableLeads;
+                                }
+                            } );
+                        } );
+                    } )
+                    this.authService.module.isCompanyPartner = true;
+                }
+                
+                
+                this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
+                    this.refService.getOrgCampaignTypes( response ).subscribe( data => {
+                        this.enableLeads = data.enableLeads;
+                        this.formAccess = data.form;
+                        /**********Form**************/
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && this.formAccess ) {
+                            this.authService.module.hasFormAccess = true;
+                        }
+                        /**********Landing Page**************/
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPage ) {
+                            this.authService.module.hasLandingPageAccess = true;
+                        }
+                       /*************Landing Page Campaign*************/ 
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPageCampaign ) {
+                            this.authService.module.hasLandingPageCampaignAccess = true;
+                        }
+                        
+                    } );
+                    /**********Landing Page************/    
+                } )
 
             }
         } catch ( error ) { console.log( error ); }
@@ -119,34 +159,43 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
     }
     ngDoCheck() {
-        if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false ); }
+        if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false,false,false ); }
     }
     openOrCloseTabs( urlType: string ) {
         if ( window.innerWidth < 990 ) {
             if ( urlType === 'emailtemplates' ) {
                 this.emailtemplates = this.router.url.includes( 'emailtemplates' ) ? true : ( this.emailtemplates = !this.emailtemplates );
-                this.clearSubMenuValues( this.emailtemplates, false, false, false, false );
+                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false );
             }
             else if ( urlType === 'contacts' ) {
                 this.contacts = this.router.url.includes( 'contacts' ) ? true : ( this.contacts = !this.contacts );
-                this.clearSubMenuValues( false, false, false, this.contacts, false );
+                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false );
             }
             else if ( urlType === 'partners' ) {
                 this.partners = this.router.url.includes( 'partners' ) ? true : ( this.partners = !this.partners );
-                this.clearSubMenuValues( false, false, false, false, this.partners );
+                this.clearSubMenuValues( false, false, false, false, this.partners,false,false );
             }
             else if ( urlType === 'campaigns' ) {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
-                this.clearSubMenuValues( false, this.campaigns, false, false, false );
+                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false );
             }
             else if ( urlType === 'content' ) {
                 this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
-                this.clearSubMenuValues( false, false, this.videos, false, false );
+                this.clearSubMenuValues( false, false, this.videos, false, false,false,false );
             }
+            else if(urlType ==='forms') {
+                this.videos = this.router.url.includes('forms') ? true: (this.forms = !this.forms);
+                this.clearSubMenuValues(false,false,false,false,false,this.forms,false); 
+            }
+            else if(urlType ==='landing-pages') {
+                this.videos = this.router.url.includes('forms') ? true: (this.landingPages = !this.landingPages);
+                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages); 
+               }
         }
     }
-    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners ) {
+    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages ) {
         this.emailtemplates = emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts; this.partners = partners;
+        this.forms = forms;this.landingPages = landingPages;
     }
     logout() {
         this.authService.logout();
