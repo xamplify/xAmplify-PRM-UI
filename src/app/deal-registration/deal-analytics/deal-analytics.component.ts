@@ -626,7 +626,7 @@ export class DealAnalyticsComponent implements OnInit
                 this.getEventCampaignByCampaignId(campaignId);
               } else
               {
-                this.campaignType = 'EMAIL';
+                this.campaignType = 'REGULAR';
               }
             }
             this.getEmailSentCount(this.campaignId);

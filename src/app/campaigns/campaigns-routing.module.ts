@@ -16,7 +16,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
 
 export const campaignRoutes: Routes = [
-  { path: "", redirectTo: "select", pathMatch: "full" },
+  { path: "", redirectTo: "manage", pathMatch: "full" },
   { path: "select", component: SelectCampaignTypeComponent },
   { path: "create", component: CreateCampaignComponent },
   { path: "social", component: SocialCampaignComponent },

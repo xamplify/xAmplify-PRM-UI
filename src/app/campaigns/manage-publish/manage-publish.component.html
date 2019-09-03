@@ -23,7 +23,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="tabbable tabbable-custom tabbable-noborder">
-				<div class="tab-content" style="min-height: 677px;">
+				<div class="tab-content" >
 					<div class="page-bar m10">
 						<ul class="mix-filter col-xs-6 col-sm-12 col-md-6 p0 m0">
 							<!-- <li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li> -->
@@ -32,7 +32,6 @@
 							<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign">Social</li>
 							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
-							<li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign">SMS</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
@@ -64,8 +63,8 @@
 						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
 						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
 					<section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-						<div class="table-responsive">
-							<table class='table tgrid table-hover table-sm hidden-xs' *ngIf="isListView">
+						<div class="">
+							<table [class.bottomTableCss]="pagination.pagedItems.length<5" class='table tgrid table-hover table-sm hidden-xs' *ngIf="isListView">
 								<thead>
 									<tr>
                       <th colspan="2" style="width: 30%">Campaign</th>
@@ -83,20 +82,14 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
 											</ng-container>
-											<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
-												</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 											</ng-container>
-											<ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
-											</ng-container>
                     					</td>
-                     					<td>
+                     <td>
 											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:36}}
 													<span *ngIf="campaign.campaignName?.length>36">...</span>
 											</h4>
@@ -160,19 +153,11 @@
 												</a>
 
 
-													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
 													 data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
-													
-													<a *ngIf="campaign.formsCount>0" (click)="goToFormAnalytics(campaign.campaignId)"
-													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
-														<i class="fa fa-wpforms"></i>
-														<span class="badge" id="notification">{{campaign.formsCount}}</span>
-													</a>
-													
-													
-													<!-- <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+													<!-- <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a> -->
@@ -218,7 +203,7 @@
 														</li>
 														<ng-container *ngIf="campaign.launched">
 														<li    *ngIf="campaign.launched">
-														<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+														<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Campaign
@@ -284,9 +269,6 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
 											</ng-container>
-											<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
-												</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
                       </ng-container>
@@ -330,13 +312,13 @@
                           </ng-container>
                           <ng-container *ngIf="campaign.launched">
                             <li>
-                              <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+                              <a *ngIf="hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
                                 data-rel="fancybox-button" (click)="campaginRouter(campaign)" title="Campaign Based Reports">
                                 <i class="fa fa-line-chart"></i> Campaign Analytics
                               </a>
                             </li>
                             <li>
-                              <a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+                              <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
                                 data-rel="fancybox-button" title="Copy campaign" (click)="openSaveAsModal(campaign)">
                                 <i class="fa fa-files-o"></i> Copy campaign
                               </a>
@@ -379,7 +361,7 @@
 											</h4>
 											<h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
 											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
-											<h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By<b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h6>
+											<h6 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h6>
 											<h6>
 											<span>
 												<span *ngIf="campaign.launched">Launched On</span>
@@ -407,7 +389,7 @@
 												</span>
 											</div>
 											<div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
-												<span *ngIf="campaign.launched && campaign.showCancelButton">Launched</span>
+												<span *ngIf="campaign.launched">Launched</span>
 												<div  class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</div>
                         <ng-container *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
                           <span *ngIf="!campaign.launched && campaign.launchedOn?.length > 0">Scheduled</span>
@@ -426,31 +408,25 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
-												<ng-container *ngIf="campaign.formsCount>0" >
-													<a (click)="goToFormAnalytics(campaign.campaignId)"
-													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
-														<i class="fa fa-wpforms"></i>
-													</a>
-													<span class="badge" id="notification-list">{{campaign.formsCount}}</span>
-												</ng-container>
+
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
-														<i style="color: white">{{campaign.redistributedCount}}</i>
+														<b style="color: white">{{campaign.redistributedCount}}</b>
 													</a>
 
-													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor"
+													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
                          								 (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
-													<a *ngIf=" (campaign.campaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+													<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
 													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
 														<i class="fa fa-files-o"></i>
 													</a>
 													 <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
 						                       		 (click)="goToPreviewPartners(campaign)"
 						                       		 data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_preview_partner}}" data-rel="fancybox-button">
-						                         		<i class="fa fa-handshake-o" id="partner-icon"></i>
+						                         		<i class="fa fa-handshake-o"></i>
 						                       		</a>
 													<!-- <a *ngIf="isOnlyPartner" data-rel="fancybox-button" (click)="openSaveAsModal(campaign.campaignId, campaign.campaignName)" title="Save As">
 														<i class="fa fa-files-o"></i>

@@ -40,7 +40,7 @@
             <th class="center">Campaign Name</th>
             <th class="center">Added By (Partner)</th>
             <th class="center" *ngIf ="!isPartner && pageText != 'TOTAL LEADS'">Status</th>
-            <th class="center">Actions</th>
+            <th class="center" style="width: 18%">Actions</th>
             <!--  <th class="center">Details</th> -->
           </tr>
         </thead>
@@ -48,7 +48,7 @@
           <ng-container *ngFor="let item of pagination.pagedItems;let i=index">
             <tr>
               <td>
-                <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true"></app-user-info>
+                <app-user-info [userInfo]="item" [isCompanyInfo]="true"></app-user-info>
               </td>
 
               <td class="re-distributed-count" title="{{item.dealTitle}}" *ngIf="pageText != 'TOTAL LEADS'">{{item.dealTitle | slice:0:20}}
@@ -70,6 +70,7 @@
                 <h5 style="font-weight: 600; color: #676767;">
                   <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
                   </app-timestamp>
+                  
                 </h5>
               </td>
               <td *ngIf="filter.length > 0 && item.partner != null">
@@ -83,7 +84,8 @@
                   <span *ngIf="item.partner.emailId?.length>30">...</span>
                 </h6>
                 <h5 style="font-weight: 600; color: #676767;">
-                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
+                 
+                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.dealCreatedTime">
                   </app-timestamp>
                 </h5>
               </td>
@@ -132,7 +134,8 @@
                 </a>
                 <a *ngIf="isPartner" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="Comments" style="margin-top: 10px">
                    
-                 <button class="btn btn-primary">{{item.dealButtonText}}</button>
+                  <button class="btn btn-primary register_deal" *ngIf="item.deal" >Update Deal</button>
+                  <button class="btn btn-primary register_deal" *ngIf="!item.deal" >Register Deal</button> 
                    
               
               </a>

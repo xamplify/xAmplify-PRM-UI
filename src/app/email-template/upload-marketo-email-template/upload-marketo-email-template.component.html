@@ -8,8 +8,8 @@
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
-				<li><a [routerLink]="['../../emailtemplates/select']">Select Template</a><i class="fa fa-angle-right"></i></li>
-				<li><a style="color: blue;">Marketo Template</a></li>
+				<li><a [routerLink]="['../../../emailtemplates/select']">Select Template</a><i class="fa fa-angle-right"></i></li>
+				<li><a >Marketo Template</a></li>
 			</ul>
 		</div>
 		<!-- BEGIN PAGE CONTENT-->
@@ -19,10 +19,10 @@
 					<form>
 						<div class="row">
 							<div class="col-xs-12 col-md-4" >
-								<h4 style="float:right;">Template Name<font style="color: red;">*</font> :</h4>
+								<h4 >Template Name<font style="color: red;">*</font> :</h4>
 							</div>
 							<div class="col-xs-12 col-md-8">
-								<input type="text" class="form-control" style="border-left: 5px solid #a94442" id="templateName" [(ngModel)]="model.templateName"
+								<input type="text" class="form-control" style="border-left: 1px solid #a94442" id="templateName" [(ngModel)]="model.templateName"
 								 name="templateName" minlength="1" maxlength="50" placeholder="Please name your template" #templateName="ngModel"
 								 (ngModelChange)="checkAvailableNames($event)">
 								<div *ngIf="!isValidTemplateName" class="alert alert-danger">Name is required</div>
@@ -31,11 +31,11 @@
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-md-4" >
-								<h4 style="float:right;">Template Type<font style="color: red;">*</font> :</h4>
+								<h4 >Template Type<font style="color: red;">*</font> :</h4>
 							</div>
 							<div class="col-xs-12 col-md-8">
 								<div >
-									<select class="form-control" style="border-left: 5px solid #42A948" id="isRegularUpload" [(ngModel)]="model.isRegularUpload"
+									<select class="form-control" style="border-left: 1px solid #42A948" id="isRegularUpload" [(ngModel)]="model.isRegularUpload"
 									 name="isRegularUpload" [ngModelOptions]="{standalone: true}" (ngModelChange)="setVideoGif($event)">
 
 										<option [value]="'REGULAR'" selected>REGULAR</option>
@@ -56,7 +56,7 @@
 						</div>
 
 
-						
+
 
 						<div class="row" style="margin-top: 20px;margin-right: 0px">
 

@@ -11,7 +11,7 @@
                 <div class='text-input__loading--line thin w75'></div>
             </div>
             <div class="panel panel-default" *ngIf="result.jsonResponse?.status === false && result.jsonResponse?.body === null">
-                <h5 class="p10">{{result.jsonResponse.title}} <a (click)="test(result)" class="btn btn-success btn-xs">Try again</a></h5>                
+                <h5 class="p10">The spam checker should automatically begin in just a moment. If it doesn't start after a few seconds please click <!-- {{result.jsonResponse.title}} --> <a (click)="test(result)" class="btn btn-success btn-xs">Refresh</a> to try again.</h5>                
             </div>
             <div class="panel panel-default" *ngIf="result.jsonResponse?.status">                
                 <div class="panel-heading" role="tab" id="headingOne" aria-controls="collapseOne">

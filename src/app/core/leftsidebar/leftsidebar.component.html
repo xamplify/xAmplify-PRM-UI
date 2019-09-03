@@ -1,18 +1,19 @@
 <!-- BEGIN SIDEBAR -->
-<div class="page-sidebar-wrapper" *ngIf="authService.user.hasCompany">
+<div class="page-sidebar-wrapper" *ngIf="authService.user.hasCompany || authService.isOnlyUser()">
   <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
   <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
   <div class="page-sidebar navbar-collapse collapse">
     <!-- BEGIN SIDEBAR MENU -->
     <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-      <li  [ngClass]="{'active': location?.path().includes('dashboard')}">
+      <li  [ngClass]="{'active': location.path().includes('dashboard')}">
         <a [routerLink]="['/home/dashboard/default']" ><!-- [class.disabled]="!authService.user.hasCompany ?true:null" -->
         <i class="icon-home"></i>
         <span class="title">Account Dashboard</span>
         <span class="selected"></span>
         </a>
       </li>
-      <li  *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor  || authService.module.isPartner" [ngClass]="{'active': location.path().includes('partners')}">
+
+      <li  *ngIf="authService.user.hasCompany && authService.module.isPartner" [ngClass]="{'active': location.path().includes('partners')}">
         <a href="javascript:;" (click)="openOrCloseTabs('partners')">
         <i class="fa fa-handshake-o"></i>
         <span class="title">Partners</span>
@@ -35,17 +36,8 @@
         </ul>
       </li>
 
-      <li *ngIf="authService.module.isCompanyPartner && !authService.module.isVideo  && !authService.isOnlyPartner()"  [ngClass]="{'active': location.path().includes('videos')}">
-        <a  [routerLink]="['./videos/manage']">
-        <i class="fa fa-video-camera"></i>
-        <span class="title">Videos</span>
-        <span class="arrow "></span>
-        <span class="selected"></span>
-        </a>
-      </li>
-
-      <li *ngIf="authService.module.isVideo  && !authService.isOnlyPartner()" [ngClass]="{'active': location.path().includes('videos') || location.path().includes('content')}">
-        <a href="javascript:;" (click)="openOrCloseTabs('videos')">
+      <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('content') || location.path().includes('content')}">
+        <a href="javascript:;" (click)="openOrCloseTabs('content')">
           <i class="fa fa-cloud-upload" aria-hidden="true"></i>
         <span class="title">Content</span>
         <span class="arrow "></span>
@@ -53,29 +45,27 @@
         </a>
         <ul class="sub-menu" [ngStyle]="{'display': videos? 'block': 'none' }">
         <li>
-          <a  [routerLink]="['./videos']">
-            <!-- <i class="fa fa-file-video-o"></i> -->
+          <a  [routerLink]="['/home/content/upload']">
             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
             <span class="title">Upload Content</span>
           </a>
         </li>
         <li>
-            <a [routerLink]="['./videos/manage']">
-             <!-- <i class="fa fa-list"></i> -->
+            <a [routerLink]="['./content/videos']">
              <i class="fa fa-file-video-o"></i>
              <span class="title">Manage Videos</span>
             </a>
         </li>
         <li>
-          <a [routerLink]="['./content']">
+          <a [routerLink]="['./content/manage']">
            <i class="fa fa-list"></i>
            <span class="title">Manage Content</span>
           </a>
       </li>
         </ul>
       </li>
-      <!--&& !authService.isAddedByVendor-->
-      <li *ngIf="(authService.module.isContact ||authService.module.isCompanyPartner)"  [ngClass]="{'active': location.path().includes('contacts')}">
+
+      <li *ngIf="authService.user.hasCompany && (authService.module.isContact || authService.isShowContact)"  [ngClass]="{'active': location.path().includes('contacts')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('contacts')">
         <i class="fa fa-list-ul"></i>
         <span class="title">Contacts</span>
@@ -97,24 +87,23 @@
         </li>
         </ul>
       </li>
-
-      <li *ngIf="authService.module.isCompanyPartner && !authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
+     <!--  <li *ngIf="authService.user.hasCompany && authService.module.isCompanyPartner && !authService.module.isEmailTemplate && !authService.isOnlyPartner() && !authService.isPartnerTeamMember" [ngClass]="{'active':location.path().includes('emailtemplate')}">
         <a [routerLink]="['./emailtemplates']">
         <i class="fa fa-envelope"></i>
         <span class="title">Email Templates</span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-      </li>
+      </li> -->
 
-      <li *ngIf="authService.module.isEmailTemplate && !authService.isOnlyPartner()" [ngClass]="{'active':location.path().includes('emailtemplate')}">
+      <li *ngIf="authService.user.hasCompany && authService.module.isEmailTemplate" [ngClass]="{'active':location.path().includes('emailtemplate')}">
         <a class="hidden-xs" [ngClass]="{'emailTempCss': changeTemplateCss && refService.isSidebarClosed}" (mouseover)="changeTemplateCss=true" (mouseout)="changeTemplateCss=false" (click)="openOrCloseTabs('emailtemplates')" >
         <i class="fa fa-envelope"></i>
         <span class="title">Email Templates</span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-        <a class="visible-xs" [routerLink]="['./emailtemplates']" >
+        <a class="visible-xs" [routerLink]="['./emailtemplates/select']" >
             <i class="fa fa-envelope"></i>
             <span class="title">Email Templates</span>
             <span class="arrow "></span>
@@ -124,34 +113,37 @@
         <li>
           <a [routerLink]="['./emailtemplates/select']" >
           <i class="fa fa-envelope"></i>
-          <span class="title">Create Email Template</span>
+          <span class="title">Create Email Templates</span>
           </a>
         </li>
         <li>
-          <a [routerLink]="['./emailtemplates']">
+          <a [routerLink]="['./emailtemplates/manage']">
             <i class="fa fa-list"></i>
             <span class="title">Manage Email Templates</span>
           </a>
         </li>
         </ul>
       </li>
-      <li *ngIf="authService.module.isCampaign || authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('campaigns')}">
+      <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('campaigns')" >
         <i class="fa fa-bullhorn"></i>
-        <span class="title">Campaign</span>
+        <span class="title">Campaign </span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
         <ul class="sub-menu" [ngStyle]="{'display': campaigns? 'block': 'none' }">
         <li>
-            <a *ngIf="isOnlyPartner && !authService.module.isCampaign"  [routerLink] ="['./campaigns/partner/all']" >
+            <a *ngIf="authService.module.isReDistribution || authService.isShowRedistribution"  [routerLink] ="['./campaigns/partner/all']" >
             <i class="fa fa-bullhorn"></i>
             <span class="title">Redistribute Campaign</span>
             </a>
-            <a *ngIf="!isOnlyPartner && authService.module.isCampaign"  [routerLink] ="['./campaigns']" >
+          <li>
+          <li>
+            <a *ngIf="authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember)"  [routerLink] ="['./campaigns/select']" >
             <i class="fa fa-bullhorn"></i>
             <span class="title">Create Campaign</span>
             </a>
+
           </li>
           <li>
             <a  [routerLink] ="['./campaigns/manage']">
@@ -162,91 +154,33 @@
         </ul>
       </li>
 
-      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany) || authService.module.isVendor" [ngClass]="{'active': location.path().includes('team')}">
+      <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || authService.module.isCompanyPartner)" [ngClass]="{'active': location.path().includes('team')}">
         <a  [routerLink]="['./team/add-team']" >
         <i class="fa fa-users"></i>
         <span class="title">Team</span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
+
       </li>
 
 
       <!-- ------Deal Registration------ -->
-      <li *ngIf="(authService.module.isOrgAdmin && authService.user.hasCompany && enableLeads) || (authService.module.isVendor && enableLeads) || (isOnlyPartner && enableLeadsByVendor) || (this.authService.module.isCompanyPartner  && enableLeadsByVendor) ||(authService.module.hasOpportunityRole && enableLeads)" [ngClass]="{'active': location.path().includes('deals')}">
+      <li *ngIf="authService.user.hasCompany && authService.enableLeads"
+      [ngClass]="{'active': location.path().includes('deals')}">
         <a   [routerLink]="['./deals/manage']">
         <i class="fa fa-tags"></i>
         <span class="title">Opportunities</span>
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-        
-		<!-- ------------------------- F o r m ----------------------------------------------------- -->
-		<li *ngIf="authService.module.hasFormAccess" [ngClass]="{'active': location.path().includes('forms')}">
-		        <a  href="javascript:;" (click)="openOrCloseTabs('forms')" >
-		        <i class="fa fa-wpforms"></i>
-		        <span class="title">Form Builder</span>
-		        <span class="arrow "></span>
-		        <span class="selected"></span>
-		        </a>
-		        <ul class="sub-menu" [ngStyle]="{'display': forms? 'block': 'none' }">
-		        <li>
-		            <a  [routerLink] ="['./forms/add']" >
-		            <i class="fa fa-wpforms"></i>
-		            <span class="title">Create Form</span>
-		            </a>
-		          </li>
-		          <li>
-		            <a  [routerLink] ="['./forms/manage']">
-		            <i class="fa fa-list"></i>
-		            <span class="title">Manage Form</span>
-		            </a>
-		          </li>
-		        </ul>
-	     </li>
-	     
-	     <!-- ------------------------- L a n d i n g P a g e s ----------------------------------------------------- -->
-		<li *ngIf="authService.module.hasLandingPageAccess" [ngClass]="{'active': location.path().includes('forms')}">
-		        <a  href="javascript:;" (click)="openOrCloseTabs('landing-pages')" >
-		        <i class="fa fa-wpforms"></i>
-		        <span class="title">Landing Pages</span>
-		        <span class="arrow "></span>
-		        <span class="selected"></span>
-		        </a>
-		        <ul class="sub-menu" [ngStyle]="{'display': forms? 'block': 'none' }">
-		        <li>
-		            <a  [routerLink] ="['./landing-pages/select']" >
-		            <i class="fa fa-wpforms"></i>
-		            <span class="title">Create Landing Page</span>
-		            </a>
-		          </li>
-		          <li>
-		            <a  [routerLink] ="['./landing-pages/manage']">
-		            <i class="fa fa-list"></i>
-		            <span class="title">Manage Landing Page</span>
-		            </a>
-		          </li>
-		        </ul>
-	     </li>
-	     
-	     
-	     
 
+      </li>
 
-
-      <!-- <li *ngIf="authService.module.isOrgAdmin || authService.module.isVendor" [ngClass]="{'active':location.path().includes('upgrade')}">
-        <a style="cursor:not-allowed">
-          [routerLink]="['./upgrade']"
-        <i class="fa fa-arrow-circle-up"></i>
-        <span class="title">Upgrade</span>
-        <span class="arrow "></span>
-        <span class="selected"></span>
-        </a>
-      </li> -->
       <li *ngIf="false">
-        <a [routerLink]="['/home/dashboard/welcome']">
-        <i class="fa fa-question-circle"></i>
-        <span class="title">Help</span>
+        <a [routerLink]="['/home/rss/']">
+        <i class="fa fa-rss"></i>
+        <span class="title">RSS</span>
         <span class="arrow "></span>
         </a>
       </li>

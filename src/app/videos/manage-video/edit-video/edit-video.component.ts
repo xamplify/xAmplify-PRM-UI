@@ -157,7 +157,14 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
       this.defaultSettingValue = this.saveVideoFile.defaultSetting;
       this.enableVideoControl = this.saveVideoFile.enableVideoController;
       this.editVideoTitle = this.saveVideoFile.title;
-      this.itemOfTags = this.saveVideoFile.tags;
+
+      if ( this.saveVideoFile.tags ) {
+          if ( this.saveVideoFile.tags[0] != null ) {
+              this.itemOfTags = this.saveVideoFile.tags;
+          }
+  }
+
+     // this.itemOfTags = this.saveVideoFile.tags;
       this.publish = this.videoUtilService.publishUtil;
       this.validationMessages = this.videoUtilService.validationMessages;
       this.formErrors = this.videoUtilService.formErrors;
@@ -183,6 +190,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.callAction.isOverlay = false;
       } else { this.callAction.isOverlay = true; }
       this.enableCalltoAction = this.saveVideoFile.callACtion;  // call action value
+      if(this.enableCalltoAction) { this.lowerTextValid = true; this.upperTextValid = true;}
       this.callActionOverlayboolean(this.saveVideoFile.startOfVideo, this.saveVideoFile.endOfVideo);
       if (this.saveVideoFile.startOfVideo && this.saveVideoFile.callACtion) {
           this.callActionValues('StartOftheVideo', true, false, 'PLAY');

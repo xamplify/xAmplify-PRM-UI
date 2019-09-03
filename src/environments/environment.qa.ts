@@ -8,7 +8,7 @@ export const environment = {
   clientSecret : "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa",
   imagesHost: "https://aravindu.com/vod/images/",
 
-  CLIENT_URL: 'https://socialubuntu.com/', //socail ubuntu client app server
-  SERVER_URL: 'https://aravindu.com/' , // social ubuntu backend prodution testing
+ // CLIENT_URL: 'https://socialubuntu.com/', //socail ubuntu client app server
+ // SERVER_URL: 'https://aravindu.com/' , // social ubuntu backend prodution testing
   MARKETO_SERVER_URL: 'https://aravindu.com/' //Marketo sever url
 };

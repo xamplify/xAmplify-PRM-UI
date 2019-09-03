@@ -25,7 +25,21 @@ export class DealRegistrationService
     {
 
     }
-
+    getPartnerLeadServices(userId:number,companyId:number){
+        return this.http.get(this.URL + "partnerLeadAccess/" +userId+"/"+ companyId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getVendorLeadServices(userId:number,companyId:number){
+        return this.http.get(this.URL + "vendorLeadAccess/" +userId+"/"+ companyId + "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    getSuperorId(userId:number){
+        return this.http.get(this.URL + "getSuperiorId/" +userId+ "?access_token=" + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
     getTotalDeals(userId: number)
     {
         return this.http.get(this.URL + "total/" + userId + "?access_token=" + this.authenticationService.access_token)

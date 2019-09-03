@@ -36,10 +36,10 @@
                 <div class="flex" *ngIf="callAction.isFistNameChecked==true">
                   <input type="text" name="firstName" style="margin-right: 0;"
                     [(ngModel)]="callAction.firstName"
-                    (ngModelChange)="checkingCallToActionValues()"
+                    (ngModelChange)="checkingCallToActionValues()" maxlength="20"
                     class="form-control text-box m21" placeholder="First Name">
                   <input type="text" name="lastName"
-                    [(ngModel)]="callAction.lastName"
+                    [(ngModel)]="callAction.lastName" maxlength="20"
                     (ngModelChange)="checkingCallToActionValues()"
                     class="form-control text-box m21" placeholder="Last Name">
                 </div>

@@ -8,10 +8,11 @@ import { CommonComponentModule } from '../common/common.module';
 import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
 import { SharedLibraryModule } from '../shared/shared-library.module';
+import { CKEditorModule } from "ng2-ckeditor";
 
 @NgModule({
   imports: [
-    CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
+    CKEditorModule, CommonModule, PartnerRoutingModule, SharedModule, SharedContactsModule, CommonComponentModule, SharedLibraryModule
   ],
   providers: [],
   declarations: [ManagePartnersComponent, AddPartnersComponent, PartnerReportsComponent]

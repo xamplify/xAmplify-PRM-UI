@@ -207,6 +207,46 @@ export class SocialService {
                 error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
             return Observable.throw( error );
         }
+    }
+    getRSSCategoriesWithChannelCount() {
+      return this.http.get(this.URL + 'rss/categoriesWithChannelCount?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
+    getFeeds() {
+      return this.http.get(this.URL + 'rss/feeds?access_token=' + this.authenticationService.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getFeedsByUserId(userId: number){
+        return this.http.get(this.URL + `rss/user/${userId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getRSSFeedsByChannel(channelId: number){
+        return this.http.get(this.URL + `rss/channel/${channelId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getRSSFeedsByCategory(categoryId: number){
+        return this.http.get(this.URL + `rss/category/${categoryId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getRSSFeedsByTag(tagId: number){
+        return this.http.get(this.URL + `rss/tag/${tagId}/feeds?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getFavouritesByUserId(userId: number){
+        return this.http.get(this.URL + `rss/user/${userId}/favourites?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 }

@@ -23,6 +23,7 @@
 	text-align: center;
 	padding: 2px;
 }
+.text-danger {color: red !important;}
 
 .campaign-type {
 	min-width: 310px;
@@ -74,6 +75,9 @@
 	-o-filter: blur(1px);
 	-ms-filter: blur(1px);
 	filter: blur(1px);
+}
+.disabled{
+	pointer-events: none;
 }
 
 #disabled-icon{

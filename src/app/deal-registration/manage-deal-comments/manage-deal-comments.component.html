@@ -172,7 +172,7 @@
 
     .write-new button {
         float: right;
-        background-color: #87bae1;
+        background-color: #2184d0;
         box-shadow: 1px 2px 1px 0 rgba(0, 0, 0, 0.12);
         border-radius: 2px;
         border: 0;
@@ -380,7 +380,7 @@
 
     <div>
         <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
-        <button type="submit" (click)="postComment(comment)">Submit</button>
+        <button type="submit" (click)="postComment(comment)" *ngIf="comment.comment" >Submit</button>
     </div>
 
 

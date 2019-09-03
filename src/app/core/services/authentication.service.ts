@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { EnvService } from 'app/env.service';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
@@ -22,8 +23,8 @@ export class AuthenticationService {
     refresh_token: string;
     expires_in: number;
     logged_in_time: Date;
-    APP_URL = environment.CLIENT_URL;
-    SERVER_URL = environment.SERVER_URL;
+    APP_URL: any;
+    SERVER_URL: any;
     REST_URL: string;
     MEDIA_URL: string;
     SHARE_URL: string;
@@ -37,13 +38,34 @@ export class AuthenticationService {
     module:Module = new Module();
     roleName: Roles= new Roles();
     isAddedByVendor = false;
+    isPartnerTeamMember = false;
+    superiorRole = '';
     selectedVendorId: number;
     venorMyProfileReport: any;
-    constructor(private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
+    loggedInUserRole:string;
+    hasOnlyPartnerRole = false;
+    isShowCampaign = false;
+    isShowRedistribution = false;
+    enableLeads = false;
+    isCompanyPartner = false;
+    isShowContact = false;
+    
+    clientId: any;
+    clientSecret: any;
+    imagesHost: any;
+    superiorId:number =0 ;
+    
+    constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
+        this.SERVER_URL = this.envService.SERVER_URL;
+        this.APP_URL = this.envService.CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
         
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
+        
+        this.clientId = this.envService.clientId;
+        this.clientSecret = this.envService.clientSecret;
+        this.imagesHost = this.envService.imagesHost;
     }
 
     getOptions(): RequestOptions {
@@ -102,6 +124,8 @@ export class AuthenticationService {
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }
+
+ 
     getUserId(): number {
         try{
         let userId;
@@ -141,20 +165,32 @@ export class AuthenticationService {
     showRoles():string{
       try{
         const roleNames = this.getRoles();
-
         /***********Org Admin**************/
         if(roleNames){
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
         const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
+       /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 && 
+        (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if(roleNames.length===1){   return "User";
-        }else{
-            if(isOrgAdmin&&isPartner){ return "Orgadmin & Partner";
-            }else if(isVendor&&isPartner){ return "Vendor & Partner";
-            }else if(isOrgAdmin){  return "Orgadmin";
-            }else if(isVendor){ return "Vendor";
-            }else if(isPartner){  return "Partner";
-            }else{  return "Team Member"; }
+        } else {
+            if ( isOrgAdmin && isPartner ) {
+                return "Orgadmin & Partner";
+            } else if ( isVendor && isPartner ) {
+                return "Vendor & Partner";
+            } else if ( isOrgAdmin ) {
+                return "Orgadmin";
+            } else if ( isVendor ) {
+                return "Vendor";
+            } else if (this.isOnlyPartner() ) {
+                return "Partner";
+            } else{
+                return "Team Member";
+            } /*else if ( isPartnerAndTeamMember ) {
+                return "Partner & Team Member";
+            }  else if(roleNames.length>2 && isPartner) {
+                return "Team Member & Partner";
+            }*/
         }
       }
       }catch(error){
@@ -163,17 +199,35 @@ export class AuthenticationService {
     }
 
     isOnlyPartner(){
+        /*
       try{
         const roleNames = this.getRoles();
-        if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-            return true;
-        }else{
-            return false;
-        }
+            if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+                return true;
+            }else{
+                return false;
+            }
+        
       }catch(error){
         this.xtremandLogger.log('error'+error);
       }
+    */
+      return this.loggedInUserRole=="Partner" && this.isPartnerTeamMember==false;
     }
+    
+    isOnlyUser(){
+        try{
+          const roleNames = this.getRoles();
+          if(roleNames && roleNames.length === 1 && (roleNames.indexOf('ROLE_USER')>-1)){
+              return true;
+          }else{
+              return false;
+          }
+        }catch(error){
+          this.xtremandLogger.log('error'+error);
+        }
+      }
+
 
     isSuperAdmin(){
         try{
@@ -244,7 +298,7 @@ export class AuthenticationService {
     isOrgAdminPartner(){
       try{
         const roleNames = this.getRoles();
-        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
+        if( roleNames && ( (roleNames.indexOf('ROLE_ORG_ADMIN')>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember){
             return true;
         }else{
             return false;
@@ -254,8 +308,8 @@ export class AuthenticationService {
     isVendorPartner(){
       try{
       const roleNames = this.getRoles();
-      if(roleNames && (roleNames.indexOf(this.roleName.vendorRole)>-1) && (roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-        return true;
+      if(roleNames && ( (roleNames.indexOf(this.roleName.vendorRole)>-1 || (roleNames.indexOf('ROLE_ALL')>-1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember){
+          return true;
       }else{
           return false;
       }
@@ -272,6 +326,20 @@ export class AuthenticationService {
          }
        } catch(error){  this.xtremandLogger.log('error'+error);}
      }
+    
+    hasAllAccess() {
+        try{
+        const roles = this.getRoles();
+        if(roles) {
+        if (roles && roles.indexOf('ROLE_ALL') > -1 || roles.indexOf('ROLE_ORG_ADMIN') > -1) {
+             return true;
+         } else {
+             return false;
+         }
+       }
+       }catch(error){console.log('error'+error);}
+     }
+    
     logout(): void {
         this.xtremandLogger.log('Logout');
         // clear token remove user from local storage to log user out
@@ -279,10 +347,13 @@ export class AuthenticationService {
         this.refresh_token = null;
         localStorage.removeItem('currentUser');
         localStorage.removeItem("campaignRouter");
+        localStorage.removeItem("superiorId");
+        localStorage.clear();
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
         const module = this.module;
         module.isOrgAdmin = false;
+        this.isShowContact = false;
         module.isContact = false;
         module.isPartner = false;
         module.isEmailTemplate = false;
@@ -293,13 +364,23 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+
         module.hasFormAccess = false;
         module.hasLandingPageAccess = false;
         module.hasLandingPageCampaignAccess = false;
+
+        module.isAddingPartnersAccess = false;
+
         this.isAddedByVendor = false;
+        this.isPartnerTeamMember = false;
+        this.loggedInUserRole = "";
+        this.hasOnlyPartnerRole = false;
+        module.isOnlyPartner = false;
+        module.isReDistribution = false;
+        this.isShowRedistribution = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
-            if ( environment.CLIENT_URL ==='https://xamplify.io/' ) {
+            if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {
                 window.location.href = 'https://www.xamplify.com/';
             } else {
                 this.router.navigate( ['/'] )

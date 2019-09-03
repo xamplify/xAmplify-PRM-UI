@@ -280,7 +280,7 @@ td h5 {
     position: relative;
     color: #00a6e8;
 }
-.mobile-css { position: absolute; top:-77px;}
+.mobile-css { position: absolute !important; top:-129px !important;}
 .circled-number.disabled{ cursor: not-allowed}
 
 .cancel-ribbon{
@@ -337,4 +337,8 @@ td h5 {
     margin-bottom: 36px;
     margin-left: -23px;
     margin-top: -2px;
+}
+.bottomTableCss {
+  margin-bottom: 300px !important;
+
 }

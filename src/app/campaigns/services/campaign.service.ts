@@ -20,7 +20,6 @@ export class CampaignService {
     componentName: string = "campaign.service.ts";
     URL = this.authenticationService.REST_URL;
     reDistributeEvent = false;
-    loading = false;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger) { }
 
     saveCampaignDetails(data: any) {
@@ -142,20 +141,15 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    smsActionList(campaignId: number, actionType: string, pagination: Pagination) {
-        return this.http.post(this.URL + 'campaign/list-smslogs-by-action/' + campaignId + '/' + actionType + '?access_token=' + this.authenticationService.access_token, pagination)
+
+    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean) {
+        return this.http.post(this.URL + 'campaign/views/' + campaignId + '/'+ isChannelCampaign + '?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean,smsAnalytics=false) {
-        return this.http.post(this.URL + 'campaign/views/' + campaignId + '/'+ isChannelCampaign + '/'+smsAnalytics+'?access_token=' + this.authenticationService.access_token, pagination)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
-    listCampaignInteractiveViews(pagination: Pagination,smsAnalytics=false) {
-        return this.http.post(this.URL + 'campaign/interactive-views/'+smsAnalytics+'?access_token=' + this.authenticationService.access_token, pagination)
+    listCampaignInteractiveViews(pagination: Pagination) {
+        return this.http.post(this.URL + 'campaign/interactive-views?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -172,29 +166,8 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    getSmsLogCountByCampaign(campaignId: number) {
-        return this.http.get(this.URL + 'campaign/smslog-count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
     getEmailSentCount(campaignId: number) {
         return this.http.get(this.URL + 'emails_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    getSmsSentCount(campaignId: number) {
-        return this.http.get(this.URL + 'sms_sent_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    getSmsSentSuccessCount(campaignId: number) {
-        return this.http.get(this.URL + 'sms_sent_success_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    getSmsSentFailureCount(campaignId: number) {
-        return this.http.get(this.URL + 'sms_sent_failure_count/' + campaignId + '?access_token=' + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -241,13 +214,14 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
-        return this.http.get(this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
+    listautoResponseAnalyticsByCampaignAndUser(json: any){
+ return this.http.post(this.URL + 'autoResponse/analytics?access_token=' + this.authenticationService.access_token, json)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    listSMSLogsByCampaignAndUser(campaignId: number, userId: number) {
-        return this.http.get(this.URL + 'campaign/user-timeline-log-sms/'+campaignId+'/'+userId+'?access_token=' + this.authenticationService.access_token )
+
+    listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
+        return this.http.get(this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -307,13 +281,18 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    hasRedistributeAccess(userId: number) {
+        return this.http.get(this.URL + `campaign/checkRedistibuteAccess/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     /*  listPartnerCampaigns(userId: number, campaignType: string){
           return this.http.get(this.URL+`campaign/partner-campaigns/${userId}?campaignType=${campaignType}&access_token=${this.authenticationService.access_token}`)
               .map(this.extractData)
               .catch(this.handleError);
       }*/
-
 
     listPartnerCampaigns(pagination: Pagination, userId: number) {
         var url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
@@ -502,7 +481,7 @@ export class CampaignService {
 
 
 
-    addEmailId(campaign: Campaign, selectedEmailTemplateId: number, selectedLandingPageId :number, nurtureCampaign: boolean) {
+    addEmailId(campaign: Campaign, selectedEmailTemplateId: number, nurtureCampaign: boolean) {
         try {
             var self = this;
             swal({
@@ -521,8 +500,7 @@ export class CampaignService {
                 allowOutsideClick: false,
 
             }).then(function (email: string) {
-                self.loading = true;
-               self.setData(email, campaign, selectedEmailTemplateId,selectedLandingPageId, nurtureCampaign);
+                self.setData(email, campaign, selectedEmailTemplateId, nurtureCampaign);
             }, function (dismiss: any) {
                 console.log('you clicked on option' + dismiss);
             });
@@ -533,7 +511,7 @@ export class CampaignService {
     }
 
 
-    setData(emailId: string, campaign: Campaign, selectedEmailTemplateId: number,selectedLandingPageId:number, nutrureCampaign: boolean) {
+    setData(emailId: string, campaign: Campaign, selectedEmailTemplateId: number, nutrureCampaign: boolean) {
         try {
             let data: Object = {};
             data['campaignName'] = campaign.campaignName;
@@ -542,29 +520,21 @@ export class CampaignService {
             data['subjectLine'] = campaign.subjectLine;
             data['nurtureCampaign'] = nutrureCampaign;
             data['preHeader'] = campaign.preHeader;
-            if(campaign.campaignTypeInString=='LANDINGPAGE'){
-                data['landingPageId'] = selectedLandingPageId;
-            }else{
-                data['selectedEmailTemplateId'] = selectedEmailTemplateId;
-            }
-            data['campaignTypeInString'] = campaign.campaignTypeInString;
+            data['selectedEmailTemplateId'] = selectedEmailTemplateId;
             data['testEmailId'] = emailId;
             data['userId'] = campaign.userId;
             data['selectedVideoId'] = campaign.selectedVideoId;
             data['parentCampaignId'] = campaign.parentCampaignId;
-            console.log(data);
             this.sendTestEmail(data)
                 .subscribe(
                 data => {
                     if (data.statusCode === 2017) {
                         swal("Mail Sent Successfully", "", "success");
-                        this.loading = false;
                     }
                 },
                 error => {
                     this.logger.error("error in setData()", error);
                     swal("Unable to send email", "", "error");
-                    this.loading = false;
                 },
                 () => this.logger.info("Finished setData()")
                 );
@@ -640,18 +610,8 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    getEventCampaignByAliasSms(alias: string) {
-        return this.http.get(this.URL + `get-event-campaign-rsvp-alias-sms/${alias}`)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
     saveEventCampaignRsvp(campaignRsvp: any) {
         return this.http.post(this.URL + `save-rsvp`, campaignRsvp)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-    saveEventCampaignRsvpSms(campaignRsvp: any) {
-        return this.http.post(this.URL + `save-rsvp-sms`, campaignRsvp)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -665,5 +625,13 @@ export class CampaignService {
       return this.http.post(this.URL + `campaign/calendar?access_token=${this.authenticationService.access_token}`, request )
           .map(this.extractData)
           .catch(this.handleError);
+  }
+  
+  
+  listAutoResponseAnalytics(pagination:Pagination) {
+      var url =this.URL+"autoResponse/analytics?access_token="+this.authenticationService.access_token;
+      return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);   
   }
 }

@@ -126,7 +126,31 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   tempStartTime: string;
   isVendor = false;
 
-     pushToMarketo = false;
+
+    
+
+  enableLeads : boolean;
+  
+  //Push Leads To Marketo
+  showMarketoForm: boolean;
+  clientId: string;
+  secretId: string;
+  marketoInstance: string;
+  clientIdClass: string;
+  secretIdClass: string;
+  marketoInstanceClass: string;
+
+  templateError: boolean;
+  clentIdError: boolean;
+  secretIdError: boolean;
+  marketoInstanceError: boolean;
+  isModelFormValid: boolean;
+  templateSuccessMsg: any;
+
+  loadingMarketo: boolean;
+  marketoButtonClass = "btn btn-default";
+  loading = false;
+  pushToMarketo = false;
      
 
      loadingMarketo: boolean;
@@ -139,6 +163,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
      smsText: any;
      enableSmsText: boolean;
      smsTextDivClass: string
+
+  
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -174,6 +201,15 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        this.enableSMS = response.data;
     })
 
+    referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+        referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+            console.log(data)
+            this.enableLeads = data.enableLeads;
+            console.log(this.enableLeads);
+
+        });
+    })
+    
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -489,11 +525,19 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
        this.contactListsPagination.filterKey = 'isPartnerUserList';
     }
 
-    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
+    if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) || this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner' ){
       if(!this.eventCampaign.channelCampaign){
         this.contactListsPagination.filterValue = false;
         this.contactListsPagination.filterKey = null;
         this.showContactType = true;
+      }else{
+          if(this.reDistributeEvent || this.reDistributeEventManage){
+              this.contactListsPagination.filterValue = false;
+          }else{
+          this.contactListsPagination.filterValue = true;
+          }
+          this.showContactType = false;
+          this.contactListsPagination.filterKey = 'isPartnerUserList';
       }
      }
        this.contactListMethod(this.contactListsPagination);
@@ -946,9 +990,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
-      'pushToMarketo':this.pushToMarketo,
-            'smsService':this.smsService,
-            'smsText':this.smsText
+       'pushToMarketo': eventCampaign.pushToMarketo,
+       'smsService':this.smsService,
+       'smsText':this.smsText
+
+    
+
     }
     
     eventCampaign = customEventCampaign;
@@ -1785,11 +1832,214 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.isEnableUpdateButton = false;
         }
     }
+    
+    
+
+    pushMarketo(event: any)
+    {
+        this.eventCampaign.pushToMarketo =  !this.eventCampaign.pushToMarketo;
+        console.log(this.eventCampaign.pushToMarketo);
+
+        if (this.eventCampaign.pushToMarketo)
+        {
+            this.checkMarketoCredentials();
+        }
+    }
+    
+    checkMarketoCredentials()
+    {
+        this.loadingMarketo = true;
+        this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response =>
+        {
+            if (response.statusCode == 8000)
+            {
+                this.loading = true;
+                this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
+                    {
+                        if (customObjectResponse.statusCode == 8020){
+                            this.eventCampaign.pushToMarketo =  true;
+                            console.log(this.eventCampaign.pushToMarketo);
+
+                            this.templateError = false;
+                            this.loading = false;
+                        }else{
+                            this.eventCampaign.pushToMarketo = false;
+
+                            this.templateError = false;
+                            this.loading = false;
+                            alert("Custom Objects are not found")
+                        }
+
+                    }, error =>
+                    {
+                        this.eventCampaign.pushToMarketo = false;
+                        this.templateError = error;
+
+                        this.loadingMarketo = false;
+                    })
+
+            }
+            else
+            {
+                this.eventCampaign.pushToMarketo = false;
+
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.templateError = false;
+                this.loadingMarketo = false;
+
+            }
+        }, error =>
+            {
+                this.eventCampaign.pushToMarketo = false;
+                this.templateError = error;
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.loadingMarketo = false;
+            })
+    }
+    
+    submitMarketoCredentials()
+    {
+        this.loadingMarketo = true;
+        const obj = {
+            userId: this.authenticationService.getUserId(),
+            instanceUrl: this.marketoInstance,
+            clientId: this.clientId,
+            clientSecret: this.secretId
+        }
+
+        this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
+        {
+            if (response.statusCode == 8003)
+            {
+                $("#closeButton").hide();
+                this.showMarketoForm = false;
+                this.eventCampaign.pushToMarketo = true;
+                this.templateError = false;
+                this.templateSuccessMsg = response.message;
+                this.loadingMarketo = false;
+
+                setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
+            } else
+            {
+                this.eventCampaign.pushToMarketo = false;
+                $("#templateRetrieve").modal('show');
+                $("#closeButton").show();
+                this.templateError = response.message;
+                this.templateSuccessMsg = false;
+                this.loadingMarketo = false;
+            }
+        }, error =>
+        {
+        this.templateError = error;
+            this.eventCampaign.pushToMarketo = false;
+            $("#closeButton").show();
+            this.loadingMarketo = false;
+        }
+        )
+
+    }
+    
+    getTemplatesFromMarketo()
+    {
+        this.clearValues();
+
+        this.checkMarketoCredentials();
+    }
+    
+    clearValues()
+    {
+        this.clientId = '';
+        this.secretId = '';
+        this.marketoInstance = '';
+        this.clientIdClass = "form-group";
+        this.secretIdClass = "form-group";
+        this.marketoInstanceClass = "form-group";
+
+    }
+
+
+    validateModelForm(fieldId: any)
+    {
+        var errorClass = "form-group has-error has-feedback";
+        var successClass = "form-group has-success has-feedback";
+
+        if (fieldId == 'email')
+        {
+            if (this.clientId.length > 0)
+            {
+                this.clientIdClass = successClass;
+                this.clentIdError = false;
+            } else
+            {
+                this.clientIdClass = errorClass;
+                this.clentIdError = true;
+            }
+        } else if (fieldId == 'pwd')
+        {
+            if (this.secretId.length > 0)
+            {
+                this.secretIdClass = successClass;
+                this.secretIdError = false;
+            } else
+            {
+                this.secretIdClass = errorClass;
+                this.secretIdError = true;
+            }
+        } else if (fieldId == 'instance')
+        {
+            if (this.marketoInstance.length > 0)
+            {
+                this.marketoInstanceClass = successClass;
+                this.marketoInstanceError = false;
+            } else
+            {
+                this.marketoInstanceClass = errorClass;
+                this.marketoInstanceError = false;
+            }
+        }
+        this.toggleSubmitButtonState();
+    }
+
+
+    saveMarketoTemplatesButtonState()
+    {
+
+
+    }
+
+
+    toggleSubmitButtonState()
+    {
+        if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
+            {
+            this.isModelFormValid = true;
+            this.marketoButtonClass = "btn btn-primary";
+            }
+        else
+        {
+            this.isModelFormValid = false;
+            this.marketoButtonClass = "btn btn-default";
+        }
+
+    }
+    closeMarketoModal()
+    {
+        this.eventCampaign.pushToMarketo = false;
+        $("#templateRetrieve").modal('hide');
+    }
+
+    
+    
+    spamCheck() {
+        $("#email_spam_check").modal('show');
+    }
 
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
     CKEDITOR.config.readOnly = false;
-    if(!this.hasInternalError && this.router.url!=="/" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
+    if(!this.hasInternalError && this.router.url!=="/login" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
      if(!this.isReloaded){
       if(!this.isLaunched){
           /*if(this.isAdd){

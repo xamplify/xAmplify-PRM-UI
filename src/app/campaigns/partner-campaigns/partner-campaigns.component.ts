@@ -12,6 +12,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { UtilService } from 'app/core/services/util.service';
+
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 
@@ -31,7 +32,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     totalRecords = 1;
     searchKey = "";
     campaignSuccessMessage = "";
-    loggedInUserId = 0;
+    superiorId = 0;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -57,14 +58,21 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     isListView = false;
     campaignType:string;
     role = '';
-
     customResponse: CustomResponse = new CustomResponse();
+
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+
+
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
         private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
-        this.loggedInUserId = this.authenticationService.getUserId();
+        let superiorId = parseInt(localStorage.getItem('superiorId'));
+        if(isNaN(superiorId)){
+            this.superiorId = this.authenticationService.getUserId();
+        }else{
+            this.superiorId = superiorId;
+        }
         this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
@@ -97,8 +105,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.filterValue = null;
             pagination.filterKey = null;
         }
-
-        this.campaignService.listPartnerCampaigns(this.pagination, this.loggedInUserId)
+        
+        
+        this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
           .subscribe(
             data => {
               this.campaigns = data.campaigns;
@@ -192,7 +201,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.getCampaignById( obj )
           .subscribe(
               data => {
-                if(data.campaignTypeInString=='LANDINGPAGE'){
+         if(data.campaignTypeInString=='LANDINGPAGE'){
                     let landingPage = data.landingPage;
                     if(landingPage!=undefined){
                         this.previewLandingPageComponent.showPreview(landingPage);
@@ -210,6 +219,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         swal("EmailTemplate Not Found","","error");
                         this.ngxloading = false;
                     }
+
                 }
               },
               error => { this.xtremandLogger.errorPage( error ) },
@@ -225,23 +235,58 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                   body = body.replace(value, self.authenticationService.MEDIA_URL+campaign.companyLogo);
               });
               body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL+campaign.companyLogo);
-              emailTemplate.body = body;
-              this.referenceService.previewEmailTemplate(emailTemplate, campaign);
-              this.ngxloading = false;
+              if(this.referenceService.hasMyMergeTagsExits(body)){
+                  let data = {};
+                  data['emailId'] = this.authenticationService.userProfile.emailId;
+                  this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                          response => {
+                              if(response.statusCode==200){
+                                  body = this.referenceService.replaceMyMergeTags(response.data, body);
+                                  this.setUpdatedBody(body,emailTemplate,campaign);
+                              }
+                          },
+                          error => {
+                              this.xtremandLogger.error(error);
+                              this.setUpdatedBody(body,emailTemplate,campaign);
+                          }
+                      );
+                 }else{
+                     this.setUpdatedBody(body,emailTemplate,campaign);
+                 }
+              
+             
               },
               error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
               () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()")
               );
 
     }
+    
+    setUpdatedBody(body:any,emailTemplate:any,campaign:Campaign){
+        emailTemplate.body = body;
+        this.referenceService.previewEmailTemplate(emailTemplate, campaign);
+        this.ngxloading = false;
+    }
+
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
         (result)=>{
           console.log(result.data.emailTemplateDTO.body)
           result.data.emailTemplateDTO.body = result.data.emailTemplateDTO.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           this.campaignName = result.data.campaign;
+          
           $("#email-template-content").empty();
           $("#email-template-title").empty();
+          
+          let userProfile = this.authenticationService.userProfile;
+          let partnerLogo = userProfile.companyLogo;
+          let partnerCompanyUrl = userProfile.websiteUrl;
+          
+          if(result.data.nurtureCampaign || userProfile.id!=result.data.id){
+              result.data.emailTemplateDTO.body = this.referenceService.replacePartnerLogo(result.data.emailTemplateDTO.body,partnerLogo,partnerCompanyUrl,result.data);
+          }
+          
+          
           $("#email-template-content").append(result.data.emailTemplateDTO.body);
           $('.modal .modal-body').css('overflow-y', 'auto');
           $("#email_template_preivew").modal('show');
@@ -267,7 +312,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
         }
         else {
-        const data = { 'campaignId': campaign.campaignId,'userId':this.loggedInUserId }
+        const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
         this.campaignService.getParnterCampaignById(data)
             .subscribe(
                 data => {

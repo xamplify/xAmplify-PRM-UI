@@ -1,4 +1,5 @@
 <div class="page-content">
+	<ngx-loading [show]="loading"></ngx-loading>
 	<div class="page-bar rounded-0 margin-bottom-10px">
 		<ul class="page-breadcrumb">
 			<li>
@@ -93,34 +94,34 @@
 		<div class="col-md-9 col-sm-12" [ngClass]="{'disabled-div': socialStatusProviders?.length === 0}" id="us-right">
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix p10">
-					<div class="form-group pull-right m0" style="position: relative;top: -3px" *ngIf="isSocialCampaign && !alias">
-						<h5 class="control-label font-purple-intense pr10 inline">Notify me when email is opened</h5>
-						<switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-						 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-						 (statusChange)="socialCampaign.emailOpened = !socialCampaign.emailOpened">
-						</switch>
+					<div class="col-sm-7 col-xs-12">
+						<div class="form-group m0">
+							<label for="campaignName">
+								<h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
+							</label>
+							<input type="text" autocomplete="off" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
+							<span *ngIf="isCampaignNameExist" style="color:red">Campaign already exists</span>
+						</div>
 					</div>
-					<div class="form-group m0">
-						<label for="campaignName">
-							<h6 class="caption-subject font-red-sunglo uppercase bold m0">Campaign</h6>
-						</label>
-						<input type="text" class="form-control input-lg" id="campaignName" placeholder="Campaign Name" [(ngModel)]="socialCampaign.campaignName" (input)="validateCampaignName(socialCampaign.campaignName)">
-						<span *ngIf="isCampaignNameExist" style="color:red">Campaign already exists</span>
-          </div>
-          <div class="form-group" *ngIf="false">   <!-- !authenticationService.isOnlyPartner()-->
-						<label for="hostedBy" class="col-sm-3 labal-css" >Through Partner</label>
-						<div class="col-sm-3">
-							<switch [status]="channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue"
-								[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
-								(statusChange)="changeChannelCampaign()">
-							</switch>
-            </div>
-            <label for="hostedBy" class="col-sm-2 labal-css p0">To Partner</label>
-            <div class="col-sm-3" style="padding: 0;margin-top: 5px;">
-            <span style="cursor: pointer;color: #54a7e9;" title="{{properties.TO_PARTNER_MESSAGE}}&#013;{{properties.THROUGH_PARTNER_MESSAGE}}">
-              <i class="fa fa-question-circle" ></i>
-          </span>
-          </div>
+					<div class="col-sm-5 col-xs-12">
+						<div>
+							<h6 class="caption-subject font-red-sunglo uppercase bold m0">Additional Setting</h6>
+							<section class="mt5 mb5">
+								<switch [status]="socialCampaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+									(statusChange)="socialCampaign.emailOpened = !socialCampaign.emailOpened">
+								</switch>
+								<h5 class="pl10 inline">Notify me when email is opened</h5>
+							</section>
+							<section *ngIf="!alias">
+								<h5 class="pr10 inline" [ngClass]="{'f-w-600': socialCampaign.channelCampaign}">Through Partner</h5>
+								<switch [status]="socialCampaign.channelCampaign" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+									(statusChange)="socialCampaign.channelCampaign = !socialCampaign.channelCampaign">
+								</switch>
+								<h5 class="pl10 inline" [ngClass]="{'f-w-600': !socialCampaign.channelCampaign}">To Partner</h5>
+							</section>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -133,9 +134,10 @@
 			</div>
 
 			<div class="col-sm-12 dashboard-stat2 p0 clearfix">
-				<ngx-loading [show]="loading"></ngx-loading>
-				<section class='col-sm-12 p10' *ngIf="customResponse.statusText !== null">
-					<div class="alert alert-dismissible m0" role="alert" [ngClass]="{
+				
+				<div class="clearfix"><button class="pull-right mr10" *ngIf="socialStatusResponse?.length > 0" (click)="resetCustomResponse()">Clear All</button></div>
+				<section class='col-sm-12 p10'>
+					<div *ngIf="customResponse.statusText !== null" class="alert alert-dismissible m0" role="alert" [ngClass]="{
 									'alert-info': customResponse.type === 0,
 	                				'alert-success': customResponse.type === 1,
 	                				'alert-warning': customResponse.type === 2,
@@ -155,10 +157,9 @@
 						<ng-container *ngIf='customResponse.statusArray'>
 							<h5 *ngFor="let item of customResponse.statusArray">{{item}}</h5>
 						</ng-container>
-						
 					</div>
-				</section>
-				<section class='col-sm-12 p10' *ngIf="socialStatusResponse?.length > 0">
+				
+				<div *ngIf="socialStatusResponse?.length > 0">
 					<div *ngFor="let socialStatus of socialStatusResponse">
 						<div class="social-status-response alert alert-dismissible" [ngClass]="{
 									'alert-success': socialStatus.publishStatus !== 'FAILURE',
@@ -166,7 +167,7 @@
 							<div class="pull-right">
 								<i class="fa fa-times-circle" aria-hidden="true" (click)="dismissMessage(socialStatus)"></i>
 							</div>
-							<div class="profile-image-box">
+							<div class="profile-image-box ml0">
 								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
 								<img class="profile-icon" src="assets/images/social/{{socialStatus.socialStatusProvider.socialConnection.source}}.png">
 							</div>
@@ -192,7 +193,9 @@
 							</div>
 						</div>
 					</div>
+				</div>
 				</section>
+
 				<ng-container *ngIf="selectedAccounts > 0">
 					<h6 class="caption-subject font-red-sunglo uppercase bold m10">Selected Accounts</h6>
 					<div *ngFor="let socialStatusProvider of socialStatusProviders">
@@ -247,13 +250,23 @@
 							</div>
 						</section>
 
-						<section [hidden]="isSocialCampaign && alias" class="pull-left">
-							<label class="add-photos" title="Add photos" data-toggle="tooltip" data-placement="top">
+						<section *ngIf="socialStatus.validLink" class="row">
+							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
+							<div class="col-sm-10"><a>{{socialStatus.statusMessage}}</a>
+							<h6 contenteditable="true"><b>{{socialStatus.ogTitle}}</b></h6>
+							<p contenteditable="true">{{socialStatus.ogDescription}}</p>
+							</div>
+						</section>
+						<section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
+							<label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-image"></i>
 								<input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
 							</label>
 							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-video-camera"></i>
+							</span>
+							<span class="rss hidden" title="RSS Feeds" (click)="openRssModal()"  data-toggle="tooltip" data-placement="top">
+								<i class="fa fa-rss-square"></i>
 							</span>
 						</section>
 					</div>
@@ -369,7 +382,6 @@
 				</div>
 				<div class="col-xs-12 m0 p0" id="post-actions-button-group">
 					<div class="col-xs-12 col-sm-6 pr10 pull-right">
-						<button type="button" class="btn pull-right ml10" (click)="cancel()">Cancel</button>
 						<div class="btn-group pull-right" *ngIf="!(selectedAccounts > 1 && !isCustomizeButtonClicked)">
 							<button type="button" class="btn btn-primary rounded-0" (click)="shareNow()">Post Now</button>
 							<button type="button" style="min-width: 32px;" class="btn btn-primary dropdown-toggle rounded-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" *ngIf="isSocialCampaign">
@@ -379,9 +391,9 @@
 								<li><a (click)="showScheduleOption('schedule-option-div')">Schedule</a></li>
 							</ul>
 						</div>
-						<div *ngIf="selectedAccounts > 1 && isCustomizeButtonClicked">
-							<button type="button" class="btn pull-right mr10" (click)="undoCustomizeEachNetwork()" data-toggle="tooltip" data-placement="top" title="Undo">
-								<span ><i class="fa fa-undo" aria-hidden="true" ></i></span>							
+						<div *ngIf="!alias && (selectedAccounts > 1 && isCustomizeButtonClicked)">
+							<button type="button" class="btn pull-right mr10" (click)="undoCustomizeEachNetwork()">
+								<span ><i class="fa fa-undo" aria-hidden="true" ></i> Undo</span>							
 							</button>
 						</div>
 						<ng-container *ngIf="selectedAccounts > 1 && !isCustomizeButtonClicked">
@@ -398,11 +410,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign && !alias">
+			<div class="col-sm-12 dashboard-stat2 p0 clearfix" *ngIf="isSocialCampaign">
 				<div class="portlet-body clearfix p10">
 					<ng-container >
 						<div class="form-group m0 pull-right">
-							<!--<h5 class="control-label font-purple-intense pr10 inline">Partner Contacts</h5>
+							<!--<h5 class="pr10 inline">Partner Contacts</h5>
 							<switch [status]="socialCampaign.isPartner" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 							 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
 							 (statusChange)="toggleContactLists()">
@@ -424,11 +436,14 @@
 						</div>
 					</div>
 
-					<section *ngIf="contactListsPagination.pagedItems?.length === 0">
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0 && !contactListsPagination.isLoading">
 						<div class='alert alert-info' role='alert'>
 							<h4 class='m0'>You have not added any contact lists yet. Please add at least one list to your account</h4>
 						</div>
 						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
+					</section>
+					<section *ngIf="contactListsPagination.pagedItems?.length === 0 &&contactListsPagination.isLoading">
+						<app-list-loader></app-list-loader>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length > 0">
 						<ngx-loading [show]="contactListsPagination.isLoading"></ngx-loading>
@@ -633,4 +648,23 @@
 
 <div id='fc-{{item.socialStatus.id}}-{{item.socialStatusProvider.id}}' *ngFor="let item of socialStatusDtos" class='clearfix m10 hidden'>
 	<app-social-status [socialStatus]="item.socialStatus"></app-social-status>	
+</div>
+
+<!--RSS Modal -->
+<div class="modal fade right" id="rssModal" tabindex="-1" role="dialog" aria-labelledby="rssModalLabel">
+  <div class="modal-dialog" role="document" style="width: 100% !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
+      </div>
+		<div class="modal-body">
+			<!--<app-rss></app-rss>-->
+		</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>

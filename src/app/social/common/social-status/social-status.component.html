@@ -24,8 +24,11 @@
 			<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='TWITTER'">{{socialStatus.socialStatusProvider.socialConnection.firstName}}</span>
 			<span *ngIf="socialStatus.socialStatusProvider.socialConnection.source ==='GOOGLE'">{{socialStatus.socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatus.socialStatusProvider.socialConnection.lastName}}</span>
 		</h5>
-		<h5 class="status-time">{{socialStatus.scheduledTimeUser | date:
-			'short'}}</h5>
+		<h5 class="status-time">{{socialStatus.scheduledTime | date:'short'}}
+		<span class="badge" data-toggle="tooltip" data-placement="auto" title="{{socialStatus.publishMessage}}" 
+			[ngClass]="{'badge-danger': socialStatus.publishStatus === 'FAILURE', 
+				'badge-primary': socialStatus.publishStatus === 'SUCCESS'}" >{{socialStatus.publishStatus | titlecase }}</span>
+		</h5>
 	</div>
 	<div class="portlet body m0">
 		<div class="status-message"
@@ -41,12 +44,8 @@
 			<ng-container
 				*ngFor="let socialStatusContent of socialStatus.socialStatusContents">
 			<div class="image-wrapper col-xs-6">
-				<img async *ngIf="socialStatusContent.fileType === 'image'"
-					src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
-				<video *ngIf="socialStatusContent.fileType == 'video'" width="160"
-					height="80">
-					<source src="{{socialStatusContent.filePath}}" type="video/mp4">
-				</video>
+				<img async *ngIf="socialStatusContent.fileType === 'image'" src="{{authenticationService.MEDIA_URL}}{{socialStatusContent.filePath}}">
+				<img async src="{{socialStatusContent.filePath}}" *ngIf="socialStatusContent.fileType == 'video'">
 			</div>
 			</ng-container>
 		</div>

@@ -11,8 +11,16 @@ export class Module {
     hasSocialStatusRole:boolean = false;
     isCompanyPartner:boolean = false;
     isVendor:boolean = false;
+
     hasFormAccess:boolean = false;
     hasLandingPageAccess:boolean = false;
     hasLandingPageCampaignAccess:boolean = false;
+
+
+    enableLeadsByVendor = false;
+    enableLeads = false;
+    isOnlyPartner = false;
+    isAddingPartnersAccess = false;
+    isReDistribution = false;
 
 }

@@ -7,10 +7,12 @@ import { AuthenticationService } from '../services/authentication.service';
 import { ReferenceService } from './reference.service';
 import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
+import { Pagination } from '../models/pagination';
 
 @Injectable()
 export class UserService {
     private token: string;
+    pagination: Pagination;
 
     loggedInUserData: User;
 
@@ -159,15 +161,33 @@ export class UserService {
     }
 
     saveBrandLogo(logoPath: string,logoDesc: string,userId: number){
-     return this.http.get( this.URL + 'videos/save-branding-logo?logoPath='+logoPath+'&LogoDescUri='+logoDesc+'&userId='+userId+'&access_token='+this.authenticationService.access_token )
-       .map(this.extractData)
-       .catch(this.handleError);
+    console.log("")
     }
 
     isAddedByVendor( userId: number ) {
         return this.http.get( this.URL + "admin/get-team-member-details/" + userId + "?access_token=" + this.authenticationService.access_token )
             .map( this.extractData )
             .catch( this.handleError );
+    }
+
+    getRoles(userId:number){
+        return this.http.get( this.URL+ "admin/getRolesByUserId/" + userId + "?access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    getHomeRoles(uRl){
+        const url = this.URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    loadVendorDetails(uRl, pagination: Pagination) {
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+
     }
 
     resendActivationMail(emailId:string) {
@@ -205,7 +225,6 @@ export class UserService {
     }
     private extractData( res: Response ) {
         const body = res.json();
-        console.log(body);
         // return body || {};
         return body;
     }

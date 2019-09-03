@@ -1,34 +1,27 @@
-import { Component, OnInit,OnDestroy,ViewChild,AfterViewInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { EmailTemplateService } from '../services/email-template.service';
+import { User } from '../../core/models/user';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { EmailTemplate} from '../models/email-template';
+import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { environment } from 'environments/environment';
-import { Pagination } from '../../core/models/pagination';
-import { PagerService } from '../../core/services/pager.service';
-import {FormService} from '../../forms/services/form.service';
-import { SortOption } from '../../core/models/sort-option';
-import { CustomResponse } from '../../common/models/custom-response';
-import { UtilService } from '../../core/services/util.service';
-import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.component';
-import { User } from '../../core/models/user';
-/**********Email Template**************/
-import { EmailTemplateService } from '../services/email-template.service';
-import { EmailTemplate} from '../models/email-template';
-import { EmailTemplateType } from '../../email-template/models/email-template-type';
 declare var BeePlugin,swal,$:any;
 
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
   styleUrls: ['./create-template.component.css'],
-  providers :[EmailTemplate,HttpRequestLoader,FormService,Pagination,SortOption]
+  providers :[EmailTemplate,HttpRequestLoader]
 })
 export class CreateTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-    formsLoader:HttpRequestLoader = new HttpRequestLoader();
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     loggedInUserId = 0;
     companyProfileImages:string[]=[];
     emailTemplate:EmailTemplate = new EmailTemplate();
@@ -43,16 +36,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     loadTemplate = false;
     isAdd:boolean;
     isMinTimeOver:boolean = false;
-    pagination:Pagination = new Pagination();
-    formsError:boolean = false;
-    customResponse: CustomResponse = new CustomResponse();
-    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
-    constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
-                private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location,
-                private formService:FormService,public pagerService:PagerService,public sortOption:SortOption,public utilService:UtilService) {
-    console.log('client Id: '+environment.clientId+'and secret id: '+environment.clientSecret);
-    
-    
+    constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
+                private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
+    console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);
+
+
     if ( emailTemplateService.emailTemplate != undefined ) {
         var names: any = [];
         let self = this;
@@ -215,7 +203,17 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         { name: 'Last Name', value: '{{lastName}}' },
         { name: 'Full Name', value: '{{fullName}}' },
         { name: 'Email Id', value: '{{emailId}}' },
-        { name: 'Company Name', value: '{{companyName}}' }];
+        { name: 'Company Name', value: '{{companyName}}' }
+        ];
+
+        mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
+        mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
+        mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+        mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
+        mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
+        mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
+        mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
+        mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
 
         if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
@@ -229,22 +227,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' } );
             mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' } );
         }
-        
-        var mergeContents = [{
-            name: 'Headline news',
-            value: '{headline}'
-           }, {
-            name: 'Image of last product viewed',
-            value: '{last-product-viewed}'
-           }];
-        var specialLinks: [{
-            type: 'Subscription',
-            label: 'Unsubscribe',
-            link: 'http://[unsubscribe]/'
-           }, {
-            type: 'Subscription',
-           label: 'Subscribe', 
-           link: 'http://[subscribe]/' }];
+
+
 
         if ( refService.defaultPlayerSettings != null ) {
             var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
@@ -254,7 +238,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                 autosave: 15,
                 language: 'en-US',
                 mergeTags: mergeTags,
-                specialLinks:specialLinks, 
                 onSave: function( jsonFile, htmlFile ) {
                     save( jsonFile, htmlFile );
                 },
@@ -280,7 +263,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             request(
                 'POST',
                 'https://auth.getbee.io/apiauth',
-                'grant_type=password&client_id=' + environment.clientId + '&client_secret=' + environment.clientSecret + '',
+                'grant_type=password&client_id=' + authenticationService.clientId + '&client_secret=' + authenticationService.clientSecret + '',
                 'application/x-www-form-urlencoded',
                 function( token: any ) {
                     BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {
@@ -388,7 +371,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           () => console.log( "Email Template Updated" )
           );
   }
-  
+
   updateCompanyLogo(emailTemplate:EmailTemplate){
       emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
       if(emailTemplate.body!=undefined){
@@ -399,9 +382,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnInit() {
   }
   ngOnDestroy(){
+      this.emailTemplateService.isNewTemplate = false;
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
-      if(isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
+      if(this.router.url!="/login" && isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
        let isDefaultTemplate = this.emailTemplateService.emailTemplate.defaultTemplate;
        let isUserDefined = this.emailTemplateService.emailTemplate.userDefined;
        let isDraft = this.emailTemplateService.emailTemplate.draft;
@@ -418,7 +402,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           }
       }
   }
-  
+
   showSweetAlert(){
       let self = this;
       swal( {
@@ -439,18 +423,18 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               self.updateEmailTemplate(self.emailTemplate,self.emailTemplateService, true);
           }
       },function (dismiss) {
-          
+
       })
   }
-  
-  
+
+
   saveTemplate(){
       this.refService.startLoader(this.httpRequestLoader);
       this.emailTemplate.draft = false;
       this.saveEmailTemplate(this.emailTemplate,this.emailTemplateService,this.loggedInUserId,false);
       swal.close();
   }
-  
+
   createButton(text, cb) {
       if(text=="Save"){
           return $('<input type="submit" class="btn btn-primary" value="'+text+'" id="save" disabled="disabled">').on('click', cb);
@@ -463,8 +447,5 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           return $('<input type="submit" class="btn btn-primary" value="'+text+'">').on('click', cb);
       }
   }
-  
-  ngAfterViewInit() {
-  }
-  
+
 }

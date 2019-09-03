@@ -10,6 +10,7 @@ import { DefaultVideoPlayer } from '../../videos/models/default-video-player';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Roles } from '../../core/models/roles';
 import { Country } from '../../core/models/country';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { Timezone } from '../../core/models/timezone';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { EmailTemplate } from '../../email-template/models/email-template';
@@ -100,14 +101,21 @@ export class ReferenceService {
     socialCampaign = false;
     eventCampaign = false;
     loadingPreview = false;
+    eventCampaignId: number;
     dealId = 0;
     smsCampaign = false;
     serverErrorMessage = 'Oops!There is some technical error,Please try after sometime';
+    myMergeTagsInfo:any;
+    eventCampaignTabAccess: boolean = false;
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
+    superiorId:number = 0;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
-        this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
-        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
-        this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
+        console.log('reference service constructor');
+        this.videoTag = "<img src=\""+authenticationService.imagesHost+"xtremand-video.gif\">";
+        this.coBrandingTag = "<img src=\""+authenticationService.imagesHost+"co-branding.png\">";
+        this.coBrandingImageTag = "img src=\""+authenticationService.imagesHost+"co-branding.png\"";
+
     }
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();
@@ -1627,7 +1635,7 @@ export class ReferenceService {
 
 
 
-     previewEmailTemplate(emailTemplate: EmailTemplate,campaign:Campaign) {
+     previewEmailTemplate(emailTemplate: EmailTemplate,campaign:any) {
           const body = emailTemplate.body;
           let userProfile = this.authenticationService.userProfile;
           let partnerLogo = userProfile.companyLogo;
@@ -1657,15 +1665,28 @@ export class ReferenceService {
               updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
 
           }
-          if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+          if(this.campaignType === "EVENT"){
+           if(campaign.nurtureCampaign ||userProfile.id!= this.eventCampaignId){
               updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
-          }
-
+           }
+         }else{
+             if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+                 updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
+              }
+         }
+          updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
           $("#email-template-content").append(updatedBody);
           $('.modal .modal-body').css('overflow-y', 'auto');
           $("#email_template_preivew").modal('show');
           $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
       }
+     
+     showPreviewAfterMergeTags(updatedBody:string){
+         $("#email-template-content").append(updatedBody);
+         $('.modal .modal-body').css('overflow-y', 'auto');
+         $("#email_template_preivew").modal('show');
+         $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+     }
 
 
      showEmailTemplatePreview(campaign:Campaign,campaignType:string,selectedVideoGifPath:string,emailTemplateBody:string){
@@ -1687,8 +1708,30 @@ export class ReferenceService {
              updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"","<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
              updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png","");
          }
-         if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
+         if(this.campaignType === "EVENT"){
+             if(campaign.nurtureCampaign ||userProfile.id!= this.eventCampaignId){
+                updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
+             }
+           }else{
+            if(campaign.nurtureCampaign ||userProfile.id!=campaign.userId){
              updatedBody = this.replacePartnerLogo(updatedBody,partnerLogo,partnerCompanyUrl,campaign);
+            }
+           }
+         /************My Merge Tags Info**********/
+         updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
+         return updatedBody;
+     }
+     
+     replaceMyMergeTags(myMergeTags:any,updatedBody:string){
+         if(myMergeTags!=undefined && this.hasMyMergeTagsExits(updatedBody)){
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstNameGlobal,myMergeTags.myFirstName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderLastNameGlobal,myMergeTags.myLastName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFullNameGlobal,myMergeTags.myFullName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailIdGlobal,myMergeTags.myEmailId);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumberGlobal,myMergeTags.myContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal,myMergeTags.senderCompany);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal,myMergeTags.myCompanyContactNumber);
          }
          return updatedBody;
      }
@@ -1700,6 +1743,12 @@ export class ReferenceService {
       }
     }
 
+     hasMyMergeTagsExits(body:string){
+         return body.indexOf(this.senderMergeTag.senderFirstName)>-1 || body.indexOf(this.senderMergeTag.senderLastName)>-1 || body.indexOf(this.senderMergeTag.senderFullName)>-1 ||
+         body.indexOf(this.senderMergeTag.senderEmailId)>-1 || body.indexOf(this.senderMergeTag.senderContactNumber)>-1 || body.indexOf(this.senderMergeTag.senderCompany)>-1 
+         || body.indexOf(this.senderMergeTag.senderCompanyUrl)>-1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber)>-1;
+     }
+     
      formatAMPM(date) {
          var hours = date.getHours();
          var minutes = date.getMinutes();
@@ -1730,6 +1779,13 @@ export class ReferenceService {
           .map(this.extractData)
           .catch(this.handleError);
     }
+    
+    getHomeOrgCampaignTypes( uRl ) {
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
 
     getCompanyIdByUserId(userId: any) {
        return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
@@ -1737,6 +1793,7 @@ export class ReferenceService {
         .catch(this.handleError);
     }
     
+
     replaceAllSpacesWithUnderScore(text:string){
         return text = text.replace(/ /g,"_").toLocaleLowerCase();
     }
@@ -1755,4 +1812,19 @@ export class ReferenceService {
          });
         return arr;
     }
+  getHomeCompanyIdByUserId(uRl){
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    getMyMergeTagsInfoByEmailId(data:any){
+        return this.http.post(this.authenticationService.REST_URL + "campaign/getMyMergeTagsInfo?access_token=" + this.authenticationService.access_token, data)
+        .map(this.extractData)
+        .catch(this.handleError);
+
+    }
+
+  
 }

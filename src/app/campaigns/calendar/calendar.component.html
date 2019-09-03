@@ -1,4 +1,19 @@
 <div class="page-content">
+
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li *ngIf="!authenticationService.isSuperAdmin()">
+				<i class="fa fa-home"></i>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
+				<i class="fa fa-angle-right"></i>
+			</li>
+			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+			<li>
+				<a>Manage Campaigns</a>
+			</li>
+		</ul>
+	</div>
+
   <div class="pg8">
       <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   </div>

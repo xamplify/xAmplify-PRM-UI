@@ -10,8 +10,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { Roles } from '../../core/models/roles';
-import { CampaignAccess } from '../../campaigns/models/campaign-access';
-
 
 declare var swal,$:any;
 
@@ -19,7 +17,7 @@ declare var swal,$:any;
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
-  providers: [Pagination, HttpRequestLoader, Properties,CampaignAccess]
+  providers: [Pagination, HttpRequestLoader, Properties]
 })
 
 export class AdminReportComponent implements OnInit {
@@ -30,15 +28,14 @@ export class AdminReportComponent implements OnInit {
     vendorsDetails: any;
     selectedVendorsDetails: any;
     detailsTielsView = false;
+    isAccessView = false;
     selectedVendorRow: any;
     loading = false;
-    updateFormLoading = false;
     isListLoading = false;
     public searchKey: string;
     customResponse: CustomResponse = new CustomResponse();
-    updateFormCustomResponse: CustomResponse = new CustomResponse();
     roles: Roles = new Roles();
-    campaignAccess = new CampaignAccess();
+    
     sortcolumn: string = null;
     sortingOrder: string = null;
 
@@ -52,7 +49,7 @@ export class AdminReportComponent implements OnInit {
 
                ];
     public sortOption: any = this.sortOptions[0];
-    
+    top10RecentUsers: any[];
     
     
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
@@ -95,7 +92,23 @@ public authenticationService: AuthenticationService, public router:Router) {
       }
   }
   
+  listTop10RecentUsers(){
+      try {
+          this.isListLoading = true;
+          this.dashboardService.listTop10RecentUsers()
+              .subscribe(
+              ( data: any ) => {
+                  this.top10RecentUsers = data;
+              },
+              error => console.error( error ),
+              () => console.info( "vendors reports() finished" )
+              )
+      } catch ( error ) {
+          console.error( error, "adminReportComponent", "loadingAllVendors()" );
+      }
   
+
+  }
   getVendorsDetails() {
       try {
           this.isListLoading = true;
@@ -185,7 +198,7 @@ public authenticationService: AuthenticationService, public router:Router) {
               this.loading = false;
               swal("Vedor has signed up but not yet created company information.");
           }else{
-          this.selectedVendorRow = selectedVendor;
+    	  this.selectedVendorRow = selectedVendor;
           this.authenticationService.selectedVendorId = selectedVendor.id;
           this.dashboardService.loadDashboardReportsCount( selectedVendor.id )
               .subscribe(
@@ -210,6 +223,7 @@ public authenticationService: AuthenticationService, public router:Router) {
 
   ngOnInit() {
       this.getVendorsDetails();
+      this.listTop10RecentUsers();
   }
   
   changeStatus(report:any){
@@ -267,13 +281,14 @@ public authenticationService: AuthenticationService, public router:Router) {
       try {
           this.loading = true;
           this.customResponse = new CustomResponse();
-          this.updateFormCustomResponse  =new CustomResponse();
           this.dashboardService.getAccess(report.companyId)
               .subscribe(
               ( data: any ) => {
+                  console.log(data);
+                  this.isAccessView = true;
                   this.loading = false;
-                  this.campaignAccess = data;
-                  $('#access-modal').modal('show');
+                  this.modulesAccess = data;
+                  $('#access-template-div').modal('show');
               },
               error => {
                   console.error( error )
@@ -287,24 +302,6 @@ public authenticationService: AuthenticationService, public router:Router) {
           console.error( error, "adminReportComponent", "changeAccess()" );
       }
   
-  }
-  
-  updateAccess(){
-      this.updateFormLoading = true;
-      this.dashboardService.changeAccess(this.campaignAccess)
-      .subscribe(
-      ( data: any ) => {
-          this.updateFormLoading=false;
-          this.updateFormCustomResponse = new CustomResponse('SUCCESS',data.message,true );
-      },
-      error => {
-          this.updateFormLoading=false;
-          this.updateFormCustomResponse = new CustomResponse('ERROR','Something went wrong.',true );
-      },
-      () => console.info( "updateAccess() finished" )
-      )
-     
-
   }
   
   

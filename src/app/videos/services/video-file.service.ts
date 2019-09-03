@@ -9,6 +9,7 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLog } from '../models/xtremand-log';
 import { User } from '../../core/models/user';
 import { environment } from 'environments/environment.prod';
+import { EnvService } from 'app/env.service';
 
 @Injectable()
 export class VideoFileService {
@@ -36,7 +37,7 @@ export class VideoFileService {
     videoFileSweetAlertMessage: boolean;
     contentRedirect = false;
     URL: string = this.authenticationService.REST_URL + 'videos/';
-    constructor(private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
+    constructor(public envService: EnvService, private http: Http, private authenticationService: AuthenticationService,public httpClient: HttpClient) {
         console.log('VideoFileService constructor');
     }
     processVideoFile(responsePath: any): Observable<any> {
@@ -135,7 +136,7 @@ export class VideoFileService {
     }
     getVideoByShortenerUrlAliasXamplify(shortnerUrlAlias: string): Observable<SaveVideoFile> {
       console.log(shortnerUrlAlias);
-      const url = environment.SERVER_URL+'xtremand-rest/videos/' + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
+      const url = this.envService.SERVER_URL+'xtremand-rest/videos/' + 'video-by-shortenerurlalias?shortenUrlAlias=' + shortnerUrlAlias;
       return this.http.get(url, '')
         .map(this.extractData)
         .catch(this.handleError);
@@ -167,11 +168,11 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleErrorDelete);
     }
-    saveCalltoActionUser(user: User) {
-        console.log(user);
+    saveCalltoActionUser(emailLogReport, id) {
+        console.log(emailLogReport);
         try {
-            const url = this.URL + 'user/save-call-action-user';
-            return this.httpClient.post(url, user).catch(this.handleError);
+            const url = this.URL + id+'/user/save-call-action-user';
+            return this.httpClient.post(url, emailLogReport).catch(this.handleError);
         } catch (error) { console.log(error); }
     }
     showCampaignVideo(emailLog: any) {
@@ -190,7 +191,7 @@ export class VideoFileService {
     }
     logEmbedVideoActions(xtremandLog: XtremandLog) {
         xtremandLog.campaignId = 0;
-        xtremandLog.userId = 0;
+       // xtremandLog.userId = 0;
         console.log(this.timeValue);
         try {
             if (xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime; }

@@ -72,17 +72,16 @@
                   <font style="color: red">
                     <b> * </b>
                   </font>
-                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOrgAdminAndPartner || isVendorAndPartner">
+                  <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()"><!-- *ngIf="isOrgAdminAndPartner || isVendorAndPartner"-->
                     <option *ngFor="let teamMember of teamMemberEmailIds" [ngValue]="teamMember.emailId" >
-						{{teamMember.emailId}}
-					</option>
+						          {{teamMember.emailId}}
+					        </option>
                   </select>
-
-                   <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
+                   <!---<select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" (change)="setFromName()" *ngIf="isOnlyPartner">
                     <option  [ngValue]="campaign.email" >
-						{{campaign.email}}
-					</option>
-                  </select>
+						        {{campaign.email}}
+					          </option>
+                  </select>--->
                 </div>
                 <div class="form-group" [attr.class]="preHeaderDivClass">
                   <label for="exampleInputPassword1">Pre header</label>
@@ -298,7 +297,7 @@
                                   <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                 </td>
 
-                               
+
                                 <td class="text-center">
                                   <a (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
                                     <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
@@ -458,15 +457,15 @@
 		                                    <span class="item__name"
 		                                      [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:20}}</b><b *ngIf="reply.emailTemplate?.name?.length>20">...</b>
 		                                    </span>
-		                                    
+
 		                                    <span style="float:left"  title="{{reply.emailTemplate.createdBy}}">
                                           	<span>{{reply.emailTemplate.createdBy|slice:0:20}}<span *ngIf="reply.emailTemplate.createdBy?.length>20">...</span></span>
                                      		 </span>
-		
+
 		                                    <div class="item__actions">
 		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 		                                        data-toggle="tooltip" data-placement="top"
-		                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(reply.emailTemplate)">
+		                                        title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(reply.emailTemplate)">
 		                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
 		                                       </a>
 		                                      </span>
@@ -589,15 +588,15 @@
 		                                    <span class="item__name"
 		                                      [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:20}}</b><b *ngIf="url.emailTemplate?.name?.length>20">...</b>
 		                                    </span>
-		                                    
+
 		                                    <span style="float:left"  title="{{url.emailTemplate.createdBy}}">
                                           	<span>{{url.emailTemplate.createdBy|slice:0:20}}<span *ngIf="url.emailTemplate.createdBy?.length>20">...</span></span>
                                      		 </span>
-		
+
 		                                    <div class="item__actions">
 		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 		                                        data-toggle="tooltip" data-placement="top"
-		                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(url.emailTemplate)">
+		                                        title="Preview"  (click)="$event.stopPropagation();previewEmailTemplate(url.emailTemplate)">
 		                                          <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
 		                                       </a>
 		                                      </span>

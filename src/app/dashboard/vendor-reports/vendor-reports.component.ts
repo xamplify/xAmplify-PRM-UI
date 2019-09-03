@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { AuthenticationService } from "../../core/services/authentication.service";
 import { ReferenceService } from "../../core/services/reference.service";
 import { Pagination } from "../../core/models/pagination";
@@ -6,6 +6,9 @@ import { DashboardService } from "../dashboard.service";
 import { PagerService } from "../../core/services/pager.service";
 import { PaginationComponent } from "../../common/pagination/pagination.component";
 import { Router } from "@angular/router";
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { CustomResponse } from '../../common/models/custom-response';
+declare var $: any;
 
 @Component({
   selector: "app-vendor-reports",
@@ -16,6 +19,7 @@ import { Router } from "@angular/router";
 export class VendorReportsComponent implements OnInit {
   vendorDetails: any;
   loading = false;
+  customResponse: CustomResponse = new CustomResponse();
 
   constructor(
     public referenseService: ReferenceService,
@@ -25,7 +29,9 @@ export class VendorReportsComponent implements OnInit {
     public pagerService: PagerService,
     public paginationComponent: PaginationComponent,
     private router: Router
-  ) {}
+  ) {
+
+  }
 
   vendorReports() {
     this.loading = true;
@@ -73,6 +79,8 @@ export class VendorReportsComponent implements OnInit {
   errorHandler(event){
    event.target.src = 'assets/images/default-company.png';
   }
+  
+  
   ngOnInit() {
     this.vendorReports();
   }

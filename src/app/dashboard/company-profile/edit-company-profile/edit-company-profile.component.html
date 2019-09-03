@@ -32,7 +32,7 @@
 						<div class="progress">
 							<div class="progress-bar"></div>
 						</div>
-						<a class="smpl-step-icon"><i class="fa fa-check"></i></a>
+						<a class="smpl-step-icon" style="cursor:default"><i class="fa fa-check"></i></a>
 						<div class="smpl-step-info text-center" style="margin-top: 3px;">Sign up</div>
 					</div>
 
@@ -40,7 +40,7 @@
 						<div class="progress">
 							<div class="progress-bar"></div>
 						</div>
-						<a class="smpl-step-icon"><i class="fa fa-user"></i></a>
+						<a class="smpl-step-icon" style="cursor:default"><i class="fa fa-user"></i></a>
 						<div class="smpl-step-info text-center" style="margin-top: 3px;">Complete your company profile</div>
 					</div>
 
@@ -65,13 +65,8 @@
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
 									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
                     <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
-                  	<span *ngIf="!croppedImage"> <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a; position: absolute;bottom: 5px;">* Please upload company logo</span></span>
+                  	<span *ngIf="!croppedImage"> <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a;">* Please upload company logo</span></span>
 										<span *ngIf="(squareData | json) == '{}'"><img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image"></span>
-
-                    <!-- <span class="result" *ngIf="(squareData | json) != '{}'; else showImage">
-                      <img *ngIf="!cropRounded && squareData?.image; else Other" [src]="squareData.image">
-                      <ng-template #Other><img [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
-                    </span> -->
                     <span *ngIf="croppedImage; else showImage">
                       <img [src]="croppedImage" style="width:100%;height: 100%;">
                     </span>
@@ -80,8 +75,6 @@
                     <div class="profile-overlay">
 												<label class="fileContainer pointer" (click)="fileChangeEvent()" >
 													<i class="fa fa-camera"></i>&nbsp;<span  *ngIf="!companyLogoImageUrlPath">Upload company logo</span><span *ngIf="companyLogoImageUrlPath">Change company logo</span>
-                          <!-- <input id="companyLogo" type="file" ng2FileSelect [uploader]="companyLogoUploader" accept="image/jpeg,image/pjpeg,image/jpeg,image/pjpeg,image/png"
-															*ngIf="companyLogoUploader.queue.length==0" (change)="changeLogo($event)" title=" " #input/> -->
                          </label>
                     </div>
 										</div>
@@ -105,7 +98,7 @@
 						<div class="col-sm-6 col-xs-12">
 							<div class="form-group" [attr.class]="companyNameDivClass">
 								<label class="control-label">Company Name <font	style="color: #f55d7a"><b>*</b></font></label>
-									<input type="text"		id="companyName" name="companyName" placeholder="Company Name"	class="form-control" [(ngModel)]="companyProfile.companyName"
+									<input type="text" id="companyName" name="companyName" placeholder="Company Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.companyName"
 									(input)="validateEmptySpace('companyName')"	(blur)="validateNames(companyProfile.companyName)" />
 								<span *ngIf="companyNameError" style="color: #f55d7a">{{companyNameErrorMessage}}</span>
 							</div>
@@ -113,7 +106,7 @@
 							<div class="form-group" [attr.class]="companyProfileNameDivClass">
 								<label class="control-label">Company Profile Name <font style="color: #f55d7a"><b>*</b></font></label>
 								<ng-container *ngIf="companyProfile.isAdd">
-									 <input	type="text" id="companyProfileName"	placeholder="Company Profile Name" class="form-control"name="companyProfileName"[(ngModel)]="companyProfile.companyProfileName"
+									 <input	type="text" id="companyProfileName"	placeholder="Company Profile Name" maxlength="240" class="form-control"name="companyProfileName"[(ngModel)]="companyProfile.companyProfileName"
 										(input)="validateEmptySpace('companyProfileName')"	(blur)="validateProfileNames(companyProfile.companyProfileName)" />
 									<span *ngIf="companyProfileNameError" style="color: #f55d7a">{{companyProfileNameErrorMessage}}</span>
 								</ng-container>
@@ -123,13 +116,13 @@
 
 							<div class="form-group" [attr.class]="emailIdDivClass">
 								<label class="control-label"> Company Email</label>
-								 <input type="email"	id="emailId" name="emailId" placeholder="Email Id"	class="form-control" [(ngModel)]="companyProfile.emailId" (input)="validatePattern('emailId')" (blur)="validatePattern('emailId')" />
+								 <input type="email"	id="emailId" name="emailId" placeholder="Email Id"	class="form-control" maxlength="240" [(ngModel)]="companyProfile.emailId" (input)="validatePattern('emailId')" (blur)="validatePattern('emailId')" />
 								 <span	*ngIf="emailIdError" style="color: #f55d7a">{{emailIdErrorMessage}}</span>
 							</div>
 
 							<div class="form-group" [attr.class]="tagLineDivClass">
 								<label class="control-label">Tag Line</label>
-									<input type="text" id="tagLine" name="tagLine" placeholder="Tag Line" class="form-control" [(ngModel)]="companyProfile.tagLine" />
+									<input type="text" id="tagLine" name="tagLine" placeholder="Tag Line" class="form-control" maxlength="240" [(ngModel)]="companyProfile.tagLine" />
 									<span	*ngIf="tagLineError" style="color: #f55d7a">{{tagLineErrorMessage}}</span>
 							</div>
 
@@ -143,7 +136,7 @@
 
 							<div class="form-group" [attr.class]="websiteDivClass">
 								<label class="control-label">Company Url <font style="color: #f55d7a"><b>*</b></font></label>
-								 <input type="text"	id="website" name="website" placeholder="WebSite" class="form-control" [(ngModel)]="companyProfile.website" (input)="validatePattern('website')"	(blur)="validatePattern('website')" />
+								 <input type="text"	id="website" name="website" placeholder="WebSite" maxlength="240" class="form-control" [(ngModel)]="companyProfile.website" (input)="validatePattern('website')"	(blur)="validatePattern('website')" />
 								<span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
 							</div>
 
@@ -173,21 +166,21 @@
 								<div id="collapse1" class="panel-collapse collapse">
                     <div class="form-group">
                         <label class="control-label">Street</label>
-                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="Street" class="form-control"/>
+                        <input type="text" id="street" [(ngModel)]="companyProfile.street"	name="street" placeholder="Street" maxlength="240" class="form-control"/>
                       </div>
 									<div class="form-group" [attr.class]="cityDivClass">
 										<label class="control-label">City</label>
-										<input type="text" id="city"	name="city" placeholder="City" class="form-control" [(ngModel)]="companyProfile.city" (input)="validatePattern('city')" (blur)="validatePattern('city')" />
+										<input type="text" id="city"	name="city" placeholder="City" class="form-control" maxlength="240" [(ngModel)]="companyProfile.city" (input)="validatePattern('city')" (blur)="validatePattern('city')" />
 										<span *ngIf="cityError" style="color: #f55d7a">{{cityErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="stateDivClass">
 										<label class="control-label">State</label>
-										<input type="text" id="state"	name="state" placeholder="State" class="form-control" [(ngModel)]="companyProfile.state" (input)="validatePattern('state')" (blur)="validatePattern('state')" />
+										<input type="text" id="state"	name="state" placeholder="State" class="form-control" maxlength="240" [(ngModel)]="companyProfile.state" (input)="validatePattern('state')" (blur)="validatePattern('state')" />
 										<span *ngIf="stateError" style="color: #f55d7a">{{stateErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="zipDivClass">
 										<label class="control-label">Zip</label>
-										<input type="text" id="zip" name="zip" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
+										<input type="text" id="zip" name="zip" maxlength="50" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
 										<span *ngIf="zipError"  style="color: #f55d7a">{{zipErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="countryDivClass">
@@ -250,16 +243,16 @@
 		<div class="modal-content rounded-0" >
 			<div class="modal-header">
         <a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
-        <h4 class="modal-title" id="cropLogoImage">Please add your company logo</h4>
+        <h4 class="modal-title" id="cropLogoImage">Choose the image to be used as your company logo</h4>
 			</div>
-			<div class="modal-body">
+      <div class="modal-body" style="overflow-y: unset !important;">
           <div style="position: relative;top: -5px;width: 118px;"
             class="btn green fileinput-button-css" *ngIf="!imageChangedEvent"><span>Select image</span>
             <input style="height: 36px;"  title=" "  id="custom-input" type="file" (change)="filenewChangeEvent($event)">
           </div>
           <div style="position: relative;top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
           <div>
-          <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
           <!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper> -->
         <div [hidden]="!imageChangedEvent"><image-cropper
           [imageChangedEvent]="imageChangedEvent"
@@ -283,7 +276,7 @@
 
         </div>
           <div>
-            <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadLogo()">Upload Image</button>
+            <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadLogo()">Save Changes</button>
           </div>
           <div>
             <ul style="padding: 0 15px;">

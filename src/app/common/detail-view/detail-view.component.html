@@ -5,11 +5,11 @@
 <!-- <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
 	<div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
 
-    <a (click)="analyticsComponent.showRsvpDetails = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+    <a (click)="analyticsComponent.showRsvpDetails = false; analyticsComponent.clearPaginationValues()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
 
     <div class="col-xs-12 caption-subject font-red-sunglo">
-		<h4 class="pull-left">Your Total Campaign Response</h4>
+		<h4 class="pull-left">Your Campaign Response</h4>
 		</div>
 		<div class="col-xs-12 col-sm-4 p-5x">
 		<div class="p-5x">
@@ -129,12 +129,12 @@
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>
    				 </div>
-				<div class="btn-group pull-right" style="margin: 23px 28px 0px 0px; cursor:pointer; color: #7d8c98">
+				<div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="margin: 23px 28px 0px 0px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin: -15px;padding-right: 10px;float:right;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="analyticsComponent.downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="analyticsComponent.downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 				</div>
@@ -142,6 +142,11 @@
     <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
     <div class="col-xs-12">
+    <div class="alert alert-info flex" *ngIf="analyticsComponent.isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 					<div class="table-responsive">
 					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
 					<div class="alert alert-info alert-dismissible" *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0">
@@ -158,7 +163,7 @@
 									<th class="text-center-css" *ngIf="detailType === 'email open' && detailType !== 'NOTYET'">SUBJECT</th>
 									<th class="text-center-css" *ngIf="detailType !== 'NOTYET'  && detailType !== 'invities' && detailType !== 'email not open'"><span>Most Recent</span></th>
 									<th class="text-center-css" *ngIf="detailType === 'YES'">Guests</th>
-									<th class="text-center-css" *ngIf="detailType === 'email not open'">Reminder</th>
+									<th class="text-center-css" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'">Reminder</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -182,7 +187,7 @@
 									</h6>
 									</td>
 									<td class="text-center" *ngIf="detailType === 'YES'" style="text-align:center"> {{item.additionalCount}}</td>
-									<td class="text-center" *ngIf="detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
+									<td class="text-center" *ngIf="!analyticsComponent.isCancelledEvent && detailType === 'email not open'" style="text-align:center"> <a (click)="sendEmailNotOpenReminder(item)">
 									<i class="fa fa-bell-o" aria-hidden="true"></i>
 									</a> </td>
 								</tr>

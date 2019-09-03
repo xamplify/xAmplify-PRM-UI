@@ -92,6 +92,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isCompanyDetails = false;
     allPartnersPagination: Pagination = new Pagination();
     teamMemberPagination: Pagination = new Pagination();
+    contactAssociatedCampaignPagination: Pagination = new Pagination();
     pageSize: number = 12;
     contactListAssociatedCampaignsList: any;
     editingEmailId = '';
@@ -268,8 +269,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.isEmailExist = true;
                     this.existedEmailIds.push(emailId);
                     break;
-                } else {
-                    this.isEmailExist = false;
                 }
             }
         }
@@ -474,8 +473,24 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.loadPartnerList( this.pagination );
                                 this.clipBoard = false;
                                 this.cancelPartners();
-                                this.getContactsAssocialteCampaigns();
+                                if(data.statusCode == 200){
+                                  this.getContactsAssocialteCampaigns();
+                                }
                                 this.disableOtherFuctionality = false;
+                                
+                                if(data.statusCode == 409){
+                                	let emailIds = data.emailAddresses;
+                                	let allEmailIds = "";
+                                	$.each(emailIds,function(index,emailId){
+                                	allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                                	});
+                                	let message = data.errorMessage+"<br><br>"+allEmailIds;
+                                	this.customResponse = new CustomResponse( 'ERROR', message, true );
+                                }
+                                
+                                if(data.statusCode == 417){
+                                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+                                }
                             },
                             ( error: any ) => {
                                 let body: string = error['_body'];
@@ -526,6 +541,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.socialPartnerUsers.length = 0;
         this.allselectedUsers.length = 0;
         this.selectedContactListIds.length = 0;
+        this.getGoogleConatacts = null;
         this.pager = [];
         this.pagedItems = [];
         this.paginationType = "";
@@ -615,7 +631,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     readFiles( files: any, index = 0 ) {
-        if ( files[0].type == "application/vnd.ms-excel" || files[0].type == "text/csv" || files[0].type == "text/x-csv" ) {
+        if ( this.fileUtil.isCSVFile(files[0]) ) {
             this.isListLoader = true;
             this.paginationType = "csvPartners";
             var outputstring = files[0].name.substring( 0, files[0].name.lastIndexOf( "." ) );
@@ -747,17 +763,25 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         var startTime = new Date();
         $( "#clipBoardValidationMessage" ).html( '' );
         var self = this;
+        
         var allTextLines = this.clipboardTextareaText.split( "\n" );
         this.xtremandLogger.info( "allTextLines: " + allTextLines );
         this.xtremandLogger.info( "allTextLines Length: " + allTextLines.length );
         var isValidData: boolean = true;
-        for ( var i = 0; i < allTextLines.length; i++ ) {
+        if(this.clipboardTextareaText === ""){
+            $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Please enter the valid data." + "</h4>" );  
+            isValidData = false;
+        }
+        
+        if(this.clipboardTextareaText != ""){
+         for ( var i = 0; i < allTextLines.length; i++ ) {
             var data = allTextLines[i].split( splitValue );
             if ( !this.validateEmailAddress( data[4] ) ) {
                 $( "#clipBoardValidationMessage" ).append( "<h4 style='color:#f68a55;'>" + "Email Address is not valid for Row:" + ( i + 1 ) + " -- Entered Email Address: " + data[4] + "</h4>" );
                 isValidData = false;
             }
             this.newPartnerUser.length = 0;
+         }
         }
         if ( isValidData ) {
             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
@@ -915,81 +939,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         user.country = data[13].trim()
                         user.mobileNumber = data[14].trim()
                         break;
-                    /*case 6:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        break;
-                    case 7:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        break;
-                    case 8:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        break;
-                    case 9:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        break;
-                    case 10:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        user.country = data[9];
-                        break;
-                    case 11:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.state = data[7];
-                        user.zipCode = data[8];
-                        user.country = data[9];
-                        user.mobileNumber = data[10];
-                        break;*/
-                    /*case 10:
-                        user.firstName = data[0];
-                        user.lastName = data[1];
-                        user.contactCompany = data[2];
-                        user.jobTitle = data[3];
-                        user.emailId = data[4];
-                        user.address = data[5];
-                        user.city = data[6];
-                        user.country = data[7];
-                        user.mobileNumber = data[8];
-                        user.description = data[9];
-                        break;*/
                 }
                 this.xtremandLogger.info( user );
                 self.newPartnerUser.push( user );
@@ -2089,10 +2038,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     getContactsAssocialteCampaigns() {
         try {
-            this.contactService.contactListAssociatedCampaigns( this.partnerListId )
+            this.contactService.contactListAssociatedCampaigns( this.partnerListId, this.contactAssociatedCampaignPagination )
                 .subscribe(
                 data => {
-                    this.contactListAssociatedCampaignsList = data;
+                    this.contactListAssociatedCampaignsList = data.data;
                     if ( this.contactListAssociatedCampaignsList ) {
                         this.openCampaignModal = true;
                     }
@@ -2108,7 +2057,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     listTeamMembers() {
         try {
-            this.teamMemberService.listTeamMemberEmailIds( )
+            this.teamMemberService.listOrganizationTeamMembers(this.loggedInUserId)
                 .subscribe(
                 data => {
                     console.log( data );
@@ -2206,12 +2155,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     ngOnInit() {
         try {
             this.socialContactImage();
-            this.listTeamMembers();
            /* this.listOrgAdmin();*/
             
             $( "#Gfile_preview" ).hide();
             this.socialContactsValue = true;
             this.loggedInUserId = this.authenticationService.getUserId();
+            this.listTeamMembers();
             this.defaultPartnerList( this.loggedInUserId );
             if ( this.contactService.socialProviderName == 'google' ) {
                 this.getGoogleContactsUsers();
@@ -2239,7 +2188,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
 
-        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/' && !this.isDuplicateEmailId ) {
+        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
            let self = this;
             swal( {
                 title: 'Are you sure?',
@@ -2336,6 +2285,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
         }
     }
+    
     saveMarketoContacts()
     {
 
@@ -2348,59 +2298,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         } else
             this.xtremandLogger.error( "AddContactComponent saveMarketoContacts() Contacts Null Error" );
 
-        // try
-        // {
-        //     this.socialPartners.socialNetwork = "MARKETO";
-        //     this.socialPartners.contactName = this.pager.contactListName;
-        //     this.socialPartners.isPartnerUserList = this.isPartner;
-        //     this.socialPartners.contactType = this.contactType;
-        //     this.socialPartners.contacts = this.socialPartnerUsers;
-        //     this.socialPartners.contacts = this.validateMarketoContacts(this.socialPartnerUsers);
-        //     this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
-        //     this.socialPartners.listName = this.pager.contactListName;
-        //     if (this.pager.contactListName != '' && !this.isValidContactName && this.pager.contactListName != ' ')
-        //     {
-        //         this.loading = true;
-        //         if (this.socialPartnerUsers.length > 0)
-        //         {
-        //             this.contactService.saveMarketoContactList(this.socialPartners)
-        //                 .subscribe(
-        //                     data =>
-        //                     {
-        //                         data = data;
-        //                         this.loading = false;
-        //                         this.selectedAddPartnerOption = 9;
-        //                         this.contactService.saveAsSuccessMessage = "add";
-        //                         this.xtremandLogger.info("update Contacts ListUsers:" + data);
-        //                         if (this.isPartner == false)
-        //                         {
-        //                             this.router.navigateByUrl('/home/contacts/manage')
-        //                         } else
-        //                         {
-        //                             this.router.navigateByUrl('home/partners/manage')
-        //                         }
-        //                     },
-
-        //                     (error: any) =>
-        //                     {
-        //                         this.loading = false;
-        //                         this.xtremandLogger.error(error);
-        //                         this.xtremandLogger.errorPage(error);
-        //                     },
-        //                     () => this.xtremandLogger.info("addcontactComponent saveMarketoContact() finished")
-        //                 )
-        //         } else
-        //             this.xtremandLogger.error("AddContactComponent saveMarketoContact() Contacts Null Error");
-        //     }
-        //     else
-        //     {
-        //         this.xtremandLogger.error("AddContactComponent saveMarketoContact() ContactList Name Error");
-        //     }
-        // } catch (error)
-        // {
-        //     this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContact().")
-        // }
     }
+    
     saveMarketoContactSelectedUsers()
     {
 
@@ -2412,64 +2311,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         else {
             this.xtremandLogger.error( "AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error" );
         }
-        // try
-        // {
 
-        //     this.allselectedUsers = this.validateMarketoContacts(this.allselectedUsers);
-        //     this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
-
-        //     if (this.pager.contactListName != '' && !this.isValidContactName && this.pager.contactListName != ' ' && this.allselectedUsers.length != 0)
-        //     {
-        //         console.log(this.allselectedUsers);
-        //         this.loading = true;
-        //         this.partnerLi = new ContactList;
-        //         this.contactListObject.name = this.model.contactListName;
-        //         this.contactListObject.isPartnerUserList = this.isPartner;
-        //         this.socialPartners.socialNetwork = "MARKETO";
-        //         this.socialPartners.contactName = this.pager.contactListName;
-        //         this.socialPartners.isPartnerUserList = this.isPartner;
-        //         this.socialPartners.contactType = this.contactType;
-        //         this.socialPartners.contacts = this.allselectedUsers;
-        //         this.socialPartners.contacts = this.validateMarketoContacts(this.allselectedUsers);
-        //         this.pager.contactListName = this.pager.contactListName.replace(/\s\s+/g, ' ');
-        //         this.socialPartners.listName = this.pager.contactListName;
-        //         this.contactService.saveMarketoContactList(this.socialPartners)
-        //             .subscribe(
-        //                 data =>
-        //                 {
-        //                     data = data;
-        //                     this.loading = false;
-        //                     this.selectedAddPartnerOption = 9;
-
-        //                     this.contactService.saveAsSuccessMessage = "add";
-        //                     this.xtremandLogger.info("update Contacts ListUsers:" + data);
-        //                     if (this.isPartner == false)
-        //                     {
-        //                         this.router.navigateByUrl('/home/contacts/manage')
-        //                     } else
-        //                     {
-        //                         this.router.navigateByUrl('home/partners/manage')
-        //                     }
-        //                 },
-
-        //                 (error: any) =>
-        //                 {
-        //                     this.loading = false;
-        //                     this.xtremandLogger.error(error);
-        //                     this.xtremandLogger.errorPage(error);
-        //                 },
-        //                 () => this.xtremandLogger.info("addcontactComponent saveMarketoContactSelectedUsers() finished")
-        //             )
-        //     }
-        //     else
-        //     {
-             
-        //         this.xtremandLogger.error("AddContactComponent saveMarketoContactSelectedUsers() ContactList Name Error");
-        //     }
-        // } catch (error)
-        // {
-        //     this.xtremandLogger.error(error, "AddContactsComponent saveMarketoContactSelectedUsers().")
-        // }
     }
 
     authorisedMarketoContacts()
@@ -2485,9 +2327,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.marketoImageBlur = false;
             this.marketoImageNormal = true;
             this.getMarketoConatacts = data.data;
-
+            this.getGoogleConatacts  = data.data;
            
-            this.getMarketoConatacts = data.data;
+            //this.getMarketoConatacts = data.data;
             this.loadingMarketo = false;
            
             if (this.getMarketoConatacts.length == 0)

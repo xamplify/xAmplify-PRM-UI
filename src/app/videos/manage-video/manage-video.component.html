@@ -105,7 +105,7 @@
                                 <a class="disable" *ngIf="videoFile.viewBy=='DRAFT' && videoFile.processed" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
                                   <i class="fa fa-bullhorn" ></i>
                                 </a>
-                                <a class="disable" *ngIf="!videoFile.processed" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
+                                <a class="disable" *ngIf="!videoFile.processed" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
                                     <i class="fa fa-bullhorn" ></i>
                                   </a>
                               </ng-container>
@@ -121,10 +121,10 @@
                              </a>
                              </ng-container>
                              <ng-container *ngIf="!videoFile.processed">
-                                  <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
+                                  <a class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
                                     <i class="fa fa-line-chart"></i>
                                   </a>
-                                  <a class="disable" data-toggle="tooltip" data-placement="left" title="Unavailabel for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor">
+                                  <a class="disable" data-toggle="tooltip" data-placement="left" title="Unavailable for processing" *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == videoFile.uploadedUserId) || authenticationService.module.isVendor">
                                     <i class="fa fa-trash-o"></i>
                                   </a>
                               </ng-container>
@@ -186,7 +186,7 @@
                             <a class="disable" *ngIf="videoFile.viewBy=='DRAFT' && videoFile.processed" data-toggle="tooltip" data-placement="top" [title]="actionsDescription.video_draft">
                             <i class="fa fa-bullhorn" ></i>
                              </a>
-                             <a *ngIf="!videoFile.processed" class="disable" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
+                             <a *ngIf="!videoFile.processed" class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
                                 <i class="fa fa-bullhorn"></i>
                             </a>
                         </span>
@@ -196,7 +196,7 @@
                         <a *ngIf="videoFile.viewBy!=='DRAFT' && videoFile.processed" data-toggle="tooltip" data-placement="top" (click)="showCampaignVideoReport(videoFile)"[title]="actionsDescription.video_report">
                           <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="!videoFile.processed" class="disable" data-toggle="tooltip" data-placement="top" title="Unavailabel for processing">
+                        <a *ngIf="!videoFile.processed" class="disable" data-toggle="tooltip" data-placement="top" title="Unavailable for processing">
                             <i class="fa fa-line-chart"></i>
                           </a>
                       </ng-container>
