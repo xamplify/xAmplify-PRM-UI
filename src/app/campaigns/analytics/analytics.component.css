@@ -635,3 +635,20 @@ tr>td>h6 {
 #autoresponse-tr{
 	background-color: #d3d3d317
 }
+#landing-page-icons{
+	margin-top: 10px;
+}
+#notification{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
+}
+#notification-list{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 36px;
+    margin-left: -23px;
+    margin-top: -2px;
+}
