@@ -151,7 +151,7 @@
 															Campaign <span class="f-w-600" *ngIf="emailLog.subject" title="{{emailLog.subject}}">
 																{{emailLog.subject | slice:0:30}} <span *ngIf="emailLog.subject?.length>30">...</span>
 															</span> email opened
-														</span>
+														</span> 
 														<span *ngIf="emailLog.actionId == 14 && campaign.campaignVideoFile">Clicked <span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title
 																| slice:0:30}} <span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span></span> video GIF</span>
 														<span *ngIf="emailLog.actionId == 15">
@@ -159,7 +159,7 @@
 															<span class="f-w-600" *ngIf="emailLog.url"><a href="{{emailLog.url}}" target="_blank" title="{{emailLog.url}}">{{emailLog.url
 																	| slice:0:30}}<span *ngIf="emailLog.url?.length>30">...</span></a></span>
 														</span>
-														<span *ngIf="campaign.campaignVideoFile && (emailLog.actionId == 1 || emailLog.actionId == 10)">
+														<span *ngIf="campaign.campaignVideoFile && (emailLog.actionId == 1 || emailLog.actionId == 10) ">
 															<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}}
 																<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
 															</span> <span *ngIf="emailLog.actionId == 10">re-</span>played

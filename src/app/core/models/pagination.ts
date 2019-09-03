@@ -1,7 +1,9 @@
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { Criteria } from '../../contacts/models/criteria';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
 
 export class Pagination {
+    
 	pageIndex = 1;
 	maxResults = 12;
 	sortcolumn: string = null;
@@ -32,4 +34,10 @@ export class Pagination {
 	isListView:boolean = false;
 	dealStatus:string = null;
 	showDraftContent=false;
+	campaignForm = false;
+	landingPageCampaignForm = false;
+	landingPageId = 0;
+	landingPageForm = false;
+	loader:HttpRequestLoader = new HttpRequestLoader();
+	
 }

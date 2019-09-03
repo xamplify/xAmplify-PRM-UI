@@ -448,5 +448,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
         }
     }
+    
+    goToFormAnalytics(id:number){
+        this.router.navigate(['/home/forms/cf/'+id]);
+    }
 
 }

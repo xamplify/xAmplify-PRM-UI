@@ -481,13 +481,25 @@
                         </div>
 		                   	</td>
                             <td class="text-center">
-                              <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                              <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
                                 data-placement="top" title="Campaign Based Reports" class='circled-number'>
                                 <i class="fa fa-line-chart"></i>
                               </a>
+                              <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                                data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
+                                <i class="fa fa-line-chart"></i>
+                              </a>
+                              <ng-container *ngIf="redistributedCampaign.formsCount>0">
+                              	 <a data-rel="fancybox-button" routerLink="/home/forms/cf/{{redistributedCampaign.campaignId}}" data-toggle="tooltip" 
+                                data-placement="top" title="Form Analytics" class='circled-number'>
+                                <i class="fa fa-wpforms"></i>
+                             	 </a>
+                               <span class="badge" id="notification">{{redistributedCampaign.formsCount}}</span>
+                              </ng-container>
                               <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
                                 <img src="../assets/images/disabled-icon.png">
                               </a>
+                              
                             </td>
                           </tr>
                         </tbody>
@@ -531,8 +543,11 @@
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == sortOption.selectedCampaignTypeIndex">Email</li>
                 <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex">Video</li>
                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == sortOption.selectedCampaignTypeIndex">Social</li>
+
+
                 <li class="filter" *ngIf="referenseService.eventCampaign || referenseService.eventCampaignTabAccess" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
                 <li class="filter" style="display: none;">Own Template</li>
+
               </ul>
               <div class="page-toolbar col-xs-6 col-sm-12 col-md-7">
                 <div class="btn-group pull-right">
@@ -595,6 +610,11 @@
                         <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
                         <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                          alt="{{campaign.campaignType}} Campaign">
+                          
+                          <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;"
+                          alt="{{campaign.campaignType}} Campaign">
+                        <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
                       </td>

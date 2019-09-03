@@ -82,6 +82,9 @@ export class WorldmapComponent implements OnInit {
      this.titleName = 'Partners';
     } else if(this.router.url.includes('home/content/videos')){
       this.worldmapMessage = 'Check out where your videos are being watched';
+    }else if(this.router.url.includes('home/landing-pages')){
+        this.worldmapMessage = 'Check out where your landing pages are viewed';
+        this.titleName = 'Viewers';
     }
     else {
       this.worldmapMessage = 'Check out where your videos are being watched';

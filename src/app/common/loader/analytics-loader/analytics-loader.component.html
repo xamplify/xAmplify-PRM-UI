@@ -35,12 +35,12 @@
   </div>
 </div>
 
-<div class="row m10" style="background: #fff" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL' || referenceService.campaignType === 'EVENT'">
+<div class="row m10" style="background: #fff" *ngIf="referenceService.campaignType === 'REGULAR' || referenceService.campaignType === 'SOCIAL' || referenceService.campaignType === 'EVENT' || referenceService.campaignType === 'LANDINGPAGE'">
   <div class="col-xs-12 p0">
     <div class="col-sm-6" *ngIf="referenceService.campaignType !== 'SOCIAL'">
       <div class='text-input__loading--line rect-box box-custom'></div>
     </div>
-    <div [ngClass]='{"col-sm-12":referenceService.campaignType === "SOCIAL", "col-sm-6":referenceService.campaignType === "REGULAR" }'>
+    <div [ngClass]='{"col-sm-12":referenceService.campaignType === "SOCIAL", "col-sm-6":(referenceService.campaignType === "REGULAR" || referenceService.campaignType === "LANDINGPAGE" || referenceService.campaignType === "EVENT" ) }'>
       <div class='text-input__loading--line rect-box box-custom'></div>
     </div>
   </div>

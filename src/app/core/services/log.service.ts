@@ -23,6 +23,18 @@ export class LogService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    logSMSUrlOpened(smsLog: any) {
+        return this.http.post(this.URL + "user/logSMSURLOpened", smsLog)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    logSMSUrlClicks(smsLog: any) {
+        return this.http.post(this.URL + "user/logSMSURLClick", smsLog)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
 
     logunsubscribedUser(userAlias: string, companyId: number) {
         return this.http.post(this.URL + "log/unsubscribe-user?userAlias=" + userAlias + "&companyId=" + companyId, +"")

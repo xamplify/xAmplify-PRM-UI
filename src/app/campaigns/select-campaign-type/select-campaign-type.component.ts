@@ -9,7 +9,7 @@ import { UserService } from 'app/core/services/user.service';
 import { CampaignAccess } from '../models/campaign-access';
 import { HomeComponent } from 'app/core/home/home.component';
 
-declare var Metronic, Layout , Demo,TableManaged:any;
+declare var Metronic, Layout , Demo,TableManaged,swal:any;
 @Component({
     selector: 'app-select-campaign',
     templateUrl: './select-campaign-type-component.html',
@@ -44,9 +44,11 @@ export class SelectCampaignTypeComponent implements OnInit{
         }
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
     }
-    cssClassChange(){
-      const countOfTrues = [this.campaignAccess.videoCampaign,this.campaignAccess.emailCampaign, this.campaignAccess.socialCampaign, this.campaignAccess.eventCampaign].filter(Boolean).length;
-      if(countOfTrues === 4) { this.changeClass = 'col-xs-12 col-sm-3';
+   cssClassChange(){
+      const countOfTrues = [this.campaignAccess.videoCampaign,this.campaignAccess.emailCampaign, this.campaignAccess.socialCampaign, this.campaignAccess.eventCampaign
+      ,this.campaignAccess.smsCampaign].filter(Boolean).length;
+      if(countOfTrues === 5) { this.changeClass = 'col-xs-12 col-sm-3';
+      }else if(countOfTrues === 4) { this.changeClass = 'col-xs-12 col-sm-3';
       } else if (countOfTrues === 3) { this.changeClass = 'col-xs-12 col-sm-4';
       } else if (countOfTrues === 2) { this.changeClass = 'col-xs-12 col-sm-6';
       } else if (countOfTrues === 1) { this.changeClass = 'col-xs-12'; }
@@ -60,6 +62,9 @@ export class SelectCampaignTypeComponent implements OnInit{
         this.campaignAccess.emailCampaign = data.regular;
         this.campaignAccess.socialCampaign = data.social;
         this.campaignAccess.eventCampaign = data.event
+        this.campaignAccess.smsCampaign = data.sms;
+        this.campaignAccess.landingPageCampaign = data.landingPageCampaign;
+        this.refService.smsCampaign = data.sms;
         this.cssClassChange();
       });
     }
@@ -105,6 +110,15 @@ export class SelectCampaignTypeComponent implements OnInit{
        if(this.isOrgAdmin || this.hasSocialStatusRole ||this.isOnlyPartner || this.authenticationService.module.isVendor){
       //this.refService.selectedCampaignType = "socialCampaign";
        this.router.navigate(["/home/campaigns/social"]); }
+     }
+     createSMS_Campaign(){
+      this.refService.selectedCampaignType = "sms";
+      this.router.navigate(["/home/campaigns/create"]);
+     }
+     
+     createLandingPageCampaign(){
+         this.refService.selectedCampaignType = "landingPage";
+         this.router.navigate(["/home/campaigns/create"]);
      }
 
 

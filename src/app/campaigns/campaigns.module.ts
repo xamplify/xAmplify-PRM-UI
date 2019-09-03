@@ -29,7 +29,9 @@ import { DealRegistrationService } from '../deal-registration/services/deal-regi
 import { SharedLibraryModule } from "../shared/shared-library.module";
 import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-comments/manage-deal-comments.component";
 import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
+import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
 import { SharedRssModule } from "app/shared/shared-rss.module";
+
 
 @NgModule({
   imports: [
@@ -46,6 +48,7 @@ import { SharedRssModule } from "app/shared/shared-rss.module";
     ManagePublishComponent,
     SelectCampaignTypeComponent,
     CreateCampaignComponent,
+    CreateSmsCampaignComponent,
     AnalyticsComponent,
     HeatMapComponent,
     SocialCampaignComponent,

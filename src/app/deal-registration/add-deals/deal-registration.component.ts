@@ -140,7 +140,7 @@ export class DealRegistrationComponent implements OnInit
         
         if (this.dealId == -1)
         {
-            this.submitButtonText = "REGISTER DEAL";
+           
 
             this.dealRegistrationService.getForms(this.campaign.userId).subscribe(forms =>
             {
@@ -247,6 +247,7 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.title = data.title;
         this.dealRegistration.role = data.role;
         this.dealRegistration.isDeal=data.deal;
+        this.dealRegistration.role = data.role;
         // if(data.pushToMarketo)
         //     this.dealRegistration.pushToMarketo = data.pushToMarketo;
         // else
@@ -295,6 +296,7 @@ export class DealRegistrationComponent implements OnInit
         {
             this.dealRegistration.leadCountry = this.countryNames.countries[0];
         }
+        
         if (data.answers.length > 0)
         {
             this.dealRegistration.answers = data.answers;
@@ -325,6 +327,8 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistrationService.getFormById(this.campaign.userId, this.formId).subscribe(form =>
         {
             this.form = form;
+            console.log( this.form)
+            console.log( answers)
             this.properties.forEach(property =>
             {
                 this.validateQuestion(property);
@@ -858,22 +862,7 @@ export class DealRegistrationComponent implements OnInit
     submitButtonStatus()
     {
 
-     console.log("websiteError"+"===> "+this.websiteError);
-     console.log("leadStreetError"+"===> "+this.leadStreetError);
-     console.log("leadCityError"+"===> "+this.leadCityError);
-     console.log("opportunityAmountError"+"===> "+this.opportunityAmountError);
-     console.log("leadPostalCodeError"+"===> "+this.leadPostalCodeError);
-     console.log("countryError"+"===> "+this.countryError);
-     console.log("estimatedCloseDateError"+"===> "+this.estimatedCloseDateError);
-     console.log("companyError"+"===> "+this.companyError);
-     console.log("firstNameError"+"===> "+this.firstNameError);
-
-     console.log("lastNameError"+"===> "+this.lastNameError);
-     console.log("titleError"+"===> "+this.titleError);
-
-     console.log("dealTypeError"+"===> "+this.dealTypeError);
-     console.log("phoneError"+"===> "+this.phoneError);
-
+    
         if (!this.websiteError && !this.leadStreetError && !this.leadCityError
             && !this.leadStateError && !this.leadPostalCodeError && !this.countryError
             && !this.opportunityAmountError && !this.estimatedCloseDateError
@@ -992,7 +981,7 @@ export class DealRegistrationComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your leadâ€™s URL.';
+                this.websiteErrorMessage = 'Please add your lead’s URL.';
         }
     }
 
@@ -1067,7 +1056,7 @@ export class DealRegistrationComponent implements OnInit
         }
     }
     showAlert(i:number,question:DealDynamicProperties){
-        if( question.isSaved ){
+        if(question.isSaved ){
             this.deleteComment(i,question);
             
         }else{
@@ -1082,6 +1071,49 @@ export class DealRegistrationComponent implements OnInit
         alert("SUCCES")
      }
 
+     formatMobileNumber(mobile:string){
+        var value = mobile.toString().trim().replace(/^/, '');
+
+        
+
+        var country, city, number;
+
+        switch (value.length) {
+            case 10: // +1PPP####### -> C (PPP) ###-####
+                country = 1;
+                city = value.slice(0, 3);
+                number = value.slice(3);
+                break;
+
+            case 11: // +CPPP####### -> CCC (PP) ###-####
+                country = value[0];
+                city = value.slice(1, 4);
+                number = value.slice(4);
+                break;
+
+            case 12: // +CCCPP####### -> CCC (PP) ###-####
+                country = value.slice(0, 3);
+                city = value.slice(3, 5);
+                number = value.slice(5);
+                break;
+                case 13: // +CCCPP####### -> CCC (PP) ###-####
+                country = value.slice(0, 3);
+                city = value.slice(3, 5);
+                number = value.slice(5);
+                break;
+
+            default:
+                return mobile;
+        }
+
+        if (country == 1) {
+            country = "";
+        }
+
+        number = number.slice(0, 3) + '-' + number.slice(3);
+
+        return (country + " -" + city + "- " + number).trim();
+     }
 
 }
 

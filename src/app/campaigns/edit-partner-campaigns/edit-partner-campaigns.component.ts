@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -24,7 +24,9 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
-
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPage } from '../../landing-pages/models/landing-page';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -32,12 +34,13 @@ var moment = require('moment-timezone');
   selector: 'app-edit-partner-campaigns',
   templateUrl: './edit-partner-campaigns.component.html',
   styleUrls: ['./edit-partner-campaigns.component.css','../../../assets/css/content.css'],
-  providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties]
+  providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties,LandingPageService]
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
 
     selectedEmailTemplateId = 0;
+    selectedLandingPageId = 0;
     campaign: Campaign;
     emailTemplate: EmailTemplate;
     userLists: any;
@@ -161,6 +164,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     isOnlyPartner = false;
     isOrgAdminAndPartner =false;
     isVendorAndPartner = false;
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
 
     constructor(private router: Router,
             public campaignService: CampaignService,
@@ -219,8 +223,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.getCampaignUrls(this.campaign);
 
         this.loadContactList(this.contactListPagination);
-        this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
-        this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+        
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
         }
@@ -229,6 +232,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaignType=="VIDEO";
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
+        }else if(this.campaignType.includes('LANDINGPAGE')){
+            this.campaignType=="LANDINGPAGE";
+        }
+        
+        if(this.campaignType!="LANDINGPAGE"){
+            this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
+            this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+        }else{
+            this.selectedLandingPageId = this.campaign.landingPage.id;
         }
 
         if(this.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
@@ -615,7 +627,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'nurtureCampaign':true,
             'dataShare':this.campaign.dataShare,
             'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared,
-            'parentCampaignId':this.campaign.parentCampaignId
+            'parentCampaignId':this.campaign.parentCampaignId,
+            'landingPageId':this.selectedLandingPageId
         };
         return data;
     }
@@ -1273,7 +1286,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           this.referenceService.goToTop();
       }
   return false;
-
+  }
+  previewCampaignLandingPage(landingPage:LandingPage){
+      this.previewLandingPageComponent.showPreview(landingPage);
   }
 
 

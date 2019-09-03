@@ -125,6 +125,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   beforeDaysLength: number;
   tempStartTime: string;
   isVendor = false;
+
+
+    
+
   enableLeads : boolean;
   
   //Push Leads To Marketo
@@ -146,8 +150,22 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   loadingMarketo: boolean;
   marketoButtonClass = "btn btn-default";
   loading = false;
+  pushToMarketo = false;
+     
+
+     loadingMarketo: boolean;
+     marketoButtonClass = "btn btn-default";
+ 
+     //ENABLE or DISABLE LEADS
+     smsService = false;
+     enableLeads : boolean;
+     enableSMS:boolean;
+     smsText: any;
+     enableSmsText: boolean;
+     smsTextDivClass: string
 
   
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
     public campaignService: CampaignService,
@@ -170,6 +188,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
     this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
+    referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
+        referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+            console.log(data)
+            this.enableLeads = data.enableLeads;
+            console.log(this.enableLeads);
+           
+        });
+    })
+    authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
+        console.log(response);
+       this.enableSMS = response.data;
+    })
 
     referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
         referenceService.getOrgCampaignTypes(response).subscribe(data=>{
@@ -216,6 +246,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   if(event===13) { this.searchEmailTemplate();}
  }
  ngOnInit() {
+    
+
+
     this.detailsTab = true;
     this.resetTabClass()
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -957,7 +990,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
-      'pushToMarketo': eventCampaign.pushToMarketo
+       'pushToMarketo': eventCampaign.pushToMarketo,
+       'smsService':this.smsService,
+       'smsText':this.smsText
+
+    
+
     }
     
     eventCampaign = customEventCampaign;
@@ -974,6 +1012,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     this.onBlurValidation();
     eventCampaign.campaignScheduleType = launchOption;
+    eventCampaign.smsService = this.smsService;
+    eventCampaign.smsText = this.smsText;
     eventCampaign =  this.getCampaignData(eventCampaign)
     if((this.isEditCampaign || this.reDistributeEventManage) && !eventCampaign.onlineMeeting && !eventCampaign.campaignLocation.id)  {  }
     else {  eventCampaign.campaignLocation.id = null;}
@@ -2030,5 +2070,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     $('#contactsModal').modal('hide');
     $('#show_email_template_preivew').modal('hide');
  }
+
+ smsServices(){
+        
+    this.smsService =  !this.smsService;
+    this.enableSmsText =  this.smsService;
+}
 
 }

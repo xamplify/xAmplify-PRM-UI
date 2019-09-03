@@ -113,3 +113,10 @@ cursor: default;
 .greay{
   background-color: #8a8282c4;
 }
+#notification{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
+}
