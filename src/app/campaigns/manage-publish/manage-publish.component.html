@@ -32,6 +32,7 @@
 							<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == selectedCampaignTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign">Social</li>
 							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
+							<li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign">SMS</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
@@ -88,8 +89,15 @@
 											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
+													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
+											</ng-container>
+											<ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
+												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
+											</ng-container>
+											
                     					</td>
-                     <td>
+                     					<td>
 											<h4 class="ellipsis campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:36}}
 													<span *ngIf="campaign.campaignName?.length>36">...</span>
 											</h4>
@@ -271,10 +279,13 @@
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
 												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
-                      </ng-container>
-                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-                          <img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
-                      </ng-container>
+                      					</ng-container>
+                      						<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
+													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
+												</ng-container>
+					                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
+					                          <img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
+					                      </ng-container>
 										</td>
 										<td>
 											<h4 class="campaign-title" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
@@ -408,7 +419,13 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
-
+												<ng-container *ngIf="campaign.formsCount>0" >
+													<a (click)="goToFormAnalytics(campaign.campaignId)"
+													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+														<i class="fa fa-wpforms"></i>
+													</a>
+													<span class="badge" id="notification-list">{{campaign.formsCount}}</span>
+												</ng-container>
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
