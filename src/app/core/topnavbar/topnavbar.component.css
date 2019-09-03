@@ -87,3 +87,30 @@ label{font-weight: bold !important;}
 .alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
 .text{padding-top: 12px;}
 
+.btn-group button {
+  background-color: #008fd5; 
+  border: 1px solid #3575b5; 
+  color: #fff; 
+  padding: 6px 16px; 
+  cursor: pointer; 
+  float: left; 
+  font-size: 14px;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; 
+}
+
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.btn-group button:hover {
+  background-color: #4db1e2;
+}
+
+.refer-vendor-button{
+	padding: 17px 5px 0px 0px;
+}
+

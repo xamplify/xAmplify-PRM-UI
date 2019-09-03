@@ -56,7 +56,7 @@ export class ContactService {
         return this._http.get( this.url + `default-partner-list/${userId}?access_token=${this.authenticationService.access_token}` )
         .map( this.extractData )
         .catch( this.handleError );
-}
+   }
 
     listContactsOfDefaultPartnerList(userId: number, pagination: Pagination){
         return this._http.post( this.url + `partners/${userId}?access_token=${this.authenticationService.access_token}`, pagination )

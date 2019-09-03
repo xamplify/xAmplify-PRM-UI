@@ -20,7 +20,7 @@ import { BubbleChartComponent } from "./analytics/bubble-chart/bubble-chart.comp
 import { PartnerCampaignsComponent } from "./partner-campaigns/partner-campaigns.component";
 import { EditPartnerCampaignsComponent } from "./edit-partner-campaigns/edit-partner-campaigns.component";
 import { PreviewCampaignComponent } from "./preview-campaign/preview-campaign.component";
-import { EventCampaignComponent } from './event-campaign/event-campaign.component'; 
+import { EventCampaignComponent } from './event-campaign/event-campaign.component';
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 import { CalendarComponent } from './calendar/calendar.component';
@@ -29,6 +29,7 @@ import { DealRegistrationService } from '../deal-registration/services/deal-regi
 import { SharedLibraryModule } from "../shared/shared-library.module";
 import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-comments/manage-deal-comments.component";
 import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
+import { SharedRssModule } from "app/shared/shared-rss.module";
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.comp
     CKEditorModule,
     CommonComponentModule,
     ErrorPagesModule,
-    SharedLibraryModule
+    SharedLibraryModule,
+    SharedRssModule
   ],
   declarations: [
     ManagePublishComponent,

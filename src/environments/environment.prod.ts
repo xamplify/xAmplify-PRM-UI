@@ -7,8 +7,8 @@ export const environment = {
   clientSecret : "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa",
   imagesHost: "https://xamp.io/vod/images/",
 
-  CLIENT_URL: 'https://xamplify.io/', // xamplify client app server
-  SERVER_URL: 'https://xamp.io/' // xamplify backend production server
+  //CLIENT_URL: 'https://xamplify.io/', // xamplify client app server
+ // SERVER_URL: 'https://xamp.io/' // xamplify backend production server
 
   // CLIENT_URL: 'https://upload.mobinar.com/', // xamplify client app server
   // SERVER_URL: 'https://server.mobinar.com/' // xamplify backend production server

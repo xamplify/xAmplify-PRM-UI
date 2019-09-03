@@ -99,11 +99,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
         this.daySort = this.sortDates[3];
         this.referenceService.daySortValue = this.daySort.value;
-
         this.heatMapSort = this.sortHeatMapValues[4];
         this.xtremandLogger.info('dashboard constructor');
         this.utilService.setRouterLocalStorage('dashboard');
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+       // this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        //.isOnlyPartner = this.authenticationService.hasOnlyPartnerRole;
     }
 
     genderDemographics(userId: number) {
@@ -206,6 +206,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     generatHeatMap(heatMapData, heatMapId) {
         const self = this;
+        if(true){
         const data = heatMapData;
         this.xtremandLogger.log(data);
         Highcharts.chart(heatMapId, {
@@ -255,6 +256,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 enabled: false
             }
         });
+        }
     }
     generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) {
         const charts = [],
@@ -750,13 +752,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
                 subscribe(result => {
                     this.xtremandLogger.log(result.heatMapData);
-                    this.heatMapData = result.heatMapData;
-                    this.heatMapData.forEach(element => {
-                      element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
-                      if(element.launchTime) { element.launchTime = this.convertDateFormat(element.launchTime); }
-                    });
-                    if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
-                    } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
+                    if(result){
+                      this.heatMapData = result.heatMapData;
+                      this.heatMapData.forEach(element => {
+                        element.name = element.name.length>25 ? element.name.substring(0,25)+"..." : element.name;
+                        if(element.launchTime) { element.launchTime = this.convertDateFormat(element.launchTime); }
+                      });
+                      if (!this.isFullscreenToggle) { this.generatHeatMap(this.heatMapData, 'dashboard-heat-map');
+                      } else { this.generatHeatMap(this.heatMapData, 'heat-map-data'); }
+                    } else { this.heatMapData = [];}
                   },
                     (error: any) => {
                         this.xtremandLogger.error(error);
@@ -889,10 +893,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
                /* "Date and Time": date.toDateString() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds(),*/
                /* "Campaign Name": this.dashboardReport.downloadEmailLogList[i].campaignName*/
             }
-            
+
             let hours = this.referenceService.formatAMPM(date);
             object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-            
+
             if (this.paginationType == 'open') {
                 object["Company Name"] = this.dashboardReport.downloadEmailLogList[i].companyName;
                 object["Campaign Name"] = this.dashboardReport.downloadEmailLogList[i].campaignName;

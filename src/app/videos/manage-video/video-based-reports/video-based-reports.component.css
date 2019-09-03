@@ -4,6 +4,9 @@ padding: 2px 5px;
 #newPlayerVideo {
 width: auto;
 }
+.width30{
+	width:30%;
+}
 
 .videoTitle {
 word-break: break-all;
@@ -105,3 +108,6 @@ text-align: center;
 @media screen and (max-width:600px){.video-modal { width:100%; } }
 @media screen and (min-width:601px){.video-modal { width:80% !important; } }
 .tooltip-css{position: relative;cursor: pointer;color: #54a7e9;}
+.disabled{
+  pointer-events: none;
+}

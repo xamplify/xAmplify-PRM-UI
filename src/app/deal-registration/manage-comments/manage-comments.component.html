@@ -377,7 +377,7 @@
                     <i class="fa fa-times"></i>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 100%">
                 <div *ngIf="campaign != null && campaign != undefined" style="margin:auto;width: 87%;padding:0px;background-color: white;"
                     class="campaignProps shadow p-6">
                     <div class="tab-pane active" *ngIf="!isListView">
@@ -394,32 +394,32 @@
                                     <div class="col-md-8" style="text-align: left;">
                                             <div *ngIf="campaign">
                                                     <h5 class="mt10 mb0" *ngIf="campaign?.campaignName" title="{{campaign.campaignName}}"><span style="font-size:14px;font-weight: 400"
-                                                        class="col-md-6">
+                                                        class="col-md-5">
                                                             Campaign name </span>: {{campaign.campaignName | slice:0:25}}
-                                                        <span *ngIf="campaign.campaignName?.length>25">...</span>
+                                                        <span *ngIf="campaign.campaignName?.length>25">..</span>
                                                     </h5>
                                                 </div>
                                     <div *ngIf="deal?.deal">
                                         <h5 class="mt10 mb0" *ngIf="deal?.title" title="{{deal.title}}"><span style="font-size:14px;font-weight: 400"
-                                            class="col-md-6">
+                                            class="col-md-5">
                                                 Deal Title </span>: {{deal.title | slice:0:25}}
-                                            <span *ngIf="deal.title?.length>25">...</span>
+                                            <span *ngIf="deal.title?.length>25">..</span>
                                         </h5>
                                     </div>
                                     <div *ngIf="!deal?.deal">
                                         <h5 class="mt10 mb0" *ngIf="leadName" title="{{leadName}}"><span style="font-size:14px;font-weight: 400"
-                                            class="col-md-6">Lead
+                                            class="col-md-5">Lead
                                                </span> : {{leadName | slice:0:25}}
-                                            <span *ngIf="leadName?.length>25">...</span>
+                                            <span *ngIf="leadName?.length>25">..</span>
                                         </h5>
                                     </div>
-                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName"><span style="font-size:14px;font-weight: 400"  class="col-md-6">Partner
-                                            Name </span>: {{userName | slice:0:30}} <span *ngIf="userName.length>30">...</span></h5>
-                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId"><span style="font-size:14px;font-weight: 400"  class="col-md-6">Partner
-                                            Email </span>:  {{createdBy.emailId | slice:0:50}}<span *ngIf="createdBy.email?.length>50">...</span></h5>
+                                    <h5 class="mt10 mb0" *ngIf="userName" [title]="userName"><span style="font-size:14px;font-weight: 400"  class="col-md-5">Partner
+                                            Name </span>: {{userName | slice:0:25}} <span *ngIf="userName.length>25">..</span></h5>
+                                    <h5 class="mt10 mb0" *ngIf="createdBy?.emailId" [title]="createdBy?.emailId"><span style="font-size:14px;font-weight: 400"  class="col-md-5">Partner
+                                            Email </span>:  {{createdBy.emailId | slice:0:25}}<span *ngIf="createdBy.email?.length>25">..</span></h5>
                                     <h5 class="mt10 mb0">
                                         <span>
-                                            <span style="font-size:14px;font-weight: 400"  class="col-md-6">Created On</span>
+                                            <span style="font-size:14px;font-weight: 400"  class="col-md-5">Created On</span>
                                         </span>
                                         <span title="Upload date">
                                             <span>

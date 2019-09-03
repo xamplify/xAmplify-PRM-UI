@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input,OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { SocialService } from '../../social/services/social.service';
@@ -12,8 +12,12 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { DashboardService } from "../../dashboard/dashboard.service";
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl , NgModel} from '@angular/forms';
 declare var $, CKEDITOR, ckInstance:any;
+import { TagInputComponent as SourceTagInput } from 'ngx-chips';
+import "rxjs/add/observable/of";
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-topnavbar',
@@ -36,6 +40,13 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   validationMessage = "";
   isUser = false;
   isShowCKeditor = false;
+  invalidTagError = false;
+  @ViewChild('tagInput')
+  tagInput: SourceTagInput;
+  public validators = [ this.must_be_email.bind(this) ];
+  public errorMessages = {'must_be_email': 'Please be sure to use a valid email format'};
+  public onAddedFunc = this.beforeAdd.bind(this);
+  private addFirstAttemptFailed = false;
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
@@ -53,7 +64,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
                 console.log(data);
                 refService.userDefaultPage = data.userDefaultPage;
                 const loggedInUser = data;
-                if (loggedInUser.firstName != null) {
+                if (loggedInUser.firstName) {
                   this.model.displayName = loggedInUser.firstName;
                   refService.topNavBarUserDetails.displayName = loggedInUser.firstName;
                 } else {
@@ -72,8 +83,6 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
               () => this.logger.log('Finished')
               );
           }
-
-
     const roles = this.authenticationService.getRoles();
     if(roles!=undefined){
         if (roles.indexOf(this.roleName.videRole) > -1 || roles.indexOf(this.roleName.allRole) > -1) {
@@ -91,11 +100,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           if (roles.indexOf(this.roleName.companyPartnerRole) > -1) {
             this.authenticationService.module.isCompanyPartner = true;
           }
-
           if(roles.indexOf(this.roleName.vendorRole)>-1){
               this.authenticationService.module.isVendor = true;
           }
-
     }
     }else{
        this.authenticationService.logout();
@@ -104,6 +111,30 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
   errorHandler(event:any){
     event.target.src = 'assets/images/icon-user-default.png';
+  }
+  private must_be_email(control: FormControl) {
+    if (this.addFirstAttemptFailed && !this.validateEmail(control.value)) {
+        return { "must_be_email": true };
+    }
+    return null;
+  }
+  private beforeAdd(tag: any) {
+    let isPaste = false;
+    if(tag['value']) {  isPaste = true; tag = tag.value;}
+    if (!this.validateEmail(tag)) {
+      if (!this.addFirstAttemptFailed) {
+        this.addFirstAttemptFailed = true;
+        if(!isPaste) { this.tagInput.setInputValue(tag); }
+      }
+      if(isPaste) {  return Observable.throw(this.errorMessages['must_be_email']); }
+      else { return Observable.of('').pipe(tap(() => setTimeout(() => this.tagInput.setInputValue(tag)))); }
+    }
+    this.addFirstAttemptFailed = false;
+    return Observable.of(tag);
+  }
+  private validateEmail(text: string) {
+    var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
+    return (text && EMAIL_REGEXP.test(text));
   }
   connectToWebSocket(){
       let error_callback = function(error) {
@@ -124,11 +155,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           });
 
       });*/
-
-
   }
-
-
 
   getUnreadNotificationsCount() {
    try{
@@ -156,8 +183,6 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     }catch(error) {this.logger.error('error'+error); }
   }
 
-
-  
   getRoles(){
       this.userService.getRoles(this.authenticationService.getUserId())
       .subscribe(
@@ -165,6 +190,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
            if(response.statusCode==200){
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+              this.authenticationService.hasOnlyPartnerRole = this.authenticationService.loggedInUserRole =="Partner" && this.authenticationService.isPartnerTeamMember==false;
            }else{
                this.authenticationService.loggedInUserRole = 'User';
            }
@@ -178,7 +204,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     return false;
   }
   ngOnDestroy(){
-    this.isShowCKeditor = false; 
+    this.isShowCKeditor = false;
+    $('#requestForVendor').modal('hide');
   }
   ngOnInit() {
     try{
@@ -201,8 +228,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     this.authenticationService.logout();
    // this.router.navigate(['/']);
   }
-  
-  
+
+
   openRequestAsVendorModal(){
       this.isShowCKeditor = true;
       CKEDITOR.config.height = '300px';
@@ -215,20 +242,18 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
 
           + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
-     
+
           + "<br><br>" + "Best, " + "<br><br>"
-          
+
           + this.authenticationService.user.firstName
-          
+
           + "<br>" + this.authenticationService.user.firstName + " " + this.authenticationService.user.lastName
-          
+
           + "<br>" + this.authenticationService.user.companyName
-          
+
           $( '#requestForVendor' ).modal( 'show' );
-     
   }
-  
-  
+
   validateVendoorInvitation(){
       if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds){
           this.isValidVendorInvitation = true;
@@ -236,40 +261,24 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           this.isValidVendorInvitation = false;
       }
   }
-  
-  
-  public validators = [ this.must_be_email ];
-  public errorMessages = {
-      'must_be_email': 'Enter a valid email address and press Enter.'
-  };
-  private must_be_email(control: FormControl) {        
-      var EMAIL_REGEXP = /^(([a-zA-Z0-9.!#$&'*+\/=?_`{|}~-]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (control.value != "" && (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))) {
-          return { "must_be_email": true };
-      }
-      return null;
-  }
-  
   sendRequestForVendorEmail(){
       this.loading = true;
       this.isError = false;
+      this.onAddingEmailId();
       this.vendoorInvitation.emailIds = this.emailIds;
-   
      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
         .subscribe(
           data => {
-              data = data;
               this.isValidationMessage = true;
               if(data.statusCode === 200){
                 this.customResponse = new CustomResponse( 'SUCCESS', "Vendor invitation has been sent successfully.", true );
               }else if(data.statusCode === 417){
-                this.customResponse = new CustomResponse( 'ERROR', "The email address you entered is already your vendor.", true );
+                this.customResponse = new CustomResponse( 'ERROR', data.data[0].message, true );
               }
               else{
                   this.customResponse = new CustomResponse( 'ERROR', "Mail sending failed! something went wrong please try after some time.", true );
               }
-            
             this.loading = false;
            // this.closeInvitationModal()
           },
@@ -286,18 +295,18 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       }else{
           this.isError = true;
           this.loading = false;
+          $('#requestForVendor').animate({ scrollTop: 0 }, 'fast');
+          $("#requestForVendor").scrollTop(0);
       }
   }
-  
+
   closeInvitationModal() {
       $('#requestForVendor').modal('hide');
       this.vendoorInvitation.emailIds = [];
       this.emailIds = [];
       this.isValidationMessage = false;
   }
-  
-  
-  public onAddingEmailId( tag: any ) {
+  public onAddingEmailId() {
       console.log( this.emailIds );
       const emailIds = this.emailIds;
       let newEmailIds = [];
@@ -305,9 +314,10 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
           const tag = emailIds[i];
           if ( tag['value'] !== undefined ) {
               newEmailIds[i] = tag['value'];
-          } else {
-              newEmailIds[i] = tag;
           }
+          // else {
+          //     newEmailIds[i] = tag;
+          // }
       }
       this.emailIds = newEmailIds;
       console.log( this.emailIds );
@@ -318,8 +328,5 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       });
       if ( uniqueEmailids.length < this.emailIds.length ) { this.emailIds.pop(); }
     }
-  
-  
-  
-  
+
 }

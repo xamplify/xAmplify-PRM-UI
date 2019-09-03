@@ -67,6 +67,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     logoImageUrlPath: string;
     logoLink: string;
     errorMessage:string;
+    callToActionErrorMessage: any;
+    isCallToActionError = false;
 
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
@@ -204,6 +206,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
             this.callAction.isOverlay = false;
         } else { this.callAction.isOverlay = true; }
     }
+
     play360Video() {
         this.is360Value = true;
         console.log('Loaded 360 Video');
@@ -215,9 +218,10 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
+        //this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         const player360 = this;
-        const player = videojs('videoId', {
+        this.videoJSplayer = videojs('videoId', {
              "controls": true,
             // "autoplay": false,
              "preload": "auto",
@@ -265,7 +269,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 }
             });
         });
-        player.panorama({
+        player360.videoJSplayer.panorama({
             autoMobileOrientation: true,
             clickAndDrag: true,
             clickToToggle: true,
@@ -275,35 +279,35 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 let isCallActionthere = false;
                 const document: any = window.document;
                 player360.replyVideo = false;
-                player.ready(function () {
+                player360.videoJSplayer.ready(function () {
                     player360.xtremandLog.startDuration = 0;
                     player360.xtremandLog.startDuration = 0;
                     $('#overLayImage').append($('#overlay-logo').show());
                      $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + player360.embedVideoFile.playerColor + '!important');
                     if (isValid === 'StartOftheVideo') {
                         $('#videoId').append($('#overlay-modal').show());
-                        player.pause();
+                        player360.videoJSplayer.pause();
                     } else if (isValid !== 'StartOftheVideo') {
                         $('#overlay-modal').hide();
-                        player.play();
+                        player360.videoJSplayer.play();
                     } else { $('#overlay-modal').hide(); }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
-                        player.play();
+                        player360.videoJSplayer.play();
                     });
-                    $('#playorsubmit').click(function () {
-                        isCallActionthere = false;
-                        $('#overlay-modal').hide();
-                        player.play();
-                    });
+                    // $('#playorsubmit').click(function () {
+                    //     isCallActionthere = false;
+                    //     $('#overlay-modal').hide();
+                    //     player360.videoJSplayer.play();
+                    // });
                 });
-                player.on('play', function () {
+                player360.videoJSplayer.on('play', function () {
                     player360.videoFileService.pauseAction = false;
-                    const seekigTime = player360.trimCurrentTime(player.currentTime());
+                    const seekigTime = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
                     console.log('ply button pressed ');
                     $('.vjs-big-play-button').css('display', 'none');
-                    console.log('play button clicked and current time' + player360.trimCurrentTime(player.currentTime()));
+                    console.log('play button clicked and current time' + player360.trimCurrentTime( player360.videoJSplayer.currentTime()));
                     if (player360.replyVideo === true) {
                         player360.xtremandLog.actionId = player360.LogAction.replyVideo;
                         player360.replyVideo = false;
@@ -312,8 +316,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                     }
                     player360.xtremandLog.startTime = new Date();
                     player360.xtremandLog.endTime = new Date();
-                    player360.xtremandLog.startDuration = player360.trimCurrentTime(player.currentTime());
-                    player360.xtremandLog.stopDuration = player360.trimCurrentTime(player.currentTime());
+                    player360.xtremandLog.startDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
+                    player360.xtremandLog.stopDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
                     console.log(player360.xtremandLog.actionId);
                     player360.videoLogAction(player360.xtremandLog);
                     if (player360.logVideoViewValue === true) {
@@ -321,17 +325,17 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         player360.logVideoViewValue = false;
                     }
                 });
-                player.on('pause', function () {
+                player360.videoJSplayer.on('pause', function () {
                     player360.videoFileService.pauseAction = false;
-                    console.log('pused and current time' + player360.trimCurrentTime(player.currentTime()));
+                    console.log('pused and current time' + player360.trimCurrentTime( player360.videoJSplayer.currentTime()));
                     player360.xtremandLog.actionId = player360.LogAction.pauseVideo;
                     player360.xtremandLog.startTime = new Date();
                     player360.xtremandLog.endTime = new Date();
-                    player360.xtremandLog.startDuration = player360.trimCurrentTime(player.currentTime());
-                    player360.xtremandLog.stopDuration = player360.trimCurrentTime(player.currentTime());
+                    player360.xtremandLog.startDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
+                    player360.xtremandLog.stopDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
                     player360.videoLogAction(player360.xtremandLog);
                 });
-                player.on('seeking', function () {
+                player360.videoJSplayer.on('seeking', function () {
                 if(player360.seekbarPreviousTime === false){
                     console.log(' enter into seek bar previous time is: '+player360.previousTime);
                     player360.seekbarTimestored = player360.previousTime;
@@ -340,16 +344,16 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                   }
                  const timeoutTime = 300;
                  const beforeCounter = player360.counter + 1;
-                 if (player.cache_.currentTime === player.duration()) {
+                 if ( player360.videoJSplayer.cache_.currentTime ===  player360.videoJSplayer.duration()) {
                     return;
                  }
-                 player360.beforeTimeChange = player360.beforeTimeChange || player.cache_.currentTime;
+                 player360.beforeTimeChange = player360.beforeTimeChange ||  player360.videoJSplayer.cache_.currentTime;
                  setTimeout(function() {
                     if (beforeCounter === player360.counter) {
-                        console.log('before seek', player360.beforeTimeChange, '\nafter seek', player.currentTime() - (timeoutTime / 1000));
+                        console.log('before seek', player360.beforeTimeChange, '\nafter seek',  player360.videoJSplayer.currentTime() - (timeoutTime / 1000));
                            player360.xtremandLog.actionId = player360.LogAction.videoPlayer_slideSlider;
                             player360.xtremandLog.startDuration = player360.previousTime;
-                            player360.xtremandLog.stopDuration = player.currentTime() - (timeoutTime / 1000);
+                            player360.xtremandLog.stopDuration =  player360.videoJSplayer.currentTime() - (timeoutTime / 1000);
                             player360.xtremandLog.startTime = player360.startTimeUpdate;
                             player360.xtremandLog.endTime = new Date();
                             player360.videoLogAction(player360.xtremandLog);
@@ -359,28 +363,28 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                  }, timeoutTime);
                  player360.counter++;
                 });
-                 player.on('seeked', function(){
+                player360.videoJSplayer.on('seeked', function(){
                     player360.seekbarPreviousTime = false;
                     player360.videoFileService.seekbarTime = 0;
                     console.log('seeked completed'+ player360.videoFileService.seekbarTime);
                 });
-                player.on('timeupdate', function () {
+                player360.videoJSplayer.on('timeupdate', function () {
                     player360.previousTime = player360.currentTime;
-                    player360.currentTime = player.currentTime();
+                    player360.currentTime =  player360.videoJSplayer.currentTime();
                     player360.startTimeUpdate = player360.endTimeUpdate;
                     player360.endTimeUpdate = new Date();
-                    startDuration = player360.trimCurrentTime(player.currentTime());
+                    startDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
                 });
-                player.on('ended', function () {
-                    const time = player.currentTime();
+                player360.videoJSplayer.on('ended', function () {
+                    const time =  player360.videoJSplayer.currentTime();
                     console.log(time);
                     player360.replyVideo = true;
                     player360.videoFileService.replyVideo = true;
                     player360.xtremandLog.actionId = player360.LogAction.videoPlayer_movieReachEnd;
                     player360.xtremandLog.startTime = new Date();
                     player360.xtremandLog.endTime = new Date();
-                    player360.xtremandLog.startDuration = player360.trimCurrentTime(player.currentTime());
-                    player360.xtremandLog.stopDuration = player360.trimCurrentTime(player.currentTime());
+                    player360.xtremandLog.startDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
+                    player360.xtremandLog.stopDuration = player360.trimCurrentTime( player360.videoJSplayer.currentTime());
                     player360.videoLogAction(player360.xtremandLog);
                     if (isValid === 'EndOftheVideo') {
                         //    $('#videoId').append( $('#overlay-modal').show());
@@ -401,24 +405,24 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('#videoId').append($('#overlay-modal').show());
                         }
                     } else if (isValid !== 'EndOftheVideo') {
-                        $('#overlay-modal').hide(); player.pause();
-                    } else { $('#overlay-modal').hide(); player.pause(); }
+                        $('#overlay-modal').hide();  player360.videoJSplayer.pause();
+                    } else { $('#overlay-modal').hide();  player360.videoJSplayer.pause(); }
                     $('#repeatPlay').click(function () {
                         $('#overlay-modal').hide();
-                        player.play();
+                        player360.videoJSplayer.play();
                     });
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
-                        player.pause();
+                        player360.videoJSplayer.pause();
                     });
                     $('#playorsubmit').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
-                        player.pause();
+                        player360.videoJSplayer.pause();
                     });
                 });
-                player.on('fullscreenchange', function () {
+                player360.videoJSplayer.on('fullscreenchange', function () {
                     const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
                     const event = state ? 'FullscreenOn' : 'FullscreenOff';
                     if (event === 'FullscreenOn') {
@@ -443,7 +447,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         }
                     }
                 });
-                player.on('click', function () {
+                player360.videoJSplayer.on('click', function () {
                 });
             }
         });
@@ -451,6 +455,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         // $('#videoId').css('height', window.innerHeight);
         this.setVideoIdHeightWidth();
     }
+
     playNormalVideo() {
         $('.p-video').remove();
         this.videoUtilService.normalVideoJsFiles();
@@ -460,6 +465,8 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoUrl = this.embedVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
         this.videoUrl = this.videoUrl + '_mobinar.m3u8';  // need to remove it
+
+       //this.videoUrl = 'https://xamp.io/vod/videos/14626/24042019/xAmpemailtemplatesmodule1556137162081_mobinar.m3u8?access_token=09956128-2c5d-4284-8cd1-01aa36d286a4';
         $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
         this.setVideoIdHeightWidth();
         $('.video-js .vjs-tech').css('width', '100%');
@@ -506,11 +513,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                             $('#overlay-modal').hide();
                             player.play();
                         });
-                        $('#playorsubmit').click(function () {
-                            isCallActionthere = false;
-                            $('#overlay-modal').hide();
-                            player.play();
-                        });
+                       // $('#playorsubmit').click(function () {
+                         //   isCallActionthere = false;
+                          //  $('#overlay-modal').hide();
+                           // player.play();
+                        //});
                     });
                     this.on('play', function () {
                         self.videoFileService.pauseAction = false;
@@ -756,6 +763,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         // location detector
         console.log(this.xtremandLog);
         this.xtremandLog.sessionId = this.sessionId;
+        this.xtremandLog.userId = 0;
     }
     defaultLocationJsonValues(data: any) {
         this.xtremandLog.city = data.city;
@@ -804,26 +812,44 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 console.log('successfully logged view count');
             });
     }
+    playVideoJs(){
+    	 $('#overlay-modal').hide();
+         if (this.videoJSplayer) {
+             if (this.callAction.videoOverlaySubmit === 'PLAY') {
+                 this.videoJSplayer.play();
+             } else { this.videoJSplayer.pause(); }
+      }
+    }
     saveCallToActionUserForm() {
-        $('#overlay-modal').hide();
-        if (this.videoJSplayer) {
-            if (this.callAction.videoOverlaySubmit === 'PLAY') {
-                this.videoJSplayer.play();
-            } else { this.videoJSplayer.pause(); }
-        }
         this.xtremandLogger.debug(this.callAction.email_id);
-        this.user.emailId = this.toLowerString(this.callAction.email_id);
-        this.user.firstName = this.callAction.firstName;
-        this.user.lastName = this.callAction.lastName;
-        this.xtremandLogger.debug(this.user);
-        this.videoFileService.saveCalltoActionUser(this.user)
+        // this.user.emailId = this.toLowerString(this.callAction.email_id);
+        // this.user.firstName = this.callAction.firstName;
+        // this.user.lastName = this.callAction.lastName;
+        // this.xtremandLogger.debug(this.user);
+        const emailLogReport = {
+          'emailId': this.toLowerString(this.callAction.email_id),'firstName': this.callAction.firstName,
+          'lastName': this.callAction.lastName, 'sessionId': this.sessionId
+        };
+        this.xtremandLogger.debug(emailLogReport);
+        this.videoFileService.saveCalltoActionUser(emailLogReport, this.embedVideoFile.id)
             .subscribe((result: any) => {
-                this.xtremandLogger.info('Save user Form call to acton is successfull' + result);
-            },
-            (error: any) => {
+               this.xtremandLogger.info('Save user Form call to acton is successfull' + result);
+                if(result.statusCode === 200){
+                this.xtremandLog.userId = result.id;
+                this.playVideoJs();
+                this.videoJSplayer.play();
+               }else if(result.statusCode === 409){
+            	   this.isCallToActionError = true;
+            	   this.callToActionErrorMessage = result.errorMessage;
+               }
+               // this.referService.shareUserId = result.id;
+                },
+              (error: any) => {
                 //  this.errorPage = true;
                 this.xtremandLogger.error(error);
-            });
+                this.playVideoJs();
+              },
+            ()=>{ });
     }
     toLowerString(mail: string) {
         return mail.toLowerCase();
@@ -864,6 +890,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         $('.h-video').remove();
         $('.p-video').remove();
         this.videoFileService.replyVideo = false;
+        //this.referService.shareUserId = 0;
         //  this.sub.unsubscribe();
     }
 }

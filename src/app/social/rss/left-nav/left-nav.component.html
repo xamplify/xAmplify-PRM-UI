@@ -1,0 +1,37 @@
+<div class="col-md-2 pr0">
+   <div id="leftbar" class="page-bar page-bar-shadow">
+      <div class="portlet-body" style="height:539px!important;">
+         <div class="single category">
+            <h4 aria-expanded="false" style="font-size:14px!important">RSS FEEDS </h4>
+            <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">
+               <div class="row">
+                  <div class="col-md-12" style="text-align: center;padding-top:11px;">
+                     <span><i class="fa fa-wifi" style="font-size: 50px;color: #b3b1b1;padding-top: 20px;"></i></span>
+                  </div>
+                  <div class="col-md-12" style="text-align: center;padding-top:16px;">
+                     <p>Keep up with your favourite sources and keyword alerts</p>
+                  </div>
+                  <div class="col-md-12" style="text-align: center;padding-top:19px;    padding-bottom: 12px;">
+                     <a class="button" [routerLink]="['/home/rss/discover']">CREATE YOUR FIRST FEED</a>
+                  </div>
+               </div>
+            </div>
+            <div *ngFor="let item of rssService.collectionsResponse?.data">
+               <div>
+                  <a class="mr5" (click)="item.isExpand=!item.isExpand"><i class="fa" [ngClass]="{'fa-angle-down': item.isExpand, 'fa-angle-up': !item.isExpand}"></i></a>
+                  <a [routerLink]="['/home/rss/collections', item.alias]">{{item.title}}</a>
+                  <div style="margin-left: 20px" *ngFor="let source of item.sources" [ngClass]="{'show': item.isExpand, 'hidden': !item.isExpand}">
+                     <a [routerLink]="['/home/rss/sources', source.alias]">
+                        <img src="{{source.imageUrl}}" (error)="rssService.errorHandlerImage($event)">
+                        <h6 class="overflow">{{source.customTitle}}</h6>
+                     </a>
+                  </div>
+               </div>
+            </div>
+            <div>
+            </div>
+         </div>
+      </div>
+      <a class="btn btn-primary btn-block" routerLink="/home/rss/discover"><i class="fa fa-plus"></i>Add Content</a>
+   </div>
+</div>

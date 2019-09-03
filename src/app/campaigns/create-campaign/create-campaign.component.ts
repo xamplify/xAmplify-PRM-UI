@@ -619,7 +619,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       }else{ this.loadEmailTemplates(this.emailTemplatesPagination); }
     }
     setPagePagination(event:any){ this.setPage(event.page, event.type);}
-    loadPaginationDropdownTemplates(event:Pagination){ this.emailTemplatesLoad();}
+    loadPaginationDropdownTemplates(event:Pagination){
+        this.emailTemplatesPagination = event;
+        this.emailTemplatesLoad();
+    }
     /*************************************************************Campaign Details***************************************************************************************/
     isValidEmail:boolean = false;
     isValidCampaignName:boolean = true;
@@ -1382,7 +1385,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             pagination.campaignDefaultTemplate = false;
             pagination.isEmailTemplateSearchedFromCampaign = true;
         }
-        pagination.maxResults = 12;
         this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
         .subscribe(
             (data:any) => {
@@ -1406,7 +1408,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         pagination.campaignDefaultTemplate = false;
         pagination.isEmailTemplateSearchedFromCampaign = true;
-        pagination.maxResults = 12;
         this.emailTemplateService.listTemplatesForVideo(pagination,this.loggedInUserId,this.campaign.selectedVideoId)
         .subscribe(
             (data:any) => {
@@ -1578,7 +1579,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     $("#email-template-title").append(emailTemplateName);
                     $('#email-template-title').prop('title',emailTemplate.name);
                     let myMergeTags = this.campaign.myMergeTagsInfo;
-                    
+
                     if(this.refService.hasMyMergeTagsExits(body) &&(myMergeTags==undefined || this.campaign.email!=myMergeTags.myEmailId)){
                         let data = {};
                         data['emailId'] = this.campaign.email;
@@ -1594,7 +1595,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                                     this.setMergeTagsInfo(body);
                                 }
                             );
-                        
+
                     }else{
                         this.setMergeTagsInfo(body);
                     }
@@ -1602,7 +1603,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 error => { this.ngxloading = false;this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
     }
-    
+
     setMergeTagsInfo(body:string){
         let updatedBody = this.refService.showEmailTemplatePreview(this.campaign, this.campaignType, this.launchVideoPreview.gifImagePath, body);
         $("#htmlContent").append(updatedBody);
@@ -1611,7 +1612,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         $("#show_email_template_preivew").modal('show');
         this.ngxloading = false;
     }
-    
+
     filterTemplates(type:string,index:number){
        if(type=="BASIC"){
            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
@@ -2109,6 +2110,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     /********************************************On Destory********************************************/
     ngOnDestroy() {
         this.campaignService.campaign = undefined;
+        this.refService.campaignVideoFile = undefined;
         if(!this.hasInternalError && this.router.url!="/login"){
             if(!this.isReloaded){
                 if(!this.isLaunched){

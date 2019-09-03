@@ -13,7 +13,10 @@ export class UploadCloudvideoService {
         console.log('cloud service constructor');
     }
     downloadFromDropbox(downloadLink: string, fileName: string): Observable<any> {
-        fileName = fileName.replace(/&/g, '');
+        fileName= fileName.replace(/[^a-zA-Z0-9.]/g, '');
+        var suffix = fileName.substring(fileName.lastIndexOf("."));
+        var prefix = fileName.substring(0, fileName.lastIndexOf("."));
+        fileName = prefix+suffix;
         console.log('file path in service ' + downloadLink + 'file name' + fileName);
         const url = this.URL + '?access_token=' + this.authenticationService.access_token +
             '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
@@ -30,7 +33,10 @@ export class UploadCloudvideoService {
     }
 
     downloadFromBox(downloadLink: string, fileName: string): Observable<any> {
-      fileName = fileName.replace(/&/g, '');
+    	  fileName= fileName.replace(/[^a-zA-Z0-9.]/g, '');
+          var suffix = fileName.substring(fileName.lastIndexOf("."));
+          var prefix = fileName.substring(0, fileName.lastIndexOf("."));
+          fileName = prefix+suffix;
       console.log('file path in service' + downloadLink + 'file name' + fileName);
         const url = this.URL + '?access_token=' + this.authenticationService.access_token +
             '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&userId=' + this.authenticationService.user.id;
@@ -48,7 +54,10 @@ export class UploadCloudvideoService {
     }
 
     downloadFromGDrive(downloadLink: string, fileName: string, oauthToken: string): Observable<any> {
-      fileName = fileName.replace(/&/g, '');
+    	  fileName= fileName.replace(/[^a-zA-Z0-9.]/g, '');
+          var suffix = fileName.substring(fileName.lastIndexOf("."));
+          var prefix = fileName.substring(0, fileName.lastIndexOf("."));
+          fileName = prefix+suffix;
       console.log('file path in service' + downloadLink + 'file name' + fileName + 'oauthToken' + oauthToken);
         const url = this.URL + '?access_token=' + this.authenticationService.access_token +
             '&downloadLink=' + downloadLink + '&fileName=' + fileName + '&oauthToken=' + oauthToken +

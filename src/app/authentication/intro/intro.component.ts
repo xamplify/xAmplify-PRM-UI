@@ -3,6 +3,7 @@ import { AuthenticationService } from "../../core/services/authentication.servic
 import { Properties } from '../../common/models/properties';
 import { Router } from "@angular/router";
 import { environment } from "environments/environment";
+import { EnvService } from 'app/env.service';
 
 @Component({
   selector: "app-intro",
@@ -23,10 +24,13 @@ export class IntroComponent implements OnInit {
   zoom = 10;
   lat =  37.5483;
   lng = -121.9886;
+  clientUrl: any;
   markers = [{ lat: 37.5483, lng: -121.9886, label: "A", draggable: false }];
-  clientUrl = environment.CLIENT_URL;
-  constructor(public authenticationService: AuthenticationService, public properties: Properties,
-    public router:Router) {}
+  
+  constructor(public envService: EnvService, public authenticationService: AuthenticationService, public properties: Properties,
+    public router:Router) {
+      this.clientUrl = this.envService.CLIENT_URL;
+  }
 
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`);

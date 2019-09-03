@@ -11,7 +11,7 @@ export class WorldmapComponent implements OnInit {
   @Input() worldMapData: any;
   @Output() notifyParent: EventEmitter<any>;
   worldmapMessage: string;
-  titleName = 'Recipients';
+  titleName = 'Views';
 
   constructor(public router:Router) {
     this.notifyParent = new EventEmitter<any>();
@@ -80,7 +80,7 @@ export class WorldmapComponent implements OnInit {
     if(this.router.url.includes('home/partners/analytics')){
      this.worldmapMessage = 'Check out where your Partners are located';
      this.titleName = 'Partners';
-    } else if(this.router.url.includes('home/videos/manage')){
+    } else if(this.router.url.includes('home/content/videos')){
       this.worldmapMessage = 'Check out where your videos are being watched';
     }
     else {

@@ -283,10 +283,18 @@
                    {{item.invitationStatus}}
                   </td>
                   <td style="text-align: center;">
-                   <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
-					(click)="approvePartnerRequest(item.partnerId)">Approve</button>
+                  <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'" style="width:42%; text-transform: capitalize"  type="button" data-toggle="dropdown">{{item.invitationStatus}}
+    				<span class="caret"></span></button>
+    				<ul class="dropdown-menu" style="min-width: 43%;left: 68px;"*ngIf="item.invitationStatus != 'approved'" >
+      					<li *ngIf="item.invitationStatus != 'approved'"><a (click)="requestText='Approve';approveAndDeclineRequest(item.partnerId, item.firstName)">Approve</a></li>
+     					 <li *ngIf="item.invitationStatus != 'declined'"><a (click)="requestText='Decline';approveAndDeclineRequest(item.partnerId, item.firstName)">Decline</a></li>
+    				</ul>
+ 				 </div>
+                  <!--  <button type="submit" [disabled]="item.invitationStatus == 'approved'" class="btn green"
+					(click)="showApprovePartnerSweetAlert(item.partnerId)">Approve</button>
 					<button [disabled]="item.invitationStatus == 'approved' || item.invitationStatus == 'declined'" type="submit" class="btn green"
-					(click)="declinePartnerRequest(item.partnerId)">Decline</button>
+					(click)="showDeclinePartnerSweetAlert(item.partnerId)">Decline</button> -->
                   </td> 
                 </tr>
               </tbody>
@@ -406,7 +414,6 @@
 					        	</div>
                    	</td>
                     <td style="text-align: right;">
-
                       <div class="actions-block">
                         <font class="circled-number">{{item.redistributedCampaignsCount}}</font>
                         <a  (click)="showRedistributedCampaings(item)" data-toggle="tooltip" data-placement="top" title="View Redistributed Campaigns"   *ngIf="item.redistributedCampaignsCount> 0">
@@ -421,7 +428,7 @@
                         <thead>
                           <tr>
                               <!-- style="float: left;margin-left: 70px;" -->
-                            <th  class="center-aligned">Partners</th>
+                            <th  class="center-aligned" style="width: 24%">Partners</th>
                             <th class="center-aligned">Campaign Name</th>
                             <th class="center">Total Recipients</th>
                             <th class="center">Active Recipients</th>
@@ -524,7 +531,7 @@
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == sortOption.selectedCampaignTypeIndex">Email</li>
                 <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex">Video</li>
                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == sortOption.selectedCampaignTypeIndex">Social</li>
-                <li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
+                <li class="filter" *ngIf="referenseService.eventCampaign || referenseService.eventCampaignTabAccess" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
                 <li class="filter" style="display: none;">Own Template</li>
               </ul>
               <div class="page-toolbar col-xs-6 col-sm-12 col-md-7">
@@ -780,4 +787,51 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- ..........Approve and Decline Partner request modal........... -->
+
+<div class="modal fade right" id="approve-decline-modal" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" data-backdrop="static"
+	data-keyboard="false">
+	<div class="modal-dialog" role="document">
+	<div class="my-container">
+		<!-- <ngx-loading [show]="loading"
+			[config]="{ backdropBorderRadius: '14px' }"></ngx-loading> -->
+	</div>
+		<div class="modal-content">
+			<div class="modal-header">
+				<a class="close-circle" (click)="closeRequestModal()" data-dismiss="modal"> <i class="fa fa-times"></i></a>
+				<h4 class="modal-title left" id="myModalLabel" *ngIf="requestText == 'Approve'">Approve vendor request and send an email.</h4>
+				<h4 class="modal-title left" id="myModalLabel" *ngIf="requestText == 'Decline'">Decline vendor request and send an email.</h4>
+			</div>
+			<div class="modal-body">
+			<div>
+			   <div *ngIf="isError" class="alert alert-danger alert-dismissible left">
+			   <a (click)="isError = false" class="close" data-dismiss="alert" aria-label="close"></a>
+			   Please complete the required fields.
+			  </div>
+
+			
+				<div class="form-group">
+				<label for="subjectLine">Email subject <span class="text-danger">*</span></label>
+				<input type="text" id="subjectLine"
+					[(ngModel)]="vendoorInvitation.subject" (input)="validateRequest()" [ngModelOptions]="{standalone: true}"
+					placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
+				</div>
+				<div class="form-group" *ngIf="isShowCKeditor">
+					<label for="subjectLine">Message <span class="text-danger">*</span></label>
+					<ckeditor name="body" [(ngModel)]="vendoorInvitation.message" [ngModelOptions]="{standalone: true}" (input)="validateRequest()"></ckeditor>
+				</div>
+
+			 </div>
+			 
+  </div>
+    <div class="modal-footer" style="border: none">
+      <button class="btn btn-default" (click)="closeRequestModal()" data-dismiss="modal">Cancel</button>
+      <button *ngIf="requestText=='Approve'" type="submit" class="btn green" (click)="approvePartnerRequest()">Send & Approve</button>
+      <button *ngIf="requestText=='Decline'" type="submit" class="btn green" (click)="declinePartnerRequest()">Send & Decline</button>
+    </div>
+		</div>
+	</div>
 </div>

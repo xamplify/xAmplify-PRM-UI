@@ -11,28 +11,16 @@ import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../../core/models/pagination';
 import { SaveVideoFile } from '../../models/save-video-file';
 
-declare var videojs, $, QuickSidebar, Highcharts: any;
+declare var  $, QuickSidebar, Highcharts: any;
 
 @Component({
     selector: 'app-video-based-report',
     templateUrl: './video-based-reports.component.html',
-    styleUrls: ['./video-based-reports.component.css', '../../../../assets/css/video-css/video-js.custom.css'],
+    styleUrls: ['./video-based-reports.component.css', ],
     providers: [Pagination]
 })
 export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Input() selectedVideo: SaveVideoFile;
-    videoJSplayer: any;
-    videoUrl: string;
-    is360Value: boolean;
-    overLayValue: string;
-    posterImagePath: string;
-    isFistNameChecked: boolean;
-    firstName: string;
-    lastName: string;
-    isOverlay: boolean;
-    videoOverlaySubmit: string;
-    isSkipChecked: boolean;
-    isPlay: boolean;
     categories: any;
     watchedFully: number;
     minutesWatchedUsers: number;
@@ -60,6 +48,10 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     nonApplicableUsersViews: any;
     videoPlayedPagination: Pagination = new Pagination();
     reportsPagination: Pagination = new Pagination();
+
+    videoLeadsDetails: any;
+    videoLeadsTotalListDetails: any;
+    videoLeadsDetailsPagination: Pagination = new Pagination();
     countryCode: string;
     downloadTypeName = '';
     downloadCsvList: any;
@@ -69,13 +61,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     worldMapdataReport: any;
     viewsBarData: any;
     trellisBarChartData: any;
-    logoDescriptionUrl: any;
-    brandLogoUrl:any;
-    fullScreenMode: boolean;
     paginationType:string;
     videoPlayedSkipedInfo:any;
     logListName = "";
     videoTotalViews: number;
+    isLoadingDownloadList = false;
+    isVideoPlayedDurationDownload = false;
 
     constructor(public authenticationService: AuthenticationService, public videoBaseReportService: VideoBaseReportService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService,
@@ -87,7 +78,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoUtilService.selectedVideo = this.selectedVideo;
         if (category.includes('Q')) { category = category.substring(1, category.length); }
         this.videoUtilService.timePeriodValue = category;
-        this.router.navigate(['./home/videos/manage/reports']);
+        this.router.navigate(['./home/content/videos/reports']);
     }
 
     watchedByTenUserschartsDayStates(minutesWatched: any, names: any) {
@@ -313,24 +304,24 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             });
     }
     selectedCampaignWatchedUsers(timePeriod) {
-        this.viewsBarData = undefined;
-        if (timePeriod !== undefined) {
-            this.videoUtilService.timePeriod = timePeriod;
-            this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
-                .subscribe((result: any) => {
-                    console.log(result);
-                    this.videoUtilService.videoViewsData = result;
-                    this.viewsBarData = result;
-                    // this.monthlyViewsBarCharts(result.dates, result.views);
-                },
-                (error: any) => {
-                    this.xtremandLogger.error(error);
-                    this.xtremandLogger.errorPage(error);
-                });
+      this.viewsBarData = undefined;
+      if (timePeriod !== undefined) {
+        this.videoUtilService.timePeriod = timePeriod;
+        this.videoBaseReportService.getCampaignUserWatchedViews(timePeriod, this.selectedVideo.id)
+            .subscribe((result: any) => {
+                console.log(result);
+                this.videoUtilService.videoViewsData = result;
+                this.viewsBarData = result;
+            },
+            (error: any) => {
+                this.xtremandLogger.error(error);
+                this.xtremandLogger.errorPage(error);
+            });
         }
     }
     watchedFullyDetailReport() {
         this.paginationType = 'watchedFully';
+        this.downloadTypeName = 'watchedFully';
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -342,46 +333,23 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.pagination = this.pagerService.getPagedItems(this.pagination, result.data);
                 // if (this.watchedFullyReportData.length > 0) {
                 $('#watchedFullyModelPopup').modal('show');
-                this.watchedFullyTotalReport(this.pagination.totalRecords);
+                //this.watchedFullyTotalReport(this.pagination.totalRecords);
                 // }
             },
             (err: any) => { console.log(err); })
     }
     totalMinutesWatchedByMostUsers() {
+        this.downloadTypeName = 'minetesWatched';
         this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
             (result: any) => {
                 console.log(result);
                 result.forEach((element, index) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
                 this.totalUsersWatched = result;
-                this.downloadTypeName = 'minetesWatched'
                 if (this.totalUsersWatched.length > 0) {
                     $('#totalwatchedUsersModelPopup').modal('show');
                 }
             },
             (err: any) => { console.log(err); })
-    }
-    defaultVideoSettings() {
-        console.log('default settings called');
-        $('.video-js').css('color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.selectedVideo.playerColor);
-        $('.video-js .vjs-control-bar').css('background-color', this.selectedVideo.controllerColor);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.selectedVideo.controllerColor + '!important');
-        if (this.selectedVideo.allowFullscreen === false) {
-            $('.video-js .vjs-fullscreen-control').hide();
-        } else {
-            $('.video-js .vjs-fullscreen-control').show();
-        }
-    }
-    defaultVideoControllers() {
-        if (this.selectedVideo.enableVideoController === false) {
-            $('.video-js .vjs-control-bar').hide();
-        } else { $('.video-js .vjs-control-bar').show(); }
-    }
-    transperancyControllBar(value: any) {
-        const color: any = this.selectedVideo.controllerColor;
-        const rgba = this.videoUtilService.transparancyControllBarColor(color, value);
-        $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
     }
     getCampaignVideoCountriesAndViews(alias: any) {
         try {
@@ -425,6 +393,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     clickedMinutesWatched(userId: any) {
         this.paginationType = 'userMinutesWatched';
+        this.downloadTypeName = 'clickedMenetsWatched';
         console.log(this.dropdownValue + 'and inner data' + this.minutesinnerSort);
         this.userId = userId;
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.pagination).
@@ -437,7 +406,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
                 console.log(this.pagination);
                 $('#usersMinutesModelPopup').modal('show');
-                this.clickedMinutesWatchedTotalList(userId, this.pagination.totalRecords);
+               // this.clickedMinutesWatchedTotalList(userId, this.pagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -445,20 +414,62 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             }
             );
     }
+
+    videoLeadsList() {
+        this.paginationType = 'videoLeads';
+        this.downloadTypeName = 'videoLeads';
+        this.videoBaseReportService.videoLeadsList(this.selectedVideo.id, this.videoLeadsDetailsPagination).
+            subscribe(
+            data => {
+                console.log(data);
+                data.data.forEach((element) => { if(element.time){ element.time = new Date(element.utcTimeString);} });
+                this.videoLeadsDetails = data.data;
+                this.videoLeadsDetailsPagination.totalRecords = data.totalRecords;
+                this.videoLeadsDetailsPagination = this.pagerService.getPagedItems(this.videoLeadsDetailsPagination, this.videoLeadsDetails);
+                console.log(this.videoLeadsDetailsPagination);
+                //this.videoLeadsTotalList();
+            },
+            error => {
+                this.xtremandLogger.error(error);
+                //this.xtremandLogger.errorPage(error);
+            }
+            );
+    }
+
+    videoLeadsTotalList() {
+        this.videoLeadsDetailsPagination.maxResults = this.videoLeadsDetailsPagination.totalRecords;
+        this.videoBaseReportService.videoLeadsList(this.selectedVideo.id, this.videoLeadsDetailsPagination).
+            subscribe(
+            data => {
+                data.data.forEach((element) => { if(element.time){ element.time = new Date(element.utcTimeString);} });
+                this.videoLeadsTotalListDetails = data.data;
+                this.downloadLogs();
+            },
+            error => {
+                this.xtremandLogger.error(error);
+            }
+            );
+    }
+
     setPage(event: any) {
         this.paginationType = event.type;
         if(this.paginationType === 'videoPlayed'){ this.videoPlayedPagination.pageIndex = event.page; }
+        else if(this.paginationType === 'videoLeads'){ this.videoLeadsDetailsPagination.pageIndex = event.page; }
         else { this.pagination.pageIndex = event.page; }
         this.callPaginationMethods();
     }
     paginationDropdown(pagination:Pagination){
         if(this.paginationType === 'videoPlayed'){this.videoPlayedPagination = pagination; }
+        else if(this.paginationType === 'videoLeads'){ this.videoLeadsDetailsPagination = pagination; }
         else { this.pagination = pagination; }
         this.callPaginationMethods();
     }
     callPaginationMethods(){
         if (this.paginationType === 'userMinutesWatched') {
             this.clickedMinutesWatched(this.userId);
+        }
+        else if (this.paginationType === 'videoLeads') {
+            this.videoLeadsList();
         }
         else if (this.paginationType === 'watchedFully') {
             this.watchedFullyDetailReport();
@@ -480,6 +491,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoPlayedPagination.maxResults = 12;
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
+        this.downloadTypeName = 'videoLeads';
     }
     getVideoPlayedSkippedInfo() {
         this.videoBaseReportService.getVideoPlayedSkippedInfo(this.selectedVideo.id).subscribe(
@@ -496,6 +508,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoSkippedDurationInfo() {
         this.paginationType = 'videoSkipped';
+        this.downloadTypeName = 'skippedDuration';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -506,7 +519,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.videoSkippedDuration = result.data;
                 this.pagination.totalRecords = result.totalRecords;
                 this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoSkippedDuration);
-                this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
+                //this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -516,6 +529,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoPlayedDurationInfo() {
         this.paginationType = 'videoPlayed';
+        this.downloadTypeName = 'playedDuration';
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.videoPlayedPagination).subscribe(
             (result: any) => {
                 console.log(result);
@@ -526,7 +540,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 this.videoPlayedDuration = result.data;
                 this.videoPlayedPagination.totalRecords = result.totalRecords;
                 this.videoPlayedPagination = this.pagerService.getPagedItems(this.videoPlayedPagination, this.videoPlayedDuration);
-                this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
+                //this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -563,7 +577,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 if (this.worldMapCampaignUsersInfo.length > 0) {
                     $('#worldMapModal').modal('show');
                 }
-                this.getCampaignCoutryViewsDetailsTotalReport(countryCode, this.pagination.totalRecords);
+                //this.getCampaignCoutryViewsDetailsTotalReport(countryCode, this.pagination.totalRecords);
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -574,12 +588,12 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     getCampaignCoutryViewsDetailsTotalReport(countryCode: string, totalRecords: number) {
         this.countryCode = countryCode.toUpperCase();
         this.reportsPagination.maxResults = totalRecords;
-        this.downloadTypeName = 'worldMapData';
         this.videoBaseReportService.getCampaignCoutryViewsDetailsReport(this.selectedVideo.id, this.countryCode, this.reportsPagination).
             subscribe(
             (result: any) => {
                 console.log(result);
                 this.worldMapCampaignUsersTotalData = result.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -594,19 +608,20 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
             (result: any) => {
                 console.log(result);
                 this.watchedFullyTotalReportList = result.data;
+                this.downloadLogs();
             },
             (err: any) => { console.log(err); })
     }
 
     clickedMinutesWatchedTotalList(userId: any, totalRecord: number) {
         this.reportsPagination.maxResults = totalRecord;
-        this.downloadTypeName = 'clickedMenetsWatched';
         this.userId = userId;
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.reportsPagination).
             subscribe(
             data => {
                 console.log(data);
                 this.userMinutesWatchedTotalList = data.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.errorPage(error);
@@ -616,11 +631,11 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
 
     videoSkippedDurationTotalInfo(totalRecords: number) {
         this.reportsPagination.maxResults = totalRecords;
-        // this.downloadTypeName = 'skippedDuration';
         this.videoBaseReportService.videoSkippedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);
                 this.videoSkippedDurationTotalList = result.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -629,17 +644,39 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     }
     videoPlayedDurationTotalInfo(totalRecords: number) {
         this.reportsPagination.maxResults = totalRecords;
-        //this.downloadTypeName = 'playedDuration';
         this.videoBaseReportService.videoPlayedDurationInfo(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
                 console.log(result);
                 this.videoPlayedDurationTotalList = result.data;
+                this.downloadLogs();
             },
             error => {
                 this.xtremandLogger.error(error);
-                //  this.xtremandLogger.errorPage(error);
             }
         );
+    }
+
+    downloadFunctionality(){
+        this.isLoadingDownloadList = true;
+        if (this.downloadTypeName === 'minetesWatched') {
+            this.downloadLogs();
+        } else if (this.downloadTypeName === 'watchedFully') {
+            this.watchedFullyTotalReport(this.pagination.totalRecords);
+        } else if (this.downloadTypeName === 'worldMapData') {
+            this.getCampaignCoutryViewsDetailsTotalReport(this.countryCode, this.pagination.totalRecords);
+        } else if (this.downloadTypeName === 'clickedMenetsWatched') {
+            this.clickedMinutesWatchedTotalList(this.userId, this.pagination.totalRecords);
+        }
+        else if (this.downloadTypeName === 'playedDuration') {
+            this.isVideoPlayedDurationDownload = true;
+            this.videoPlayedDurationTotalInfo(this.videoPlayedPagination.totalRecords);
+        }
+        else if (this.downloadTypeName === 'skippedDuration') {
+            this.videoSkippedDurationTotalInfo(this.pagination.totalRecords);
+        }else if (this.downloadTypeName === 'videoLeads') {
+            this.videoLeadsTotalList();
+        }
+
     }
 
     downloadLogs() {
@@ -663,6 +700,9 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         else if (this.downloadTypeName === 'skippedDuration') {
             this.logListName = 'Skipped_Duration_logs.csv';
             this.downloadCsvList = this.videoSkippedDurationTotalList;
+        }else if (this.downloadTypeName === 'videoLeads') {
+            this.logListName = 'Video_leads_logs.csv';
+            this.downloadCsvList = this.videoLeadsTotalListDetails;
         }
 
         this.downloadDataList.length = 0;
@@ -727,244 +767,42 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 object["End Time"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
                 object["Device"] = this.downloadCsvList[i].device;
             }
+            else if (this.downloadTypeName === 'videoLeads') {
+                object["Email Id"] = this.downloadCsvList[i].emailId;
+                let hours = this.referenceService.formatAMPM(time);
+                object["Date & Time"] = time.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+                object["City"] = this.downloadCsvList[i].city;
+                object["State"] = this.downloadCsvList[i].state;
+                object["Country"] = this.downloadCsvList[i].country;
+                object["Device"] = this.downloadCsvList[i].os;
+            }
             this.downloadDataList.push(object);
         }
         this.referenceService.isDownloadCsvFile = true;
+        this.isLoadingDownloadList = false;
+        this.isVideoPlayedDurationDownload = false;
     }
     clickedTrellisChart(){
        this.totalMinutesWatchedByMostUsers();
     }
     ngOnInit() {
-        this.logoDescriptionUrl = this.selectedVideo.brandingLogoDescUri;
-        this.brandLogoUrl = this.selectedVideo.brandingLogoUri;
         this.pagination.pageIndex = 1;
         this.pagination.maxResults = 12;
         this.getWatchedCountInfo(this.selectedVideo.alias);
         this.getCampaignVideoCountriesAndViews(this.selectedVideo.alias);
         this.selectedCampaignWatchedUsers(this.videoUtilService.sortMonthDates[3].value);
         this.selectedSortByValue(this.minutesSort.value);
-        this.posterImagePath = this.selectedVideo.imagePath;
         QuickSidebar.init();
         this.getVideoPlayedSkippedInfo();
         this.videoUtilService.selectedVideoId = this.selectedVideo.id;
         this.nonApplicableUsersMinutesWatched();
+        this.videoLeadsList();
     }
     ngAfterViewInit() {
         this.xtremandLogger.log('called ng after view init');
-        $('#newPlayerVideo').empty();
-        if (this.selectedVideo.is360video !== true) {
-            this.is360Value = false;
-            this.playNormalVideo();
-        } else {
-            this.play360Video();
-        }
-        this.defaultVideoSettings();
-        this.transperancyControllBar(this.selectedVideo.transparency);
-        if (this.selectedVideo.enableVideoController === false) {
-            this.defaultVideoControllers();
-        }
     } // ng After view closed
-    playNormalVideo() {
-        $('.p-video').remove();
-        this.videoUtilService.normalVideoJsFiles();
-        this.is360Value = false;
-        const str = '<video id="videoId" poster=' + this.posterImagePath + '  preload="none"  class="video-js vjs-default-skin" controls></video>';
-        $('#newPlayerVideo').append(str);
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '315px');
-        $('#videoId').css('width', 'auto');
-        $('.video-js .vjs-tech').css('width', '100%');
-        $('.video-js .vjs-tech').css('height', '100%');
-        const self = this;
-        const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
-        console.log(overrideNativeValue);
-        this.videoJSplayer = videojs('videoId', {
-            html5: {
-                hls: {
-                    overrideNative: overrideNativeValue
-                },
-                nativeVideoTracks: !overrideNativeValue,
-                nativeAudioTracks: !overrideNativeValue,
-                nativeTextTracks: !overrideNativeValue
-            }
-        }, function () {
-            const player = this;
-            const document: any = window.document;
-            const isValid = self.overLayValue;
-            this.ready(function () {
-                $('#overLayImage').append($('#overlay-logo').show());
-                $('.video-js .vjs-tech').css('width', '100%');
-                $('.video-js .vjs-tech').css('height', '100%');
-                player.pause();
-            });
-            this.on('ended', function () {
-                console.log('video done');
-            });
-            player.on('fullscreenchange', function () {
-                const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                if (event === 'FullscreenOn') {
-                    $('.vjs-tech').css('width', '100%');
-                    $('.vjs-tech').css('height', '100%');
-                    self.fullScreenMode = true;
-                    $('#videoId').append($('#overlay-logo').show());
-                } else if (event === 'FullscreenOff') {
-                    $('#videoId').css('width', 'auto');
-                    $('#videoId').css('height', '315px');
-                    self.fullScreenMode = false;
-                }
-            });
-            this.on('contextmenu', function (e) {
-                e.preventDefault();
-            });
-            this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
-                enableFullscreen: false, enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function (event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function (e: any) { return (e.which === 83); },
-                        handler: function (player: any, options: any, e: any) {
-                            if (player.paused()) { player.play(); } else { player.pause(); }
-                        }
-                    },
-                    complexKey: {
-                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableMute) { player.muted(!player.muted()); }
-                        }
-                    },
-                    numbersKey: {
-                        key: function (event: any) {
-                            return ((event.which > 47 && event.which < 59) ||
-                                (event.which > 95 && event.which < 106));
-                        },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                let sub = 48;
-                                if (event.which > 95) { sub = 96; }
-                                const number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
-                            }
-                        }
-                    },
-                    emptyHotkey: {},
-                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
-                    withoutHandler: { key: function (e: any) { return true; } },
-                    malformedKey: {
-                        key: function () { console.log(' The Key function must return a boolean.'); },
-                        handler: function (player: any, options: any, event: any) { }
-                    }
-                }
-            });
-        });
-    }
-    play360Video() {
-        this.is360Value = true;
-        this.xtremandLogger.log('Loaded 360 Video');
-        $('.h-video').remove();
-        this.videoUtilService.player360VideoJsFiles();
-        this.videoUtilService.video360withm3u8();
-        const str = '<video id=videoId poster=' + this.posterImagePath + '  class="video-js vjs-default-skin" crossorigin="anonymous" controls></video>';
-        $('#newPlayerVideo').append(str);
-        this.videoUrl = this.selectedVideo.videoPath;
-        this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
-        this.videoUrl = this.videoUrl + '_mobinar.m3u8?access_token=' + this.authenticationService.access_token;
-        $('#newPlayerVideo video').append('<source src=' + this.videoUrl + ' type="application/x-mpegURL">');
-        $('#videoId').css('height', '315px');
-        $('#videoId').css('width', 'auto');
-        const newValue = this;
-        const player = videojs('videoId').ready(function () {
-            this.hotkeys({
-                volumeStep: 0.1, seekStep: 5, enableMute: true,
-                enableFullscreen: false, enableNumbers: false,
-                enableVolumeScroll: true,
-                fullscreenKey: function (event: any, player: any) {
-                    return ((event.which === 70) || (event.ctrlKey && event.which === 13));
-                },
-                customKeys: {
-                    simpleKey: {
-                        key: function (e: any) { return (e.which === 83); },
-                        handler: function (player: any, options: any, e: any) {
-                            if (player.paused()) { player.play(); } else { player.pause(); }
-                        }
-                    },
-                    complexKey: {
-                        key: function (e: any) { return (e.ctrlKey && e.which === 68); },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableMute) { player.muted(!player.muted()); }
-                        }
-                    },
-                    numbersKey: {
-                        key: function (event: any) {
-                            return ((event.which > 47 && event.which < 59) ||
-                                (event.which > 95 && event.which < 106));
-                        },
-                        handler: function (player: any, options: any, event: any) {
-                            if (options.enableModifiersForNumbers || !(event.metaKey || event.ctrlKey || event.altKey)) {
-                                let sub = 48;
-                                if (event.which > 95) { sub = 96; }
-                                const number = event.which - sub;
-                                player.currentTime(player.duration() * number * 0.1);
-                            }
-                        }
-                    },
-                    emptyHotkey: {},
-                    withoutKey: { handler: function (player: any, options: any, event: any) { console.log('withoutKey handler'); } },
-                    withoutHandler: { key: function (e: any) { return true; } },
-                    malformedKey: {
-                        key: function () { console.log(' The Key function must return a boolean.'); },
-                        handler: function (player: any, options: any, event: any) { }
-                    }
-                }
-            });
-        });
-        player.panorama({
-            autoMobileOrientation: true,
-            clickAndDrag: true,
-            clickToToggle: true,
-            callback: function () {
-                const isValid = newValue.overLayValue;
-                const document: any = window.document;
-                player.ready(function () {
-                    $('#overLayImage').append($('#overlay-logo').show());
-                    player.pause();
-                    $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + newValue.selectedVideo.playerColor + '!important');
-                });
-                player.on('fullscreenchange', function () {
-                    const state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-                    const event = state ? 'FullscreenOn' : 'FullscreenOff';
-                    if (event === 'FullscreenOn') {
-                        $('.vjs-tech').css('width', '100%');
-                        $('.vjs-tech').css('height', '100%');
-                        newValue.fullScreenMode = true;
-                        $('#videoId').append($('#overlay-logo').show());
-                    } else if (event === 'FullscreenOff') {
-                        $('#videoId').css('width', 'auto');
-                        $('#videoId').css('height', '315px');
-                        newValue.fullScreenMode = false;
-                    }
-                });
-            }
-        });
-        $('#videoId').css('width', 'auto');
-        $('#videoId').css('height', '315px');
-    }
     ngOnDestroy() {
         this.xtremandLogger.log('Deinit - Destroyed Component');
-        if (this.is360Value !== true) {
-            this.videoJSplayer.dispose();
-        } else if (this.videoJSplayer) {
-            this.videoJSplayer.dispose();
-        } else { }
-        $('.h-video').remove();
-        $('.p-video').remove();
         $('#watchedFullyModelPopup').modal('hide');
         $('#totalwatchedUsersModelPopup').modal('hide');
         $('#usersMinutesModelPopup').modal('hide');

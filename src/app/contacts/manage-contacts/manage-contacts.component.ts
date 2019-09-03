@@ -934,7 +934,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     this.contactsCount();
                     this.contactCountLoad = true;
                     this.listContactsByType( this.contactsByType.selectedCategory );
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                    if(this.isPartner){
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
+                    }else {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );  
+                    }
                 },
                 ( error: any ) => {
                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {

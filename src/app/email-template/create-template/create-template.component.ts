@@ -36,11 +36,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     loadTemplate = false;
     isAdd:boolean;
     isMinTimeOver:boolean = false;
-    constructor(private emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
+    constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
-    console.log('client Id: '+environment.clientId+'and secret id: '+environment.clientSecret);
-    
-    
+    console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);
+
+
     if ( emailTemplateService.emailTemplate != undefined ) {
         var names: any = [];
         let self = this;
@@ -214,7 +214,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
         mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
         mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
-        
+
         if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
             mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );
@@ -227,9 +227,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             mergeTags.push( { name: 'Vendor Name   ', value: '{{vendor_name}}' } );
             mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' } );
         }
-        
-        
-       
+
+
+
         if ( refService.defaultPlayerSettings != null ) {
             var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
             var beeConfig = {
@@ -263,7 +263,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             request(
                 'POST',
                 'https://auth.getbee.io/apiauth',
-                'grant_type=password&client_id=' + environment.clientId + '&client_secret=' + environment.clientSecret + '',
+                'grant_type=password&client_id=' + authenticationService.clientId + '&client_secret=' + authenticationService.clientSecret + '',
                 'application/x-www-form-urlencoded',
                 function( token: any ) {
                     BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {
@@ -371,7 +371,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           () => console.log( "Email Template Updated" )
           );
   }
-  
+
   updateCompanyLogo(emailTemplate:EmailTemplate){
       emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.refService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
       if(emailTemplate.body!=undefined){
@@ -382,6 +382,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
   ngOnInit() {
   }
   ngOnDestroy(){
+      this.emailTemplateService.isNewTemplate = false;
       swal.close();
       let isButtonClicked = this.clickedButtonName!="SAVE" && this.clickedButtonName!="SAVE_AS" &&  this.clickedButtonName!="UPDATE";
       if(this.router.url!="/login" && isButtonClicked && this.emailTemplateService.emailTemplate!=undefined &&this.loggedInUserId>0 && this.emailTemplate.jsonBody!=undefined && this.isMinTimeOver){
@@ -401,7 +402,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
           }
       }
   }
-  
+
   showSweetAlert(){
       let self = this;
       swal( {
@@ -422,18 +423,18 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               self.updateEmailTemplate(self.emailTemplate,self.emailTemplateService, true);
           }
       },function (dismiss) {
-          
+
       })
   }
-  
-  
+
+
   saveTemplate(){
       this.refService.startLoader(this.httpRequestLoader);
       this.emailTemplate.draft = false;
       this.saveEmailTemplate(this.emailTemplate,this.emailTemplateService,this.loggedInUserId,false);
       swal.close();
   }
-  
+
   createButton(text, cb) {
       if(text=="Save"){
           return $('<input type="submit" class="btn btn-primary" value="'+text+'" id="save" disabled="disabled">').on('click', cb);

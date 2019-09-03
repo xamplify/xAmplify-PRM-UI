@@ -1,10 +1,8 @@
-<!-- BEGIN CONTENT -->
 <div class="page-content-wrapper">
 	<div class="page-content" [style.background-color]="refService.pageContnetBgColor">
 		<div class="my-container">
-						<ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-				</div>
-		<!-- BEGIN PAGE HEADER-->
+			<ngx-loading [show]="httpRequestLoader.isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+		</div>
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li>
@@ -13,39 +11,35 @@
 				<li>
 					<a [routerLink]="['../../emailtemplates/manage']">Email Templates</a><i class="fa fa-angle-right"></i>
 				</li>
-				<li><a style="color: blue;" >Update Template</a></li>
+				<li><a>Update Template</a></li>
 			</ul>
 		</div>
-		<!-- BEGIN PAGE CONTENT-->
 		<div class="portlet light">
 			<div class="portlet-body">
-					<div class="col-xs-12 col-md-6">
-   						<form>
-							<h3>Template Name</h3> 
-							<input type="text"
-								class="form-control" id="templateName"
-								[(ngModel)]="model.templateName" name="templateName"
-								minlength="1" maxlength="50"
-								placeholder="Please Enter Template Name"
-								#templateName="ngModel" (ngModelChange)="checkUpdatedAvailableNames($event)" style="border-left: 5px solid #42A948">
-							<div *ngIf="invalidTemplateName"	class="alert alert-danger">Name is required</div>
-							<div *ngIf="duplicateTemplateName && !invalidTemplateName" class="alert alert-danger">Duplicate	Name</div>
-							<div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
-
-
-							
-						</form>
-					</div>
-					<div class="col-xs-12 col-md-6" style="padding: 4em;">
-						<table>
+          <div class="col-md-12">
+              <form>
+                <div class="col-md-2" style="font-weight: 500;font-size: 17px;margin-bottom: 34px;padding: 2px;">Template Name :</div>
+                <div class="col-md-4">
+                <input type="text" class="form-control"  id="templateName" [(ngModel)]="model.templateName"
+                      name="templateName" minlength="1" maxlength="50"	placeholder="Template name" #templateName="ngModel" (ngModelChange)="checkUpdatedAvailableNames($event)">
+                <span *ngIf="invalidTemplateName" style="color:red">Name is required</span>
+                <span *ngIf="duplicateTemplateName && !invalidTemplateName" style="color:red">Template name is alreday exists.</span>
+                <span *ngIf="isVideoTagError" style="color:red">{{videoTagsError}}</span>
+              </div>
+                <div class="col-md-6"></div>
+              </form>
+              </div>
+					 <div class="col-xs-12 col-md-12">
+              <button style="float: right;" type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName">Update</button>
+						<!-- <table>
 							<tbody>
 								<tr>
-									<td nowrap>
+									<td >
 										<button type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName">Update</button>
 									</td>
 								</tr>
 							</tbody>
-						</table>
+						</table> -->
 						<br>
 						<div>
 					 		<label for="info"><font style="color: red;">Use Below Image Tag For Co-Branding.</font></label>
@@ -63,22 +57,17 @@
 									(statusChange)="setCoBrandingLogo($event)">
 							</switch>
 					</div>
-					
 					<!-- <div>
 					 		<br><label for="info"><font style="color: red;">**Be sure to use these merge tags if you’re doing a mail merge.</font></label>
 						 	<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="4">{{refService.emailMergeTags}}</textarea>
 					</div> -->
-					
+
 					</div>
 					<div class="col-xs-12"><!--  -->
 					 	<ckeditor [(ngModel)]="model.content" name="subject"></ckeditor>
 					</div>
-			
 				<div class="clearfix" style="margin: 5px;"></div>
-				
 			</div>
-			<!-- END PAGE CONTENT-->
 		</div>
 	</div>
-	<!-- END CONTAINER -->
 </div>

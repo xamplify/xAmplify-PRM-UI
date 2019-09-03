@@ -11,6 +11,11 @@ a.disabled {
 	cursor: not-allowed;
 }
 
+.cancel-alert-class{
+	margin-left: 10px;
+    margin-right: 10px;
+}
+
 .heatmap {
 	min-width: 100%;
 	background: rgba(0, 166, 232, 0.5);
@@ -614,4 +619,19 @@ tr>td>h6 {
     color: #008fd5 !important;
     font-size: 13px !important;
     position: absolute !important;
+}
+
+#align-center{
+	margin-right: 80px;
+}
+
+.center-aligned{
+	text-align: center;
+}
+
+#autoresponse-analytics{
+	background-color:#f1f1f15e;
+}
+#autoresponse-tr{
+	background-color: #d3d3d317
 }

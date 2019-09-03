@@ -16,12 +16,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
 
 import { AppComponent } from './app.component';
-// import { Logger, Options } from 'angular2-logger/core';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
 import { ShareVideoComponent } from './videos/share-video/share-video.component';
 import { CampaignVideoComponent } from './videos/campaign-video/campaign-video.component';
-
+import { RssService } from './social/services/rss.service';
 import { TwitterService } from './social/services/twitter.service';
 import { FacebookService } from './social/services/facebook.service';
 import { SocialService } from './social/services/social.service';
@@ -51,6 +50,7 @@ import { LogEmailClickComponent } from './campaigns/log-email-click/log-email-cl
 import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubscribe.component';
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
+import { EnvServiceProvider } from './env.service.provider';
 
 
 @NgModule({
@@ -65,9 +65,9 @@ import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
-        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,
+        AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider],
     bootstrap: [AppComponent]
 
 })

@@ -72,7 +72,25 @@
     margin: 2px;
   }
   </style>
-  <div class="page-content">
+  <div class="page-content" *ngIf="authenticationService.isOnlyUser()">
+    <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
+      <div class="col-xs-12 col-sm-6 p0">
+        <h4 class="text-primary f-w-600 m10">{{properties.APP_WELCOME_MESSAGE}}</h4>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="clearfix"></div>
+      <div class="page-bar portlet light border-radius-0" style="margin: 14px;margin-top: 1px;">
+       <div class="alert alert-danger alert-dismissible" style="padding: 12px">
+			   <a class="close" data-dismiss="alert" aria-label="close"></a>
+			   You have only limit access please upgrade.
+			  </div>
+        </div>
+        </div>
+
+  </div>
+  <div class="page-content" *ngIf="!authenticationService.isOnlyUser()">
     <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
     <div class="page-bar" *ngIf="userDefaultPage.responseType != null" style="margin-bottom: 5px;">
       <div class="alert alert-dismissible" role="alert" [ngClass]="{'alert-success': userDefaultPage.responseType == 'SUCCESS',
@@ -191,10 +209,11 @@
           <h4 class="pull-left m10 f-w-600 text-primary">Campaigns</h4>
           <a data-toggle="tooltip" title="Customize campaign report" data-placement="left" style="float: right;">
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
-             *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember) ||authenticationService.isOrgAdmin() || authenticationService.isPartner()
-              || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
+             *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole) ||
+             authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
-          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white" *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember)  && authenticationService.user.hasCompany">Create Campaign</a>
+          <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white"
+           *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
@@ -235,7 +254,8 @@
             </div>
           </section>
           <section>
-            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() )">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+             *ngIf="totalCampaignsCount < 4 && (authenticationService.isVendor()|| authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()) && (!authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)">
               <div class="portlet light border-radius-0">
                 <div class="portlet-body">
                   <div class="text-center" style="margin: 1.3em 0.5em;">
@@ -359,7 +379,7 @@
                       <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[2].value || referenceService.daySortValue===sortHeatMapValues[3].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="14 Days">
                         <i class="fa fa-question-circle stats"></i>
                       </span>
-                      <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[3].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="12 Days">
+                      <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[3].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="21 Days">
                         <i class="fa fa-question-circle stats"></i>
                       </span>
                       <span [hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[2].value" class="pointer"  data-toggle="tooltip" data-placement="left" title="Current Month">
@@ -469,7 +489,8 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) ||
+    			authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
       <div class="clearfix" *ngIf="socialConnections?.length > 0">
         <div class="portlet light shadow">
           <div class="portlet-title">

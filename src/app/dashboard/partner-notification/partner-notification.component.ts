@@ -30,6 +30,18 @@ export class PartnerNotificationComponent implements OnInit {
             );
     }
     
+    getPartnerCampaignsNotifications(){
+        this.campaignService.getPartnerCampaignsNotifications(this.loggedInUserId)
+            .subscribe(
+                data => {
+                    console.log(data);
+                    this.referenceService.eventCampaignTabAccess = data.event;
+                },
+                error => { },
+                () => this.xtremandLogger.info('Finished listCampaign()')
+            );
+    }
+    
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.authenticationService.showRoles()=="Team Member" && this.authenticationService.module.isCampaign){
@@ -47,6 +59,10 @@ export class PartnerNotificationComponent implements OnInit {
         );
     }else if(this.authenticationService.isPartner()){
         this.callRedistributedCampaignsDiv(this.loggedInUserId);
+    }
+    
+    if(this.hasRedistributeAccess){
+        this.getPartnerCampaignsNotifications();   
     }
   }
   

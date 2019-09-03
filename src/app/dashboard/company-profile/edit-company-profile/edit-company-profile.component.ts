@@ -263,17 +263,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
     errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
     saveVideoBrandLog() {
-      const logoLink = this.videoUtilService.isStartsWith(this.companyProfile.website);
-      if(logoLink && this.companyLogoImageUrlPath && this.loggedInUserId){
-      this.userService.saveBrandLogo(this.companyLogoImageUrlPath, logoLink, this.loggedInUserId)
-        .subscribe(
-          (data: any) => {
-            console.log(data);
-            if (data !== undefined) { console.log('logo updated successfully');
-            } else { this.ngxloading = false; }
-         },
-        (error) => { this.ngxloading = false; console.log(error); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true);});
-      }
+     console.log("");
     }
 
     geoLocation(){
@@ -311,7 +301,38 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.getAllCompanyNames();
         this.getAllCompanyProfileNames();
     }
-
+    
+    getUserByUserName( userName: string ) {
+        try{
+           this.authenticationService.getUserByUserName( userName )
+              .subscribe(
+              data => {
+                console.log('logged in user profile info:');
+                console.log(data);
+                this.authenticationService.user = data;
+                this.authenticationService.userProfile = data;
+                
+                const currentUser = localStorage.getItem( 'currentUser' );
+                const userToken = {
+                        'userName': userName,
+                        'userId': data.id,
+                        'accessToken': JSON.parse( currentUser )['accessToken'],
+                        'refreshToken': JSON.parse( currentUser )['refreshToken'],
+                        'expiresIn':  JSON.parse( currentUser )['expiresIn'],
+                        'hasCompany': data.hasCompany,
+                        'roles': data.roles
+                    };
+                    localStorage.clear();
+                    localStorage.setItem('currentUser', JSON.stringify(userToken));
+                
+              },
+              error => {console.log( error ); this.router.navigate(['/su'])},
+              () => { }
+              );
+          }catch(error){ console.log('error'+error); }
+      }
+    
+    
     save() {
         this.ngxloading = true;
         this.refService.goToTop();
@@ -334,6 +355,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                     data => {
                         this.isUpdateChaged = true;
                         this.message = data.message;
+                        this.getUserByUserName(this.authenticationService.user.emailId);
                         if(this.message==='Company Profile Info Added Successfully') {
                           this.message = 'Company Profile saved successfully';
                           this.formUpdated = false;
@@ -349,7 +371,26 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
                             let module = self.authenticationService.module;
-                            if (self.isOnlyPartner) {
+                            
+                            self.router.navigate(["/home/dashboard/welcome"]);
+                            self.processor.set(self.processor);
+                            self.saveVideoBrandLog();
+                            const currentUser = localStorage.getItem('currentUser');
+                            const userToken = {
+                                'userName': JSON.parse(currentUser)['userName'],
+                                'userId': JSON.parse(currentUser)['userId'],
+                                'accessToken': JSON.parse(currentUser)['accessToken'],
+                                'refreshToken': JSON.parse(currentUser)['refreshToken'],
+                                'expiresIn': JSON.parse(currentUser)['expiresIn'],
+                                'hasCompany': self.authenticationService.user.hasCompany,
+                                'roles': JSON.parse(currentUser)['roles']
+                            };
+                            localStorage.setItem('currentUser', JSON.stringify(userToken));
+                            self.homeComponent.getVideoDefaultSettings();
+                            self.homeComponent.getTeamMembersDetails();
+                            
+                            
+                       /*     if (self.isOnlyPartner) {
                                 self.router.navigate(["/home/dashboard"]);
                             } else {
                                 if (self.isVendorRole) {
@@ -380,7 +421,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                                 };
                                 localStorage.setItem('currentUser', JSON.stringify(userToken));
                                 self.homeComponent.getVideoDefaultSettings();
-                            }
+                                self.homeComponent.getTeamMembersDetails();
+                            }*/
 
                         }, 3000);
                     },

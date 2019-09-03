@@ -102,14 +102,17 @@ export class ReferenceService {
     eventCampaignId: number;
     dealId = 0;
     myMergeTagsInfo:any;
+    
+    eventCampaignTabAccess: boolean = false;
+    
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     superiorId:number = 0;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
-        this.videoTag = "<img src=\""+environment.imagesHost+"xtremand-video.gif\">";
-        this.coBrandingTag = "<img src=\""+environment.imagesHost+"co-branding.png\">";
-        this.coBrandingImageTag = "img src=\""+environment.imagesHost+"co-branding.png\"";
+        this.videoTag = "<img src=\""+authenticationService.imagesHost+"xtremand-video.gif\">";
+        this.coBrandingTag = "<img src=\""+authenticationService.imagesHost+"co-branding.png\">";
+        this.coBrandingImageTag = "img src=\""+authenticationService.imagesHost+"co-branding.png\"";
     }
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();
@@ -1713,14 +1716,14 @@ export class ReferenceService {
      
      replaceMyMergeTags(myMergeTags:any,updatedBody:string){
          if(myMergeTags!=undefined && this.hasMyMergeTagsExits(updatedBody)){
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstName,myMergeTags.myFirstName);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderLastName,myMergeTags.myLastName);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderFullName,myMergeTags.myFullName);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailId,myMergeTags.myEmailId);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumber,myMergeTags.myContactNumber);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompany,myMergeTags.senderCompany);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrl,myMergeTags.myCompanyUrl);
-             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumber,myMergeTags.myCompanyContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstNameGlobal,myMergeTags.myFirstName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderLastNameGlobal,myMergeTags.myLastName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderFullNameGlobal,myMergeTags.myFullName);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailIdGlobal,myMergeTags.myEmailId);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumberGlobal,myMergeTags.myContactNumber);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal,myMergeTags.senderCompany);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
+             updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal,myMergeTags.myCompanyContactNumber);
          }
          return updatedBody;
      }
@@ -1768,11 +1771,25 @@ export class ReferenceService {
           .map(this.extractData)
           .catch(this.handleError);
     }
+    
+    getHomeOrgCampaignTypes( uRl ) {
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
 
     getCompanyIdByUserId(userId: any) {
        return this.http.get(this.authenticationService.REST_URL + `admin/get-company-id/${userId}?access_token=${this.authenticationService.access_token}` )
         .map(this.extractData)
         .catch(this.handleError);
+    }
+    
+    getHomeCompanyIdByUserId(uRl){
+        const url = this.authenticationService.REST_URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
     }
     
     getMyMergeTagsInfoByEmailId(data:any){

@@ -10,6 +10,7 @@
 			"assets": [
             "assets/images",
             "favicon.ico",
+            "env.js",
             ".htaccess",
             "assets/admin/layout2/img",
             "assets/admin/pages/media/works",

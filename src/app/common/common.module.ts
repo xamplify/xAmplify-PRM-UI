@@ -30,6 +30,7 @@ import { EventSendReminderComponent } from './event-send-reminder/event-send-rem
 import { VideoPlayComponent } from './video-play/video-play.component';
 import { ImageCropperComponent } from './image-cropper/component/image-cropper.component';
 import { EmailSpamCheckComponent } from '../email-template/email-spam-check/email-spam-check.component';
+import { AutoResponseLoaderComponent } from './loader/auto-response-loader/auto-response-loader.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, LoadingModule],
@@ -38,11 +39,11 @@ import { EmailSpamCheckComponent } from '../email-template/email-spam-check/emai
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
-        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent],
+        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent],
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent]
+        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent]
 })
 export class CommonComponentModule { }

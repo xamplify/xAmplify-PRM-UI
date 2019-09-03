@@ -148,11 +148,11 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   goToMangeVideos() {
     this.videoUtilService.selectedVideo = null;
     this.checkVideo = false;
-    this.router.navigate(['../home/videos/manage']);
+    this.router.navigate(['../home/content/videos']);
   }
   goBackToLastPage() {
     this.checkVideo = true;
-    this.router.navigate(['../home/videos/manage']);
+    this.router.navigate(['../home/content/videos']);
   }
 
   videoViewsBarChartLevelTwoTotalList(){
@@ -193,7 +193,7 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     try{
     console.log(this.videoViewsData);
     if (!this.timePeriod) {
-      this.router.navigate(['/home/videos/manage']);
+      this.router.navigate(['/home/content/videos']);
     }
     this.selectedCampaignWatchedUsers(this.timePeriod, true);
   } catch(error){this.xtremandLogger.log('error in ngonit'+error); }

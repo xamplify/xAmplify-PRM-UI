@@ -67,6 +67,16 @@ export class VideoBaseReportService {
                 .catch(this.handleError);
         } catch (error) { console.log(error); }
     }
+    
+    videoLeadsList(videoId: number, pagination: Pagination) {
+        try {
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/leads-info?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url, pagination)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+    }
+    
     getVideoViewsDetails(timePeriod: string, videoId: number, timePeriodValue: string) {
         try {
             const url = this.authenticationService.REST_URL + 'videos/views/' + timePeriod + '/detail-report?access_token=' + this.authenticationService.access_token +
