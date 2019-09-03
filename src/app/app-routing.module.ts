@@ -26,41 +26,33 @@ import { CompanyPageComponent } from './dashboard/company-profile/company-page/c
 import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
-import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
-import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
-import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
-import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
-import {FormPreviewComponent} from './forms/preview/form-preview.component';
-import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
-
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'signup/:alias', component: SignupComponent },
-    { path: 'v-signup', component: SignupComponent},
+    { path: 'v-signup', component: SignupComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     /*{ path: '', component: IntroComponent},*/
-    { path: '', redirectTo:'login', pathMatch: 'full'},
-    { path: 'home', redirectTo:'', pathMatch: 'full'},
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard],
-      children: [
-          { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
-          { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
-          { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
-          { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
-          { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
-          { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
-          { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
-          { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
-          { path: 'content', loadChildren: 'app/content-management/content-management.module#ContentManagementModule',  data: { preload: false } },
-          { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
-          { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
-          { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
-          { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
-          { path: 'landing-pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
-          { path: 'error/:errorStatusId', component: ErrorPagesComponent }
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'home', redirectTo: 'home/dashboard', pathMatch: 'full' },
+    {
+        path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+        children: [
+            { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
+            { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
+            { path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: false } },
+            { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
+            { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
+            { path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule' },
+            { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
+            { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: false } },
+            { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: false } },
+            { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
+            { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
+            { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
+            { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
     { path: 'terms-conditions', component: TermsConditonComponent },
@@ -73,29 +65,20 @@ export const routes: Routes = [
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },
     { path: 'showCampaignEmail/:alias', component: LogRegularCampaignComponent },
-    { path: 'smsShowCampaign/:alias', component: LogRegularCampaignComponentSMS },
-    { path: 'smsCampaignVideo/:alias', component: CampaignSMSVideoComponent },
-    { path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
     { path: 'company-page/:alias', component: CompanyPageComponent },
     { path: 'partner-page/:alias', component: CompanyPageComponent },
     { path: 'loge/:alias', component: LogEmailClickComponent },
-    { path: 'logs/:alias', component: LogSMSClickComponent },
     { path: 'log/unsubscribe-user', component: LogUnsubscribeComponent },
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'rsvp/:alias', component: RsvpComponent },
-    {path: 'f/:alias', component:FormPreviewComponent},
-    {path: 'l/:alias', component:ShowLandingPageComponent},
-    {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
-    {path: 'clpl/:alias', component:ShowLandingPageComponent},
-    { path: '**', component: PageNotFoundComponent},
+    { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader })
-            ],
+    ],
     exports: [RouterModule],
-    providers : [AppCustomPreloader]
+    providers: [AppCustomPreloader]
 })
 export class AppRoutingModule { }
- 
