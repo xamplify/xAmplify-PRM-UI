@@ -33,110 +33,90 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger ) {
         console.log( authService.getUserId() );
-        this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
-            this.refService.getOrgCampaignTypes( response ).subscribe( data => {
-                this.enableLeads = data.enableLeads;
-                console.log( data )
-            } );
-
-        } )
         this.updateLeftSideBar( location );
     }
 
     updateLeftSideBar( location: Location ) {
         this.location = location;
         try {
+
             const roles = this.authService.getRoles();
             if ( roles ) {
+                
+                if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
+                    this.authService.isCompanyPartner = true;
+                }else{
+                    this.authService.isCompanyPartner = false;
+                }
+                
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.allRole ) > -1 ||
-                    roles.indexOf( this.roleName.vendorRole ) > -1 ) {
+                    roles.indexOf( this.roleName.vendorRole ) > -1 ||
+                    roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
                     this.authService.module.isCampaign = true;
-                    // this.isCampaign = true;
+                    if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner' || this.authService.superiorRole === 'Partner'))
+                            || this.authService.isCompanyPartner){
+                        this.authService.module.isReDistribution = true;
+                    }else{
+                        this.authService.module.isReDistribution = false;
+                    }
                 }
                 if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
-                    roles.indexOf( this.roleName.orgAdminRole ) > -1 )//roles.indexOf(this.roleName.allRole) > -1)
+                    roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.companyPartnerRole ) > -1 ||
+                    (roles.indexOf( this.roleName.allRole ) > -1 && 
+                     (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner') 
+                    ))
                 {
                     this.authService.module.isContact = true;
                 }
                 if ( roles.indexOf( this.roleName.emailTemplateRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.allRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isEmailTemplate = true;
                 }
                 if ( roles.indexOf( this.roleName.statsRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.allRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isStats = true;
                 }
                 if ( roles.indexOf( this.roleName.partnersRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.allRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isPartner = true;
                 }
                 if ( roles.indexOf( this.roleName.videRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.allRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isVideo = true;
                 }
                 if ( roles.indexOf( this.roleName.opportunityRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.allRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.hasOpportunityRole = true;
                 }
+
+                if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 &&
+                        roles.indexOf( this.roleName.orgAdminRole ) < 0 &&
+                        roles.indexOf( this.roleName.vendorRole ) < 0 ) {
+                        this.authService.module.isOnlyPartner = true;
+                    }
+
                 if ( roles.indexOf( this.roleName.orgAdminRole ) > -1 ) {
                     this.authService.module.isOrgAdmin = true;
                 }
-                if (roles.indexOf(this.roleName.companyPartnerRole) > -1)
-                {
-                    this.pagination.pageIndex = 1;
-                    this.pagination.maxResults = 10000;
-                    this.dashBoardService.loadVendorDetails(this.authService.getUserId(), this.pagination).subscribe(response =>
-                    {
-                        response.data.forEach(element =>
-                        {
-                            this.refService.getOrgCampaignTypes(element.companyId).subscribe(data =>
-                            {
-                                if (!this.authService.module.enableLeadsByVendor)
-                                {
-                                    this.authService.module.enableLeadsByVendor =data.enableLeads;
-                                }
-                                console.log(data)
-                            });
-                        });
-                    })
-                    this.authService.module.isCompanyPartner = true;
-                }
+
                 if (roles.indexOf(this.roleName.vendorRole) > -1)
-                {
+                 {
                     this.authService.module.isVendor = true;
                 }
-            
+
             }
         } catch ( error ) { console.log( error ); }
     }
+    
     ngOnInit() {
-      //  this.isOnlyPartner = this.authService.isOnlyPartner();
-        this.userService.getRoles(this.authService.getUserId())
-        .subscribe(
-        response => {
-             if(response.statusCode==200){
-                this.authService.loggedInUserRole = response.data.role;
-                this.authService.isPartnerTeamMember = response.data.partnerTeamMember;
-                this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
-             }else{
-                 this.authService.loggedInUserRole = 'User';
-             }
-        },
-        error => this.logger.errorPage(error),
-        () => this.logger.log('Finished')
-        );
+        this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false ); }
@@ -159,8 +139,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
                 this.clearSubMenuValues( false, this.campaigns, false, false, false );
             }
-            else if ( urlType === 'videos' ) {
-                this.videos = this.router.url.includes( 'videos' ) ? true : ( this.videos = !this.videos );
+            else if ( urlType === 'content' ) {
+                this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
                 this.clearSubMenuValues( false, false, this.videos, false, false );
             }
         }

@@ -220,7 +220,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     console.log(this.videoFileService.actionValue);
                     if (this.redirectPge === false) {
                       //  this.router.navigateByUrl('/home/videos/manage');
-                        this.router.navigate(['/home/videos/manage']);
+                        this.router.navigate(['/home/content/videos']);
                     } else if (this.playerInit === false) {
                         this.videoFileService.actionValue = '';
                         this.videoFileService.isProgressBar = false;
@@ -290,7 +290,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     setTimoutMethod() {
         this.uploader.queue.length = 0;
-        setTimeout( () => { this.maxSizeOver = false;  this.router.navigate(['./home/videos']);}, 5000);
+        setTimeout( () => { this.maxSizeOver = false;  this.router.navigate(['./home/content']);}, 5000);
     }
     fileDropPreview(file: File): void {
         if (this.isFileDrop === false) {
@@ -437,7 +437,6 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 const localStream = stream;
                 const track = stream.getTracks()[0];
                 track.stop();
-                localStream.stop();
                 localStream.getVideoTracks()[0].stop();
                 recordBlocked.refService.cameraIsthere = true;
             },
@@ -641,7 +640,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.isDisable = false;
         this.isFileProgress = false;
         this.isSelectedVideo = false;
-        this.router.navigate(['./home/videos']);
+        this.router.navigate(['./home/content']);
     }
     downloadFromDropbox() {
       try{
@@ -959,7 +958,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     linkType: 'direct',
                     multiselect: true,
                     extensions: ['.csv','.jpg', '.cvs', '.gif','.html','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls', '.xlsx', '.zip', '.xml', '.sdf', '.key', '.tar','.sdf', '.key','.xlr', '.pct', '.indd', '.ai', '.eps', '.ps', '.svg', '.app', '.apk', '.b', '.exe', '.bat', '.jar', '.7z','.kmz','.rpm','.zipx', '.hqx','.apk','.dat', '.sitx','.url','.webp', '.gz','.kml','.pps',
-                    '.tff', '.deb', '.dxf'],
+                    '.tff', '.deb', '.dxf','.rar','.gpx'],
                 };
                 Dropbox.choose(options);
             }
@@ -984,7 +983,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     swal.close();
                     this.contentProcessing = true; this.processing = false;
                     this.refService.contentManagementLoader=true;
-                    if(!this.videoFileService.contentRedirect || this.router.url.includes('home/videos/upload') ) {
+                    if(!this.videoFileService.contentRedirect || this.router.url.includes('home/content/upload') ) {
                       this.videoFileService.contentRedirect = false;this.redirectContent = false;
                       this.router.navigate(['/home/content/manage']);
                      }
@@ -1060,7 +1059,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                             swal.close();
                             self.contentProcessing = true; self.processing = false;
                             self.refService.contentManagementLoader=true;
-                            if(!self.videoFileService.contentRedirect || self.router.url.includes('home/videos/upload')) {
+                            if(!self.videoFileService.contentRedirect || self.router.url.includes('home/content/upload')) {
                                self.videoFileService.contentRedirect = false;
                                self.router.navigate(['/home/content/manage']);
                              }
@@ -1186,7 +1185,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                           self.contentProcessing = true; self.processing = false;
                           self.videoFileService.videoFileSweetAlertMessage = false;
                           self.refService.contentManagementLoader=true;
-                          if(!self.videoFileService.contentRedirect || self.router.url.includes('home/videos/upload')) {
+                          if(!self.videoFileService.contentRedirect || self.router.url.includes('home/content/upload')) {
                             self.videoFileService.contentRedirect = false;
                             setTimeout(() => { self.router.navigate(['/home/content/manage']); }, 2000);
                           }
@@ -1211,7 +1210,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                   self.picker.setVisible(false);
                   self.picker.dispose();
                   }
-                    self.router.navigate(['/home/videos']);
+                    self.router.navigate(['/home/content']);
                     self.videoFileService.videoFileSweetAlertMessage = true;
                 //  google.script.host.close();
                   swal('Other than video files can be uploaded');

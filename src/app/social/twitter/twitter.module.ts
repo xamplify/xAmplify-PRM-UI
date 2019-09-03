@@ -18,10 +18,11 @@ import { TwitterAreaChartComponent } from './twitter-area-chart/twitter-area-cha
 import { ProfileCardComponent } from './profile-card/profile-card.component';
 import { HeaderComponent } from './header/header.component';
 import { TweetComponent } from './tweet/tweet.component';
+import { SharedRssModule } from '../../shared/shared-rss.module';
 
 @NgModule({
   imports: [
-    CommonModule, SharedModule, TwitterRoutingModule
+    CommonModule, SharedModule, TwitterRoutingModule, SharedRssModule
   ],
   declarations: [TwitterProfileComponent, TwitterTweetsComponent, TwitterFriendsComponent, TwitterFollowersComponent,
     TwitterAnalyticsComponent, LineChartComponent, NewFansLineChartComponent, PieChartGeoDistributionComponent,

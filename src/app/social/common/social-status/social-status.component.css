@@ -4,12 +4,16 @@
     border-radius: 50%;
     float: left;
     margin-right: 10px;
+    background: #f1f1f1;
 }
 .profile-name {
     font-weight: 600;
-    font-size: 14px;
     margin: 0;
     padding-top: 10px;
+    white-space: nowrap;
+    width: 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status-time {
@@ -38,7 +42,7 @@
     max-width: 100%;
     max-height: 100%;
     max-height: 100%;
-    height: auto;
+    height: 60px;
     width: 100%;
     margin: 0 auto;
     float: left;

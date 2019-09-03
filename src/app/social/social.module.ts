@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { CommonComponentModule} from '../common/common.module';
 import { SocialRoutingModule } from './social-routing.module';
 import { SharedModule } from '../shared/shared.module';
-
+import { SharedRssModule } from '../shared/shared-rss.module';
 
 import { FacebookAccountsComponent } from './facebook/facebook-accounts/facebook-accounts.component';
 import { FacebookPostsComponent } from './facebook/facebook-posts/facebook-posts.component';
@@ -18,7 +17,7 @@ import { FacebookReactionsComponent } from './facebook/facebook-reactions/facebo
 import { FacebookCommentsComponent } from './facebook/facebook-comments/facebook-comments.component';
 
 @NgModule( {
-    imports: [CommonModule, SharedModule, SocialRoutingModule, FormsModule, CommonComponentModule],
+    imports: [CommonModule, SharedModule, SharedRssModule, SocialRoutingModule, FormsModule],
     declarations: [SocialManageComponent, FacebookAccountsComponent, FacebookPostsComponent, FacebookAnalyticsComponent,
         FacebookInsightGenderAgeComponent, FacebookInsightFansCountryComponent, FacebookReactionsComponent, FacebookCommentsComponent],
     providers: []

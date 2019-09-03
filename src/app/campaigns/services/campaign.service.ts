@@ -214,6 +214,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listautoResponseAnalyticsByCampaignAndUser(json: any){
+ return this.http.post(this.URL + 'autoResponse/analytics?access_token=' + this.authenticationService.access_token, json)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
         return this.http.get(this.URL + 'campaign/user-timeline-log?access_token=' + this.authenticationService.access_token + '&userId=' + userId + '&campaignId=' + campaignId)
             .map(this.extractData)
@@ -275,6 +281,11 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getPartnerCampaignsNotifications(userId: number) {
+        return this.http.get(this.URL + `partner/access/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
     hasRedistributeAccess(userId: number) {
         return this.http.get(this.URL + `campaign/checkRedistibuteAccess/${userId}?access_token=${this.authenticationService.access_token}`)
@@ -287,7 +298,6 @@ export class CampaignService {
               .map(this.extractData)
               .catch(this.handleError);
       }*/
-
 
     listPartnerCampaigns(pagination: Pagination, userId: number) {
         var url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
@@ -620,5 +630,13 @@ export class CampaignService {
       return this.http.post(this.URL + `campaign/calendar?access_token=${this.authenticationService.access_token}`, request )
           .map(this.extractData)
           .catch(this.handleError);
+  }
+  
+  
+  listAutoResponseAnalytics(pagination:Pagination) {
+      var url =this.URL+"autoResponse/analytics?access_token="+this.authenticationService.access_token;
+      return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);   
   }
 }

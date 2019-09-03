@@ -16,7 +16,7 @@ export class CompanyProfileService {
         .map(this.extractData)
         .catch(this.handleError);
    }
-
+    
     save(companyProfile:CompanyProfile,userId:number){
         return this.http.post(this.URL+"company-profile/save/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
         .map(this.extractData)

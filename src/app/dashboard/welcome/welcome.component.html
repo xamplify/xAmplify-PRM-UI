@@ -76,8 +76,8 @@
              <h1 class="text-left" style="color: #76c9ff">Videos</h1>
              <p class="left-side">{{welcome_text.videos}}</p>
              <div class="text-left" >
-               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload video</button>
-               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View videos</button>
+               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content']" >Upload video</button>
+               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content/videos']">View videos</button>
                <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')">Tell me how</button>
              </div>
            </div>
@@ -94,7 +94,7 @@
              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
              <div style="text-align: left">
                <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload Content</button>
-               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos/manage']">View Content</button>
+               <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content/videos']">View Content</button>
                <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')">Tell me how</button>
              </div>
            </div>
@@ -159,7 +159,7 @@
          </div>
        </div>
        <div class="divider" *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.module.isCampaign"></div>
-       <div class="flex" *ngIf="  authenticationService.loggedInUserRole!='Team Member' && (authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()|| 
+       <div class="flex" *ngIf="  authenticationService.loggedInUserRole!='Team Member' && (authenticationService.isVendor() || authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()||
        								authenticationService.isOrgAdmin())">
            <div class="col-sm-6 col-xs-12 block image-block">
              <img src="../../../assets/images/welcome/img-members.png" style="max-width: 100%;height: 202px;margin-top: -10px;">

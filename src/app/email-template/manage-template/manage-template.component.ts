@@ -197,6 +197,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     if ( data.regularTemplate || data.videoTemplate ) {
                         this.router.navigate( ["/home/emailtemplates/update"] );
                     } else {
+                        this.emailTemplateService.isNewTemplate = false;
                         this.router.navigate( ["/home/emailtemplates/create"] );
                     }
                 }else {
@@ -371,7 +372,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                     $("#email-template-title").empty();
                     $("#email-template-title").append(emailTemplateName);
                     $('#email-template-title').prop('title',emailTemplate.name);
-                    
+
                     if(this.refService.hasMyMergeTagsExits(body)){
                         let data = {};
                         data['emailId'] = this.authenticationService.user.emailId;
@@ -387,24 +388,24 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                                     this.showModal(body);
                                 }
                             );
-                        
+
                     }else{
                         this.showModal(body);
                     }
-               
+
                 },
                 error => {this.ngxloading = false; this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
                 () =>  this.logger.info("Finished getAllCompanyProfileImages()"));
-       
+
     }
-    
+
     showModal(body:string){
         $("#htmlContent").append(body);
         $('.modal .modal-body').css('overflow-y', 'auto');
         $("#show_email_template_preivew").modal('show');
         this.ngxloading = false;
     }
-    
+
     spamCheck(emailTemplate: any) {
         this.emailTemplate = null;
         this.emailTemplate = emailTemplate;

@@ -14,6 +14,8 @@ export class SocialCampaign {
   emailOpened = false;
   shareNow = true;
   isPartner = true;
+  channelCampaign = false;
+  nurtureCampaign = false;
   userListIds: Array<number> = [];
 
   socialStatusProviderList: Array<SocialStatusProvider> = [];

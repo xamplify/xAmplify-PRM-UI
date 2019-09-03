@@ -22,6 +22,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     @Output() notifyParent: EventEmitter<any>;
     contactsByType: ContactsByType = new ContactsByType();
     selectedCampaignIds = [];
+    paginationCampaignIds = []
     checkengListType = "";
     loading = false;
     isHeaderCheckBoxChecked: boolean = false;
@@ -39,6 +40,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                 $( '[name="associatedContactList[]"]:checked' ).each( function() {
                     var id = $( this ).val();
                     self.selectedCampaignIds.push( parseInt( id ) );
+                    self.paginationCampaignIds.push( parseInt( id ) );
                     console.log( self.selectedCampaignIds );
                     /*$( '#campaignContactListTable_' + id ).addClass( 'contact-list-selected' );*/
                 });
@@ -47,6 +49,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                 $( '[name="associatedContactList[]"]' ).prop( 'checked', false );
                /* $( '#user_list_tb tr' ).removeClass( "contact-list-selected" );*/
                 let self = this;
+                self.paginationCampaignIds = [];
                 if ( self.pagination.maxResults == self.pagination.totalRecords ) {
                     self.selectedCampaignIds = [];
                 } else {
@@ -64,11 +67,13 @@ export class ContactsCampaignsMailsComponent implements OnInit {
         let isChecked = $( '#' + campaignId ).is( ':checked' );
         if ( isChecked ) {
             this.selectedCampaignIds.push( campaignId );
+            this.paginationCampaignIds.push( campaignId );
         } else {
             this.selectedCampaignIds.splice( $.inArray( campaignId, this.selectedCampaignIds ), 1 );
+            this.paginationCampaignIds.splice( $.inArray( campaignId, this.paginationCampaignIds ), 1 );
         }
         
-        if ( this.selectedCampaignIds.length == this.pagination.pagedItems.length ) {
+        if ( this.paginationCampaignIds.length == this.pagination.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
         } else {
             this.isHeaderCheckBoxChecked = false;
@@ -122,6 +127,7 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     setPage( event: any ) {
         this.pagination.pageIndex = event.page;
         this.getContactsAssocialteCampaigns( this.pagination );
+        this.paginationCampaignIds = [];
     }
     
     onChangePaginationDropDown( event: Pagination ) {
@@ -138,11 +144,12 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                     this.pagination.totalRecords = data.totalRecords;
                     this.pagination = this.pagerService.getPagedItems( this.pagination, this.contactsByType.contactListAssociatedCampaigns );
                     
-                    
                     var contactIds = this.pagination.pagedItems.map( function( a ) { return a.campaignId; });
                     var items = $.grep( this.selectedCampaignIds, function( element ) {
                         return $.inArray( element, contactIds ) !== -1;
                     });
+                    
+                    
                     console.log( "Contact Ids" + contactIds );
                     console.log( "Selected Contact Ids" + this.selectedCampaignIds );
                     if ( items.length == this.pagination.totalRecords || items.length == this.pagination.pagedItems.length ) {
@@ -151,6 +158,12 @@ export class ContactsCampaignsMailsComponent implements OnInit {
                         this.isHeaderCheckBoxChecked = false;
                     }
                     
+                    for(let i=0; i< items.length; i++){
+                        if(items){
+                            this.paginationCampaignIds.push(items[i]);  
+                        }
+                    }
+                      
                     
                 },
                 error => console.log( error ),

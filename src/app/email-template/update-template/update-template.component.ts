@@ -73,39 +73,39 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     checkUpdatedAvailableNames(value: any) {
         if (value.trim().length > 0 ) {
             this.invalidTemplateName = false;
-             $("#templateName").attr('style','border-left: 5px solid #42A948');
+             $("#templateName").attr('style','border-left: 1px solid #42A948');
                 if(this.availableTemplateNames.indexOf(value.toLocaleLowerCase().trim()) > -1 && this.emailTemplateService.emailTemplate.name.toLowerCase() != value.toLowerCase().trim()){
                     this.duplicateTemplateName = true;
-                    $("#templateName").attr('style','border-left: 5px solid #a94442');
+                    $("#templateName").attr('style','border-left: 1px solid #a94442');
                 }else{
-                    $("#templateName").attr('style','border-left: 5px solid #42A948');
+                    $("#templateName").attr('style','border-left: 1px solid #42A948');
                     this.duplicateTemplateName = false;
                 }
         } else {
-            $("#templateName").attr('style','border-left: 5px solid #a94442');
+            $("#templateName").attr('style','border-left: 1px solid #a94442');
             this.invalidTemplateName = true;
         }
     }
     validateType(){
         let fieldValue= $("#isRegularUpload").val();
-       
+
         if (fieldValue !=null && fieldValue != undefined &&  fieldValue.length > 0 && fieldValue!= "Select Type")
         {
-          
+
           this.isValidType = true;
-         
-          $("#isRegularUpload").attr('style', 'border-left: 5px solid #42A948');
+
+          $("#isRegularUpload").attr('style', 'border-left: 1px solid #42A948');
         } else
         {
-         
+
           this.isValidType = false;
-         
-          $("#isRegularUpload").attr('style', 'border-left: 5px solid #a94442');
-          
+
+          $("#isRegularUpload").attr('style', 'border-left: 1px solid #a94442');
+
         }
-       
+
       }
-    
+
 
     update(){
         this.clickedButtonName = this.updateButton;
@@ -176,7 +176,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     setCoBrandingLogo(event)
     {
         console.log(event)
-      
+
       this.coBrandingLogo = event;
       let body = this.getCkEditorData();
       if (event)
@@ -190,10 +190,10 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.model.content = this.model.content.replace(this.refService.coBrandingImageTag, "").
           replace("<p>< /></p>", "").
           replace("< />", "").replace("<p>&lt;&gt;</p>", "").replace("<>", "");
-  
+
         // .replace("&lt; style=&quot;background-color:black&quot; /&gt;","");
       }
-  
+
     }
     getCkEditorData()
     {
@@ -221,8 +221,8 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.showSweetAlert(body);
         }
     }
-    
-    
+
+
     showSweetAlert(body:any) {
         let self = this;
         swal( {
@@ -241,7 +241,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
         } );
     }
-    
-    
-    
+
+
+
 }

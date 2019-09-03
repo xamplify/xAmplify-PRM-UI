@@ -13,7 +13,7 @@ export class Module {
     isVendor:boolean = false;
     enableLeadsByVendor = false;
     enableLeads = false;
-
-
-
+    isOnlyPartner = false;
+    isAddingPartnersAccess = false;
+    isReDistribution = false;
 }

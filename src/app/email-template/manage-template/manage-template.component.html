@@ -57,9 +57,9 @@
 										[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video
                     Co-Branding</li>
                     <li class="filter" (click)="filterTemplates('RICH',false,9)"
-										[class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
+										[class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event</li>
 										<li class="filter"
-										(click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="campaignAccess.eventCampaign"
+										(click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign"
 										[class.emailtemplate-selected]="10 == selectedTemplateTypeIndex">Event
                     Co-Branding</li>
 									<li class="filter" style="display: none;">Own Template</li>
@@ -131,15 +131,18 @@
 										<h6>
 											Shared By <b>{{emailTemplate.vendorName}}</b>
 										</h6>
-										<h6>
-											From <b>{{emailTemplate.vendorOrganizationName}}</b>
+										<h6 title="{{emailTemplate.vendorOrganizationName}}">
+											From <b>{{emailTemplate.vendorOrganizationName | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.vendorOrganizationName?.length > 25">..</span>
 										</h6>
 										</ng-container> <ng-container *ngIf="emailTemplate.type!='PARTNER'">
-										<h6>
-											Created By <b>{{emailTemplate.createdBy}}</b>
+										<h6 title="{{emailTemplate.createdBy}}">
+											Created By <b>{{emailTemplate.createdBy | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.createdBy?.length > 25">..</span>
 										</h6>
-										<h6>
-											From <b>{{emailTemplate.companyName}}</b>
+										<h6  title="{{emailTemplate.companyName}}">
+											From <b>{{emailTemplate.companyName | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.companyName?.length > 25">..</span>
 										</h6>
 										</ng-container>
 										<h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft">DRAFT</h5>
@@ -152,8 +155,9 @@
 									</td>
 									<td class="hidden-xs text-center"
 										*ngIf="!authenticationService.isVendor()">
-										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'">
-											<b>{{emailTemplate.vendorOrganizationName}}</b>
+										<h5 style="width: auto;" *ngIf="emailTemplate.type=='PARTNER'" title="{{emailTemplate.vendorOrganizationName}}">
+											<b>{{emailTemplate.vendorOrganizationName | slice:0:25}}</b>
+											<span *ngIf="emailTemplate.vendorOrganizationName?.length > 25">..</span>
 										</h5>
 										<h5 style="width: auto;" *ngIf="emailTemplate.type!='PARTNER'">
 											<b>-</b>
@@ -252,8 +256,8 @@
 									<b *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</b>
 								</h6>
 								<h6 title="{{emailTemplate.vendorOrganizationName}}">
-									From <b *ngIf="emailTemplate.companyName?.length>17">{{emailTemplate.vendorOrganizationName|slice:0:17}}..</b>
-									<b *ngIf="emailTemplate.companyName?.length<17">{{emailTemplate.vendorOrganizationName}}</b>
+									From <b>{{emailTemplate.vendorOrganizationName | slice:0:20}}</b>
+									<span *ngIf="emailTemplate.vendorOrganizationName?.length>20">..</span>
 								</h6>
 								</ng-container>
 

@@ -17,10 +17,12 @@ import { LoadingModule } from 'ngx-loading';
 
 import { LoaderComponent } from '../loader/loader.component';
 import { CountLoaderComponent } from '../count-loader/count-loader.component';
-import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
-import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
-import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
-import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
+
+// import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
+// import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
+// import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
+// import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
+
 import { CommonComponentModule } from '../common/common.module';
 import { NgxCurrencyModule } from "ngx-currency";
 import { ImageCropperModule } from 'ng2-img-cropper';
@@ -28,13 +30,13 @@ import { ImageCropperModule } from 'ng2-img-cropper';
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule ],
-        declarations: [LoaderComponent, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent,CountLoaderComponent],
+                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule],
+        declarations: [LoaderComponent, CountLoaderComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
-                  FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,
+                  FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule ,LoaderComponent, TimepickerModule,
-                  BootstrapSwitchModule, TimezonePickerModule, UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, LoadingModule, SocialLoaderComponent,NgxCurrencyModule,CountLoaderComponent
-                ],
+                  BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
+                  NgxCurrencyModule,CountLoaderComponent],
         providers: [],
 })
 

@@ -40,12 +40,12 @@
                 <app-user-info [userInfo]="item" [isPartnerEntityInfo]="true" [isPartnerInfo]="true"></app-user-info>
               </td>
               <td *ngIf="isCampaignByLeads">
-                <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="# Of Leads">
+                <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="Number Of Leads">
                   <span class="circled-number"><b>{{item.count}}</b></span>
                 </a>
               </td>
               <td *ngIf="!isCampaignByLeads">
-                  <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="# Of Deals">
+                  <a (click)="showLeads(item)" data-toggle="tooltip" data-placement="top" title="Number Of Deals">
                     <span class="circled-number"><b>{{item.count}}</b></span>
                   </a>
                 </td>

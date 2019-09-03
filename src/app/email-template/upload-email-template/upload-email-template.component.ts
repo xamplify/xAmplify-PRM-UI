@@ -123,23 +123,25 @@ export class UploadEmailTemplateComponent implements OnInit, OnDestroy {
         this.isUploadFileError = false;
         this.customResponse.isVisible = false;
     }
-
+    dropClick(){
+      $('#file-upload').click();
+    }
     checkAvailableNames( value: any ) {
         if ( $.trim( value ).length > 0 ) {
             this.isValidTemplateName = true;
             this.disableButton = false;
-            $( "#templateName" ).attr( 'style', 'border-left: 5px solid #42A948' );
+            $( "#templateName" ).attr( 'style', 'border-left: 1px solid #42A948' );
             if ( this.availableTemplateNames.length > 0 ) {
                 if ( this.availableTemplateNames.indexOf( $.trim( value.toLocaleLowerCase() ) ) > -1 ) {
                     this.duplicateTemplateName = true;
-                    $( "#templateName" ).attr( 'style', 'border-left: 5px solid #a94442' );
+                    $( "#templateName" ).attr( 'style', 'border-left: 1px solid #a94442' );
                 } else {
-                    $( "#templateName" ).attr( 'style', 'border-left: 5px solid #42A948' );
+                    $( "#templateName" ).attr( 'style', 'border-left: 1px solid #42A948' );
                     this.duplicateTemplateName = false;
                 }
             }
         } else {
-            $( "#templateName" ).attr( 'style', 'border-left: 5px solid #a94442' );
+            $( "#templateName" ).attr( 'style', 'border-left: 1px solid #a94442' );
             this.isValidTemplateName = false;
             this.disableButton = true;
         }

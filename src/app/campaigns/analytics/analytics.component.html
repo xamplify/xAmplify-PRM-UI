@@ -13,13 +13,13 @@
 		color: #fff;
 	}
 </style>
-<ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<ngx-loading [show]="ngxloading" [config]="{fullScreenBackdrop:true , backdropBorderRadius: '14px' }"></ngx-loading>
 <app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId"
  [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
 <app-detail-view *ngIf="showRsvpDetails" [campaignReport]="campaignReport" [detailType]="rsvpResposeType" [campaignType]="campaignType"
  [campaign]="campaign" [details]="rsvpDetailsList"></app-detail-view>
-<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails && !isDealRegistration" [class.ml0]="authenticationService.isSuperAdmin()">
+<ngx-loading [show]="loading" [config]="{fullScreenBackdrop:true , backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails" [class.ml0]="authenticationService.isSuperAdmin()">
 	<div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
@@ -52,6 +52,10 @@
 					<div class="alert alert-danger alert-dismissible" *ngIf="contactListDeleteError">
 						<a (click)="contactListDeleteError = false" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						The contact list(s) associated with this campaign has been deleted.
+					</div>
+					<div class="alert alert-danger alert-dismissible cancel-alert-class" *ngIf="isCancelledEvent">
+						<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+						The event has been cancelled.
 					</div>
 					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}"
 					 *ngIf="campaignType === 'VIDEO' && campaign.selectedVideoId>0">
@@ -510,16 +514,21 @@
 									</button>
 								</div>
 
-								<div class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
+								<div [class.disabled]="campaignViewsPagination.pagedItems?.length == 0" class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
 										<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
 											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 										</span>
 										<ul class="dropdown-menu pull-right">
-											<li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadEmailLogs()"> Export To Excel </a></li>
+											<li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()"> Export To Excel </a></li>
 										</ul>
 									</div>
 								</div>
 								<div class="portlet-body clearfix">
+								<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+					             <div class="loader"
+									style="margin-right: 10px; width: 25px; height: 25px;"></div>
+									<h4 class="m5">Please wait while we process your request.</h4>
+								</div>
 									<div *ngIf="campaignViewsPagination.pagedItems?.length === 0" class="alert alert-info">
 										<strong>No Records Found.</strong>
 									</div>
@@ -549,10 +558,13 @@
 															<span *ngIf="campaignType==='REGULAR'">Email Opened</span>
 															<span *ngIf="campaignType==='SOCIAL'">Redistributed</span>
 														</th>
+														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaign.dipCampaign">
+															Auto Responses
+														</th>
 													</tr>
 												</thead>
 												<tbody>
-													<ng-container *ngFor="let item of campaignViewsPagination.pagedItems">
+													<ng-container *ngFor="let item of campaignViewsPagination.pagedItems;let i=index">
 														<tr (click)="userTimeline(item);">
 															<td>
 																<app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
@@ -620,7 +632,59 @@
 																	</ng-container>
 																</ng-container>
 															</td>
+															<td *ngIf="campaign.dipCampaign">
+										                      <div class="actions-block" id="align-center" (click)="$event.stopPropagation()">
+										                      	<font class="circled-number" *ngIf="item.autoResponsesCount==0" style="margin-right: 50px;cursor: not-allowed">{{item.autoResponsesCount}}</font>
+										                       <font class="circled-number" *ngIf="item.autoResponsesCount>0">{{item.autoResponsesCount}}</font>
+										                        <a *ngIf="item.autoResponsesCount>0" (click)="$event.stopPropagation();showAutoResponseAnalytics(item,i)"   data-toggle="tooltip" data-placement="top" title="View Auto Response Analytics">
+ 										                          <i class="fa" [ngClass]="{'fa-plus': !item.expanded, 'fa-minus': item.expanded}"></i>
+										                        </a>
+										                      </div>
+                   											 </td>
 														</tr>
+														<tr [ngClass]="{'hidden': !item.expanded}" id="autoresponse-tr">
+														 	 <td colspan="5">
+														 	 	 <table class="table tgrid table-condensed" id="autoresponse-analytics">
+											                        <thead>
+											                          <tr>
+											                            <th  class="center-aligned">Auto Response Type</th>
+											                            <th class="center-aligned">Subject</th>
+											                            <th class="center-aligned">Reply In X Days</th>
+											                            <th class="center-aligned">Reply Time</th>
+											                            <th class="center-aligned">Sent Time</th>
+											                            <th class="center-aligned">Opened Time</th>
+											                          </tr>
+											                        </thead>
+											                        <tbody>
+											                         <app-auto-response-loader  *ngIf="autoResponeAnalyticsLoader.isLoading"></app-auto-response-loader>
+											                         <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+											                        	<tr  *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
+											                        		<td class="center-aligned">{{autoResponseAnalytics.autoResponseType}}</td>
+												                        	<td class="center-aligned">{{autoResponseAnalytics.subject}}</td>
+												                        	<td class="center-aligned">{{autoResponseAnalytics.replyInDays}}</td>
+												                        	<td class="center-aligned">{{autoResponseAnalytics.replyTimeString}}</td>
+												                        	<td class="center-aligned">
+												                        		<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime"> </app-timestamp>
+                        														<span *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
+												                        	</td>
+												                        	<td class="center-aligned" *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
+												                        		<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.openedTime"> </app-timestamp>
+                        														<span *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
+												                        	</td>
+												                        	<td class="center-aligned" *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
+												                        		-
+												                        	</td>
+											                        	</tr>
+											                        	</ng-container>
+														 	 		</tbody>
+														 	 		</table>
+														 	 		 <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
+																			<app-pagination [pagination]="autoResponseAnalyticsPagination"
+																				(notifyParent)="setAutoResponsesPage($event,item)"
+																				(notifyParentDropDown)="listAutoResponseAnalytics($event,item)" [hidden]="autoResponeAnalyticsLoader.isLoading"></app-pagination>
+																		</div>
+														 	 </td>
+														 </tr>
 													</ng-container>
 												</tbody>
 											</table>
@@ -643,7 +707,7 @@
 
 
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
-	<div id="timeline-view" class="page-content" *ngIf="isTimeLineView && !isDealRegistration">
+	<div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<div class="page-bar" style="min-height: 572px;">
 			<a (click)="resetTopNavBarValue(); rsvpDetailType = ''" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
@@ -769,7 +833,7 @@
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NO'">People who have responded <b class="highlet">NO</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'MAYBE'">People who have responded <b class="highlet">MAYBE</b></h4>
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'NOTYET'">People who have<b class="highlet">NOT YET RESPONDED </b></h4>
-			
+
 			<div class="pull-right col-xs-4">
 			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
@@ -778,7 +842,7 @@
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
 			</div>
-			
+
 			</div>
 
 			<div class="col-xs-12">
@@ -837,7 +901,7 @@
 	</div>
 </section>
 <section *ngIf="!isChannelCampaign || campaignType != 'EVENT'">
-	<div id="timeline-view" class="page-content" *ngIf="isTimeLineView && !isDealRegistration" [class.ml0]="authenticationService.isSuperAdmin()">
+	<div id="timeline-view" class="page-content" *ngIf="isTimeLineView " [class.ml0]="authenticationService.isSuperAdmin()">
 		<div class="page-bar" style="border: 1px solid #CCC;">
 			<a (click)="resetTopNavBarValue()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
 			<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
@@ -863,16 +927,20 @@
 					<div id="campaign-views-barchart" style="width: 100%; max-width: 100%; height: 260px; margin: 0 auto"></div>
 					<div>
 						<app-pagination class="pg8" *ngIf="pagination.pagedItems?.length > 0" [pagination]="pagination" [type]="'viewsBarChart'"
-						 (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
+						 (notifyParent)="setPage($event)" [isDropdown]="true"></app-pagination>
+			<!-- 		 This code is for pagination dropdown
+					 (notifyParentDropDown)="paginationDropdown($event)" -->
 					</div>
 				</div>
 				<div class="col-xs-12 col-sm-6">
 					<div data-animation="slideInUp">
 						<div class="row mb10">
 							<img src="/assets/images/user.png" width="48px" class="user-profile-image">
-							<span *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&  authenticationService.module.isCompanyPartner  && enableLeads && !createdBySelf">
+							<span *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-									class="btn btn-success">{{dealButtonText}}</button>
+									class="btn btn-success" *ngIf="campaignType=='VIDEO' && totalTimeSpent != '00:00:00'" >{{dealButtonText}}</button>
+									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+									class="btn btn-success" *ngIf="campaignType!='VIDEO'" >{{dealButtonText}}</button>
 								</span>
 							<h5 class="f-w-600 mt10 mb0"><span *ngIf="selectedRow?.firstName">{{selectedRow.firstName | slice:0:20}}</span>
 							<span *ngIf="selectedRow.firstName?.length>20">..</span>
@@ -963,6 +1031,7 @@
 								<img *ngIf="emailLog.actionId == 14" alt="clicked" src="assets/images/clicked.png">
 								<img *ngIf="emailLog.actionId == 15" alt="clicked" src="assets/images/clicked.png">
 								<img *ngIf="emailLog.actionId == 1 || emailLog.actionId == 10" alt="watched" src="assets/images/video.png">
+								<img *ngIf="emailLog.autoResponseType" src="assets/images/closed-env.png">
 							</div>
 							<div class="timeline-panel">
 								<div class="timeline-heading">
@@ -989,7 +1058,11 @@
 											<span class="f-w-600" title="{{campaign.campaignVideoFile.title}}">{{campaign.campaignVideoFile.title | slice:0:30}}
 												<span *ngIf="campaign.campaignVideoFile.title?.length>30">...</span>
 											</span> <span *ngIf="emailLog.actionId == 10">re-</span>played
-										</span><app-timestamp [dateAndTime]="emailLog.time"> </app-timestamp>
+										</span>
+										<span *ngIf="emailLog.autoResponseType">
+											<h5>Email sent for the auto response: <b>{{emailLog.autoResponseType}}</b></h5>
+											<h6>Subject Line: <b>{{emailLog.subject}}</b></h6>
+										</span>
 									</h5>
 									<span *ngIf="emailLog.countryCode">
 										<h6>
@@ -1032,11 +1105,16 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="row">
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1111,7 +1189,7 @@
 					by recipients</h4>
 				<h4 class="modal-title col-xs-4" id="emailActionListModalLabel" *ngIf="campaignReport.emailActionType === 'click'">Recipients
 					who clicked a URL</h4>
-					
+
 				<div class='col-xs-4'>
 			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
@@ -1130,11 +1208,16 @@
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="row">
 					<div class="table-responsive">
 						<div *ngIf="campaignReport.emailActionType" class="inputs" align="right" style="float: right;margin-bottom: 10px;">
@@ -1259,7 +1342,7 @@
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 			</div>
@@ -1306,7 +1389,7 @@
 			<div class="modal-header col-xs-12">
 				<!-- <div class='col-xs-12'> -->
 				<h4 class="modal-title col-xs-6" id="emailSentListModalLabel">Sent Email Details</h4>
-				
+
 				 <div class='col-xs-4'>
 			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
@@ -1315,13 +1398,13 @@
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
    				 </div>
-   				 
+
 				<div class="btn-group col-xs-1" style="cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; position: absolute; margin-top: 8px;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px;"></i>
 					</span>
 					<ul class="dropdown-menu pull-right" style="margin-top:30px">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 				<div class="col-xs-1">
@@ -1330,6 +1413,11 @@
 			<!-- </div> -->
 			</div>
 			<div class="modal-body">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="row">
 					<div class="table-responsive">
 						<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1338,7 +1426,7 @@
 						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						  No results found.
 						</div>
-						
+
 							<table class="table tgrid" *ngIf="sentEmailOpenPagination.pagedItems?.length != 0">
 								<thead>
 									<tr>
@@ -1388,7 +1476,7 @@
 					<span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
 					<span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
 					Views</h4>
-				
+
 				 <div class='col-xs-4'>
 			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
@@ -1397,18 +1485,23 @@
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
    				 </div>
-				
+
 				<div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 					</span>
 					<ul class="dropdown-menu pull-right">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 
 			</div>
 			<div class="modal-body clearfix">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<!-- <div class="row"> -->
 				<div class="table-responsive">
 					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
@@ -1467,9 +1560,9 @@
 	<div class="modal-dialog modal-css" role="document" style="right:0">
 		<div class="modal-content">
 			<div class="modal-header col-xs-12">
-				
+
 				<h4 class="m0 col-xs-6" style="text-align: center ">People Who Have Watched Your Video</h4>
-				
+
 				 <div class='col-xs-4'>
 			        <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="eventHandler($event.keyCode)">
@@ -1478,22 +1571,27 @@
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
    				 </div>
-   				 
-				
+
+
 				<div class="btn-group col-xs-1" style="cursor:pointer; color: #7d8c98">
 					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none; position: absolute; margin-top: 8px;">
 						<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px;"></i>
 					</span>
 					<ul class="dropdown-menu pull-right" style="margin-top:30px">
-						<li><a id="delete_button" (click)="downloadEmailLogs()"> Export To Excel </a></li>
+						<li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 				<div class="col-xs-1">
 				<a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
 			</div>
-				
+
 			</div>
 			<div class="modal-body clearfix">
+			<div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
+			  <div class="loader"
+				style="margin-right: 10px; width: 25px; height: 25px;"></div>
+					<h4 class="m5">Please wait while we process your request.</h4>
+			</div>
 				<div class="table-responsive">
 					<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 					<ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
@@ -1720,17 +1818,12 @@
 <!-- --_Deal Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
  data-backdrop="static" *ngIf="isDealRegistration" style="display: block">
-
 	<div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
 		<div class="modal-content">
-
-			<div class="modal-body">
-			
-					
-						<a (click)="showTimeLineView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
-							<span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
-						<app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
-					
+			<div class="modal-body" style="overflow:unset">
+        <a (click)="showTimeLineView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+        <app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
 			</div>
 		</div>
 	</div>

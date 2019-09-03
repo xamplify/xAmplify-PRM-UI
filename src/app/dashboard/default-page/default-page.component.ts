@@ -33,8 +33,14 @@ export class DefaultPageComponent implements OnInit {
        }
     }
    checkDefaultPage(defaultPage:string){
-    if (defaultPage === 'welcome' || defaultPage==='WELCOME') {  this.goToWelcomePage();
-    } else {  this.goToDashBoard();  }
+    if(!this.authenticationService.isOnlyUser()){
+      if (defaultPage === 'welcome' || defaultPage==='WELCOME') {
+        this.goToWelcomePage();
+    } else { 
+        this.goToDashBoard();  }
+     }else{
+         this.router.navigate(['/home/dashboard']);
+     }
    }
 
     goToWelcomePage(){
@@ -42,6 +48,9 @@ export class DefaultPageComponent implements OnInit {
             this.router.navigate(['/home/dashboard/admin-report']);
         }
         else if(this.authenticationService.user.hasCompany){
+            this.router.navigate(['/home/dashboard/welcome']);
+        }
+        else if(this.authenticationService.isOnlyUser()){
             this.router.navigate(['/home/dashboard/welcome']);
         }else{
             this.router.navigate(['/home/dashboard/add-company-profile']);
@@ -54,6 +63,9 @@ export class DefaultPageComponent implements OnInit {
         }
         else if(this.authenticationService.user.hasCompany){
             this.router.navigate(['/home/dashboard']);
+        }
+        else if(this.authenticationService.isOnlyUser()){
+            this.router.navigate(['/home/dashboard/dashboard']);
         }else{
             this.router.navigate(['/home/dashboard/add-company-profile']);
         }

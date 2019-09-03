@@ -269,8 +269,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.isEmailExist = true;
                     this.existedEmailIds.push(emailId);
                     break;
-                } else {
-                    this.isEmailExist = false;
                 }
             }
         }
@@ -475,7 +473,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.loadPartnerList( this.pagination );
                                 this.clipBoard = false;
                                 this.cancelPartners();
-                                if(data.statusCode != 409){
+                                if(data.statusCode == 200){
                                   this.getContactsAssocialteCampaigns();
                                 }
                                 this.disableOtherFuctionality = false;
@@ -488,6 +486,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 	});
                                 	let message = data.errorMessage+"<br><br>"+allEmailIds;
                                 	this.customResponse = new CustomResponse( 'ERROR', message, true );
+                                }
+                                
+                                if(data.statusCode == 417){
+                                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
                                 }
                             },
                             ( error: any ) => {

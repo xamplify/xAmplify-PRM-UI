@@ -212,7 +212,7 @@
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isVendor()">
+											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -246,7 +246,7 @@
                         </div>
                         </ng-container>
 											</div>
-							 	<div class="col-sm-12 col-md-6 p0" *ngIf="selectedAddContactsOption === 8" style="margin-top: 10px;">
+							 	<div class="col-sm-12 col-md-6 p0 pull-right" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; margin-left: 50px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -262,7 +262,7 @@
 										class="fa fa-times" aria-hidden="true"
 										style="color: red; margin-left: -12px;"></i>
 								</div>
-								<div class="btn-group pull-right" *ngIf="showEditContactData">
+								<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8" >
 									<div class="inputs" align="right" style="float: right">
 
 										<div class="inputs" align="right" style="float: right">
@@ -586,7 +586,7 @@
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
 															<!-- <th class='text-center'>MORE</th> -->
-														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
+														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -697,8 +697,14 @@
 																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
 															<td align="center" class="hidden-xs" *ngIf="!isPartner">
-																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																<h5 class='mb0'>{{contact.city}}<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}</h5>
+																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address | slice:0:30}}
+																<span *ngIf="contact.address?.length>30">..</span>
+																</h5>
+																<h5 class='mb0'>{{contact.city | slice:0:15}}
+																<span *ngIf="contact.city?.length>15">..</span>
+																<span *ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state | slice:0:15}}
+																<span *ngIf="contact.state?.length>15">..</span>
+																</h5>
 																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
 															<!-- <td align="center">
@@ -715,13 +721,13 @@
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button>
 															</td>
-															<td align="center" *ngIf="!clickBoard">
+															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 															<!-- <button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
 																	*ngIf="contact.isShowDetails">Less</span>
 															</button> -->
-															<div class="actions-block override-actions" *ngIf="(hasAllAccess || (hasContactRole && loggedInUserId==uploadedUserId) || authenticationService.isOnlyPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !isSynchronizationList">
+															<div class="actions-block override-actions">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
@@ -949,8 +955,14 @@
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
 												<td class="hidden-xs" *ngIf="!isPartner">
-													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-													<h5 class='mb0'>{{allcontacts.city}}<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}</h5>
+													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address  | slice:0:30}}
+													<span *ngIf="allcontacts.address?.length>30">..</span>
+													</h5>
+													<h5 class='mb0'>{{allcontacts.city | slice:0:15}}
+													<span *ngIf="allcontacts.city?.length>15">..</span>
+													<span *ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state | slice:0:15}}
+													<span *ngIf="allcontacts.state?.length>15">..</span>
+													</h5>
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>

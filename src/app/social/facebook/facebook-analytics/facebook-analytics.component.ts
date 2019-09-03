@@ -34,11 +34,11 @@ export class FacebookAnalyticsComponent implements OnInit {
         this.facebookService.getPageFanCount( socialConnection, pageId )
             .subscribe(
             data => {
-                this.fanCount = data;
+                this.fanCount = data.fan_count;
             },
             error => console.log( error ),
             () => {
-                if(this.fanCount > 30){
+                if(this.fanCount > 100){
                     for ( var i in this.metricsArray )
                         this.getInsight( this.socialConnection, this.socialConnection.profileId, this.metricsArray[i], 'lifetime' );
                 }
@@ -287,7 +287,6 @@ export class FacebookAnalyticsComponent implements OnInit {
         });
     }
     getSocialConnectionByUserIdAndProfileId( userId: number, profileId: string ) {
-        debugger;
       this.socialService.getSocialConnectionByUserIdAndProfileId(userId, profileId)
         .subscribe(
           data => {

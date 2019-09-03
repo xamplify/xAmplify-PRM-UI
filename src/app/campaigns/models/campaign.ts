@@ -63,4 +63,5 @@ export class Campaign {
     parentCampaignUserId:number = 0;
     companyLogo:string = "";
     myMergeTagsInfo:any;
+    dipCampaign = false;
 }

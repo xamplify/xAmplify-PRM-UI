@@ -66,9 +66,9 @@
 							<h2 class="upper-text-heading upperText">{{saveVideoFile.upperText}}</h2>
 							<div class="flex" style="padding:0.5%" *ngIf="callAction.isFistNameChecked">
 								<input type="text" name="firstName" style="margin-right: 0;" [(ngModel)]="callAction.firstName" (ngModelChange)="checkingCallToActionValues()"
-								 class="form-control text-box m21" placeholder="First Name">
+								 class="form-control text-box m21" placeholder="First Name" maxlength="20">
 								<input type="text" name="lastName" [(ngModel)]="callAction.lastName" (ngModelChange)="checkingCallToActionValues()" class="form-control text-box m21"
-								 placeholder="Last Name">
+								 placeholder="Last Name" maxlength="20">
 							</div>
 							<div class="flex m02">
 								<div class="w-8">
@@ -150,7 +150,7 @@
 							</div>
 						</div>
 						<!-- BEGIN SAMPLE FORM PORTLET-->
-						<div class="portlet box green " style="margin-top: 3px;">
+						<div class="portlet box green " style="margin-top: 3px;" [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
 							<div class="portlet-title" (click)="titleDivChange();" [ngClass]="{'activeDiv':!titleDiv , 'inactiveDiv' :titleDiv}">
 								<div class="col-xs-12 caption p01">
 									<!-- <i class="fa fa-info-circle"></i> -->
@@ -207,9 +207,9 @@
 											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add a tag to your video and press Enter">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
 											</span>
-											
+
 											<!-- (onAdd)="onAdding($event)"  for removing duplicate tags(lower/upper case) -->
-											
+
 											<tag-input [(ngModel)]="itemOfTags"  [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"
 											 [validators]="validatorsTag" required></tag-input>
 											<div *ngIf="itemOfTags?.length===0 || itemOfTags===null" style="color:red">Please add a tag and press enter for your video.</div>
@@ -301,7 +301,7 @@
 						<!-- END SAMPLE FORM PORTLET-->
 
 						<!-- BEGIN Customize FORM PORTLET-->
-						<div class="portlet box blue">
+						<div class="portlet box blue"  [class.inactiveDiv]="enableCalltoAction && !(lowerTextValid && upperTextValid)">
 							<div class="portlet-title" [ngClass]="{'activeDiv':!colorControl , 'inactiveDiv' :colorControl}" (click)="colorControlChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
@@ -677,7 +677,9 @@
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
 										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color: #7b8894;">{{characterleft}} characters left</label>
-									</div>
+                    <span *ngIf="!upperTextValid" style="color: red;">Please fill the upper text.</span>
+                  </div>
+
 								</div>
 								<div class="form-group">
 									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Lower Text:
@@ -689,7 +691,9 @@
 										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
 										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color:#7b8894">{{lowerCharacterleft}} characters left</label>
-									</div>
+                    <span *ngIf="!lowerTextValid" style="color: red;">Please fill the lower text.</span>
+                  </div>
+
 								</div>
 							</div>
 						</div>

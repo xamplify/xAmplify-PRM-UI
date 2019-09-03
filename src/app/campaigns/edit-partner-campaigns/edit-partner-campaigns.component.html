@@ -272,7 +272,7 @@
                                   <app-timestamp [isOnlyDate]="true" [dateAndTime]="contacts.createdDate"> </app-timestamp>
                                 </td>
 
-                               
+
                                 <td class="text-center">
                                   <a (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,contacts.name)">
                                     <i class="fa fa-eye" style="padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
@@ -432,11 +432,11 @@
 		                                    <span class="item__name"
 		                                      [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:20}}</b><b *ngIf="reply.emailTemplate?.name?.length>20">...</b>
 		                                    </span>
-		                                    
+
 		                                    <span style="float:left"  title="{{reply.emailTemplate.createdBy}}">
                                           	<span>{{reply.emailTemplate.createdBy|slice:0:20}}<span *ngIf="reply.emailTemplate.createdBy?.length>20">...</span></span>
                                      		 </span>
-		
+
 		                                    <div class="item__actions">
 		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 		                                        data-toggle="tooltip" data-placement="top"
@@ -563,11 +563,11 @@
 		                                    <span class="item__name"
 		                                      [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:20}}</b><b *ngIf="url.emailTemplate?.name?.length>20">...</b>
 		                                    </span>
-		                                    
+
 		                                    <span style="float:left"  title="{{url.emailTemplate.createdBy}}">
                                           	<span>{{url.emailTemplate.createdBy|slice:0:20}}<span *ngIf="url.emailTemplate.createdBy?.length>20">...</span></span>
                                      		 </span>
-		
+
 		                                    <div class="item__actions">
 		                                      <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
 		                                        data-toggle="tooltip" data-placement="top"

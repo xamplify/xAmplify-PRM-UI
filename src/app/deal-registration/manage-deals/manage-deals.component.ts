@@ -18,6 +18,7 @@ import { User } from '../../core/models/user';
 import { isNumber } from 'util';
 import { Roles } from '../../core/models/roles';
 import { CustomResponse } from '../../common/models/custom-response';
+import { UserService } from 'app/core/services/user.service';
 
 
 
@@ -97,6 +98,7 @@ export class ManageDealsComponent implements OnInit
     enableLeads = false;
 
     customResponse: CustomResponse;
+    superiorId: number =0;
    
 
     @ViewChild(ManagePartnersComponent)
@@ -111,26 +113,73 @@ export class ManageDealsComponent implements OnInit
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
-        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService)
+        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService,userService:UserService)
     {
-
         this.loggedInUserId = this.authenticationService.getUserId();
+        const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
+      userService.getHomeRoles(url)
+      .subscribe(
+      response => {
+           if(response.statusCode==200){
+             console.log(response)
+              this.authenticationService.loggedInUserRole = response.data.role;
+              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+              this.authenticationService.superiorRole = response.data.superiorRole;
+              if(this.authenticationService.loggedInUserRole == "Team Member"){
+            
+                dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
+                    console.log(response)
+                    this.superiorId = response;
+                    this.init();
+                });
+            }else{
+                this.superiorId = this.authenticationService.getUserId();
+                this.init();
+            };
+           }
+        })
+        
+
+
+    }
+
+    ngOnInit()
+    {
+       
+
+    }
+    init(){
         this.isListView = !this.referenceService.isGridView;
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+       
         const roles = this.authenticationService.getRoles();
         if(roles!==undefined){
+            if(this.authenticationService.loggedInUserRole != "Team Member"){
+                this.isOnlyPartner = this.authenticationService.isOnlyPartner();
             if (
                     roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                     roles.indexOf(this.roleName.allRole) > -1 ||
                     roles.indexOf(this.roleName.vendorRole)>-1) {
                     this.isVendor = true;
                 }
-                if(roles.indexOf(this.roleName.companyPartnerRole)>-1){
+                if(this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember){
+                    this.isCompanyPartner = true;
+                }
+            }else{
+                if(!this.authenticationService.superiorRole.includes("Vendor") 
+                && this.authenticationService.superiorRole.includes("Partner")) {
+                        this.isOnlyPartner = true;
+                }
+                if(this.authenticationService.superiorRole.includes("Vendor")) {
+                    this.isVendor = true;
+                }
+                if(this.authenticationService.superiorRole.includes("Partner")) {
                     this.isCompanyPartner = true;
                 }
             }
-            referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(response=>{
-                referenceService.getOrgCampaignTypes(response).subscribe(data=>{
+            }
+            this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response=>{
+                console.log(this.superiorId)
+                this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
                     this.enableLeads = data.enableLeads;
                     console.log(data)
                     if(!this.isOnlyPartner){
@@ -141,20 +190,7 @@ export class ManageDealsComponent implements OnInit
                 });
             })
         
-        console.log(authenticationService.getRoles())
-        
-        // if(!this.isOnlyPartner){
-        //     this.showVendor();
-        // }else{
-        //     this.showPartner();
-        // }
-
-    }
-
-    ngOnInit()
-    {
-       
-
+        console.log(this.authenticationService.getRoles())
     }
     switchVersions()
     {
@@ -190,7 +226,7 @@ export class ManageDealsComponent implements OnInit
             this.campaignsPagination = new Pagination();
             this.campaignsPaginationByDeals = new Pagination();
             this.isPartner = true;
-            this.partner = this.loggedInUserId;
+            this.partner = this.superiorId;
             this.isCampaignByLeads = true;
             this.isCampaignByDeals = false;
             this.campaingnList = true;
@@ -212,6 +248,7 @@ export class ManageDealsComponent implements OnInit
 
     showCampaigns()
     {
+        this.clearPagination();
         if(this.isVendorVersion)
             this.listCampaigns(this.campaignsPagination);
         
@@ -230,6 +267,7 @@ export class ManageDealsComponent implements OnInit
     }
     showCampaignsByDeals()
     {
+        this.clearPagination();
         if(this.isVendorVersion)
             this.listCampaignsByDeals(this.campaignsPaginationByDeals);
         
@@ -252,7 +290,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalLeadsLoader = true;
-            this.dealRegistrationService.getTotalLeads(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalLeads(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalLeads = data.data;
@@ -275,7 +313,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalLeadsLoader = true;
-            this.dealRegistrationService.getTotalLeadsByPartner(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalLeadsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalLeads = data.data;
@@ -299,7 +337,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalDealsLoader = true;
-            this.dealRegistrationService.getTotalDeals(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalDeals(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalDeals = data.data;
@@ -323,7 +361,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalDealsLoader = true;
-            this.dealRegistrationService.getTotalDealsByPartner(this.loggedInUserId).subscribe(
+            this.dealRegistrationService.getTotalDealsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalDeals = data.data;
@@ -347,7 +385,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"opened").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
                     this.openedDeals = data.data;
@@ -371,7 +409,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.dealsOnHoldLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"hold").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
                     this.dealsOnHold = data.data;
@@ -396,7 +434,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"closed").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
                     this.closedDeals = data.data;
@@ -422,7 +460,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"approved").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
                     this.approvedDeals = data.data;
@@ -446,7 +484,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"approved").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
                     this.approvedDeals = data.data;
@@ -470,7 +508,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.loggedInUserId,"rejected").subscribe(
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
                  
@@ -495,7 +533,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.rejectedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"rejected").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
                     this.rejectedDeals = data.data;
@@ -520,7 +558,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"opened").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
                     console.log(data)
@@ -545,7 +583,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.dealsOnHoldLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"hold").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
                     this.dealsOnHold = data.data;
@@ -570,7 +608,7 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.loggedInUserId,"closed").subscribe(
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
                     this.closedDeals = data.data;
@@ -593,7 +631,7 @@ export class ManageDealsComponent implements OnInit
     listCampaigns(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaigns(pagination)
             .subscribe(
@@ -621,7 +659,7 @@ export class ManageDealsComponent implements OnInit
     listCampaignsByDeals(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsByDeals(pagination)
             .subscribe(
@@ -647,7 +685,7 @@ export class ManageDealsComponent implements OnInit
     listCampaignsByPartner(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsByPartner(pagination)
             .subscribe(
@@ -676,7 +714,7 @@ export class ManageDealsComponent implements OnInit
     listCampaignsDealsByPartner(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.loggedInUserId;
+        pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsDealsByPartner(pagination)
             .subscribe(
@@ -728,15 +766,22 @@ export class ManageDealsComponent implements OnInit
         let sortedValue = this.sortOption.selectedSortedOption.value;
         this.setSortColumns(pagination, sortedValue);
         if(this.isVendorVersion){
-            if(this.isCampaignByLeads)
+            if(this.isCampaignByLeads){
             this.listCampaigns(pagination);
-            else
-            this.listCampaignsByDeals(this.campaignsPaginationByDeals);
+            }
+            else{
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.listCampaignsByDeals(this.campaignsPaginationByDeals);
+            }
         }else{
-            if(this.isCampaignByLeads)
-            this.listCampaignsByPartner(this.campaignsPagination);
-            else
-            this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+            if(this.isCampaignByLeads){
+                this.listCampaignsByPartner(this.campaignsPagination);
+            }
+            else{
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+
+                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+            }
         }
 
     }
@@ -785,8 +830,33 @@ export class ManageDealsComponent implements OnInit
     /********Pages Navigation***********/
     navigatePages(event: any)
     {
-        this.campaignsPagination.pageIndex = event.page;
-        this.listCampaigns(this.campaignsPagination);
+       
+       
+        if(this.isVendorVersion){
+            if(this.isCampaignByLeads){
+                this.campaignsPagination.pageIndex = event.page;
+                this.campaignsPagination.searchKey = this.sortOption.searchKey;
+                this.listCampaigns(this.campaignsPagination);
+            }
+            else{
+                this.campaignsPaginationByDeals.pageIndex = event.page;
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.listCampaignsByDeals(this.campaignsPaginationByDeals);
+            }
+        }else{
+            if(this.isCampaignByLeads){
+                this.campaignsPagination.pageIndex = event.page;
+                this.campaignsPagination.searchKey = this.sortOption.searchKey;
+                this.listCampaignsByPartner(this.campaignsPagination);
+            }
+            else{
+                this.campaignsPaginationByDeals.pageIndex = event.page;
+                this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+            }
+        }
+        
+       
     }
     /*****Dropdown**********/
     changeSize(items: any, type: any)
@@ -809,7 +879,7 @@ export class ManageDealsComponent implements OnInit
         } else
         {
 
-            this.dealRegistrationService.getCampaignPartnerById(this.loggedInUserId).subscribe(data =>
+            this.dealRegistrationService.getCampaignPartnerById(this.superiorId).subscribe(data =>
             {
                 this.selectedCampaignId = campaign.id;
                 
@@ -918,7 +988,7 @@ export class ManageDealsComponent implements OnInit
         {
 
             this.selectedDealId = deal.dealId;
-            this.dealRegistrationService.getDealById(deal.dealId,this.loggedInUserId).subscribe(dealNew =>
+            this.dealRegistrationService.getDealById(deal.dealId,this.superiorId).subscribe(dealNew =>
             {
                 this.selectedDeal = dealNew.data;
 
@@ -969,7 +1039,7 @@ export class ManageDealsComponent implements OnInit
     {
 
 
-        this.dealRegistrationService.getDealById(item,this.loggedInUserId).subscribe(deal =>
+        this.dealRegistrationService.getDealById(item,this.superiorId).subscribe(deal =>
         {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
@@ -1058,7 +1128,7 @@ export class ManageDealsComponent implements OnInit
     getDealInfo(item: any)
     {
 
-        this.dealRegistrationService.getDealById(item,this.loggedInUserId).subscribe(deal =>
+        this.dealRegistrationService.getDealById(item,this.superiorId).subscribe(deal =>
         {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
@@ -1155,6 +1225,11 @@ export class ManageDealsComponent implements OnInit
     {
         this.hasClientErrors = true;
         this.xtremandLogger.showClientErrors(this.componentName, methodName, error);
+    }
+
+    clearPagination(){
+        this.campaignsPagination = new Pagination();
+            this.campaignsPaginationByDeals = new Pagination();
     }
 
 }

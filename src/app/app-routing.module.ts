@@ -31,27 +31,28 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'signup/:alias', component: SignupComponent },
-    { path: 'v-signup', component: SignupComponent},
+    { path: 'v-signup', component: SignupComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'register/verifyemail/user', component: VerifyEmailComponent },
     /*{ path: '', component: IntroComponent},*/
-    { path: '', redirectTo:'login', pathMatch: 'full'},
-    { path: 'home', redirectTo:'', pathMatch: 'full'},
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard],
-      children: [
-          { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
-          { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
-          { path: 'videos', loadChildren: 'app/videos/videos.module#VideosModule',  data: { preload: true } },
-          { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
-          { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
-          { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule',  data: { preload: true } },
-          { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule',  data: { preload: true } },
-          { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule',  data: { preload: false } },
-          { path: 'content', loadChildren: 'app/content-management/content-management.module#ContentManagementModule',  data: { preload: false } },
-          { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
-          { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
-          { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
-          { path: 'error/:errorStatusId', component: ErrorPagesComponent }
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'home', redirectTo: 'home/dashboard', pathMatch: 'full' },
+    {
+        path: 'home', component: HomeComponent, canActivate: [AuthGuard],
+        children: [
+            { path: 'dashboard', loadChildren: 'app/dashboard/dashboard.module#DashboardModule' },
+            { path: 'emailtemplates', loadChildren: 'app/email-template/email-template.module#EmailTemplateModule' },
+            { path: 'content', loadChildren: 'app/videos/videos.module#VideosModule', data: { preload: false } },
+            { path: 'social', loadChildren: 'app/social/social.module#SocialModule' },
+            { path: 'twitter', loadChildren: 'app/social/twitter/twitter.module#TwitterModule' },
+            { path: 'rss', loadChildren: 'app/social/rss/rss.module#RssModule' },
+            { path: 'contacts', loadChildren: 'app/contacts/contacts.module#ContactsModule', data: { preload: false } },
+            { path: 'partners', loadChildren: 'app/partners/partners.module#PartnersModule', data: { preload: false } },
+            { path: 'campaigns', loadChildren: 'app/campaigns/campaigns.module#CampaignsModule', data: { preload: false } },
+            { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
+            { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
+            { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
+            { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
     { path: 'terms-conditions', component: TermsConditonComponent },
@@ -71,13 +72,13 @@ export const routes: Routes = [
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'rsvp/:alias', component: RsvpComponent },
-    { path: '**', component: PageNotFoundComponent},
+    { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, { preloadingStrategy: AppCustomPreloader })
-            ],
+    ],
     exports: [RouterModule],
-    providers : [AppCustomPreloader]
+    providers: [AppCustomPreloader]
 })
 export class AppRoutingModule { }
