@@ -210,7 +210,7 @@
           <a data-toggle="tooltip" title="Customize campaign report" data-placement="left" style="float: right;">
             <i style="font-size: 1.5em;padding: 3px 10px;margin: 10px 0;" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"
              *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole) ||
-             authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
+             authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
           <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white"
            *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany">Create Campaign</a>
