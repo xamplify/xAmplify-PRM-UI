@@ -729,12 +729,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
           pagination.campaignId = campaignId;
           pagination.campaignType = "VIDEO";
-          this.campaignService.listCampaignInteractiveViews(pagination)
+          this.campaignService.listCampaignInteractiveViews(pagination,false)
            .subscribe(data => {  this.listCampaignViewsDataInsert(data, campaignId); },
            error => console.log(error),
            () => console.log('listCampaignInteractiveViews(): called') )
       } else{
-         this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
+         this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign,false)
            .subscribe(data => { this.listCampaignViewsDataInsert(data.campaignviews, campaignId); },
             error => console.log(error),
             () => console.log('listCampaignViews(); called') )
@@ -755,7 +755,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     try{
         this.totalViewsPatination.maxResults = totalRecords;
         if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
-        this.campaignService.listCampaignInteractiveViews(this.totalViewsPatination)
+        this.campaignService.listCampaignInteractiveViews(this.totalViewsPatination,false)
          .subscribe(data => {
              this.totalCampaignViews = data;
              this.downloadEmailLogs();
@@ -763,7 +763,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
          error => console.log(error),
          () => console.log('listCampaignInteractiveViews(): called') )
     } else{
-       this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign)
+       this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign,false)
          .subscribe(data => {
              this.totalCampaignViews = data.campaignviews;
              this.downloadEmailLogs();

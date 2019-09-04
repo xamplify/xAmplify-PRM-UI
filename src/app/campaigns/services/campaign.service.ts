@@ -149,13 +149,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean,smsAnalytics=false) {
+    listCampaignViews(campaignId: number, pagination: Pagination, isChannelCampaign: boolean,smsAnalytics:boolean) {
         return this.http.post(this.URL + 'campaign/views/' + campaignId + '/'+ isChannelCampaign + '/'+smsAnalytics+'?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    listCampaignInteractiveViews(pagination: Pagination,smsAnalytics=false) {
+    listCampaignInteractiveViews(pagination: Pagination,smsAnalytics:boolean) {
         return this.http.post(this.URL + 'campaign/interactive-views/'+smsAnalytics+'?access_token=' + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleError);
