@@ -34,7 +34,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     isListView = false;
     private dom: Document;
-    clientUrl = environment.CLIENT_URL;
     message = "";
     campaignId = 0;
     landingPageId = 0;

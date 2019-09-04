@@ -33,7 +33,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     isAdd:boolean;
     isMinTimeOver:boolean = false;
     pagination:Pagination = new Pagination();
-    clientUrl = environment.CLIENT_URL;
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
     name = "";

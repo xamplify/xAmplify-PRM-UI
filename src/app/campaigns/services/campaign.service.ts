@@ -314,6 +314,11 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getPartnerCampaignsNotifications(userId: number) {
+        return this.http.get(this.URL + `partner/access/${userId}?access_token=${this.authenticationService.access_token}`)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     
     hasRedistributeAccess(userId: number) {
         return this.http.get(this.URL + `campaign/checkRedistibuteAccess/${userId}?access_token=${this.authenticationService.access_token}`)

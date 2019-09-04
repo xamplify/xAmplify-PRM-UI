@@ -151,18 +151,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   marketoButtonClass = "btn btn-default";
   loading = false;
   pushToMarketo = false;
-     
-
-     loadingMarketo: boolean;
-     marketoButtonClass = "btn btn-default";
- 
-     //ENABLE or DISABLE LEADS
-     smsService = false;
-     enableLeads : boolean;
-     enableSMS:boolean;
-     smsText: any;
-     enableSmsText: boolean;
-     smsTextDivClass: string
+ //ENABLE or DISABLE LEADS
+ smsService = false;
+ enableSMS:boolean;
+ smsText: any;
+ enableSmsText: boolean;
+ smsTextDivClass: string
 
   
 
