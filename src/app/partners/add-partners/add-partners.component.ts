@@ -395,7 +395,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.teamMembersList.push( this.authenticationService.user.emailId );
             let emails = []
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
-                emails.push( this.newPartnerUser[i].emailId );
+                if(this.newPartnerUser[i].emailId){
+                  emails.push( this.newPartnerUser[i].emailId );
+                }else{
+                    emails.push( this.newPartnerUser[i].email );
+                }
             }
             let existedEmails = []
             if ( emails.length > this.teamMembersList.length ) {
