@@ -894,7 +894,7 @@
                         <div class="item__content">
                           <div class="flex-row">
                             <span class="item__name" style="float:left"
-                              [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:17}}</b><b *ngIf="emailTemplate?.name?.length>15">...</b>
+                              [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:15}}</b><b *ngIf="emailTemplate?.name?.length>15">...</b>
                             </span>
                            <br>
                             <span lass="item__name" title="created on" style="float:left">
@@ -1468,8 +1468,8 @@
                             <div class="item__content" style="text-align: left;">
                               <div class="flex-row">
                                 <span class="item__name" data-toggle="tooltip"
-                                  [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
-                                  <span *ngIf="emailTemplate.name?.length>18">...</span></b>
+                                  [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:15}}
+                                  <span *ngIf="emailTemplate.name?.length>15">...</span></b>
                                 </span>
                                 <div class="item__last-modified">
                                   <span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
@@ -1695,8 +1695,8 @@
                               <div class="item__content" style="text-align: left;">
                                 <div class="flex-row">
                                   <span class="item__name" data-toggle="tooltip"
-                                    [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
-                                    <span *ngIf="emailTemplate.name?.length>18">...</span></b>
+                                    [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:15}}
+                                    <span *ngIf="emailTemplate.name?.length>15">...</span></b>
                                   </span>
                                   <div class="item__last-modified">
                                     <span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
