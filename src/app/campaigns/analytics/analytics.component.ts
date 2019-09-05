@@ -123,6 +123,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   isOnlyPartner = false;
   isLoadingDownloadList = false;
   actionType = '';
+  colspanValue: number = 5;
   sortByDropDown = [
                     { 'name': 'Sort By', 'value': '' },
                     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -899,10 +900,11 @@ showTimeLineView(){
             this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
             this.isDataShare = this.campaign.dataShare;
             this.isNavigatedThroughAnalytics = true;
-            /*if(data.campaignType === 'EVENT'){
-                this.isDataShare = true;
-                this.isPartnerEnabledAnalyticsAccess = true;
-            }*/
+            if(data.campaignType === 'EVENT'){
+                this.colspanValue = 10;
+            }else{
+                this.colspanValue = 5;
+            }
         }else{
             this.isNavigatedThroughAnalytics = false;
             this.isPartnerEnabledAnalyticsAccess = true;
@@ -933,6 +935,7 @@ showTimeLineView(){
             this.getSocialCampaignByCampaignId(campaignId);
           } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
+              this.colspanValue = 10;
               if(this.campaign.emailTemplate){
                 this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
               }
