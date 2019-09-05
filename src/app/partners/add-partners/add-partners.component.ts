@@ -371,11 +371,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     validateSocialContacts( socialUsers: any ) {
         let users = [];
         for ( let i = 0; i < socialUsers.length; i++ ) {
+           if(socialUsers[i].emailId){
             if ( socialUsers[i].emailId !== null && this.validateEmailAddress( socialUsers[i].emailId ) ) {
                 let email = socialUsers[i].emailId.toLowerCase();
                 socialUsers[i].emailId = email;
                 users.push( socialUsers[i] );
             }
+           }else{
+               if ( socialUsers[i].email !== null && this.validateEmailAddress( socialUsers[i].email ) ) {
+                   let email = socialUsers[i].email.toLowerCase();
+                   socialUsers[i].emailId = email;
+                   users.push( socialUsers[i] );
+               }
+           }
         }
         return users;
     }
@@ -446,11 +454,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 if ( !this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
                     this.invalidPatternEmails.push( this.newPartnerUser[i].emailId )
                 }
-                if ( this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
-                    this.validCsvContacts = true;
-                }
-                else {
+                if(this.newPartnerUser[i].emailId){
+                 if ( this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
+                     this.validCsvContacts = true;
+                 }else {
                     this.validCsvContacts = false;
+                 }
+                }else{
+                    if ( this.validateEmailAddress( this.newPartnerUser[i].email ) ) {
+                        this.validCsvContacts = true;
+                    }else {
+                       this.validCsvContacts = false;
+                    }
                 }
             }
             this.newPartnerUser = this.validateSocialContacts( this.newPartnerUser );
