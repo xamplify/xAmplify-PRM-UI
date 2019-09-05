@@ -1,4 +1,7 @@
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
+ <div class="my-container">
+    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
   <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
    <ng-container *ngIf="!httpRequestLoader.isLoading">
       <div class="row">

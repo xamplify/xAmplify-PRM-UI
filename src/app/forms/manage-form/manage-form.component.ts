@@ -77,7 +77,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
 
     listForms( pagination: Pagination ) {
-        this.customResponse = new CustomResponse();
         this.referenceService.loading( this.httpRequestLoader, true );
         this.formService.list( pagination ).subscribe(
             ( response: any ) => {

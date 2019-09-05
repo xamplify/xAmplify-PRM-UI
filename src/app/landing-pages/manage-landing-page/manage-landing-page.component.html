@@ -10,7 +10,7 @@
 		</ul>
 	</div>
 	<div style="position: relative; top: -10px">
-    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    <app-response-message *ngIf="customResponse.isVisible" [customResponse]="customResponse"></app-response-message>
   </div>
 		<div class="row" *ngIf="statusCode==200">
 		<div class="col-md-12">

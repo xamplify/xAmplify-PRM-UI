@@ -45,8 +45,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.pagination.userId = this.loggedInUserId;
         if ( this.referenceService.isCreated ) {
             this.message = "Landing page created successfully";
-            this.showMessageOnTop( this.message );
-        } else if ( this.referenceService.isUpdated ) {
+            this.showMessageOnTop(this.message );
+        } else if ( this.referenceService.isUpdated) {
             this.message = "Landing page updated successfully";
             this.showMessageOnTop( this.message );
         }
@@ -59,7 +59,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     
     
     listLandingPages( pagination: Pagination ) {
-        this.customResponse = new CustomResponse();
         this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.list( pagination ).subscribe(
             ( response: any ) => {

@@ -28,6 +28,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     formsLoader: HttpRequestLoader = new HttpRequestLoader();
     landingPage:LandingPage = new LandingPage();
+    ngxloading = false;
     loggedInUserId = 0;
     clickedButtonName = "";
     isAdd:boolean;
@@ -98,8 +99,9 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                             self.clickedButtonName = "SAVE_AS";
                                             self.saveLandingPage(false);
                                         } ) ).append( self.createButton( 'Update', function() {
+                                            self.ngxloading = true;
                                             self.clickedButtonName = "UPDATE";
-                                            self.referenceService.startLoader( self.httpRequestLoader );
+                                           // self.referenceService.startLoader( self.httpRequestLoader );
                                             swal.close();
                                             self.updateLandingPage(false);
                                         } ) ).append( self.createButton( 'Cancel', function() {
@@ -107,7 +109,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                             swal.close();
                                             console.log( 'Cancel' );
                                         } ) );
-                                    swal( { title: title, html: buttons, showConfirmButton: false, showCancelButton: false } );
+                                    swal( { title: title, html: buttons, showConfirmButton: false, showCancelButton: false,allowOutsideClick: false } );
                                 } else {
                                     var buttons = $( '<div>' )
                                         .append( ' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' )
@@ -122,7 +124,8 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                         title: title,
                                         html: buttons,
                                         showConfirmButton: false,
-                                        showCancelButton: false
+                                        showCancelButton: false,
+                                        allowOutsideClick: false
                                     } );
                                 }
                                 
@@ -248,7 +251,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                 },
                 error => {
                     this.referenceService.stopLoader(this.httpRequestLoader);
-                    this.logger.errorPage(error)
+                    this.logger.errorPage(error);
                     },
                 () => console.log( "Email Template Saved" )
                 );
@@ -256,12 +259,13 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     
     updateLandingPage(isDestroy:boolean){
         swal.close();
-        this.referenceService.startLoader(this.httpRequestLoader);
+        //this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
         this.landingPageService.update(this.landingPage) .subscribe(
                 data => {
+                    this.ngxloading = false;
                     this.referenceService.stopLoader(this.httpRequestLoader);
                     if(!isDestroy){
                         this.referenceService.isUpdated = true;
@@ -271,10 +275,16 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                     }
                 },
                 error => {
+                    this.ngxloading = false;
                     this.referenceService.stopLoader(this.httpRequestLoader);
-                    this.logger.errorPage(error)
+                    if(error.status==400){
+                        let message = JSON.parse(error['_body']).message;
+                        swal(message, "", "error" );
+                    }else{
+                        this.logger.errorPage(error);
+                    }
                     },
-                () => console.log( "Email Template Saved" )
+                () => console.log( "Landing Page Saved" )
                 );
     }
     
