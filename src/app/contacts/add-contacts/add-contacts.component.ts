@@ -1160,11 +1160,19 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     validateSocialContacts( socialUsers: any ) {
         let users = [];
         for ( let i = 0; i < socialUsers.length; i++ ) {
+           if(socialUsers[i].emailId){
             if ( socialUsers[i].emailId !== null && this.validateEmailAddress( socialUsers[i].emailId ) ) {
                 let email = socialUsers[i].emailId.toLowerCase();
                 socialUsers[i].emailId = email;
                 users.push( socialUsers[i] );
             }
+           }else{
+               if ( socialUsers[i].email !== null && this.validateEmailAddress( socialUsers[i].email ) ) {
+                   let email = socialUsers[i].email.toLowerCase();
+                   socialUsers[i].emailId = email;
+                   users.push( socialUsers[i] );
+               }
+           }
         }
         return users;
     }
@@ -2594,6 +2602,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             var object = {
                 "id": user.id,
                 "emailId": user.emailId,
+                "email": user.email,
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "country": user.country,
@@ -2637,6 +2646,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         "id": self.pagedItems[i].id,
                         "emailId": self.pagedItems[i].emailId,
+                        "email": self.pagedItems[i].email,
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                         "country": self.pagedItems[i].country,
