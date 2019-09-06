@@ -2529,7 +2529,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
-            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            
+            this.allselectedUsers.forEach((value) => {
+                if(value.id == user.id){
+                  this.allselectedUsers.splice(value.id, 1);
+                }
+                });
+          
+            //this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
         }
         if (this.selectedContactListIds.length == this.pagedItems.length)
         {
@@ -2539,6 +2546,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.isHeaderCheckBoxChecked = false;
         }
         event.stopPropagation();
+        console.log(this.allselectedUsers);
     }
 
     checkAllForMarketo(ev: any)
