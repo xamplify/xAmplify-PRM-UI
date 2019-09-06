@@ -2501,7 +2501,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     
-    highlightMarketoRow(user: any)
+    highlightMarketoRow(user: any, event, index)
     {
         let isChecked = $('#' + user.id).is(':checked');
 
@@ -2530,13 +2530,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
             
-            this.allselectedUsers.forEach((value) => {
+           this.allselectedUsers.forEach((value) => {
                 if(value.id == user.id){
-                  this.allselectedUsers.splice(value.id, 1);
+                    console.log(value);
+                    console.log(this.allselectedUsers.indexOf(value))
+                  this.allselectedUsers.splice( this.allselectedUsers.indexOf(value), 1);
                 }
-                });
+             });
           
-            //this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+          //  this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
         }
         if (this.selectedContactListIds.length == this.pagedItems.length)
         {

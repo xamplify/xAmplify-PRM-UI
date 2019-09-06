@@ -343,7 +343,7 @@ img:hover {
 										[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
 										lang="{{user.name}}" name="campaignContact[]"
 										value="{{user.id}}" id="{{user.id}}"
-										(click)="highlightMarketoRow(user,$event)" />
+										(click)="highlightMarketoRow(user,$event, i)" />
 									</td>
 									<td>{{user.emailId}}</td>
 									<td>{{user.firstName}}</td>
