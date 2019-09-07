@@ -980,7 +980,7 @@
                         <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer col-xs-12">
                           <div class="mix-grid">
                         <ng-container *ngIf="showLandingPage"><!--*ngIf="showSelectedEmailTemplate" !hideCoBrandedEmailTemplate -->
-                          <div  *ngIf="!isAdd && selectedLandingPageId>0 && landingPagePagination.totalRecords>0 && landingPagePagination.pageIndex==1 ">
+                          <div  *ngIf="!isAdd && landingPageId>0 && landingPagePagination.totalRecords>0 && landingPagePagination.pageIndex==1 ">
                           <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="landingPageId === selectedLandingPageRow">
                               <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->

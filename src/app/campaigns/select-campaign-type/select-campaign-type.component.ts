@@ -47,7 +47,7 @@ export class SelectCampaignTypeComponent implements OnInit{
    cssClassChange(){
       const countOfTrues = [this.campaignAccess.videoCampaign,this.campaignAccess.emailCampaign, this.campaignAccess.socialCampaign, this.campaignAccess.eventCampaign
       ,this.campaignAccess.smsCampaign].filter(Boolean).length;
-      if(countOfTrues === 5) { this.changeClass = 'col-xs-12 col-sm-3';
+      if(countOfTrues>=4) { this.changeClass = 'col-xs-12 col-sm-3';
       }else if(countOfTrues === 4) { this.changeClass = 'col-xs-12 col-sm-3';
       } else if (countOfTrues === 3) { this.changeClass = 'col-xs-12 col-sm-4';
       } else if (countOfTrues === 2) { this.changeClass = 'col-xs-12 col-sm-6';
@@ -57,7 +57,6 @@ export class SelectCampaignTypeComponent implements OnInit{
     getOrgCampaignTypes(){
       this.campaignService.getOrgCampaignTypes( this.refService.companyId).subscribe(
       data=>{
-        console.log(data);
         this.campaignAccess.videoCampaign = data.video;
         this.campaignAccess.emailCampaign = data.regular;
         this.campaignAccess.socialCampaign = data.social;

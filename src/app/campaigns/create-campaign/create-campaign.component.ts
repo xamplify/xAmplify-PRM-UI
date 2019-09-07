@@ -402,6 +402,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     this.isLandingPage = true;
                     this.isVideo = true;
                     this.landingPage = this.campaign.landingPage;
+                    this.showLandingPage = true;
                 }
                 this.listLandingPages(this.landingPagePagination);            
             }

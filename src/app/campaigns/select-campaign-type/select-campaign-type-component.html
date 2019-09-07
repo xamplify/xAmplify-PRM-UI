@@ -29,7 +29,7 @@
 							<div class="portlet-body">
 								<div class="clearfix">
 									<!-- Pricing -->
-									<div [class]="changeClass" *ngIf="campaignAccess.videoCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.videoCampaign"  id="min-height">
 										<div class="pricing hover-effect pointer"  (click)="createVideoCampaign()">
 											<div class="pricing-head">
 												<h3>Video E-mail Campaign</h3>
@@ -49,7 +49,7 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.emailCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.emailCampaign" id="min-height">
 										<div class="pricing hover-effect pointer"  (click)="createRegularCampaign()">
 											<div class="pricing-head">
 												<h3>E-mail Campaign</h3>
@@ -69,7 +69,7 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.smsCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.smsCampaign" id="min-height">
 										<div class="pricing hover-effect pointer"  (click)="createSMS_Campaign()">
 											<div class="pricing-head">
 												<h3>SMS Campaign</h3>
@@ -89,7 +89,7 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.socialCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.socialCampaign" id="min-height">
 										<div class="pricing hover-effect pointer" (click)="socialMediaCampaign()">
 											<div class="pricing-head">
 												<h3>Social Media Campaign</h3>
@@ -113,7 +113,7 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.eventCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.eventCampaign" id="min-height">
 										<div class="pricing hover-effect pointer" (click)="createEventCampaign()">
 											<div class="pricing-head">
 												<h3>Event Campaign</h3>
@@ -139,7 +139,7 @@
 										</div>
 									</div>
 									
-									<div [class]="changeClass" *ngIf="campaignAccess.landingPageCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.landingPageCampaign" id="min-height">
 										<div class="pricing hover-effect pointer"  (click)="createLandingPageCampaign()">
 											<div class="pricing-head">
 												<h3>Landing Page Campaign</h3>
