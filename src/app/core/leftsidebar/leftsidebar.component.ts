@@ -134,6 +134,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.refService.getOrgCampaignTypes( response ).subscribe( data => {
                         this.enableLeads = data.enableLeads;
                         this.formAccess = data.form;
+                        this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
                         /**********Form**************/
                         if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
@@ -149,8 +150,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         
                     } );
                     /**********Landing Page************/    
-                } )
-
+                } );
             }
         } catch ( error ) { console.log( error ); }
     }

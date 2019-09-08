@@ -14,6 +14,7 @@ export class Module {
 
     hasFormAccess:boolean = false;
     hasLandingPageAccess:boolean = false;
+    hasPartnerLandingPageAccess:boolean = false;
     hasLandingPageCampaignAccess:boolean = false;
 
 

@@ -367,6 +367,7 @@ export class AuthenticationService {
 
         module.hasFormAccess = false;
         module.hasLandingPageAccess = false;
+        module.hasPartnerLandingPageAccess = false;
         module.hasLandingPageCampaignAccess = false;
 
         module.isAddingPartnersAccess = false;

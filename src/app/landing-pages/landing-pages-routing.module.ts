@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { SelectLandingPageComponent } from './select-landing-page/select-landing-page.component';
 import { AddLandingPageComponent } from './add-landing-page/add-landing-page.component';
 import { ManageLandingPageComponent } from './manage-landing-page/manage-landing-page.component';
+import { PartnerLandingPageComponent } from './partner-landing-page/partner-landing-page.component';
 import { LandingPageAnalyticsComponent } from './landing-page-analytics/landing-page-analytics.component';
 
 export const routes: Routes = [
@@ -11,6 +12,7 @@ export const routes: Routes = [
     { path: "select", component: SelectLandingPageComponent },
     { path: "add", component: AddLandingPageComponent },
     { path: "manage", component: ManageLandingPageComponent },
+    { path: "partner", component: PartnerLandingPageComponent },
     { path: ":landingPageId/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/campaign/analytics", component: LandingPageAnalyticsComponent },
     ];

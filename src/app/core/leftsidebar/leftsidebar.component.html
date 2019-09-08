@@ -202,16 +202,15 @@
 		          </li>
 		        </ul>
 	     </li>
-	     
-	     <!-- ------------------------- L a n d i n g P a g e s ----------------------------------------------------- -->
-		<li *ngIf="authService.module.hasLandingPageAccess" [ngClass]="{'active': location.path().includes('forms')}">
+	     <!-- ------------------------- L a n d i n g P a g e s -------------------------------------------------------->
+		<li *ngIf="authService.module.hasLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
 		        <a  href="javascript:;" (click)="openOrCloseTabs('landing-pages')" >
 		        <i class="fa fa-wpforms"></i>
 		        <span class="title">Landing Pages</span>
 		        <span class="arrow "></span>
 		        <span class="selected"></span>
 		        </a>
-		        <ul class="sub-menu" [ngStyle]="{'display': forms? 'block': 'none' }">
+		        <ul class="sub-menu" [ngStyle]="{'display': landing-pages? 'block': 'none' }">
 		        <li>
 		            <a  [routerLink] ="['./landing-pages/select']" >
 		            <i class="fa fa-wpforms"></i>
@@ -225,6 +224,15 @@
 		            </a>
 		          </li>
 		        </ul>
+	     </li>
+	     
+	     <li *ngIf="!authService.module.hasLandingPageAccess && authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+		        <a [routerLink] ="['./landing-pages/partner']">
+		        <i class="fa fa-wpforms"></i>
+		        <span class="title">Landing Pages</span>
+		        <span class="arrow "></span>
+		        <span class="selected"></span>
+		        </a>
 	     </li>
       
 

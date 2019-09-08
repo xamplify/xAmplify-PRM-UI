@@ -33,6 +33,12 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
+    listPartnerLandingPages( pagination: Pagination ): Observable<any> {
+        return this.http.post( this.URL + "partner?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
     listAnalytics( pagination: Pagination,countryCode:string ): Observable<any> {
         let url = this.URL + "analytics/list?";
         if($.trim(countryCode).length>0){

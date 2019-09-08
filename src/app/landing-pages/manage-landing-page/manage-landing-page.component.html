@@ -52,7 +52,7 @@
 								<img class="img-responsive center-block" src="assets/images/Landing-Pages/{{landingPage.imageName}}" alt="Not Found" id="auto-height">
 								<h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
 								<div class="bar">
-									<a data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
+									<a *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
 										<i class="fa fa-pencil-square-o"></i>
 									</a>
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(landingPage)">
@@ -76,7 +76,7 @@
 									<span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
 									
 									
-									<a data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)" >
+									<a *ngIf="!isPartnerLandingPage" data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)" >
 										<i class="fa fa-trash-o"></i>
 									</a>
 								</div>
