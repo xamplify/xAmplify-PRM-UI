@@ -2885,7 +2885,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     listLandingPages( pagination: Pagination ) {
         this.refService.loading( this.landingPageLoader, true );
         pagination.userId = this.loggedInUserId;
-        this.landingPageService.list( pagination ).subscribe(
+        this.landingPageService.list(pagination,false).subscribe(
             ( response: any ) => {
                 const data = response.data;
                 pagination.totalRecords = data.totalRecords;
