@@ -146,7 +146,9 @@ data-backdrop="static">
               <tbody>
                 <ng-container *ngFor="let userList of contactListPagination.pagedItems; let i = index">
                   <tr>
-                    <td><b>{{userList.name}}</b></td>
+                    <td title="{{userList.name}}"><b>{{userList.name | slice:0:40}}
+                    <span *ngIf="userList.name?.length>40">..</span>
+                    </b></td>
                     <td class="text-center"><app-timestamp [isOnlyDate]="true" [dateAndTime]="userList.createdDate"> </app-timestamp></td>
                     <td class="text-center">
                         <a *ngIf="!authenticationService.isOnlyPartner()" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,userList.name)">
