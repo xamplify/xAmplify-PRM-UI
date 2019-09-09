@@ -212,7 +212,7 @@
              *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()"></i>
           </a>
           <a [routerLink]="['/home/campaigns/select']" class="btn btn-sm btn-primary pull-right" style="margin: 5px 0;border-color: white; color:white"
-           *ngIf="(hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany">Create Campaign</a>
+           *ngIf="campaigns?.length == 0 && ((hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany)">Create Campaign</a>
         </div>
         <div class="portlet-body clearfix">
           <section *ngFor="let campaign of campaigns; let i=index">
