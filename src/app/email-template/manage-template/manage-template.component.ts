@@ -354,9 +354,26 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         swal.close();
 
     }
+    
+    getTemplateById(emailTemplate:EmailTemplate){
+    	this.emailTemplateService.getTemplateById( emailTemplate.id )
+        .subscribe(
+        ( data: any ) => {
+            console.log( data );
+            emailTemplate.body = data.body;
+            this.showPreview(emailTemplate);
+        },
+        error => console.error( error ),
+        () => {
+            console.log( 'loadContacts() finished' );
+        }
+        );
+    }
+    
     showPreview(emailTemplate:EmailTemplate){
         this.ngxloading = true;
-        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId)
+        .subscribe(
                 ( data: any ) => {
                     let body = emailTemplate.body;
                     let self  =this;
