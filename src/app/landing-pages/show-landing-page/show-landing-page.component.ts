@@ -136,6 +136,12 @@ export class ShowLandingPageComponent implements OnInit {
       this.landingPageService.saveAnalytics(geoLocationAnalytics)
       .subscribe(
         (data: any) => {
+            let response = data.data;
+            if(data.statusCode==200){
+                this.logger.info("Location Details Saved Successfully");
+            }else{
+                this.logger.error("Error In Saving Location Tracking Details");
+            }
         },
         (error: string) => {
             this.logger.error( "Error In saving Location Details",error); 
@@ -152,8 +158,16 @@ export class ShowLandingPageComponent implements OnInit {
         (response: any) => {
           if (response.statusCode === 200) {
             this.hasLandingPage = true;
-            document.getElementById('landing-page-html-body').innerHTML = response.message;
-            this.getLocationDetails(null,null,this.alias,null,response.data,null,0);
+           if(this.isPartnerLandingPage){
+               let data = response.data;
+               let landingPageAlias = data.landingPageAlias;
+               let htmlBody = data.htmlBody;
+               document.getElementById('landing-page-html-body').innerHTML = htmlBody;
+               this.getLocationDetails(null,null,landingPageAlias,null,data.enumType,null,0);
+           }else{
+               document.getElementById('landing-page-html-body').innerHTML = response.message;
+               this.getLocationDetails(null,null,this.alias,null,response.data,null,0);
+           }
           } else {
             this.hasLandingPage = false;
             this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);
