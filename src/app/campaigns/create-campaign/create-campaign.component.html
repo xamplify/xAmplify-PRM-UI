@@ -775,7 +775,7 @@
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
-                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)"> <!-- (click)="preview(file)"  -->
+                                        title="Preview"  (click)="$event.stopPropagation();getTemplateById(emailTemplate)"> <!-- (click)="preview(file)"  -->
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                        </a>
                                       </span>
@@ -831,7 +831,7 @@
                             <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
                             <div class="item__actions">
                               <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
-                                title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                title="Preview" (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
                                   <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                </a>
                               </span>
@@ -997,7 +997,7 @@
 									<ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template</ng-container>
 								</td>
 								<td width="55%">
-									<a (click)="getEmailTemplatePreview(emailTemplate)" title="{{emailTemplate.name}}">
+									<a (click)="getTemplateById(emailTemplate)" title="{{emailTemplate.name}}">
 										<ng-container *ngIf="emailTemplate.name?.length>50">
 											{{emailTemplate.name | slice:0:50}}...
 										</ng-container>
@@ -1178,7 +1178,7 @@
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
-                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(reply.emailTemplate)">
+                                        title="Preview"  (click)="$event.stopPropagation();getTemplateById(reply.emailTemplate)">
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                        </a>
                                       </span>
@@ -1228,7 +1228,7 @@
                                 </div>
                                 <div class="item__actions">
                                     <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
-                                      title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                      title="Preview" (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
                                         <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                      </a>
                                     </span>
@@ -1397,17 +1397,29 @@
                                     <span class="item__name"
                                       [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:15}}</b><b *ngIf="url.emailTemplate?.name?.length>15">...</b>
                                     </span>
-                                    <span lass="item__name" title="created on" style="float:left">
+                                    
+                                   <div class="item__last-modified">
+                                    <span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
+                                    <span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+                                    </span>
+                                  </div>
+                                  <div class="item__last-modified">
+                                    <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate"> </app-timestamp></span>
+                                  </div>
+                                    
+                                    
+                                    
+                                   <!--  <span lass="item__name" title="created on" style="float:left">
                                     <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="url.emailTemplate.createdDate">
                                      </app-timestamp></span>
                                     </span>
                                     <span *ngIf="url.emailTemplate.createdBy?.length>20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</span>
                                     <span *ngIf="url.emailTemplate.createdBy?.length<=20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</span>
-
+ -->
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
-                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(url.emailTemplate)">
+                                        title="Preview"  (click)="$event.stopPropagation();getTemplateById(url.emailTemplate)">
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                                        </a>
                                       </span>
@@ -1455,7 +1467,7 @@
                                   </div>
                                   <div class="item__actions">
                                       <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
-                                        title="Preview" (click)="$event.stopPropagation();getEmailTemplatePreview(emailTemplate)">
+                                        title="Preview" (click)="$event.stopPropagation();getTemplateById(emailTemplate)">
                                           <i class="fa fa-external-link-square"  aria-hidden="true" style="font-size: 20px; color: #5a5a5a; padding-top: 1px !important;"></i>
                                        </a>
                                       </span>

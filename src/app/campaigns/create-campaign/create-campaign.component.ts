@@ -1557,6 +1557,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
+    
+    getTemplateById(emailTemplate:EmailTemplate){
+        this.emailTemplateService.getTemplateById( emailTemplate.id )
+        .subscribe(
+        ( data: any ) => {
+            console.log( data );
+            emailTemplate.body = data.body;
+            this.getEmailTemplatePreview(emailTemplate);
+        },
+        error => console.error( error ),
+        () => {
+            console.log( 'loadContacts() finished' );
+        }
+        );
+    }
 
 
     getEmailTemplatePreview(emailTemplate:EmailTemplate){
