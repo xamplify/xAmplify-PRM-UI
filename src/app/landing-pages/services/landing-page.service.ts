@@ -27,17 +27,16 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    list( pagination: Pagination ): Observable<any> {
-        return this.http.post( this.URL + "list?access_token=" + this.authenticationService.access_token, pagination )
+    list( pagination: Pagination,isPartnerLandingPage:boolean): Observable<any> {
+        let url = "list";
+        if(isPartnerLandingPage){
+            url = "partner";
+        }
+        return this.http.post( this.URL +url+"?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
     
-    listPartnerLandingPages( pagination: Pagination ): Observable<any> {
-        return this.http.post( this.URL + "partner?access_token=" + this.authenticationService.access_token, pagination )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
     
     listAnalytics( pagination: Pagination,countryCode:string ): Observable<any> {
         let url = this.URL + "analytics/list?";
@@ -92,8 +91,12 @@ export class LandingPageService {
             .catch( this.handleError );
     }
     
-    getHtmlContentByAlias( alias: string ) {
-        return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias, "" )
+    getHtmlContentByAlias( alias: string,isPartnerLandingPage:boolean) {
+        let url  = "/getHtmlBodyByAlias/";
+        if(isPartnerLandingPage){
+            url  = "/getPartnerHtmlBodyByAlias/";
+        }
+        return this.http.get( this.authenticationService.REST_URL + url + alias, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

@@ -36,6 +36,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     campaignId = 0;
     statusCode = 200;
     isPartnerLandingPage = false;
+    landingPageAliasUrl:string = "";
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor( public referenceService: ReferenceService,
             public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -56,44 +57,32 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     
     ngOnInit() {
         if(this.router.url.includes('home/landing-pages/partner')){
-            this.listPartnerLandingPages(this.pagination);
             this.isPartnerLandingPage = true;
         }else{
-            this.listLandingPages(this.pagination);
             this.isPartnerLandingPage = false;
         }
+        this.listLandingPages(this.pagination);
         
     }
     
     
     listLandingPages( pagination: Pagination ) {
         this.referenceService.loading( this.httpRequestLoader, true );
-        this.landingPageService.list( pagination ).subscribe(
+        this.landingPageService.list( pagination,this.isPartnerLandingPage ).subscribe(
             ( response: any ) => {
-                this.setList(response, pagination);
+                const data = response.data;
+                this.statusCode = response.statusCode;
+                if(this.statusCode==200){
+                    pagination.totalRecords = data.totalRecords;
+                    this.sortOption.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                }
+                this.referenceService.loading( this.httpRequestLoader, false );
+            
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
     
-    setList(response:any,pagination:Pagination){
-        const data = response.data;
-        this.statusCode = response.statusCode;
-        if(this.statusCode==200){
-            pagination.totalRecords = data.totalRecords;
-            this.sortOption.totalRecords = data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
-        }
-        this.referenceService.loading( this.httpRequestLoader, false );
-    }
-    
-    listPartnerLandingPages( pagination: Pagination ) {
-        this.referenceService.loading( this.httpRequestLoader, true );
-        this.landingPageService.listPartnerLandingPages( pagination ).subscribe(
-            ( response: any ) => {
-                this.setList(response, pagination);
-            },
-            ( error: any ) => { this.logger.errorPage( error ); } );
-    }
 
     /********************Pagaination&Search Code*****************/
 
@@ -202,6 +191,11 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     showLandingPageLink(landingPage:LandingPage){
           this.landingPage = landingPage;
           this.copiedLinkCustomResponse = new CustomResponse();
+          if(this.isPartnerLandingPage){
+              this.landingPageAliasUrl = this.authenticationService.APP_URL+"pl/"+this.landingPage.alias;
+          }else{
+              this.landingPageAliasUrl = this.authenticationService.APP_URL+"l/"+this.landingPage.alias;
+          }
           $('#landing-page-url-modal').modal('show');
       }
 

@@ -85,6 +85,7 @@ export const routes: Routes = [
     { path: 'logs/:alias', component: LogSMSClickComponent },
     {path: 'f/:alias', component:FormPreviewComponent},
     {path: 'l/:alias', component:ShowLandingPageComponent},
+    {path: 'pl/:alias', component:ShowLandingPageComponent},
     {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
     {path: 'clpl/:alias', component:ShowLandingPageComponent},
     { path: '**', component: PageNotFoundComponent },

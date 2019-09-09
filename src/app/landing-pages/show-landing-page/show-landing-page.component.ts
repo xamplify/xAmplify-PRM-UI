@@ -32,6 +32,7 @@ export class ShowLandingPageComponent implements OnInit {
     errorAlertClass = "alert alert-danger";
     show: boolean;
     message: string;
+    isPartnerLandingPage:boolean=false;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
           private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
           public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService) { }
@@ -43,8 +44,10 @@ export class ShowLandingPageComponent implements OnInit {
           this.getHtmlBodyCampaignLandingPageAlias(this.alias);
       }else if(this.router.url.includes("/clpl/")){
           this.redirectToOriginalUrl(this.alias);
-      }
-      else{
+      }else if(this.router.url.includes("/pl/")){
+          this.isPartnerLandingPage = true;
+          this.getHtmlBodyAlias(this.alias);
+      }else{
           this.getHtmlBodyAlias(this.alias);
       }
   }
@@ -144,7 +147,7 @@ export class ShowLandingPageComponent implements OnInit {
   
   
   getHtmlBodyAlias(alias:string){
-      this.landingPageService.getHtmlContentByAlias(alias)
+      this.landingPageService.getHtmlContentByAlias(alias,this.isPartnerLandingPage)
       .subscribe(
         (response: any) => {
           if (response.statusCode === 200) {
