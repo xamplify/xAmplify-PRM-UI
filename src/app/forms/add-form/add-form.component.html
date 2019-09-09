@@ -22,11 +22,12 @@
           <button type="button" class="close-circle" [routerLink]="['/home/forms/manage']" aria-hidden="true">
             <i class="fa fa-times"></i>
           </button>
-      	<h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
+      	<h4 [attr.class]="formNameClass"><b>CREATE FORM</b>
 	      	<a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
 				(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
 			</a>
 		</h4>
+		
 		
 		<div class="portlet-body blur-content" id="add-form-parent-div">
           <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -80,7 +81,12 @@
                   <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                       <i class="icon-globe theme-font hide"></i>
-                      <span class="caption-subject font-blue-madison bold uppercase">Create Form</span>
+                      <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
+                      <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
+	      				<a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
+							(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
+						</a>
+						</h4>
                     </div>
                     <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip"  id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
                   	 <a class="close-circle" data-toggle="tooltip" title="Preview"  id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true" id="eye"></i></a>

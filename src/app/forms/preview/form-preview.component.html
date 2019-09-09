@@ -22,6 +22,7 @@
 				<div class="panel-title">{{form.name}}</div>
 			</div>
 			<div class="panel-body">
+			 <h5>{{form.description}}</h5>
 				<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
 				<ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
 						<div class="form-group">
@@ -83,7 +84,7 @@
 <ng-container *ngIf="!hasFormExists">
 	<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
 </ng-container>
-</div>
+
 
 
 <div [hidden]="!processor.isProcessing">
@@ -92,4 +93,3 @@
 				<img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
 			</div>
 	</div>
-

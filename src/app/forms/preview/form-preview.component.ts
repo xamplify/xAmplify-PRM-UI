@@ -50,6 +50,7 @@ export class FormPreviewComponent implements OnInit {
   }
 
   ngOnInit() {
+     $('.mobile-camp').removeClass('mobile-camp');
       this.processor.set(this.processor);
       this.alias = this.route.snapshot.params['alias'];
       this.getFormFieldsByAlias(this.alias);
