@@ -1559,7 +1559,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     getTemplateById(emailTemplate:EmailTemplate){
-        this.emailTemplateService.getTemplateById( emailTemplate.id )
+        this.emailTemplateService.getById( emailTemplate.id )
         .subscribe(
         ( data: any ) => {
             console.log( data );

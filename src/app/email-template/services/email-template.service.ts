@@ -115,13 +115,6 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
-    
-    getTemplateById(id: number){
-        return this.http.post(this.URL+"admin/getEmailTemplateById/"+ id +"?access_token="+this.authenticationService.access_token,"")
-        .map(this.extractData)
-        .catch(this.handleError);
-    }
-
 
     getAllCompanyProfileImages(userId:number){
         return this.http.get(this.URL+"admin/listAllCompanyProfileImages/"+userId+"?access_token="+this.authenticationService.access_token,"")
