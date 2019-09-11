@@ -329,13 +329,21 @@ img:hover {
 							<tbody>
 								<tr *ngFor="let user of pagedItems;let i = index"
 									class='row_{{i}}'>
-									<td align="center"><input type="checkbox"
+									<td *ngIf="selectedAddPartnerOption != 8" align="center"><input type="checkbox"
 										[checked]="selectedContactListIds.indexOf(user.id)>-1"
 										class="chk"
 										[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
 										lang="{{user.name}}" name="campaignContact[]"
 										value="{{user.id}}" id="{{user.id}}"
 										(click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
+									</td>
+									<td *ngIf="selectedAddPartnerOption == 8" align="center"><input type="checkbox"
+										[checked]="selectedContactListIds.indexOf(user.id)>-1"
+										class="chk"
+										[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
+										lang="{{user.name}}" name="campaignContact[]"
+										value="{{user.id}}" id="{{user.id}}"
+										(click)="highlightMarketoRow(user,$event, i)" />
 									</td>
 									<td>{{user.emailId}}</td>
 									<td>{{user.firstName}}</td>

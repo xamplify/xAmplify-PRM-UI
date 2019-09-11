@@ -10,7 +10,7 @@
     
     
      <div class="col-xs-3">
-      <a class="dashboard-stat dashboard-stat blue" (click)="listOfVendorRequestReports('ALL')"
+      <a class="dashboard-stat dashboard-stat blue" [class.disabled]="allVendorsCount == 0" (click)="listOfVendorRequestReports('ALL')"
       [class.grey]="statusType != 'ALL'">
         <div class="visual">
           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'ALL' ? '#white' : '#ccc' }"
@@ -26,7 +26,7 @@
       </a>
     </div>
      <div class="col-xs-3">
-      <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="listOfVendorRequestReports('APPROVED')"
+      <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.disabled]="approvedVendorsCount == 0" (click)="listOfVendorRequestReports('APPROVED')"
       [class.grey]="statusType != 'APPROVED'">
         <div class="visual">
           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'APPROVED' ? '#white' : '#ccc' }"
@@ -42,7 +42,7 @@
       </a>
     </div>
      <div class="col-xs-3">
-      <a class="dashboard-stat dashboard-stat purple" (click)="listOfVendorRequestReports('INVITED')"
+      <a class="dashboard-stat dashboard-stat purple" [class.disabled]="invitedVendorsCount == 0" (click)="listOfVendorRequestReports('INVITED')"
       [class.grey]="statusType != 'INVITED'">
         <div class="visual">
            <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'INVITED' ? '#white' : '#ccc' }"
@@ -58,7 +58,7 @@
       </a>
     </div>
      <div class="col-xs-3">
-      <a class="dashboard-stat dashboard-stat yellow-gold" (click)="listOfVendorRequestReports('DECLINED')"
+      <a class="dashboard-stat dashboard-stat yellow-gold" [class.disabled]="declinedVendorsCount == 0" (click)="listOfVendorRequestReports('DECLINED')"
        [class.grey]="statusType != 'DECLINED'">
         <div class="visual">
           <i class="fa fa-check-circle" style="font-size: 40px;line-height: 60px;opacity: 1;padding-left: 30px;"  [ngStyle]="{'color': statusType == 'DECLINED' ? '#white' : '#ccc' }"

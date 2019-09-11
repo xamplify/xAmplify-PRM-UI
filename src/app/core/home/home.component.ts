@@ -122,6 +122,21 @@ export class HomeComponent implements OnInit {
       });
     }
   
+  getPartnerCampaignsNotifications(){
+    if(!this.referenceService.eventCampaignTabAccess){
+      const url = "partner/access/" + this.userId + "?access_token=" + this.token;
+      this.userService.getEventAccessTab(url)
+          .subscribe(
+              data => {
+                  console.log(data);
+                  this.referenceService.eventCampaignTabAccess = data.event;
+              },
+              error => { },
+              () => this.xtremandLogger.info('Finished home component CampaignNotification()')
+          );
+     }
+  }
+  
   getTeamMembersDetails(){
       const url = "admin/getRolesByUserId/" + this.userId + "?access_token=" + this.token;
       this.userService.getHomeRoles(url)
@@ -255,7 +270,7 @@ export class HomeComponent implements OnInit {
             this.getVideoDefaultSettings();
             this.referenceService.defaulgVideoMethodCalled = true;
             this.getTeamMembersDetails();
-
+            this.getPartnerCampaignsNotifications();
           }
        } catch (error) {
          this.xtremandLogger.error("error" + error);

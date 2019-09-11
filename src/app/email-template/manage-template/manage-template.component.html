@@ -182,7 +182,7 @@
 												*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 												<i class="fa fa-pencil-square-o"></i>
 											</a> <a *ngIf="!emailTemplate.draft"
-												(click)="showPreview(emailTemplate)" data-toggle="tooltip"
+												(click)="getTemplateById(emailTemplate)" data-toggle="tooltip"
 												data-placement="top"
 												title="{{actionsDescription.template_preview}}"> <i
 												class="fa fa-eye"></i>
@@ -272,7 +272,7 @@
 									*ngIf="(hasAllAccess||(hasEmailTemplateRole && emailTemplate.userId==loggedInUserId)  || authenticationService.module.isVendor) && emailTemplate.type!='PARTNER'">
 									<i class="fa fa-pencil-square-o"></i>
 								</a> <a *ngIf="!emailTemplate.draft"
-									(click)="showPreview(emailTemplate)" data-toggle="tooltip"
+									(click)="getTemplateById(emailTemplate)" data-toggle="tooltip"
 									data-placement="top"
 									title="{{actionsDescription.template_preview}}"> <i
 									class="fa fa-eye"></i>

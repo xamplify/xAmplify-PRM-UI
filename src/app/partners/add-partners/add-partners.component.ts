@@ -371,11 +371,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     validateSocialContacts( socialUsers: any ) {
         let users = [];
         for ( let i = 0; i < socialUsers.length; i++ ) {
+           if(socialUsers[i].emailId){
             if ( socialUsers[i].emailId !== null && this.validateEmailAddress( socialUsers[i].emailId ) ) {
                 let email = socialUsers[i].emailId.toLowerCase();
                 socialUsers[i].emailId = email;
                 users.push( socialUsers[i] );
             }
+           }else{
+               if ( socialUsers[i].email !== null && this.validateEmailAddress( socialUsers[i].email ) ) {
+                   let email = socialUsers[i].email.toLowerCase();
+                   socialUsers[i].emailId = email;
+                   users.push( socialUsers[i] );
+               }
+           }
         }
         return users;
     }
@@ -395,7 +403,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.teamMembersList.push( this.authenticationService.user.emailId );
             let emails = []
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
-                emails.push( this.newPartnerUser[i].emailId );
+                if(this.newPartnerUser[i].emailId){
+                  emails.push( this.newPartnerUser[i].emailId );
+                }else{
+                    emails.push( this.newPartnerUser[i].email );
+                }
             }
             let existedEmails = []
             if ( emails.length > this.teamMembersList.length ) {
@@ -442,11 +454,18 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 if ( !this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
                     this.invalidPatternEmails.push( this.newPartnerUser[i].emailId )
                 }
-                if ( this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
-                    this.validCsvContacts = true;
-                }
-                else {
+                if(this.newPartnerUser[i].emailId){
+                 if ( this.validateEmailAddress( this.newPartnerUser[i].emailId ) ) {
+                     this.validCsvContacts = true;
+                 }else {
                     this.validCsvContacts = false;
+                 }
+                }else{
+                    if ( this.validateEmailAddress( this.newPartnerUser[i].email ) ) {
+                        this.validCsvContacts = true;
+                    }else {
+                       this.validCsvContacts = false;
+                    }
                 }
             }
             this.newPartnerUser = this.validateSocialContacts( this.newPartnerUser );
@@ -2482,7 +2501,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     
-    highlightMarketoRow(user: any)
+    highlightMarketoRow(user: any, event, index)
     {
         let isChecked = $('#' + user.id).is(':checked');
 
@@ -2510,7 +2529,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         {
             $('#row_' + user.id).removeClass('contact-list-selected');
             this.selectedContactListIds.splice($.inArray(user.id, this.selectedContactListIds), 1);
-            this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
+            
+           this.allselectedUsers.forEach((value) => {
+                if(value.id == user.id){
+                    console.log(value);
+                    console.log(this.allselectedUsers.indexOf(value))
+                  this.allselectedUsers.splice( this.allselectedUsers.indexOf(value), 1);
+                }
+             });
+          
+          //  this.allselectedUsers.splice($.inArray(user.id, this.allselectedUsers), 1);
         }
         if (this.selectedContactListIds.length == this.pagedItems.length)
         {
@@ -2520,6 +2548,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.isHeaderCheckBoxChecked = false;
         }
         event.stopPropagation();
+        console.log(this.allselectedUsers);
     }
 
     checkAllForMarketo(ev: any)

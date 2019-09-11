@@ -182,6 +182,13 @@ export class UserService {
         .catch( this.handleError );
     }
     
+    getEventAccessTab(uRl){
+        const url = this.URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
     loadVendorDetails(uRl, pagination: Pagination) {
         const url = this.authenticationService.REST_URL + uRl;
         return this.http.post(url, pagination)

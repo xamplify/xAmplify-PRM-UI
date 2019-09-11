@@ -923,7 +923,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
 
             if (this.paginationType == 'countryWiseUsers') {
-                object["Device"] = this.dashboardReport.downloadEmailLogList[i].os;
+                object["Device"] = this.dashboardReport.downloadEmailLogList[i].deviceType;
 
             }
 
