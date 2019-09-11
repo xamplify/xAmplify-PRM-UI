@@ -10,14 +10,14 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { Roles } from '../../core/models/roles';
-
+import { CampaignAccess } from '../../campaigns/models/campaign-access';
 declare var swal,$:any;
 
 @Component({
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
-  providers: [Pagination, HttpRequestLoader, Properties]
+  providers: [Pagination, HttpRequestLoader, Properties,CampaignAccess]
 })
 
 export class AdminReportComponent implements OnInit {
@@ -50,8 +50,9 @@ export class AdminReportComponent implements OnInit {
                ];
     public sortOption: any = this.sortOptions[0];
     top10RecentUsers: any[];
-    
-    
+    updateFormLoading = false;
+    updateFormCustomResponse: CustomResponse = new CustomResponse();
+    campaignAccess = new CampaignAccess();
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
 
@@ -281,6 +282,7 @@ public authenticationService: AuthenticationService, public router:Router) {
       try {
           this.loading = true;
           this.customResponse = new CustomResponse();
+          this.updateFormCustomResponse  =new CustomResponse();
           this.dashboardService.getAccess(report.companyId)
               .subscribe(
               ( data: any ) => {
@@ -302,6 +304,24 @@ public authenticationService: AuthenticationService, public router:Router) {
           console.error( error, "adminReportComponent", "changeAccess()" );
       }
   
+  }
+  
+  updateAccess(){
+      this.updateFormLoading = true;
+      this.dashboardService.changeAccess(this.campaignAccess)
+      .subscribe(
+      ( data: any ) => {
+          this.updateFormLoading=false;
+          this.updateFormCustomResponse = new CustomResponse('SUCCESS',data.message,true );
+      },
+      error => {
+          this.updateFormLoading=false;
+          this.updateFormCustomResponse = new CustomResponse('ERROR','Something went wrong.',true );
+      },
+      () => console.info( "updateAccess() finished" )
+      )
+     
+
   }
   
   

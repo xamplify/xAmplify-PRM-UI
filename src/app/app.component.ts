@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     
     ngOnInit() {
-        QuickSidebar.init();
+        //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application
         this.router.routeReuseStrategy.shouldReuseRoute = function () {

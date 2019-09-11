@@ -90,15 +90,15 @@
               <input type="text" maxlength="100" class="form-control" [(ngModel)]=" dealRegistration.lastName" [ngModelOptions]="{standalone: true}"
                 id="lastName" (input)="validateField('lastName',false)" [disabled]="isVendor" />
             </div>
-          <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
-            <label class="control-label">Role
-              <font style="color: #f55d7a">
-                <b>*</b>
-              </font>
-            </label>
-            <input type="text" maxlength="100" name="role" class="form-control" [(ngModel)]=" dealRegistration.role" [ngModelOptions]="{standalone: true}"
-              id="role" (input)="validateField('role',false)" [disabled]="isVendor" />
-          </div>
+                     <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
+              <label class="control-label">Job Title
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
+              </label>
+              <input type="text" maxlength="100" name="role" class="form-control" [(ngModel)]=" dealRegistration.role" [ngModelOptions]="{standalone: true}"
+                id="role" (input)="validateField('role',false)" [disabled]="isVendor" />
+            </div>
 
             <div class="form-group" *ngIf="dealRegistration.email" style="margin-bottom: 20px">
               <label class="control-label">Email
@@ -266,9 +266,9 @@
             <div class="input-group" style="border:1px solid #e5e5e5">
 
 
-              <input type="text" currencyMask [options]="{align :'left' }" class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
+              <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
                 [ngModelOptions]="{standalone: true}" id="opportunityAmount" (ngModelChange)="validateField('opportunityAmount',false)"
-                [disabled]="isVendor" max="10000000000.00" />
+                [disabled]="isVendor" maxlength="20" />
             </div>
           </div>
           <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">

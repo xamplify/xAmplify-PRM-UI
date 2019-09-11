@@ -103,7 +103,8 @@ export class AuthenticationService {
                         'refreshToken': this.map.refresh_token,
                         'expiresIn': this.map.expires_in,
                         'hasCompany': res.json().hasCompany,
-                        'roles': res.json().roles
+                        'roles': res.json().roles,
+                        'campaignAccessDto':res.json().campaignAccessDto
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
@@ -363,7 +364,14 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+
+        module.hasFormAccess = false;
+        module.hasLandingPageAccess = false;
+        module.hasPartnerLandingPageAccess = false;
+        module.hasLandingPageCampaignAccess = false;
+
         module.isAddingPartnersAccess = false;
+
         this.isAddedByVendor = false;
         this.isPartnerTeamMember = false;
         this.loggedInUserRole = "";
@@ -405,6 +413,11 @@ export class AuthenticationService {
         let socket = new SockJs( url );
         let stompClient = Stomp.over( socket );
         return stompClient;
+    }
+     getSMSServiceModule(userId: number) {
+        return this.http.get(this.REST_URL + 'admin/getSMSServiceModule/' + userId + '?access_token=' + this.access_token)
+            .map((res: Response) => { return res.json(); })
+            .catch((error: any) => { return error; });
     }
     
     extractData( res: Response ) {

@@ -29,7 +29,7 @@
 							<div class="portlet-body">
 								<div class="clearfix">
 									<!-- Pricing -->
-									<div [class]="changeClass" *ngIf="campaignAccess.videoCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.videoCampaign"  id="min-height">
 										<div class="pricing hover-effect pointer"  (click)="createVideoCampaign()">
 											<div class="pricing-head">
 												<h3>Video E-mail Campaign</h3>
@@ -49,7 +49,7 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.emailCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.emailCampaign" id="min-height">
 										<div class="pricing hover-effect pointer"  (click)="createRegularCampaign()">
 											<div class="pricing-head">
 												<h3>E-mail Campaign</h3>
@@ -69,7 +69,27 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.socialCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.smsCampaign" id="min-height">
+										<div class="pricing hover-effect pointer"  (click)="createSMS_Campaign()">
+											<div class="pricing-head">
+												<h3>SMS Campaign</h3>
+												<h4><img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+											</div>
+											<h5><span style="padding-left:5px;"> Steps involved:</span></h5>
+											<ul class="pricing-content list-unstyled">
+												<li><i class="fa fa-list"></i> Provide campaign(SMS) details</li>
+												<li><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
+												<li><i class="fa fa-envelope"></i> Select an Web template </li>
+												<li><i class="fa fa-rocket"></i> Preview and Launch</li>
+											</ul>
+											<div class="pricing-footer" style="margin-bottom: -2px;">
+												<div class="col-xs-hidden"><br><br></div>
+												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
+												<a href="javascript:;" class="btn yellow-crusta" (click)="createSMS_Campaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
+											</div>
+										</div>
+									</div>
+									<div [class]="changeClass" *ngIf="campaignAccess.socialCampaign" id="min-height">
 										<div class="pricing hover-effect pointer" (click)="socialMediaCampaign()">
 											<div class="pricing-head">
 												<h3>Social Media Campaign</h3>
@@ -93,7 +113,7 @@
 											</div>
 										</div>
 									</div>
-									<div [class]="changeClass" *ngIf="campaignAccess.eventCampaign">
+									<div [class]="changeClass" *ngIf="campaignAccess.eventCampaign" id="min-height">
 										<div class="pricing hover-effect pointer" (click)="createEventCampaign()">
 											<div class="pricing-head">
 												<h3>Event Campaign</h3>
@@ -115,6 +135,27 @@
 												<ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
 														<a class="btn yellow-crusta" style="cursor: not-allowed" title="Please contact your account admin for access to this feature.">Select <i class="m-icon-swapright m-icon-white"></i></a>
 												</ng-container>
+											</div>
+										</div>
+									</div>
+									
+									<div [class]="changeClass" *ngIf="campaignAccess.landingPageCampaign" id="min-height">
+										<div class="pricing hover-effect pointer"  (click)="createLandingPageCampaign()">
+											<div class="pricing-head">
+												<h3>Landing Page Campaign</h3>
+												<h4><img alt="Landing Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png"></h4>
+											</div>
+											<h5><span style="padding-left:5px;"> Steps involved:</span></h5>
+											<ul class="pricing-content list-unstyled">
+												<li><i class="fa fa-list"></i> Provide campaign details</li>
+												<li><i class="fa fa-users"></i> Select Recipients <span class="important">*</span></li>
+												<li><i class="fa fa-envelope"></i> Select a landing page <span class="important">*</span></li>
+												<li><i class="fa fa-rocket"></i> Preview and Launch</li>
+											</ul>
+											<div class="pricing-footer" style="margin-bottom: -2px;">
+												<div class="col-xs-hidden"><br><br></div>
+												<p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
+												<a href="javascript:;" class="btn yellow-crusta" (click)="createLandingPageCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
 											</div>
 										</div>
 									</div>

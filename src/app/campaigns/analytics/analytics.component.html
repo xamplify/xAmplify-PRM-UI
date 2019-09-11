@@ -111,7 +111,45 @@
 							</div>
 						</a>
 					</div>
-					<div [hidden]="campaignType === 'SOCIAL'" class="pl10 pr10 col-xs-6 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'REGULAR'}"
+					
+					<div class="pl10 pr10 col-xs-12"[ngClass]="{'col-sm-6': campaignType === 'LANDINGPAGE','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+							*ngIf="(campaignType === 'LANDINGPAGE') && campaign.landingPageId>0">
+					<a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
+						<div class="visual">
+							<i class="fa fa-envelope-open"></i>
+						</div>
+						<div class="camp-details">
+							<div class="camp-title">Landing Page Info</div>
+							<div class="camp-number">
+								<b class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
+									| slice: 0: 25}}</b> <span
+									*ngIf="campaign.landingPage.name?.length>25">...</span>
+							</div>
+							<div class="camp-desc" *ngIf="isDataShare" (click)="showLandingPagePreview(campaign.landingPage)">
+								<span>Click for preview</span>
+							</div>
+						</div>
+						<div class="actions-block override-actions" id="landing-page-icons">
+						<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showLandingPagePreview(campaign.landingPage)">
+							<i class="fa fa-eye"></i>
+						</a>
+						<a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+								<i class="fa fa-wpforms"></i>
+								<span class="badge" id="notification">{{campaign.formsCount}}</span>
+						</a>
+						<a *ngIf="campaign.campaignLandingPageAnalyticsCount>0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+							<i class="fa fa-line-chart"></i>
+							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
+						</a>
+						<a class="disabled"  *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+							<i class="fa fa-line-chart"></i>
+							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
+						</a>
+						</div>
+					</a>
+				</div>
+					
+					<div [hidden]="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'" class="pl10 pr10 col-xs-6 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'REGULAR'}"
 					 *ngIf="campaign.selectedEmailTemplateId==0">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default;">
 							<div class="visual">
@@ -129,7 +167,7 @@
 						</a>
 					</div>
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': campaignType === 'REGULAR', 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-6': campaignType === 'EVENT', 'col-sm-6': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
 								<i class="fa fa-users"></i>
@@ -940,7 +978,13 @@
 							<img src="/assets/images/user.png" width="48px" class="user-profile-image">
 							<span *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-									class="btn btn-success" *ngIf="campaignType=='VIDEO' && totalTimeSpent != '00:00:00'" >{{dealButtonText}}</button>
+
+                  class="btn btn-success" *ngIf="campaignType=='VIDEO' && totalTimeSpent != '00:00:00'"
+                  >{{dealButtonText}}</button>
+                  <button style="position: absolute; left: 350px; margin-top: 7px;opacity: 0.8;"
+                  class="btn btn-success" *ngIf="campaignType=='VIDEO' && totalTimeSpent == '00:00:00'"
+                  data-toggle="tooltip" data-placement="top" title="Please watch the video to {{dealButtonText}}">{{dealButtonText}}</button>
+
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
 									class="btn btn-success" *ngIf="campaignType!='VIDEO'" >{{dealButtonText}}</button>
 								</span>
@@ -1830,3 +1874,4 @@
 		</div>
 	</div>
 </div>
+<app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>

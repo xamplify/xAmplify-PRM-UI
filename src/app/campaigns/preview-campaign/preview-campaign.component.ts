@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy, EventEmitter, Output, Input} from '@angular/core';
+import { Component, OnInit,OnDestroy, EventEmitter, Output, Input,ViewChild} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { EmailTemplate } from '../../email-template/models/email-template';
@@ -32,14 +32,19 @@ import { EventCampaign } from '../models/event-campaign';
 import { Router } from '@angular/router';
 import { EmailLog } from '../models/email-log';
 import { CountryNames } from 'app/common/models/country-names';
+
+import { LandingPage } from '../../landing-pages/models/landing-page';
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { CampaignType } from '../models/campaign-type';
+
 declare var $:any;
 
 @Component({
   selector: 'app-preview-campaign',
   templateUrl: './preview-campaign.component.html',
   styleUrls: ['./preview-campaign.component.css', '../../../assets/css/content.css'],
-  providers:[CallActionSwitch,Properties, CountryNames]
+  providers:[CallActionSwitch,Properties, CountryNames,LandingPageService]
 })
 export class PreviewCampaignComponent implements OnInit,OnDestroy {
     ngxloading:boolean;
@@ -131,12 +136,13 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     saveAsCampaignInfo: any;
     isScheduledCampaignLaunched: boolean;
     isContactListLoader = false;
-    
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     downloadEmailLogList: any;
     downloadDataList = [];
     logListName = "";
     isLoadingDownloadList = false;
     downloadTypeName = "";
+
 
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
@@ -182,9 +188,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               this.getSocialCampaignByCampaignId(this.previewCampaignId);
             } else if (campaignType.includes('EVENT')) {
               this.campaignType = 'EVENT';
-            } else {
+
+            }else if(campaignType.includes('LANDINGPAGE')){
+                this.campaignType = 'LANDINGPAGE';
+            }else {
               this.campaignType = 'REGULAR';
-            }
+            } 
             this.getEmailSentCount(this.previewCampaignId);
             this.getEmailLogCountByCampaign(this.previewCampaignId);
             this.getCampaignWatchedUsersCount(this.previewCampaignId);
@@ -720,12 +729,12 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
           pagination.campaignId = campaignId;
           pagination.campaignType = "VIDEO";
-          this.campaignService.listCampaignInteractiveViews(pagination)
+          this.campaignService.listCampaignInteractiveViews(pagination,false)
            .subscribe(data => {  this.listCampaignViewsDataInsert(data, campaignId); },
            error => console.log(error),
            () => console.log('listCampaignInteractiveViews(): called') )
       } else{
-         this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign)
+         this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign,false)
            .subscribe(data => { this.listCampaignViewsDataInsert(data.campaignviews, campaignId); },
             error => console.log(error),
             () => console.log('listCampaignViews(); called') )
@@ -746,7 +755,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     try{
         this.totalViewsPatination.maxResults = totalRecords;
         if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare){
-        this.campaignService.listCampaignInteractiveViews(this.totalViewsPatination)
+        this.campaignService.listCampaignInteractiveViews(this.totalViewsPatination,false)
          .subscribe(data => {
              this.totalCampaignViews = data;
              this.downloadEmailLogs();
@@ -754,7 +763,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
          error => console.log(error),
          () => console.log('listCampaignInteractiveViews(): called') )
     } else{
-       this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign)
+       this.campaignService.listCampaignViews(campaignId, this.totalViewsPatination, this.isChannelCampaign,false)
          .subscribe(data => {
              this.totalCampaignViews = data.campaignviews;
              this.downloadEmailLogs();
@@ -1177,5 +1186,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   navigatePreviewPartners(campaign: any) {
     $('#myModal').modal('hide');
     this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/remove-access"]);
+  }
+  
+  showLandingPagePreview(landingPage:LandingPage){
+      this.previewLandingPageComponent.showPreview(landingPage);
   }
 }

@@ -31,6 +31,8 @@ export class ReferenceService {
     campaignSuccessMessage = "";
     isCreated = false;
     isUpdated = false;
+    isLandingPageCreated = false;
+    isLandingPageUpdated = false;
     errorPrepender = "Error In";
     campaignVideoFile: SaveVideoFile;
     videoTitles: string[];
@@ -101,10 +103,10 @@ export class ReferenceService {
     loadingPreview = false;
     eventCampaignId: number;
     dealId = 0;
+    smsCampaign = false;
+    serverErrorMessage = 'Oops!There is some technical error,Please try after sometime';
     myMergeTagsInfo:any;
-    
     eventCampaignTabAccess: boolean = false;
-    
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     superiorId:number = 0;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
@@ -113,6 +115,7 @@ export class ReferenceService {
         this.videoTag = "<img src=\""+authenticationService.imagesHost+"xtremand-video.gif\">";
         this.coBrandingTag = "<img src=\""+authenticationService.imagesHost+"co-branding.png\">";
         this.coBrandingImageTag = "img src=\""+authenticationService.imagesHost+"co-branding.png\"";
+
     }
     getBrowserInfoForNativeSet(){
          this.deviceInfo = this.deviceService.getDeviceInfo();
@@ -187,6 +190,12 @@ export class ReferenceService {
     loading(httpRequestLoader: HttpRequestLoader, isLoading: boolean) {
         httpRequestLoader.isLoading = isLoading;
         httpRequestLoader.isServerError = false;
+        httpRequestLoader.message = "";
+    }
+    showServerErrorMessage(httpRequestLoader: HttpRequestLoader){
+        httpRequestLoader.isLoading = false;
+        httpRequestLoader.isServerError = true;
+        httpRequestLoader.message = this.serverErrorMessage;
     }
     isPlayVideoLoading(loading:boolean){
       return this.isPlayVideo = loading;
@@ -196,7 +205,6 @@ export class ReferenceService {
     }
     extractData(res: Response) {
         let body = res.json();
-        console.log(body);
         return body || {};
     }
 
@@ -1766,8 +1774,8 @@ export class ReferenceService {
         const scrollingElement = (document.scrollingElement || document.body)
         $("#"+elementId).animate({ scrollTop: document.body.scrollHeight }, 500);
      }
-    getOrgCampaignTypes(companyId: any) {
-      return this.http.get(this.authenticationService.REST_URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
+    getOrgCampaignTypes(userId: any) {
+      return this.http.get(this.authenticationService.REST_URL + `campaign/access/${userId}?access_token=${this.authenticationService.access_token}` )
           .map(this.extractData)
           .catch(this.handleError);
     }
@@ -1785,7 +1793,26 @@ export class ReferenceService {
         .catch(this.handleError);
     }
     
-    getHomeCompanyIdByUserId(uRl){
+
+    replaceAllSpacesWithUnderScore(text:string){
+        return text = text.replace(/ /g,"_").toLocaleLowerCase();
+    }
+    replaceAllSpacesWithEmpty(text:string){
+        return text = text.replace(/ /g,"").toLocaleLowerCase();
+    }
+    
+    scrollToBottomByDivId(divId:string){
+        $('#'+divId).animate({
+            scrollTop: $('#'+divId)[0].scrollHeight}, 500);
+    }
+    
+    removeObjectFromArrayList(arr:any,id:string,key:string){
+        arr = $.grep(arr, function(data, index) {
+            return data[key] !== id;
+         });
+        return arr;
+    }
+  getHomeCompanyIdByUserId(uRl){
         const url = this.authenticationService.REST_URL + uRl;
         return this.http.get( url,'' )
         .map( this.extractData )
@@ -1796,5 +1823,8 @@ export class ReferenceService {
         return this.http.post(this.authenticationService.REST_URL + "campaign/getMyMergeTagsInfo?access_token=" + this.authenticationService.access_token, data)
         .map(this.extractData)
         .catch(this.handleError);
+
     }
+
+  
 }

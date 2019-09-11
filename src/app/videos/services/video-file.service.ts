@@ -271,6 +271,55 @@ export class VideoFileService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+     logCampaignVideoActionsSms(xtremandLog: XtremandLog) {
+        try {
+            if (xtremandLog.actionId === 8) { xtremandLog.startDuration = this.seekbarTime; }
+            let skipPause: any;
+            if (xtremandLog.actionId === 2 || xtremandLog.actionId === 1) { this.campaignTimeValue = xtremandLog.startDuration; }
+            if (xtremandLog.actionId === 8) { skipPause = true; }
+            console.log(this.campaignTimeValue);
+            if ((xtremandLog.actionId === 8 && this.replyVideo === true) || (xtremandLog.actionId === 1 && this.pauseAction === true)
+                || (xtremandLog.actionId === 2 && this.pauseAction === true)) {
+                console.log('service called replyed and ended the video');
+                this.replyVideo = false;
+            } else {
+                console.log(xtremandLog);
+                const url = this.authenticationService.REST_URL + 'user/logVideoActionSms';
+                return this.http.post(url, xtremandLog)
+                    .map(this.extractData)
+                    .catch(this.handleErrorLogAction);
+            }
+        } catch (error) {
+            console.log('error comes here');
+        }
+    }
+    logVideoViewsSms(alias: string,urlAlias:string) {
+        const url = this.authenticationService.REST_URL + 'admin/video/increment_view_sms?alias=' + alias+ '&urlAlias='+ urlAlias;
+        return this.http.post(url,'')
+            .map(this.extractData)
+            .catch(this.handleErrorLogAction);
+    }
+    showSmsCampaignVideo(smsLog: any) {
+        try {
+            const url = this.authenticationService.REST_URL + 'user/showSmsCampaignVideo';
+            return this.http.post(url, smsLog)
+                .map(this.extractData)
+                .catch(this.handleErrorLogAction);
+        } catch (error) { console.log(error); }
+    }
+    showCampaignSMS(alias: string) {
+        const url = this.authenticationService.REST_URL;
+        return this.http.get(url + 'smsShowCampaign/' + alias)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    showEventCampaignSMS(alias: string) {
+        const url = this.authenticationService.REST_URL;
+        return this.http.get(url + 'smsShowEventCampaign/' + alias)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

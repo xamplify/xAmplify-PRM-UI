@@ -1,0 +1,37 @@
+#signupbox{
+    margin-top: 25px;
+    margin-left: 18%;
+}
+.required {
+	color: red;
+	margin: 1px;
+}
+
+@media screen and (min-width:601px){
+ .mobile-camp{  margin: -169px auto 21px; background: #f1f1f1;  padding: 180px; }
+}
+@media screen and (max-width:600px){
+  .mobile-camp{   }
+}
+#form-preivew-base-div{
+	background: #f1f1f1; 
+}
+#bottom-right {
+	float: right;
+}
+
+#header-center{
+	text-align: center;
+}
+
+#check-mark{
+	font-size: 25px;
+    color: green;
+    margin-right: 10px;
+}
+.alert {padding: 20px; margin: 20px;}
+
+    body {
+        overflow: hidden;
+         background: #f1f1f1  !important; 
+    }

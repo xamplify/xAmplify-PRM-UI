@@ -408,6 +408,8 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.createdBy = this.authenticationService.getUserId();
         this.dealRegistration.leadId = this.lead.userId;
         this.dealRegistration.estimatedClosedDateString = this.dealRegistration.estimatedCloseDate;
+        if(this.dealRegistration.leadCountry == "Select Country")
+        this.dealRegistration.leadCountry = "";
         var obj = [];
         let answers: DealAnswer[] = [];
 
@@ -760,7 +762,7 @@ export class AddLeadsComponent implements OnInit
             if (!this.URL_PATTERN.test(this.dealRegistration.website))
             {
                 this.addWebSiteError(x);
-                this.websiteErrorMessage = "Please enter a valid companyâ€™s URL.";
+                this.websiteErrorMessage = "Please enter a valid company’s URL.";
             } else
             {
                 this.removeWebSiteError();
@@ -769,7 +771,7 @@ export class AddLeadsComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your companyâ€™s URL.';
+                this.websiteErrorMessage = 'Please add your company’s URL.';
         }
     }
 

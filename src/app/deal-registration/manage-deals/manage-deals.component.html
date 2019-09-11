@@ -37,7 +37,7 @@
 					<!-- -------Total Leads------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex" (click)="showCampaigns()">
+						<a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="1!=selectedTabIndex" (click)="showCampaigns()" >
 							<div class="visual">
 
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 1==selectedTabIndex ? '#white' : '#ccc' }"
@@ -82,7 +82,7 @@
 					<!-- -------Opened Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showOpenedLeads()" [class.greay]="3!=selectedTabIndex">
+						<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="showOpenedLeads()" [class.greay]="3!=selectedTabIndex" [class.disabled]="openedDeals == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 3==selectedTabIndex ? '#white' : '#ccc' }"
 								 *ngIf=" 3==selectedTabIndex"></i>
@@ -104,7 +104,7 @@
 					<!-- -------Closed Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showClosedLeads()" [class.greay]="4!=selectedTabIndex">
+						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showClosedLeads()" [class.greay]="4!=selectedTabIndex" [class.disabled]="closedDeals == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 4==selectedTabIndex ? '#white' : '#ccc' }"
 								 *ngIf=" 4==selectedTabIndex"></i>
@@ -126,7 +126,7 @@
 					<!-- -------Hold Deals------- -->
 					<app-count-loader *ngIf="totalDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!totalDealsError &&!totalDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="showDealsOnHold()" [class.greay]="5!=selectedTabIndex">
+						<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="showDealsOnHold()" [class.greay]="5!=selectedTabIndex" [class.disabled]="dealsOnHold == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 5==selectedTabIndex ? '#white' : '#ccc' }"
 								 *ngIf=" 5==selectedTabIndex"></i>
@@ -148,7 +148,7 @@
 					<!-- -------Approved Deals------- -->
 					<app-count-loader *ngIf="openedDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!openedDealsError && !openedDealsLoader">
-						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()" [class.greay]="6!=selectedTabIndex">
+						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showApprovedLeads()" [class.greay]="6!=selectedTabIndex" [class.disabled]="approvedDeals == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 6==selectedTabIndex ? '#white' : '#ccc' }"
 								 *ngIf=" 6==selectedTabIndex"></i>
@@ -170,7 +170,7 @@
 					<!-- -------Closed Deals------- -->
 					<app-count-loader *ngIf="closedDealsLoader"></app-count-loader>
 					<div class="col-xs-8 col-sm-4 col-md-3" *ngIf="!closedDealsError &&!closedDealsLoader ">
-						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()" [class.greay]="7!=selectedTabIndex">
+						<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="showRejectedLeads()" [class.greay]="7!=selectedTabIndex" [class.disabled]="rejectedDeals == 0">
 							<div class="visual">
 								<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1" [ngStyle]="{'color': 7==selectedTabIndex ? '#white' : '#ccc' }"
 								 *ngIf=" 7==selectedTabIndex"></i>

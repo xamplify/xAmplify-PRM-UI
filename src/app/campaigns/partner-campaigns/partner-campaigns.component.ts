@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { SocialService } from '../../social/services/social.service';
@@ -12,13 +12,17 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { UtilService } from 'app/core/services/util.service';
+
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+
 declare var $,swal: any;
 
 @Component({
     selector: 'app-partner-campaigns',
     templateUrl: './partner-campaigns.component.html',
     styleUrls: ['./partner-campaigns.component.css'],
-    providers: [Pagination, HttpRequestLoader]
+    providers: [Pagination, HttpRequestLoader,LandingPageService]
 })
 export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
@@ -55,6 +59,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignType:string;
     role = '';
     customResponse: CustomResponse = new CustomResponse();
+
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+
+
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
@@ -188,18 +196,30 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
     }
     getCampaignById(campaignId) {
-        this.ngxloading = true;
+        //this.ngxloading = true;
         var obj = { 'campaignId': campaignId }
         this.campaignService.getCampaignById( obj )
           .subscribe(
               data => {
-                const emailTemplate = data.emailTemplate;
-                this.campaignName = data.campaignName;
-                if(emailTemplate!=undefined){
-                    this.previewEmailTemplate(emailTemplate, data);
+         if(data.campaignTypeInString=='LANDINGPAGE'){
+                    let landingPage = data.landingPage;
+                    if(landingPage!=undefined){
+                        this.previewLandingPageComponent.showPreview(landingPage);
+                    }else{
+                        swal("Landing Page Not Found","","error");
+                        this.ngxloading = false;
+                    }
+                    
                 }else{
-                    swal("EmailTemplate Not Found","","error");
-                    this.ngxloading = false;
+                    const emailTemplate = data.emailTemplate;
+                    this.campaignName = data.campaignName;
+                    if(emailTemplate!=undefined){
+                        this.previewEmailTemplate(emailTemplate, data);
+                    }else{
+                        swal("EmailTemplate Not Found","","error");
+                        this.ngxloading = false;
+                    }
+
                 }
               },
               error => { this.xtremandLogger.errorPage( error ) },

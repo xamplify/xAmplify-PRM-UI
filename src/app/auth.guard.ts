@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { AuthenticationService } from './core/services/authentication.service';
 import { Roles } from './core/models/roles';
-
+import { ReferenceService } from './core/services/reference.service';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
     roles: Roles = new Roles();
@@ -17,8 +17,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     upgradeBaseUrl = 'upgrade';
     teamBaseUrl = 'team';
     opportunityBaseUrl = 'deals';
-
-    constructor( private authenticationService: AuthenticationService, private router: Router ) {  }
+    formBaseUrl = 'forms';
+    landingPagesUrl = 'landing-pages';
+    constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService ) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
         return this.checkLogin( url );
@@ -38,6 +39,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.emailId = userName;
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
+            this.authenticationService.user.campaignAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
             this.getUserByUserName(userName);
             if(url.includes('home/error')){ this.router.navigateByUrl('/home/dashboard') }
             else if(!this.authenticationService.user.hasCompany) {
@@ -119,7 +121,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         if(url.indexOf(this.opportunityBaseUrl)>-1){
           return this.authorizeUrl(roles, url, this.opportunityBaseUrl);
-      }
+        }
+        if(url.indexOf(this.formBaseUrl)>-1){
+            return this.authorizeUrl(roles, url, this.formBaseUrl);
+         }
+        if(url.indexOf(this.landingPagesUrl)>-1){
+            return this.authorizeUrl(roles, url, this.landingPagesUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -158,7 +166,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         if(urlType===this.opportunityBaseUrl){
           role = this.roles.opportunityRole;
-      }
+        }
+        if(urlType===this.formBaseUrl){
+            role = this.roles.formRole;
+         }
+        if ( urlType === this.landingPagesUrl ) {
+            role = this.roles.landingPageRole;
+        }
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
@@ -171,6 +185,36 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(isSuperAdmin){
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
+        }
+        if(urlType==this.formBaseUrl){
+            let hasFormAccess = false;
+            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            if(campaignAccessDto!=undefined){
+                hasFormAccess = campaignAccessDto.formBuilder;
+            }
+            let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1;  
+            if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1))){
+                return true;
+            }else{
+                return this.goToAccessDenied();
+            }
+        }
+        else if(urlType==this.landingPagesUrl){
+            let hasLandingPageAccess = false;
+            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            if(campaignAccessDto!=undefined){
+                hasLandingPageAccess = campaignAccessDto.landingPage;
+            }
+            let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
+            let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
+            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess){
+                return true;
+            }else{
+                return this.goToAccessDenied();
+            }
+        
         }
         else if(isVendor && !isPartner){
             return this.checkVendorAccessUrls(url, urlType);

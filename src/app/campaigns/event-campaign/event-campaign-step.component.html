@@ -400,7 +400,43 @@ a.disabled {
 									</div>
 								</div>
 							</div>
-						</section>
+            </section>
+            
+            <div class="form-group" *ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner() && enableSMS">
+              <label class="control-label col-sm-3">SMS service</label>
+              <div class="col-sm-9">
+                <div class="email-options-checkbox-group email-options-notify">
+                  <div class="email-options-checkbox clearfix">
+                    <div class="col-sm-1 ui-switch-custom-div">
+                     <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
+                     <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                     [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)" id="falseAction" *ngIf="!smsService">
+                      </switch>
+                      <switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+                     [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="smsServices(smsService)" id="trueAction" *ngIf="smsService">
+                      </switch>
+                    </div>
+                     
+                        <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Enable SMS services for this campaign">
+                          <i class="fa fa-question-circle" style="padding: 8px;"></i>
+                        </span>
+                      
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" [attr.class]="smsTextDivClass" *ngIf="enableSmsText" >
+              <label class="control-label col-sm-4">Sms Text
+                <font style="color: red">
+                  <b>*</b>
+                </font>
+              </label>
+              <div class="col-sm-8">
+                <textarea  id="smsText" placeholder="Sms Text" class="form-control" [(ngModel)]="smsText" name="smsText"
+                 (input)="validateForm();validateField('smsText');" maxlength="200" ></textarea>
+              </div>
+            </div>
 						
 						<div class="form-group" *ngIf="reDistributeEvent || reDistributeEventManage">
                   <label class="col-sm-3 labal-css color-css">Data Sharing</label>

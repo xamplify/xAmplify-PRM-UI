@@ -330,13 +330,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         return campaignData;
     }
     saveAsCampaign() {
+        $('#saveAsModal').modal('hide');
+        this.refService.loading(this.httpRequestLoader, true);
         const campaignData = this.setCampaignData();
         this.campaignService.saveAsCampaign(campaignData)
             .subscribe(data => {
-                console.log(data);
+                this.refService.loading(this.httpRequestLoader, false);
                 this.campaignSuccessMessage = "Campaign copied successfully";
                 $('#lanchSuccess').show(600);
-                $('#saveAsModal').modal('hide');
                 this.showMessageOnTop();
                 this.listCampaign(this.pagination);
                 console.log("saveAsCampaign Successfully");
@@ -447,6 +448,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (event === 'something went wrong') {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
         }
+    }
+    
+    goToFormAnalytics(id:number){
+        this.router.navigate(['/home/forms/cf/'+id]);
     }
 
 }

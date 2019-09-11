@@ -124,6 +124,70 @@
         </li>
         </ul>
       </li>
+      
+      
+            
+      
+      
+      <!-- ------------------------- F o r m ----------------------------------------------------- -->
+		<li *ngIf="authService.module.hasFormAccess" [ngClass]="{'active': location.path().includes('forms')}">
+		        <a  href="javascript:;" (click)="openOrCloseTabs('forms')" >
+		        <i class="fa fa-wpforms"></i>
+		        <span class="title">Form Builder</span>
+		        <span class="arrow "></span>
+		        <span class="selected"></span>
+		        </a>
+		        <ul class="sub-menu" [ngStyle]="{'display': forms? 'block': 'none' }">
+		        <li>
+		            <a  [routerLink] ="['./forms/add']" >
+		            <i class="fa fa-wpforms"></i>
+		            <span class="title">Create Form</span>
+		            </a>
+		          </li>
+		          <li>
+		            <a  [routerLink] ="['./forms/manage']">
+		            <i class="fa fa-list"></i>
+		            <span class="title">Manage Form</span>
+		            </a>
+		          </li>
+		        </ul>
+	     </li>
+	     <!-- ------------------------- L a n d i n g P a g e s -------------------------------------------------------->
+		<li *ngIf="authService.module.hasLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+		        <a  href="javascript:;" (click)="openOrCloseTabs('landing-pages')" >
+		        <i class="fa fa-wpforms"></i>
+		        <span class="title">Landing Pages</span>
+		        <span class="arrow "></span>
+		        <span class="selected"></span>
+		        </a>
+		        <ul class="sub-menu" [ngStyle]="{'display': landing-pages? 'block': 'none' }">
+		        <li>
+		            <a  [routerLink] ="['./landing-pages/select']" >
+		            <i class="fa fa-wpforms"></i>
+		            <span class="title">Create Landing Page</span>
+		            </a>
+		          </li>
+		          <li>
+		            <a  [routerLink] ="['./landing-pages/manage']">
+		            <i class="fa fa-list"></i>
+		            <span class="title">Manage Landing Page</span>
+		            </a>
+		          </li>
+		        </ul>
+	     </li>
+	     
+	     <li *ngIf="!authService.module.hasLandingPageAccess && authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+		        <a [routerLink] ="['./landing-pages/partner']">
+		        <i class="fa fa-wpforms"></i>
+		        <span class="title">Landing Pages</span>
+		        <span class="arrow "></span>
+		        <span class="selected"></span>
+		        </a>
+	     </li>
+      
+      
+      
+      
       <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('campaigns')" >
         <i class="fa fa-bullhorn"></i>
@@ -176,6 +240,7 @@
         </a>
 
       </li>
+
 
       <li *ngIf="false">
         <a [routerLink]="['/home/rss/']">

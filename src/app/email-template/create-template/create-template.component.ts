@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -11,16 +11,24 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { environment } from 'environments/environment';
+import { Pagination } from '../../core/models/pagination';
+import { PagerService } from '../../core/services/pager.service';
+import {FormService} from '../../forms/services/form.service';
+import { SortOption } from '../../core/models/sort-option';
+import { CustomResponse } from '../../common/models/custom-response';
+import { UtilService } from '../../core/services/util.service';
+import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.component';
 declare var BeePlugin,swal,$:any;
 
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
   styleUrls: ['./create-template.component.css'],
-  providers :[EmailTemplate,HttpRequestLoader]
+  providers :[EmailTemplate,HttpRequestLoader,FormService,Pagination,SortOption]
 })
 export class CreateTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    formsLoader:HttpRequestLoader = new HttpRequestLoader();
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     loggedInUserId = 0;
     companyProfileImages:string[]=[];
@@ -36,6 +44,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     loadTemplate = false;
     isAdd:boolean;
     isMinTimeOver:boolean = false;
+    pagination:Pagination = new Pagination();
+    formsError:boolean = false;
+    customResponse: CustomResponse = new CustomResponse();
+    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
     console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);
