@@ -209,7 +209,12 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                                 null,
                                                 null,
                                                 function( template: any ) {
-                                                    let jsonBody = JSON.parse(landingPage.jsonBody);
+                                                    var body = landingPage.jsonBody;
+                                                    if(self.referenceService.companyProfileImage!=undefined){
+                                                        console.log(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                                                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+                                                    }
+                                                    var jsonBody = JSON.parse(body);
                                                     bee.load( jsonBody );
                                                     bee.start( jsonBody );
                                                     self.loadLandingPage = true;
@@ -217,10 +222,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                         } );
                                     } );
                             }
-                            
-                            
-                            
-                            
                         }else{
                             swal("Please Contact Admin!", "No Landing Page Found", "error");
                         }

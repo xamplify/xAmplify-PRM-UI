@@ -37,6 +37,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     statusCode = 200;
     isPartnerLandingPage = false;
     landingPageAliasUrl:string = "";
+    selectedLandingPageTypeIndex = 0;
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor( public referenceService: ReferenceService,
             public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -59,11 +60,20 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if(this.router.url.includes('home/landing-pages/partner')){
             this.isPartnerLandingPage = true;
         }else{
+            this.selectedLandingPageTypeIndex = 0;
+            this.pagination.filterValue = "All";
             this.isPartnerLandingPage = false;
         }
         this.listLandingPages(this.pagination);
         
     }
+    
+    showAllLandingPages(type:string,index:number){
+        this.selectedLandingPageTypeIndex = index;
+        this.pagination.filterValue = type;
+        this.listLandingPages(this.pagination);
+    }
+    
     
     
     listLandingPages( pagination: Pagination ) {

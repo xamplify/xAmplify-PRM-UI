@@ -132,6 +132,12 @@ export class LandingPageService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    getAllCompanyProfileImages(userId:number){
+        return this.http.get(this.authenticationService.REST_URL+"admin/listAllCompanyProfileImages/"+userId+"?access_token="+this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
 
     goToManage() {

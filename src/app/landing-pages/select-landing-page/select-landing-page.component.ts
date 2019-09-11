@@ -21,6 +21,7 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
     ngxloading = false;
     pagination: Pagination = new Pagination();
     searchKey = "";
+    selectedLandingPageTypeIndex = 0;
   constructor( public referenceService: ReferenceService,
           public httpRequestLoader: HttpRequestLoader, public pagerService:
               PagerService, public authenticationService: AuthenticationService,
@@ -28,8 +29,18 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
           private landingPageService:LandingPageService) { }
 
   ngOnInit() {
+      this.selectedLandingPageTypeIndex = 0;
+      this.pagination.filterValue = "All";
       this.listLandingPages(this.pagination);
   }
+  
+  showAllLandingPages(type:string,index:number){
+      this.selectedLandingPageTypeIndex = index;
+      this.pagination.filterValue = type;
+      this.listLandingPages(this.pagination);
+  }
+  
+  
   
   listLandingPages( pagination: Pagination ) {
       this.referenceService.loading( this.httpRequestLoader, true );
