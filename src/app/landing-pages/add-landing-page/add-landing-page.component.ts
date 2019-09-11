@@ -211,7 +211,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                                 function( template: any ) {
                                                     var body = landingPage.jsonBody;
                                                     if(self.referenceService.companyProfileImage!=undefined){
-                                                        console.log(self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
                                                         body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
                                                     }
                                                     var jsonBody = JSON.parse(body);
@@ -240,6 +239,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
+        this.updateCompanyLogo(this.landingPage);
         this.landingPageService.save(this.landingPage) .subscribe(
                 data => {
                     this.referenceService.stopLoader(this.httpRequestLoader);
@@ -264,6 +264,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
+        this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage) .subscribe(
                 data => {
                     this.ngxloading = false;
@@ -288,6 +289,14 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                 () => console.log( "Landing Page Saved" )
                 );
     }
+    
+    updateCompanyLogo(landingPage:LandingPage){
+        landingPage.jsonBody = landingPage.jsonBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+        if(landingPage.htmlBody!=undefined){
+            landingPage.htmlBody = landingPage.htmlBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+        }
+    }
+
     
     
     createButton(text, cb) {
