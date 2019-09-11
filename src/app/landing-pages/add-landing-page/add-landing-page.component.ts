@@ -63,6 +63,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                             this.defaultLandingPage = defaultLandingPage;
                             this.landingPage = new LandingPage();
                             this.landingPage.thumbnailPath = landingPage.thumbnailPath;
+                            this.landingPage.coBranded = landingPage.coBranded;
                             var request = function( method, url, data, type, callback ) {
                                 var req = new XMLHttpRequest();
                                 req.onreadystatechange = function() {
