@@ -590,6 +590,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
+        this.listActiveSocialAccounts(this.loggedInUserId);
         if(this.isAdd){
            this.loadContacts();
            /************Load Email Templates If Campaign Type is 'regular/video' *******************/
@@ -2482,9 +2483,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if (this.selectedAccounts === this.socialStatusProviders.length)
                 this.isAllSelected = true;
         }
-
+        
+        
+        listActiveSocialAccounts(userId: number) {
+            this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
+                .subscribe(
+                    data => {
+                        this.socialService.socialConnections = data;
+                    },
+                    error => console.log(error),
+                    () => {
+                        console.log('getFacebookAccounts() Finished.');
+                    }
+                );
+        }
+        
         listSocialStatusProviders() {
-         if(this.socialStatusProviders.length < 1){
+            if(this.socialStatusProviders.length < 1){
             const socialConnections = this.socialService.socialConnections;
             socialConnections.forEach( data => {
                 if(data.active){
