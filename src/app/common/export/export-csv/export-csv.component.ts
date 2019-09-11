@@ -31,6 +31,7 @@ export class ExportCsvComponent implements OnInit, AfterViewInit{
                       line += ' ';
                   } else{
                       line += array[i][index];
+                      line = line.replace(",,", ",");
                   }
           }
           str += line + '\r\n';
