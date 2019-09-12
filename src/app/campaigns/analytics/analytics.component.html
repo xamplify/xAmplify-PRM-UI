@@ -125,12 +125,12 @@
 									| slice: 0: 25}}</b> <span
 									*ngIf="campaign.landingPage.name?.length>25">...</span>
 							</div>
-							<div class="camp-desc" *ngIf="isDataShare" (click)="showLandingPagePreview(campaign.landingPage)">
+							<div class="camp-desc" *ngIf="isDataShare" (click)="showLandingPagePreview(campaign)">
 								<span>Click for preview</span>
 							</div>
 						</div>
 						<div class="actions-block override-actions" id="landing-page-icons">
-						<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showLandingPagePreview(campaign.landingPage)">
+						<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showLandingPagePreview(campaign)">
 							<i class="fa fa-eye"></i>
 						</a>
 						<a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">

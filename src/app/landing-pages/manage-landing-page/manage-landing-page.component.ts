@@ -134,7 +134,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     
     /***********Preview Email Template*********************/
     showPreview( landingPage: LandingPage ) {
-        this.previewLandingPageComponent.showPreview(landingPage);
+        this.previewLandingPageComponent.showPreview(landingPage,"");
       }
     
     

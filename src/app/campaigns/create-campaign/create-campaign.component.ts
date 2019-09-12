@@ -2956,7 +2956,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     showLandingPagePreview(landingPage:LandingPage){
-        this.previewLandingPageComponent.showPreview(landingPage);
+        this.previewLandingPageComponent.showPreview(landingPage,"");
     }
 
     setLandingPage(landingPage:LandingPage){

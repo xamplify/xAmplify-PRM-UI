@@ -202,9 +202,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           .subscribe(
               data => {
          if(data.campaignTypeInString=='LANDINGPAGE'){
+             console.log(data);
                     let landingPage = data.landingPage;
                     if(landingPage!=undefined){
-                        this.previewLandingPageComponent.showPreview(landingPage);
+                        this.previewLandingPageComponent.showPreview(landingPage,data);
                     }else{
                         swal("Landing Page Not Found","","error");
                         this.ngxloading = false;
