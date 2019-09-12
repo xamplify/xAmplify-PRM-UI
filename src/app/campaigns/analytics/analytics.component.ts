@@ -1882,8 +1882,8 @@ showTimeLineView(){
     $('#donutModelPopup').modal('hide');
   }
   
-  showLandingPagePreview(landingPage:LandingPage){
-      this.previewLandingPageComponent.showPreview(landingPage);
+  showLandingPagePreview(campaign:Campaign){
+      this.previewLandingPageComponent.showPreview(campaign.landingPage,campaign);
   }
     goToCampaignLandingPageAnalytics(campaignId:number){
         this.router.navigate(['home/landing-pages/'+campaignId+'/campaign/analytics']);

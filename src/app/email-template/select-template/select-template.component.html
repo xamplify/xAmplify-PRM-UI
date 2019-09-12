@@ -16,7 +16,6 @@
 				<div class="portlet-title m0">
 					<div class="row">
 						<div class="colxs-12 col-sm-9">
-
 						<div>
 							<ul class="mix-filter">
 								<li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
@@ -29,9 +28,9 @@
 								<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading">Default</li>
 								<li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading">Upload Custom</li>
 								<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event</li>
-									<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event Co-Branding</li>
+								<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event Co-Branding</li>
 								<li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex">Marketo Templates</li>
-                <li class="filter" style="display: none;">Own Template</li>
+                				<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
 						</div>

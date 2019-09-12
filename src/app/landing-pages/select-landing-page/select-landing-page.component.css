@@ -105,9 +105,7 @@ h1 {
 	background-color: #6dcff6;
 }
 
-.grid-box img {
-	margin: 0 auto;
-}
+
 
 @media screen and (max-width:600px) {
 	.modal-template {
@@ -140,6 +138,13 @@ h1 {
 	margin-top: -12px;
 }
 
+.grid-box img {
+     margin: 0 auto;
+     height: 390px !important;
+     width: 100% !important;
+     border-radius: 5px;
+}
+
 #right {
 	float: right;
 }
@@ -160,4 +165,7 @@ h1 {
 }
 #icon{
 	position: relative;right: -11px;
+}
+.landing-page-selected{
+     background-color: #6dcff6;
 }

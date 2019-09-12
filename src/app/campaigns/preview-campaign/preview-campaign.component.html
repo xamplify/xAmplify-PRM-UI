@@ -150,23 +150,26 @@ data-backdrop="static">
                           </a>
                         </span>
                       </div>
-                      <div class="item__content">
+                      
+                        <div class="item__content">
                         <div class="flex-row">
                           <span class="item__name"
-                            [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b><b *ngIf="campaign.landingPage?.name?.length>15">...</b>
+                            [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:20}}</b>
+                            <b *ngIf="campaign.landingPage?.name?.length>20">...</b>
                           </span>
-                          <span lass="item__name" title="created on" style="float:left">
+                          <br>
+                          <span lass="item__name" title="created on">
                           <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.landingPage?.createdDateInString"></app-timestamp></span>
                           </span>
                           <ng-container>
-                            <span style="float:left"  title="{{campaign.landingPage.createdUser}}">
-                                <b>By:</b> <span>{{campaign.landingPage.createdUser|slice:0:12}}<span *ngIf="campaign.landingPage.createdUser?.length>12">...</span></span>
+                            <span style="float:left"  title="{{campaign?.landingPage?.createdUser}}">
+                                <b>By:</b> <span>{{campaign?.landingPage?.createdUser|slice:0:12}}<span *ngIf="campaign?.landingPage?.createdUser?.length>12">...</span></span>
                             </span>
                           </ng-container>
                           <div class="item__actions">
                             <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                               data-toggle="tooltip" data-placement="top"
-                              title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign.landingPage)"> <!-- (click)="preview(file)"  -->
+                              title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign)">
                                 <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
                              </a>
                             </span>

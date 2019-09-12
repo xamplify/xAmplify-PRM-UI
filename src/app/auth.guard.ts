@@ -189,6 +189,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(urlType==this.formBaseUrl){
             let hasFormAccess = false;
             let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            console.log(campaignAccessDto);
             if(campaignAccessDto!=undefined){
                 hasFormAccess = campaignAccessDto.formBuilder;
             }
@@ -197,12 +198,16 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1))){
                 return true;
             }else{
+                console.log(campaignAccessDto);
+                console.log("hasFormAcess:-"+hasFormAccess);
+                console.log("hasRole:-"+hasFormAccess);
                 return this.goToAccessDenied();
             }
         }
         else if(urlType==this.landingPagesUrl){
             let hasLandingPageAccess = false;
             let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            console.log(campaignAccessDto);
             if(campaignAccessDto!=undefined){
                 hasLandingPageAccess = campaignAccessDto.landingPage;
             }
@@ -212,6 +217,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess){
                 return true;
             }else{
+                console.log(campaignAccessDto);
+                console.log("hasLandingPageAccess:-"+hasLandingPageAccess);
+                console.log("hasRole:-"+hasRole);
+                console.log("hasPartnerLandingPageAccess:-"+hasPartnerLandingPageAccess);
                 return this.goToAccessDenied();
             }
         

@@ -1188,7 +1188,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     this.router.navigate(['/home/campaigns/' + this.previewCampaignId + "/remove-access"]);
   }
   
-  showLandingPagePreview(landingPage:LandingPage){
-      this.previewLandingPageComponent.showPreview(landingPage);
+  showLandingPagePreview(campaign:Campaign){
+      this.previewLandingPageComponent.showPreview(campaign.landingPage,campaign);
   }
 }

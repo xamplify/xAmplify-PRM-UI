@@ -151,7 +151,7 @@ h1 {
 	width: 200px;
 }
 #right-margin{
-	margin-right: 56px;
+	margin-right: 66px;
 }
 #search-div{
 	margin-right: 10px;
@@ -182,6 +182,18 @@ h1 {
 #max-height{
 	bottom:25px;
 }
-.grid-box.height{
+/* .grid-box.height{
 	height: 485px;
+} */
+.grid-box img {
+     margin: 0 auto;
+     height: 390px !important;
+     width: 100% !important;
+     border-radius: 5px;
+}
+.landing-page-selected{
+     background-color: #6dcff6;
+}
+#custom-response-div{
+	position: relative; top: -10px;
 }

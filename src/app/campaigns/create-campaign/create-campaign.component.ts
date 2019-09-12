@@ -390,6 +390,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         this.loadEmailTemplates(this.emailTemplatesPagination);
                     }
                 }
+            }else{
+                this.filterCoBrandedLandingPages(this.campaign.enableCoBrandingLogo);
             }
            /*****************Landing Page**************************/ 
            let selectedLandingPageId = this.campaignService.campaign.landingPageId;
@@ -590,6 +592,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
+        this.listActiveSocialAccounts(this.loggedInUserId);
         if(this.isAdd){
            this.loadContacts();
            /************Load Email Templates If Campaign Type is 'regular/video' *******************/
@@ -813,7 +816,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.clearSelectedContactList();
         if(event){
             this.removeTemplateAndAutoResponse();
-            this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            if(this.campaignType!='landingPage'){
+                this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+            }
             this.setCoBrandingLogo(event);
            // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
@@ -844,8 +849,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         });
     }
     setCoBrandingLogo(event:any){
-        if(!this.isLandingPageSwitch){
-            this.campaign.enableCoBrandingLogo = event;
+        this.campaign.enableCoBrandingLogo = event;
+        this.removeTemplateAndAutoResponse();
+        if(this.campaignType!='landingPage'){
             let isRegularCoBranding = this.campaign.emailTemplate!=undefined &&this.campaign.emailTemplate.regularCoBrandingTemplate;
             let isVideoCoBranding =  this.campaign.emailTemplate!=undefined &&  this.campaign.emailTemplate.videoCoBrandingTemplate;
             /*if(!this.campaign.enableCoBrandingLogo || isRegularCoBranding || isVideoCoBranding){
@@ -853,9 +859,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }else{
                 this.hideCoBrandedEmailTemplate = false;
             }*/
-            this.removeTemplateAndAutoResponse();
             this.filterCoBrandedTemplates(event);
+        }else{
+            this.filterCoBrandedLandingPages(event);
         }
+       
+    
 
     }
 
@@ -863,6 +872,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.urls = [];//Removing Auto-Response WebSites
         this.selectedEmailTemplateRow = 0;
         this.isEmailTemplate = false;
+        this.selectedLandingPageRow = 0;
+        this.isLandingPage = false;
     }
     filterCoBrandedTemplates(event:any){
         if(event){
@@ -872,6 +883,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
           this.loadAllEmailTemplates(this.emailTemplatesPagination);
         }
     }
+    
+    filterCoBrandedLandingPages(event:any){
+        if(event){
+            this.listCoBrandedLandingPages();
+        }else{
+          this.listAllLandingPages();
+        }
+    }
+    
+    listCoBrandedLandingPages(){
+        this.landingPagePagination.filterValue = "Co-Branded";
+        this.listLandingPages(this.landingPagePagination);
+    }
+    
+    listAllLandingPages(){
+        this.landingPagePagination.filterValue = "All";
+        this.listLandingPages(this.landingPagePagination);
+    }
+    
 
    loadRegularOrVideoCoBrandedTemplates(){
         if(this.campaignType == "regular"){
@@ -2482,9 +2512,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             if (this.selectedAccounts === this.socialStatusProviders.length)
                 this.isAllSelected = true;
         }
-
+        
+        
+        listActiveSocialAccounts(userId: number) {
+            this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
+                .subscribe(
+                    data => {
+                        this.socialService.socialConnections = data;
+                    },
+                    error => console.log(error),
+                    () => {
+                        console.log('getFacebookAccounts() Finished.');
+                    }
+                );
+        }
+        
         listSocialStatusProviders() {
-         if(this.socialStatusProviders.length < 1){
+            if(this.socialStatusProviders.length < 1){
             const socialConnections = this.socialService.socialConnections;
             socialConnections.forEach( data => {
                 if(data.active){
@@ -2912,7 +2956,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     showLandingPagePreview(landingPage:LandingPage){
-        this.previewLandingPageComponent.showPreview(landingPage);
+        this.previewLandingPageComponent.showPreview(landingPage,"");
     }
 
     setLandingPage(landingPage:LandingPage){
@@ -2934,7 +2978,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     filterLandingPagesForEditCampaign(){
-        if(this.landingPagePagination.searchKey==null){
+        if(this.landingPagePagination.filterValue =='All' && this.landingPagePagination.searchKey==null){
             if(this.landingPagePagination.pageIndex==1){
                 this.showLandingPage=true;
             }else{
@@ -2949,5 +2993,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
+
 
 }

@@ -14,12 +14,21 @@
 			<div class="portlet light clearfix">
 				<div class="portlet-title">
 					<div class="row">
+						<div class="colxs-12 col-sm-9">
+						<div> 
+							<ul class="mix-filter">
+								<li class="filter"  (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
+								<li class="filter"  (click)="showAllLandingPages('Regular',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular</li>
+								<li class="filter"   (click)="showAllLandingPages('Co-Branded',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Co-Branded</li>
+							</ul>
+						</div>
+						</div>
 						<div class="btn-group pull-right" id="right-margin">
 							<div class="portlet-input input-inline input-small" id="search-div">
 									<div class="input-icon right" id="icon">
 										<!-- <i class="icon-magnifier"></i> -->
 										<input type="text" class="form-control" [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-										<button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchLandingPages();"></button>
+										<button class="glyphicon glyphicon-remove search-box-item-clear" (click)="searchKey='';searchLandingPages();" *ngIf="searchKey?.length>0"></button>
 										<button type="submit" class="search-box-item-click" (click)="searchLandingPages()"><i class="fa fa-search"></i></button>
 									</div>
 								</div>
@@ -32,8 +41,8 @@
 						<app-error-pages *ngIf="httpRequestLoader.isServerError"></app-error-pages>
 						<ng-container *ngIf="!httpRequestLoader.isLoading">
 							<div id="max-height" class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
-							<div id="height"  class="grid-box">
-								<img class="img-responsive center-block" src="assets/images/Landing-Pages/{{landingPage.imageName}}" alt="Not Found" id="auto-height">
+							<div  class="grid-box">
+								<img class="img-responsive center-block" src="assets/images/Landing-Pages/{{landingPage.imageName}}" alt="Not Found">
 								<h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
 								<div class="bar">
 									<a data-toggle="tooltip" data-placement="top" title="Create Landing Page" (click)="showLandingPage(landingPage.id)">

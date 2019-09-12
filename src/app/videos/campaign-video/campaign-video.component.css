@@ -92,8 +92,8 @@
     top: 15px !important;
     width: 91px !important;
     height: 58px !important;
-    right: 21px !important;
-    background: transparent !important;
+    right: 45px !important;
+    /* background: transparent !important; */
 }
 .hideDiv {
     display: none;

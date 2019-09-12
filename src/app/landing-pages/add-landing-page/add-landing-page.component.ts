@@ -63,6 +63,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                             this.defaultLandingPage = defaultLandingPage;
                             this.landingPage = new LandingPage();
                             this.landingPage.thumbnailPath = landingPage.thumbnailPath;
+                            this.landingPage.coBranded = landingPage.coBranded;
                             var request = function( method, url, data, type, callback ) {
                                 var req = new XMLHttpRequest();
                                 req.onreadystatechange = function() {
@@ -209,7 +210,11 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                                 null,
                                                 null,
                                                 function( template: any ) {
-                                                    let jsonBody = JSON.parse(landingPage.jsonBody);
+                                                    var body = landingPage.jsonBody;
+                                                    if(self.referenceService.companyProfileImage!=undefined){
+                                                        body = body.replace("https://xamp.io/vod/replace-company-logo.png", self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage );
+                                                    }
+                                                    var jsonBody = JSON.parse(body);
                                                     bee.load( jsonBody );
                                                     bee.start( jsonBody );
                                                     self.loadLandingPage = true;
@@ -217,10 +222,6 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                         } );
                                     } );
                             }
-                            
-                            
-                            
-                            
                         }else{
                             swal("Please Contact Admin!", "No Landing Page Found", "error");
                         }
@@ -239,6 +240,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
+        this.updateCompanyLogo(this.landingPage);
         this.landingPageService.save(this.landingPage) .subscribe(
                 data => {
                     this.referenceService.stopLoader(this.httpRequestLoader);
@@ -263,6 +265,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         this.landingPage.name = this.name;
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
+        this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage) .subscribe(
                 data => {
                     this.ngxloading = false;
@@ -287,6 +290,14 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                 () => console.log( "Landing Page Saved" )
                 );
     }
+    
+    updateCompanyLogo(landingPage:LandingPage){
+        landingPage.jsonBody = landingPage.jsonBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+        if(landingPage.htmlBody!=undefined){
+            landingPage.htmlBody = landingPage.htmlBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
+        }
+    }
+
     
     
     createButton(text, cb) {

@@ -12,4 +12,5 @@ export class LandingPage {
     analyticsCount:number;
     createdUser:string;
     createdDateInString:string;
+    coBranded:boolean;
 }

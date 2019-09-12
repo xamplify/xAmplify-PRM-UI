@@ -661,8 +661,11 @@ legend {
     margin: 10px 0;
     text-align: center;
     position: relative;
-    padding: 1em 0;
-    box-shadow: 1px 1px 1px 1px #adadad;
+   /*  padding: 1em 0;
+    box-shadow: 1px 1px 1px 1px #adadad; */
+    padding-bottom: 1em;
+    border-radius: 5px;
+    border: 1px solid #eaeaea;
   }
 }
 

@@ -126,4 +126,5 @@ export class UtilService {
       cropperSetting.noFileInput = true;
       return cropperSetting;
     }
+    
 }
