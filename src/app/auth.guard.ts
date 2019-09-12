@@ -232,7 +232,6 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             return this.checkPartnerAccessUrls(url, urlType)
         }
         else{
-            alert("atlast I came ere");
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1 || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
 

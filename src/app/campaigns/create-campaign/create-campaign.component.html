@@ -178,7 +178,7 @@
 											</div>
 
 
-											<div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && !isLandingPageSwitch">
+											<div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
 												<label class="control-label col-sm-4">Co-Branding Logo</label>
 												<div class="col-sm-8">
 													<switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -802,7 +802,7 @@
                 </ul>
                 <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
                    <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                   placeholder="Search for a template" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
+                   placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput=''"></button>
                    <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                 </div>
@@ -843,11 +843,11 @@
                                     <span class="item__name" style="float:left"
                                       [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
                                     </span>
+                                    <br>
                                     <span lass="item__name" title="created on" style="float:left">
-                                        <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
-                                        <span><app-timestamp [isOnlyDate]="true"
-                                          [dateAndTime]="campaign?.emailTemplate?.createdDate">
-                                        </app-timestamp></span>
+                                        <span>
+                                        	<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.emailTemplate?.createdDate"></app-timestamp>
+                                        </span>
                                     </span>
                                     <ng-container *ngIf="campaign?.emailTemplate?.type?.toLocaleString()!='PARTNER'">
                                       <span style="float:left"  title="{{campaign.emailTemplate.createdBy}}">
@@ -964,7 +964,7 @@
               <div class="portlet light">
                 <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
                    <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control"
-                   placeholder="Search for a landing page" (keypress)="eventHandler($event.keyCode, 'landingPages')">
+                   placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'landingPages')">
                    <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput=''"></button>
                    <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()"><i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                 </div>
