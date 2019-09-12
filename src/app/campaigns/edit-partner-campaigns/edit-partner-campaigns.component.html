@@ -192,7 +192,7 @@
             </fieldset>
             
              <!-- ----------Landing Page---------- -->
-            <fieldset>
+            <fieldset *ngIf="campaignType=='LANDINGPAGE'">
               <legend>Selected landing page</legend>
               <div class="row m0" (click)="previewCampaignLandingPage(campaign)" style="cursor: pointer;">
                 <div class="col-xs-3">
