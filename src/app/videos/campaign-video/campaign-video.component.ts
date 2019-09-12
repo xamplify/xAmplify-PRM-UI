@@ -371,7 +371,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('.h-video').remove();
         this.videoUtilService.player360VideoJsFiles();
         this.videoUtilService.video360withm3u8();
-        const str = '<video id=videoId poster=' + this.posterImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls ></video>';
+        const str = '<video id=videoId poster=' + this.posterImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" autoplay controls ></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.campaignVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -385,7 +385,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const selfPanorama = this;
         const player = videojs('videoId', {
              "controls": true,
-           //  "autoplay": false,
+             "autoplay": true,
              "preload": "auto",
              "customControlsOnMobile": true,
              "nativeControlsForTouch": true
@@ -450,7 +450,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
+                    player.play();
                     this.play();
+
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {

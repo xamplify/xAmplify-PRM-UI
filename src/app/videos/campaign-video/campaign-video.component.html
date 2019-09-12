@@ -10,7 +10,8 @@
 <div id="overLayImage"></div>
 <div id="overlay-logo" class="video-js" [ngClass]="{'logoFullscreen':fullScreenMode}">
     <a  [href]="logoLink" target="_blank" [class.disabled]="logoLink===null">
-        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive">
+        <img *ngIf="logoImageUrlPath" [src]="authenticationService.MEDIA_URL + logoImageUrlPath"
+         class="img-responsive" style="filter:none;">
     </a>
 </div>
 </div>
