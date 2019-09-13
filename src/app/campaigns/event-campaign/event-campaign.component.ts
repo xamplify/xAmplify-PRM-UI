@@ -674,12 +674,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               emailTemplatesPagination.campaignDefaultTemplate = false;
               emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
           }
-          
+         /* 
           if(this.eventCampaign.enableCoBrandingLogo){
               emailTemplatesPagination.filterBy = null;
           }else{
               emailTemplatesPagination.filterBy = 'campaignEventEmails';
-          }
+          }*/
+          
+          emailTemplatesPagination.filterBy = 'campaignEventEmails';
           
           emailTemplatesPagination.userId = this.loggedInUserId;
           this.emailTemplateService.listTemplates(emailTemplatesPagination,this.loggedInUserId)
@@ -1274,20 +1276,35 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
 
   getEmailTemplatePreview(emailTemplate: EmailTemplate) {
-    let body = emailTemplate.body;
-    let emailTemplateName = emailTemplate.name;
-    if (emailTemplateName.length > 50) {
-      emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-    }
-    $("#htmlContent").empty();
-    $("#email-template-title").empty();
-    $("#email-template-title").append(emailTemplateName);
-    $('#email-template-title').prop('title', emailTemplate.name);
-    let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
-    $("#htmlContent").append(updatedBody);
-    $('.modal .modal-body').css('overflow-y', 'auto');
-    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-    $("#show_email_template_preivew").modal('show');
+   
+      
+      this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+              ( data: any ) => {
+                  let body = emailTemplate.body;
+                  let self  = this;
+                  $.each(data,function(index,value){
+                      body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                  });
+                  body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+
+                  let emailTemplateName = emailTemplate.name;
+                  if (emailTemplateName.length > 50) {
+                    emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+                  }
+                  $("#htmlContent").empty();
+                  $("#email-template-title").empty();
+                  $("#email-template-title").append(emailTemplateName);
+                  $('#email-template-title').prop('title', emailTemplate.name);
+                  let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
+                  $("#htmlContent").append(updatedBody);
+                  $('.modal .modal-body').css('overflow-y', 'auto');
+                  $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                  $("#show_email_template_preivew").modal('show');
+                  
+                  
+              },
+              error => {this.logger.error("error in getAllCompanyProfileImages("+this.loggedInUserId+")", error); },
+              () =>  this.logger.info("Finished getAllCompanyProfileImages()"));  
   }
 
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
