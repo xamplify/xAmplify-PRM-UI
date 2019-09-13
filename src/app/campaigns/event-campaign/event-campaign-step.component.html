@@ -536,6 +536,40 @@ a.disabled {
 							</ul>
 						</div>
 					</div>
+					
+					<div class="boxes portlet light">
+						<div class="portlet-title" style="display:block">
+							<h4 class="pull-left f-w-600">Public vs Private</h4>
+							<div class="pull-right" style="margin: 5px 5px 0px 0px;">
+							<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
+									[status]="eventCampaign.publicEventCampaign"
+									[onText]="'Public'"
+									[offText]="'Private'"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.offPrivateColor"
+									[size]="callActionSwitch.size"
+									(statusChange)="publicVsPrivateSwitchStatusChange()">
+								</switch>
+							</div>
+						</div>
+					</div>
+				<!-- 	
+					<div class="form-group">
+							<label for="hostedBy" class="labal-css color-css">Public vs Private</label>
+							<div class="col-sm-9">
+								<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
+									[status]="eventCampaign.publicEventCampaign"
+									[onText]="'Public'"
+									[offText]="'Private'"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.offDefaultColor"
+									[size]="callActionSwitch.size"
+									(statusChange)="publicVsPrivateSwitchStatusChange()">
+								</switch>
+							</div>
+						</div> -->
+					
+					
 					<div class="boxes portlet light" *ngIf="false">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Listing Privacy</h4>

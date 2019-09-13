@@ -14,6 +14,7 @@ export class CallActionSwitch {
     onYellowColorSwitch = 'yellow';
     onDefaultColorSwitch = 'default';
     offDefaultColor = 'gray';
+    offPrivateColor = 'red';
     onTextValueView = 'GRID';
     offTextValueView = 'LIST';
     isGridView = true;

@@ -662,21 +662,27 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.loadEmailTemplates(this.emailTemplatesPagination);
   }
 
-  loadEmailTemplates(pagination:Pagination){
+  loadEmailTemplates(emailTemplatesPagination:Pagination){
       //Not calling this method for only partner
       if(!this.authenticationService.isOnlyPartner()){
           this.gridLoader = true;
-          pagination.throughPartner = this.eventCampaign.channelCampaign;
+          emailTemplatesPagination.throughPartner = this.eventCampaign.channelCampaign;
           this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-          if(pagination.searchKey==null || pagination.searchKey==""){
-              pagination.campaignDefaultTemplate = true;
+          if(emailTemplatesPagination.searchKey==null || emailTemplatesPagination.searchKey==""){
+              emailTemplatesPagination.campaignDefaultTemplate = true;
           }else{
-              pagination.campaignDefaultTemplate = false;
-              pagination.isEmailTemplateSearchedFromCampaign = true;
+              emailTemplatesPagination.campaignDefaultTemplate = false;
+              emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
           }
-          pagination.filterBy = 'campaignEventEmails';
-          pagination.userId = this.loggedInUserId;
-          this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
+          
+          if(this.eventCampaign.enableCoBrandingLogo){
+              emailTemplatesPagination.filterBy = null;
+          }else{
+              emailTemplatesPagination.filterBy = 'campaignEventEmails';
+          }
+          
+          emailTemplatesPagination.userId = this.loggedInUserId;
+          this.emailTemplateService.listTemplates(emailTemplatesPagination,this.loggedInUserId)
           .subscribe(
               (data:any) => {
                   let allEventEmailTemplates = data.emailTemplates;
@@ -691,8 +697,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                            this.campaignEmailTemplates = allEventEmailTemplates;
                        }
                   }
-                  pagination.totalRecords = data.totalRecords;
-                  this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
+                  this.emailTemplatesPagination.totalRecords = data.totalRecords;
+                  this.emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, this.campaignEmailTemplates);
                   this.filterEmailTemplateForEditCampaign();
                  this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
               },
@@ -1748,6 +1754,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     onlineMeetingSwitchStatusChange(){
         this.eventCampaign.onlineMeeting = !this.eventCampaign.onlineMeeting;
         this.resetTabClass();
+    }
+    
+    publicVsPrivateSwitchStatusChange(){
+        this.eventCampaign.publicEventCampaign = !this.eventCampaign.publicEventCampaign;
     }
 
     resetTabClass(){
