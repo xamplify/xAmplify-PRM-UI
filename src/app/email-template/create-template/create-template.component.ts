@@ -137,10 +137,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_end_time}}﻿ merge tag.", "error" );
                     return false;
                 }
-                if ( jsonContent.indexOf( self.eventLocation ) < 0 ) {
+/*                if ( jsonContent.indexOf( self.eventLocation ) < 0 ) {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{address}} merge tag.", "error" );
                     return false;
-                }
+                }*/
             }
 
             if ( !isDefaultTemplate ) {
@@ -227,7 +227,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
         mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
 
-        if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
+        if (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
             mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );
             mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' } );
