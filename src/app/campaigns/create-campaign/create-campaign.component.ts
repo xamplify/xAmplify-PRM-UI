@@ -2971,7 +2971,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     showLandingPagePreview(landingPage:LandingPage){
-        this.previewLandingPageComponent.showPreview(landingPage,"");
+        if(this.campaign.enableCoBrandingLogo){
+            landingPage.showYourPartnersLogo = true;
+        }else{
+            landingPage.showYourPartnersLogo = false;
+        }
+        this.previewLandingPageComponent.showPreview(landingPage);
     }
 
     setLandingPage(landingPage:LandingPage){

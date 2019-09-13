@@ -1,5 +1,4 @@
 export class LandingPage {
-    
     id:number;
     name:string;
     thumbnailPath:string;
@@ -13,4 +12,8 @@ export class LandingPage {
     createdUser:string;
     createdDateInString:string;
     coBranded:boolean;
+    partnerId:number;
+    showPartnerCompanyLogo:boolean=false;
+    showYourPartnersLogo:boolean = false;
+
 }

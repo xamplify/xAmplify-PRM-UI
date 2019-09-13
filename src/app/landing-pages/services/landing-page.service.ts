@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { Pagination } from '../../core/models/pagination';
 import { LandingPage } from '../models/landing-page';
+import { LandingPageGetDto } from '../models/landing-page-get-dto';
 import {LandingPageAnalyticsPostDto} from '../models/landing-page-analytics-post-dto';
 import { Router } from '@angular/router';
 import { GeoLocationAnalytics } from "../../util/geo-location-analytics";
@@ -85,20 +86,23 @@ export class LandingPageService {
             .catch( this.handleError );
     }
 
-    getHtmlContent( id: number ): Observable<any> {
-        return this.http.get( this.URL + "getHtmlBodyById/" + id + "?access_token=" + this.authenticationService.access_token, "" )
+    getHtmlContent(landingPageDto:LandingPageGetDto): Observable<any> {
+        return this.http.post( this.URL + "getHtmlBodyById?access_token=" + this.authenticationService.access_token, landingPageDto )
             .map( this.extractData )
             .catch( this.handleError );
     }
     
     getHtmlContentByAlias( alias: string,isPartnerLandingPage:boolean) {
-        let url  = "/getHtmlBodyByAlias/";
         if(isPartnerLandingPage){
-            url  = "/getPartnerHtmlBodyByAlias/";
-        }
-        return this.http.get( this.authenticationService.REST_URL + url + alias, "" )
+            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias" + alias,)
             .map( this.extractData )
             .catch( this.handleError );
+        }else{
+            return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias, "" )
+            .map( this.extractData )
+            .catch( this.handleError );
+        }
+        
     }
     
     getHtmlContentByCampaignLandingPageAlias( alias: string ) {
