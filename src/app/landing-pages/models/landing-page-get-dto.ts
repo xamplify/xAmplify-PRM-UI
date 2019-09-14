@@ -5,5 +5,6 @@ export class LandingPageGetDto {
     showYourPartnersLogo=false;
     partnerId:number;
     landingPageAlias:string;
+    partnerLandingPage = false;
 }
 

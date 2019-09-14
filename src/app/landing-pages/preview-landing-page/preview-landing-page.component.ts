@@ -27,6 +27,8 @@ export class PreviewLandingPageComponent implements OnInit {
       landingPageDto.showPartnerCompanyLogo = landingPage.showPartnerCompanyLogo;
       landingPageDto.partnerId  = landingPage.partnerId;
       landingPageDto.showYourPartnersLogo = landingPage.showYourPartnersLogo;
+      landingPageDto.partnerLandingPage = landingPage.partnerLandingPage;
+      landingPageDto.landingPageAlias = landingPage.alias;
       let htmlContent = "#landingPage-html-content";
       $(htmlContent).empty();
       let title = "#landing-page-preview-title";

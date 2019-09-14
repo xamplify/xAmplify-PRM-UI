@@ -137,6 +137,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if(this.isPartnerLandingPage){
             landingPage.showPartnerCompanyLogo = true;
             landingPage.partnerId = this.loggedInUserId;
+            landingPage.partnerLandingPage = true;
+            landingPage.alias = landingPage.alias;
         }else{
             landingPage.showYourPartnersLogo = true;
         }

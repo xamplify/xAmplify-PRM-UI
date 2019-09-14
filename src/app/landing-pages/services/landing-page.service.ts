@@ -94,7 +94,7 @@ export class LandingPageService {
     
     getHtmlContentByAlias( alias: string,isPartnerLandingPage:boolean) {
         if(isPartnerLandingPage){
-            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias" + alias,)
+            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias/" + alias,)
             .map( this.extractData )
             .catch( this.handleError );
         }else{

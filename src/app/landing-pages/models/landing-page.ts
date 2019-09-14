@@ -15,5 +15,6 @@ export class LandingPage {
     partnerId:number;
     showPartnerCompanyLogo:boolean=false;
     showYourPartnersLogo:boolean = false;
+    partnerLandingPage = false;
 
 }
