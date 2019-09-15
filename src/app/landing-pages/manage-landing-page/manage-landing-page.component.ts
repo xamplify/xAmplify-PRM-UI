@@ -188,6 +188,14 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse('SUCCESS',message,true );
                 this.pagination.pageIndex = 1;
                 this.listLandingPages(this.pagination);
+            }else{
+                let campaignNames = "";
+                $.each(response.data,function(index,value){
+                    campaignNames+= (index+1)+"."+value+"<br><br>";
+                });
+                let message = response.message+"<br><br>"+campaignNames;
+                this.customResponse = new CustomResponse('ERROR',message,true );
+                this.referenceService.loading(this.httpRequestLoader, false);
             }
 
         },
