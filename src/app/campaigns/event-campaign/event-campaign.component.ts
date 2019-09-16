@@ -675,11 +675,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
               emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
           }
           
-          if(this.eventCampaign.enableCoBrandingLogo){
+          /*if(this.eventCampaign.enableCoBrandingLogo){
               emailTemplatesPagination.filterBy = null;
           }else{
               emailTemplatesPagination.filterBy = 'campaignEventEmails';
-          }
+          }*/
+          
+          emailTemplatesPagination.filterBy = 'campaignEventEmails';
           
           emailTemplatesPagination.userId = this.loggedInUserId;
           this.emailTemplateService.listTemplates(emailTemplatesPagination,this.loggedInUserId)
