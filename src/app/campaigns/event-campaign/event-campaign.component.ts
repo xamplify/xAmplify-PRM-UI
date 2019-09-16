@@ -585,7 +585,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       }else{
           this.emailTemplatesPagination.throughPartner = true;
           this.eventCampaign.enableCoBrandingLogo = true;
-          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
           this.loadEmailTemplates(this.emailTemplatesPagination);
       }
       if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
