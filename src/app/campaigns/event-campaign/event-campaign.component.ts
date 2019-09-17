@@ -574,8 +574,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.eventCampaign.userListIds = [];
       }
   }
+  
+  clearSelectedTemplate(){
+      this.eventCampaign.emailTemplate = new EmailTemplate;
+      this.eventCampaign.selectedEditEmailTemplate = new EmailTemplate;
+      this.resetTabClass();
+  }
+  
   switchStatusChange(){
     this.clearSelectedContactList();
+    this.clearSelectedTemplate();
     this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
       this.contactListsPagination.pageIndex = 1;
       if(!this.eventCampaign.channelCampaign){
@@ -641,6 +649,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   setCoBrandingLogo(event:any){
       this.eventCampaign.enableCoBrandingLogo = event;
+      this.clearSelectedTemplate();
       if(this.eventCampaign.enableCoBrandingLogo){
           //this.eventCampaign.enableCoBrandingLogo = true;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
