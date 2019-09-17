@@ -578,6 +578,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   clearSelectedTemplate(){
       this.eventCampaign.emailTemplate = new EmailTemplate;
       this.eventCampaign.selectedEditEmailTemplate = new EmailTemplate;
+      this.emailTemplateId = 0;
       this.resetTabClass();
   }
   
@@ -704,7 +705,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                   let allEventEmailTemplates = data.emailTemplates;
                   this.gridLoader = false;
                   this.campaignEmailTemplates = [];
-                  for(let i=0;i< allEventEmailTemplates.length;i++){
+                  this.campaignEmailTemplates = allEventEmailTemplates;
+                 /* for(let i=0;i< allEventEmailTemplates.length;i++){
                       if(this.eventCampaign.channelCampaign){
                           if(allEventEmailTemplates[i].beeEventCoBrandingTemplate){
                            this.campaignEmailTemplates.push(allEventEmailTemplates[i]);
@@ -712,9 +714,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                        }else{
                            this.campaignEmailTemplates = allEventEmailTemplates;
                        }
-                  }
+                  }*/
                   this.emailTemplatesPagination.totalRecords = data.totalRecords;
-                  this.emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, this.campaignEmailTemplates);
+                  this.emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, data.emailTemplates);
                   this.filterEmailTemplateForEditCampaign();
                  this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
               },

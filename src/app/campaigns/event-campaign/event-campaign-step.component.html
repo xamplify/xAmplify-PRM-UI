@@ -841,8 +841,8 @@ a.disabled {
                       </div>
                   </ng-container>
                   <ul class="content__list"
-										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
-										<li *ngIf="emailTemplateId!=emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
+										*ngFor="let emailTemplate of campaignEmailTemplates;let i =index">
+										<li *ngIf="emailTemplateId != emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">
