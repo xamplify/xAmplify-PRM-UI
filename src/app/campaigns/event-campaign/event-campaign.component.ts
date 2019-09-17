@@ -353,7 +353,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
-        if(!this.eventCampaign.nurtureCampaign){ this.loadEmailTemplates(this.emailTemplatesPagination); }
+        if(!this.eventCampaign.nurtureCampaign){
+            this.loadEmailTemplates(this.emailTemplatesPagination); }
         this.recipientsTabClass = "enableRecipientsTab";
         this.detailsTab = true;
         this.resetTabClass();
@@ -688,6 +689,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
           }else{
               emailTemplatesPagination.campaignDefaultTemplate = false;
               emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
+          }
+          
+          if(this.isEditCampaign){
+              if(this.eventCampaign.enableCoBrandingLogo){
+                  this.emailTemplatesPagination.throughPartner = true;
+                  this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+              }
+              else if(this.eventCampaign.channelCampaign){
+                  this.emailTemplatesPagination.throughPartner = true;
+              }
           }
           
           /*if(this.eventCampaign.enableCoBrandingLogo){
