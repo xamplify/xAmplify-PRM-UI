@@ -1,12 +1,58 @@
 <div [hidden]="!processor.isProcessing">
-  <div class="loader-container">
-    <div class="loader"></div>
-    <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
-  </div>
+	<div class="loader-container">
+		<div class="loader"></div>
+		<img alt="logo" class="logo-default"
+			src="assets/images/xamplify-logo.png">
+	</div>
 </div>
 <div [hidden]="processor.isProcessing">
-  <div class="page-content"><div class="portlet light" style="border: navajowhite;">
-     <div class="portlet-body clearfix">
-     <h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >{{message}}</h3></div></div>
-  </div>
+	<div class="page-content">
+		<div class="portlet light" style="border: navajowhite;">
+		<img src="https://xamplify.io/assets/images/xamplify-logo.png" class="img-rounded" alt="Cinque Terre" width="200" height="100" style="height: 60px;top: 0;filter: grayscale(0);"> 
+		<div *ngIf="!isShowSuccessMessage">
+			<div class="container" *ngIf="isUnsubscribed" style="margin-top: 50px;">
+				<h1>you have already unSubscribed from this organization <b>{{companyName}}</b></h1>
+				<h2>Would you like to ReSubscribe?</h2>
+				<h3>Tell us the Reason</h3>
+				<form style="line-height: 25px; font-size: 15px; width:50%;">
+					<label for="comment">Reason Or Message:</label>
+                    <textarea class="form-control" [(ngModel)]="reason" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+				</form>
+				<div style="margin-top: 20px;">
+					<button type="button"
+						class="btn btn-primary" (click)="unSubscribeUser()">Submit</button>
+				</div>
+			</div>
+
+
+
+
+			<div class="container" *ngIf="!isUnsubscribed" style="margin-top: 50px;">
+				<h1>We're sorry to see you go!</h1>
+				<h2>Would you like to Unsubscribe?</h2>
+				<h3>Select the Reason</h3>
+				<form style="line-height: 25px; font-size: 15px;">
+					<input type="radio" (click)="reason = 'reason1';isOtherReason = false" name="reason"
+						value="reason"> Reason1<br> <input type="radio"
+						(click)="reason = 'reason2';isOtherReason = false" name="reason" value="reason">
+					Reason2<br> <input type="radio" (click)="reason = 'reason3';isOtherReason = false"
+						name="reason" value="reason"> Reason3<br>
+						<input type="radio" (click)="isOtherReason = true"
+						name="reason" value="reason"> Other<br>
+						<div *ngIf="isOtherReason" style="width: 50%;">
+						<label for="comment">Reason:</label>
+                    <textarea class="form-control" [(ngModel)]="reason" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+				</div>
+				</form>
+				<div style="margin-top: 20px;">
+					<button type="button" [disabled]="reason == ''"
+						class="btn btn-primary" (click)="unSubscribeUser()">Submit</button>
+				</div>
+			</div>
+			</div>
+			<div *ngIf="isShowSuccessMessage" class="alert alert-success">
+  Your Response has been stored successfully
+</div>
+		</div>
+	</div>
 </div>
