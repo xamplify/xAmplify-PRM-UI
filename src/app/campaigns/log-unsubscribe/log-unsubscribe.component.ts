@@ -78,7 +78,7 @@ export class LogUnsubscribeComponent implements OnInit {
       .subscribe(
         (result: any) => {
           console.log(result);
-          this.message = result.message;
+          this.message = result["_body"].message;
           this.isShowSuccessMessage = true
         },
         (error: any) => {
