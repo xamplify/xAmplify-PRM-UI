@@ -1137,6 +1137,33 @@
 	</div>
 </div>
 
+<!-- T&C Modal -->
+<div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+	role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content" style="top: 100px;">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you Sure?</h4>
+			</div>
+			<div class="modal-body">
+			<div>
+				<h4 class="modal-title f-w-600">You are agreeing xAmplify Terms&Conditions </h4>
+			</div>
+			<div class="form-group" style="margin-top: 15px;">
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> I Agree <a (click)="navigateToTermsAndConditions()">T&C</a><br>
+			</div>
+			<div *ngIf="!isCheckTC" style="color:red">You must agree T&C</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()">Decline</button>
+				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
+					(click)="saveContactsWithPermission()">Accept</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
