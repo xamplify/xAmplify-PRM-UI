@@ -53,6 +53,9 @@ export class LogUnsubscribeComponent implements OnInit {
         }
       );
   }
+  setOtherOption(){
+      this.isOtherReason = false;
+  }
   
   unSubscribeUser(){
       

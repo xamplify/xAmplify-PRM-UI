@@ -8,10 +8,10 @@
 <div [hidden]="processor.isProcessing">
 	<div class="page-content">
 		<div class="portlet light" style="border: navajowhite;">
-		<img src="https://xamplify.io/assets/images/xamplify-logo.png" class="img-rounded" alt="Cinque Terre" width="200" height="100" style="height: 60px;top: 0;filter: grayscale(0);"> 
+		<img src="https://xamplify.io/assets/images/xamplify-logo.png" class="img-rounded" alt="Cinque Terre" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0;filter: grayscale(0);"> 
 		<div *ngIf="!isShowSuccessMessage">
 			<div class="container" *ngIf="isUnsubscribed" style="margin-top: 50px;">
-				<h1>you have already unSubscribed from this organization <b>{{companyName}}</b></h1>
+				<h1>You have already unSubscribed for receiving emails from <b>{{companyName}}</b></h1>
 				<h2>Would you like to ReSubscribe?</h2>
 				<h3>Tell us the Reason</h3>
 				<form style="line-height: 25px; font-size: 15px; width:50%;">
@@ -32,10 +32,10 @@
 				<h2>Would you like to Unsubscribe?</h2>
 				<h3>Select the Reason</h3>
 				<form style="line-height: 25px; font-size: 15px;">
-					<input type="radio" (click)="reason = 'reason1';isOtherReason = false" name="reason"
+					<input type="radio" (click)="reason = 'reason1';setOtherOption()" name="reason"
 						value="reason"> Reason1<br> <input type="radio"
-						(click)="reason = 'reason2';isOtherReason = false" name="reason" value="reason">
-					Reason2<br> <input type="radio" (click)="reason = 'reason3';isOtherReason = false"
+						(click)="reason = 'reason2';setOtherOption()" name="reason" value="reason">
+					Reason2<br> <input type="radio" (click)="reason = 'reason3';setOtherOption()"
 						name="reason" value="reason"> Reason3<br>
 						<input type="radio" (click)="isOtherReason = true"
 						name="reason" value="reason"> Other<br>
@@ -51,7 +51,7 @@
 			</div>
 			</div>
 			<div style="margin-top: 70px;" *ngIf="isShowSuccessMessage" class="alert alert-success">
-  Your Response has been stored successfully
+            {{message}}
 </div>
 		</div>
 	</div>
