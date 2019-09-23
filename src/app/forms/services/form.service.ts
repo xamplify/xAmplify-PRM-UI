@@ -76,7 +76,12 @@ export class FormService {
     
 
     getFormAnalytics( pagination: Pagination,alias:string,campaignFormAnalytics:boolean): Observable<any> {
-        let url = this.URL + "analytics/"+alias;
+        let url = "";
+        if(alias.length>0){
+            url = this.URL + "analytics/"+alias;
+        }else{
+            url = this.URL + "partner-landingPage/analytics";
+        }
         return this.http.post(url+"?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );

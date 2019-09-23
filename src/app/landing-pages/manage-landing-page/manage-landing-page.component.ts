@@ -228,8 +228,14 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     goToFormAnalytics(id:number){
         this.router.navigate(['/home/forms/lf/'+id]);
     }
+    goToPartnerLandingPageFormAnalytics(alias:string){
+        this.router.navigate(['/home/forms/partner/lf/'+alias]);
+    }
     goToLandingPageAnalytics(id:number){
         this.router.navigate(['/home/landing-pages/'+id+'/analytics']);
+    }
+    goToPartnerLandingPageAnalytics(alias:string){
+        this.router.navigate(['/home/landing-pages/partner/'+alias+'/analytics']);
     }
 
     

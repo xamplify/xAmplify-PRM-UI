@@ -173,18 +173,24 @@
 		            <span class="title">Manage Landing Pages</span>
 		            </a>
 		          </li>
+		          	<!-- <li *ngIf="authService.module.hasLandingPageAccess && authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+				       <a  [routerLink] ="['./landing-pages/partner']">
+		           		 <i class="fa fa-handshake-o"></i>
+		           		 <span class="title">Partner Landing Pages</span>
+		            </a>
+	    		 </li> -->
 		        </ul>
 	     </li>
-	    <!--  
-	     <li *ngIf="!authService.module.hasLandingPageAccess && authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+	     
+	  <!--    <li *ngIf="!authService.module.hasLandingPageAccess && authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
 		        <a [routerLink] ="['./landing-pages/partner']">
 		        <i class="fa fa-wpforms"></i>
 		        <span class="title">Landing Pages</span>
 		        <span class="arrow "></span>
 		        <span class="selected"></span>
 		        </a>
-	     </li>
-       -->
+	     </li> -->
+      
       
       <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
         <a  href="javascript:;" (click)="openOrCloseTabs('campaigns')" >

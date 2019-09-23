@@ -1885,7 +1885,11 @@ showTimeLineView(){
   showLandingPagePreview(campaign:Campaign){
       if(campaign.nurtureCampaign){
           campaign.landingPage.showPartnerCompanyLogo = true;
-          campaign.landingPage.partnerId = this.loggedInUserId;
+          if(campaign.userId==this.loggedInUserId){
+              campaign.landingPage.partnerId = this.loggedInUserId;
+          }else{
+              campaign.landingPage.partnerId = campaign.userId;
+          }
       }else{
           if(campaign.enableCoBrandingLogo){
               campaign.landingPage.showYourPartnersLogo = true;

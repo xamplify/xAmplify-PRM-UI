@@ -7,6 +7,7 @@ export class LandingPageAnalyticsPostDto {
     timePeriod:string;
     filterValue:string;
     analyticsTypeString:string;
+    landingPageAlias:string = "";
     
     
 }

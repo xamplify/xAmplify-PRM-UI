@@ -16,9 +16,11 @@ export const routes: Routes = [
     { path: "manage", component: ManageFormComponent },
     { path: ":alias/analytics", component: FormAnalyticsComponent},
     { path: ":alias/:campaignAlias/analytics", component: FormAnalyticsComponent},
+    { path: ":partner/:formId/:partnerLandingPageAlias/analytics", component: FormAnalyticsComponent},
     { path: "lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
     {path: "cf/:alias",component:CampaignFormAnalyticsComponent},
     {path: "lf/:landingPageId",component:LandingPageFormsComponent},
+    {path: "partner/lf/:partnerLandingPageAlias",component:LandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId",component:CampaignLandingPageFormsComponent}
 ];
 

@@ -18,7 +18,7 @@
 				<div class="portlet-title">
 					    <div class="row">
 					    <div class="colxs-12 col-sm-4">
-						<div> 
+						<div *ngIf="!isPartnerLandingPage"> 
 							<ul class="mix-filter">
 								<li class="filter"  (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
 								<li class="filter"  (click)="showAllLandingPages('Regular',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular</li>
@@ -29,13 +29,23 @@
 			            <div class="page-toolbar">
 			              <div class="btn-group pull-right" id="right-margin">
 			                <div class="inputs" align="right" id="right">
-			                  <div id="left">
+			                  <div id="left" *ngIf="!isPartnerLandingPage">
 			                    <select class="form-control" [(ngModel)]="sortOption.formsSortOption"
-			                      (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+			                      (ngModelChange)="sortBy($event)" id="select-dropdown">
 			                      <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
 			                        {{option.name}}</option>
 			                    </select>
 			                  </div>
+			                  
+			                  <div id="left" *ngIf="isPartnerLandingPage">
+			                    <select class="form-control" [(ngModel)]="sortOption.partnerLandingPageSortOption"
+			                      (ngModelChange)="sortBy($event)" id="select-dropdown">
+			                      <option *ngFor="let option of sortOption.partnerLandingPageSortOptions" [ngValue]="option">
+			                        {{option.name}}</option>
+			                    </select>
+			                  </div>
+			                  
+			                  
 			                  <div class="portlet-input input-inline input-small" id="search-div">
 			                    <div class="input-icon right" id="icon">
 			                      <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -44,7 +54,8 @@
 			                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"
 			                        (click)="sortOption.searchKey='';searchLandingPages();"></button>
 			                      <button type="submit" class="search-box-item-click" (click)="searchLandingPages()">
-			                      	<i class="fa fa-search"></i></button>
+			                      	<i class="fa fa-search"></i>
+			                      </button>
 			                    </div>
 			                  </div>
 			                </div>
@@ -71,20 +82,20 @@
 										<i class="fa fa-clipboard"></i>
 									</a>
 									<ng-container *ngIf="landingPage.formsCount>0">
-										<a data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
-										<i class="fa fa-wpforms"></i>
-									</a>
-									</ng-container>
+										<a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form(s) Count"><i class="fa fa-wpforms"></i></a>
+										<a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form(s) Count"><i class="fa fa-wpforms"></i></a>
 									<span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
-									
-									<ng-container *ngIf="landingPage.analyticsCount>0">
-										<a data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+									</ng-container>
+									<a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
+											<i class="fa fa-line-chart"></i>
+									</a>
+									<a *ngIf="landingPage.analyticsCount>0 && !isPartnerLandingPage" data-rel="fancybox-button" (click)="goToLandingPageAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Analytics">
 										<i class="fa fa-line-chart"></i>
 									</a>
-									</ng-container>
+									<a *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Analytics">
+										<i class="fa fa-line-chart"></i>
+									</a>
 									<span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
-									
-									
 									<a *ngIf="!isPartnerLandingPage" data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)" >
 										<i class="fa fa-trash-o"></i>
 									</a>

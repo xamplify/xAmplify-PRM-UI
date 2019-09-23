@@ -175,7 +175,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
             data => {
                 console.log(data);
-                this.setCampaignAccessValues(data.video, data.regular, data.social, data.event,data.landingPageCampaign);
+                this.setCampaignAccessValues(data.video, data.regular, data.social, data.event,data.landingPageCampaign,data.partnerLandingPage);
             });
     }
     getCompanyIdByUserId() {
@@ -191,17 +191,18 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             );
         } catch (error) { console.log(error); }
     }
-    setCampaignAccessValues(video: any, regular: any, social: any, event: any,landingPageCampaign:boolean) {
+    setCampaignAccessValues(video: any, regular: any, social: any, event: any,landingPageCampaign:boolean,partnerLandingPage:boolean) {
         this.campaignAccess.videoCampaign = video;
         this.campaignAccess.emailCampaign = regular;
         this.campaignAccess.socialCampaign = social;
         this.campaignAccess.eventCampaign = event;
         this.campaignAccess.landingPageCampaign = landingPageCampaign;
+        this.campaignAccess.partnerLandingPage  = partnerLandingPage;
     }
     ngOnInit() {
         try {
             this.refService.manageRouter = true;
-            if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false) }
+            if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
             else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
