@@ -8,7 +8,7 @@
 <div [hidden]="processor.isProcessing">
 	<div class="page-content">
 		<div class="portlet light" style="border: navajowhite;">
-		<img src="https://xamplify.io/assets/images/xamplify-logo.png" class="img-rounded" alt="Cinque Terre" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0;filter: grayscale(0);"> 
+		<img src="https://xamplify.io/assets/images/xamplify-logo.png" class="img-rounded" alt="Cinque Terre" width="200" height="100" style="left: 8%;height: 52px;width: 130px;top: 0; margin-top: 10px;;filter: grayscale(0);"> 
 		<div *ngIf="!isShowSuccessMessage">
 			<div class="container" *ngIf="isUnsubscribed" style="margin-top: 50px;">
 				<h1>You have already unSubscribed for receiving emails from <b>{{companyName}}</b></h1>
@@ -16,7 +16,8 @@
 				<h3>Tell us the Reason</h3>
 				<form style="line-height: 25px; font-size: 15px; width:50%;">
 					<label for="comment">Reason Or Message:</label>
-                    <textarea class="form-control" [(ngModel)]="reason" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                    <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                    <label class="text-area-css">{{characterleft}} characters left</label>
 				</form>
 				<div style="margin-top: 20px;">
 					<button type="button"
@@ -41,7 +42,8 @@
 						name="reason" value="reason"> Other<br>
 						<div *ngIf="isOtherReason" style="width: 50%;">
 						<label for="comment">Reason:</label>
-                    <textarea class="form-control" [(ngModel)]="reason" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                    <textarea class="form-control" [(ngModel)]="reason" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                    <label class="text-area-css">{{characterleft}} characters left</label>
 				</div>
 				</form>
 				<div style="margin-top: 20px;">

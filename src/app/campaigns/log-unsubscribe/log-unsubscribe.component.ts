@@ -23,6 +23,7 @@ export class LogUnsubscribeComponent implements OnInit {
   reason = '';
   isOtherReason = false;
   isShowSuccessMessage = false;
+  characterleft = 250;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -91,6 +92,10 @@ export class LogUnsubscribeComponent implements OnInit {
         }
       );
   }
+  
+  characterSize(){
+      this.characterleft = 250 - this.reason.length;
+    }
 
   ngOnInit() {
     this.processor.set(this.processor);
