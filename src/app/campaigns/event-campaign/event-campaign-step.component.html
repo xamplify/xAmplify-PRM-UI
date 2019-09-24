@@ -325,6 +325,19 @@ a.disabled {
 								</switch>
 							</div>
 						</div>
+						
+						<section *ngIf="eventCampaign.onlineMeeting">
+							<div class="form-group">
+								<label for="hostedBy" class="col-sm-3 labal-css color-css">Description
+									<!-- <span class="text-danger" style="position: absolute;">*</span> -->
+								</label>
+								<div class="col-sm-9">
+								  <textarea class="form-control" [(ngModel)]="eventCampaign.message" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                                  <label class="text-area-label-css pull-right">{{characterleft}} characters left</label>
+								</div>
+							</div>
+						</section>
+						
 						<section *ngIf="!eventCampaign.onlineMeeting">
 							<div class="form-group">
 								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location

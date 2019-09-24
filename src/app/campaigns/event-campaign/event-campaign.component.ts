@@ -125,6 +125,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   beforeDaysLength: number;
   tempStartTime: string;
   isVendor = false;
+  
+  characterleft = 250;
 
 
     
@@ -2064,9 +2066,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.eventCampaign.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
+    
+    characterSize(){
+        this.characterleft = 250 - this.eventCampaign.message.length;
+      }
 
-    
-    
     spamCheck() {
         $("#email_spam_check").modal('show');
     }
