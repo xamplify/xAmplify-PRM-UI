@@ -99,6 +99,7 @@ export class FormPreviewComponent implements OnInit {
       .subscribe(
         (response: any) => {
             let geoLocationAnalytics = new GeoLocationAnalytics();
+            let upForm = new Form();
             this.deviceInfo = this.deviceService.getDeviceInfo();
             if (this.deviceInfo.device === 'unknown') {
                 this.deviceInfo.device = 'computer';
@@ -121,6 +122,7 @@ export class FormPreviewComponent implements OnInit {
             geoLocationAnalytics.analyticsType = form.analyticsType;
             geoLocationAnalytics.campaignId = form.campaignId;
             geoLocationAnalytics.userId = form.userId;
+            geoLocationAnalytics.partnerCompanyId = form.partnerCompanyId;
             this.saveAnalytics(geoLocationAnalytics);
         },
         (error: string) => {

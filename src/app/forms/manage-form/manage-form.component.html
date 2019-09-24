@@ -16,11 +16,9 @@
           	       <a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
           </ng-container>
           
-          <ng-container *ngIf="pagination.landingPageForm">
-          	       <li>
-          	       <a [routerLink]="['/home/landing-pages/manage']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
-          </ng-container>
-            <li style="color: #808080">Manage Forms</li>
+          	   <li *ngIf="!pagination.landingPageCampaignForm">
+          	       <a  routerLink="{{landingPagesRouterLink}}">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+            	<li style="color: #808080">Manage Forms</li>
     </ul>
   </div>
   <div style="position: relative; top: -10px">

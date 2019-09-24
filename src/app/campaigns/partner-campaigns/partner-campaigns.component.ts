@@ -66,7 +66,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
-        private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
+        public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
         let superiorId = parseInt(localStorage.getItem('superiorId'));
         if(isNaN(superiorId)){
             this.superiorId = this.authenticationService.getUserId();

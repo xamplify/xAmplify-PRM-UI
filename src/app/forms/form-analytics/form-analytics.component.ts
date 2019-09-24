@@ -79,6 +79,8 @@ export class FormAnalyticsComponent implements OnInit {
                     this.formDataRows = data.submittedData;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
+                }else{
+                    console.log(response.statusCode);
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
             },

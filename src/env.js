@@ -9,8 +9,8 @@
   
   /*************Local*******************************/
   window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
-  window.__env.SERVER_URL = 'http://localhost:9090/'; // xamplify backend production server
- // window.__env.imagesHost = "https://aravindu.com/vod/images/";
+  window.__env.SERVER_URL = 'http://localhost:7070/'; // xamplify backend production server
+  window.__env.imagesHost = "https://aravindu.com/vod/images/";
   
   
   //USE BELOW URLS FOR CLIENT AND SERVER CONNECTIONS
@@ -26,9 +26,9 @@
  //  window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 /*************************Release*******************************/	
-  //  window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server
-  // window.__env.SERVER_URL =  "https://xamplify.co/" // release xamplify backend production server
-  //window.__env.imagesHost = "https://xamp.io/vod/images/";
+ // window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server
+ // window.__env.SERVER_URL =  "https://release.xamp.io/" // release xamplify backend production server
+ //window.__env.imagesHost = "https://release.xamp.io/vod/images/";
 
   
   

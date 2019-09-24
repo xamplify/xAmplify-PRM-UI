@@ -44,6 +44,7 @@ ngOnInit() {
     this.alias = this.route.snapshot.params['alias'];
     this.landingPageId = this.route.snapshot.params['landingPageAlias'];
     if(this.landingPageId!=undefined){
+        alert("jere");
         this.pagination.landingPageId = parseInt(this.landingPageId);
         this.landingPageForms = true;
         this.routerLink = "/home/forms/lf/"+this.pagination.landingPageId;

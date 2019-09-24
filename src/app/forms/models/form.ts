@@ -15,4 +15,5 @@ export class Form {
     landingPageId:number;
     userId:number;
     campaignId:number;
+    partnerCompanyId:number;    
 }
