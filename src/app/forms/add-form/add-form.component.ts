@@ -552,7 +552,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
      
      save(form:Form){
          form.formType = this.formType;
-         alert(form.formType);
          this.formService.saveForm(form)
          .subscribe(
          (result:any) => {
