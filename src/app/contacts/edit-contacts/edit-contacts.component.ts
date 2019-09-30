@@ -2749,6 +2749,22 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         }
 
     }
+    
+    navigateToTermsOfUse(){
+        window.open("https://www.xamplify.com/terms-conditions/", "_blank");
+    }
+    
+    navigateToPrivacy(){
+        window.open("https://www.xamplify.com/privacy-policy/", "_blank");
+    }
+    
+    navigateToGDPR(){
+        window.open("https://gdpr-info.eu/", "_blank");
+    }
+    
+    navigateToCCPA(){
+        window.open("https://www.caprivacy.org/", "_blank");
+    }
 
     ngOnInit() {
     
