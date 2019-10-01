@@ -111,7 +111,6 @@
                    </div>
 									</div>
 								</section>
-
 								<!-- -List View -->
 								<section [hidden]="isListView">
 									<ul class="content__list"
@@ -174,7 +173,8 @@
                       </div>
 									</div>
                 </section>
-                <section>
+              </div>
+              <section>
                 <ul *ngIf="pager.pages && pager.pages.length"  class="pagination">
                 <li [ngClass]="{disabled:pager.currentPage === 1}"><a  (click)="setPage(1)">First</a></li>
                 <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setPage(pager.currentPage - 1)">Previous</a></li>
@@ -189,12 +189,11 @@
               </ul>
               <select class="form-control" style="cursor: pointer; float: right;width:6%;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
                   <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-                  <option *ngIf="paginatedList.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
-                  <option *ngIf="paginatedList.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
-                  <option *ngIf="paginatedList.length>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
+                  <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+                  <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+                  <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
                 </select>
                 </section>
-							</div>
 						</div>
 					</div>
 				</div>

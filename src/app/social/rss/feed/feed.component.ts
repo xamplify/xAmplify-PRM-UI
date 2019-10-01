@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {BrowserModule, DomSanitizer} from '@angular/platform-browser'
-import { Http} from '@angular/http';
-declare var $: any;
+import { SocialService } from '../../services/social.service';
+
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
@@ -10,16 +9,14 @@ declare var $: any;
 export class FeedComponent implements OnInit {
 @Input('feed') feed: any;
 link: any;
-  constructor(public sanitizer: DomSanitizer, private http: Http) { 
+  constructor(private socialService: SocialService) { 
+  }
+
+  addFeed(){
+    this.socialService.selectedFeed = this.feed;
   }
 
   ngOnInit() {
         
   }
-
-  openModal(link: string){
-    this.link = this.sanitizer.bypassSecurityTrustResourceUrl(link) ;
-    $('#exampleModal').modal('show');
-  }
-
 }

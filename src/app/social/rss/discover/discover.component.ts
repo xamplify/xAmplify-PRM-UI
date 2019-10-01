@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html',
-  styleUrls: ['../rss/rss.component.css']
+  styleUrls: ['../rss/rss.component.css', 'discover.component.css']
 })
 export class DiscoverComponent implements OnInit {
   featuredCategories = [
@@ -23,9 +24,13 @@ export class DiscoverComponent implements OnInit {
     { 'name': 'SKIILS', 'value': ['Entrepreneurship', 'Leadership', 'Economics', 'Programming', 'SEO', 'Management', 'Photography', 'Data Science', 'Writing', 'Creativity', 'Content Marketing'] },
     { 'name': 'FUN', 'value': ['Comics', 'Gaming', 'Food', 'Fashion', 'Travel', 'Music', 'Culture', 'Crafts', 'Dating'] }
   ]
-  constructor() { }
-
+  constructor(private router: Router) { }
+  item: any;
   ngOnInit() {
+  }
+
+  search(q: string) {
+    this.router.navigate(['/home/rss/search'], { queryParams: {'q':q} });        
   }
 
 }

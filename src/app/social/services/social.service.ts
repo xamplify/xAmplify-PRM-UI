@@ -18,6 +18,8 @@ export class SocialService {
   URL = this.authenticationService.REST_URL;
   public REST_URL: string;
   public socialConnections: SocialConnection[];
+  selectedFeed: any;
+
   constructor(private http: Http, private router: Router,
     private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
     this.socialConnections = new Array<SocialConnection>();

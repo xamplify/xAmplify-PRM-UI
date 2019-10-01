@@ -5,23 +5,27 @@
       <li><i class="fa fa-rss"></i>RSS</li>
     </ul>
   </div>
-  <div class="row">
+
+<div class="row">
     <div class="col-md-12 col-lg-12">
-      <div class="page-bar page-bar-shadow">
-        <div class="portlet light">
-          <div class="portlet-body">
-            <div class="row">
-              <app-left-nav></app-left-nav>
-              <div class="col-sm-10">
-                <div class="row">
+      <div class="row">
+        <app-left-nav [refreshTime]="rssService.refreshTime"></app-left-nav>
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="page-bar page-bar-shadow pb-m">
+              <div class="portlet light" style="border-color: #fff !important;">
+                <div class="portlet-body pt0">
+                  <div class="col-sm-12 col-xs-12 head-h p0">
                   <div class="col-sm-6 col-xs-12">
-                    <h1 class="heading">{{feedsResponse?.data.title}}</h1>
+                    <h4 class="f-w-600">{{feedsResponse?.data.title}}</h4>
                   </div>
                   <div class="col-sm-6 col-xs-12">
-                    <h1 class="heading" style="text-align: center">
-                    <a data-toggle="tooltip" data-placement="bottom" title="View"><i class="fa fa-list p10" aria-hidden="true"></i></a>
-                    <a (click)="getFeedsByCollectionAlias()" data-toggle="tooltip" data-placement="bottom" title="Refresh"><i class="fa fa-refresh p10" aria-hidden="true"></i></a>                    
-                    <div class="btn-group">
+                    <h4 class="text-right m0">
+                      <a data-toggle="tooltip" data-placement="bottom" title="View"><i class="fa fa-list circled-grey"
+                          aria-hidden="true"></i></a>
+                      <a (click)="getFeedsByCollectionAlias()" data-toggle="tooltip" data-placement="bottom"
+                        title="Refresh"><i class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
+                      <div class="btn-group">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> 
                         <i class="fa fa-ellipsis-h p10" aria-hidden="true"></i>
                       </a> 
@@ -30,9 +34,10 @@
                           <li><a (click)="deleteCollectionDialog()">Delete</a></li>
                       </ul>
                     </div>
-                    </h1>
+                    </h4>
                   </div>
                 </div>
+                <h5 class="clearfix col-xs-12">{{feedsResponse?.data.description}}</h5>
                 <app-rss-loader *ngIf="loading"></app-rss-loader>
                 <div *ngFor="let feed of feedsResponse?.data.feeds">
                   <app-feed [feed]="feed"></app-feed>
@@ -44,6 +49,7 @@
       </div>
     </div>
   </div>
+</div>  
 </div>
 
 <!-- Modal -->

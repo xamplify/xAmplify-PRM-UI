@@ -86,9 +86,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     isProgressBar = false;
     failedtoUpload = false;
     customResponse: CustomResponse = new CustomResponse();
+    recordCustomResponse: CustomResponse = new CustomResponse();
     loggedInUserId:any;
     contentProcessing:boolean;
     cloudContentArr = new Array<CloudContent>();
+    videoRecordTimeLess = false;
     videoExtentions =  ['video/m4v', 'video/avi', 'video/mpg', 'video/mp4', 'video/flv', 'video/mov', 'video/wmv', 'video/divx', 'video/f4v', 'video/mpeg', 'video/vob', 'video/xvid', 'video/x-matroska'];
 
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
@@ -326,6 +328,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.processing = true;
     }
     uploadRecordedVideo() {
+     if(this.player.record().getDuration() < 10) {
+       this.videoRecordTimeLess = true;
+       this.recordCustomResponse = new CustomResponse( 'ERROR', 'Record Video length must be greater than 10 seconds', true );
+      } else {
+       this.videoRecordTimeLess = false;
       try{
         this.RecordSave = true;
         this.saveVideo = false;
@@ -357,6 +364,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.errorPage(error);
              } );
        }catch(error) { this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);}
+       }
     }
     removeRecordVideo() {
        try{
