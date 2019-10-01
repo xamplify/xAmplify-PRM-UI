@@ -31,4 +31,5 @@ export class SocialStatus {
   ogImage: string;
 	ogTitle: string;
 	ogDescription: string;
+  ogt: boolean;
 }

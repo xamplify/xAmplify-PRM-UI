@@ -1,31 +1,32 @@
 <div class="page-content">
-  <div class="page-bar">
-    <ul class="page-breadcrumb">
-      <li><i class="fa fa-home"></i> <a routerLink="/home/dashboard/default">Home</a><i class="fa fa-angle-right"></i></li>
-      <li><i class="fa fa-rss"></i>RSS</li>
-    </ul>
-  </div>
-  <div class="row">
-    <div class="col-md-12 col-lg-12">
-      <div class="page-bar page-bar-shadow">
-        <div class="portlet light">
-          <div class="portlet-body">
-            <div class="row">
-              <app-left-nav></app-left-nav>
-              <div class="col-sm-10">
-                <h1 class="heading">Today</h1>
-                <h2>The insights you need to get the inside edge</h2>
-                <app-rss-loader *ngIf="loading"></app-rss-loader>
-                <div *ngFor="let item of homeFeedsResponse?.data">
-                  <div *ngFor="let feed of item.feeds" >
-                      <app-feed [feed]="feed"></app-feed>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li><i class="fa fa-home"></i> <a routerLink="/home/dashboard/default">Home</a><i class="fa fa-angle-right"></i></li>
+            <li><i class="fa fa-rss"></i>RSS</li>
+        </ul>
     </div>
-  </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div class="row">
+                <app-left-nav></app-left-nav>
+                <div class="col-sm-9">
+                    <div class="page-bar page-bar-shadow pb-m">
+                        <div class="portlet light" style="border-color: #fff !important;">
+                            <div class="portlet-body pt0">
+                                <h4 class="head-h">Today</h4>
+                                <h2 style="font-size:14px">The insights you need to get the inside edge</h2>
+                                <app-rss-loader *ngIf="loading"></app-rss-loader>
+                                <div *ngFor="let item of homeFeedsResponse?.data">
+                                    <div *ngFor="let feed of item.feeds">
+                                        <app-feed [feed]="feed"></app-feed>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>

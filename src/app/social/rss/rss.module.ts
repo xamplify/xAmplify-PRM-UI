@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { SharedRssModule } from "../../shared/shared-rss.module";
 import { RssRoutingModule } from './rss-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
-// import { CommonComponentModule } from 'app/common/common.module';
 
 @NgModule({
   imports: [CommonModule, RssRoutingModule, FormsModule, SharedRssModule, SharedModule],

@@ -317,8 +317,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     } else if (this.isCampaignNameExist) {
       isValid = false;
       this.setCustomResponse(ResponseType.Warning, 'Please provide another campaign name');
-    }
-    else if (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0) {
+    } else if (!this.alias && (this.socialCampaign.campaignName && this.socialCampaign.userListIds.length === 0)) {
       isValid = false;
       this.setCustomResponse(ResponseType.Warning, 'Please select one or more recipient lists.');
     }
@@ -1100,8 +1099,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       data.ogTitle = feed.title;
       data.ogDescription = feed.description;
       data.validLink = true;
+      data.ogt = true;
     });
     $('#rssModal').modal('hide');
+  }
+
+  navigateRssHome(navigateUrl: string){
+    $('#rssModal').modal('hide');    
+    this.router.navigate([navigateUrl]);
   }
 
 }

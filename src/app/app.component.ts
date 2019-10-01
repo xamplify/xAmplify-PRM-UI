@@ -56,5 +56,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (event instanceof NavigationCancel) { this.slimLoadingBarService.stop(); }
       if (event instanceof NavigationError) { this.slimLoadingBarService.stop(); }
     }
-    ngAfterViewInit(){  $('body').tooltip({ selector: '[data-toggle="tooltip"]' }); }
+    ngAfterViewInit(){
+          $('body').tooltip({ selector: '[data-toggle="tooltip"]' }); 
+          $('body').popover({ selector: '[data-toggle="popover"]' }); 
+    }
 }

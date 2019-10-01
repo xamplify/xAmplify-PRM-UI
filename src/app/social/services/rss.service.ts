@@ -55,6 +55,12 @@ export class RssService {
             .catch(this.handleError);
     }
 
+    search(requestBody: any){
+        return this.http.post(this.URL + `rss/search?access_token=${this.authenticationService.access_token}`, requestBody)
+            .map(this.extractData)
+            .catch(this.handleError); 
+    }
+
     renameCollection(requestBody: any){
         return this.http.post(this.URL + `rss/collection/rename?access_token=${this.authenticationService.access_token}`, requestBody)
             .map(this.extractData)
