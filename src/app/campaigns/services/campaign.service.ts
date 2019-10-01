@@ -566,10 +566,16 @@ export class CampaignService {
             }
             data['campaignTypeInString'] = campaign.campaignTypeInString;
             data['testEmailId'] = emailId;
-            data['userId'] = campaign.userId;
+            if(nutrureCampaign){
+                data['userId'] = campaign.userId;
+                data['enableCoBrandingLogo'] = campaign.enableCoBrandingLogo;
+                data['parentCampaignUserId'] =this.authenticationService.getUserId();
+            }else{
+                data['userId'] = campaign.userId;
+            }
             data['selectedVideoId'] = campaign.selectedVideoId;
             data['parentCampaignId'] = campaign.parentCampaignId;
-            console.log(data);
+          console.log(data);
             this.sendTestEmail(data)
                 .subscribe(
                 data => {

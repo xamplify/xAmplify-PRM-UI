@@ -35,6 +35,11 @@ export class LogService {
             .catch(this.handleError);
     }
     
+    unSubscribeUser(object:any){
+        return this.http.post(this.URL + "log/unsubscribe-status",object)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
     logunsubscribedUser(userAlias: string, companyId: number) {
         return this.http.post(this.URL + "log/unsubscribe-user?userAlias=" + userAlias + "&companyId=" + companyId, +"")

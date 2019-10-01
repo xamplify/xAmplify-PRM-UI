@@ -110,6 +110,9 @@ export class ShowLandingPageComponent implements OnInit {
             if(url!=null){
               landingPageAnalytics.url = url;
             }
+            if(this.isPartnerLandingPage){
+                landingPageAnalytics.partnerLandingPageAlias = this.alias;
+            }
             this.saveAnalytics(landingPageAnalytics);
             if(analyticsTypeString!="CAMPAIGN_LANDING_PAGE_FORM"){
                 if (url && (url.startsWith("http://") || url.startsWith("https://"))) {

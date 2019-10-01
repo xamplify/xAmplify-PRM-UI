@@ -22,7 +22,7 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
-declare var $, Papa, swal: any;
+declare var $, Papa, swal, Swal: any;
 
 @Component( {
     selector: 'app-add-partners',
@@ -107,6 +107,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     paginationType = "";
     isSaveAsList = false;
     isDuplicateEmailId = false;
+    isCheckTC = true;
 
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
@@ -472,68 +473,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( existedEmails.length === 0 ) {
                 if ( this.isCompanyDetails ) {
                     if ( this.validCsvContacts ) {
-                        this.loading = true;
-                        this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
-                        this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
-                            .subscribe(
-                            ( data: any ) => {
-                                data = data;
-                                this.loading = false;
-                                this.selectedAddPartnerOption = 5;
-                                this.xtremandLogger.info( "update partner ListUsers:" + data );
-                                $( "tr.new_row" ).each( function() {
-                                    $( this ).remove();
-                                });
-
-                                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
-
-                                this.newPartnerUser.length = 0;
-                                this.allselectedUsers.length = 0;
-                                this.loadPartnerList( this.pagination );
-                                this.clipBoard = false;
-                                this.cancelPartners();
-                                if(data.statusCode == 200){
-                                  this.getContactsAssocialteCampaigns();
-                                }
-                                this.disableOtherFuctionality = false;
-                                
-                                if(data.statusCode == 409){
-                                	let emailIds = data.emailAddresses;
-                                	let allEmailIds = "";
-                                	$.each(emailIds,function(index,emailId){
-                                	allEmailIds+= (index+1)+"."+emailId+"<br><br>";
-                                	});
-                                	let message = data.errorMessage+"<br><br>"+allEmailIds;
-                                	this.customResponse = new CustomResponse( 'ERROR', message, true );
-                                }
-                                
-                                if(data.statusCode == 417){
-                                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
-                                }
-                            },
-                            ( error: any ) => {
-                                let body: string = error['_body'];
-                                body = body.substring( 1, body.length - 1 );
-                                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
-                                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                                    console.log( "done" )
-                                } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
-                                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
-                                }else{
-                                    this.xtremandLogger.errorPage( error );
-                                }
-                                this.xtremandLogger.error( error );
-                                this.loading = false;
-                                console.log( error );
-                                this.newPartnerUser.length = 0;
-                                this.allselectedUsers.length = 0;
-                                this.loadPartnerList( this.pagination );
-                                this.clipBoard = false;
-                                this.cancelPartners();
-                            },
-                            () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
-                            )
-                        this.dublicateEmailId = false;
+                        this.askForPermission();
                     } else {
                         this.customResponse = new CustomResponse( 'ERROR', "We Found Invalid emailId(s) Please remove " + this.invalidPatternEmails, true );
                         this.invalidPatternEmails = [];
@@ -555,6 +495,121 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     closeDuplicateEmailErrorMessage(){
         this.dublicateEmailId = false;
     }
+    
+    allConditionsAcceptedListSave(){
+        this.loading = true;
+        this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
+        this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
+            .subscribe(
+            ( data: any ) => {
+                data = data;
+                this.loading = false;
+                this.selectedAddPartnerOption = 5;
+                this.xtremandLogger.info( "update partner ListUsers:" + data );
+                $( "tr.new_row" ).each( function() {
+                    $( this ).remove();
+                });
+
+                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
+
+                this.newPartnerUser.length = 0;
+                this.allselectedUsers.length = 0;
+                this.loadPartnerList( this.pagination );
+                this.clipBoard = false;
+                this.cancelPartners();
+                if(data.statusCode == 200){
+                  this.getContactsAssocialteCampaigns();
+                }
+                this.disableOtherFuctionality = false;
+                
+                if(data.statusCode == 409){
+                    let emailIds = data.emailAddresses;
+                    let allEmailIds = "";
+                    $.each(emailIds,function(index,emailId){
+                    allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+                    });
+                    let message = data.errorMessage+"<br><br>"+allEmailIds;
+                    this.customResponse = new CustomResponse( 'ERROR', message, true );
+                }
+                
+                if(data.statusCode == 417){
+                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+                }
+            },
+            ( error: any ) => {
+                let body: string = error['_body'];
+                body = body.substring( 1, body.length - 1 );
+                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
+                    console.log( "done" )
+                } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                }else{
+                    this.xtremandLogger.errorPage( error );
+                }
+                this.xtremandLogger.error( error );
+                this.loading = false;
+                console.log( error );
+                this.newPartnerUser.length = 0;
+                this.allselectedUsers.length = 0;
+                this.loadPartnerList( this.pagination );
+                this.clipBoard = false;
+                this.cancelPartners();
+            },
+            () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
+            )
+        this.dublicateEmailId = false;
+    }
+    
+    chectTermAndConditions(){
+        console.log("check box checked properly");
+    }
+    
+/*    askForPermission() {
+        let self = this;
+        swal({
+            title: 'Are you Sure?',
+            text: "You are acceptin all the T/C from Xamplify!",
+            type: 'warning',
+            showCancelButton: true,
+            //swalConfirmButtonColor: '#54a7e9',
+            //swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, Accept it!',
+            input: 'checkbox',
+            inputPlaceholder: 'accept all the T/C.',
+            allowOutsideClick: false,
+            preConfirm: function( result: any ) {
+                return new Promise( function() {
+                        if (result === 0) {
+                              swal.showValidationError( 'you should accept T/C' )
+                          }else{
+                              swal.close();
+                              self.allConditionsAcceptedListSave();
+                          }
+                });
+            }
+          }).then( function( result: any ) {
+              console.log( result );
+          }, function( dismiss: any ) {
+              if ( dismiss === 'cancel' ) {
+                  self.cancelPartners();
+              }
+          });
+    }*/
+    
+    askForPermission() {
+        $('#tcModal').modal('show');
+   }
+    
+    saveContactsWithPermission(){
+        $('#tcModal').modal('hide');
+        this.allConditionsAcceptedListSave();
+    }
+   
+    navigateToTermsAndConditions(){
+        window.open("https://www.xamplify.com/terms-conditions", "_blank");
+    }
+    
 
     cancelPartners() {
         this.socialPartnerUsers.length = 0;
@@ -2624,6 +2679,22 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }
         }
         return users;
+    }
+    
+    navigateToTermsOfUse(){
+        window.open("https://www.xamplify.com/terms-conditions/", "_blank");
+    }
+    
+    navigateToPrivacy(){
+        window.open("https://www.xamplify.com/privacy-policy/", "_blank");
+    }
+    
+    navigateToGDPR(){
+        window.open("https://gdpr-info.eu/", "_blank");
+    }
+    
+    navigateToCCPA(){
+        window.open("https://www.caprivacy.org/", "_blank");
     }
 
 }

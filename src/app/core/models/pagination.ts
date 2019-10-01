@@ -38,6 +38,9 @@ export class Pagination {
 	landingPageCampaignForm = false;
 	landingPageId = 0;
 	landingPageForm = false;
+	landingPageAlias:string = "";
+	partnerLandingPageForm = false;
+	formId = 0;
 	loader:HttpRequestLoader = new HttpRequestLoader();
 	
 }

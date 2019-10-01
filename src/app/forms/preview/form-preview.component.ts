@@ -42,6 +42,7 @@ export class FormPreviewComponent implements OnInit {
     show: boolean;
     formSubmitted = false;
     message: string;
+    isSubmittedAgain = false;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
     private authenticationService:AuthenticationService,private formService:FormService,
     private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
@@ -73,7 +74,10 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
-            this.saveLocationDetails(this.form);
+            if(!this.isSubmittedAgain){
+                this.saveLocationDetails(this.form);
+            }
+            
           } else {
             this.hasFormExists = false;
             this.addHeaderMessage("Oops! This form does not exists.",this.errorAlertClass);
@@ -95,6 +99,7 @@ export class FormPreviewComponent implements OnInit {
       .subscribe(
         (response: any) => {
             let geoLocationAnalytics = new GeoLocationAnalytics();
+            let upForm = new Form();
             this.deviceInfo = this.deviceService.getDeviceInfo();
             if (this.deviceInfo.device === 'unknown') {
                 this.deviceInfo.device = 'computer';
@@ -117,6 +122,7 @@ export class FormPreviewComponent implements OnInit {
             geoLocationAnalytics.analyticsType = form.analyticsType;
             geoLocationAnalytics.campaignId = form.campaignId;
             geoLocationAnalytics.userId = form.userId;
+            geoLocationAnalytics.partnerCompanyId = form.partnerCompanyId;
             this.saveAnalytics(geoLocationAnalytics);
         },
         (error: string) => {
@@ -129,6 +135,7 @@ export class FormPreviewComponent implements OnInit {
       this.landingPageService.saveAnalytics(geoLocationAnalytics)
       .subscribe(
         (data: any) => {
+            console.log(data);
         },
         (error: string) => {
             this.logger.error( "Error In saving Location Details",error); 
@@ -226,7 +233,9 @@ export class FormPreviewComponent implements OnInit {
   showForm(){
       this.formSubmitted = false;
       this.show = false;
+      this.form = new Form();
       this.customResponse = new CustomResponse();
+      this.isSubmittedAgain = true;
       this.getFormFieldsByAlias(this.alias);
   }
 

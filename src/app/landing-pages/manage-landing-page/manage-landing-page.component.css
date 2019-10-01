@@ -197,3 +197,9 @@ h1 {
 #custom-response-div{
 	position: relative; top: -10px;
 }
+#select-dropdown{
+	position: relative;right: -3px;
+}
+#cursor-not-allowed{
+	cursor: not-allowed;
+}

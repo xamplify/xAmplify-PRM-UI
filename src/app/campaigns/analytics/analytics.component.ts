@@ -1883,7 +1883,21 @@ showTimeLineView(){
   }
   
   showLandingPagePreview(campaign:Campaign){
-      this.previewLandingPageComponent.showPreview(campaign.landingPage,campaign);
+      if(campaign.nurtureCampaign){
+          campaign.landingPage.showPartnerCompanyLogo = true;
+          if(campaign.userId==this.loggedInUserId){
+              campaign.landingPage.partnerId = this.loggedInUserId;
+          }else{
+              campaign.landingPage.partnerId = campaign.userId;
+          }
+      }else{
+          if(campaign.enableCoBrandingLogo){
+              campaign.landingPage.showYourPartnersLogo = true;
+          }else{
+              campaign.landingPage.showYourPartnersLogo = false;
+          }
+      }
+      this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
     goToCampaignLandingPageAnalytics(campaignId:number){
         this.router.navigate(['home/landing-pages/'+campaignId+'/campaign/analytics']);

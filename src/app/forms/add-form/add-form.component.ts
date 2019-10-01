@@ -8,6 +8,7 @@ import { ColumnInfo } from '../models/column-info';
 import {DefaultFormChoice} from '../models/default-form-choice';
 import {FormOption} from '../models/form-option';
 import {Form} from '../models/form';
+import {FormType} from '../models/form-type.enum';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
@@ -25,6 +26,7 @@ declare var $:any,swal:any ;
 })
 export class AddFormComponent implements OnInit, OnDestroy {
     ngxloading = false;
+    formType:FormType=FormType.XAMPLIFY_FORM;
     allItems = [];
     defaultColumns = [
         { 'labelName': 'Email', 'labelType': 'email' },
@@ -549,6 +551,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
      }
      
      save(form:Form){
+         form.formType = this.formType;
          this.formService.saveForm(form)
          .subscribe(
          (result:any) => {

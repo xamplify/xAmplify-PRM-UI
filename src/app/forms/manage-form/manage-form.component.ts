@@ -26,6 +26,7 @@ declare var swal, $: any;
   providers: [Pagination, HttpRequestLoader,ActionsDescription,SortOption],
 })
 export class ManageFormComponent implements OnInit, OnDestroy {
+    landingPagesRouterLink: string;
     form:Form = new Form();
     ngxloading = false;
     pagination: Pagination = new Pagination();
@@ -38,6 +39,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     campaignId = 0;
     landingPageId = 0;
     landingPageCampaignId = 0;
+    partnerLandingPageAlias = "";
     statusCode = 200;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
@@ -62,15 +64,21 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.campaignId = this.route.snapshot.params['alias'];
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.landingPageCampaignId  = this.route.snapshot.params['landingPageCampaignId'];
+        this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
         if(this.campaignId!=undefined){
             this.pagination.campaignId = this.campaignId;
             this.pagination.campaignForm = true;
         }else if(this.landingPageId>0){
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.landingPageForm = true;
+            this.landingPagesRouterLink = "/home/landing-pages/manage";
         }else if(this.landingPageCampaignId>0){
             this.pagination.campaignId = this.landingPageCampaignId;
             this.pagination.landingPageCampaignForm = true;
+        }else if(this.partnerLandingPageAlias!=undefined){
+            this.pagination.landingPageAlias = this.partnerLandingPageAlias;
+            this.pagination.partnerLandingPageForm = true;
+            this.landingPagesRouterLink = "/home/landing-pages/partner";
         }
         this.listForms(this.pagination);
     }
@@ -249,6 +257,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.router.navigate(['/home/forms/'+form.alias+'/'+this.landingPageCampaignId+'/analytics']);
         }else if(this.pagination.landingPageForm){
             this.router.navigate(['/home/forms/lf/'+form.alias+'/'+this.landingPageId+'/analytics']);
+        }else if(this.pagination.partnerLandingPageForm){
+            this.router.navigate(['/home/forms/partner/f/'+form.id+'/'+this.partnerLandingPageAlias+'/analytics']);
         }else{
             this.router.navigate(['/home/forms/'+form.alias+'/analytics']);
         }

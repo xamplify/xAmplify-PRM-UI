@@ -1669,6 +1669,21 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }
     }
     
+    getTemplateBodyById(emailTemplate:EmailTemplate){
+        this.emailTemplateService.getById( emailTemplate.id )
+        .subscribe(
+        ( data: any ) => {
+            console.log( data );
+            emailTemplate.body = data.body;
+            this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+        },
+        error => console.error( error ),
+        () => {
+            console.log( 'TemplateBodyLoaded() finished' );
+        }
+        );
+    }
+    
     getTemplateById(emailTemplate:EmailTemplate){
         this.emailTemplateService.getById( emailTemplate.id )
         .subscribe(
@@ -1842,7 +1857,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      if(!emailTemplate.draft){
          $('#emailTemplateContent').html('');
          this.emailTemplateHrefLinks = [];
-         this.getAnchorLinksFromEmailTemplate(emailTemplate.body);
+         this.getTemplateBodyById(emailTemplate);
          this.setEmailTemplateData(emailTemplate);
          if(this.emailTemplateHrefLinks.length == 0){
              this.urls = [];
@@ -2956,7 +2971,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     showLandingPagePreview(landingPage:LandingPage){
-        this.previewLandingPageComponent.showPreview(landingPage,"");
+        if(this.campaign.enableCoBrandingLogo){
+            landingPage.showYourPartnersLogo = true;
+        }else{
+            landingPage.showYourPartnersLogo = false;
+        }
+        this.previewLandingPageComponent.showPreview(landingPage);
     }
 
     setLandingPage(landingPage:LandingPage){

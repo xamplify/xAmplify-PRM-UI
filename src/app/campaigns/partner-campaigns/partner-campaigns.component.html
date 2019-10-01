@@ -40,10 +40,11 @@
 						<ul class="mix-filter col-xs-6 p0 m0">
 					  	<li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">All</li>
 					  	<li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
-              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
-              <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
-              <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
-              <li class="filter" style="display: none;">Own Template</li>
+			              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
+			              <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
+			              <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
+			               <li class="filter" *ngIf="authenticationService.module.hasPartnerLandingPageAccess" (click)="filterCampaigns('landingPage')" [class.active]="'landingPage' == campaignType">Landing Page</li>
+			              <li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
 							<div class="btn-group pull-right">
@@ -200,20 +201,14 @@
 												<span style="margin: 0px -7px; font-size: 17px; color: white;">
 													<i *ngIf="campaign.campaignType.indexOf('VIDEO') > -1" class="fa fa-video-camera" aria-hidden="true"></i>
 													<i *ngIf="campaign.campaignType.indexOf('REGULAR') > -1" class="fa fa-envelope" aria-hidden="true"></i>
-                          <i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
-                          <i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
+                          							<i *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1" class="fa fa-globe" aria-hidden="true"></i>
+                          							<i *ngIf="campaign.campaignType.indexOf('EVENT') > -1" class="fa fa-calendar" aria-hidden="true"></i>
+                          							<i *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1" class="fa fa-wpforms" aria-hidden="true"></i>
 												</span>
 											</div>
-
-
-
 											<div class="ribbon">
 												<div  class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">Cancelled</div>
 											</div>
-
-
-
-
 											<div class="bar">
 											<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>

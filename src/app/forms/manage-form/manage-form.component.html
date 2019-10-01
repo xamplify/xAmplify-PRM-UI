@@ -16,11 +16,9 @@
           	       <a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
           </ng-container>
           
-          <ng-container *ngIf="pagination.landingPageForm">
-          	       <li>
-          	       <a [routerLink]="['/home/landing-pages/manage']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
-          </ng-container>
-            <li style="color: #808080">Manage Forms</li>
+          	   <li *ngIf="!pagination.landingPageCampaignForm">
+          	       <a  routerLink="{{landingPagesRouterLink}}">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+            	<li style="color: #808080">Manage Forms</li>
     </ul>
   </div>
   <div style="position: relative; top: -10px">
@@ -75,7 +73,7 @@
               <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
                 <thead>
                   <tr>
-                    <th class="visible-xs" colspan="1" style="width: 45%">Email Template List</th>
+                    <th class="visible-xs" colspan="1" style="width: 45%">Form List</th>
                     <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form Details</th>
                     <th class="hidden-xs text-center">Created On</th>
                     <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width">Actions</th>
@@ -106,13 +104,13 @@
                     </td>
                     <td id="actions-row">
                       <div class="actions-block override-actions">
-                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
+                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
                         <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                           <i class="fa fa-eye"></i>
                         </a>
-                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
+                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
                           <i class="fa fa-clipboard"></i>
                         </a>
                         <ng-container *ngIf="form.campaignForm&&!form.dataShare">
@@ -130,7 +128,7 @@
                            <span class="badge" id="notification">{{form.count}}</span>
                         </a>
                        </ng-container>
-                       <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
+                       <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
                           title="Delete">
                           <i class="fa fa-trash-o"></i>
                         </a>
@@ -171,13 +169,13 @@
                  	<span>Form</span>
             	</div>
               <div class="bar">
-                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
+                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                   <i class="fa fa-pencil-square-o"></i>
                 </a>
                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)"> 
                 	<i class="fa fa-eye"></i>
                 </a>
-                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
+                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
                   <i class="fa fa-clipboard"></i>
                 </a>
                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
@@ -195,7 +193,7 @@
                 </a>
                  <span class="badge" id="notification-list">{{form.count}}</span>
                 </ng-container>
-                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
+                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
                   <i class="fa fa-trash-o"></i>
                 </a>
               </div>

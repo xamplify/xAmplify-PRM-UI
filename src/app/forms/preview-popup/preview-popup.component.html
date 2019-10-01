@@ -126,12 +126,12 @@
                     </label>
                     <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
                       <input type="{{columnInfo.labelType}}" class="form-control"
-                        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="50">
+                        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="50" disabled="disabled">
                     </ng-container>
 
                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
                       <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
-                        maxlength="250"></textarea>
+                        maxlength="250" disabled="disabled"></textarea>
                     </ng-container>
                     <!-- ---------------------------Radio Button----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -139,7 +139,7 @@
                         <div class="form-check">
                           <label class="form-check-label">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-                              class="form-check-input">
+                              class="form-check-input" disabled="disabled">
                             {{radioButton.name}}
                           </label>
                         </div>
@@ -152,7 +152,7 @@
                         <div class="form-check">
                           <label class="form-check-label">
                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-                              class="form-check-input">
+                              class="form-check-input" disabled="disabled">
                             {{checkBox.name}}
                           </label>
                         </div>

@@ -902,6 +902,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
+														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
 											</tr>
@@ -966,6 +967,7 @@
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
+												<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
 												<td align="center" *ngIf="isPartner">
                            <button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
@@ -1136,6 +1138,44 @@
 		</div>
 	</div>
 </div>
+
+<!-- T&C Modal -->
+<div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+	role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content" style="top: 100px;">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you Sure?</h4>
+			</div>
+			<div class="modal-body">
+			<div>
+				<h4 class="modal-title f-w-600">You are agreeing xAmplify Terms&Conditions </h4>
+			</div>
+			
+			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
+			  By onboarding a partner, you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore Moreover, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  <br>
+			</div>
+			
+			<div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
+			   By adding a contact(s), you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore Moreover, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  <br>
+			</div>
+			
+			
+			<div *ngIf="!isCheckTC" style="color:red">You must agree T&C</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()">Decline</button>
+				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
+					(click)="saveContactsWithPermission()">Accept</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 
 <app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
 

@@ -15,6 +15,9 @@
        <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
       		<a [routerLink]="['/home/landing-pages/manage']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
       	</li>
+      	 <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='PartnerLandingPage'">
+      		<a [routerLink]="['/home/landing-pages/partner']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+      	</li>
       <li>
         <a>Landing Page Analytics</a>
       </li>

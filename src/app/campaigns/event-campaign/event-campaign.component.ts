@@ -125,6 +125,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   beforeDaysLength: number;
   tempStartTime: string;
   isVendor = false;
+  
+  characterleft = 250;
 
 
     
@@ -353,7 +355,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
-        if(!this.eventCampaign.nurtureCampaign){ this.loadEmailTemplates(this.emailTemplatesPagination); }
+        if(!this.eventCampaign.nurtureCampaign){
+            this.loadEmailTemplates(this.emailTemplatesPagination); }
         this.recipientsTabClass = "enableRecipientsTab";
         this.detailsTab = true;
         this.resetTabClass();
@@ -574,13 +577,27 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
         this.eventCampaign.userListIds = [];
       }
   }
+  
+  clearSelectedTemplate(){
+      this.eventCampaign.emailTemplate = new EmailTemplate;
+      this.eventCampaign.selectedEditEmailTemplate = new EmailTemplate;
+      this.emailTemplateId = 0;
+      this.resetTabClass();
+  }
+  
   switchStatusChange(){
     this.clearSelectedContactList();
+    this.clearSelectedTemplate();
     this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
       this.contactListsPagination.pageIndex = 1;
       if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
+          this.loadEmailTemplates(this.emailTemplatesPagination);
+      }else{
+          this.emailTemplatesPagination.throughPartner = true;
+          this.eventCampaign.enableCoBrandingLogo = true;
+          this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
           this.loadEmailTemplates(this.emailTemplatesPagination);
       }
       if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
@@ -636,6 +653,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   setCoBrandingLogo(event:any){
       this.eventCampaign.enableCoBrandingLogo = event;
+      this.clearSelectedTemplate();
       if(this.eventCampaign.enableCoBrandingLogo){
           //this.eventCampaign.enableCoBrandingLogo = true;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
@@ -662,27 +680,46 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.loadEmailTemplates(this.emailTemplatesPagination);
   }
 
-  loadEmailTemplates(pagination:Pagination){
+  loadEmailTemplates(emailTemplatesPagination:Pagination){
       //Not calling this method for only partner
       if(!this.authenticationService.isOnlyPartner()){
           this.gridLoader = true;
-          pagination.throughPartner = this.eventCampaign.channelCampaign;
+          emailTemplatesPagination.throughPartner = this.eventCampaign.channelCampaign;
           this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-          if(pagination.searchKey==null || pagination.searchKey==""){
-              pagination.campaignDefaultTemplate = true;
+          if(emailTemplatesPagination.searchKey==null || emailTemplatesPagination.searchKey==""){
+              emailTemplatesPagination.campaignDefaultTemplate = true;
           }else{
-              pagination.campaignDefaultTemplate = false;
-              pagination.isEmailTemplateSearchedFromCampaign = true;
+              emailTemplatesPagination.campaignDefaultTemplate = false;
+              emailTemplatesPagination.isEmailTemplateSearchedFromCampaign = true;
           }
-          pagination.filterBy = 'campaignEventEmails';
-          pagination.userId = this.loggedInUserId;
-          this.emailTemplateService.listTemplates(pagination,this.loggedInUserId)
+          
+          if(this.isEditCampaign){
+              if(this.eventCampaign.enableCoBrandingLogo){
+                  this.emailTemplatesPagination.throughPartner = true;
+                  this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
+              }
+              else if(this.eventCampaign.channelCampaign){
+                  this.emailTemplatesPagination.throughPartner = true;
+              }
+          }
+          
+          /*if(this.eventCampaign.enableCoBrandingLogo){
+              emailTemplatesPagination.filterBy = null;
+          }else{
+              emailTemplatesPagination.filterBy = 'campaignEventEmails';
+          }*/
+          
+          emailTemplatesPagination.filterBy = 'campaignEventEmails';
+          
+          emailTemplatesPagination.userId = this.loggedInUserId;
+          this.emailTemplateService.listTemplates(emailTemplatesPagination,this.loggedInUserId)
           .subscribe(
               (data:any) => {
                   let allEventEmailTemplates = data.emailTemplates;
                   this.gridLoader = false;
                   this.campaignEmailTemplates = [];
-                  for(let i=0;i< allEventEmailTemplates.length;i++){
+                  this.campaignEmailTemplates = allEventEmailTemplates;
+                 /* for(let i=0;i< allEventEmailTemplates.length;i++){
                       if(this.eventCampaign.channelCampaign){
                           if(allEventEmailTemplates[i].beeEventCoBrandingTemplate){
                            this.campaignEmailTemplates.push(allEventEmailTemplates[i]);
@@ -690,9 +727,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
                        }else{
                            this.campaignEmailTemplates = allEventEmailTemplates;
                        }
-                  }
-                  pagination.totalRecords = data.totalRecords;
-                  this.emailTemplatesPagination = this.pagerService.getPagedItems(pagination, this.campaignEmailTemplates);
+                  }*/
+                  this.emailTemplatesPagination.totalRecords = data.totalRecords;
+                  this.emailTemplatesPagination = this.pagerService.getPagedItems(emailTemplatesPagination, data.emailTemplates);
                   this.filterEmailTemplateForEditCampaign();
                  this.referenceService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
               },
@@ -1465,6 +1502,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           if ( this.eventCampaign.email ) {
               data.body = data.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           }
+          
+          data.body = data.body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
 
           this.getEmailTemplatePreview( data );
       },
@@ -1749,6 +1788,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.eventCampaign.onlineMeeting = !this.eventCampaign.onlineMeeting;
         this.resetTabClass();
     }
+    
+    publicVsPrivateSwitchStatusChange(){
+        this.eventCampaign.publicEventCampaign = !this.eventCampaign.publicEventCampaign;
+    }
 
     resetTabClass(){
         if((this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
@@ -2023,9 +2066,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.eventCampaign.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
+    
+    characterSize(){
+        this.characterleft = 250 - this.eventCampaign.message.length;
+      }
 
-    
-    
     spamCheck() {
         $("#email_spam_check").modal('show');
     }

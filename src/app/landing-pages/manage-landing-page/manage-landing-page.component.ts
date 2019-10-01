@@ -134,7 +134,15 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     
     /***********Preview Email Template*********************/
     showPreview( landingPage: LandingPage ) {
-        this.previewLandingPageComponent.showPreview(landingPage,"");
+        if(this.isPartnerLandingPage){
+            landingPage.showPartnerCompanyLogo = true;
+            landingPage.partnerId = this.loggedInUserId;
+            landingPage.partnerLandingPage = true;
+            landingPage.alias = landingPage.alias;
+        }else{
+            landingPage.showYourPartnersLogo = true;
+        }
+        this.previewLandingPageComponent.showPreview(landingPage);
       }
     
     
@@ -180,6 +188,14 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 this.customResponse = new CustomResponse('SUCCESS',message,true );
                 this.pagination.pageIndex = 1;
                 this.listLandingPages(this.pagination);
+            }else{
+                let campaignNames = "";
+                $.each(response.data,function(index,value){
+                    campaignNames+= (index+1)+"."+value+"<br><br>";
+                });
+                let message = response.message+"<br><br>"+campaignNames;
+                this.customResponse = new CustomResponse('ERROR',message,true );
+                this.referenceService.loading(this.httpRequestLoader, false);
             }
 
         },
@@ -212,8 +228,14 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     goToFormAnalytics(id:number){
         this.router.navigate(['/home/forms/lf/'+id]);
     }
+    goToPartnerLandingPageFormAnalytics(alias:string){
+        this.router.navigate(['/home/forms/partner/lf/'+alias]);
+    }
     goToLandingPageAnalytics(id:number){
         this.router.navigate(['/home/landing-pages/'+id+'/analytics']);
+    }
+    goToPartnerLandingPageAnalytics(alias:string){
+        this.router.navigate(['/home/landing-pages/partner/'+alias+'/analytics']);
     }
 
     

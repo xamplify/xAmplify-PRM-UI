@@ -1288,7 +1288,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   return false;
   }
   previewCampaignLandingPage(campaign:Campaign){
-      this.previewLandingPageComponent.showPreview(campaign.landingPage,campaign);
+      campaign.landingPage.showPartnerCompanyLogo = true;
+      campaign.landingPage.partnerId = this.loggedInUserId;
+      this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
 
 

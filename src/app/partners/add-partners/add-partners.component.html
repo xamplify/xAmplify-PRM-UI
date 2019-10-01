@@ -1150,3 +1150,32 @@ img:hover {
 			</div>
 		</div>
 	</div>
+	
+	<!-- T&C Modal -->
+<div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+	role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content" style="width: 80%;top: 100px;left: 60px">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you Sure?</h4>
+			</div>
+			<div class="modal-body">
+			<div>
+				<h4 class="modal-title f-w-600">You are agreeing xAmplify Terms&Conditions </h4>
+			</div>
+			<div class="form-group" style="margin-top: 15px;">
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
+			  By onboarding a partner, you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore Moreover, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  <br>
+			</div>
+			<div *ngIf="!isCheckTC" style="color:red">You must agree</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelPartners()">Decline</button>
+				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
+					(click)="saveContactsWithPermission()">Accept</button>
+			</div>
+		</div>
+	</div>
+</div>
+	

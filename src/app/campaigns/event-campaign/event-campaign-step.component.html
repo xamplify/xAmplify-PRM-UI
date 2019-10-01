@@ -325,6 +325,19 @@ a.disabled {
 								</switch>
 							</div>
 						</div>
+						
+						<section *ngIf="eventCampaign.onlineMeeting">
+							<div class="form-group">
+								<label for="hostedBy" class="col-sm-3 labal-css color-css">Description
+									<!-- <span class="text-danger" style="position: absolute;">*</span> -->
+								</label>
+								<div class="col-sm-9">
+								  <textarea class="form-control" [(ngModel)]="eventCampaign.message" (input)="characterSize()" [ngModelOptions]="{standalone: true}" rows="5" cols="50" id="comment" maxlength="250"></textarea>
+                                  <label class="text-area-label-css pull-right">{{characterleft}} characters left</label>
+								</div>
+							</div>
+						</section>
+						
 						<section *ngIf="!eventCampaign.onlineMeeting">
 							<div class="form-group">
 								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
@@ -536,6 +549,40 @@ a.disabled {
 							</ul>
 						</div>
 					</div>
+					
+					<div class="boxes portlet light" style="display:none">
+						<div class="portlet-title" style="display:block">
+							<h4 class="pull-left f-w-600">Public vs Private</h4>
+							<div class="pull-right" style="margin: 5px 5px 0px 0px;">
+							<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
+									[status]="eventCampaign.publicEventCampaign"
+									[onText]="'Public'"
+									[offText]="'Private'"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.offPrivateColor"
+									[size]="callActionSwitch.size"
+									(statusChange)="publicVsPrivateSwitchStatusChange()">
+								</switch>
+							</div>
+						</div>
+					</div>
+				<!-- 	
+					<div class="form-group">
+							<label for="hostedBy" class="labal-css color-css">Public vs Private</label>
+							<div class="col-sm-9">
+								<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
+									[status]="eventCampaign.publicEventCampaign"
+									[onText]="'Public'"
+									[offText]="'Private'"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.offDefaultColor"
+									[size]="callActionSwitch.size"
+									(statusChange)="publicVsPrivateSwitchStatusChange()">
+								</switch>
+							</div>
+						</div> -->
+					
+					
 					<div class="boxes portlet light" *ngIf="false">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Listing Privacy</h4>
@@ -755,7 +802,7 @@ a.disabled {
 
 				    	<div class="portlet-body clearfix">
                  <section  style="min-height: 200px;">
-                 <ng-container *ngIf="showSelectedTemplate"><!-- !hideCoBrandedEmailTemplate -->
+                 <ng-container *ngIf="showSelectedTemplate && eventCampaign.selectedEditEmailTemplate.id"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1">
                          <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id" (click)="emailTemplateSelection(eventCampaign.selectedEditEmailTemplate)">
@@ -807,8 +854,8 @@ a.disabled {
                       </div>
                   </ng-container>
                   <ul class="content__list"
-										*ngFor="let emailTemplate of emailTemplatesPagination.pagedItems;let i =index">
-										<li *ngIf="emailTemplateId!=emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
+										*ngFor="let emailTemplate of campaignEmailTemplates;let i =index">
+										<li *ngIf="emailTemplateId != emailTemplate?.id" [class.disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage" (click)="emailTemplateSelection(emailTemplate)" class="list__item" [class.list__item--selected]="eventCampaign?.emailTemplate?.id === emailTemplate?.id">
 											<!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
 											<div class="flex-row">
 												<div class="item__select-box-wrapper">

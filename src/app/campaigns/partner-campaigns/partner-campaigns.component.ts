@@ -66,7 +66,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
-        private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
+        public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
         let superiorId = parseInt(localStorage.getItem('superiorId'));
         if(isNaN(superiorId)){
             this.superiorId = this.authenticationService.getUserId();
@@ -205,7 +205,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
              console.log(data);
                     let landingPage = data.landingPage;
                     if(landingPage!=undefined){
-                        this.previewLandingPageComponent.showPreview(landingPage,data);
+                        landingPage.showPartnerCompanyLogo = true;
+                        landingPage.partnerId = this.authenticationService.getUserId();
+                        this.previewLandingPageComponent.showPreview(landingPage);
                     }else{
                         swal("Landing Page Not Found","","error");
                         this.ngxloading = false;

@@ -189,3 +189,11 @@ a.icons-link:hover {background:  #357ebd;}
 .hide {
   display: none;
 }
+.text-area-label-css{
+  float: right;
+  font-size: 11px;
+  position: relative;
+  left: -4px;
+  color: #7b8894;
+  bottom: 18px;
+}

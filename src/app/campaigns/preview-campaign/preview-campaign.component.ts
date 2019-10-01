@@ -1189,6 +1189,17 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
   }
   
   showLandingPagePreview(campaign:Campaign){
-      this.previewLandingPageComponent.showPreview(campaign.landingPage,campaign);
+      if(campaign.nurtureCampaign){
+          campaign.landingPage.showPartnerCompanyLogo = true;
+          campaign.landingPage.partnerId = this.loggedInUserId;
+      }else{
+          if(campaign.enableCoBrandingLogo){
+              campaign.landingPage.showYourPartnersLogo = true;
+          }else{
+              campaign.landingPage.showYourPartnersLogo = false;
+          }
+          
+      }
+      this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
 }

@@ -107,6 +107,13 @@ export class SortOption {
                       { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
                       { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
                   ];
+    
+    partnerLandingPageSortOptions = [
+                                     { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+                                     { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+                                     { 'name': 'Shared On (ASC)', 'value': 'createdTime-ASC' },
+                                     { 'name': 'Shared On (DESC)', 'value': 'createdTime-DESC' }
+                                     ];
    
    
     numberOfItemsPerPage = [
@@ -122,6 +129,7 @@ export class SortOption {
     public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[0];    
     public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
     public formsSortOption: any = this.manageFormsSortOptions[3];
+    public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];    
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

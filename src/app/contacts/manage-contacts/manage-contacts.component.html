@@ -659,6 +659,7 @@
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner"></th>
+														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs">Reason</th>
 														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
@@ -741,6 +742,7 @@
 																	*ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
 															</h5>
 														</td>
+														<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{contact.unsubscribedReason}}</td>
 														<td  align="center" *ngIf="isPartner">
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">

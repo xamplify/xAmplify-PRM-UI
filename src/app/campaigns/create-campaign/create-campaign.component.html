@@ -1817,7 +1817,7 @@
 												<button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;">Previous</button>
 												<button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;">Send Test Email</button>
 												<button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid"  style="width: 10em;">{{buttonName}}</button>
-												<button type="button" class="btn green" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
+												<button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="spamCheck()"  style="width: 10em;">Spam check</button>
 											</div>
 										</div>
 									</div>

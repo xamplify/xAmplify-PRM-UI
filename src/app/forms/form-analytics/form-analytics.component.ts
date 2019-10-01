@@ -22,6 +22,8 @@ declare var $:any,swal:any ;
   providers: [Pagination, HttpRequestLoader]
 })
 export class FormAnalyticsComponent implements OnInit {
+    formId: any;
+    partnerLandingPageAlias: any;
     loggedInUserId: number=0;
     alias:string="";
     campaignAlias:string = "";
@@ -46,11 +48,19 @@ export class FormAnalyticsComponent implements OnInit {
     ngOnInit() {
         this.alias = this.route.snapshot.params['alias'];
         this.campaignAlias = this.route.snapshot.params['campaignAlias'];
+        this.partnerLandingPageAlias =this.route.snapshot.params['partnerLandingPageAlias'];
+        this.formId =this.route.snapshot.params['formId'];
         if(this.campaignAlias!=undefined){
             this.pagination.campaignId = parseInt(this.campaignAlias);
             this.campaignForms = true;
             //this.routerLink = "/home/forms/cf/"+this.pagination.campaignId;
              this.routerLink = "/home/forms/clpf/"+this.pagination.campaignId;
+        }else if(this.partnerLandingPageAlias!=undefined){
+            this.pagination.landingPageAlias = this.partnerLandingPageAlias;
+            this.routerLink = "/home/forms/partner/lf/"+this.partnerLandingPageAlias;
+            this.pagination.formId = this.formId;
+            this.alias = "";
+            this.pagination.partnerLandingPageForm = true;
         }
         this.listSubmittedData(this.pagination);
     }
@@ -69,6 +79,8 @@ export class FormAnalyticsComponent implements OnInit {
                     this.formDataRows = data.submittedData;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, this.formDataRows);
+                }else{
+                    console.log(response.statusCode);
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
