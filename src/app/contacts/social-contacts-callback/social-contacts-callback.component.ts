@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ContactService } from '../services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -15,7 +15,7 @@ export class SocialContactsCallbackComponent implements OnInit {
     public isPartner: boolean;
     callbackName: string;
 
-    constructor( public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger ) {
+    constructor( private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger ) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
@@ -39,9 +39,9 @@ export class SocialContactsCallbackComponent implements OnInit {
         }
     }
 
-    socialContactsCallback() {
+    socialContactsCallback(queryParam: any) {
         try {
-            this.contactService.socialContactsCallback()
+            this.contactService.socialContactsCallback(queryParam)
                 .subscribe(
                 result => {
                     localStorage.removeItem( "userAlias" );
@@ -73,7 +73,15 @@ export class SocialContactsCallbackComponent implements OnInit {
     ngOnInit() {
         this.contactService.socialProviderName = '';
         try {
-            this.socialContactsCallback();
+            
+        let queryParam: string = "";
+        this.route.queryParams.subscribe(
+            ( param: any ) => {
+                let code = param['code'];
+                let denied = param['denied'];
+                queryParam = "?code=" + code;
+            });
+            this.socialContactsCallback(queryParam);
         }
         catch ( err ) {
             this.xtremandLogger.error( err );
