@@ -45,6 +45,7 @@ export class Properties {
   SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
   SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
   CONTACT_LIST_VALIDATION ='Please select how you would like to add your contacts.';
+  CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
 
   /* For Partners*/
   PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
@@ -68,6 +69,7 @@ export class Properties {
 
   PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
   PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
+  PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partners have been validated successfully.";
 
   /* Authentication Module*/
 

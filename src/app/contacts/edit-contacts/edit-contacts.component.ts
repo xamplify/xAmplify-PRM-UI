@@ -1709,6 +1709,34 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "editContactComponent", "checkingSelectedInvalidUsers()" );
         }
     }
+    
+    validateUndeliverableContacts() {
+        try {
+            this.resetResponse();
+            this.xtremandLogger.info( this.selectedInvalidContactIds );
+            this.contactService.validateUndelivarableEmailsAddress( this.selectedInvalidContactIds )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.xtremandLogger.log( data );
+                    console.log( "update Contacts ListUsers:" + data );
+                    this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
+                    this.selectedInvalidContactIds.length = 0;
+                    if(this.isPartner){
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true );
+                    }else {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true );  
+                    }
+                },
+                ( error: any ) => {
+                    console.log( error );
+                },
+                () => this.xtremandLogger.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+                )
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+        }
+    }
 
     removeInvalidContactListUsers() {
         try {

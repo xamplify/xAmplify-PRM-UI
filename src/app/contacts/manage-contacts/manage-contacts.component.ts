@@ -989,6 +989,38 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.error( error, "ManageContactsComponent", "removingInvalidUsersAlert()" );
         }
     }
+    
+    
+    validateUndeliverableContacts() {
+        try {
+            this.resetResponse();
+            this.xtremandLogger.info( this.selectedInvalidContactIds );
+            this.contactService.validateUndelivarableEmailsAddress( this.selectedInvalidContactIds )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.xtremandLogger.log( data );
+                    console.log( "update Contacts ListUsers:" + data );
+                    this.contactsCount();
+                    this.contactCountLoad = true;
+                    this.listContactsByType( this.contactsByType.selectedCategory );
+                    if(this.isPartner){
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true );
+                    }else {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true );  
+                    }
+                },
+                ( error: any ) => {
+                    console.log( error );
+                },
+                () => this.xtremandLogger.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+                )
+            this.invalidDeleteSucessMessage = false;
+            this.invalidDeleteErrorMessage = false;
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+        }
+    }
 
     contactsCount() {
         try {

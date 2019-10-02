@@ -818,13 +818,16 @@
 								</div>
 								<div class="btn-group pull-right"
 									style="margin-top: 4px; color: #000000;"
-									*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || ( hasContactRole && loggedInUserId == uploadedUserId )">
+									*ngIf="contactsByType.selectedCategory == 'invalid'">
 									<span class="dropdown-toggle" data-toggle="dropdown" style="color: #FFF; box-shadow:none; margin-top: 8px; float:right;">
 										<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 									</span>
 									<ul class="dropdown-menu pull-right">
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
 											(click)="invalidContactsShowAlert()"> Delete </a></li>
+										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+													id="validate_email_button" (click)="validateUndeliverableContacts()">
+													Validate Emails </a></li>
 										<li><a id="delete_button"
 										(click) = "downloadContactTypeList()"> Export To Excel </a></li>
 									</ul>
