@@ -1720,6 +1720,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     data = data;
                     this.xtremandLogger.log( data );
                     console.log( "update Contacts ListUsers:" + data );
+                    this.checkingLoadContactsCount = true;
+                    this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
                     this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
                     this.selectedInvalidContactIds.length = 0;
                     if(this.isPartner){
