@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class FeedUpdateComponent implements OnInit {
 
-  constructor(private rssService: RssService, private authenticationService: AuthenticationService) { }
+  constructor(public rssService: RssService, private authenticationService: AuthenticationService) { }
   @Output() selectedFeed = new EventEmitter();
   @Output() navigateUrl = new EventEmitter();
   userId: number;

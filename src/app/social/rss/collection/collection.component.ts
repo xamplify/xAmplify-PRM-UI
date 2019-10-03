@@ -16,7 +16,7 @@ export class CollectionComponent implements OnInit {
   userId: number;
   collectionTitle: string;
   renameCollectionTitleResponse: any;
-  constructor(private router: Router, private route: ActivatedRoute, private rssService: RssService, private authenticationService: AuthenticationService) { }
+  constructor(private router: Router, private route: ActivatedRoute, public rssService: RssService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.userId = this.authenticationService.getUserId();

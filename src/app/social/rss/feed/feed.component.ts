@@ -9,7 +9,7 @@ import { SocialService } from '../../services/social.service';
 export class FeedComponent implements OnInit {
 @Input('feed') feed: any;
 link: any;
-  constructor(private socialService: SocialService) { 
+  constructor(public socialService: SocialService) { 
   }
 
   addFeed(){
