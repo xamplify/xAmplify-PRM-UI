@@ -241,6 +241,13 @@ export class ContactService {
             .map(( response: any ) => response.json() );
     }
     
+    getValidUsersCount( selectedListIds: Array<number> ): Observable<Object> {
+        this.logger.info( selectedListIds );
+        var newUrl = this.contactsUrl + "valid-contacts-count?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+        return this._http.post( newUrl, selectedListIds )
+            .map(( response: any ) => response.json() );
+    }
+    
 
     downloadContactList( contactListId: number ): Observable<Response> {
         this.logger.info( contactListId );

@@ -159,6 +159,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  smsText: any;
  enableSmsText: boolean;
  smsTextDivClass: string
+ validUsersCount: number;
 
   
 
@@ -1761,6 +1762,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
+            this.getValidUsersCount();
             }
 
     }
@@ -2115,5 +2117,30 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     this.smsService =  !this.smsService;
     this.enableSmsText =  this.smsService;
 }
+ 
+ getValidUsersCount() {
+     try {
+         var listOfUserListIds = [];
+         for(var i=0; i< this.userListDTOObj.length; i++){
+             listOfUserListIds.push(this.userListDTOObj[i].id);
+         }
+         
+         this.contactService.getValidUsersCount( listOfUserListIds )
+             .subscribe(
+             data => {
+                 data = data;
+                 this.validUsersCount = data['count'];
+                 console.log( "valid contacts Data:" + data['count'] );
+             },
+             ( error: any ) => {
+                 console.log( error );
+             },
+             () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+             )
+     } catch ( error ) {
+         console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+     }
+ }
+ 
 
 }

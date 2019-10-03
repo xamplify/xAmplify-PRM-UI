@@ -240,6 +240,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      smsText: any;
      enableSmsText: boolean;
      smsTextDivClass: string;
+     validUsersCount: number;
 
      /************Landing Page Variables***************** */
      landingPageSearchInput:string = "";
@@ -2488,6 +2489,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactListTabClass = this.successTabClass;
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
+                this.getValidUsersCount()
                 this.listSocialStatusProviders();
                 this.statusMessage = this.campaign.campaignName;
                 if(!this.isAdd && this.selectedTemplateBody!==undefined){
@@ -3013,6 +3015,26 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
+    
+    getValidUsersCount() {
+        try {
+            this.contactService.getValidUsersCount( this.selectedContactListIds )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.validUsersCount = data['count'];
+                    console.log( "valid contacts Data:" + data['count'] );
+                },
+                ( error: any ) => {
+                    console.log( error );
+                },
+                () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+                )
+        } catch ( error ) {
+            console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+        }
+    }
+    
 
 
 }

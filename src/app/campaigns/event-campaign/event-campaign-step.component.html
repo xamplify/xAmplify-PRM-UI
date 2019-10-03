@@ -975,7 +975,8 @@ a.disabled {
                       </ng-container>
                       <a>
                         <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
-                      </a>
+                      </a><br>
+                      <span style="color: cornflowerblue;font-weight: 600;">Emails will send for {{validUsersCount}} users</span>
                     </td>
                     <td style="text-align: right" width="20%">
                       <a  [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
