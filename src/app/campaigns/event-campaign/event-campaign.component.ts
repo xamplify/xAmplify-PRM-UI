@@ -160,6 +160,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  enableSmsText: boolean;
  smsTextDivClass: string
  validUsersCount: number;
+ allUsersCount: number;
+ listOfSelectedUserListIds = [];
 
   
 
@@ -2120,17 +2122,17 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
  
  getValidUsersCount() {
      try {
-         var listOfUserListIds = [];
          for(var i=0; i< this.userListDTOObj.length; i++){
-             listOfUserListIds.push(this.userListDTOObj[i].id);
+             this.listOfSelectedUserListIds.push(this.userListDTOObj[i].id);
          }
          
-         this.contactService.getValidUsersCount( listOfUserListIds )
+         this.contactService.getValidUsersCount( this.listOfSelectedUserListIds )
              .subscribe(
              data => {
                  data = data;
-                 this.validUsersCount = data['count'];
-                 console.log( "valid contacts Data:" + data['count'] );
+                 this.validUsersCount = data['validContactsCount'];
+                 this.allUsersCount = data['allContactsCount'];
+                 console.log( "valid contacts Data:" + data['validContactsCount'] );
              },
              ( error: any ) => {
                  console.log( error );

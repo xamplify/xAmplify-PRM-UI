@@ -227,6 +227,8 @@
                   <h4 class="pull-left" *ngIf="selectedUserlistIds.length>1">{{selectedUserlistIds.length}} contact lists
                     are selected</h4>
                   <a class="pull-right btn btn-primary btn-sm" style="margin-top: 6px" (click)="showContacts()">{{previewText}}</a>
+                  <br>
+                  <span *ngIf="selectedUserlistIds.length>0" style="color: cornflowerblue;font-weight: 600;float: left;margin-bottom: 10px;">Emails will send for {{validUsersCount}}({{allUsersCount}}) users</span>
                 </div>
               </div>
               <div id="campaign-contact-list" style="display: none;">

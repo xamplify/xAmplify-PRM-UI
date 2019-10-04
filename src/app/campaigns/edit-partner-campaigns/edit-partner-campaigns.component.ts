@@ -164,6 +164,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     isOnlyPartner = false;
     isOrgAdminAndPartner =false;
     isVendorAndPartner = false;
+    validUsersCount: number;
+    allUsersCount: number;
+    
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
 
     constructor(private router: Router,
@@ -636,7 +639,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     getRepliesData(){
-        for(var i=0;i<this.replies.length;i++){
+        for(var i=0;i< this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
@@ -715,7 +718,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     getOnClickData(){
-        for(var i=0;i<this.urls.length;i++){
+        for(var i=0;i< this.urls.length;i++){
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
@@ -830,6 +833,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             $('#' + contactListId).parent().closest('tr').removeClass('highlight');
         }
         this.contactsUtility();
+        this.getValidUsersCount();
         event.stopPropagation();
     }
 
@@ -1091,6 +1095,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                   this.selectedUserlistIds.push(contactId);
               }
                 this.contactsUtility();
+                this.getValidUsersCount();
                 event.stopPropagation();
             }else{
                 this.emptyContactsMessage = "Contacts are in progress";
@@ -1293,5 +1298,24 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
 
+  getValidUsersCount() {
+      try {
+          this.contactService.getValidUsersCount( this.selectedUserlistIds )
+              .subscribe(
+              data => {
+                  data = data;
+                  this.validUsersCount = data['validContactsCount'];
+                  this.allUsersCount = data['allContactsCount'];
+                  console.log( "valid contacts Data:" + data['validContactsCount'] );
+              },
+              ( error: any ) => {
+                  console.log( error );
+              },
+              () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+              )
+      } catch ( error ) {
+          console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+      }
+  }
 
 }

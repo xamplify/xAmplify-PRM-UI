@@ -241,6 +241,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      enableSmsText: boolean;
      smsTextDivClass: string;
      validUsersCount: number;
+     allUsersCount: number;
 
      /************Landing Page Variables***************** */
      landingPageSearchInput:string = "";
@@ -3022,8 +3023,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 .subscribe(
                 data => {
                     data = data;
-                    this.validUsersCount = data['count'];
-                    console.log( "valid contacts Data:" + data['count'] );
+                    this.validUsersCount = data['validContactsCount'];
+                    this.allUsersCount = data['allContactsCount'];
+                    console.log( "valid contacts Data:" + data['validContactsCount'] );
                 },
                 ( error: any ) => {
                     console.log( error );

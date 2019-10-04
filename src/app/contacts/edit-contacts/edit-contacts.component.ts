@@ -1713,11 +1713,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     validateUndeliverableContacts() {
         try {
             this.resetResponse();
+            this.loading = true;
             this.xtremandLogger.info( this.selectedInvalidContactIds );
             this.contactService.validateUndelivarableEmailsAddress( this.selectedInvalidContactIds )
                 .subscribe(
                 data => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.log( data );
                     console.log( "update Contacts ListUsers:" + data );
                     this.checkingLoadContactsCount = true;
@@ -1732,6 +1734,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 },
                 ( error: any ) => {
                     console.log( error );
+                    this.loading = false;
                 },
                 () => this.xtremandLogger.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
                 )

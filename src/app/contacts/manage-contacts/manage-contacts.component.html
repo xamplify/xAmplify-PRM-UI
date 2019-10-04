@@ -29,7 +29,8 @@
 				class="capitalize">Undeliverable {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
-
+<ngx-loading [show]="loading"
+							[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div id="manageContacts" >
 		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 		<div *ngIf="showAll">
@@ -625,7 +626,7 @@
 														Delete </a></li>
 												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="validate_email_button" (click)="validateUndeliverableContacts()">
-													Make valid email(s) </a></li>
+													Mark as valid email(s) </a></li>
 												<li><a id="delete_button"
 													(click)="downloadContactTypeList()"> Export To Excel </a></li>
 											</ul>

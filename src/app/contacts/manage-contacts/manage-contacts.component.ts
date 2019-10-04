@@ -98,6 +98,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
     public totalRecords: number;
+    loading = false;
 
     searchContactType = "";
 
@@ -994,11 +995,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     validateUndeliverableContacts() {
         try {
             this.resetResponse();
+            this.loading = true;
             this.xtremandLogger.info( this.selectedInvalidContactIds );
             this.contactService.validateUndelivarableEmailsAddress( this.selectedInvalidContactIds )
                 .subscribe(
                 data => {
                     data = data;
+                    this.loading = false;
                     this.xtremandLogger.log( data );
                     console.log( "update Contacts ListUsers:" + data );
                     this.contactsCount();
@@ -1012,6 +1015,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 },
                 ( error: any ) => {
                     console.log( error );
+                    this.loading = false;
                 },
                 () => this.xtremandLogger.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
                 )
