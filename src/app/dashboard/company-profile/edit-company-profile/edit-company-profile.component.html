@@ -147,15 +147,15 @@
 									<option *ngFor="let videoFile of publicVideos"	[ngValue]="videoFile.id">{{videoFile.title}}</option>
 								</select>
 							</div>
-							<!-- <div class="form-group" [attr.class]="aboutUsDivClass">
+							<div class="form-group" [attr.class]="aboutUsDivClass">
 								<label class="control-label">About Us <font	style="color: #f55d7a"><b>*</b></font></label>
 								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs" (input)="validateEmptySpace('aboutUs')" (blur)="validateEmptySpace('aboutUs')"></textarea>
 								<span *ngIf="aboutUsError"  style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
-							</div> -->
-							<div class="form-group">
+							</div>
+							<!-- <div class="form-group">
 								<label class="control-label">About Us</label>
 								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs"></textarea>
-							</div>
+							</div> -->
 							<div class="panel-group">
 								<div class="panel panel-default">
 								<div class="panel-heading" data-toggle="collapse" href="#collapse1" (click)="refService.scrollSmoothToBottom()">
@@ -180,7 +180,7 @@
 									</div>
 									<div class="form-group" [attr.class]="zipDivClass">
 										<label class="control-label">Zip</label>
-										<input type="text" id="zip" name="zip" maxlength="50" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
+										<input type="text" id="zip" name="zip" maxlength="10" placeholder="Zip" onkeypress="return event.charCode >= 48 && event.charCode <= 57"	class="form-control" [(ngModel)]="companyProfile.zip"  />
 										<span *ngIf="zipError"  style="color: #f55d7a">{{zipErrorMessage}}</span>
 									</div>
 									<div class="form-group" [attr.class]="countryDivClass">
