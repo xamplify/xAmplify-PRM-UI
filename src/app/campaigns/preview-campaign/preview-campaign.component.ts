@@ -37,6 +37,8 @@ import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { CampaignType } from '../models/campaign-type';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+
 
 declare var $:any;
 
@@ -142,6 +144,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     logListName = "";
     isLoadingDownloadList = false;
     downloadTypeName = "";
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
 
 
     constructor(
@@ -1002,6 +1005,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                                 body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
                             });
                             body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+                        }
+                        if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                            body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+
                         }
                         let emailTemplateName = emailTemplate.name;
                         if (emailTemplateName.length > 50) {

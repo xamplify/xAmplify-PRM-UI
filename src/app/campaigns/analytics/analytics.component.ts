@@ -27,6 +27,8 @@ import { EventCampaign } from '../models/event-campaign';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+
 
 declare var $, Highcharts,swal: any;
 
@@ -141,6 +143,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   smsService: boolean;
  isSmsServiceAnalytics = false;
  @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+ senderMergeTag:SenderMergeTag = new SenderMergeTag();
+
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -1725,6 +1729,9 @@ showTimeLineView(){
                       body = body.replace( value, self.authenticationService.MEDIA_URL + campaign.companyLogo );
                   } );
                   body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );
+                  if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                      body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                  }
                   tempalteObject.body = body;
                   this.referenceService.previewEmailTemplate( tempalteObject, campaign);
                   this.ngxloading = false;

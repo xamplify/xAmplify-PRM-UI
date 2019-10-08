@@ -36,6 +36,8 @@ import { Properties } from '../../common/models/properties';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -255,6 +257,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      showLandingPage: boolean;
      filtereLandingPageIds: Array<number>;
      isLandingPageSwitch = false;
+     senderMergeTag:SenderMergeTag = new SenderMergeTag();
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -1712,6 +1716,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                     });
                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                    if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                        body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                    }
                     let emailTemplateName = emailTemplate.name;
                     if(emailTemplateName.length>50){
                         emailTemplateName = emailTemplateName.substring(0, 50)+"...";

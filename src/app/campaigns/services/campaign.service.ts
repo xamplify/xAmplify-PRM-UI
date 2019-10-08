@@ -558,6 +558,7 @@ export class CampaignService {
             data['email'] = campaign.email;
             data['subjectLine'] = campaign.subjectLine;
             data['nurtureCampaign'] = nutrureCampaign;
+            data['channelCampaign'] = campaign.channelCampaign;
             data['preHeader'] = campaign.preHeader;
             if(campaign.campaignTypeInString=='LANDINGPAGE'){
                 data['landingPageId'] = selectedLandingPageId;
