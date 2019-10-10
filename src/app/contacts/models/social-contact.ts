@@ -27,4 +27,8 @@ export class SocialContact{
     company: string;
     mobilePhone: string;
     title:string;
+    website:string;
+    userId:number;
+    type:string;
+    externalListId:number;
 }

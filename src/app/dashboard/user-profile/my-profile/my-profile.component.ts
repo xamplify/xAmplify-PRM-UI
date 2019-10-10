@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
-import { FormGroup,FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
 import { UserService } from '../../../core/services/user.service';
@@ -24,6 +24,7 @@ import { DealForms } from '../../../deal-registration/models/deal-forms';
 import { DealType } from '../../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 import { DashboardService } from '../../dashboard.service';
+import { HubSpotService } from 'app/core/services/hubspot.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -76,93 +77,98 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     hasClientErrors = false;
 
-    dealForms:DealForms[] = [];
+    dealForms: DealForms[] = [];
     form = new DealForms();
-    questions:DealQuestions[] =[];
-    question:DealQuestions;
-    dealtype:DealType;
-    dealtypes:DealType[] = [];
+    questions: DealQuestions[] = [];
+    question: DealQuestions;
+    dealtype: DealType;
+    dealtypes: DealType[] = [];
     formSubmiteState = true;
     dealSubmiteState = true;
     submitButtonText = "Save Form";
     dealButtonText = "Save Deals";
-    validateForm:boolean;
-    selectedForm:DealForms;
-    defaultQuestions:string[] = ["Campaign Name","Company","First Name","Last Name","Title ","Email ","Phone Number","Deal Type","Website","Lead Address",
-        "Lead City","Lead State/Province","Lead Postal Code","Lead Country","Opportunity Amount","Estimated Close date"];
-    isListFormSection:boolean;
+    validateForm: boolean;
+    selectedForm: DealForms;
+    defaultQuestions: string[] = ["Campaign Name", "Company", "First Name", "Last Name", "Title ", "Email ", "Phone Number", "Deal Type", "Website", "Lead Address",
+        "Lead City", "Lead State/Province", "Lead Postal Code", "Lead Country", "Opportunity Amount", "Estimated Close date"];
+    isListFormSection: boolean;
     customResponseForm: CustomResponse = new CustomResponse();
 
 
     circleCropperSettings: CropperSettings;
-    circleData:any;
+    circleData: any;
     cropRounded = false;
     loadingcrop = false;
     errorUploadCropper = false;
     integrationTabIndex = 0;
-    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
+    @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
     integrateRibbonText: string;
+   
+    hubSpotRibbonText: string;
+    hubSpotRedirectURL: string;
+
+
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService,private dashBoardServiece:DashboardService) {
-     //   this.customConstructorCall();
+        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService, private hubSpotService: HubSpotService) {
+        //   this.customConstructorCall();
     }
     cropperSettings() {
-        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
+        this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
         this.circleCropperSettings.noFileInput = true;
         this.circleData = {};
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
-    closeModal(){
-      this.cropRounded = !this.cropRounded;
-      this.circleData = {};
+    closeModal() {
+        this.cropRounded = !this.cropRounded;
+        this.circleData = {};
     }
-    fileChangeEvent(){ this.cropRounded = false; $('#cropProfileImage').modal('show'); }
-    uploadProfileImage(){
-      this.loadingcrop = true;
-      let fileObj:any;
-      fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
-      fileObj = this.utilService.blobToFile(fileObj);
-      console.log(fileObj);
-      this.fileUploadCode(fileObj);
+    fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
+    uploadProfileImage() {
+        this.loadingcrop = true;
+        let fileObj: any;
+        fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
+        fileObj = this.utilService.blobToFile(fileObj);
+        console.log(fileObj);
+        this.fileUploadCode(fileObj);
     }
-    fileUploadCode(fileObj:File){
-      this.userService.saveUserProfileLogo(fileObj).subscribe(
-        (response: any) => {
-          const imageFilePath = response;
-          this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
-          this.profileUploadSuccess = true;
-          this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
-          this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-          this.loadingcrop = false;
-          this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
-          $('#cropProfileImage').modal('hide');
-          this.closeModal();
-        },
-        (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
-        ()=>{ this.loadingcrop = false;  $('#cropProfileImage').modal('hide');});
+    fileUploadCode(fileObj: File) {
+        this.userService.saveUserProfileLogo(fileObj).subscribe(
+            (response: any) => {
+                const imageFilePath = response;
+                this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
+                this.profileUploadSuccess = true;
+                this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+                this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+                this.loadingcrop = false;
+                this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED, true);
+                $('#cropProfileImage').modal('hide');
+                this.closeModal();
+            },
+            (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true); },
+            () => { this.loadingcrop = false; $('#cropProfileImage').modal('hide'); });
     }
-    fileChangeListener($event,cropperComp: ImageCropperComponent) {
-      this.cropper = cropperComp;
-      const image:any = new Image();
-      const file:File = $event.target.files[0];
-      const isSupportfile: any = file.type;
-      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-        this.errorUploadCropper = false;
-        const myReader:FileReader = new FileReader();
-        const that = this;
-        myReader.onloadend = function (loadEvent:any) {
-            image.src = loadEvent.target.result;
-            that.cropper.setImage(image);
-        };
-        myReader.readAsDataURL(file);
-       } else {  this.errorUploadCropper = true;}
-      }
+    fileChangeListener($event, cropperComp: ImageCropperComponent) {
+        this.cropper = cropperComp;
+        const image: any = new Image();
+        const file: File = $event.target.files[0];
+        const isSupportfile: any = file.type;
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+            this.errorUploadCropper = false;
+            const myReader: FileReader = new FileReader();
+            const that = this;
+            myReader.onloadend = function (loadEvent: any) {
+                image.src = loadEvent.target.result;
+                that.cropper.setImage(image);
+            };
+            myReader.readAsDataURL(file);
+        } else { this.errorUploadCropper = true; }
+    }
     videojsCall() {
-        this.customResponse =  new CustomResponse();
+        this.customResponse = new CustomResponse();
         if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
             const self = this;
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
@@ -205,20 +211,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             this.defaultVideoSettings();
             this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-            if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers();}
-            setTimeout( ()=> {this.videoJSplayer.play(); this.videoJSplayer.pause();}, 1);
+            if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
+            setTimeout(() => { this.videoJSplayer.play(); this.videoJSplayer.pause(); }, 1);
         } else {
             this.logger.log('you already initialized the videojs');
         }
     }
-    imageUpload(event){ $('#'+event).click();}
-    clearCustomResponse(){ this.customResponse = new CustomResponse(); }
-    errorHandler(event:any){ event.target.src = 'assets/images/icon-user-default.png';}
-    customConstructorCall(){
-      if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
-          try{
-            if ( this.authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
-            } else { this.userData = this.authenticationService.userProfile;
+    imageUpload(event) { $('#' + event).click(); }
+    clearCustomResponse() { this.customResponse = new CustomResponse(); }
+    errorHandler(event: any) { event.target.src = 'assets/images/icon-user-default.png'; }
+    customConstructorCall() {
+        if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) { this.router.navigateByUrl(this.referenceService.homeRouter); }
+        try {
+            if (this.authenticationService.isSuperAdmin()) {
+                this.userData = this.authenticationService.venorMyProfileReport;
+            } else {
+                this.userData = this.authenticationService.userProfile;
             }
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.getUserByUserName(this.currentUser.userName);
@@ -231,8 +239,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.hasAllAccess = this.referenceService.hasAllAccess();
             this.hasVideoRole = this.authenticationService.hasVideoRole();
-            if(this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()){
-              this.hasVideoRole = false;
+            if (this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) {
+                this.hasVideoRole = false;
             }
             this.hasCompany = this.authenticationService.user.hasCompany;
             this.callActionSwitch.size = 'normal';
@@ -249,7 +257,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             this.initializeForm();
             this.checkIntegrations();
-        }catch(error){
+        } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
         }
@@ -263,14 +271,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.videoUtilService.normalVideoJsFiles();
             // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             // this.getUserByUserName(currentUser.userName);
-            if(!this.referenceService.isMobileScreenSize()){
-              this.isGridView(this.authenticationService.getUserId()); }
+            if (!this.referenceService.isMobileScreenSize()) {
+                this.isGridView(this.authenticationService.getUserId());
+            }
             else { this.referenceService.isGridView = true; }
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
             this.authenticationService.isOnlyPartner();
-            if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length>1 && this.hasCompany)) {
+            if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
                 if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
                     this.getVideoDefaultSettings();
@@ -293,36 +302,36 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        try{
+        try {
             if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany() && !this.authenticationService.isOnlyPartner()) {
                 this.defaultVideoSettings();
-               if(this.referenceService.defaultPlayerSettings !== undefined){
-                if (this.referenceService.defaultPlayerSettings.transparency === null) {
-                   this.referenceService.defaultPlayerSettings.transparency = 100;
-                   this.referenceService.defaultPlayerSettings.controllerColor = '#456';
-                   this.referenceService.defaultPlayerSettings.playerColor = '#879';
-               }
-               this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-               if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
-               }
-              }
-        }catch(error){
+                if (this.referenceService.defaultPlayerSettings !== undefined) {
+                    if (this.referenceService.defaultPlayerSettings.transparency === null) {
+                        this.referenceService.defaultPlayerSettings.transparency = 100;
+                        this.referenceService.defaultPlayerSettings.controllerColor = '#456';
+                        this.referenceService.defaultPlayerSettings.playerColor = '#879';
+                    }
+                    this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+                    if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
+                }
+            }
+        } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
     }
-   getUserByUserName( userName: string ) {
-      try{
-         this.authenticationService.getUserByUserName( userName )
-            .subscribe(
-            data => {
-              this.userData = data;
-              this.authenticationService.userProfile = data;
-            },
-            error => {console.log( error ); this.router.navigate(['/su'])},
-            () => { }
-            );
-        }catch(error){ console.log('error'+error); }
+    getUserByUserName(userName: string) {
+        try {
+            this.authenticationService.getUserByUserName(userName)
+                .subscribe(
+                    data => {
+                        this.userData = data;
+                        this.authenticationService.userProfile = data;
+                    },
+                    error => { console.log(error); this.router.navigate(['/su']) },
+                    () => { }
+                );
+        } catch (error) { console.log('error' + error); }
     }
     updatePassword() {
         this.ngxloading = true;
@@ -333,7 +342,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'userId': this.loggedInUserId
         }
         if (this.updatePasswordForm.value.oldPassword === this.updatePasswordForm.value.newPassword) {
-           this.customResponse = new CustomResponse('ERROR','Your new password cannot be the same as your current password',true);
+            this.customResponse = new CustomResponse('ERROR', 'Your new password cannot be the same as your current password', true);
             this.ngxloading = false;
         } else {
             this.userService.updatePassword(userPassword)
@@ -355,7 +364,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                 }
                             } else if (response.message == "Password Updated Successfully") {
                                 this.ngxloading = false;
-                                this.customResponse = new CustomResponse('SUCCESS',this.properties.PASSWORD_UPDATED,true);
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PASSWORD_UPDATED, true);
                                 this.userData.hasPassword = true;
                                 this.updatePasswordForm.reset();
                             } else {
@@ -483,7 +492,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'mobileNumber': {
             'required': 'Mobile Number required.',
             'minlength': '',
-           /* 'maxlength': 'Mobile should be 10 digit.',*/
+            /* 'maxlength': 'Mobile should be 10 digit.',*/
             'pattern': 'Mobile Numbe should be 10 digits and only contain numbers.'
 
         },
@@ -514,22 +523,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     /*******************Update User Profile*************************************/
-    geoLocation(){
-        try{
-        this.videoFileService.getJSONLocation()
-        .subscribe(
-        (data: any) => {
-            if ( this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined ) {
-                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
-                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
-                        this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
-                        break;
-                    }
-                }
-            }
-        } )
-        } catch ( error ) {
-            console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
+    geoLocation() {
+        try {
+            this.videoFileService.getJSONLocation()
+                .subscribe(
+                    (data: any) => {
+                        if (this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined) {
+                            for (let i = 0; i < this.countryNames.countriesMobileCodes.length; i++) {
+                                if (data.countryCode == this.countryNames.countriesMobileCodes[i].code) {
+                                    this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
+                                    break;
+                                }
+                            }
+                        }
+                    })
+        } catch (error) {
+            console.error(error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation");
         }
     }
 
@@ -543,7 +552,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'lastName': [this.userData.lastName],
             // 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-           // 'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+            // 'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
             'mobileNumber': [this.userData.mobileNumber],
             'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
@@ -587,8 +596,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.referenceService.goToTop();
         this.ngxloading = true;
 
-        if ( this.userData.mobileNumber ) {
-            if ( this.userData.mobileNumber.length > 6 ) {
+        if (this.userData.mobileNumber) {
+            if (this.userData.mobileNumber.length > 6) {
                 this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
             } else {
                 this.updateUserProfileForm.value.mobileNumber = ""
@@ -602,7 +611,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         const response = data;
                         const message = response.message;
                         if (message === "User Updated") {
-                            this.customResponse =  new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED,true);
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED, true);
                             this.userData = this.updateUserProfileForm.value;
                             this.userData.displayName = this.updateUserProfileForm.value.firstName;
                             this.userData.emailId = this.authenticationService.user.emailId;
@@ -663,8 +672,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.valueRange = response.transparency;
                 this.tempControllerColor = response.controllerColor;
                 this.tempPlayerColor = response.playerColor;
-                if(!response.controllerColor && !response.playerColor && !response.transparency) {
-                  this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
+                if (!response.controllerColor && !response.playerColor && !response.transparency) {
+                    this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
                 }
                 this.logoImageUrlPath = response.brandingLogoUri = response.companyProfile.companyLogoPath;
                 this.logoLink = response.brandingLogoDescUri = response.companyProfile.website;
@@ -673,7 +682,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.videoUtilService.videoTempDefaultSettings = response;
                 }
             },
-            (error:any)=>{ console.log('error'+error); }
+            (error: any) => { console.log('error' + error); }
         );
     }
     enableVideoController(event: any) {
@@ -691,15 +700,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
-    changeControllerColor(event: any, enableVideoController:boolean) {
-         try{
-          this.defaultVideoPlayer.controllerColor = event;
-          this.compControllerColor = event;
-          if(enableVideoController){
-            const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
-            $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-           }
-          } catch(error){ console.log(error); }
+    changeControllerColor(event: any, enableVideoController: boolean) {
+        try {
+            this.defaultVideoPlayer.controllerColor = event;
+            this.compControllerColor = event;
+            if (enableVideoController) {
+                const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+            }
+        } catch (error) { console.log(error); }
     }
     changePlayerColor(event: any) {
         this.defaultVideoPlayer.playerColor = event;
@@ -752,28 +761,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     defaultVideoSettings() {
-      if(this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined){
-      console.log('default settings called');
-      console.log(this.referenceService.defaultPlayerSettings);
-      console.log(this.referenceService.defaultPlayerSettings.playerColor);
+        if (this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined) {
+            console.log('default settings called');
+            console.log(this.referenceService.defaultPlayerSettings);
+            console.log(this.referenceService.defaultPlayerSettings.playerColor);
 
-        if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
-            this.referenceService.defaultPlayerSettings.playerColor = '#454';
-            this.referenceService.defaultPlayerSettings.controllerColor = '#234';
-            this.referenceService.defaultPlayerSettings.transparency = 100;
+            if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
+                this.referenceService.defaultPlayerSettings.playerColor = '#454';
+                this.referenceService.defaultPlayerSettings.controllerColor = '#234';
+                this.referenceService.defaultPlayerSettings.transparency = 100;
+            }
+            $('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
+            $('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+            $('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+            if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
+                const event = '#fbfbfb';
+                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
+            } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
+            if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
+                $('.video-js .vjs-fullscreen-control').hide();
+            } else { $('.video-js .vjs-fullscreen-control').show(); }
+
         }
-        $('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
-        if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
-            const event = '#fbfbfb';
-            $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
-        } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
-        if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
-            $('.video-js .vjs-fullscreen-control').hide();
-        } else { $('.video-js .vjs-fullscreen-control').show(); }
-
-      }
     }
     UpdatePlayerSettingsValues() {
         this.ngxloading = true;
@@ -781,12 +790,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;
         this.defaultVideoPlayer.transparency = this.valueRange;
-         this.userService.updatePlayerSettings(this.defaultVideoPlayer)
+        this.userService.updatePlayerSettings(this.defaultVideoPlayer)
             .subscribe((result: any) => {
                 this.ngxloading = false;
                 this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
-               if(!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); } },
-                (error:any) => { console.error('error in update player setting api'); }
+                if (!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); }
+            },
+                (error: any) => { console.error('error in update player setting api'); }
             );
     }
     resetForm() {
@@ -850,7 +860,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.isGridView(userId)
             .subscribe(
                 data => {
-                    this.callActionSwitch.isGridView = data; },
+                    this.callActionSwitch.isGridView = data;
+                },
                 error => console.log(error),
                 () => { }
             );
@@ -869,7 +880,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.ngxloading = false;
                     console.log(error);
                     this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
-            },
+                },
                 () => { }
             );
     }
@@ -890,7 +901,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
                     allowOutsideClick: false,
-                    cancelButtonText : 'No'
+                    cancelButtonText: 'No'
                     /*     preConfirm: () => {
                              if(self.orgAdminCount>1){
                                  $('a').addClass('disabled');
@@ -914,8 +925,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         swal.close();
 
                     }
-                }, function(dismiss:any) {
-                    console.log('you clicked on option'+dismiss);
+                }, function (dismiss: any) {
+                    console.log('you clicked on option' + dismiss);
                 });
 
             }
@@ -964,39 +975,38 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Forms section
 
-    initializeForm(){
+    initializeForm() {
         this.userService.listForm(this.loggedInUserId).subscribe(result => {
-            this.dealForms = result;  
+            this.dealForms = result;
             console.log(this.dealForms)
-            if(result[0]){
-                this.form =   result[0]; 
+            if (result[0]) {
+                this.form = result[0];
                 this.questions = this.form.campaignDealQuestionDTOs;
-                let index =1;
-                this.questions = this.questions.map(q=>{
+                let index = 1;
+                this.questions = this.questions.map(q => {
                     q.divId = 'question-' + index++;
                     return q;
                 });
                 this.submitButtonText = "Update Form";
-               
-            }else
+
+            } else
                 this.submitButtonText = "Save Form";
             this.submitBUttonStateChange();
         })
         this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-                
-            this.dealtypes = dealTypes.data;  
-            
+
+            this.dealtypes = dealTypes.data;
+
         });
     }
 
-    addQuestion()
-    {
+    addQuestion() {
         this.question = new DealQuestions();
         var length;
-        if(this.questions != null && this.questions!= undefined)
+        if (this.questions != null && this.questions != undefined)
             length = this.questions.length;
         else
-             length = 0;
+            length = 0;
         length = length + 1;
         var id = 'question-' + length;
         this.question.divId = id;
@@ -1008,108 +1018,101 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     }
-    remove(i, id)
-    {
+    remove(i, id) {
         if (id)
             console.log(id)
-            console.log(i)
+        console.log(i)
         var index = 1;
 
         this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
-            .map(question =>
-            {
+            .map(question => {
                 question.divId = 'question-' + index++;
                 return question;
             });
-            console.log(this.questions);
-            this.submitBUttonStateChange();
+        console.log(this.questions);
+        this.submitBUttonStateChange();
 
     }
-    validateQuestion(question:DealQuestions){
+    validateQuestion(question: DealQuestions) {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
-        if (question.question.length > 0)
-        {
+        if (question.question.length > 0) {
             question.class = successClass;
             question.error = false;
-        } else
-        {
-             question.class = errorClass;
+        } else {
+            question.class = errorClass;
             question.error = true;
         }
         this.submitBUttonStateChange();
     }
-    validateDealForm(form:DealForms){
-        if (form.name.length > 0)
-        {
+    validateDealForm(form: DealForms) {
+        if (form.name.length > 0) {
             this.validateForm = true;
-        } else
-        {
+        } else {
             this.validateForm = false;
         }
         this.submitBUttonStateChange();
     }
-    submitBUttonStateChange(){
+    submitBUttonStateChange() {
         let countForm = 0;
-        if(this.form.name!=null && this.form.name!=undefined && this.form.name.length>0){
-        this.questions.forEach(question =>
-                {
+        if (this.form.name != null && this.form.name != undefined && this.form.name.length > 0) {
+            this.questions.forEach(question => {
 
-                    if (question.error)
-                        countForm++;
-                })
-                if (countForm > 0)
-                    this.formSubmiteState = false;
-                else
-                    this.formSubmiteState = true;
-        }else{
+                if (question.error)
+                    countForm++;
+            })
+            if (countForm > 0)
+                this.formSubmiteState = false;
+            else
+                this.formSubmiteState = true;
+        } else {
             this.formSubmiteState = false;
         }
     }
-    saveForm(){
+    saveForm() {
         this.ngxloading = true;
 
-        if(this.form.id == null){
+        if (this.form.id == null) {
             this.form.createdBy = this.loggedInUserId;
-            this.questions.forEach(question =>{
+            this.questions.forEach(question => {
                 question.createdBy == this.loggedInUserId;
             })
             this.form.campaignDealQuestionDTOs = this.questions;
-            this.userService.saveForm(this.loggedInUserId,this.form).subscribe(result => {
+            this.userService.saveForm(this.loggedInUserId, this.form).subscribe(result => {
 
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
                 this.userService.listForm(this.loggedInUserId).subscribe(form => {
                     this.dealForms = form;
-                    if(form[0]){
-                        this.form =   form[0];
+                    if (form[0]) {
+                        this.form = form[0];
                         this.questions = this.form.campaignDealQuestionDTOs;
                         this.submitButtonText = "Update Form";
                         this.ngxloading = false;
-                    }else
+                    } else
                         this.submitButtonText = "Save Form";
-                        this.ngxloading = false;
+                    this.ngxloading = false;
                 })
             })
-        }else{
+        } else {
             this.form.updatedBy = this.loggedInUserId;
-            this.questions.forEach(question =>{
-                if(question.id != null || question.id != undefined)
+            this.questions.forEach(question => {
+                if (question.id != null || question.id != undefined)
                     question.createdBy == this.loggedInUserId;
                 else
                     question.updatedBy == this.loggedInUserId;
             })
             this.form.campaignDealQuestionDTOs = this.questions;
-            this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
+            this.userService.updateForm(this.loggedInUserId, this.form).subscribe(result => {
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 
-            },(error) =>{
+            }, (error) => {
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
                 this.userService.listForm(this.loggedInUserId).subscribe(form => {
                     this.dealForms = form;
-                    if(form[0]){
-                        this.form =   form[0];
+                    if (form[0]) {
+                        this.form = form[0];
                         this.questions = this.form.campaignDealQuestionDTOs;
                     }
                 });
@@ -1118,14 +1121,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     //Deal types
-    addDealtype()
-    {
+    addDealtype() {
         this.dealtype = new DealType();
         var length;
-        if(this.dealtypes != null && this.dealtypes!= undefined)
+        if (this.dealtypes != null && this.dealtypes != undefined)
             length = this.dealtypes.length;
         else
-             length = 0;
+            length = 0;
         length = length + 1;
         var id = 'dealType-' + length;
         this.dealtype.divId = id;
@@ -1138,112 +1140,126 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     }
-    removeDealType(i, id)
-    {
+    removeDealType(i, id) {
         if (id)
             console.log(id)
-            console.log(i)
+        console.log(i)
         var index = 1;
 
         this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
-            .map(dealtype =>
-            {
+            .map(dealtype => {
                 dealtype.divId = 'dealtype-' + index++;
                 return dealtype;
             });
-            console.log(this.dealtypes);
-            this.dealTypeButtonStateChange();
+        console.log(this.dealtypes);
+        this.dealTypeButtonStateChange();
 
     }
-    validateDealType(dealType:DealType){
+    validateDealType(dealType: DealType) {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
-        if (dealType.dealType.length > 0)
-        {
+        if (dealType.dealType.length > 0) {
             dealType.class = successClass;
             dealType.error = false;
-        } else
-        {
+        } else {
             dealType.class = errorClass;
             dealType.error = true;
         }
         this.dealTypeButtonStateChange();
     }
 
-    dealTypeButtonStateChange(){
+    dealTypeButtonStateChange() {
         let countForm = 0;
-        this.dealtypes.forEach(dealType =>
-                {
+        this.dealtypes.forEach(dealType => {
 
-                    if (dealType.error)
-                        countForm++;
-                })
-                if (countForm > 0)
-                    this.dealSubmiteState = false;
-                else
-                    this.dealSubmiteState = true;
+            if (dealType.error)
+                countForm++;
+        })
+        if (countForm > 0)
+            this.dealSubmiteState = false;
+        else
+            this.dealSubmiteState = true;
 
     }
-    saveDealTypes(){
+    saveDealTypes() {
         this.ngxloading = true;
 
 
 
-            this.dealtypes.forEach(dealtype =>{
-                if(dealtype.id != null && dealtype.id != undefined)
-                    dealtype.updatedBy == this.loggedInUserId;
-                else
-                    dealtype.createdBy == this.loggedInUserId;
-            })
+        this.dealtypes.forEach(dealtype => {
+            if (dealtype.id != null && dealtype.id != undefined)
+                dealtype.updatedBy == this.loggedInUserId;
+            else
+                dealtype.createdBy == this.loggedInUserId;
+        })
 
-            this.dealRegSevice.saveDealTypes(this.dealtypes,this.loggedInUserId).subscribe(result => {
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+        this.dealRegSevice.saveDealTypes(this.dealtypes, this.loggedInUserId).subscribe(result => {
+            this.ngxloading = false;
+            this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 
-            },(error) =>{
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
+        }, (error) => {
+            this.ngxloading = false;
+            this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
 
-            },()=>{
-                this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+        }, () => {
+            this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
 
-                    this.dealtypes = dealTypes.data;
+                this.dealtypes = dealTypes.data;
 
-                });
-            })
+            });
+        })
 
     }
 
 
-    checkIntegrations(): any
-    {
+    checkIntegrations(): any {
         this.dashBoardServiece.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
-            if (response.statusCode == 8000)
-            {
+            if (response.statusCode == 8000) {
                 this.integrateRibbonText = "configured";
             }
-            else
-            {
+            else {
                 this.integrateRibbonText = "configure";
 
             }
-        }, error =>
-            {
-                this.integrateRibbonText = "configure";
-            })
+        }, error => {
+            this.integrateRibbonText = "configure";
+        })
+
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.hubSpotRibbonText = "configured";
+            }
+            else {
+                this.hubSpotRibbonText = "configure";
+            }
+            if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                this.hubSpotRedirectURL = response.data.redirectUrl;
+            }
+        }, (error: any) => {
+            this.hubSpotRibbonText = "configure";
+            this.logger.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => this.logger.log("HubSpot Configuration Checking done"));
     }
-    configmarketo(){
+
+    configmarketo() {
         this.integrationTabIndex = 1;
     }
-      closeMarketoForm(event:any){
-       if(event === "0")
+    closeMarketoForm(event: any) {
+        if (event === "0")
             this.integrationTabIndex = 0;
-    }		    
+    }
 
     ngOnDestroy() {
-        if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }
+        if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
         $('.profile-video').remove();
         $('.h-video').remove();
         this.referenceService.defaulgVideoMethodCalled = false;
+    }
+
+    configHubSpot() {
+        if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
+            window.location.href = this.hubSpotRedirectURL;
+        }
     }
 }

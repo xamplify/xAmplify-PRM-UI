@@ -20,6 +20,7 @@ import { CountryNames } from '../../common/models/country-names';
 import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { FileUtil } from '../../core/models/file-util';
+import { HubSpotService } from 'app/core/services/hubspot.service';
 declare var swal, $, Papa: any;
 
 @Component( {
@@ -81,6 +82,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     public storeLogin: any;
     public socialContactUsers: SocialContact[] = new Array();
     public salesforceListViewsData: Array<any> = [];
+    public hubSpotContactListsData:Array<any>=[];
     pager: any = {};
     pagedItems: any[];
     checkingForEmail: boolean;
@@ -134,13 +136,18 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     marketoImageBlur: boolean = false;
     marketoImageNormal: boolean = false;
 
+    hubspotImageBlur: boolean = false;
+    hubspotImageNormal: boolean = false;
+    hubSpotSelectContactListOption:any;
+    hubSpotContactListName: string;
+
     paginatedSelectedIds = [];
 
 
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
-        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames ) {
+        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames,private hubSpotService:HubSpotService ) {
 
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
@@ -584,6 +591,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveMarketoContactsWithPermission();
         }else if(this.contactOption == 'marketoSelectedContacts'){
             this.saveMarketoSelectedContactsWithPermission();
+        }else if(this.contactOption == 'hubSpotContacts'){
+            this.saveHubSpotContactsWithPermission();
+        }else if(this.contactOption == 'hubSpotSelectedContacts'){
+            this.saveHubSpotSelectedContactsWithPermission();
         }
     }
    
@@ -1029,6 +1040,15 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.saveMarketoContactSelectedUsers();
         }
 
+        
+        if(this.selectedAddContactsOption == 9){
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveHubSpotContacts();
+            } else{
+                this.saveHubSpotContactSelectedUsers();
+            }                
+        }
+        
         if ( this.selectedAddContactsOption == 8 ) {
             this.noOptionsClickError = true;
         }
@@ -2233,6 +2253,11 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         this.marketoImageBlur = true;
                     }
+                    if ( this.storeLogin.MARKETO == true ) {
+                        this.hubspotImageNormal = true;
+                    } else {
+                        this.hubspotImageBlur = true;
+                    }
 
                 },
                 ( error: any ) => {
@@ -2866,4 +2891,227 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         ev.stopPropagation();
     }
 
+    // HubSpot Implementation 
+
+    checkingHubSpotContactsAuthentication(){
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.xtremandLogger.info("isAuthorize true");
+                this.showHubSpotModal();               
+            }
+            else{
+                if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                    window.location.href = response.data.redirectUrl;
+                }                
+            }            
+        }, (error: any) => {
+            this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+    }
+
+    showHubSpotModal() {
+        $( '#ContactHubSpotModal' ).modal( 'show' );
+    }
+
+    hideHubSpotModal() {
+        $( '#ContactHubSpotModal' ).modal( 'hide' );
+    }
+
+    onChangeHubSpotDropdown( event: Event ) {
+        try {
+            this.contactType = event.target["value"];            
+            this.socialNetwork = "hubspot";
+            this.hubSpotContactListsData = [];
+            if ( this.contactType == "DEFAULT" ) {
+                $( "button#hubspot_save_button" ).prop( 'disabled', true );
+            } else {
+                $( "button#hubspot_save_button" ).prop( 'disabled', false );
+            }
+
+           
+            if ( this.contactType === "lists") {
+                $( "button#hubspot_save_button" ).prop( 'disabled', true );
+                this.hubSpotService.getHubSpotContactsLists()
+                    .subscribe(
+                    data => {
+                        let response = data.data;
+                        if ( response.contacts.length > 0 ) {
+                            for ( var i = 0; i < response.contacts.length; i++ ) {
+                                this.hubSpotContactListsData.push( response.contacts[i] );
+                                this.xtremandLogger.log( response.contacts[i] );
+                            }
+                        } else {
+                            this.customResponse = new CustomResponse( 'ERROR', "No " + this.contactType + " found", true );
+                            this.hideHubSpotModal();
+                        }
+                    },
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.log( "onChangeHubSpotDropdown" )
+                    );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent onChangeHubSpotDropdown()." )
+        }
+    }
+
+    onChangeHubSpotListsDropdown( item: any ) {
+        if ( event.target["value"] == "DEFAULT" ) {
+            $( "button#hubspot_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#hubspot_save_button" ).prop( 'disabled', false );
+        }
+        this.hubSpotSelectContactListOption = item;
+        let selectedOptions = event.target['options'];
+        let selectedIndex = selectedOptions.selectedIndex;
+        this.hubSpotContactListName = selectedOptions[selectedIndex].text;
+    }
+
+    getHubSpotData(){
+        $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        if(this.contactType === "contacts"){
+            this.getHubSpotContacts();
+            this.hubSpotContactListName= '';            
+        }else if(this.contactType === "lists"){
+            this.getHubSpotContactsListsById();
+        }
+    }
+
+    getHubSpotContacts(){
+        this.hubSpotService.getHubSpotContacts().subscribe(data => {
+            let response = data.data;
+            this.frameHubSpotFilePreview(response);
+        });
+    }
+
+    getHubSpotContactsListsById(){
+        this.xtremandLogger.info("hubSpotSelectContactListOption :" +this.hubSpotSelectContactListOption);
+        if(this.hubSpotSelectContactListOption !== undefined && this.hubSpotSelectContactListOption !== ''){
+            this.hubSpotService.getHubSpotContactsListsById(this.hubSpotSelectContactListOption).subscribe(data =>{
+                let response = data.data;
+                this.frameHubSpotFilePreview(response);
+            });
+        }       
+    }
+
+    frameHubSpotFilePreview(response:any){
+        if ( !response.contacts ) {
+            this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+        } else {
+            this.socialContactUsers = [];
+            this.model.contactListName= this.hubSpotContactListName;
+            for ( var i = 0; i < response.contacts.length; i++ ) {
+                this.xtremandLogger.log("HubSpot Contact :" + response.contacts[i].firstName );
+                let socialContact = new SocialContact();
+                socialContact = response.contacts[i];                    
+                socialContact.id = i;
+                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
+                        this.socialContactUsers.push( socialContact );
+                    }
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                    $( "#Gfile_preview" ).show();
+                    $( "button#cancel_button" ).prop( 'disabled', false );
+                    this.hideHubSpotModal();
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            }
+        }
+            this.setPage( 1 );                
+            this.selectedAddContactsOption = 9;
+            this.socialContact.contacts = this.socialContactUsers;
+            console.log("Social Contact Users for HubSpot::" + this.socialContactUsers);                  
+    }
+
+    saveHubSpotContacts() {
+        try {
+           this.socialContact.contacts = this.validateMarketoContacts( this.socialContactUsers );
+            this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+            this.socialContact.listName = this.model.contactListName;
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' ) {
+                if ( this.socialContactUsers.length > 0 ) {
+                    this.askForPermission('hubSpotContacts')                   
+                } else
+                    this.xtremandLogger.error( "AddContactComponent saveHubSpotContact() Contacts Null Error" );
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveHubSpotContact() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent saveHubSpotContact()." )
+        }
+    }
+
+    saveHubSpotContactSelectedUsers() {
+        try {
+            this.allselectedUsers = this.validateSocialContacts( this.allselectedUsers );
+            this.model.contactListName = this.model.contactListName.replace( /\s\s+/g, ' ' );
+
+            if ( this.model.contactListName != '' && !this.isValidContactName && this.model.contactListName != ' ' && this.allselectedUsers.length != 0 ) {         
+               this.askForPermission('hubSpotSelectedContacts');                
+            }
+            else {
+                this.contactListNameError = true;
+                this.xtremandLogger.error( "AddContactComponent saveHubSpotContactSelectedUsers() ContactList Name Error" );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent saveHubSpotContactSelectedUsers()." )
+        }
+    }
+
+    saveHubSpotContactsWithPermission(){
+        this.loading = true;
+        this.socialContact.type = "hubspot";
+        this.socialContact.userId = this.authenticationService.getUserId();
+        this.socialContact.externalListId = this.hubSpotSelectContactListOption;
+        this.hubSpotService.saveHubSpotContacts(this.socialContact)
+        .subscribe(
+        data => {
+            data = data;
+            this.loading = false;
+            this.selectedAddContactsOption = 8;
+            this.contactService.saveAsSuccessMessage = "add";
+            this.xtremandLogger.info( "Save Contacts ListUsers:" + data );
+            this.router.navigateByUrl( '/home/contacts/manage' );
+        },
+
+        ( error: any ) => {
+            this.loading = false;
+            this.xtremandLogger.error( error );
+            this.xtremandLogger.errorPage( error );
+        },
+        () => this.xtremandLogger.info( "addcontactComponent saveHubSpotContactsWithPermission() finished" )
+        )
+    }
+
+    saveHubSpotSelectedContactsWithPermission(){
+        this.loading = true;
+        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+        .subscribe(
+        data => {
+            data = data;
+            this.loading = false;
+            this.selectedAddContactsOption = 8;
+            this.contactService.saveAsSuccessMessage = "add";
+            this.xtremandLogger.info( "update Contacts ListUsers:" + data );
+            this.router.navigateByUrl( '/home/contacts/manage')
+        },
+
+        ( error: any ) => {
+            this.loading = false;
+            this.xtremandLogger.error( error );
+            this.xtremandLogger.errorPage( error );
+        },
+        () => this.xtremandLogger.info( "addcontactComponent saveHubSpotSelectedContactsWithPermission() finished" )
+        )
+    }
 }

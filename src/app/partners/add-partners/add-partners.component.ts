@@ -22,6 +22,7 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
+import { HubSpotService } from 'app/core/services/hubspot.service';
 declare var $, Papa, swal, Swal: any;
 
 @Component( {
@@ -82,6 +83,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public salesforceListViewName: string;
     public salesforceListViewId: string;
     public salesforceListViewsData: Array<any> = [];
+    public hubSpotContactListsData:Array<any>=[];
     public socialNetwork: string;
     settingSocialNetwork: string;
     isUnLinkSocialNetwork: boolean = false;
@@ -158,6 +160,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     marketoImageBlur: boolean = false;
     marketoImageNormal: boolean = false;
 
+    hubspotImageBlur: boolean = false;
+    hubspotImageNormal: boolean = false;
+    hubSpotSelectContactListOption:any;
 
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
@@ -166,7 +171,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
-        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService ) {
+        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService ) {
 
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
@@ -1152,6 +1157,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     } else {
                         this.marketoImageBlur = true;
                     }
+                    if ( this.storeLogin.MARKETO == true ) {
+                        this.hubspotImageNormal = true;
+                    } else {
+                        this.hubspotImageBlur = true;
+                    }
                 },
                 ( error: any ) => {
                     this.xtremandLogger.error( error );
@@ -1889,6 +1899,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.saveMarketoContacts();
             } else
                 this.saveMarketoContactSelectedUsers();
+        }
+
+        if(this.selectedAddPartnerOption == 9){
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveHubSpotContacts();
+            } else{
+                this.saveHubSpotContactSelectedUsers();
+            }                
         }
     }
 
@@ -2697,4 +2715,168 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         window.open("https://www.caprivacy.org/", "_blank");
     }
 
+
+    // HubSpot Implementation 
+    
+    checkingHubSpotContactsAuthentication(){
+        this.selectedAddPartnerOption = 9;
+
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.xtremandLogger.info("isAuthorize true");
+                this.showHubSpotModal();               
+            }
+            else{
+                if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                    window.location.href = response.data.redirectUrl;
+                }                
+            }            
+        }, (error: any) => {
+            this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+    }
+
+    showHubSpotModal() {
+        $( '#ContactHubSpotModal' ).modal( 'show' );
+    }
+
+    hideHubSpotModal() {
+        $( '#ContactHubSpotModal' ).modal( 'hide' );
+    }
+
+    onChangeHubSpotDropdown( event: Event ) {
+        try {
+            this.contactType = event.target["value"];
+            this.socialNetwork = "hubspot";
+            this.hubSpotContactListsData = [];
+            if ( this.contactType == "DEFAULT" ) {
+                $( "button#hubspot_save_button" ).prop( 'disabled', true );
+            } else {
+                $( "button#hubspot_save_button" ).prop( 'disabled', false );
+            }
+
+           
+            if ( this.contactType === "lists") {
+                $( "button#hubspot_save_button" ).prop( 'disabled', true );
+                this.hubSpotService.getHubSpotContactsLists()
+                    .subscribe(
+                    data => {
+                        let response = data.data;
+                        if ( response.contacts.length > 0 ) {
+                            for ( var i = 0; i < response.contacts.length; i++ ) {
+                                this.hubSpotContactListsData.push( response.contacts[i] );
+                                this.xtremandLogger.log( response.contacts[i] );
+                            }
+                        } else {
+                            this.customResponse = new CustomResponse( 'ERROR', "No " + this.contactType + " found", true );
+                            this.hideHubSpotModal();
+                        }
+                    },
+                    ( error: any ) => {
+                        this.xtremandLogger.error( error );
+                        this.xtremandLogger.errorPage( error );
+                    },
+                    () => this.xtremandLogger.log( "onChangeHubSpotDropdown" )
+                    );
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent onChangeHubSpotDropdown()." )
+        }
+    }
+
+    onChangeHubSpotListsDropdown( item: any ) {
+        this.xtremandLogger.log( item );
+        //this.contactType = event.target["value"];
+        if ( this.contactType == "DEFAULT" ) {
+            $( "button#hubspot_save_button" ).prop( 'disabled', true );
+        } else {
+            $( "button#hubspot_save_button" ).prop( 'disabled', false );
+        }
+        this.hubSpotSelectContactListOption = item;
+    }
+
+    getHubSpotData(){
+        $( "button#salesforce_save_button" ).prop( 'disabled', true );
+        if(this.contactType === "contacts"){
+            this.getHubSpotContacts();            
+        }else if(this.contactType === "lists"){
+            this.getHubSpotContactsListsById();
+        }
+    }
+
+    getHubSpotContacts(){
+        this.hubSpotService.getHubSpotContacts().subscribe(data => {
+            let response = data.data;
+            this.frameHubSpotFilePreview(response);
+        });
+    }
+
+    getHubSpotContactsListsById(){
+        this.xtremandLogger.info("hubSpotSelectContactListOption :" +this.hubSpotSelectContactListOption);
+        if(this.hubSpotSelectContactListOption !== undefined && this.hubSpotSelectContactListOption !== ''){
+            this.hubSpotService.getHubSpotContactsListsById(this.hubSpotSelectContactListOption).subscribe(data =>{
+                let response = data.data;
+                this.frameHubSpotFilePreview(response);            
+            });
+        }       
+    }
+
+    frameHubSpotFilePreview(response:any){
+        if ( !response.contacts ) {
+            this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+        } else {
+            this.socialPartnerUsers = [];
+            this.getGoogleConatacts  = response.contacts.length;
+            for ( var i = 0; i < response.contacts.length; i++ ) {
+                this.xtremandLogger.log("HubSpot Partner :" + response.contacts[i].firstName );
+                let socialContact = new SocialContact();
+                socialContact = response.contacts[i];                    
+                socialContact.id = i;
+                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
+                        this.socialPartnerUsers.push( socialContact );
+                    }
+                    $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+                    $( "#Gfile_preview" ).show();
+                    $( "button#cancel_button" ).prop( 'disabled', false );
+                    this.hideHubSpotModal();
+                    $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
+                    $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                    $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            }
+        }
+            this.setSocialPage( 1 );                
+            this.selectedAddPartnerOption = 5;            
+            console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);                  
+    }
+
+    saveHubSpotContacts()
+    {
+        this.socialPartners.socialNetwork = "HUBSPOT";
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.contacts = this.socialPartnerUsers;
+        if ( this.socialPartnerUsers.length > 0 ) {
+            this.newPartnerUser = this.socialPartners.contacts;
+            this.saveValidEmails();
+        } else
+            this.xtremandLogger.error( "AddContactComponent saveHubSpotContact() Contacts Null Error" );
+
+    }
+
+    saveHubSpotContactSelectedUsers()
+    {
+        this.newPartnerUser = this.allselectedUsers;
+        if ( this.allselectedUsers.length != 0 ) {
+            this.newPartnerUser = this.allselectedUsers;
+            this.saveValidEmails();
+        }
+        else {
+            this.xtremandLogger.error( "AddContactComponent saveHubSpotContactSelectedUsers() ContactList Name Error" );
+        }
+    }
 }

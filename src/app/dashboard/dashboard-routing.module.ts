@@ -17,6 +17,7 @@ import { NotificationsComponent } from "../core/notifications/notifications.comp
 import { VendorReportsComponent } from "./vendor-reports/vendor-reports.component";
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
+import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-callback/social-contacts-callback.component";
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
   { path: "notifications", component: NotificationsComponent },
   { path: 'vendors',component:VendorReportsComponent},
   { path: 'admin-report',component:AdminReportComponent},
-  { path: 'vendor-request',component:VendorRequestReportComponent}
+  { path: 'vendor-request',component:VendorRequestReportComponent},
+  { path: 'hubspot-callback',component:SocialContactsCallbackComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

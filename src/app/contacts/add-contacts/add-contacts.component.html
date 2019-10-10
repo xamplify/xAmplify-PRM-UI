@@ -266,6 +266,32 @@
 													</a>
 												</div>
 											</div>
+
+											<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+												<a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
+												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
+													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your HubSpot account"
+													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
+												</a>
+												<a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
+												 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+													<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
+													 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access contacts from your HubSpot account"
+													 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
+												</a>
+												<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
+													<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
+														<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
+													</a>
+												</div> -->
+												<div style="position: relative" *ngIf="!hubspotImageNormal">
+													<a [class.disabled]="selectedAddContactsOption != 9" (click)="checkingHubSpotContactsAuthentication()">
+														<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
+													</a>
+												</div>
+											</div>
+											
 											<!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 												<a id="microsoftContact_button"
 													style="background-color: white"> <img
@@ -499,8 +525,8 @@
 														 class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}"
 														 name="campaignContact[]" value="{{user.id}}" id="{{user.id}}" (click)="highlightMarketoRow(user)" />
 													</td>
-													<td *ngIf="selectedAddContactsOption != 6">{{user.emailId}}</td>
-													<td *ngIf="selectedAddContactsOption == 6">{{user.email}}</td>
+													<td *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9">{{user.emailId}}</td>
+													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">{{user.email}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
 												</tr>
@@ -1012,6 +1038,52 @@
 				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()">Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
 					(click)="saveContactsWithPermission()">Accept</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- HubSpot Modal -->
+<div class="modal right fade" id="ContactHubSpotModal" tabindex="-1" role="dialog" aria-labelledby="TestHubSpotModal">
+	<div class="modal-dialog modal-css" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" style="position: relative;;top:-12px;"><i class="fa fa-times"></i></a>
+				<div class="col-sm-3" style="margin-top: 10px">
+					<img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px" width="100px" />
+				</div>
+				<div class="col-sm-12 salesforce">
+					<h4 class="modal-title">Import from HubSpot:</h4>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="email">Select Option:</label>
+							<div class="col-sm-8">
+								<select class="opts form-control" id="hubspot-dropdown-1" (change)="onChangeHubSpotDropdown($event)">
+									<option selected value="DEFAULT">Select</option>
+									<option value="contacts">Contacts</option>
+									<option value="lists">Lists</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" *ngIf="hubSpotContactListsData?.length > 0">
+							<label class="control-label col-sm-3" for="hubspot-dropdown-2">Select Option:</label>
+							<div class="col-sm-8">
+								<select class="form-control" id="hubspot-dropdown-2" (change)="onChangeHubSpotListsDropdown($event.target.value)">
+									<option selected value="DEFAULT">Select</option>
+									<option *ngFor="let item of hubSpotContactListsData" value='{{item.id}}'>{{item.name}}</option>
+								</select>
+							</div>
+						</div>
+					</form>
+				</div> 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()" data-dismiss="modal">Submit</button>
 			</div>
 		</div>
 	</div>

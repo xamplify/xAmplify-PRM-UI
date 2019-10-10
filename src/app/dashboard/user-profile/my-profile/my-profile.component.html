@@ -477,13 +477,37 @@
 															</div>
 														</div>
 													</div>
+
+														
+												<div class="col-lg-4" (click)="configHubSpot()">
+													<div class="card mb-5 mb-lg-4">
+														<div class="card-body" style="padding:10px;min-height: 300px">
+															<!-- <div class="triangle-up-right">
+																
+															</div> -->
+															<h5 class="card-title  text-uppercase text-center"
+															style="padding-top: 4%;">HubSpot</h5>
+															
+															<div class="ribbon draft" style="left:10px" >
+																<span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
+															</div>
+															<div style="height: 200px;">
+																<div>
+																	<img src="assets/images/crm/Mark-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
+																</div>
+															</div>
+
+															<a  class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configure'" >configure</a>
+															<a  class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configured'" >re configure</a>
+														</div>
+													</div>
+												</div>
 												</div>	
 											
 										</section>
 										<div *ngIf="integrationTabIndex == 1">
 										<app-marketo-authentication (closeEvent)="closeMarketoForm($event)"></app-marketo-authentication>
 										</div>
-
 									</div>
 									<div class="tab-pane" id="tab_1_3">
 										<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
