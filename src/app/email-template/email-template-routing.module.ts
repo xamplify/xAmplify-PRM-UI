@@ -10,6 +10,7 @@ import { UploadEmailTemplateComponent } from './upload-email-template/upload-ema
 import { HelpComponent } from './help/help.component';
 import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-template/upload-marketo-email-template.component';
 import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
+import { SocialContactsCallbackComponent } from 'app/contacts/social-contacts-callback/social-contacts-callback.component';
 
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manage', pathMatch: 'full' },
@@ -23,6 +24,7 @@ export const emailRoutes: Routes = [
 { path: 'videoEmails/emaileditor', component: EmailEditorComponent },
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },
 { path: 'help', component: HelpComponent },
+{ path: 'hubspot-callback',component:SocialContactsCallbackComponent}
 ];
 
 @NgModule({

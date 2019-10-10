@@ -9,6 +9,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { CustomResponse } from '../../common/models/custom-response';
 import { MarketoEmailTemplate } from '../models/marketo-email-template';
+import { HubSpotService } from 'app/core/services/hubspot.service';
 declare var $: any;
 @Component({
   selector: 'app-select-template',
@@ -45,14 +46,15 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
     selectedTemplates: number[] = [];
     selectAllTemplates = false;
     isSaveMarketoTemplatesButtonState = false;
+    isSaveHubSpotTemplatesButtonState = false;
     customResponse: CustomResponse = new CustomResponse();
     importLoading: boolean;
-
+    hubSpotEmailTemplates: EmailTemplate[] = [];
     basicTemplates = [32,33,34,35,36,37,38,39,40,307,325,359,360];
 
     constructor( private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
-        private logger: XtremandLogger,public refService:ReferenceService,public campaignAccess:CampaignAccess) {
+        private logger: XtremandLogger,public refService:ReferenceService,public campaignAccess:CampaignAccess,private hubSpotService:HubSpotService) {
 
      }
      getOrgCampaignTypes(){
@@ -559,6 +561,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
          this.selectedTemplates;
          this.selectAllTemplates;
          this.saveMarketoTemplatesButtonState();
+         this.saveHubSpotTemplatesButtonState()
      }
      selectAll(event: any)
      {
@@ -568,6 +571,7 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
          else
              this.filteredEmailTemplates.map(template => template.isSelectedMarketoTemplate = false);
          this.saveMarketoTemplatesButtonState();
+         this.saveHubSpotTemplatesButtonState();         
      }
      saveMarketoTemplatesButtonState()
      {
@@ -584,6 +588,24 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
              this.isSaveMarketoTemplatesButtonState = true;
          else
              this.isSaveMarketoTemplatesButtonState = false;
+
+     }
+
+     saveHubSpotTemplatesButtonState()
+     {
+         let count = 0;
+         this.filteredEmailTemplates.forEach(template =>
+         {
+             if (template.isSelectedHubSpotTemplate)
+             {
+
+                 count++;
+             }
+         });
+         if (count > 0)
+             this.isSaveHubSpotTemplatesButtonState = true;
+         else
+             this.isSaveHubSpotTemplatesButtonState = false;
 
      }
 
@@ -707,5 +729,58 @@ export class SelectTemplateComponent implements OnInit,OnDestroy {
          }
      }
 
+    //   HubSpot Templates Implementation
 
+    getTemplatesFromHubSpot(){
+        this.hubSpotService.getHubSpotTemplates().subscribe(data => {
+            let response = data.data;
+            this.hubSpotEmailTemplates = response.templates;
+            if(response.isAuthorize){
+                this.hubSpotEmailTemplates.map(template =>
+                {
+                        template.hubSpotTemplate = true;
+                        template.body = template.content;
+                        template.subject = "assets/images/bee-template/rich-co-branding-news-letter.png";
+                });
+             this.filteredEmailTemplates = new Array<EmailTemplate>();
+             for (var i = 0; i < response.templates.length; i++)
+             {
+                 var isHubSpotTemplate = this.hubSpotEmailTemplates[i].hubSpotTemplate;
+                 if (isHubSpotTemplate)
+                 {
+                     this.filteredEmailTemplates.push(this.hubSpotEmailTemplates[i]);
+                 }
+             }
+            }
+            else{
+                if (response.redirectUrl !== undefined && response.redirectUrl !== '') {
+                    window.location.href = response.redirectUrl;
+                } 
+            }
+        })
+    }
+
+    showHubSpotEmailtemplatePreview(emailTemplateId: number): any
+     {
+         this.hubSpotService.getHubSpotTemplateById(emailTemplateId).subscribe(data =>
+         {       
+            this.showMarketoForm = false;     
+         let response = data.data;
+         if(response.template !==   undefined && response.template !== ''){
+            let body = response.template.content;         
+            $("#htmlContent").empty();
+            $("#email-template-title").empty();
+            $('#email-template-title').prop('title', response.template.name);
+            $("#htmlContent").append(body);
+            $('.modal .modal-body').css('overflow-y', 'auto');
+            $("#show_email_template_preivew").modal('show');
+         }        
+         },
+         (error: string) =>
+         {
+             this.logger.error(this.refService.errorPrepender + ":" + error);
+             this.refService.showServerError(this.httpRequestLoader);
+         },
+         () => this.logger.info("Got Email Template Preview"))
+     }
 }

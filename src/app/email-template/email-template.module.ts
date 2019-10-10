@@ -15,10 +15,13 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { HelpComponent } from './help/help.component';
 import { UploadMarketoEmailTemplateComponent } from './upload-marketo-email-template/upload-marketo-email-template.component';
 import { UpdateMarketoTemplateComponent } from './update-marketo-template/update-marketo-template.component';
+import { SharedContactsModule } from 'app/shared/shared-contacts.module';
+
+
 
 
 @NgModule({
-  imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule ],
+  imports: [ CommonModule,SharedModule,EmailTemplateRoutingModule,CKEditorModule, ErrorPagesModule,CommonComponentModule,SharedContactsModule ],
   declarations: [EmailEditorComponent, CreateTemplateComponent,ManageTemplateComponent, SelectTemplateComponent,
                  UpdateTemplateComponent, UploadEmailTemplateComponent, HelpComponent, UploadMarketoEmailTemplateComponent, UpdateMarketoTemplateComponent],
 })

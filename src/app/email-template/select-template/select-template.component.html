@@ -30,6 +30,7 @@
 								<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event</li>
 								<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event Co-Branding</li>
 								<li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex">Marketo Templates</li>
+								<li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex">HubSpot Templates</li>
                 				<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>
@@ -67,6 +68,10 @@
 											<button class="btn" style="height: 36px;background-color: #6dcff6;" 
 											(click)="importMarketotemplates()">IMPORT</button>
 									</div>
+									<div *ngIf="isSaveHubSpotTemplatesButtonState" style="float:right;margin-right: 10px">
+										<button class="btn" style="height: 36px;background-color: #6dcff6;" 
+										(click)="importMarketotemplates()">IMPORT</button>
+								</div>
 						</div>
 						
 						<div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let beeRegularTemplate of filteredEmailTemplates | filterBy: templateFilter;let i=index">
@@ -75,22 +80,33 @@
 									<label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
 										[(ngModel)]="beeRegularTemplate.isSelectedMarketoTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
 								</div>
-								<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"
+								<div *ngIf="beeRegularTemplate.hubSpotTemplate" style="width: 100%;padding-left: 15px;">
+									<label class="checkbox-inline" style="float:left;"><input type="checkbox" value="" style="width: 20px;height: 20px;"
+										[(ngModel)]="beeRegularTemplate.isSelectedHubSpotTemplate" (ngModelChange)="setSelectedTemplates(beeRegularTemplate)"></label>
+								</div>
+								<img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"
 								 src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
-								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"
+								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"
 								 src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate" src="{{beeRegularTemplate.subject}}"
+								<img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate || beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}"
 								 alt="{{beeRegularTemplate.name}}">
 								<h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}} <span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
 								<div class="bar">
 									<a data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)"
-									 *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"><i class="fa fa-plus-circle"></i></a>
-									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate"><i
+									 *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"><i class="fa fa-plus-circle"></i></a>
+									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"><i
 										 class="fa fa-eye"></i></a>
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)"
 									 *ngIf="beeRegularTemplate.marketoTemplate"><i class="fa fa-eye"></i></a>
 									<a (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="'Create Template'"
 									 *ngIf="beeRegularTemplate.marketoTemplate">
+										<i class="fa fa-plus-circle"></i>
+									</a>
+
+									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showHubSpotEmailtemplatePreview(beeRegularTemplate.id)"
+									 *ngIf="beeRegularTemplate.hubSpotTemplate"><i class="fa fa-eye"></i></a>
+									<a (click)="edit(beeRegularTemplate)" data-toggle="tooltip" data-placement="top" title="'Create Template'"
+									 *ngIf="beeRegularTemplate.hubSpotTemplate">
 										<i class="fa fa-plus-circle"></i>
 									</a>
 								</div>
