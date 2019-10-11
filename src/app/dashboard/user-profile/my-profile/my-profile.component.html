@@ -239,31 +239,32 @@
 									<span class="caption-subject font-blue-madison bold uppercase">Account Profile</span>
 								</div>
 								<ul class="nav nav-tabs left-css">
-									<li class="active">
-										<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
+									<li [ngClass]="{'active': activeTabName == 'personalInfo'}">
+										<a (click)="activateTab('personalInfo');clearCustomResponse()">Personal Info</a>
 									</li>
-									<li>
-										<a [class.disabled]="authenticationService.isSuperAdmin()" href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()"><span
+									<li [ngClass]="{'active': activeTabName == 'password'}">
+										<a [class.disabled]="authenticationService.isSuperAdmin()" (click)="activateTab('password');clearCustomResponse()"><span
 											 class="hidden-xs">Change</span> Password</a>
 									</li>
-									<li [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
-										<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
+									<li [ngClass]="{'active': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
+										<a (click)="activateTab('settings');clearCustomResponse()">Settings</a>
 									</li>
-									<li [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
+									<li [ngClass]="{'active': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
 									 (click)="videojsCall()">
-										<a href="#tab_1_5" data-toggle="tab"><span class="hidden-xs">Default</span> Player Settings</a>
+										<a (click)="activateTab('playerSettings');"><span class="hidden-xs">Default</span> Player Settings</a>
 									</li>
-									<li class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
-										<a href="#tab_1_6" data-toggle="tab" (click)="clearCustomResponse()">Form/Deal Types</a>
+									<li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+										<a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
 									</li>
-									<li class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
-										<a href="#tab_1_7" data-toggle="tab" (click)="clearCustomResponse()"> Integrations</a>
+									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+										<a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
 									</li>
 								</ul>
 							</div>
 							<div class="portlet-body clearfix">
 								<div class="tab-content">
-									<div class="tab-pane active" id="tab_1_1">
+								<!-- removed id="tab_1_1" from below code -->
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
 										<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
 											<div class="form-group">
 												<label class="control-label">First Name</label>
@@ -311,7 +312,7 @@
 										</form>
 									</div>
 
-									<div class="tab-pane" id="tab_1_6">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'dealTypes'}">
 										<app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
 
 										<form role="form">
@@ -447,7 +448,7 @@
 
 									</div>
 
-									<div class="tab-pane" id="tab_1_7">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
  
 										
 										<section class="pricing py-5" *ngIf="integrationTabIndex == 0">
@@ -456,7 +457,7 @@
 													<!-- Free Tier -->
 													<div class="col-lg-4" (click)="configmarketo()">
 														<div class="card mb-5 mb-lg-0">
-															<div class="card-body" style="padding:10px;min-height: 300px">
+															<div class="card-body" style="padding:10px">
 																<!-- <div class="triangle-up-right">
 																	
 																</div> -->
@@ -466,7 +467,7 @@
 																<div class="ribbon draft" style="left:10px" >
 																	<span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
 																</div>
-																<div style="height: 200px;">
+																<div style="height: 120px;">
 																	<div>
 																		<img src="assets/images/crm/Mark-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
 																	</div>
@@ -481,7 +482,7 @@
 														
 												<div class="col-lg-4" (click)="configHubSpot()">
 													<div class="card mb-5 mb-lg-4">
-														<div class="card-body" style="padding:10px;min-height: 300px">
+														<div class="card-body" style="padding:10px;">
 															<!-- <div class="triangle-up-right">
 																
 															</div> -->
@@ -491,9 +492,9 @@
 															<div class="ribbon draft" style="left:10px" >
 																<span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
 															</div>
-															<div style="height: 200px;">
+															<div style="height: 120px;">
 																<div>
-																	<img src="assets/images/crm/Mark-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
+																	<img src="assets/images/crm/huspot-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
 																</div>
 															</div>
 
@@ -509,7 +510,7 @@
 										<app-marketo-authentication (closeEvent)="closeMarketoForm($event)"></app-marketo-authentication>
 										</div>
 									</div>
-									<div class="tab-pane" id="tab_1_3">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
 										<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
 											<div class="form-group" *ngIf="userData.hasPassword">
 												<label class="control-label">Current Password</label>
@@ -551,7 +552,7 @@
 										</form>
 									</div>
 									<!-- PRIVACY SETTINGS TAB -->
-									<div class="tab-pane hidden-xs" id="tab_1_4">
+									<div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
 										<form action="#">
 											<table class="table table-light">
 												<tr>
@@ -577,7 +578,7 @@
 									</div>
 									<!-- END PRIVACY SETTINGS TAB -->
 									<!--video default player settings-->
-									<div class="tab-pane" id="tab_1_5">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
 										<div>
 											<div>
 												<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">

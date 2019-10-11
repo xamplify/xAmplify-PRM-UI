@@ -445,7 +445,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     }
                 }
                 if ( this.selectedAddPartnerOption != 3 && this.selectedAddPartnerOption != 6 && this.selectedAddPartnerOption != 7 
-                    && this.selectedAddPartnerOption != 8) {
+                    && this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9) {
                     if ( this.newPartnerUser[i].contactCompany.trim() != '' ) {
                         this.isCompanyDetails = true;
                     } else {
@@ -630,9 +630,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '.googleImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 1;' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 1;cursor:not-allowed;' );
-        $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 78px;' );
-        $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 78px;' );
-        $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 78px;' );
+        $( '#SgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;' );
+        $( '#GgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;' );
+        $( '#ZgearIcon' ).attr( 'style', 'opacity: 1;position: relative;font-size: 19px;top: -81px;left: 71px;' );
         $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);' );
         $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(0%);filter: grayscale(0%);min-height:85px' );
@@ -724,9 +724,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
-            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px; left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -86px; left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
             let reader = new FileReader();
             reader.readAsText( files[0] );
@@ -815,9 +815,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
         $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-        $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-        $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-        $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+        $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
     }
 
@@ -1287,8 +1287,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                         }
                     }
@@ -1436,8 +1436,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                         }
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
@@ -1527,8 +1527,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                         }
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
@@ -1755,8 +1755,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                         }
                     }
                     this.xtremandLogger.info( this.getGoogleConatacts );
@@ -1825,8 +1825,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                             $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                         }
                     }
@@ -2412,7 +2412,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     retriveMarketoContacts()
     {
 
-
         $("#marketoShowLoginPopup").modal('hide');
         this.contactService.getMarketoContacts(this.authenticationService.getUserId()).subscribe(data =>
         {
@@ -2457,8 +2456,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                 }
              
@@ -2808,6 +2807,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     getHubSpotContacts(){
         this.hubSpotService.getHubSpotContacts().subscribe(data => {
             let response = data.data;
+            this.selectedAddPartnerOption = 9;
             this.frameHubSpotFilePreview(response);
         });
     }
@@ -2817,6 +2817,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if(this.hubSpotSelectContactListOption !== undefined && this.hubSpotSelectContactListOption !== ''){
             this.hubSpotService.getHubSpotContactsListsById(this.hubSpotSelectContactListOption).subscribe(data =>{
                 let response = data.data;
+                this.selectedAddPartnerOption = 9;
                 this.frameHubSpotFilePreview(response);            
             });
         }       
@@ -2826,16 +2827,67 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if ( !response.contacts ) {
             this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
         } else {
-            this.socialPartnerUsers = [];
+            /*this.socialPartnerUsers = [];
             this.getGoogleConatacts  = response.contacts.length;
+            let socialContact = new SocialContact();safsa
+           // socialContact = response.contacts;  
             for ( var i = 0; i < response.contacts.length; i++ ) {
                 this.xtremandLogger.log("HubSpot Partner :" + response.contacts[i].firstName );
-                let socialContact = new SocialContact();
-                socialContact = response.contacts[i];                    
                 socialContact.id = i;
+                
+                
+                if (this.validateEmailAddress(response.contacts[i].email))
+                {
+                    socialContact.emailId = response.contacts[i].email;
+                    socialContact.firstName = response.contacts[i].firstName;
+                    socialContact.lastName = response.contacts[i].lastName;
+
+                    socialContact.country = response.contacts[i].country;
+                    socialContact.city = response.contacts[i].city;
+                    socialContact.state = response.contacts[i].state;
+                    socialContact.postalCode = response.contacts[i].postalCode;
+                    socialContact.address = response.contacts[i].address;
+                    socialContact.company = response.contacts[i].company;
+                    socialContact.title = response.contacts[i].title;
+                    socialContact.mobilePhone = response.contacts[i].mobilePhone;
+                    socialContact.website = response.contacts[i].website;
+                }
+                this.socialPartnerUsers.push(socialContact);
                     if ( this.validateEmailAddress(response.contacts[i].email ) ) {
                         this.socialPartnerUsers.push( socialContact );
+                    }*/
+            
+           // this.getMarketoConatacts = data.data;
+            this.getGoogleConatacts  = response.contacts.length;
+            if (response.contacts.length == 0)
+            {
+                this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+            } else
+            {
+                for (var i = 0; i < response.contacts.length; i++)
+                {
+                    let socialPartner = new SocialContact();
+                    let user = new User();
+                    socialPartner.id = i;
+                    if (this.validateEmailAddress(response.contacts[i].email))
+                    {
+                        socialPartner.emailId = response.contacts[i].email;
+                        socialPartner.firstName = response.contacts[i].firstName;
+                        socialPartner.lastName = response.contacts[i].lastName;
+
+                        socialPartner.country = response.contacts[i].country;
+                        socialPartner.city = response.contacts[i].city;
+                        socialPartner.state = response.contacts[i].state;
+                        socialPartner.postalCode = response.contacts[i].postalCode;
+                        socialPartner.address = response.contacts[i].address;
+                        socialPartner.company = response.contacts[i].company;
+                        socialPartner.title = response.contacts[i].title;
+                        socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+
+                        this.socialPartnerUsers.push(socialPartner);
                     }
+            
+            
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                     $( "#Gfile_preview" ).show();
                     $( "button#cancel_button" ).prop( 'disabled', false );
@@ -2846,13 +2898,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
                     $( '.zohoImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
-                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
-                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 78px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                    $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
             }
         }
             this.setSocialPage( 1 );                
-            this.selectedAddPartnerOption = 5;            
+            this.selectedAddPartnerOption = 9;            
             console.log("Social Contact Users for HubSpot::" + this.socialPartnerUsers);                  
+    }
     }
 
     saveHubSpotContacts()
@@ -2864,7 +2917,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.newPartnerUser = this.socialPartners.contacts;
             this.saveValidEmails();
         } else
-            this.xtremandLogger.error( "AddContactComponent saveHubSpotContact() Contacts Null Error" );
+            this.xtremandLogger.error( "AddContactComponent saveMarketoContacts() Contacts Null Error" );
 
     }
 
@@ -2878,5 +2931,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         else {
             this.xtremandLogger.error( "AddContactComponent saveHubSpotContactSelectedUsers() ContactList Name Error" );
         }
+    }
+    
+    hideHuspotModal()
+    {
+        $("#ContactHubSpotModal").hide();
+        this.cancelPartners();
     }
 }

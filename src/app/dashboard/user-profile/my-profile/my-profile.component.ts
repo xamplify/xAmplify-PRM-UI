@@ -106,6 +106,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
    
     hubSpotRibbonText: string;
     hubSpotRedirectURL: string;
+    activeTabName: string = "";
 
 
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -265,6 +266,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         try {
+            this.activeTabName = 'personalInfo';
             this.customConstructorCall();
             console.log(this.authenticationService.user);
             this.geoLocation();
@@ -1248,6 +1250,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     closeMarketoForm(event: any) {
         if (event === "0")
             this.integrationTabIndex = 0;
+    }
+    
+    activateTab(activeTabName:any){
+      this.activeTabName = activeTabName;
     }
 
     ngOnDestroy() {

@@ -67,7 +67,7 @@ img:hover {
 		<div class="portlet-body">
 			<form #f="ngForm">
 									<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
 								<div class="portlet light add-options">
 								<div class="portlet-title"> How would you like to add your Partners?</div>
 								<div class="portlet-body">
@@ -100,7 +100,7 @@ img:hover {
 										</div>
 										<div style="margin-top: 5px;">
 										<a (click)="downloadEmptyCsv()">
-										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download Csv File</b>
+										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download File</b>
 										</a>
 										</div>
                   </div>
@@ -115,13 +115,13 @@ img:hover {
 								</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
 									<div class="portlet light cloud-services pb0">
 									<div class="portlet-title">Import Partners from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
 
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
@@ -149,7 +149,7 @@ img:hover {
 									</div>
 									<div style="padding-bottom: 22px;"></div>
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
 						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
@@ -177,7 +177,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
@@ -204,7 +204,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 										<a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
@@ -230,7 +230,7 @@ img:hover {
 									</div>
 
 									<!-- Hubspot -->
-									<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+									<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 										<a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
@@ -1212,9 +1212,9 @@ img:hover {
 	<div class="modal-dialog modal-css" role="document">
 		<div class="modal-content rounded-0">
 			<div class="modal-header">
-				<a class="close-circle" data-dismiss="modal" style="position: relative;;top:-12px;"><i class="fa fa-times"></i></a>
-				<div class="col-sm-3" style="margin-top: 10px">
-					<img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px" width="100px" />
+				<a class="close-circle" data-dismiss="modal" (click)="hideHuspotModal()" style="position: relative;top:-12px;"><i class="fa fa-times"></i></a>
+				<div class="col-sm-3" style="margin-top: 25px">
+					<img src="assets/images/crm/hubspot-logo.png" alt="Picture of a happy monkey" style="height: 60px" width="150px" />
 				</div>
 				<div class="col-sm-12 salesforce">
 					<h4 class="modal-title">Import from HubSpot:</h4>
@@ -1246,7 +1246,7 @@ img:hover {
 				</div> 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideHuspotModal()">Close</button>
 				<button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()" data-dismiss="modal">Submit</button>
 			</div>
 		</div>
