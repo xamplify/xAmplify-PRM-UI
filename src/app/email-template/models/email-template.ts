@@ -31,4 +31,6 @@ export class EmailTemplate {
 	marketoEmailTemplate: { marketo_id: number; };
 	isSelectedMarketoTemplate = false;
 	spamScore: string;
+	isSelectedHubSpotTemplate = false;
+	hubSpotTemplate = false
 }
