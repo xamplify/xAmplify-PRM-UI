@@ -96,7 +96,7 @@
         </a>
       </li> -->
 
-      <li *ngIf="authService.user.hasCompany && authService.module.isEmailTemplate" [ngClass]="{'active':location.path().includes('emailtemplate')}">
+      <!-- <li *ngIf="authService.user.hasCompany && authService.module.isEmailTemplate" [ngClass]="{'active':location.path().includes('emailtemplate')}">
         <a class="hidden-xs" [ngClass]="{'emailTempCss': changeTemplateCss && refService.isSidebarClosed}" (mouseover)="changeTemplateCss=true" (mouseout)="changeTemplateCss=false" (click)="openOrCloseTabs('emailtemplates')" >
         <i class="fa fa-envelope"></i>
         <span class="title">Email Templates</span>
@@ -125,7 +125,7 @@
         </ul>
       </li>
       
-      <!-- ------------------------- F o r m ----------------------------------------------------- -->
+      ------------------------- F o r m -----------------------------------------------------
 		<li *ngIf="authService.module.hasFormAccess" [ngClass]="{'active': location.path().includes('forms')}">
 		        <a  href="javascript:;" (click)="openOrCloseTabs('forms')" >
 		        <i class="fa fa-wpforms"></i>
@@ -148,7 +148,7 @@
 		          </li>
 		        </ul>
 	     </li>
-	     <!-- ------------------------- L a n d i n g P a g e s -------------------------------------------------------->
+	     ------------------------- L a n d i n g P a g e s ------------------------------------------------------
 		<li *ngIf="authService.module.hasLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
 		        <a  href="javascript:;" (click)="openOrCloseTabs('landing-pages')" >
 		        <i class="fa fa-wpforms"></i>
@@ -185,7 +185,25 @@
 		        <span class="arrow "></span>
 		        <span class="selected"></span>
 		        </a>
+	     </li> -->
+	      <li *ngIf="!authService.module.hasLandingPageAccess && authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+		        <a [routerLink] ="['./landing-pages/partner']">
+		        <i class="fa fa-wpforms"></i>
+		        <span class="title">Landing Pages</span>
+		        <span class="arrow "></span>
+		        <span class="selected"></span>
+		        </a>
 	     </li>
+	     
+	   <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor
+	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design')}">
+        <a  [routerLink]="['./design/add']" >
+        <i class="fa fa-paint-brush"></i>
+        <span class="title">Design</span>
+        <span class="arrow "></span>
+        <span class="selected"></span>
+        </a>
+      </li>
       
       
       <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
@@ -225,7 +243,6 @@
         <span class="arrow "></span>
         <span class="selected"></span>
         </a>
-
       </li>
 
 

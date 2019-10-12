@@ -8,13 +8,18 @@
          <div class="col-xs-12">
             <div class="tile">
                <div class="page-bar">
-                  <ul class="page-breadcrumb" *ngIf="loadTemplate">
+                  <ul class="page-breadcrumb" *ngIf="loadLandingPage">
                      <li>
                         <i class="fa fa-home"></i>
                         <a [routerLink]="referenceService.homeRouter">Home</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
-                     <li><a [routerLink]="['../../landing-pages/select']">Select Landing Page</a>
+                     <li *ngIf="defaultLandingPage">
+                     	<a [routerLink]="['../../landing-pages/select']">Select Landing Page</a>
+                        <i class="fa fa-angle-right"></i>
+                     </li>
+                     <li *ngIf="!defaultLandingPage">
+                     	<a [routerLink]="['../../landing-pages/manage']">Manage Landing Pages</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
                      <li>

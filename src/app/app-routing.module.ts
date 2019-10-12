@@ -59,6 +59,7 @@ export const routes: Routes = [
             { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
             { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
             { path: 'landing-pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
+            { path: 'design', loadChildren: 'app/design/design.module#DesignModule',  data: { preload: true } },
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },

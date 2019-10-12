@@ -1,0 +1,144 @@
+<div class="page-content">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home"></i> <a>Home</a> <i
+            class="fa fa-angle-right"></i></li>
+         <!-- <li><a [routerLink]="['../../campaigns/manage']">Manage Publish</a> <i class="fa fa-angle-right"></i></li> -->
+         <li><a>Create Design</a></li>
+      </ul>
+   </div>
+   <!-- End of page-bar -->
+   <div class="row">
+      <div class="col-md-12">
+         <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
+         <div class="portlet light">
+            <div class="portlet-title">
+               <div class="caption">
+                  <i class="fa fa-cogs"></i>Create a Design
+               </div>
+            </div>
+            <div class="portlet-body">
+               <div class="row" style="margin-top: 20px;">
+               <ng-container *ngIf="isLoading">
+               	 <app-landing-page-loader></app-landing-page-loader>
+               </ng-container>
+               <ng-container *ngIf="!isLoading">
+                  <div *ngIf="emailTemplate"  class="col-md-4" style="padding-left: 32px; padding-right: 32px;">
+                     <div class="portlet light" style="padding: 0px !important;">
+                        <div class="portlet-body hover-effect pointer">
+                           <div class="img1">
+                              <img alt="Email Templates" style="margin: 0 auto;"
+                                 class="pricing-head-img img-responsive	"
+                                 src="assets/images/email-design.png">
+                           </div>
+                           <div class="text">
+                              <h4
+                                 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Email
+                                 Templates
+                              </h4>
+                              <p
+                                 style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 55px;">
+                                 Create gorgeous,responsive email in minutes. Pick a template,
+                                 add your content.
+                              </p>
+                           </div>
+                           <div class="text">
+                              <h5>
+                                 <a [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Design Email
+                                 Templates</span></a>
+                              </h5>
+                           </div>
+                           <div class="text" style="border: none !important">
+                              <h5>
+                                 <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']"><i
+                                    class="fa fa-list">&nbsp;</i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Manage Email
+                                 Templates</span></a>
+                              </h5>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div *ngIf="form" class="col-md-4"
+                     style="padding-left: 32px; padding-right: 32px;">
+                     <div class="portlet light" style="padding: 0px !important;">
+                        <div class="portlet-body hover-effect pointer">
+                           <div class="img1">
+                              <img alt="Forms" style="margin: 0 auto;"
+                                 class="pricing-head-img img-responsive	"
+                                 src="assets/images/form-design.png">
+                           </div>
+                           <div class="text">
+                              <h4
+                                 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Forms</h4>
+                              <p
+                                 style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 55px;">
+                                 Start collecting the data you need to send your customers
+                                 personalized,relevant content
+                              </p>
+                           </div>
+                           <div class="text">
+                              <h5>
+                                 <a [routerLink] ="['../../forms/add']" ><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Design Forms</span></a>
+                              </h5>
+                           </div>
+                           <div class="text" style="border: none !important">
+                              <h5>
+                                 <a style="padding-left: 10px;"  [routerLink] ="['../../forms/manage']"><i
+                                    class="fa fa-list"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Manage Forms</span></a>
+                              </h5>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div *ngIf="landingPage || partnerLandingPage" class="col-md-4"
+                     style="padding-left: 32px; padding-right: 32px;">
+                     <div class="portlet light" style="padding: 0px !important;">
+                        <div class="portlet-body hover-effect pointer">
+                           <div class="img1">
+                              <img alt="Landing Pages" style="margin: 0 auto;"
+                                 class="pricing-head-img img-responsive	"
+                                 src="assets/images/page-design.png">
+                           </div>
+                           <div class="text">
+                              <h4
+                                 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Landing
+                                 Pages
+                              </h4>
+                              <p  style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 55px;">
+                                {{landingPageDescription}}
+                              </p>
+                           </div>
+                           <div class="text" *ngIf="landingPage">
+                              <h5>
+                                 <a [routerLink] ="['../../landing-pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Design Landing
+                                 Pages</span></a>
+                              </h5>
+                           </div>
+                           <div class="text" style="border: none !important">
+                              <h5>
+                                 <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink] ="['../../landing-pages/manage']"><i
+                                    class="fa fa-list"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Manage Landing
+                                 Pages</span></a>
+                                 
+                                  <a *ngIf="partnerLandingPage" style="padding-left: 10px;" [routerLink] ="['../../landing-pages/partner']"><i
+                                    class="fa fa-list"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Manage Landing
+                                 Pages</span></a>
+                              </h5>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                   </ng-container>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

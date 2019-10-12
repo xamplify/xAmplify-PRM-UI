@@ -27,6 +27,7 @@ declare var swal, $: any;
 })
 export class ManageFormComponent implements OnInit, OnDestroy {
     landingPagesRouterLink: string;
+    onlyForms = false;
     form:Form = new Form();
     ngxloading = false;
     pagination: Pagination = new Pagination();
@@ -79,6 +80,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.pagination.landingPageAlias = this.partnerLandingPageAlias;
             this.pagination.partnerLandingPageForm = true;
             this.landingPagesRouterLink = "/home/landing-pages/partner";
+        }else{
+            this.onlyForms = true;
         }
         this.listForms(this.pagination);
     }

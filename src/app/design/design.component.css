@@ -1,0 +1,70 @@
+@media (min-width: 992px) {
+    .col-md-3 {
+        width: 24%!important;
+    }
+}
+
+.portlet.light .portlet-body {
+    padding-top: 0px!important;
+}
+
+.text {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+h4 {
+    font-weight: 500!important;
+    font-size: 15px!important;
+}
+
+h5 {
+    font-size: 14px!important;
+    font-weight: 400!important;
+}
+
+.img1 {
+    background: #ebf1ff;
+    text-align: center;
+    height: 233px;
+}
+
+.img-responsive,
+.thumbnail a>img,
+.thumbnail>img {
+    padding-top: 65px;
+    display: block;
+    max-width: 112px;
+    height: auto;
+}
+
+.para1 {
+    padding: 10px 95px 20px 99px;
+    font-size: 16px;
+    text-align: justify;
+}
+
+.para2 {
+    padding: 7px 91px 20px 99px;
+    font-size: 16px;
+    text-align: justify;
+}
+
+@media (min-width: 992px) {
+    .col-md-4 {
+        width: 27.333333%!important;
+    }
+}
+
+.hover-effect:hover {
+    border: 3px solid #4eafd6;
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
