@@ -1732,7 +1732,7 @@ export class ReferenceService {
              updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal,myMergeTags.senderCompany);
              updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
              updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal,myMergeTags.myCompanyContactNumber);
-             updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,myMergeTags.aboutUs);
+            // updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,myMergeTags.aboutUs);
          }
          return updatedBody;
      }

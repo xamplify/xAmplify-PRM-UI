@@ -15,6 +15,7 @@ import { UtilService } from 'app/core/services/util.service';
 
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
 declare var $,swal: any;
 
@@ -59,7 +60,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignType:string;
     role = '';
     customResponse: CustomResponse = new CustomResponse();
-
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
 
 
@@ -245,6 +246,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                           response => {
                               if(response.statusCode==200){
                                   body = this.referenceService.replaceMyMergeTags(response.data, body);
+                                  body = body.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
                                   this.setUpdatedBody(body,emailTemplate,campaign);
                               }
                           },

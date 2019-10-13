@@ -1725,13 +1725,27 @@ showTimeLineView(){
               ( data: any ) => {
                   let body = tempalteObject.body;
                   let self = this;
-                  $.each( data, function( index, value ) {
+                 /* $.each( data, function( index, value ) {
                       body = body.replace( value, self.authenticationService.MEDIA_URL + campaign.companyLogo );
                   } );
-                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );
-                  if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
-                      body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );*/
+                  if(this.campaign.nurtureCampaign){
+                      body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
+                      $.each( data, function( index, value ) {
+                          body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
+                      } );
+                      body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
+                  }else{
+                      $.each(data,function(index,value){
+                          body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                      });
+                      body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
                   }
+                  
+                  
+                 /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                      body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                  }*/
                   tempalteObject.body = body;
                   this.referenceService.previewEmailTemplate( tempalteObject, campaign);
                   this.ngxloading = false;

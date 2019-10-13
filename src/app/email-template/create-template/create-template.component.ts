@@ -227,6 +227,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
         mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
         mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
+        /*if(this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || this.emailTemplateService.emailTemplate.regularCoBrandingTemplate
+            ||this.emailTemplateService.emailTemplate.videoCoBrandingTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate){
+            mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
+        }*/
         if (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
             mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );

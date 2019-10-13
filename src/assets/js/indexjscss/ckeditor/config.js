@@ -54,7 +54,7 @@ CKEDITOR.editorConfig = function( config ) {
 	                           { 'name': 'Sender Company', 'value': '{{senderCompany}}' },
 	                           { 'name': 'Sender Company Url', 'value': '{{senderCompanyUrl}}' },
 	                           { 'name': 'Sender Company Contact Number', 'value': '{{senderCompanyContactNumber}}' },
-	                           { 'name': 'Sender About Us (Partner)', 'value': '{{aboutUs}}' }
+	                           { 'name': 'Sender About Us (Partner)', 'value': '{{partnerAboutUs}}' }
 	                        ];
 	                        config.strinsert_button_label = 'Merge Tags';
 	                        config.strinsert_button_title = config.strinsert_button_voice = 'Insert Merge Tag(s)';

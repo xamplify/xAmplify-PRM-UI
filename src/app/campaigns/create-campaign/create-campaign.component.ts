@@ -1716,9 +1716,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                     });
                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
-                    if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                   /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
                         body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
-                    }
+                    }*/
                     let emailTemplateName = emailTemplate.name;
                     if(emailTemplateName.length>50){
                         emailTemplateName = emailTemplateName.substring(0, 50)+"...";

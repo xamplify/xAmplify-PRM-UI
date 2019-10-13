@@ -27,6 +27,8 @@ import { EmailTemplateService } from '../../email-template/services/email-templa
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -38,7 +40,7 @@ var moment = require('moment-timezone');
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
-
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     selectedEmailTemplateId = 0;
     selectedLandingPageId = 0;
     campaign: Campaign;
@@ -519,6 +521,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                                 response => {
                                     if(response.statusCode==200){
                                         this.campaign.myMergeTagsInfo = response.data;
+                                        body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
                                         this.setMergeTagsInfo(body);
                                     }
                                 },
