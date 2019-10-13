@@ -25,6 +25,8 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+
 declare var $,swal, flatpickr, CKEDITOR,require;
 var moment = require('moment-timezone');
 
@@ -163,7 +165,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  allUsersCount: number;
  listOfSelectedUserListIds = [];
 
-  
+ senderMergeTag:SenderMergeTag = new SenderMergeTag();
+
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService,
@@ -1318,10 +1321,26 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     $("#email-template-title").append(emailTemplateName);
     $('#email-template-title').prop('title', emailTemplate.name);
     let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
-    $("#htmlContent").append(updatedBody);
-    $('.modal .modal-body').css('overflow-y', 'auto');
-    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-    $("#show_email_template_preivew").modal('show');
+    let data = {};
+    data['emailId'] = this.authenticationService.userProfile.emailId;
+    this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+            response => {
+                if(response.statusCode==200){
+                    updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                    this.showPreviewBody(updatedBody);
+                }
+            },
+            error => {
+                this.showPreviewBody(body);
+            }
+        );
+  }
+  
+  showPreviewBody(updatedBody:string){
+      $("#htmlContent").append(updatedBody);
+      $('.modal .modal-body').css('overflow-y', 'auto');
+      $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+      $("#show_email_template_preivew").modal('show');
   }
 
   previewEventCampaignEmailTemplate(emailTemplateId: number) {

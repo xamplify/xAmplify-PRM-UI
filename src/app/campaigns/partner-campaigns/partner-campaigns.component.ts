@@ -258,8 +258,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                  }else{
                      this.setUpdatedBody(body,emailTemplate,campaign);
                  }
-              
-             
               },
               error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
               () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()")
@@ -276,7 +274,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
         (result)=>{
-          console.log(result.data.emailTemplateDTO.body)
           result.data.emailTemplateDTO.body = result.data.emailTemplateDTO.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           this.campaignName = result.data.campaign;
           
@@ -286,18 +283,32 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           let userProfile = this.authenticationService.userProfile;
           let partnerLogo = userProfile.companyLogo;
           let partnerCompanyUrl = userProfile.websiteUrl;
-          
           if(result.data.nurtureCampaign || userProfile.id!=result.data.id){
               result.data.emailTemplateDTO.body = this.referenceService.replacePartnerLogo(result.data.emailTemplateDTO.body,partnerLogo,partnerCompanyUrl,result.data);
           }
-          
-          
-          $("#email-template-content").append(result.data.emailTemplateDTO.body);
-          $('.modal .modal-body').css('overflow-y', 'auto');
-          $("#email_template_preivew").modal('show');
-          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+          let body = result.data.emailTemplateDTO.body;
+          let data = {};
+          data['emailId'] = this.authenticationService.userProfile.emailId;
+          this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                  response => {
+                      if(response.statusCode==200){
+                          body = body.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                          this.showPreviewBody(body);
+                      }
+                  },
+                  error => {
+                      this.xtremandLogger.error(error);
+                      this.showPreviewBody(body);
+                  }
+              );
          });
       }
+    showPreviewBody(body:string){
+        $("#email-template-content").append(body);
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#email_template_preivew").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    }
 
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
