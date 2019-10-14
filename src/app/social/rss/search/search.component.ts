@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
   searchResponse: any;
   userId: number;
   loading = false;
+  errorMessage: string;
   constructor(private router: Router, private activatedRoute: ActivatedRoute, public rssService: RssService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
@@ -53,7 +54,10 @@ export class SearchComponent implements OnInit {
       data => {
         this.searchResponse = data;
         if (this.searchResponse.statusCode === 8105) {
-          this.searchResponse.data.forEach(data => data.addNewCategory = false);
+          this.searchResponse.data.forEach(data => {
+            data.addNewCategory = false;
+            this.listAvailableCollections(data);
+          });
         }
       },
       error => console.log(error),
@@ -78,12 +82,38 @@ export class SearchComponent implements OnInit {
       data => {
         this.searchResponse = data;
         if (this.searchResponse.statusCode === 8105) {
-          this.searchResponse.data.forEach(data => data.addNewCategory = false);
+          this.searchResponse.data.forEach(element => {
+            element.addNewCategory = false;
+            this.listAvailableCollections(element);
+          });
         }
       },
-      error => console.log(error),
+      error => {
+        console.log(error);
+        this.errorMessage = error.message;
+        this.loading = false;
+      },
       () => this.loading = false
     );
+  }
+
+  listAvailableCollections(element: any) {
+    element.collectionNames =  new Array();
+    if (this.rssService.collectionsResponse) {
+      if (this.rssService.collectionsResponse.statusCode === 8100) {
+        this.rssService.collectionsResponse.data.forEach(data => {
+          element.collectionNames.push(data.title);
+        });
+      }
+    }
+    if (element.collections != undefined) {
+      element.collections.forEach(collection => {
+        const index = element.collectionNames.indexOf(collection.title, 0);
+        if (index > -1) {
+          element.collectionNames.splice(index, 1);
+        }
+      });
+    }
   }
 
   followSource(collectionName: string, sourceId: number) {
