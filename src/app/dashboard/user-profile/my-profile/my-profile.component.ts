@@ -266,7 +266,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         try {
-            this.activeTabName = 'personalInfo';
+            if(this.referenceService.isHubspotCallBack == true){
+              this.activeTabName = 'integrations';
+            }else{
+              this.activeTabName = 'personalInfo';
+            }
             this.customConstructorCall();
             console.log(this.authenticationService.user);
             this.geoLocation();

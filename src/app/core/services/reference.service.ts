@@ -102,6 +102,7 @@ export class ReferenceService {
     eventCampaign = false;
     loadingPreview = false;
     eventCampaignId: number;
+    isHubspotCallBack = false;
     dealId = 0;
     smsCampaign = false;
     serverErrorMessage = 'Oops!There is some technical error,Please try after sometime';

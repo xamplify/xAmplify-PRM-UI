@@ -75,6 +75,7 @@ export class SocialContactsCallbackComponent implements OnInit {
             this.hubSpotService.hubSpotCallback(code)
                 .subscribe(
                     result => {
+                        this.referenceService.isHubspotCallBack = true;
                         this.xtremandLogger.info("Hubspot Callback :: " + result);
                         localStorage.removeItem("userAlias");
                         localStorage.removeItem("isPartner");
