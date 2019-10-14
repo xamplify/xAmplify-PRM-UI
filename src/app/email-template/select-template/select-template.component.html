@@ -59,7 +59,7 @@
 								<app-response-message [customResponse]="customResponse"
 									*ngIf="customResponse.isVisible"></app-response-message>
 						</div>
-						<div *ngIf="selectedTemplateTypeIndex == 11" style="width: 100%;padding-left: 15px;" class="row">
+						<div *ngIf="selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12" style="width: 100%;padding-left: 15px;" class="row">
 								<label class="select-all-filter" style="float:right;"> <input type="checkbox" value="" 
 									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
 									<span style="font-weight: 600;font-size: 12px;"> Select All</span> </label>
