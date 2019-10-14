@@ -1326,12 +1326,17 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
             response => {
                 if(response.statusCode==200){
-                    updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                    if(this.eventCampaign.nurtureCampaign ||this.reDistributeEvent){
+                        updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                    }
+                    if(!this.eventCampaign.channelCampaign && !this.eventCampaign.nurtureCampaign){
+                        updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,"");
+                    }
                     this.showPreviewBody(updatedBody);
                 }
             },
             error => {
-                this.showPreviewBody(body);
+                this.showPreviewBody(updatedBody);
             }
         );
   }

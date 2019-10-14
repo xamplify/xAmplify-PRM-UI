@@ -1750,6 +1750,9 @@ showTimeLineView(){
                  /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
                       body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
                   }*/
+                  if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                      body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                  }
                   tempalteObject.body = body;
                   this.referenceService.previewEmailTemplate( tempalteObject, campaign);
                   this.ngxloading = false;

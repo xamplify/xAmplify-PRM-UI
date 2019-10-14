@@ -23,7 +23,7 @@
                	 <app-landing-page-loader></app-landing-page-loader>
                </ng-container>
                <ng-container *ngIf="!isLoading">
-                  <div *ngIf="emailTemplate"  class="col-md-4" style="padding-left: 32px; padding-right: 32px;">
+                  <div *ngIf="emailTemplate"  class="col-md-3" style="padding-left: 32px; padding-right: 32px;">
                      <div class="portlet light" style="padding: 0px !important;">
                         <div class="portlet-body hover-effect pointer">
                            <div class="img1">
@@ -37,7 +37,7 @@
                                  Templates
                               </h4>
                               <p
-                                 style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 55px;">
+                                 style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
                                  Create gorgeous,responsive email in minutes. Pick a template,
                                  add your content.
                               </p>
@@ -60,7 +60,7 @@
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="form" class="col-md-4"
+                  <div *ngIf="form" class="col-md-3"
                      style="padding-left: 32px; padding-right: 32px;">
                      <div class="portlet light" style="padding: 0px !important;">
                         <div class="portlet-body hover-effect pointer">
@@ -73,7 +73,7 @@
                               <h4
                                  style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Forms</h4>
                               <p
-                                 style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 55px;">
+                                 style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
                                  Start collecting the data you need to send your customers
                                  personalized,relevant content
                               </p>
@@ -94,7 +94,7 @@
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="landingPage || partnerLandingPage" class="col-md-4"
+                  <div *ngIf="landingPage || partnerLandingPage" class="col-md-3"
                      style="padding-left: 32px; padding-right: 32px;">
                      <div class="portlet light" style="padding: 0px !important;">
                         <div class="portlet-body hover-effect pointer">
@@ -108,7 +108,7 @@
                                  style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Landing
                                  Pages
                               </h4>
-                              <p  style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 55px;">
+                              <p  style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
                                 {{landingPageDescription}}
                               </p>
                            </div>
@@ -135,6 +135,50 @@
                         </div>
                      </div>
                   </div>
+                  
+                  
+                    <!--  <div *ngIf="landingPage || partnerLandingPage" class="col-md-3"
+                     style="padding-left: 32px; padding-right: 32px;">
+                     <div class="portlet light" style="padding: 0px !important;">
+                        <div class="portlet-body hover-effect pointer">
+                           <div class="img1">
+                              <img alt="Landing Pages" style="margin: 0 auto;"
+                                 class="pricing-head-img img-responsive	"
+                                 src="assets/images/page-design.png">
+                           </div>
+                           <div class="text">
+                              <h4
+                                 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Landing
+                                 Pages
+                              </h4>
+                              <p  style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
+                                {{landingPageDescription}}
+                              </p>
+                           </div>
+                           <div class="text" *ngIf="landingPage">
+                              <h5>
+                                 <a [routerLink] ="['../../landing-pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Design Landing
+                                 Pages</span></a>
+                              </h5>
+                           </div>
+                           <div class="text" style="border: none !important">
+                              <h5>
+                                 <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink] ="['../../landing-pages/manage']"><i
+                                    class="fa fa-list"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Manage Landing
+                                 Pages</span></a>
+                                 
+                                  <a *ngIf="partnerLandingPage" style="padding-left: 10px;" [routerLink] ="['../../landing-pages/partner']"><i
+                                    class="fa fa-list"></i>&nbsp;<span
+                                    style="color: #888; font-size: 12px;">Manage Landing
+                                 Pages</span></a>
+                              </h5>
+                           </div>
+                        </div>
+                     </div>
+                  </div> -->
+                  
                    </ng-container>
                </div>
             </div>

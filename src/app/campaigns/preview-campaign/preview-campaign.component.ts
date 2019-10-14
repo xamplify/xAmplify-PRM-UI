@@ -1010,6 +1010,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
                         /*if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
                             body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
                         }*/
+                        if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                            body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                        }
                         let emailTemplateName = emailTemplate.name;
                         if (emailTemplateName.length > 50) {
                             emailTemplateName = emailTemplateName.substring(0, 50) + "...";
