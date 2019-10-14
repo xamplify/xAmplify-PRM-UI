@@ -906,6 +906,10 @@ showTimeLineView(){
            if(data.data.eventCancellation.cancelled){
              this.isCancelledEvent = true;
             }
+           if(this.eventCampaign.emailTemplateDTO){
+               this.campaign.emailTemplate = this.eventCampaign.emailTemplateDTO;
+               this.campaign.selectedEmailTemplateId = this.eventCampaign.emailTemplateDTO.id;
+             }
         },
         error => console.log(error),
         () => { }
