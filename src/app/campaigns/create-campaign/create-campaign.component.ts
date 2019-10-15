@@ -37,6 +37,7 @@ import { LandingPageService } from '../../landing-pages/services/landing-page.se
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { HubSpotService } from 'app/core/services/hubspot.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -231,6 +232,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      isModelFormValid: boolean;
      templateSuccessMsg: any;
      pushToMarketo = false;
+     pushToHubspot = false;
 
      loadingMarketo: boolean;
      marketoButtonClass = "btn btn-default";
@@ -266,7 +268,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
-                private landingPageService:LandingPageService
+                private landingPageService:LandingPageService, public hubSpotService: HubSpotService
             ){
 
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
@@ -2044,6 +2046,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'createdFromVideos':this.campaign.createdFromVideos,
             'nurtureCampaign':false,
             'pushToMarketo':this.pushToMarketo,
+            'pushToHubspot':this.pushToHubspot,
             'smsService':this.smsService,
             'smsText':this.smsText,
             'landingPageId':this.selectedLandingPageRow
@@ -2766,6 +2769,35 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.checkMarketoCredentials();
         }
     }
+    
+    pushHubspot(event: any)
+    {
+        this.pushToHubspot =  !this.pushToHubspot;
+        console.log(this.pushToHubspot);
+
+        if (this.pushToHubspot)
+        {
+            this.checkingHubSpotContactsAuthentication();
+        }
+    }
+    
+    checkingHubSpotContactsAuthentication(){
+          this.hubSpotService.configHubSpot().subscribe(data => {
+              let response = data;
+              if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                  console.log("isAuthorize true");
+                  this.pushToHubspot = true;
+              }
+              else{
+                  if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                      window.location.href = response.data.redirectUrl;
+                  }                
+              }            
+          }, (error: any) => {
+              console.error(error, "Error in HubSpot checkIntegrations()");
+          }, () => console.log("HubSpot Configuration Checking done"));
+      }
+    
  smsServices(){
         
         this.smsService =  !this.smsService;

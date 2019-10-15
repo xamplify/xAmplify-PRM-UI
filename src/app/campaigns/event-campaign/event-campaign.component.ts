@@ -26,6 +26,7 @@ import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { HubSpotService } from 'app/core/services/hubspot.service';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
 var moment = require('moment-timezone');
@@ -175,6 +176,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     public emailTemplateService: EmailTemplateService,
     private pagerService: PagerService,
     private logger: XtremandLogger,
+    public hubSpotService: HubSpotService,
     private router: Router, public activatedRoute:ActivatedRoute,
     public properties: Properties, public eventError:EventError, public countryNames: CountryNames) {
     this.countries = this.referenceService.getCountries();
@@ -1028,6 +1030,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
        'pushToMarketo': eventCampaign.pushToMarketo,
+       'pushToHubspot': eventCampaign.pushToHubspot,
        'smsService':this.smsService,
        'smsText':this.smsText
 
@@ -1898,7 +1901,33 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }
     }
     
+    pushHubspot(event: any)
+    {
+        this.eventCampaign.pushToHubspot =  !this.eventCampaign.pushToHubspot;
+        console.log(this.eventCampaign.pushToHubspot);
+
+        if (this.eventCampaign.pushToHubspot)
+        {
+            this.checkingHubSpotContactsAuthentication();
+        }
+    }
     
+    checkingHubSpotContactsAuthentication(){
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                console.log("isAuthorize true");
+                this.eventCampaign.pushToHubspot = true;
+            }
+            else{
+                if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                    window.location.href = response.data.redirectUrl;
+                }                
+            }            
+        }, (error: any) => {
+            console.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => console.log("HubSpot Configuration Checking done"));
+    }
 
     pushMarketo(event: any)
     {

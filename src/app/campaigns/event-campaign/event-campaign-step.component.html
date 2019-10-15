@@ -231,6 +231,30 @@ a.disabled {
 													</div>
 												</div>
 											</div>
+											
+						<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads">
+												<label class="control-label col-sm-3">Push Leads To Hubspot</label>
+												<div class="col-sm-9">
+													<div class="email-options-checkbox-group email-options-notify">
+														<div class="email-options-checkbox clearfix">
+															<div class="col-sm-1 ui-switch-custom-div">
+															 <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
+															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushHubspot(pushToHubspot)" id="falseAction" *ngIf="!eventCampaign.pushToHubspot">
+																</switch>
+																<switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
+															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushHubspot(pushToHubspot)" id="trueAction" *ngIf="eventCampaign.pushToHubspot">
+																</switch>
+															</div>
+																<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -12px">
+																<span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into Marketo">
+																		<i class="fa fa-question-circle" style="font-size: 18px;float: left;margin: -18px 0 0 0px;"></i>
+																	</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 						
 						
 						

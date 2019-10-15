@@ -52,6 +52,7 @@ export class EventCampaign {
     hostedBy: string = "";
     nurtureCampaign: boolean = false;
     pushToMarketo = false;
+    pushToHubspot = false;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());
