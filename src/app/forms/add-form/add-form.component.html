@@ -22,7 +22,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="portlet light" id="portlet-height">
-          <button type="button" class="close-circle" [routerLink]="['../../design/add']" aria-hidden="true">
+          <button  type="button" class="close-circle" (click)="navigateBack()"  aria-hidden="true">
             <i class="fa fa-times"></i>
           </button>
       	<h4 [attr.class]="formNameClass"><b>CREATE FORM</b>
@@ -309,7 +309,7 @@
             </div><!-- End Of Row---- -->
             <div id="bottom-right">
                 <button [disabled]="!form.isValid"  type="submit" class="btn green-haze"  (click)="validateForm()">{{buttonName}}</button>
-                <button type="button" class="btn btn-primay" [routerLink]="['/home/forms/manage']" aria-hidden="true">Cancel</button>
+                <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
               </div>
           </div>
         </div>

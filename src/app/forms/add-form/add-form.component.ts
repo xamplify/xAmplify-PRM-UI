@@ -635,6 +635,14 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.minimizeForm();
 
      }
+     
+     navigateBack(){
+         if(this.isAdd){
+             this.router.navigate(["/home/design/add"]);
+         }else{
+             this.router.navigate(["/home/forms/manage"]);
+         }
+     }
 
 
 
