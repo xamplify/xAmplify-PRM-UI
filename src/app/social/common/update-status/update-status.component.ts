@@ -76,7 +76,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   isPreviewVideo: boolean = false;
   campaignNames = [];
   events = [];
-
+  selectedSocialProviderId: number;
 
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties: Properties,
@@ -259,15 +259,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
         this.socialService.uploadMedia(formData)
           .subscribe(
-          data => {
-            for (const i of Object.keys(data)) {
-              const socialStatusContent = data[i];
-              socialStatus.socialStatusContents.push(socialStatusContent);
-            }
-            console.log(socialStatus);
-          },
-          error => console.log(error),
-          () => console.log('Finished')
+            data => {
+              for (const i of Object.keys(data)) {
+                const socialStatusContent = data[i];
+                socialStatus.socialStatusContents.push(socialStatusContent);
+              }
+              console.log(socialStatus);
+            },
+            error => console.log(error),
+            () => console.log('Finished')
           );
       }
     } else {
@@ -345,36 +345,36 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
-        data => {
-          this.socialCampaign.campaignName = null;
-          this.socialStatusResponse = data.socialStatusList;
-          if (data.publishStatus !== 'FAILURE') {
-            let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
-            this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+          data => {
+            this.socialCampaign.campaignName = null;
+            this.socialStatusResponse = data.socialStatusList;
+            if (data.publishStatus !== 'FAILURE') {
+              let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
+              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
 
-            this.isRedirectEnabled = true;
-            setTimeout(() => {
-              this.redirect();
-            }, 10000);
+              this.isRedirectEnabled = true;
+              setTimeout(() => {
+                this.redirect();
+              }, 10000);
 
-          }
-          else if (data.publishStatus === 'FAILURE')
+            }
+            else if (data.publishStatus === 'FAILURE')
+              this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+
+            $('input:checkbox').removeAttr('checked');
+            $('#contact-list-table tr').removeClass("highlight");
+          },
+          error => {
             this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-
-          $('input:checkbox').removeAttr('checked');
-          $('#contact-list-table tr').removeClass("highlight");
-        },
-        error => {
-          this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-          this.customResponse.statusArray = [];
-          this.customResponse.statusArray.push(error);
-          this.loading = false;
-        },
-        () => {
-          this.initializeSocialStatus();
-          this.socialCampaign.userListIds = [];
-          this.loading = false;
-        }
+            this.customResponse.statusArray = [];
+            this.customResponse.statusArray.push(error);
+            this.loading = false;
+          },
+          () => {
+            this.initializeSocialStatus();
+            this.socialCampaign.userListIds = [];
+            this.loading = false;
+          }
         );
     }
 
@@ -396,36 +396,36 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
       this.socialService.createSocialCampaign(this.socialCampaign)
         .subscribe(
-        data => {
-          this.socialCampaign.campaignName = null;
-          this.socialStatusResponse = data.socialStatusList;
+          data => {
+            this.socialCampaign.campaignName = null;
+            this.socialStatusResponse = data.socialStatusList;
 
-          if (data.publishStatus !== 'FAILURE') {
-            let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
-            this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-            this.isRedirectEnabled = true;
-            setTimeout(() => {
-              this.redirect();
-            }, 10000);
+            if (data.publishStatus !== 'FAILURE') {
+              let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
+              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+              this.isRedirectEnabled = true;
+              setTimeout(() => {
+                this.redirect();
+              }, 10000);
 
-          }
-          else if (data.publishStatus === 'FAILURE')
+            }
+            else if (data.publishStatus === 'FAILURE')
+              this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+
+            $('input:checkbox').removeAttr('checked');
+            $('#contact-list-table tr').removeClass("highlight");
+          },
+          error => {
             this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
-
-          $('input:checkbox').removeAttr('checked');
-          $('#contact-list-table tr').removeClass("highlight");
-        },
-        error => {
-          this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
-          this.customResponse.statusArray = [];
-          this.customResponse.statusArray.push(error);
-          this.loading = false;
-        },
-        () => {
-          this.initializeSocialStatus();
-          this.socialCampaign.userListIds = [];
-          this.loading = false;
-        }
+            this.customResponse.statusArray = [];
+            this.customResponse.statusArray.push(error);
+            this.loading = false;
+          },
+          () => {
+            this.initializeSocialStatus();
+            this.socialCampaign.userListIds = [];
+            this.loading = false;
+          }
         );
     }
   }
@@ -445,21 +445,21 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialStatusResponse = [];
       this.socialService.postStatus(this.socialStatusList)
         .subscribe(
-        data => {
-          this.initializeSocialStatus();
-          $('#calendar').fullCalendar('removeEvents');
-          this.socialStatusResponse = data;
-          this.customResponse.statusText = null;
-        },
-        error => {
-          this.loading = false;
-          console.log(error);
-          this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
-        },
-        () => {
-          this.loading = false;
-          this.listEvents();
-        }
+          data => {
+            this.initializeSocialStatus();
+            $('#calendar').fullCalendar('removeEvents');
+            this.socialStatusResponse = data;
+            this.customResponse.statusText = null;
+          },
+          error => {
+            this.loading = false;
+            console.log(error);
+            this.setCustomResponse(ResponseType.Error, 'Error while posting the update.');
+          },
+          () => {
+            this.loading = false;
+            this.listEvents();
+          }
         );
     }
   }
@@ -513,17 +513,17 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.socialService.deleteStatus(socialStatus)
       .subscribe(
-      data => {
-        this.setCustomResponse(ResponseType.Success, 'Status has been deleted successfully.');
-        $('#calendar').fullCalendar('removeEvents');
-        this.listEvents();
-        this.initializeSocialStatus();
-      },
-      error => {
-        this.loading = false;
-        this.setCustomResponse(ResponseType.Error, error)
-      },
-      () => this.loading = false
+        data => {
+          this.setCustomResponse(ResponseType.Success, 'Status has been deleted successfully.');
+          $('#calendar').fullCalendar('removeEvents');
+          this.listEvents();
+          this.initializeSocialStatus();
+        },
+        error => {
+          this.loading = false;
+          this.setCustomResponse(ResponseType.Error, error)
+        },
+        () => this.loading = false
       );
   }
 
@@ -543,14 +543,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   listSocialConnections() {
     this.socialService.listAccounts(this.userId, 'ALL', 'ALL')
       .subscribe(
-      result => {
-        this.socialService.socialConnections = result;
-        this.socialConnections = result;
-      },
-      error => console.log(error),
-      () => {
-        this.initializeSocialStatus();
-      });
+        result => {
+          this.socialService.socialConnections = result;
+          this.socialConnections = result;
+        },
+        error => console.log(error),
+        () => {
+          this.initializeSocialStatus();
+        });
   }
 
   listSocialStatusProviders() {
@@ -648,14 +648,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     if (this.authenticationService.isOnlyPartner()) { this.socialCampaign.isPartner = false; }
     this.contactService.loadContactLists(contactListsPagination)
       .subscribe(
-      (data: any) => {
-        contactListsPagination.totalRecords = data.totalRecords;
-        contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
-      },
-      (error: any) => {
-        this.logger.error(error);
-      },
-      () => contactListsPagination.isLoading = false
+        (data: any) => {
+          contactListsPagination.totalRecords = data.totalRecords;
+          contactListsPagination = this.pagerService.getPagedItems(contactListsPagination, data.listOfUserLists);
+        },
+        (error: any) => {
+          this.logger.error(error);
+        },
+        () => contactListsPagination.isLoading = false
       );
   }
 
@@ -780,34 +780,34 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     const self = this;
     this.socialService.listEvents(request)
       .subscribe(
-      data => {
-        this.events = [];
-        for (const i of Object.keys(data)) {
-          const socialStatus = data[i];
-          const socialStatusDto = new SocialStatusDto();
-          socialStatusDto.socialStatus = socialStatus;
-          socialStatusDto.socialStatusContents = socialStatus.socialStatusContents;
-          socialStatusDto.socialStatusProvider = socialStatus.socialStatusProvider;
+        data => {
+          this.events = [];
+          for (const i of Object.keys(data)) {
+            const socialStatus = data[i];
+            const socialStatusDto = new SocialStatusDto();
+            socialStatusDto.socialStatus = socialStatus;
+            socialStatusDto.socialStatusContents = socialStatus.socialStatusContents;
+            socialStatusDto.socialStatusProvider = socialStatus.socialStatusProvider;
 
-          this.socialStatusDtos.push(socialStatusDto);
+            this.socialStatusDtos.push(socialStatusDto);
 
-          let event: any = {
-            id: socialStatus.id + '-' + socialStatusDto.socialStatusProvider.id,
-            title: socialStatus.statusMessage.substring(0, 10),
-            start: socialStatus.scheduledTime,
-            data: socialStatusDto,
-            editable: false,
-            allDay: false
-          };
-          // $('#calendar').fullCalendar('renderEvent', event, true);
-          this.events.push(event);
+            let event: any = {
+              id: socialStatus.id + '-' + socialStatusDto.socialStatusProvider.id,
+              title: socialStatus.statusMessage.substring(0, 10),
+              start: socialStatus.scheduledTime,
+              data: socialStatusDto,
+              editable: false,
+              allDay: false
+            };
+            // $('#calendar').fullCalendar('renderEvent', event, true);
+            this.events.push(event);
+          }
+          $('#calendar').fullCalendar('addEventSource', this.events);
+        },
+        error => console.log(error),
+        () => {
+          this.loadingCalendar = false;
         }
-        $('#calendar').fullCalendar('addEventSource', this.events);
-      },
-      error => console.log(error),
-      () => {
-        this.loadingCalendar = false;
-      }
       );
   }
 
@@ -827,18 +827,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   getSocialCampaign(socialCampaignAlias: string) {
     this.socialService.getSocialCampaignByAlias(socialCampaignAlias)
       .subscribe(
-      data => {
-        this.socialCampaign = data;
-        this.socialCampaign.shareNow = true;
-        this.socialCampaign.isPartner = true;
-        this.socialCampaign.userListIds = [];
-        this.socialStatusList = [];
-        this.isCustomizeButtonClicked = true;
-      },
-      error => this.router.navigate(['/home/error/404']),
-      () => {
-        this.listSocialStatusProviders();
-      }
+        data => {
+          this.socialCampaign = data;
+          this.socialCampaign.shareNow = true;
+          this.socialCampaign.isPartner = true;
+          this.socialCampaign.userListIds = [];
+          this.socialStatusList = [];
+          this.isCustomizeButtonClicked = true;
+        },
+        error => this.router.navigate(['/home/error/404']),
+        () => {
+          this.listSocialStatusProviders();
+        }
       );
   }
 
@@ -1037,35 +1037,35 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   save() {
     this.socialService.saveAccounts(this.socialConnections)
       .subscribe(
-      result => { },
-      error => console.log(error),
-      () => {
-        this.socialService.socialConnections = this.socialConnections;
+        result => { },
+        error => console.log(error),
+        () => {
+          this.socialService.socialConnections = this.socialConnections;
 
-        for (const i in this.socialConnections) {
-          const ssp = this.socialStatusProviders.find(item => item.socialConnection.id === this.socialConnections[i].id);
-          if (this.socialConnections[i].active) {
-            if (ssp) {
-              // do nothing
+          for (const i in this.socialConnections) {
+            const ssp = this.socialStatusProviders.find(item => item.socialConnection.id === this.socialConnections[i].id);
+            if (this.socialConnections[i].active) {
+              if (ssp) {
+                // do nothing
+              } else {
+                const socialStatusProvider = new SocialStatusProvider();
+                socialStatusProvider.socialConnection = this.socialConnections[i];
+                this.socialStatusProviders.push(socialStatusProvider);
+              }
             } else {
-              const socialStatusProvider = new SocialStatusProvider();
-              socialStatusProvider.socialConnection = this.socialConnections[i];
-              this.socialStatusProviders.push(socialStatusProvider);
-            }
-          } else {
-            if (ssp) {
-              this.socialStatusProviders = this.socialStatusProviders.filter(item => item !== ssp);
-              if (this.socialStatusList.length == 1) {
-                this.socialStatusList[0].socialStatusProvider = null;
-              } else
-                this.socialStatusList = this.socialStatusList.filter(data => data.socialStatusProvider !== ssp)
+              if (ssp) {
+                this.socialStatusProviders = this.socialStatusProviders.filter(item => item !== ssp);
+                if (this.socialStatusList.length == 1) {
+                  this.socialStatusList[0].socialStatusProvider = null;
+                } else
+                  this.socialStatusList = this.socialStatusList.filter(data => data.socialStatusProvider !== ssp)
+              }
             }
           }
-        }
 
-        this.selectNone();
-        $('#manageAccountsModal').modal('hide');
-      });
+          this.selectNone();
+          $('#manageAccountsModal').modal('hide');
+        });
 
   }
 
@@ -1087,26 +1087,40 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
   // RSS ---------------------------
 
-  openRssModal() {
+  openRssModal(socialStatus: SocialStatus) {
+    if (socialStatus.socialStatusProvider !== undefined && socialStatus.socialStatusProvider.socialConnection !== undefined) {
+      this.selectedSocialProviderId = socialStatus.socialStatusProvider.socialConnection.id;
+    }
     $('#rssModal').modal('show');
   }
 
 
   addToPost(feed: any) {
-    this.socialStatusList.forEach(data => {
-      data.statusMessage = feed.link;
-      data.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
-      data.ogTitle = feed.title;
-      data.ogDescription = feed.description;
-      data.validLink = true;
-      data.ogt = true;
-    });
+    if (this.selectedSocialProviderId === undefined) {
+      this.socialStatusList.forEach(data => {
+        data.statusMessage = feed.link;
+        data.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
+        data.ogTitle = feed.title;
+        data.ogDescription = feed.description;
+        data.validLink = true;
+        data.ogt = true;
+      });
+    } else {
+      let selectedSocialStatus = this.socialStatusList.filter(item => item.socialStatusProvider.socialConnection.id == this.selectedSocialProviderId)[0];
+      selectedSocialStatus.statusMessage = feed.link;
+      selectedSocialStatus.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
+      selectedSocialStatus.ogTitle = feed.title;
+      selectedSocialStatus.ogDescription = feed.description;
+      selectedSocialStatus.validLink = true;
+      selectedSocialStatus.ogt = true;
+      let itemIndex = this.socialStatusList.findIndex(item => item.socialStatusProvider.socialConnection.id == this.selectedSocialProviderId);
+      this.socialStatusList[itemIndex] = selectedSocialStatus;
+    }
     $('#rssModal').modal('hide');
   }
 
-  navigateRssHome(navigateUrl: string){
-    $('#rssModal').modal('hide');    
+  navigateRssHome(navigateUrl: string) {
+    $('#rssModal').modal('hide');
     this.router.navigate([navigateUrl]);
   }
-
 }
