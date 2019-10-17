@@ -31,6 +31,7 @@ export class PreviewPopupComponent implements OnInit {
     formsLoader:HttpRequestLoader = new HttpRequestLoader();
     showButton = false;
     selectedFormData: Array<Form> = [];
+    selectedFormId: number;
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
    }
@@ -150,6 +151,7 @@ export class PreviewPopupComponent implements OnInit {
   }
   
   selectedForm(form: any){
+      this.selectedFormId = form.id;
       this.selectedFormData = [];
       this.selectedFormData.push(form);
   }

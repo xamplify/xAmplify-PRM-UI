@@ -49,6 +49,7 @@
 						<tbody>
 							<tr *ngFor="let form of pagination.pagedItems ;let i =index">
 							 <td *ngIf="authenticationService.isShowForms" align="center"><input type="checkbox"
+							 [checked]="selectedFormId === form.id"
 								(click)="selectedForm(form)"></td>
 							  <td>
 								 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
