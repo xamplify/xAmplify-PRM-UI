@@ -30,6 +30,8 @@ export class PreviewPopupComponent implements OnInit {
     pagination:Pagination = new Pagination();
     formsLoader:HttpRequestLoader = new HttpRequestLoader();
     showButton = false;
+  //  selectedFormData = [];
+    selectedFormData:Form = new Form();
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
    }
@@ -146,6 +148,10 @@ export class PreviewPopupComponent implements OnInit {
       this.formError = false;
       this.ngxloading =false;
       $('#form-preview-modal').modal('show');
+  }
+  
+  selectedForm(form: any){
+      this.selectedFormData = form;
   }
 
 }

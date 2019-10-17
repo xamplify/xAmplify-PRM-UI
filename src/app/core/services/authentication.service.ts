@@ -50,6 +50,8 @@ export class AuthenticationService {
     isCompanyPartner = false;
     isShowContact = false;
     
+    isShowForms = false;
+    
     clientId: any;
     clientSecret: any;
     imagesHost: any;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, AfterViewChecked, ChangeDetectorRef  } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../.././contacts/services/contact.service';
@@ -25,16 +25,22 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { SocialStatusProvider } from "../../social/models/social-status-provider";
+import { SocialService } from "../../social/services/social.service";
+import { SocialStatus } from "../../social/models/social-status";
+import {FormService} from '../../forms/services/form.service';
+import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.component';
 declare var $,swal, flatpickr, CKEDITOR,require;
+import { Form } from 'app/forms/models/form';
 var moment = require('moment-timezone');
 
 @Component({
   selector: 'app-event-campaign',
   templateUrl: './event-campaign-step.component.html',
   styleUrls: ['./event-campaign.component.css','../create-campaign/create-campaign.component.css', '../../../assets/css/content.css' ],
-  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader, CountryNames]
+  providers: [PagerService, Pagination, CallActionSwitch, Properties,EventError,HttpRequestLoader, CountryNames, FormService]
 })
-export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
+export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,AfterViewChecked {
   emailTemplates: Array<EmailTemplate> = [];
   campaignEmailTemplate: CampaignEmailTemplate = new CampaignEmailTemplate();
   reply: Reply = new Reply();
@@ -91,6 +97,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
 
   campaignEmailTemplates=[];
   emailTemplatesPagination:Pagination = new Pagination();
+  formsPagination:Pagination = new Pagination();
 
   detailsTab = false;
   recipientsTab = false;
@@ -159,18 +166,26 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  smsText: any;
  enableSmsText: boolean;
  smsTextDivClass: string
-
+ 
+ socialStatusProviders = new Array<SocialStatusProvider>();
+ selectedAccounts: number = 0;
+ socialStatusList = new Array<SocialStatus>();
+ isAllSelected: boolean = false;
+ selectedFormData:Form = new Form();
+ statusMessage: string;
+ @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
   
 
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
-    private contactService: ContactService,
+    private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
     public authenticationService: AuthenticationService,
     public emailTemplateService: EmailTemplateService,
     private pagerService: PagerService,
     private logger: XtremandLogger,
     private router: Router, public activatedRoute:ActivatedRoute,
-    public properties: Properties, public eventError:EventError, public countryNames: CountryNames) {
+    public properties: Properties, public eventError:EventError, public countryNames: CountryNames,
+    public formService: FormService, private changeDetectorRef: ChangeDetectorRef) {
     this.countries = this.referenceService.getCountries();
     this.eventCampaign.campaignLocation.country = ( this.countryNames.countries[0] );
     //this.listEmailTemplates();
@@ -243,7 +258,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  }
  ngOnInit() {
     
-
+this.authenticationService.isShowForms = true;
 
     this.detailsTab = true;
     this.resetTabClass()
@@ -372,6 +387,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
     this.loadContactLists(this.contactListsPagination);
     this.loadEmailTemplates(this.emailTemplatesPagination);
   }
+    
+    this.listActiveSocialAccounts(this.loggedInUserId);
+    
     flatpickr('.flatpickr', {
       enableTime: true,
       dateFormat: 'm/d/Y h:i K',
@@ -388,6 +406,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
       this.resetTabClass()
   }
 
+  ngAfterViewChecked(){
+      this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
+      this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+      this.changeDetectorRef.detectChanges();
+  }
+  
   setTemplateId(){
       this.emailTemplateId = this.eventCampaign.emailTemplate.id;
       this.eventCampaign.selectedEditEmailTemplate = this.eventCampaign.emailTemplate;
@@ -988,6 +1012,26 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
    eventCampaign.country = this.countries.find(x => x.id == eventCampaign.countryId).name;
    eventCampaign.toPartner = !eventCampaign.channelCampaign;
+   
+   this.socialStatusList = [];
+   this.socialStatusProviders.forEach(data => {
+           if(data.selected){
+               let socialStatus = new SocialStatus();
+               socialStatus.socialStatusProvider = data;
+               if(socialStatus.socialStatusProvider.socialConnection.source.toLowerCase() === 'twitter'){
+                   var statusMsg = this.statusMessage;
+                   var length = 200;
+                   var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
+                   socialStatus.statusMessage = trimmedstatusMsg;
+                   debugger;
+               }else{
+                   socialStatus.statusMessage = this.statusMessage;
+               }
+               this.socialStatusList.push(socialStatus);
+           }
+       }
+   )
+
    if(eventCampaign.id){
     const customEventCampaign = {
       'id':eventCampaign.id,
@@ -1021,9 +1065,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
-       'pushToMarketo': eventCampaign.pushToMarketo,
-       'smsService':this.smsService,
-       'smsText':this.smsText
+      'pushToMarketo': eventCampaign.pushToMarketo,
+      'smsService':this.smsService,
+      'smsText':this.smsText,
+      'socialStatusList': this.socialStatusList,
+      'forms': this.selectedFormData
 
     
 
@@ -1033,10 +1079,33 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    }
    return eventCampaign;
   }
+  
   createEventCampaign(eventCampaign: any, launchOption: string) {
     this.referenceService.loading(this.httpRequestLoader, true);
     this.loader = true;
     this.isFormSubmitted = true;
+    
+    this.socialStatusList = [];
+    this.socialStatusProviders.forEach(data => {
+            if(data.selected){
+                let socialStatus = new SocialStatus();
+                socialStatus.socialStatusProvider = data;
+                if(socialStatus.socialStatusProvider.socialConnection.source.toLowerCase() === 'twitter'){
+                    var statusMsg = this.statusMessage;
+                    var length = 200;
+                    var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
+                    socialStatus.statusMessage = trimmedstatusMsg;
+                    debugger;
+                }else{
+                    socialStatus.statusMessage = this.statusMessage;
+                }
+                this.socialStatusList.push(socialStatus);
+            }
+        }
+    )
+    
+    eventCampaign.socialStatusList = this.socialStatusList;
+    
     eventCampaign.userListIds = this.parternUserListIds;
     if(this.eventCampaign.campaignLocation.country === "Select Country"){
         this.eventCampaign.campaignLocation.country = "";
@@ -2070,6 +2139,57 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     characterSize(){
         this.characterleft = 250 - this.eventCampaign.message.length;
       }
+    
+    toggleSelectAll() {
+        this.isAllSelected = !this.isAllSelected;
+        this.selectedAccounts = 0;
+        if (this.isAllSelected) {
+            this.socialStatusProviders.forEach(data => {
+                data.selected = false;
+                this.toggleSocialStatusProvider(data);
+            })
+        } else {
+            this.socialStatusList.length = 1;
+            this.socialStatusProviders.forEach(data => data.selected = false);
+        }
+    }
+
+    toggleSocialStatusProvider(socialStatusProvider: SocialStatusProvider){
+        socialStatusProvider.selected = !socialStatusProvider.selected;
+        this.selectedAccounts = socialStatusProvider.selected ? this.selectedAccounts + 1 : this.selectedAccounts - 1;
+        if (this.selectedAccounts === 0)
+            this.isAllSelected = false;
+        if (this.selectedAccounts === this.socialStatusProviders.length)
+            this.isAllSelected = true;
+    }
+    
+    
+    listActiveSocialAccounts(userId: number) {
+        this.socialService.listAccounts(userId, 'ALL', 'ACTIVE')
+            .subscribe(
+                data => {
+                    this.socialService.socialConnections = data;
+                    this.listSocialStatusProviders();
+                },
+                error => console.log(error),
+                () => {
+                    console.log('getFacebookAccounts() Finished.');
+                }
+            );
+    }
+    
+    listSocialStatusProviders() {
+        if(this.socialStatusProviders.length < 1){
+        const socialConnections = this.socialService.socialConnections;
+        socialConnections.forEach( data => {
+            if(data.active){
+                let socialStatusProvider = new SocialStatusProvider();
+                socialStatusProvider.socialConnection = data;
+                this.socialStatusProviders.push(socialStatusProvider);
+            }
+        })
+     }
+    }
 
     spamCheck() {
         $("#email_spam_check").modal('show');
@@ -2077,6 +2197,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
 
    ngOnDestroy() {
     this.campaignService.eventCampaign = undefined;
+    this.authenticationService.isShowForms = false;
     CKEDITOR.config.readOnly = false;
     if(!this.hasInternalError && this.router.url!=="/login" && !this.isPreviewEvent && !this.reDistributeEvent && !this.reDistributeEventManage){
      if(!this.isReloaded){
@@ -2111,9 +2232,43 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
  }
 
  smsServices(){
-        
     this.smsService =  !this.smsService;
     this.enableSmsText =  this.smsService;
 }
+ 
+ listForms() {
+     this.referenceService.loading( this.httpRequestLoader, true );
+     this.formsPagination.userId = this.loggedInUserId;
+     this.formService.list( this.formsPagination ).subscribe(
+         ( response: any ) => {
+             const data = response.data;
+             console.log(data);
+             if(response.statusCode == 200){
+                 this.formsPagination.totalRecords = data.totalRecords;
+                 //this.sortOption.totalRecords = data.totalRecords;
+                 this.formsPagination = this.pagerService.getPagedItems( this.formsPagination, data.forms );
+                 $( '#listOfFormsModal' ).modal( 'show' );
+             }
+             this.referenceService.loading( this.httpRequestLoader, false );
+         },
+         ( error: any ) => { 
+            this.logger.errorPage(error);
+         } );
+ }
+ 
+ /*hideListFormModal(){
+     $( '#listOfFormsModal' ).modal( 'hide' ); 
+ }*/
+ 
+/* selectedForm(form: any){
+     this.selectedFormData = form;
+     this.eventCampaign.forms = form;
+ }*/
+ 
+ previewForm(id: any){
+     this.previewPopUpComponent.previewForm(id);
+    }
+ 
+ 
 
 }

@@ -550,7 +550,7 @@ a.disabled {
 						</div>
 					</div>
 					
-					<div class="boxes portlet light" style="display:none">
+					<div class="boxes portlet light">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Public vs Private</h4>
 							<div class="pull-right" style="margin: 5px 5px 0px 0px;">
@@ -562,10 +562,92 @@ a.disabled {
 									[offColor]="callActionSwitch.offPrivateColor"
 									[size]="callActionSwitch.size"
 									(statusChange)="publicVsPrivateSwitchStatusChange()">
-								</switch>
+							</switch>
 							</div>
 						</div>
+						<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign">
+							<label>Event URL</label>
+							<input type="text" class="form-control" id="city" placeholder="Event Url">
+							
+							
+							
+					<!-- <div class="col-xs-12"> -->
+						<div *ngIf="socialStatusProviders?.length > 0">
+							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable" style="margin: 5px 15px;">
+								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
+							</button>
+							<div class="clearfix"></div>
+							<div [hidden]="!isSocialEnable">
+							<!-- <div class="col-xs-12"> -->
+							<ul class="list-group social-account">
+								<li class="list-group-item profile-box" style="background-color: #dfdfdf; cursor: pointer;" [ngClass]="{'checked': isAllSelected, 'unchecked': !isAllSelected}">
+									<div class="profile-selected" (click)="toggleSelectAll()" style="float: initial;margin: 0 0 0 10px;">
+										<i class="fa fa-square-o" *ngIf="!isAllSelected"></i>
+										<i class="fa fa-check-square" *ngIf="isAllSelected"></i>
+										<span class="ml10">Select All <b *ngIf="selectedAccounts > 0">({{selectedAccounts}})</b></span>
+									</div>
+								</li>
+								<li *ngFor="let socialStatusProvider of socialStatusProviders; let i = index" (click)="toggleSocialStatusProvider(socialStatusProvider)"
+									class="list-group-item profile-box" [ngClass]="{'checked': socialStatusProvider.selected, 'unchecked': !socialStatusProvider.selected}">
+									<div class="profile-selected">
+										<i class="fa fa-square-o" *ngIf="!socialStatusProvider.selected"></i>
+										<i class="fa fa-check-square" *ngIf="socialStatusProvider.selected"></i>
+									</div>
+									<div class="profile-image-box">
+										<img class="profile-image" src="{{socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
+										<img class="profile-icon" src="assets/images/social/{{socialStatusProvider.socialConnection.source}}.png">
+									</div>
+									<div class="profile-name">
+											<h5 *ngIf="socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.profileName}}"
+												class="heading-primary">
+												<b>{{socialStatusProvider.socialConnection.profileName}}</b>
+											</h5>
+											<h5 *ngIf="!socialStatusProvider.socialConnection.profileName" title="{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}"
+												class="heading-primary">
+												<b>{{socialStatusProvider.socialConnection.firstName}}&nbsp;{{socialStatusProvider.socialConnection.lastName}}</b>
+											</h5>
+											<h6 class="m0">
+												{{socialStatusProvider.socialConnection.source | titlecase}}
+												<span *ngIf="socialStatusProvider.socialConnection.source === 'FACEBOOK'">
+													<span *ngIf="socialStatusProvider.socialConnection.emailId">Profile</span>
+													<span *ngIf="!socialStatusProvider.socialConnection.emailId">Page</span>
+												</span>
+											</h6>
+									</div>
+									<div class="clearfix"></div>
+								</li>
+							</ul>
+							<!-- </div> -->
+							<div class="col-xs-12 p0" style="margin-top: 10px;">
+								<div style="border: 1px solid #ccc; padding: 10px;">
+										<h6 class="pull-left f-w-600 mt0">Social share preview</h6>
+										<textarea placeholder="Status message" rows="4" class="form-control" [(ngModel)]="statusMessage"  [ngModelOptions]="{standalone: true}"></textarea>
+										<p class="pull-left">A link to your campaign will be included at the end of this post.</p>
+										<div class="clearfix"></div>
+								</div>
+							</div>
+							</div>
+						</div>
+				<!-- </div> -->
+							
+						</div>
 					</div>
+					
+					
+					<div class="boxes portlet light">
+						<div class="portlet-title" style="display:block">
+							<h4 class="pull-left f-w-600">Event Form</h4>
+						</div>
+						<div class="portlet-body clearfix">
+							<!-- <button type="button" class="btn btn-default" (click)="listForms()">Select Form</button><br> -->
+							<app-preview-popup #previewPopUpComponent></app-preview-popup>
+							<section [hidden]="!selectedFormData?.id">
+							<a (click)="previewForm(selectedFormData.id)">{{selectedFormData.name}}</a>
+							</section>
+						</div>
+					</div>
+					
+					
 				<!-- 	
 					<div class="form-group">
 							<label for="hostedBy" class="labal-css color-css">Public vs Private</label>
@@ -1488,3 +1570,67 @@ a.disabled {
 		</div>
 	</div>
 </div>
+
+<!-- <div id="listOfFormsModal" class="modal right fade" role="dialog"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-circle" data-dismiss="modal" (click)="hideListFormModal()">
+					<i class="fa fa-times"></i>
+				</button>
+				<h4 class="modal-title">List of available Forms:</h4>
+			</div>
+			<div class="modal-body table-responsive">
+				<table class='table tgrid'>
+					<thead>
+						<tr>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">SELECT</th>
+							<th class='text-center' style="font-weight: 400; font-size: 12px;">Select</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">NAME</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">COMPANY NAME</th>
+							<th class='text-center'
+								style="font-weight: 400; font-size: 12px;">DESCRIPTION</th>
+							<th class='text-center hidden-xs'
+								style="font-weight: 400; font-size: 12px;">DATE</th>
+							<th class='text-center hidden-xs'
+								style="font-weight: 400; font-size: 12px;">CREATED BY</th>
+						</tr>
+					</thead>
+					<tbody>
+						<ng-container>
+						<tr class='row_{{i}}'
+							*ngFor="let form of formsPagination.pagedItems ;let i =index">
+							<td align="center"><input type="checkbox"
+								(click)="selectedForm(form)"></td>
+							<td align="center" title="{{form.name}}">{{form.name | slice:0:25}}
+							<span *ngIf="form.name?.length>25">..</span>
+							</td>
+							<td align="center">{{form.companyName | slice:0:20}}
+							<span *ngIf="form.companyName?.length>20">..</span>
+							</td>
+							<td align="center" class="hidden-xs" title="{{form.description}}">
+                             {{form.description | slice:0:20}}<span *ngIf="form.description?.length>20">..</span>
+							</td>
+							<td align="center" class="hidden-xs">
+							<app-timestamp [dateAndTime]="form.createdDateString"> </app-timestamp>
+							</td>
+							<td align="center" class="hidden-xs">{{form.createdName}} </td>
+						</tr>
+						</ng-container>
+					</tbody>
+				</table>
+				<app-pagination [pagination]="formsPagination" [type]="'listForms'" (notifyParent)="setPage($event)"
+				(notifyParentDropDown)="onChangePaginationDropDown($event)"></app-pagination>
+			</div>
+			<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+			<div class="modal-footer">
+				<button type="button"
+					class="btn green" (click)="hideListFormModal()">Done</button>
+			</div>
+		</div>
+	</div>
+</div> -->
