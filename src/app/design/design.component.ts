@@ -16,7 +16,7 @@ export class DesignComponent implements OnInit {
   constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-      this.landingPageDescription = "Create custom landing pages with xAmplify that convert more visitors than any other website.";
+      this.landingPageDescription = "Create custom  pages with xAmplify that convert more visitors than any other website.";
       this.getModuleAccess();
   }
   

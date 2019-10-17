@@ -72,14 +72,14 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }else if(this.landingPageId>0){
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.landingPageForm = true;
-            this.landingPagesRouterLink = "/home/landing-pages/manage";
+            this.landingPagesRouterLink = "/home/pages/manage";
         }else if(this.landingPageCampaignId>0){
             this.pagination.campaignId = this.landingPageCampaignId;
             this.pagination.landingPageCampaignForm = true;
         }else if(this.partnerLandingPageAlias!=undefined){
             this.pagination.landingPageAlias = this.partnerLandingPageAlias;
             this.pagination.partnerLandingPageForm = true;
-            this.landingPagesRouterLink = "/home/landing-pages/partner";
+            this.landingPagesRouterLink = "/home/pages/partner";
         }else{
             this.onlyForms = true;
         }

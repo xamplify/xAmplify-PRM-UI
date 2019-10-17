@@ -96,7 +96,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.campaignType = "SOCIAL";
         }else if(this.campaignType=="event"){
           pagination.campaignType = "EVENT";
-        }else{
+        }else if(this.campaignType=="page" || this.campaignType=="landingPage"){
+            pagination.campaignType = "LANDINGPAGE";
+        }
+        else{
             pagination.campaignType = "NONE";
         }
         if ( this.role == "Vendor" ) {
@@ -183,6 +186,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         if ( this.role == "Vendor" ) {
             this.router.navigate( ['/home/campaigns/vendor/' + type] );
         } else {
+            if(type=="landingPage"){
+                type = "page";
+            }
             this.router.navigate( ['/home/campaigns/partner/' + type] );
         }
     }
@@ -210,7 +216,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         landingPage.partnerId = this.authenticationService.getUserId();
                         this.previewLandingPageComponent.showPreview(landingPage);
                     }else{
-                        swal("Landing Page Not Found","","error");
+                        swal("Page Not Found","","error");
                         this.ngxloading = false;
                     }
                     

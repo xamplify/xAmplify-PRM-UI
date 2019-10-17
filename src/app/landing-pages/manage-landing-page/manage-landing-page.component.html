@@ -10,7 +10,7 @@
 				 <i class="fa fa-angle-right"></i>
 				 </ng-container>
 			</li>
-			<li><a>Manage Landing Pages</a></li>
+			<li><a>Manage Pages</a></li>
 		</ul>
 	</div>
 	<div id="custom-response-div">
@@ -114,7 +114,7 @@
 						(notifyParentDropDown)="listLandingPages($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
 				</div>
 		        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-		          <strong>No Landing Pages Found.</strong>
+		          <strong>No Pages Found.</strong>
 		        </div>
 				
 			</div>
@@ -129,7 +129,7 @@
           <button type="button" class="close-circle" data-dismiss="modal">
             <i class="fa fa-times"></i>
           </button>
-          <h4 class="modal-title text-center">DIRECT LINK OF YOUR LANDING PAGE</h4>
+          <h4 class="modal-title text-center">DIRECT LINK OF YOUR PAGE</h4>
         </div>
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">

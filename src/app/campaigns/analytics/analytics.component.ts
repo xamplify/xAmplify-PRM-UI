@@ -1928,7 +1928,7 @@ showTimeLineView(){
       this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
     goToCampaignLandingPageAnalytics(campaignId:number){
-        this.router.navigate(['home/landing-pages/'+campaignId+'/campaign/analytics']);
+        this.router.navigate(['home/pages/'+campaignId+'/campaign/analytics']);
     }
   
   showAutoResponseAnalytics(campaign:any,selectedIndex:number){

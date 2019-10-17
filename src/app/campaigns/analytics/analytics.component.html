@@ -119,7 +119,7 @@
 							<i class="fa fa-envelope-open"></i>
 						</div>
 						<div class="camp-details">
-							<div class="camp-title">Landing Page Info</div>
+							<div class="camp-title">Page Info</div>
 							<div class="camp-number">
 								<b class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
 									| slice: 0: 25}}</b> <span
@@ -137,11 +137,11 @@
 								<i class="fa fa-wpforms"></i>
 								<span class="badge" id="notification">{{campaign.formsCount}}</span>
 						</a>
-						<a *ngIf="campaign.campaignLandingPageAnalyticsCount>0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+						<a *ngIf="campaign.campaignLandingPageAnalyticsCount>0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
 							<i class="fa fa-line-chart"></i>
 							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
 						</a>
-						<a class="disabled"  *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+						<a class="disabled"  *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
 							<i class="fa fa-line-chart"></i>
 							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
 						</a>

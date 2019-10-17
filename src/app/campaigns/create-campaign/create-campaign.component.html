@@ -81,7 +81,7 @@
 								<span>
 								<i class="fa fa-wpforms"></i>
 							</span>
-							<h5 class="hidden-xs">Landing Page</h5>
+							<h5 class="hidden-xs">Page</h5>
 							</ng-container>
 							
 							<ng-container *ngIf="campaignType!='landingPage'">
@@ -100,7 +100,7 @@
 								<span>
 								<i class="fa fa-wpforms"></i>
 							</span>
-							<h5 class="hidden-xs">Landing Page</h5>
+							<h5 class="hidden-xs">Page</h5>
 							</ng-container>
 							
 							<ng-container *ngIf="campaignType!='landingPage'">
@@ -1105,7 +1105,7 @@
             </div>
           </ng-container>
            <div *ngIf="landingPagePagination.totalRecords==0 &&!landingPageLoader.isLoading" class="alert alert-info">
-            <strong>No landing pages found</strong>
+            <strong>No pages found</strong>
           </div>
           <div style="text-align:left;" [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
             <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'"
@@ -1113,7 +1113,7 @@
           </div>
           <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
           <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage"
-            title="Please Select Landing Page">Next</button>
+            title="Please Select  Page">Next</button>
           </div>
           </form>
           </div>
@@ -1208,7 +1208,7 @@
 						<img style="margin: 0 auto;height: 106px;" alt="E-mail Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
 					  </ng-container>
 					  <ng-container *ngIf="campaignType=='landingPage'">
-							<img style="margin: 0 auto;height: 106px;" alt="Landing Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
+							<img style="margin: 0 auto;height: 106px;" alt="Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
 						  </ng-container>	
 					</h4>
                 </div>
@@ -1261,7 +1261,7 @@
 								</div>
 									<ng-container class="h4-text" *ngIf="campaignType == 'video'">Email Template</ng-container>
 									<ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template</ng-container>
-									<ng-container class="h4-text" *ngIf="campaignType == 'landingPage'">Landing Page</ng-container>
+									<ng-container class="h4-text" *ngIf="campaignType == 'landingPage'">Page</ng-container>
 								</td>
 								<td width="55%">
 										<ng-container *ngIf="campaignType == 'video' || campaignType == 'regular'">

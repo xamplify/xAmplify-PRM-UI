@@ -15,16 +15,16 @@
                         <i class="fa fa-angle-right"></i>
                      </li>
                      <li *ngIf="defaultLandingPage">
-                     	<a [routerLink]="['../../landing-pages/select']">Select Landing Page</a>
+                     	<a [routerLink]="['../../pages/select']">Select  Page</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
                      <li *ngIf="!defaultLandingPage">
-                     	<a [routerLink]="['../../landing-pages/manage']">Manage Landing Pages</a>
+                     	<a [routerLink]="['../../pages/manage']">Manage Pages</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
                      <li>
-                        <a *ngIf="defaultLandingPage">Create Landing Page</a>
-                        <a *ngIf="!defaultLandingPage">Edit Landing Page</a>
+                        <a *ngIf="defaultLandingPage">Create Page</a>
+                        <a *ngIf="!defaultLandingPage">Edit Page</a>
                      </li>
                   </ul>
                        <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>

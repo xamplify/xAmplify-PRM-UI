@@ -145,7 +145,7 @@ export class LandingPageService {
 
 
     goToManage() {
-        if ( "/home/landing-pages/manage" == this.router.url ) {
+        if ( "/home/pages/manage" == this.router.url ) {
             this.router.navigate( [this.router.url] );
         }
     }

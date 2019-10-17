@@ -35,7 +35,7 @@ export class PreviewPopupComponent implements OnInit {
    }
 
   ngOnInit() {
-      if(this.router.url=="/home/emailtemplates/create" || this.router.url=="/home/landing-pages/add"){
+      if(this.router.url=="/home/emailtemplates/create" || this.router.url=="/home/pages/add"){
           this.showButton = true;
       }
   }
