@@ -641,8 +641,8 @@ a.disabled {
 						<div class="portlet-body clearfix">
 							<!-- <button type="button" class="btn btn-default" (click)="listForms()">Select Form</button><br> -->
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
-							<section [hidden]="!selectedFormData?.id">
-							<a (click)="previewForm(selectedFormData.id)">{{selectedFormData.name}}</a>
+							<section *ngIf="selectedFormId">
+							<a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a>
 							</section>
 						</div>
 					</div>

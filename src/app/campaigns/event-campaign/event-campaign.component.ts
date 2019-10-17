@@ -171,8 +171,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  selectedAccounts: number = 0;
  socialStatusList = new Array<SocialStatus>();
  isAllSelected: boolean = false;
- selectedFormData:Form = new Form();
+ selectedFormData: Array<Form> = [];
  statusMessage: string;
+ selectedFormName: string;
+ selectedFormId: number;
  @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
   
 
@@ -409,6 +411,10 @@ this.authenticationService.isShowForms = true;
   ngAfterViewChecked(){
       this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
       this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+      for(var i=0; i< this.selectedFormData.length; i++){
+          this.selectedFormName = this.selectedFormData[i].name;
+          this.selectedFormId = this.selectedFormData[i].id;
+      }
       this.changeDetectorRef.detectChanges();
   }
   

@@ -56,7 +56,7 @@ export class EventCampaign {
     nurtureCampaign: boolean = false;
     pushToMarketo = false;
     socialStatusList: Array<SocialStatus> = [];
-    forms: Form;
+    forms: Array<Form> = [];
     
 
     constructor() {
