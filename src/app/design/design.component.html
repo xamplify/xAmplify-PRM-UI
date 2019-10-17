@@ -23,9 +23,9 @@
                	 <app-landing-page-loader></app-landing-page-loader>
                </ng-container>
                <ng-container *ngIf="!isLoading">
-                  <div *ngIf="emailTemplate"  class="col-md-3" style="padding-left: 32px; padding-right: 32px;">
-                     <div class="portlet light" style="padding: 0px !important;">
-                        <div class="portlet-body hover-effect pointer">
+                  <div *ngIf="emailTemplate"  class="col-md-4" >
+                     <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                        <div class="portlet-body">
                            <div class="img1">
                               <img alt="Email Templates" style="margin: 0 auto;"
                                  class="pricing-head-img img-responsive	"
@@ -43,26 +43,23 @@
                            </div>
                            <div class="text">
                               <h5>
-                                 <a [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Design Email
-                                 Templates</span></a>
+                                 <a [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
+                                 <span class="design-name">Design Email Templates</span></a>
                               </h5>
                            </div>
                            <div class="text" style="border: none !important">
                               <h5>
                                  <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']"><i
-                                    class="fa fa-list">&nbsp;</i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Manage Email
-                                 Templates</span></a>
+                                    class="fa fa-list">&nbsp;</i>&nbsp;
+                                    <span  class="design-name">Manage Email Templates</span></a>
                               </h5>
                            </div>
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="form" class="col-md-3"
-                     style="padding-left: 32px; padding-right: 32px;">
-                     <div class="portlet light" style="padding: 0px !important;">
-                        <div class="portlet-body hover-effect pointer">
+                  <div *ngIf="form" class="col-md-4">
+                     <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                        <div class="portlet-body">
                            <div class="img1">
                               <img alt="Forms" style="margin: 0 auto;"
                                  class="pricing-head-img img-responsive	"
@@ -78,24 +75,23 @@
                            </div>
                            <div class="text">
                               <h5>
-                                 <a [routerLink] ="['../../forms/add']" ><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Design Forms</span></a>
+                                 <a [routerLink] ="['../../forms/add']" ><i class="glyphicon glyphicon-edit"></i>&nbsp;
+                                   <span class="design-name">Design Forms</span></a>
                               </h5>
                            </div>
                            <div class="text" style="border: none !important">
                               <h5>
                                  <a style="padding-left: 10px;"  [routerLink] ="['../../forms/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Manage Forms</span></a>
+                                    class="fa fa-list"></i>&nbsp;
+                                    <span class="design-name">Manage Forms</span></a>
                               </h5>
                            </div>
                         </div>
                      </div>
                   </div>
-                  <div *ngIf="landingPage || partnerLandingPage" class="col-md-3"
-                     style="padding-left: 32px; padding-right: 32px;">
-                     <div class="portlet light" style="padding: 0px !important;">
-                        <div class="portlet-body hover-effect pointer">
+                  <div *ngIf="landingPage || partnerLandingPage" class="col-md-4">
+                     <div class="portlet light  hover-effect pointer" style="padding: 0px !important;">
+                        <div class="portlet-body">
                            <div class="img1">
                               <img alt="Pages" style="margin: 0 auto;"
                                  class="pricing-head-img img-responsive	"
@@ -111,69 +107,20 @@
                            </div>
                            <div class="text" *ngIf="landingPage">
                               <h5>
-                                 <a [routerLink] ="['../../pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Design Pages</span></a>
+                                 <a [routerLink] ="['../../pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
+                                 <span class="design-name">Design Pages</span></a>
                               </h5>
                            </div>
                            <div class="text" style="border: none !important">
                               <h5>
                                  <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink] ="['../../pages/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Manage Pages</span></a>
-                                 
-                                  <a *ngIf="partnerLandingPage" style="padding-left: 10px;" [routerLink] ="['../../pages/partner']"><i
-                                    class="fa fa-list"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Manage Landing
-                                 Pages</span></a>
+                                    class="fa fa-list"></i>&nbsp;
+                                    <span class="design-name">Manage Pages</span></a>
                               </h5>
                            </div>
                         </div>
                      </div>
                   </div>
-                  
-                  
-                    <!--  <div *ngIf="landingPage || partnerLandingPage" class="col-md-3"
-                     style="padding-left: 32px; padding-right: 32px;">
-                     <div class="portlet light" style="padding: 0px !important;">
-                        <div class="portlet-body hover-effect pointer">
-                           <div class="img1">
-                              <img alt="Landing Pages" style="margin: 0 auto;"
-                                 class="pricing-head-img img-responsive	"
-                                 src="assets/images/page-design.png">
-                           </div>
-                           <div class="text">
-                              <h4
-                                 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Landing
-                                 Pages
-                              </h4>
-                              <p  style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
-                                {{landingPageDescription}}
-                              </p>
-                           </div>
-                           <div class="text" *ngIf="landingPage">
-                              <h5>
-                                 <a [routerLink] ="['../../landing-pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Design Landing
-                                 Pages</span></a>
-                              </h5>
-                           </div>
-                           <div class="text" style="border: none !important">
-                              <h5>
-                                 <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink] ="['../../landing-pages/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Manage Landing
-                                 Pages</span></a>
-                                 
-                                  <a *ngIf="partnerLandingPage" style="padding-left: 10px;" [routerLink] ="['../../landing-pages/partner']"><i
-                                    class="fa fa-list"></i>&nbsp;<span
-                                    style="color: #888; font-size: 12px;">Manage Landing
-                                 Pages</span></a>
-                              </h5>
-                           </div>
-                        </div>
-                     </div>
-                  </div> -->
-                  
                    </ng-container>
                </div>
             </div>
