@@ -24,7 +24,9 @@ export const emailRoutes: Routes = [
 { path: 'videoEmails/emaileditor', component: EmailEditorComponent },
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },
 { path: 'help', component: HelpComponent },
-{ path: 'hubspot-callback',component:SocialContactsCallbackComponent}
+{ path: 'hubspot-callback',component:SocialContactsCallbackComponent},
+{ path: 'hubspot/upload', component: UploadMarketoEmailTemplateComponent },
+{ path: 'hubspot/update', component: UpdateMarketoTemplateComponent }
 ];
 
 @NgModule({

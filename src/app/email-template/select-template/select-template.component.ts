@@ -52,6 +52,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     hubSpotEmailTemplates: EmailTemplate[] = [];
     basicTemplates = [32, 33, 34, 35, 36, 37, 38, 39, 40, 307, 325, 359, 360];
 
+    selectedThirdPartyIntegration: string;
+
     constructor(private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
         private logger: XtremandLogger, public refService: ReferenceService, public campaignAccess: CampaignAccess, private hubSpotService: HubSpotService) {
@@ -423,10 +425,10 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             }
         }, error => {
 
-                this.templateError = error;
-                $("#templateRetrieve").modal('show');
-                this.loading = false;
-            })
+            this.templateError = error;
+            $("#templateRetrieve").modal('show');
+            this.loading = false;
+        })
     }
     getTemplatesFromMarketo() {
         this.clearValues();
@@ -438,7 +440,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
     getMarketoEmailTemplates(): any {
         this.selectedTemplateTypeIndex = 11;
-
+        this.selectAllTemplates = false;
+        this.isSaveHubSpotTemplatesButtonState = false;
         $("#templateRetrieve").modal('hide');
         this.emailTemplateService.getMarketoEmailTemplates(this.authenticationService.getUserId()).subscribe(response => {
             this.marketoEmailTemplates = response.data;
@@ -532,14 +535,24 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         this.selectedTemplates;
         this.selectAllTemplates;
         this.saveMarketoTemplatesButtonState();
-        this.saveHubSpotTemplatesButtonState()
     }
     selectAll(event: any) {
-
-        if (event)
-            this.filteredEmailTemplates.map(template => template.isSelectedMarketoTemplate = true);
-        else
-            this.filteredEmailTemplates.map(template => template.isSelectedMarketoTemplate = false);
+        if (event) {
+            if (this.selectedTemplateTypeIndex === 11) {
+                this.filteredEmailTemplates.map(template => template.isSelectedMarketoTemplate = true);
+            }
+            else if (this.selectedTemplateTypeIndex === 12) {
+                this.filteredEmailTemplates.map(template => template.isSelectedHubSpotTemplate = true);
+            }
+        }
+        else {
+            if (this.selectedTemplateTypeIndex === 11) {
+                this.filteredEmailTemplates.map(template => template.isSelectedMarketoTemplate = false);
+            }
+            else if (this.selectedTemplateTypeIndex === 12) {
+                this.filteredEmailTemplates.map(template => template.isSelectedHubSpotTemplate = false);
+            }
+        }
         this.saveMarketoTemplatesButtonState();
         this.saveHubSpotTemplatesButtonState();
     }
@@ -555,21 +568,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             this.isSaveMarketoTemplatesButtonState = true;
         else
             this.isSaveMarketoTemplatesButtonState = false;
-
-    }
-
-    saveHubSpotTemplatesButtonState() {
-        let count = 0;
-        this.filteredEmailTemplates.forEach(template => {
-            if (template.isSelectedHubSpotTemplate) {
-
-                count++;
-            }
-        });
-        if (count > 0)
-            this.isSaveHubSpotTemplatesButtonState = true;
-        else
-            this.isSaveHubSpotTemplatesButtonState = false;
 
     }
 
@@ -653,9 +651,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             console.log(this.emailTemplateService.emailTemplate)
             this.router.navigate(["/home/emailtemplates/marketo/upload"]);
         })
-
-
-
     }
 
     showMarketoTemplates() {
@@ -678,6 +673,9 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     //   HubSpot Templates Implementation
 
     getTemplatesFromHubSpot() {
+        this.selectAllTemplates = false;
+        this.selectedTemplateTypeIndex = 12;
+        this.selectedThirdPartyIntegration = "hubspot";
         this.hubSpotService.getHubSpotTemplates().subscribe(data => {
             let response = data.data;
             this.hubSpotEmailTemplates = response.templates;
@@ -694,7 +692,6 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                         this.filteredEmailTemplates.push(this.hubSpotEmailTemplates[i]);
                     }
                 }
-                this.selectedTemplateTypeIndex = 12;
             }
             else {
                 if (!response.isAuthorize && response.redirectUrl !== undefined && response.redirectUrl !== '') {
@@ -723,5 +720,85 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.refService.showServerError(this.httpRequestLoader);
             },
             () => this.logger.info("Got Email Template Preview"))
+    }
+
+    selectedHubSpotTemplate(event: any) {
+        if (!event.isSelectedHubSpotTemplate) {
+            this.selectAllTemplates = false;
+        }
+        this.saveHubSpotTemplatesButtonState();
+    }
+
+    saveHubSpotTemplatesButtonState() {
+        let count = 0;
+        this.filteredEmailTemplates.forEach(template => {
+            if (template.isSelectedHubSpotTemplate) {
+                count++;
+            }
+        });
+        if (count > 0)
+            this.isSaveHubSpotTemplatesButtonState = true;
+        else {
+            this.isSaveHubSpotTemplatesButtonState = false;
+        }
+    }
+
+    importHubSpotTemplates() {
+        this.importLoading = true;
+        let templatesList = [];
+        let mainObj: any;
+        if (this.selectedThirdPartyIntegration === "hubspot" && this.selectAllTemplates) {
+            mainObj = {
+                type: this.selectedThirdPartyIntegration,
+                userId: this.authenticationService.getUserId(),
+            }
+        } else {
+            this.filteredEmailTemplates.forEach(template => {
+                if (template.isSelectedHubSpotTemplate) {
+                    let templateObj = {
+                        id: template.id
+                    }
+                    templatesList.push(templateObj);
+                }
+            });
+            mainObj = {
+                type: this.selectedThirdPartyIntegration,
+                userId: this.authenticationService.getUserId(),
+                templates: templatesList
+            }
+        }
+        this.hubSpotService.importHubSpotTemplates(mainObj).subscribe(response => {
+            this.customResponse = new CustomResponse('SUCCESS', response.message, true);
+            this.selectAllTemplates = false;
+            this.filteredEmailTemplates.map(template => template.isSelectedHubSpotTemplate = false);
+            this.importLoading = false;
+            this.saveHubSpotTemplatesButtonState();
+        },
+            (error: string) => {
+                this.logger.error(this.refService.errorPrepender + ":" + error);
+                this.refService.showServerError(this.httpRequestLoader);
+                this.importLoading = false;
+            },
+            () => this.logger.info("Imported HubSpot Email Templates"));
+    }
+
+    createTemplate(emailTemplateId: number) {
+        this.hubSpotService.getHubSpotTemplateById(emailTemplateId).subscribe(data => {
+            this.showMarketoForm = false;
+            let response = data.data;
+            if (response.template !== undefined && response.template !== '') {
+                let body = response.template.content;
+                this.emailTemplateService.emailTemplate = response.template;
+                this.emailTemplateService.emailTemplate.name = response.template.name;
+                this.emailTemplateService.emailTemplate.body = body;
+                this.emailTemplateService.emailTemplate.hubSpotTemplate = true;
+                this.emailTemplateService.emailTemplate.createdBy = this.authenticationService.getUserId().toString();
+                this.router.navigate(["/home/emailtemplates/" + this.selectedThirdPartyIntegration + "/upload"]);
+            }
+        },
+            (error: string) => {
+                this.logger.error(this.refService.errorPrepender + ":" + error);
+                this.refService.showServerError(this.httpRequestLoader);
+            });
     }
 }

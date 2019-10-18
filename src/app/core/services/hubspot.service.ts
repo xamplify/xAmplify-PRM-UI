@@ -6,6 +6,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ReferenceService } from "./reference.service";
 import { Observable } from "rxjs/Observable";
 import { SocialContact } from "app/contacts/models/social-contact";
+import { EmailTemplate } from "app/email-template/models/email-template";
 
 @Injectable()
 export class HubSpotService {
@@ -96,6 +97,20 @@ export class HubSpotService {
     //         .catch(this.handleError);
     // }
 
+    importHubSpotTemplates(body: any): Observable<any>{
+        this.logger.info(this.authenticationService.REST_URL + "external/templates/import?access_token=" + this.authenticationService.access_token);
+        return this._http.post(this.authenticationService.REST_URL + "external/templates/import?access_token=" + this.authenticationService.access_token,body)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    saveHubSpotEmailSaveTemplate(emailTemplate:EmailTemplate){
+        this.logger.info(this.authenticationService.REST_URL + "external/templates/import?access_token=" + this.authenticationService.access_token);
+        return this._http.post(this.authenticationService.REST_URL + "/marketo/saveEmailTemplate?access_token="+this.authenticationService.access_token,emailTemplate)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
     extractData(res: Response) {
         let body = res.json();
         console.log(body);
