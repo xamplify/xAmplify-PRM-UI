@@ -55,13 +55,13 @@ import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign
 import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
 import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
 import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
-import {FormPreviewComponent} from './forms/preview/form-preview.component';
+//import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-                   CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
+                   CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
                ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
                     ,LogSMSClickComponent,ShowLandingPageComponent, PageNotFoundComponent
                ],

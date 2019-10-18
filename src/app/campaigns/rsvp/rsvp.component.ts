@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 
@@ -6,6 +6,8 @@ import { Processor } from '../../core/models/processor';
 import { CampaignRsvp } from '../models/campaign-rsvp';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import {FormPreviewComponent} from '../../forms/preview/form-preview.component';
+
 
 declare var $: any;
 
@@ -15,8 +17,9 @@ declare var $: any;
   styleUrls: ['./rsvp.component.css'],
   providers: [Processor]
 })
-export class RsvpComponent implements OnInit {
+export class RsvpComponent implements OnInit, AfterViewChecked {
   @ViewChild('dataContainer') dataContainer: ElementRef;
+  @ViewChild('formPreviewComponent') formPreviewComponent: FormPreviewComponent;
   alias: string;
   eventcampaign: any;
   campaignRsvp: CampaignRsvp = new CampaignRsvp();
@@ -29,8 +32,9 @@ export class RsvpComponent implements OnInit {
   rsvpSavingProcessing = false;
   eventExpiredError = false;
   isCancelledEvent = false;
+  formAlias: any;
 
-  constructor(public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
+  constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
 
   getEventCampaign (alias: string) {
@@ -48,6 +52,10 @@ export class RsvpComponent implements OnInit {
         if(response.eventCancellation.cancelled){
             this.isCancelledEvent = true;
         }
+        
+        this.formAlias = response.formDTOs[0].alias;
+        this.authenticationService.formAlias = response.formDTOs[0].alias;
+        
         
       },
       error => {
@@ -171,6 +179,12 @@ export class RsvpComponent implements OnInit {
   characterSize(){
     this.characterleft = 140 - this.campaignRsvp.message.length;
   }
+  
+  ngAfterViewChecked(){
+      this.authenticationService.formAlias = this.formAlias;
+      this.changeDetectorRef.detectChanges();
+  }
+  
 
   ngOnInit() {
     try{
