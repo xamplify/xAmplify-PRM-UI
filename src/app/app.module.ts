@@ -62,7 +62,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
+               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent,LogEventCampaignComponentSMS
                     ,LogSMSClickComponent,ShowLandingPageComponent, PageNotFoundComponent
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,

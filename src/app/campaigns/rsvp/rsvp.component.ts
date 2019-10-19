@@ -6,7 +6,7 @@ import { Processor } from '../../core/models/processor';
 import { CampaignRsvp } from '../models/campaign-rsvp';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import {FormPreviewComponent} from '../../forms/preview/form-preview.component';
+//import {FormPreviewComponent} from '../../forms/preview/form-preview.component';
 
 
 declare var $: any;
@@ -19,7 +19,7 @@ declare var $: any;
 })
 export class RsvpComponent implements OnInit, AfterViewChecked {
   @ViewChild('dataContainer') dataContainer: ElementRef;
-  @ViewChild('formPreviewComponent') formPreviewComponent: FormPreviewComponent;
+ // @ViewChild('formPreviewComponent') formPreviewComponent: FormPreviewComponent;
   alias: string;
   eventcampaign: any;
   campaignRsvp: CampaignRsvp = new CampaignRsvp();
