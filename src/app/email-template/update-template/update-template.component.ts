@@ -9,6 +9,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { User } from '../../core/models/user';
+import { EmailTemplateSource } from '../../email-template/models/email-template-source';
 
 declare var Metronic ,Layout ,Demo ,TableManaged,$,CKEDITOR,swal:any;
 
@@ -26,7 +27,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     public disable: boolean;
     model: any = {};
     public availableTemplateNames: Array<string>;
-    videoTag:string = "";
     isVideoTagError:boolean = false;
     videoTagsError:string = "";
     emailOpenTrackingUrl:string = "<div id=\"bottomDiv\"><img src=\"<emailOpenImgURL>\" class='backup_picture' style='display:none'></div>";
@@ -38,6 +38,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     mycontent: string;
     emailTemplateTypes = ["VIDEO","REGULAR"];
     loggedInUserId = 0;
+    showDropDown = false;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,public refService:ReferenceService,
@@ -46,27 +47,35 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         CKEDITOR.config.allowedContent = true;
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.emailTemplateService.emailTemplate==undefined){
-            this.router.navigate(["/home/emailtemplates/select"]);
+            this.router.navigate(["/home/emailtemplates/manage"]);
         }
-        emailTemplateService.getAvailableNames(this.authenticationService.getUserId()).subscribe(
-            (data: any) => {
-                this.availableTemplateNames = data;
-            },
-            (error: any) => logger.error(error),
-            () => logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
-        );
-        this.videoTag = "<a href='<SocialUbuntuURL>'>\n   <img src='<SocialUbuntuImgURL>'/> \n </a> \n";
+       this.listAvailableNames();
         this.model.isRegularUpload =0;
         if (emailTemplateService.emailTemplate != undefined) {
             let body  = emailTemplateService.emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
             this.model.content = body;
-            if(!emailTemplateService.emailTemplate.draft)
             this.isValidType = true;
             this.model.draft = emailTemplateService.emailTemplate.draft;
             this.mycontent = this.model.content;
             this.model.templateName = emailTemplateService.emailTemplate.name;
+            if(emailTemplateService.emailTemplate.source.toString()!="MANUAL"){
+                if(this.model.draft){
+                    this.showDropDown = true;
+                    this.model.uploadType = "REGULAR";
+                }
+            }
         }
 
+    }
+    
+    listAvailableNames(){
+       this.emailTemplateService.getAvailableNames(this.authenticationService.getUserId()).subscribe(
+                (data: any) => {
+                    this.availableTemplateNames = data;
+                },
+                (error: any) => this.logger.error(error),
+                () => this.logger.debug("Got List Of Available Email Template Names in uploadEmailTemplateComponent constructor")
+            );
     }
 
 
@@ -119,18 +128,18 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplate.createdBy = this.emailTemplateService.emailTemplate.createdBy;
         this.emailTemplate.onDestroy = isOnDestroy;
         this.emailTemplate.draft = isOnDestroy;
-        if (this.model.isRegularUpload == "REGULAR")
-        {
-          this.emailTemplate.regularTemplate = true;
-          this.emailTemplate.desc = "Regular Template";
-          this.emailTemplate.subject = "assets/images/normal-email-template.png";
-          this.emailTemplate.regularCoBrandingTemplate = this.coBrandingLogo;
-        } else
-        {
-          this.emailTemplate.videoTemplate = true;
-          this.emailTemplate.desc = "Video Template";
-          this.emailTemplate.subject = "assets/images/video-email-template.png";
-          this.emailTemplate.videoCoBrandingTemplate = this.coBrandingLogo;
+        if(this.showDropDown){
+            if(this.model.uploadType=="REGULAR"){
+                this.emailTemplate.regularTemplate = true;
+                this.emailTemplate.desc = "Regular Template";
+                this.emailTemplate.subject = "assets/images/normal-email-template.png";
+                this.emailTemplate.regularCoBrandingTemplate = this.coBrandingLogo;
+            }else if(this.model.uploadType=="VIDEO"){
+                this.emailTemplate.videoTemplate = true;
+                this.emailTemplate.desc = "Video Template";
+                this.emailTemplate.subject = "assets/images/video-email-template.png";
+                this.emailTemplate.videoCoBrandingTemplate = this.coBrandingLogo;
+            }
         }
         if(isOnDestroy){
             this.emailTemplate.body = ckEditorBody;
@@ -143,57 +152,82 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         if($.trim(this.emailTemplate.body).length>0){
             this.emailTemplate.user = new User();
             this.emailTemplate.user.userId = this.loggedInUserId;
-            console.log(this.emailTemplate);
-            this.emailTemplateService.update(this.emailTemplate)
+            if(this.emailTemplateService.emailTemplate.source.toString()=="MARKETO"){
+                this.updateMarketoTemplate(isOnDestroy);
+            }else{
+                this.updateCustomTemplate(isOnDestroy);
+            }
+            
+        }
+    }
+    
+    updateCustomTemplate(isOnDestroy){
+        this.emailTemplateService.update(this.emailTemplate)
+        .subscribe(
+        (data: any) => {
+            this.refService.stopLoader(this.httpRequestLoader);
+            if(!isOnDestroy){
+                if(data.statusCode==703){
+                    this.refService.isUpdated = true;
+                    this.emailTemplateService.emailTemplate = new EmailTemplate();
+                    this.router.navigate(["/home/emailtemplates/manage"]);
+                }else{
+                    this.clickedButtonName = "";
+                    this.isVideoTagError = true;
+                    this.videoTagsError = data.message;
+                }
+            }else{
+                this.emailTemplateService.goToManage();
+            }
+
+        },
+        (error: string) => {
+            this.refService.stopLoader(this.httpRequestLoader);
+            this.logger.errorPage(error);
+        },
+        () => this.logger.info("Finished updateHtmlTemplate()")
+        );
+    }
+    
+    
+    updateMarketoTemplate( isOnDestroy ) {
+        this.emailTemplateService.updateMarketoEmailTemplate( this.emailTemplate )
             .subscribe(
-            (data: any) => {
-                this.refService.stopLoader(this.httpRequestLoader);
-                if(!isOnDestroy){
-                    if(data.statusCode==703){
+            ( data: any ) => {
+                this.refService.stopLoader( this.httpRequestLoader );
+                if ( !isOnDestroy ) {
+                    if ( data.statusCode == 8013 ) {
                         this.refService.isUpdated = true;
                         this.emailTemplateService.emailTemplate = new EmailTemplate();
-                        this.router.navigate(["/home/emailtemplates/manage"]);
-                    }else{
+                        this.router.navigate( ["/home/emailtemplates/manage"] );
+                    } else {
                         this.clickedButtonName = "";
                         this.isVideoTagError = true;
                         this.videoTagsError = data.message;
                     }
-                }else{
-                    this.emailTemplateService.goToManage();
                 }
-
             },
-            (error: string) => {
-                this.refService.stopLoader(this.httpRequestLoader);
-                this.logger.errorPage(error);
+            ( error: string ) => {
+                this.refService.stopLoader( this.httpRequestLoader );
+                this.logger.errorPage( error );
             },
-            () => this.logger.info("Finished updateHtmlTemplate()")
+            () => this.logger.info( "Finished updateHtmlTemplate()" )
             );
-        }
-
 
     }
-    setCoBrandingLogo(event)
-    {
-        console.log(event)
-
+    
+    setCoBrandingLogo(event){
       this.coBrandingLogo = event;
       let body = this.getCkEditorData();
-      if (event)
-      {
-        if (body.indexOf(this.refService.coBrandingImageTag) < 0)
-        {
+      if (event){
+        if (body.indexOf(this.refService.coBrandingImageTag) < 0){
             this.model.content = this.refService.coBrandingTag.concat(this.model.content);
         }
-      } else
-      {
+      } else{
         this.model.content = this.model.content.replace(this.refService.coBrandingImageTag, "").
           replace("<p>< /></p>", "").
           replace("< />", "").replace("<p>&lt;&gt;</p>", "").replace("<>", "");
-
-        // .replace("&lt; style=&quot;background-color:black&quot; /&gt;","");
       }
-
     }
     getCkEditorData()
     {
@@ -241,6 +275,28 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
 
         } );
     }
+    
+    copyLink(inputElement,id){
+        $('#'+id).hide();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        $('#'+id).show(500);
+    }
+    
+    selectUploadType(event:any){
+        let body = this.getCkEditorData();
+        if (event == 'VIDEO') {
+          if (body.indexOf(this.refService.videoSrcTag) < 0) {
+              this.model.content = this.refService.videoTag.concat(this.model.content);
+          }
+        } else {
+            this.model.content = this.model.content.replace(this.refService.videoSrcTag,"").
+            replace( "<p>< /></p>", "" ).
+            replace( "< />", "" ).replace( "<p>&lt;&gt;</p>", "" ).replace( "<>", "" );
+        }
+    }
+
 
 
 

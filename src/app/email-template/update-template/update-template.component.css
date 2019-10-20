@@ -28,3 +28,14 @@
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
 }
+
+.success{
+	color: green;
+}
+#upload-type{
+	border-left: 1px solid #42A948;
+}
+#templateTypeDiv{
+font-weight: 500;font-size: 17px;margin-bottom: 34px; padding: 2px;
+	
+}

@@ -79,6 +79,7 @@ export class ReferenceService {
     isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
     videoTag ="";
+    videoSrcTag = "";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} \n  For Email Id : {{emailId}}";
     coBrandingTag = "";
     coBrandingImageTag
@@ -116,6 +117,7 @@ export class ReferenceService {
         this.videoTag = "<img src=\""+authenticationService.imagesHost+"xtremand-video.gif\">";
         this.coBrandingTag = "<img src=\""+authenticationService.imagesHost+"co-branding.png\">";
         this.coBrandingImageTag = "img src=\""+authenticationService.imagesHost+"co-branding.png\"";
+        this.videoSrcTag = "img src=\""+authenticationService.imagesHost+"xtremand-video.gif\"";
 
     }
     getBrowserInfoForNativeSet(){

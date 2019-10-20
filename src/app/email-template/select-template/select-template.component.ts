@@ -51,8 +51,11 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     importLoading: boolean;
     hubSpotEmailTemplates: EmailTemplate[] = [];
     basicTemplates = [32, 33, 34, 35, 36, 37, 38, 39, 40, 307, 325, 359, 360];
-
     selectedThirdPartyIntegration: string;
+    uploadBaseUrl = "/home/emailtemplates/upload/";
+    customUploadRegularUrl = this.uploadBaseUrl+"custom";
+    customUploadVieoUrl = this.customUploadRegularUrl+"v";
+    marketoUploadUrl = this.uploadBaseUrl+"marketo";
 
     constructor(private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
@@ -371,12 +374,10 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 );
         } else if (template.name === 'Upload Regular Template') {
             //This is normal template
-            this.emailTemplateService.isRegularUpload = true;
-            this.router.navigate(["/home/emailtemplates/upload"]);
+            this.router.navigate([this.customUploadRegularUrl]);
         } else if (template.name === 'Upload Video Template') {
             //This is video template
-            this.emailTemplateService.isRegularUpload = false;
-            this.router.navigate(["/home/emailtemplates/upload"]);
+            this.router.navigate([this.customUploadVieoUrl]);
         }
     }
 
@@ -642,14 +643,13 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     }
     edit(emailTemplate: EmailTemplate) {
         this.emailTemplateService.getMarketoEmailTemplatePreview(this.authenticationService.getUserId(), emailTemplate.id).subscribe(response => {
-
             this.emailTemplateService.emailTemplate = response.data[0];
             this.emailTemplateService.emailTemplate.name = emailTemplate.name;
             this.emailTemplateService.emailTemplate.body = response.data[0].content;
             this.emailTemplateService.emailTemplate.marketoTemplate = true;
             this.emailTemplateService.emailTemplate.createdBy = this.authenticationService.getUserId().toString();
-            console.log(this.emailTemplateService.emailTemplate)
-            this.router.navigate(["/home/emailtemplates/marketo/upload"]);
+           // this.router.navigate(["/home/emailtemplates/marketo/upload"]);
+            this.router.navigate([this.marketoUploadUrl]);
         })
     }
 

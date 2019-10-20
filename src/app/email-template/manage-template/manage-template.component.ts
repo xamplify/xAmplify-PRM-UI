@@ -194,18 +194,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             .subscribe(
             ( data: EmailTemplate ) => {
                 this.emailTemplateService.emailTemplate = data;
-                // if(!data.marketoTemplate){
-                //     if ( data.regularTemplate || data.videoTemplate ) {
-                //         this.router.navigate( ["/home/emailtemplates/update"] );
-                //     } else {
-                //         this.emailTemplateService.isNewTemplate = false;
-                //         this.router.navigate( ["/home/emailtemplates/create"] );
-                //     }
-                // }else {
-                //     this.router.navigate( ["/home/emailtemplates/marketo/update"] );
-                // }
-
-                if(data.source.toString() === "MARKETO"){
+                this.router.navigate( ["/home/emailtemplates/update"] );
+              /*  if(data.source.toString() === "MARKETO"){
                     this.router.navigate( ["/home/emailtemplates/marketo/update"] );
                 }else if(data.source.toString() === "HUBSPOT"){
                     this.router.navigate( ["/home/emailtemplates/hubspot/update"] );
@@ -216,7 +206,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                         this.emailTemplateService.isNewTemplate = false;
                         this.router.navigate( ["/home/emailtemplates/create"] );
                     }
-                }
+                }*/
 
             },
             ( error: string ) => {
