@@ -89,9 +89,9 @@
 										<h5 style="margin-top: -55px;font-weight: 400;margin-bottom: 3em;">complete</h5>
 										<h4 [title]="authenticationService.user.firstName+authenticationService.user.lastName" class="control-label">{{authenticationService.user.firstName | slice:0:15}}<span *ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName | slice:0:10}}<span *ngIf="authenticationService.user.lastName?.length>10">..</span></h4>
 										<h5>{{authenticationService.user.emailId}}</h5>
-										<hr class="divider"/>
+										<!-- <hr class="divider"/>
 										<h4><span class="f-w-600">Plan Type:</span>&nbsp;BASIC</h4>
-										<button class="btn btn-warning" disabled="disabled" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button>
+										<button class="btn btn-warning" disabled="disabled" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button> -->
 								</div>
 							</div>
 						</div>

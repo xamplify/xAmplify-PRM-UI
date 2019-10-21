@@ -114,6 +114,19 @@ export class SortOption {
                                      { 'name': 'Shared On (ASC)', 'value': 'createdTime-ASC' },
                                      { 'name': 'Shared On (DESC)', 'value': 'createdTime-DESC' }
                                      ];
+    
+    demoRequestSortOptions = [
+                                     { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+                                     { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+                                     { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+                                     { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+                                     { 'name': 'TimeZone (A-Z)', 'value': 'timezone-ASC' },
+                                     { 'name': 'TimeZone(Z-A)', 'value': 'timezone-DESC' },
+                                     { 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
+                                     { 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
+                                     ];
+   
+   
    
    
     numberOfItemsPerPage = [
@@ -129,7 +142,8 @@ export class SortOption {
     public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[0];    
     public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
     public formsSortOption: any = this.manageFormsSortOptions[3];
-    public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];    
+    public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];  
+    public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];    
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

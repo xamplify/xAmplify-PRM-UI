@@ -13,6 +13,7 @@ import { SocialConnection } from '../social/models/social-connection';
 @Injectable()
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
+    demoUrl = this.authenticationService.REST_URL + "demo/request/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
@@ -238,6 +239,14 @@ export class DashboardService {
         return this.http.post(this.authenticationService.REST_URL + `admin/updateAccess?access_token=${this.authenticationService.access_token}`,campaignAccess)
         .map(this.extractData)
         .catch(this.handleError);
+    }
+    
+    listDemoRequests(pagination: Pagination) {
+        console.log(pagination);
+        const url = this.demoUrl+ 'list?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     private extractData(res: Response) {

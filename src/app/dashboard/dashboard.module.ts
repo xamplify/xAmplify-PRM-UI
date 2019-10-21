@@ -33,6 +33,7 @@ import { MarketoAuthenticationComponent } from './marketo-authentication/marketo
 import { CKEditorModule } from "ng2-ckeditor";
 import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component'
 import { SharedContactsModule } from 'app/shared/shared-contacts.module';
+import { DemoRequestComponent } from './demo-request/demo-request.component';
 
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
@@ -41,7 +42,8 @@ import { SharedContactsModule } from 'app/shared/shared-contacts.module';
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 
         VendorReportsComponent, AdminReportComponent,
         MarketoAuthenticationComponent,
-        VendorRequestReportComponent
+        VendorRequestReportComponent,
+        DemoRequestComponent
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]
