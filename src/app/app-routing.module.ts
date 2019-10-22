@@ -32,6 +32,8 @@ import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms
 import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
 import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
+import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
@@ -90,6 +92,7 @@ export const routes: Routes = [
     {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
     {path: 'scp/:alias', component:ShowLandingPageComponent},
     {path: 'clpl/:alias', component:ShowLandingPageComponent},
+    { path: 'requestdemo', component: RequestDemoComponent },
     { path: '**', component: PageNotFoundComponent },
 ];
 

@@ -8,6 +8,7 @@ import { ReferenceService } from './reference.service';
 import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
+import {RequestDemo} from '../../authentication/request-demo/request-demo';
 
 @Injectable()
 export class UserService {
@@ -230,6 +231,12 @@ export class UserService {
       return this.httpClient.post(url,formData)
       .catch(this.handleError);
     }
+    saveDemoRequest(requestDemo:RequestDemo){
+        return this.http.post( this.URL+"save/requestDemo",requestDemo)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
     private extractData( res: Response ) {
         const body = res.json();
         // return body || {};

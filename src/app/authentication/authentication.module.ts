@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { CoreModule } from "../core/core.module";
 import { SharedModule } from "../shared/shared.module";
+import { SharedLibraryModule } from '../shared/shared-library.module';
 
 import { SignupComponent } from "./signup/signup.component";
 import { LoginComponent } from "./login/login.component";
@@ -13,6 +14,7 @@ import { VideoComponent } from "./video/video.component";
 import { CommonComponentModule } from "../common/common.module";
 import { IntroComponent } from "./intro/intro.component";
 import { TermsConditonComponent } from "./terms-conditon/terms-conditon.component";
+import { RequestDemoComponent } from "./request-demo/request-demo.component";
 
 import { AgmCoreModule } from "@agm/core";
 
@@ -25,6 +27,7 @@ import { AgmCoreModule } from "@agm/core";
     CoreModule,
     SharedModule,
     CommonComponentModule,
+    SharedLibraryModule,
     AgmCoreModule.forRoot({ apiKey: "AIzaSyDDdgixbmMAkOIcujVZpwsguQXefh1-Kqw" })
   ],
   declarations: [
@@ -34,7 +37,8 @@ import { AgmCoreModule } from "@agm/core";
     VerifyEmailComponent,
     VideoComponent,
     IntroComponent,
-    TermsConditonComponent
+    TermsConditonComponent,
+    RequestDemoComponent
   ],
   exports: []
 })
