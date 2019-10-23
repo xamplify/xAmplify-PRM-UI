@@ -520,7 +520,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'required': 'About required.',
             'whitespace': 'Invalid Data',
             'minlength': 'description be at least 3 characters long.',
-            'maxlength': 'description cannot be more than 50 characters long.'
+            'maxlength': 'description cannot be more than 250 characters long.'
         },
         'websiteUrl': {
             'required': 'WebsiteUrl required.',
@@ -562,7 +562,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'mobileNumber': [this.userData.mobileNumber],
             'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
         });
 

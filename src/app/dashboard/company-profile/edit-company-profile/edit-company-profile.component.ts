@@ -955,7 +955,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validatePhone() {
         if (this.companyProfile.phone) {
-            if (!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone) || this.companyProfile.phone.length<8) {
+            if (!this.regularExpressions.PHONE_NUMBER_PATTERN.test(this.companyProfile.phone) || this.companyProfile.phone.length< 8) {
                 this.addPhoneError();
                 this.phoneErrorMessage = "Invalid Phone Number"
             } else {
@@ -968,7 +968,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateCity() {
       if ($.trim(this.companyProfile.city).length > 0) {
-        if(/^[a-zA-Z0-9]*$/.test(this.companyProfile.city) == false){
+        if(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(this.companyProfile.city) == false){
           this.addCityError();
           this.cityErrorMessage = "Invalid City";
          } else {  this.removeCityError(); }
