@@ -985,7 +985,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
 
     validateState() {
         if ($.trim(this.companyProfile.state).length > 0) {
-          if(/^[a-zA-Z0-9]*$/.test(this.companyProfile.state) == false){
+          if(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/.test(this.companyProfile.state) == false){
             // if (!this.regularExpressions.CITY_PATTERN.test(this.companyProfile.state)) {
                 this.addStateError();
                 this.stateErrorMessage = "Invalid State";
