@@ -111,6 +111,7 @@ export class ReferenceService {
     eventCampaignTabAccess: boolean = false;
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     superiorId:number = 0;
+    selectedFeed: any;
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');

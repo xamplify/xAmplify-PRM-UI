@@ -15,17 +15,42 @@
                             <div class="portlet-body pt0">
                                 <h4 class="head-h">Today</h4>
                                 <h2 style="font-size:14px">The insights you need to get the inside edge</h2>
-                                <app-rss-loader *ngIf="loading"></app-rss-loader>
-                                <div *ngFor="let item of homeFeedsResponse?.data">
-                                    <div *ngFor="let feed of item.feeds">
-                                        <app-feed [feed]="feed"></app-feed>
-                                    </div>
-                                </div>
+                                <app-rss-loader *ngIf="loading"></app-rss-loader>                                
+                                    <div *ngFor="let item of homeFeedsResponse?.data">
+                                        <div *ngFor="let feed of item.feeds">
+                                            <div class="col-md-12 col-lg-12">
+                                                    <div class="rss-entry clearfix">
+                                                        <div class="row">
+                                                            <div class="col-sm-10">
+                                                                <app-feed [feed]="feed"></app-feed>
+                                                            </div>
+                                                            <div class="col-sm-1">
+                                                                <div class="actions-block override-actions">
+                                                                    <a (click)="createSocialCampaign(feed)" data-placement="top"
+                                                                        data-toggle="tooltip" title="Create Social Campaign"
+                                                                        data-original-title="Create Social Campaign">
+                                                                        <span class="circled-number fa fa-bullhorn"></span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-1">
+                                                                    <div class="actions-block override-actions">
+                                                                        <a (click)="updateStatus(feed)" data-placement="top"
+                                                                            data-toggle="tooltip" title="Update Status"
+                                                                            data-original-title="Update Status">
+                                                                            <span class="circled-number fa fa-share"></span>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>                          
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

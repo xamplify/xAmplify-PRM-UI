@@ -549,7 +549,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         },
         error => console.log(error),
         () => {
-          this.initializeSocialStatus();
+          this.initializeSocialStatus();  
+          if(this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined){
+             this.populateRssFeed(this.referenceService.selectedFeed);
+             this.referenceService.selectedFeed = "";
+          }       
         });
   }
 
@@ -878,7 +882,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       }
       this.loadContactLists(this.contactListsPagination);
       this.loadCampaignNames(this.userId);
-    }
+    }     
   }
 
   ngOnDestroy() {
@@ -1122,5 +1126,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   navigateRssHome(navigateUrl: string) {
     $('#rssModal').modal('hide');
     this.router.navigate([navigateUrl]);
+  }
+
+  populateRssFeed(feed: any){
+    this.socialStatus.statusMessage = feed.link;
+    this.socialStatus.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
+    this.socialStatus.ogTitle = feed.title;
+    this.socialStatus.ogDescription = feed.description;
+    this.socialStatus.validLink = true;
+    this.socialStatus.ogt = true;
+    this.socialStatusList[0] = this.socialStatus;
   }
 }
