@@ -146,3 +146,12 @@ svg {
 .result.rounded > img {
   border-radius: 100px;
 }
+.blur-content {
+	-webkit-filter: url(#svg-blur);
+	filter: url(#svg-blur);
+	pointer-events: none;
+	tab-index: -1;
+}
+#right{
+	float:right;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder } from "@angular/forms";
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { FileUploader} from 'ng2-file-upload/ng2-file-upload';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Processor } from '../../../core/models/processor';
@@ -47,6 +47,19 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     companyProfileNames: string[] = [];
     isProcessing = false;
     formGroupDefaultClass = "form-group";
+    
+    userEmailIdDivClass: string = this.formGroupDefaultClass;
+    userEmailIdError = false;
+    userEmailIdErrorMessage = "";
+    
+    firstNameDivClass: string = this.formGroupDefaultClass;
+    firstNameError = false;
+    firstNameErrorMessage = "";
+    
+    lastNameDivClass: string = this.formGroupDefaultClass;
+    lastNameError = false;
+    lastNameErrorMessage = "";
+    
     companyProfileNameDivClass: string = this.formGroupDefaultClass;
     companyProfileNameError = false;
     companyProfileNameErrorMessage = "";
@@ -137,22 +150,59 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     showCropper = false;
     isAspectRatio = false;
     aspectRatioValue = '4/3';
-
+    isFromAdminPanel = false;
+    userAlias:any;
     @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
-        public userService: UserService, public properties: Properties, public utilService:UtilService) {
+        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute) {
+        if("/home/dashboard/admin-company-profile"==this.router.url){
+            this.userAlias = this.route.snapshot.params['alias'];
+            this.isFromAdminPanel = true;
+            this.addBlur();
+        }
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.isVendorRole = this.authenticationService.isVendor();
-        // this.cropperSettings();
+        this.uploadFileConfiguration();
+    }
+    
+    addBlur(){
+        $('#blur-content-div').removeClass('admin');
+        $('#blur-content-div').addClass('admin blur-content');
+        $('#image-blur-content-div').removeClass('image');
+        $('#image-blur-content-div').addClass('image blur-content');
+    }
+    
+    removeBlur(){
+        $('#blur-content-div').removeClass('admin blur-content');
+        $('#blur-content-div').addClass('admin');
+        $('#image-blur-content-div').removeClass('image blur-content');
+        $('#image-blur-content-div').addClass('image');
+    }
+    
+    ngOnInit() {
+        this.geoLocation();
+        if(!this.isFromAdminPanel){
+            this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
+            this.getCompanyProfileByUserId(this.upadatedUserId);
+            if (this.authenticationService.user.hasCompany) {
+                this.companyProfile.isAdd = false;
+                this.profileCompleted = 100;
+            }
+            this.getAllCompanyNames();
+            this.getAllCompanyProfileNames();
+        }
+    }
+    
+    
+    uploadFileConfiguration(){
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
-
         this.companyBackGroundLogoUploader = new FileUploader({
             allowedMimeType: ['image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg', 'image/png'],
             maxFileSize: 10 * 1024 * 1024, // 100 MB
@@ -175,6 +225,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             }
         }
     }
+    
+    
     closeModal(){
       this.cropRounded = !this.cropRounded;
       this.squareData = {};
@@ -288,19 +340,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
      this.fileChangeEvent();
     }
 
-    ngOnInit() {
-        this.geoLocation();
-        this.upadatedUserId = this.authenticationService.isSuperAdmin()? this.authenticationService.selectedVendorId: this.loggedInUserId;
-        this.getCompanyProfileByUserId(this.upadatedUserId);
-        if (this.authenticationService.user.hasCompany) {
-            this.companyProfile.isAdd = false;
-            this.profileCompleted = 100;
-        } /*else {
-            this.companyProfile.country = this.countryNames.countries[0];
-        }*/
-        this.getAllCompanyNames();
-        this.getAllCompanyProfileNames();
-    }
+   
     
     getUserByUserName( userName: string ) {
         try{
@@ -501,6 +541,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
     checkValidations(){
+      if(this.isFromAdminPanel){
+          this.validatePattern('userEmailId');
+      }  
       this.validateEmptySpace('companyName');
       this.validateNames(this.companyProfile.companyName);
       this.validateEmptySpace('aboutUs');
@@ -513,7 +556,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       this.validatePattern('twitterLink');
       this.validatePattern('city');
       this.validatePattern('state');
-      this.validatePattern('emailId');
       this.validateCompanyLogo();
     }
 
@@ -547,24 +589,29 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 data => {
                     if (data.data != undefined) {
                         this.companyProfile = data.data;
-                        if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
-                            this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
-                        }
-                        if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
-                            this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
-                        }
-                        if ($.trim(this.companyProfile.country).length == 0) {
-                            this.companyProfile.country = this.countryNames.countries[0];
-                        }
-                        this.geoLocation();
-                        this.existingCompanyName = data.data.companyName;
-                        this.loadPublicVideos();
+                        this.setCompanyProfileViewData(data.data.companyName);
                     }
                 },
                 error => { this.logger.errorPage(error) },
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }
             );
     }
+    
+    setCompanyProfileViewData(existingCompanyName:string){
+        if ($.trim(this.companyProfile.companyLogoPath).length > 0) {
+            this.companyLogoImageUrlPath = this.companyProfile.companyLogoPath;
+        }
+        if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
+            this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
+        }
+        if ($.trim(this.companyProfile.country).length == 0) {
+            this.companyProfile.country = this.countryNames.countries[0];
+        }
+        this.geoLocation();
+        this.existingCompanyName = existingCompanyName;
+        this.loadPublicVideos();
+    }
+    
     getCompanyProfileByIdNgOnDestroy(userId) {
       this.companyProfileService.getByUserId(userId)
           .subscribe(
@@ -803,6 +850,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.emailIdDivClass = this.refService.errorClass;
         this.disableButton();
     }
+    
+    addUserEmailIdError() {
+        this.userEmailIdError = true;
+        this.userEmailIdDivClass = this.refService.errorClass;
+        this.disableButton();
+    }
 
     addPhoneError() {
         this.phoneError = true;
@@ -875,6 +928,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         this.emailIdError = false;
         this.emailIdDivClass = this.refService.successClass;
         this.emailIdErrorMessage = "";
+        this.enableOrDisableButton();
+    }
+    
+    removeUserEmailIdError() {
+        this.userEmailIdError = false;
+        this.userEmailIdDivClass = this.refService.successClass;
+        this.userEmailIdErrorMessage = "";
         this.enableOrDisableButton();
     }
 
@@ -952,6 +1012,20 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
             this.removeEmailIdError();
         }
     }
+    
+    validateUserEmailId() {
+        if ($.trim(this.companyProfile.userEmailId).length > 0) {
+            if (!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.userEmailId)) {
+                this.addUserEmailIdError();
+                this.userEmailIdErrorMessage = "Please enter a valid email address.";
+            } else {
+                this.removeUserEmailIdError();
+            }
+        } else {
+            this.removeUserEmailIdError();
+        }
+    }
+
 
     validatePhone() {
         if (this.companyProfile.phone) {
@@ -1099,7 +1173,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
     validatePattern(column: string) {
-        if (column == "emailId") {
+        if(column=="userEmailId"){
+            this.validateUserEmailId();
+        }else if (column == "emailId") {
             this.validateEmailId();
         } else if (column == "phone") {
             this.validatePhone();
@@ -1141,7 +1217,35 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
    ngOnDestroy(): void {
-     this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
+       if(this.upadatedUserId!=undefined){
+           this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
+       }
+   }
+   checkUser(){
+       this.isLoading = true;
+       this.customResponse = new CustomResponse();
+       this.companyProfileService.getByEmailId(this.companyProfile.userEmailId)
+       .subscribe(
+       (result:any) => {
+          this.companyProfile = new CompanyProfile();
+          let statusCode = result.statusCode;
+          if(statusCode==200){
+              let data = result.data;
+              let user = data.user;
+              this.companyProfile = data.companyProfile;
+              this.companyProfile.userEmailId = user.emailId;
+              this.companyProfile.firstName = user.firstName;
+              this.companyProfile.lastName = user.lastName;
+              this.setCompanyProfileViewData(data.companyProfile.companyName);
+              let roleIds = user.roles.map(function (a) { return a.roleId; });
+                if(roleIds.indexOf(13)>-1){
+                    this.customResponse = new CustomResponse( 'ERROR', "This user is already a vendor and has company profile.So account cannot be created", true );     
+                }
+          }
+          this.removeBlur();
+          this.isLoading = false;
+       },
+       (error:string) => { this.customResponse = new CustomResponse( 'ERROR', "Oops!Something went wrong.Please try after sometime", true ); this.isLoading = false;});
    }
 
 }

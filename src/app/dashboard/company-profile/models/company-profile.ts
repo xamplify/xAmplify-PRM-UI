@@ -21,4 +21,8 @@ export class CompanyProfile {
     isAdd = true;
     videoId = 0;
     street = "";
+    /******Admin Related*********/
+    userEmailId:string = "";
+    firstName:string = "";
+    lastName:string = "";
 }

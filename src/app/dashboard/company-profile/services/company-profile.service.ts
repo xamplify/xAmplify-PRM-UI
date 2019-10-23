@@ -47,6 +47,15 @@ export class CompanyProfileService {
       return this.httpClient.post(this.URL+"company-profile/upload-logo?userId="+this.authenticationService.user.id+"&access_token="+this.authenticationService.access_token,formData)
       .catch(this.handleError);
     }
+    
+    getByEmailId( emailId: string ) {
+        let data = {};
+        data['emailId'] = emailId;
+        console.log(data);
+        return this.http.post(this.URL+"getByEmailId?access_token="+this.authenticationService.access_token,data)
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
 
     private extractData( res: Response ) {
         let body = res.json();

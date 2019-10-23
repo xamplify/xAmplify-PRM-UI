@@ -32,6 +32,8 @@ const routes: Routes = [
   { path: "shared", component: SharedComponent },
   { path: "add-company-profile", component: EditCompanyProfileComponent },
   { path: "edit-company-profile", component: EditCompanyProfileComponent },
+  { path: "admin-company-profile/:alias", component: EditCompanyProfileComponent },
+  { path: "admin-company-profile", component: EditCompanyProfileComponent },
   { path: "reports", component: ReportsComponent },
   { path: "notifications", component: NotificationsComponent },
   { path: 'vendors',component:VendorReportsComponent},

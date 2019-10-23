@@ -4,16 +4,17 @@
         <div class="portlet-title">
           <div class="caption">Demo Request(s)</div>
 		  <div class="inputs" align="right">
+		  <a [routerLink]="['../admin-company-profile']" class="btn btn-info" id="left">Create An Account</a>
 		  <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
 				<i class="fa fa-refresh margin"></i>
 			</a>
-      <div style="float: left;" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
-          <select class="form-control" [(ngModel)]="sortOption.selectedDemoRequestSortOption"
-                      (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                      <option *ngFor="let option of sortOption.demoRequestSortOptions" [ngValue]="option">
-                        {{option.name}}</option>
-           </select>
-      </div>
+	      <div id="left" [ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
+	          <select class="form-control" [(ngModel)]="sortOption.selectedDemoRequestSortOption"
+	                      (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
+	                      <option *ngFor="let option of sortOption.demoRequestSortOptions" [ngValue]="option">
+	                        {{option.name}}</option>
+	           </select>
+	      </div>
        <div class="portlet-input input-inline" id="search-margin" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
 			<div class="input-icon right" id="icon-right">
 				<input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
@@ -25,9 +26,7 @@
 					<i class="fa fa-search"></i></button>
 			</div>
 		</div> 
-		
-      
-    </div>
+   		 </div>
         </div>
           <app-list-loader  *ngIf="httpRequestLoader.isLoading"></app-list-loader>
         <div class="portlet-body clearfix"  *ngIf="!httpRequestLoader.isLoading && !hasError">
