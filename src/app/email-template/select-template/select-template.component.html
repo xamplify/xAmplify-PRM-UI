@@ -29,7 +29,7 @@
 								<li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event</li>
 								<li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="(refService.eventCampaignTabAccess || campaignAccess.eventCampaign) && !httpRequestLoader.isLoading">Event Co-Branding</li>
 								<li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex">Marketo Templates</li>
-								<!-- <li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex">HubSpot Templates</li> -->
+								<li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex">HubSpot Templates</li>
                 				<li class="filter" style="display: none;">Own Template</li>
 							</ul>
 						</div>

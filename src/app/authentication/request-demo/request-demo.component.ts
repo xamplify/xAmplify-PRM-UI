@@ -76,6 +76,7 @@ export class RequestDemoComponent implements OnInit {
       let country = $.trim($('#demo-countryName option:selected').text());
       this.requestDemo.timezone = timezoneId;
       this.requestDemo.country = country;
+      console.log(this.requestDemo);
       this.userService.saveDemoRequest(this.requestDemo)
       .subscribe(
       (result:any) => {

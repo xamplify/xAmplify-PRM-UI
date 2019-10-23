@@ -48,7 +48,7 @@
                   <ng-container *ngFor="let request of pagination.pagedItems;let i = index">
                     <tr>
                       <td>
-                        <app-user-info [userInfo]="request">
+                        <app-user-info [userInfo]="request" [isFromAdminList]="true">
                         </app-user-info>
                       </td>
                       <td align="center">{{request.company}}</td>

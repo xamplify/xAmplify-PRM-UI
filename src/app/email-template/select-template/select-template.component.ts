@@ -56,6 +56,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     customUploadRegularUrl = this.uploadBaseUrl+"custom";
     customUploadVieoUrl = this.customUploadRegularUrl+"v";
     marketoUploadUrl = this.uploadBaseUrl+"marketo";
+    hubspotUploadUrl = this.uploadBaseUrl+"hubspot";
 
     constructor(private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
@@ -240,13 +241,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isBeeRegularTemplate = this.allEmailTemplates[i].beeRegularTemplate;
                 if (isBeeRegularTemplate) {
-                    /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
-                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
-                    }*/
-                    if (this.basicTemplates.indexOf(this.allEmailTemplates[i].id) > -1) {
-                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
-                    }
-
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                 }
             }
             this.logger.debug("Showing Rich Templates size of" + this.filteredEmailTemplates.length);
@@ -793,7 +788,8 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.emailTemplateService.emailTemplate.body = body;
                 this.emailTemplateService.emailTemplate.hubSpotTemplate = true;
                 this.emailTemplateService.emailTemplate.createdBy = this.authenticationService.getUserId().toString();
-                this.router.navigate(["/home/emailtemplates/" + this.selectedThirdPartyIntegration + "/upload"]);
+                //this.router.navigate(["/home/emailtemplates/" + this.selectedThirdPartyIntegration + "/upload"]);
+                this.router.navigate([this.hubspotUploadUrl]);
             }
         },
             (error: string) => {
