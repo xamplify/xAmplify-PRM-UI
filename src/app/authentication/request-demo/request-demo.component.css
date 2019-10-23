@@ -1189,3 +1189,11 @@
 #demo-timezoneId{
 	width:115%
 }
+#wrapper {
+    text-align: center;
+}
+
+#demo-button {
+    top: 50%;
+}
+

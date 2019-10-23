@@ -21,6 +21,7 @@ export class RequestDemoComponent implements OnInit {
     isValidCompany = false;
     errorClass = "success";
     submitted = false;
+    isContacted = false;
     customResponse: CustomResponse = new CustomResponse();
   constructor(public refService:ReferenceService,private userService: UserService) {
       this.countries = this.refService.getCountries();
@@ -76,16 +77,11 @@ export class RequestDemoComponent implements OnInit {
       let country = $.trim($('#demo-countryName option:selected').text());
       this.requestDemo.timezone = timezoneId;
       this.requestDemo.country = country;
-      console.log(this.requestDemo);
       this.userService.saveDemoRequest(this.requestDemo)
       .subscribe(
       (result:any) => {
-          this.customResponse = new CustomResponse( 'SUCCESS', "Your Request Submitted Successfully", true );
-          this.submitted = false;
-          this.requestDemo = new RequestDemo();
-          this.isValidForm = false;
-          $("#demo-countryName").val($("#demo-countryName option:first").val());
-          this.setCountry();
+          this.isContacted = true;
+          this.customResponse = new CustomResponse( 'SUCCESS', "Thank you.We will contact you shortly to schedule a demo.", true );
           this.refService.scrollSmoothToTop();
       },
       (error:string) => { this.customResponse = new CustomResponse( 'ERROR', "Oops!Something went wrong.Please try after sometime", true );});

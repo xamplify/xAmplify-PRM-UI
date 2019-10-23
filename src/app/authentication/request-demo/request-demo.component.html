@@ -19,14 +19,14 @@
       </div>
       <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-            <li><a (click)="goToFeaturesTab()" lang="en">Home</a></li>
-            <li><a (click)="goToFeaturesTab()" lang="en">Features</a></li>
-            <li><a (click)="goToFeaturesTab()" lang="en">Services</a></li>
-            <li><a (click)="goToFeaturesTab()" lang="en">About Us</a></li>
-            <li><a (click)="goToFeaturesTab()" lang="en">Blog</a></li>
-            <li><a (click)="goToFeaturesTab()" lang="en">Contact</a></li>
-            <li ><a class="loginTF" routerLink="/login" lang="en" style="background: none;">Login</a></li>
-            <li ><a routerLink="/requestdemo" lang="en" class="btn signUpTF">REQUEST A DEMO</a></li>
+            <li><a href="https://www.xamplify.com" lang="en">Home</a></li>
+            <li><a href="https://www.xamplify.com/features/" lang="en">Features</a></li>
+            <li><a href="https://www.xamplify.com/sail/" lang="en">Services</a></li>
+            <li><a href="https://www.xamplify.com/about-us/" lang="en">About Us</a></li>
+            <li><a href="https://www.xamplify.com/blog/" lang="en">Blog</a></li>
+            <li><a href="https://www.xamplify.com/contact/" lang="en">Contact</a></li>
+            <li ><a class="loginTF" href="https://xamplify.io/login" lang="en" style="background: none;">Login</a></li>
+            <li ><a href="https://xamplify.io/requestdemo" lang="en" class="btn signUpTF">REQUEST A DEMO</a></li>
         </ul>
       </div>
     </div>
@@ -60,10 +60,9 @@
       <!--feature 2-->
       <div class="row">
         <div class="col-md-7 col-md-push-5 text-center"> <img src="/assets/images/feature-1.png" alt="feature"> </div>
-        <div class="col-md-5 col-md-pull-7">
+        <div class="col-md-5 col-md-pull-7" >
           <article style="margin-top: 0 !important;">
-          		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-            <form>
+            <form *ngIf="!isContacted">
               <div class="form-group">
                 <label for="email">First Name</label>
                 <input type="text" [(ngModel)]="requestDemo.firstName"  maxlength="255" class="form-control" id="firstName" [ngModelOptions]="{standalone: true}">
@@ -79,7 +78,7 @@
               </div>
                <div class="form-group">
                   <label for="email">Mobile Number</label>
-                    <int-phone-prefix [defaultCountry]="'us'" [(ngModel)]="requestDemo.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                    <int-phone-prefix [defaultCountry]="'us'" [(ngModel)]="requestDemo.mobileNumber" [maxlength]=20  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
               </div>
               <div class="form-group">
                   <label for="email">Company Name<font class="required">*</font></label>
@@ -110,16 +109,18 @@
                   </div>
                 </div>
               </div>
-              <button *ngIf="!submitted" type="submit" class="btn btn-default" [disabled]="!isValidForm" (click)="save()">Contact me now</button>
-              <button *ngIf="submitted" class="btn btn-success" disabled="disabled">Please Wait...</button>
+              	<div id="wrapper">
+              		<button *ngIf="!submitted" id="demo-button" type="submit" class="btn btn-default" [disabled]="!isValidForm" (click)="save()">Contact me now</button>
+              		<button *ngIf="submitted" id="demo-button" class="btn btn-success" disabled="disabled">Please Wait...</button>
+              	</div>
             </form>
+            <div *ngIf="isContacted">
+             <h1 class="display-3">Thank You</h1>
+			  <p class="lead"><strong>We will contact you shortly to schedule a demo.</strong></p>
+			</div>
           </article>
         </div>
       </div>
-  
-
-  
-
     </div>
   </div>
   
