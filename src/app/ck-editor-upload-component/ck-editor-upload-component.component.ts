@@ -64,7 +64,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
       this.getAvailableNames();
       if(this.type=="custom" ||this.type=="customv"){
           this.ngFileUploadForCustomTemplates();
-      }else if(this.type=="marketo"){
+      }else if(this.type=="marketo" || this.type=="hubspot"){
           this.model.uploadType = "REGULAR";
           this.disableButton = false;
           this.duplicateTemplateName = false;
