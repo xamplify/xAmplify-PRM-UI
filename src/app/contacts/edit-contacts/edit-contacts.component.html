@@ -195,19 +195,18 @@
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
+															<li><a id="download_empy_csv"
+																(click)="downloadEmptyCsv()">Download CSV Template</a></li>
 															<li><a id="delete_button"
 																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
 														</ul>
 													</div>
 													</div>
-
-													<a class="pull-right" style="padding-right: 16px;" (click)="downloadEmptyCsv()">
-				<button type="button" class="btn btn-default" download [ngStyle]="{'width':refService.isMobileScreenSize()? '100%': 'unset'}">
-         Download CSV Template
-          <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
-				</button>
-			</a>
+										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0"
+															(click)="saveAs()" style="margin-right: 5px; background-color: white; color: #777070">
+															Save As<!-- <i class="fa fa-save"></i> -->
+														</button>
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
@@ -248,14 +247,14 @@
 											</div>
 							 	<div class="col-sm-12 col-md-6 p0 pull-right" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
-									style="float: left; cursor: pointer; margin-left: 50px;"
+									style="float: left; cursor: pointer; margin-left: 120px;"
 									data-toggle="modal" data-target="#filterModal">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 								</div>
 								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
-									style="float: left; cursor: pointer; margin-left: 50px;">
+									style="float: left; cursor: pointer; margin-left: 110px;">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Remove a filter"
 										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
@@ -828,7 +827,7 @@
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="validate_email_button" (click)="validateUndeliverableContacts()">
 													Mark as valid email(s) </a></li>
-										<li><a id="delete_button"
+										<li><a id="export_button"
 										(click) = "downloadContactTypeList()"> Export To Excel </a></li>
 									</ul>
 								</div>
