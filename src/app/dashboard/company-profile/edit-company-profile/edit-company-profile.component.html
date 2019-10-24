@@ -10,13 +10,15 @@
 	<div class="portlet light" id="company-profile-div">
 		<div class="portlet-title">
 			<div class="caption">Company Profile</div>
-			<button *ngIf="isFromAdminPanel" class="btn green-haze" id="right" (click)="checkUser()" [disabled]="userEmailIdError || companyProfile.userEmailId?.length==0">Check User</button>
 		</div>
 		<div class="alert alert-danger"  id="company-profile-error-div" style="display: none;">
 			<a (click)="refService.hideDiv('company-profile-error-div')" class="close" aria-label="close">x</a>
 	  		<strong>Please complete the required (*) fields. </strong>
 		</div>
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		<div class="alert alert-info" *ngIf="upgradeToVendor">
+			<h4>Do you want to upgrade this account to Vendor? <a class="btn btn-primary btn-sm" (click)="addVendorRole()">Upgrade To Vendor</a></h4>
+		</div>
 		<div class="portlet-body clearfix">
 			<div class="alert alert-success" id="edit-sucess" style="display: none;">
 				<a (click)="refService.hideDiv('edit-sucess')" class="close" aria-label="close">x</a>
@@ -61,8 +63,8 @@
 			<div [hidden]="processor.isProcessing">
 				<form role="form" id="company-profile-form">
 					<div class="row">
-					<div class="image blur-content" id="image-blur-content-div">
 						<div class="col-sm-4 col-xs-12 col-sm-offset-1">
+							<div class="image blur-content" id="image-blur-content-div">
 							<div class="portlet light border-radius-0 shadow">
 								<div class="portlet-body clearfix text-center" style="padding: 2em 0;">
 									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
@@ -88,32 +90,92 @@
 											<h2 class="percentage-value" style="margin: -2.7em 0 0 0;">{{profileCompleted}}%</h2>
 										</section>
 										<h5 style="margin-top: -55px;font-weight: 400;margin-bottom: 3em;">complete</h5>
-										<h4 [title]="authenticationService.user.firstName+authenticationService.user.lastName" class="control-label">{{authenticationService.user.firstName | slice:0:15}}<span *ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName | slice:0:10}}<span *ngIf="authenticationService.user.lastName?.length>10">..</span></h4>
-										<h5>{{authenticationService.user.emailId}}</h5>
+										<ng-container *ngIf="!isFromAdminPanel">
+												<h4 [title]="authenticationService.user.firstName+authenticationService.user.lastName" class="control-label">{{authenticationService.user.firstName | slice:0:15}}<span *ngIf="authenticationService.user.firstName?.length>15">...</span>&nbsp;{{authenticationService.user.lastName | slice:0:10}}<span *ngIf="authenticationService.user.lastName?.length>10">..</span></h4>
+												<h5>{{authenticationService.user.emailId}}</h5>
+										</ng-container>
+										<ng-container *ngIf="isFromAdminPanel">
+												<h4 [title]="companyProfile.firstName+companyProfile.lastName" class="control-label">{{companyProfile.firstName | slice:0:15}}<span *ngIf="companyProfile.firstName?.length>15">...</span>&nbsp;{{companyProfile.lastName | slice:0:10}}<span *ngIf="companyProfile.lastName?.length>10">..</span></h4>
+												<h5>{{companyProfile.userEmailId}}</h5>
+										</ng-container>
 										<!-- <hr class="divider"/>
 										<h4><span class="f-w-600">Plan Type:</span>&nbsp;BASIC</h4>
 										<button class="btn btn-warning" disabled="disabled" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button> -->
 								</div>
 							</div>
+							</div>
+						<!-- ---------------Module Access ---------->	
+						<div class="module-access blur-content" id="module-access-blur-content-div" *ngIf="isFromAdminPanel">
+						<div class="portlet-body clearfix">
+						<div class="portlet-title">
+							<div class="caption"><b>Assign Modules</b></div>
+						</div><br>
+						<div class="table-responsive" style="overflow-x:inherit">
+							<table class="table table-striped  table-hover" style="width:100%">
+							  <tr>
+							    <th>Email Campaign</th>
+							    <td><input disabled="disabled" type="checkbox" [(ngModel)]="campaignAccess.emailCampaign" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							  <tr>
+							    <th>Video Campaign</th>
+							    <td><input disabled="disabled" type="checkbox" [(ngModel)]="campaignAccess.videoCampaign" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							  <tr>
+							    <th>Social Campaign</th>
+							    <td><input disabled="disabled" type="checkbox" [(ngModel)]="campaignAccess.socialCampaign" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							  <tr>
+							    <th>Event Campaign</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							  <tr>
+							    <th>Leads</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.leads" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							  <tr>
+							    <th>Form Builder</th>
+							   <td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							   <tr>
+							    <th>Page</th>
+							   	<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							  <tr>
+							    <th>Page Campaign</th>
+							   	<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign" [ngModelOptions]="{standalone: true}"></td>
+							  </tr>
+							</table>
+							</div>
+							<div class="modal-footer">
+								<button type="button" (click)="updateAccess()" class="btn btn-info">Save</button>
+							</div>
+						</div>
 						</div>
 						</div>
 						<div class="col-sm-6 col-xs-12">
 						<!-- ---Start Of Admin Panel -->
-						<div class="form-group" [attr.class]="userEmailIdDivClass">
+						<div class="row" *ngIf="isFromAdminPanel">
+							<div class="col-xs-12">
+								<div class="form-group" [attr.class]="userEmailIdDivClass">
 								<label class="control-label">Email/Username<font style="color: #f55d7a"><b>*</b></font></label>
-									<input type="text" id="emailId" name="emailId" placeholder="Email/Username" maxlength="240" class="form-control" [(ngModel)]="companyProfile.userEmailId"
-									(input)="validatePattern('userEmailId')" (blur)="validatePattern('userEmailId')"/>
+									<input type="text" id="userEmailId" name="userEmailId" placeholder="Email/Username" maxlength="240" class="form-control" [(ngModel)]="companyProfile.userEmailId"
+									(input)="validatePattern('userEmailId')" (blur)="validatePattern('userEmailId')" (ngModelChange)="this.fetchResult.next($event)"/>
 								<span *ngIf="userEmailIdError" style="color: #f55d7a">{{userEmailIdErrorMessage}}</span>
+								</div>
 							</div>
+							<div class="col-xs-2" id="check-user">
+								<button *ngIf="isFromAdminPanel" class="btn green-haze" id="right" (click)="checkUser()" [disabled]="userEmailIdError || companyProfile.userEmailId?.length==0">Validate</button>
+							</div>
+						</div>
 							<div class="admin blur-content" id="blur-content-div">
-							<div class="form-group" [attr.class]="firstNameDivClass">
+							<div class="form-group" [attr.class]="firstNameDivClass" *ngIf="isFromAdminPanel">
 								<label class="control-label">First Name <font	style="color: #f55d7a"><b>*</b></font></label>
 									<input type="text" id="firstName" name="firstName" placeholder="First Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.firstName"
 									(input)="validateEmptySpace('firstName')"	(blur)="validateNames(companyProfile.firstName)" />
 								<span *ngIf="firstNameError" style="color: #f55d7a">{{firstNameErrorMessage}}</span>
 							</div>
 							
-							<div class="form-group" [attr.class]="lastNameDivClass">
+							<div class="form-group" [attr.class]="lastNameDivClass" *ngIf="isFromAdminPanel">
 								<label class="control-label">Last Name <font	style="color: #f55d7a"><b>*</b></font></label>
 									<input type="text" id="lastName" name="lastName" placeholder="Last Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.lastName"
 									(input)="validateEmptySpace('lastName')"	(blur)="validateNames(companyProfile.lastName)" />
@@ -251,9 +313,12 @@
 							</div><!-- -End Of Panel -->
 						</div><!-- End of col-xs-6 -->
 					</div>
-					<div class="pull-right">
+					<div class="pull-right" *ngIf="!isFromAdminPanel">
 						<button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="save()"	class="btn green-haze" disabled="disabled">Save</button>
 						<button type="submit" [disabled]="authenticationService.isSuperAdmin()" *ngIf="!companyProfile.isAdd"	id="saveOrUpdateCompanyButton" (click)="update()"class="btn green-haze">Update</button>
+					</div>
+					<div class="pull-right" *ngIf="isFromAdminPanel && createAccount">
+						<button type="submit" id="saveOrUpdateCompanyButton" (click)="createUserAndCompanyProfile()"	class="btn green-haze" disabled="disabled">Save</button>
 					</div>
 				</form>
 			</div>
@@ -314,7 +379,7 @@
 	</div>
 	<svg id="svg-filter">
         <filter id="svg-blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3"></feGaussianBlur>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
         </filter>
     </svg>
 </div>

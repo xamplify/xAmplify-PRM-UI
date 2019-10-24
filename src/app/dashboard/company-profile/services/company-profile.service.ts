@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CompanyProfile } from '../models/company-profile';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 
 @Injectable()
 export class CompanyProfileService {
@@ -51,8 +52,13 @@ export class CompanyProfileService {
     getByEmailId( emailId: string ) {
         let data = {};
         data['emailId'] = emailId;
-        console.log(data);
         return this.http.post(this.URL+"getByEmailId?access_token="+this.authenticationService.access_token,data)
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
+    
+    upgradeToVendorRole( campaignAccess: CampaignAccess ) {
+        return this.http.post(this.URL+"upgradeToVendor?access_token="+this.authenticationService.access_token,campaignAccess)
         .map(this.extractData)
         .catch(this.handleError);
    }

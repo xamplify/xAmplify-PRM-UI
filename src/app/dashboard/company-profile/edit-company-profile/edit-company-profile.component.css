@@ -155,3 +155,7 @@ svg {
 #right{
 	float:right;
 }
+#check-user{
+	margin-top: 26px;
+	display: none;
+}

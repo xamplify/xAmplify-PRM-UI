@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { FormBuilder } from "@angular/forms";
 import { Router,ActivatedRoute } from '@angular/router';
 import { FileUploader} from 'ng2-file-upload/ng2-file-upload';
@@ -25,6 +27,7 @@ import { UtilService } from 'app/core/services/util.service';
 // ImageCroppedEvent
 import { ImageCroppedEvent } from '../../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { ImageCropperComponent } from '../../../common/image-cropper/component/image-cropper.component';
+import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 
 declare var $,swal: any;
 
@@ -33,10 +36,13 @@ declare var $,swal: any;
     templateUrl: './edit-company-profile.component.html',
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
-    providers: [Processor, CountryNames, RegularExpressions, Properties]
+    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess]
 
 })
-export class EditCompanyProfileComponent implements OnInit, OnDestroy {
+export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+    campaignAccess = new CampaignAccess();
+    upgradeToVendor: boolean;
+    createAccount: boolean;
     customResponse: CustomResponse = new CustomResponse();
     isLoading = false;
     loaderHeight = "";
@@ -153,6 +159,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     isFromAdminPanel = false;
     userAlias:any;
     @ViewChild(ImageCropperComponent) imageCropper: ImageCropperComponent;
+    fetchResult = new Subject<string>();
+    public consoleMessages: string[] = [];
+    serverErrorMessage = "Oops!Something went wrong.Please try after sometime";
+    userId = 0;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -161,8 +171,23 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute) {
         if("/home/dashboard/admin-company-profile"==this.router.url){
             this.userAlias = this.route.snapshot.params['alias'];
+            this.campaignAccess.emailCampaign = true;
+            this.campaignAccess.videoCampaign = true;
+            this.campaignAccess.socialCampaign = true;
             this.isFromAdminPanel = true;
             this.addBlur();
+            // Debounce search.
+            this.fetchResult.pipe(
+              debounceTime(600),
+              distinctUntilChanged())
+              .subscribe(value => {
+                  if(this.userEmailIdErrorMessage.length==0){
+                      console.log("calling the method");
+                      this.checkUser();
+                  }
+                 
+              });
+            
         }
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
@@ -177,6 +202,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         $('#blur-content-div').addClass('admin blur-content');
         $('#image-blur-content-div').removeClass('image');
         $('#image-blur-content-div').addClass('image blur-content');
+        $('#module-access-blur-content-div').removeClass('module-access');
+        $('#module-access-blur-content-div').addClass('module-access blur-content');
     }
     
     removeBlur(){
@@ -184,6 +211,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
         $('#blur-content-div').addClass('admin');
         $('#image-blur-content-div').removeClass('image blur-content');
         $('#image-blur-content-div').addClass('image');
+        this.removeModuleBlur();
+    }
+    
+    removeModuleBlur(){
+        $('#module-access-blur-content-div').removeClass('module-access blur-content');
+        $('#module-access-blur-content-div').addClass('module-access');
     }
     
     ngOnInit() {
@@ -584,7 +617,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
       }
     }
     getCompanyProfileByUserId(userId) {
-        this.companyProfileService.getByUserId(userId)
+        if(userId!=undefined){
+            this.companyProfileService.getByUserId(userId)
             .subscribe(
                 data => {
                     if (data.data != undefined) {
@@ -595,6 +629,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
                 error => { this.logger.errorPage(error) },
                 () => { this.logger.info("Completed getCompanyProfileByUserId()") }
             );
+        }
+       
     }
     
     setCompanyProfileViewData(existingCompanyName:string){
@@ -1014,6 +1050,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
     
     validateUserEmailId() {
+        this.addBlur();
         if ($.trim(this.companyProfile.userEmailId).length > 0) {
             if (!this.regularExpressions.EMAIL_ID_PATTERN.test(this.companyProfile.userEmailId)) {
                 this.addUserEmailIdError();
@@ -1217,35 +1254,84 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy {
     }
 
    ngOnDestroy(): void {
-       if(this.upadatedUserId!=undefined){
+       if(this.upadatedUserId!=undefined &&this.upadatedUserId>0){
            this.getCompanyProfileByIdNgOnDestroy(this.upadatedUserId);
        }
    }
    checkUser(){
        this.isLoading = true;
+       this.createAccount = false;
+       this.upgradeToVendor = false;
        this.customResponse = new CustomResponse();
        this.companyProfileService.getByEmailId(this.companyProfile.userEmailId)
        .subscribe(
        (result:any) => {
+          let emailId = this.companyProfile.userEmailId;
           this.companyProfile = new CompanyProfile();
           let statusCode = result.statusCode;
           if(statusCode==200){
               let data = result.data;
               let user = data.user;
-              this.companyProfile = data.companyProfile;
-              this.companyProfile.userEmailId = user.emailId;
-              this.companyProfile.firstName = user.firstName;
-              this.companyProfile.lastName = user.lastName;
-              this.setCompanyProfileViewData(data.companyProfile.companyName);
+              this.userId = user.id;
               let roleIds = user.roles.map(function (a) { return a.roleId; });
-                if(roleIds.indexOf(13)>-1){
-                    this.customResponse = new CustomResponse( 'ERROR', "This user is already a vendor and has company profile.So account cannot be created", true );     
-                }
+              let companyProfile = data.companyProfile;
+              if(companyProfile.id!=null && companyProfile.id>0){
+                  this.createAccount = false;
+                  this.companyProfile = data.companyProfile;
+                  this.companyProfile.userEmailId = user.emailId;
+                  this.companyProfile.firstName = user.firstName;
+                  this.companyProfile.lastName = user.lastName;
+                  this.setCompanyProfileViewData(data.companyProfile.companyName);
+                    if(roleIds.indexOf(13)>-1){
+                        this.customResponse = new CustomResponse( 'ERROR', "This user is already a vendor and has company profile.So account cannot be created", true );
+                    }else if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
+                        this.upgradeToVendor = true;
+                    }
+              }else{
+                  this.createAccount = true;
+                  this.removeBlur();
+              }
+              
+          }else{
+              this.createAccount = true;
+              this.companyProfile.userEmailId = emailId;
+              this.removeBlur();
           }
-          this.removeBlur();
+          
           this.isLoading = false;
        },
-       (error:string) => { this.customResponse = new CustomResponse( 'ERROR', "Oops!Something went wrong.Please try after sometime", true ); this.isLoading = false;});
+       (error:string) => { this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true ); this.isLoading = false;});
+   }
+   
+   addVendorRole(){
+       this.removeModuleBlur();
+       this.refService.goToDiv("module-access-blur-content-div");
+   }
+   updateAccess(){
+       this.isLoading = true;
+       this.campaignAccess.userId = this.userId;
+       this.companyProfileService.upgradeToVendorRole(this.campaignAccess)
+       .subscribe(
+       (result:any) => {
+           this.customResponse = new CustomResponse( 'SUCCESS', result.message, true );
+           this.isLoading = false;
+           this.upgradeToVendor = false;
+           this.refService.goToTop();
+       },
+       (error:string) => {
+           this.isLoading = false;
+           this.refService.goToTop();
+           this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true );
+       });
+       
+       
+   }
+   
+   ngAfterViewInit(){
+       if(!this.isFromAdminPanel){
+           this.removeBlur();
+       }
+      
    }
 
 }
