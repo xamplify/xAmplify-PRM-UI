@@ -1273,23 +1273,29 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               let data = result.data;
               let user = data.user;
               this.userId = user.id;
-              let roleIds = user.roles.map(function (a) { return a.roleId; });
-              let companyProfile = data.companyProfile;
-              if(companyProfile.id!=null && companyProfile.id>0){
-                  this.createAccount = false;
-                  this.companyProfile = data.companyProfile;
-                  this.companyProfile.userEmailId = user.emailId;
-                  this.companyProfile.firstName = user.firstName;
-                  this.companyProfile.lastName = user.lastName;
-                  this.setCompanyProfileViewData(data.companyProfile.companyName);
-                    if(roleIds.indexOf(13)>-1){
-                        this.customResponse = new CustomResponse( 'ERROR', "This user is already a vendor and has company profile.So account cannot be created", true );
-                    }else if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
-                        this.upgradeToVendor = true;
-                    }
+              console.log(user);
+              if(user.teamMember){
+                  this.customResponse = new CustomResponse( 'ERROR', "This user is already a team member.So account cannot be created", true );
               }else{
-                  this.createAccount = true;
-                  this.removeBlur();
+                  let roleIds = user.roles.map(function (a) { return a.roleId; });
+                  let companyProfile = data.companyProfile;
+                  if(companyProfile.id!=null && companyProfile.id>0){
+                      this.createAccount = false;
+                      this.companyProfile = data.companyProfile;
+                      this.companyProfile.userEmailId = user.emailId;
+                      this.companyProfile.firstName = user.firstName;
+                      this.companyProfile.lastName = user.lastName;
+                      this.setCompanyProfileViewData(data.companyProfile.companyName);
+                        if(roleIds.indexOf(13)>-1){
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already a vendor and has company profile.So account cannot be created", true );
+                        }
+                        else if(roleIds.length==2&&roleIds.indexOf(3)>-1 && roleIds.indexOf(12)>-1){
+                            this.upgradeToVendor = true;
+                        }
+                  }else{
+                      this.createAccount = true;
+                      this.removeBlur();
+                  }
               }
               
           }else{
@@ -1297,7 +1303,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               this.companyProfile.userEmailId = emailId;
               this.removeBlur();
           }
-          
           this.isLoading = false;
        },
        (error:string) => { this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true ); this.isLoading = false;});
@@ -1313,10 +1318,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        this.companyProfileService.upgradeToVendorRole(this.campaignAccess)
        .subscribe(
        (result:any) => {
-           this.customResponse = new CustomResponse( 'SUCCESS', result.message, true );
            this.isLoading = false;
            this.upgradeToVendor = false;
            this.refService.goToTop();
+           let self = this;
+           swal({
+               title: result.message,
+               type: "success"
+           }).then(function() {
+               self.router.navigate(["home/dashboard/admin-report"]);
+           });
        },
        (error:string) => {
            this.isLoading = false;
