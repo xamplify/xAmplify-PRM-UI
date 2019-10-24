@@ -222,7 +222,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
         });
     })
-    
+    this.eventCampaign.eventUrl = 'https://www.xamplify.com';
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -260,7 +260,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  }
  ngOnInit() {
     
-this.authenticationService.isShowForms = true;
+    this.authenticationService.isShowForms = true;
 
     this.detailsTab = true;
     this.resetTabClass()
@@ -1099,8 +1099,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 if(socialStatus.socialStatusProvider.socialConnection.source.toLowerCase() === 'twitter'){
                     var statusMsg = this.statusMessage;
                     var length = 200;
-                    var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
-                    socialStatus.statusMessage = trimmedstatusMsg;
+                    if(statusMsg){
+                      var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
+                      socialStatus.statusMessage = trimmedstatusMsg;
+                    }
                     debugger;
                 }else{
                     socialStatus.statusMessage = this.statusMessage;

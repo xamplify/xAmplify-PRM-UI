@@ -58,6 +58,7 @@ import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.co
 //import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { CommonComponentModule } from 'app/common/common.module';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -67,7 +68,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule],
     providers: [{
         provide: Http,
         useFactory: httpService,

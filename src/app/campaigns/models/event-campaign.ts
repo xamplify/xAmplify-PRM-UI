@@ -37,6 +37,8 @@ export class EventCampaign {
     onlineMeeting: boolean = true;
     enableCoBrandingLogo = false;
     
+    eventUrl: string = '';
+    
     dataShare = false;
     detailedAnalyticsShared = false;
     

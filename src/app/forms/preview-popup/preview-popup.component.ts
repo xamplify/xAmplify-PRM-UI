@@ -34,6 +34,7 @@ export class PreviewPopupComponent implements OnInit {
     selectedFormId: number;
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
+   console.log("Is Show forms in preview popup: " + this.authenticationService.isShowForms);
    }
 
   ngOnInit() {

@@ -567,7 +567,7 @@ a.disabled {
 						</div>
 						<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign">
 							<label>Event URL</label>
-							<input type="text" class="form-control" id="city" placeholder="Event Url">
+							<input type="text" class="form-control" id="eventUrl" placeholder="Event Url" [(ngModel)]="eventCampaign.eventUrl" [ngModelOptions]="{standalone: true}">
 							
 							
 							
@@ -634,13 +634,15 @@ a.disabled {
 					</div>
 					
 					
-					<div class="boxes portlet light">
+					<div class="boxes portlet light" *ngIf="authenticationService.module.hasFormAccess">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
 						<div class="portlet-body clearfix">
 							<!-- <button type="button" class="btn btn-default" (click)="listForms()">Select Form</button><br> -->
+							
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
+							
 							<section *ngIf="selectedFormId">
 							<a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a>
 							</section>
