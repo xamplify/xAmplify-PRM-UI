@@ -181,8 +181,11 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
   }
   
   ngAfterViewChecked(){
-      this.authenticationService.formAlias = this.formAlias;
+      if(this.formPreviewComponent){
+          this.campaignRsvp.formSubmitDTO = this.formPreviewComponent.form.formLabelDTOs;
+      }
       this.changeDetectorRef.detectChanges();
+      /* this.authenticationService.formAlias = this.formAlias;*/
   }
   
 

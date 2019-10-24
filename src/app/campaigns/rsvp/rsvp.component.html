@@ -81,7 +81,6 @@
       </div>
     </div>
   </div>
-  <app-form-preview #formPreviewComponent></app-form-preview>
 </div>
 </ng-container>
 </div>
@@ -89,7 +88,7 @@
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" style="height: 100%">
       <div class="modal-header">
         <a class="close-circle" data-dismiss="modal" (click)="closeRsvpModel()">
           <i class="fa fa-times"></i>
@@ -108,6 +107,9 @@
          <button class="btn btn-defult default-btn-css totalguests">{{totalGuests}}</button>
          <button style="margin-left: -4px;" class="btn btn-primary default-btn-css" [disabled]="totalGuests==11" (click)="totalGuests = totalGuests+1">+</button>
          <span class="bold">Total guests</span> (in addition to you)
+        </div>
+        <div *ngIf="authenticationService.formAlias" style="position: relative; right: 190px;">
+           <app-form-preview #formPreviewComponent></app-form-preview>
         </div>
       <div class="modal-footer">
         <div class="right-css" [class.alignCss]="campaignRsvp.eventCampaignRsvp!='YES' || !eventcampaign.inviteOthers">
