@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef, AfterViewChecked, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 
@@ -21,7 +21,7 @@ declare var $: any;
   styleUrls: ['./rsvp.component.css'],
   providers: [Processor]
 })
-export class RsvpComponent implements OnInit, AfterViewChecked {
+export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('dataContainer') dataContainer: ElementRef;
   @ViewChild('formPreviewComponent') formPreviewComponent: FormPreviewComponent;
   alias: string;
@@ -218,6 +218,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     try{
+        this.authenticationService.isFromRsvpPage = true;
         $('body').css('cssText', 'background-color: white !important');
         this.processor.set(this.processor);
         this.alias = this.route.snapshot.params['alias'];
@@ -226,6 +227,10 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
        }catch(error){
         console.error(error);
        }
+  }
+  
+  ngOnDestroy() {
+      this.authenticationService.isFromRsvpPage = false;
   }
 
 }

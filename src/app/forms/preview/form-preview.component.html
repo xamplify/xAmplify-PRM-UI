@@ -75,7 +75,7 @@
 								  </ng-container>
 						</div>
 					</ng-container>
-					<button  type="submit" [disabled]="!isValidEmailIds" class="btn green-haze" id="bottom-right" (click)="submitForm()">Submit</button>
+					<button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds" class="btn green-haze" id="bottom-right" (click)="submitForm()">Submit</button>
 			</div>
 			</ng-container>
 		</div>
