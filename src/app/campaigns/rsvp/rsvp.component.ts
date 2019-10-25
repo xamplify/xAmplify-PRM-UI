@@ -165,7 +165,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
     formSubmit.id = this.form.id;
     formSubmit.alias = this.formAlias;
     $.each(formLabelDtos,function(index:number,field:ColumnInfo){
-        const formField  = new FormSubmitField();
+        const formField: any = { };
         formField.id = field.id;
         formField.value = $.trim(field.value);
         if(field.labelType==="checkbox"){
