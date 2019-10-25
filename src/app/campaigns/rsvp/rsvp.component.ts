@@ -7,6 +7,10 @@ import { CampaignRsvp } from '../models/campaign-rsvp';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import {FormPreviewComponent} from '../../forms/preview/form-preview.component';
+import { FormSubmit } from '../../forms/models/form-submit';
+import { FormSubmitField } from '../../forms/models/form-submit-field';
+import { ColumnInfo } from '../../forms/models/column-info';
+import { Form } from '../../forms/models/form';
 
 
 declare var $: any;
@@ -33,6 +37,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
   eventExpiredError = false;
   isCancelledEvent = false;
   formAlias: any;
+  form:Form = new Form();
 
   constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -152,6 +157,27 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
 
   saveEventCampaignRsvp() {
     this.rsvpSavingProcessing = true;
+    
+    let self = this;
+    
+    const formLabelDtos = this.form.formLabelDTOs;
+    const formSubmit = new FormSubmit();
+    formSubmit.id = this.form.id;
+    formSubmit.alias = this.formAlias;
+    $.each(formLabelDtos,function(index:number,field:ColumnInfo){
+        const formField  = new FormSubmitField();
+        formField.id = field.id;
+        formField.value = $.trim(field.value);
+        if(field.labelType==="checkbox"){
+          formField.dropdownIds = field.value;
+          formField.value = ""; 
+        }
+        formSubmit.fields.push(formField);
+        //self.campaignRsvp.formSubmitDTO.push(formField);
+    });
+    
+    this.campaignRsvp.formSubmitDTO = formSubmit;
+    
     this.campaignRsvp.additionalCount = this.totalGuests;
     this.campaignService.saveEventCampaignRsvp(this.campaignRsvp)
       .subscribe(
@@ -182,7 +208,8 @@ export class RsvpComponent implements OnInit, AfterViewChecked {
   
   ngAfterViewChecked(){
       if(this.formPreviewComponent){
-          this.campaignRsvp.formSubmitDTO = this.formPreviewComponent.form.formLabelDTOs;
+          this.form.formLabelDTOs = this.formPreviewComponent.form.formLabelDTOs;
+          this.form.id = this.formPreviewComponent.form.id;
       }
       this.changeDetectorRef.detectChanges();
       /* this.authenticationService.formAlias = this.formAlias;*/
