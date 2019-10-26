@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { DashboardService } from '../dashboard.service';
 import { Pagination } from '../../core/models/pagination';
@@ -11,6 +11,8 @@ import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { Roles } from '../../core/models/roles';
 import { CampaignAccess } from '../../campaigns/models/campaign-access';
+import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-email-content.component';
+
 declare var swal,$:any;
 
 @Component({
@@ -53,6 +55,7 @@ export class AdminReportComponent implements OnInit {
     updateFormLoading = false;
     updateFormCustomResponse: CustomResponse = new CustomResponse();
     campaignAccess = new CampaignAccess();
+    @ViewChild('dynamicEmailContentComponent') dynamicEmailContentComponent: DynamicEmailContentComponent;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
 
@@ -320,9 +323,10 @@ public authenticationService: AuthenticationService, public router:Router) {
       },
       () => console.info( "updateAccess() finished" )
       )
-     
-
   }
   
+  sendWelcomeEmail(response:any){
+      this.dynamicEmailContentComponent.openModal(response.alias,response.emailId);
+  }
   
 }

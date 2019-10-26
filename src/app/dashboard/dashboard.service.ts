@@ -97,7 +97,15 @@ export class DashboardService {
         return this.http.post(url, vendorInvitation)
             .map(this.extractData)
             .catch(this.handleError);
-
+    }
+    
+    sendWelcomeEmail(vendorInvitation: any,alias:string){
+        vendorInvitation['alias'] = alias;
+        console.log(vendorInvitation);
+        const url = this.authenticationService.REST_URL+ 'superadmin/account/mail/welcome?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, vendorInvitation)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     getCountryViewsDetails() {

@@ -154,9 +154,12 @@
 
                         <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(report)"> 
 								<i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
+								
+						<a data-toggle="tooltip" data-placement="top" title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
+								<i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px"></i></a>
 
-                        <a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
-								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a>
+                       <!--  <a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
+								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a> -->
 
                         <!-- <a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
 								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a> -->
@@ -287,7 +290,6 @@
 				</div>
 			</div>
 		</div>
-  
   </section>
-  
 </div>
+<app-dynamic-email-content #dynamicEmailContentComponent></app-dynamic-email-content>
