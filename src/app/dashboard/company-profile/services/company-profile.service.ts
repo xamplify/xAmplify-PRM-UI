@@ -49,6 +49,18 @@ export class CompanyProfileService {
       .catch(this.handleError);
     }
     
+    saveCompanyProfileByAdmin(file:any,companyProfile:CompanyProfile){
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        formData.append('accountDto', new Blob([JSON.stringify(companyProfile)],
+                {
+                    type: "application/json"
+                }));
+        return this.httpClient.post(this.authenticationService.REST_URL+"superadmin/saveUserAndCompanyProfile?access_token="+this.authenticationService.access_token,formData)
+        .catch(this.handleError);
+        
+    }
+    
     getByEmailId( emailId: string ) {
         let data = {};
         data['emailId'] = emailId;
@@ -59,6 +71,12 @@ export class CompanyProfileService {
     
     upgradeToVendorRole( campaignAccess: CampaignAccess ) {
         return this.http.post(this.URL+"upgradeToVendor?access_token="+this.authenticationService.access_token,campaignAccess)
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
+    
+    createNewVendorRole( companyProfile: CompanyProfile ) {
+        return this.http.post(this.authenticationService.REST_URL+"superadmin/account/create?access_token="+this.authenticationService.access_token,companyProfile)
         .map(this.extractData)
         .catch(this.handleError);
    }

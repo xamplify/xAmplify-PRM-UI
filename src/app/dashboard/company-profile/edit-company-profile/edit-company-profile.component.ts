@@ -163,6 +163,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     public consoleMessages: string[] = [];
     serverErrorMessage = "Oops!Something went wrong.Please try after sometime";
     userId = 0;
+    countryFromBrowser:string = "";
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -234,9 +235,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
             }
-            this.getAllCompanyNames();
-            this.getAllCompanyProfileNames();
         }
+        this.getAllCompanyNames();
+        this.getAllCompanyProfileNames();
     }
     
     
@@ -333,7 +334,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       let fileObj:any;
       fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
       fileObj = this.utilService.blobToFile(fileObj);
-      console.log(fileObj);
       this.fileUploadCode(fileObj);
     }
 
@@ -363,6 +363,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         (data: any) => {
             if ( this.companyProfile.country == undefined || this.companyProfile.country == "" || this.companyProfile.country =="Select Country" ) {
                 this.companyProfile.country = data.country;
+                this.countryFromBrowser = data.country;
             }
             if ( this.companyProfile.phone == undefined || this.companyProfile.phone == "" && !this.companyProfile.phone) {
                 for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
@@ -416,6 +417,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.ngxloading = true;
         this.refService.goToTop();
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
+        $('#module-access-button').prop('disabled', true);
         this.validateEmptySpace('companyProfileName');
         this.validateNames(this.companyProfile.companyName)
         this.validateProfileNames(this.companyProfile.companyProfileName);
@@ -538,6 +540,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         $('#company-profile-error-div').hide();
         $('#edit-sucess').hide();
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
+        $('#module-access-button').prop('disabled', true);
         this.checkValidations();
         let errorLength = $('div.form-group.has-error.has-feedback').length;
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
@@ -564,6 +567,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         $('#info').hide();
                         $('#edit-sucess').show(600);
                         $('#saveOrUpdateCompanyButton').prop('disabled', false);
+                        $('#module-access-button').prop('disabled', false);
                         this.processor.remove(this.processor);
                         this.authenticationService.user.websiteUrl = this.companyProfile.website;
                         this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
@@ -750,6 +754,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     enableOrDisableButton() {
         $('#saveOrUpdateCompanyButton').prop('disabled', false);
+        $('#module-access-button').prop('disabled', false);
         /*let errorLength = $('div.form-group.has-error.has-feedback').length;
           if(errorLength==0){
             $('#saveOrUpdateCompanyButton').prop('disabled',false);
@@ -760,6 +765,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     disableButton() {
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
+        $('#module-access-button').prop('disabled', true);
+        
     }
 
     validateProfileNames(value: any) {
@@ -787,6 +794,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     }
     setCompanyProfileNameError(errorMessage: string) {
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
+        $('#module-access-button').prop('disabled', true);
         this.companyProfileNameError = true;
         this.companyProfileNameErrorMessage = errorMessage;
         this.companyProfileNameDivClass = this.refService.errorClass;
@@ -796,6 +804,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         let value = $.trim($('#' + columnName).val());
         if (value.length == 0) {
             $('#saveOrUpdateCompanyButton').prop('disabled', true);
+            $('#module-access-button').prop('disabled', true);
             if (columnName == "companyName") {
                 this.companyNameError = true;
                 this.companyNameDivClass = this.refService.errorClass;
@@ -1287,7 +1296,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               }else{
                   let roleIds = user.roles.map(function (a) { return a.roleId; });
                   let companyProfile = data.companyProfile;
-                  if(companyProfile.id!=null && companyProfile.id>0){
+                  if(companyProfile!=undefined && companyProfile.id!=null && companyProfile.id>0){
                       this.createAccount = false;
                       this.companyProfile = data.companyProfile;
                       this.companyProfile.userEmailId = user.emailId;
@@ -1303,44 +1312,67 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             this.addBlur();
                         }
                   }else{
-                      this.createAccount = true;
-                      this.customResponse = new CustomResponse( 'INFO', "Work In Progress", true );
-                     // this.removeBlur();
+                      this.setNewAccount(emailId);
                   }
               }
           }else{
-              this.createAccount = true;
-              this.companyProfile.userEmailId = emailId;
-              this.customResponse = new CustomResponse( 'INFO', "Work In Progress", true );
-              //this.removeBlur();
+             this.setNewAccount(emailId);
           }
           this.isLoading = false;
        },
        (error:string) => { this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true ); this.isLoading = false;});
    }
    
+   setNewAccount(emailId:string){
+       this.createAccount = true;
+       this.companyProfile.userEmailId = emailId;
+       this.companyProfile.country = this.countryFromBrowser;
+       this.removeBlur();
+       $('#module-access-button').prop('disabled', true);
+   }
+   
    addVendorRole(){
+       $('#module-access-button').prop('disabled', false);
        this.removeModuleBlur();
        this.refService.goToDiv("module-access-blur-content-div");
    }
    updateAccess(){
+       this.isLoading = true;
        if(this.createAccount){
+           this.validateEmptySpace('companyProfileName');
+           this.validateNames(this.companyProfile.companyName)
+           this.validateProfileNames(this.companyProfile.companyProfileName);
+           this.checkValidations();
+           if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
+               && !this.facebookLinkError && !this.googlePlusLinkError && !this.twitterLinkError && !this.linkedinLinkError && !this.cityError && !this.stateError && !this.countryError &&
+               !this.zipError && !this.logoError && !this.aboutUsError) {
+               this.customResponse = new CustomResponse();
+               this.companyProfile.campaignAccessDto = this.campaignAccess;
+               this.companyProfileService.createNewVendorRole(this.companyProfile)
+               .subscribe(
+               (result:any) => {
+                   this.goBackToAdminPanel("Account Created Successfully");
+               },
+               (error:string) => {
+                   this.isLoading = false;
+                   $('#module-access-button').show();
+                   this.refService.goToTop();
+                   this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true );
+               });
+           }else{
+               this.isLoading = false;
+               this.refService.goToTop();
+               $('#company-profile-error-div').show(600);
+           }
+           
+           
+        
        }else{
-           this.isLoading = true;
            this.campaignAccess.userId = this.userId;
            this.companyProfileService.upgradeToVendorRole(this.campaignAccess)
            .subscribe(
            (result:any) => {
-               this.isLoading = false;
-               this.upgradeToVendor = false;
-               this.refService.goToTop();
-               let self = this;
-               swal({
-                   title: result.message,
-                   type: "success"
-               }).then(function() {
-                   self.router.navigate(["home/dashboard/admin-report"]);
-               });
+              this.goBackToAdminPanel(result.message);
            },
            (error:string) => {
                this.isLoading = false;
@@ -1349,9 +1381,31 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
            });
            
        }
-       
-      
-       
+   }
+   
+   goBackToAdminPanel(message:string){
+       this.isLoading = false;
+       this.upgradeToVendor = false;
+       this.refService.goToTop();
+       let self = this;
+       swal({
+           title:message,
+           type: "success"
+       }).then(function() {
+           self.router.navigate(["home/dashboard/admin-report"]);
+       });
+   }
+   saveChanges(){
+       this.loadingcrop = true;
+       let fileObj:any;
+       fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+       fileObj = this.utilService.blobToFile(fileObj);
+       console.log(fileObj);
+       this.logoError = false;
+       this.logoErrorMessage = "";
+       this.enableOrDisableButton();
+       $('#cropLogoImage').modal('hide');
+       this.closeModal();
    }
    
    ngAfterViewInit(){

@@ -1,3 +1,5 @@
+import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+
 export class CompanyProfile {
     id = 0;
     companyName = "";
@@ -25,4 +27,6 @@ export class CompanyProfile {
     userEmailId:string = "";
     firstName:string = "";
     lastName:string = "";
+    
+    campaignAccessDto:CampaignAccess;
 }

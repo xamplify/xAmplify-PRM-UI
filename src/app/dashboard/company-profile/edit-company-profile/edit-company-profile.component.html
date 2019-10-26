@@ -70,14 +70,18 @@
 									<div class="profile-image-wrapper" style="cursor:pointer"  (click)="imageClick()">
 					                    <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
 					                  	<span *ngIf="!croppedImage"> <span *ngIf="!companyLogoImageUrlPath" style="color: #f55d7a;">* Please upload company logo</span></span>
-															<span *ngIf="(squareData | json) == '{}'"><img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image"></span>
+															<span *ngIf="(squareData | json) == '{}'">
+										<img *ngIf="!companyLogoImageUrlPath" src="assets/images/company-profile-logo.png" class="profile-image"></span>
 					                    <span *ngIf="croppedImage; else showImage">
 					                      <img [src]="croppedImage" style="width:100%;height: 100%;">
 					                    </span>
-					                    <ng-template #showImage><img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
+					                    <ng-template #showImage>
+					                    <img *ngIf="companyLogoImageUrlPath" [src]= "authenticationService.MEDIA_URL + companyLogoImageUrlPath"  [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)">
+					                    </ng-template>
 					                    <div class="profile-overlay">
 											<label class="fileContainer pointer" (click)="fileChangeEvent()" >
-												<i class="fa fa-camera"></i>&nbsp;<span  *ngIf="!companyLogoImageUrlPath">Upload company logo</span><span *ngIf="companyLogoImageUrlPath">Change company logo</span>
+												<i class="fa fa-camera"></i>&nbsp;<span  *ngIf="!companyLogoImageUrlPath">Upload company logo</span>
+												<span *ngIf="companyLogoImageUrlPath">Change company logo</span>
 					                         </label>
 					                    </div>
 										</div>
@@ -146,8 +150,8 @@
 							  </tr>
 							</table>
 							</div>
-							<div class="modal-footer" *ngIf="this.userEmailIdErrorMessage.length==0 && customResponse.responseType!='ERROR'">
-								<button type="button" id="module-access-button" (click)="updateAccess()" class="btn green-haze">Save</button>
+							<div class="modal-footer"> <!-- *ngIf="this.userEmailIdErrorMessage.length==0 && customResponse.responseType!='ERROR'" -->
+								<button type="button" id="module-access-button" (click)="updateAccess()" disabled="disabled" class="btn green-haze">Save</button>
 							</div>
 						</div>
 						</div>
@@ -169,17 +173,19 @@
 						</div>
 							<div class="admin blur-content" id="blur-content-div">
 							<div class="form-group" [attr.class]="firstNameDivClass" *ngIf="isFromAdminPanel">
-								<label class="control-label">First Name <font	style="color: #f55d7a"><b>*</b></font></label>
-									<input type="text" id="firstName" name="firstName" placeholder="First Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.firstName"
+								<label class="control-label">First Name</label>
+								<!-- 	<input type="text" id="firstName" name="firstName" placeholder="First Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.firstName"
 									(input)="validateEmptySpace('firstName')"	(blur)="validateNames(companyProfile.firstName)" />
-								<span *ngIf="firstNameError" style="color: #f55d7a">{{firstNameErrorMessage}}</span>
+								<span *ngIf="firstNameError" style="color: #f55d7a">{{firstNameErrorMessage}}</span> -->
+								<input type="text"  class="form-control"  id="firstName" name="firstName" placeholder="First Name" maxlength="240" maxlength="240" [(ngModel)]="companyProfile.firstName" />
 							</div>
 							
 							<div class="form-group" [attr.class]="lastNameDivClass" *ngIf="isFromAdminPanel">
-								<label class="control-label">Last Name <font	style="color: #f55d7a"><b>*</b></font></label>
-									<input type="text" id="lastName" name="lastName" placeholder="Last Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.lastName"
+								<label class="control-label">Last Name</label>
+									<!-- <input type="text" id="lastName" name="lastName" placeholder="Last Name" maxlength="240" class="form-control" [(ngModel)]="companyProfile.lastName"
 									(input)="validateEmptySpace('lastName')"	(blur)="validateNames(companyProfile.lastName)" />
-								<span *ngIf="lastNameError" style="color: #f55d7a">{{lastNameErrorMessage}}</span>
+								<span *ngIf="lastNameError" style="color: #f55d7a">{{lastNameErrorMessage}}</span> -->
+								<input type="text"  class="form-control"  id="lastName" name="lastName" placeholder="Last Name" maxlength="240" maxlength="240" [(ngModel)]="companyProfile.lastName" />
 							</div>
 							<!-- ---End Of Admin Panel -->
 							<div class="form-group" [attr.class]="companyNameDivClass">
@@ -363,7 +369,7 @@
 
         </div>
           <div>
-            <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadLogo()">Save Changes</button>
+             <button class="btn btn-primary" [disabled]="!showCropper" (click)="uploadLogo()">Save Changes</button>
           </div>
           <div>
             <ul style="padding: 0 15px;">
