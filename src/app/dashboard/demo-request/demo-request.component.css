@@ -14,3 +14,12 @@
 #left{
 	float:left;
 }
+#center{
+	text-align: center;
+}
+.xAmpColor{
+	color:#5aadf0;
+}
+#create-account{
+	font-size: 20px;
+}

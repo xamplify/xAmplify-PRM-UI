@@ -163,7 +163,7 @@
 								<div class="form-group" [attr.class]="userEmailIdDivClass">
 								<label class="control-label">Email/Username<font style="color: #f55d7a"><b>*</b></font></label>
 									<input type="text" id="userEmailId" name="userEmailId" placeholder="Email/Username" maxlength="240" class="form-control" [(ngModel)]="companyProfile.userEmailId"
-									(input)="validatePattern('userEmailId')" (blur)="validatePattern('userEmailId')" (ngModelChange)="this.fetchResult.next($event)"/>
+									(input)="validatePattern('userEmailId')" (blur)="validatePattern('userEmailId')" (keydown)="this.fetchResult.next($event)"/>
 								<span *ngIf="userEmailIdError" style="color: #f55d7a">{{userEmailIdErrorMessage}}</span>
 								</div>
 							</div>

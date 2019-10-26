@@ -170,8 +170,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
         public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute) {
-        if("/home/dashboard/admin-company-profile"==this.router.url){
+        if(this.router.url.indexOf("/home/dashboard/admin-company-profile")>-1){
             this.userAlias = this.route.snapshot.params['alias'];
+            if(this.userAlias!=undefined && $.trim(this.userAlias).length>0){
+                this.companyProfile.userEmailId = this.userAlias;
+                this.validatePattern('userEmailId');
+                this.validateUserUsingEmailId();
+            }
             this.campaignAccess.emailCampaign = true;
             this.campaignAccess.videoCampaign = true;
             this.campaignAccess.socialCampaign = true;
@@ -182,17 +187,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               debounceTime(600),
               distinctUntilChanged())
               .subscribe(value => {
-                  this.customResponse = new CustomResponse();
-                  this.upgradeToVendor = false;
-                  if(this.userEmailIdErrorMessage.length==0){
-                      if($.trim(this.companyProfile.userEmailId).length>0 && this.userEmailIdErrorMessage.length==0){
-                          this.checkUser();
-                      }else{
-                          this.addBlur();
-                      }
-                     
-                  }
-                 
+                this.validateUserUsingEmailId();
               });
             
         }
@@ -202,6 +197,18 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         this.isVendorRole = this.authenticationService.isVendor();
         this.uploadFileConfiguration();
+    }
+    
+    validateUserUsingEmailId(){
+        this.customResponse = new CustomResponse();
+        this.upgradeToVendor = false;
+        if(this.userEmailIdErrorMessage.length==0){
+            if($.trim(this.companyProfile.userEmailId).length>0 && this.userEmailIdErrorMessage.length==0){
+                this.checkUser();
+            }else{
+                this.addBlur();
+            }
+        }
     }
     
     addBlur(){
@@ -1316,6 +1323,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                   }
               }
           }else{
+              this.customResponse = new CustomResponse( 'INFO', "New Account Can Be Created For This Account", true );
              this.setNewAccount(emailId);
           }
           this.isLoading = false;
@@ -1338,6 +1346,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
    }
    updateAccess(){
        this.isLoading = true;
+       this.customResponse = new CustomResponse();
        if(this.createAccount){
            this.validateEmptySpace('companyProfileName');
            this.validateNames(this.companyProfile.companyName)
@@ -1364,8 +1373,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                this.refService.goToTop();
                $('#company-profile-error-div').show(600);
            }
-           
-           
         
        }else{
            this.campaignAccess.userId = this.userId;
@@ -1386,7 +1393,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
    goBackToAdminPanel(message:string){
        this.isLoading = false;
        this.upgradeToVendor = false;
-       this.refService.goToTop();
        let self = this;
        swal({
            title:message,

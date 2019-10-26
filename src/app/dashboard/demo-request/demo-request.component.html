@@ -42,6 +42,7 @@
                      <th class='text-center'>TIME ZONE</th>
                     <th class='text-center'>REMARKS</th>
                     <th class='text-center'>CREATED TIME</th>
+                    <th class='text-center'>CREATE ACCOUNT</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -62,6 +63,7 @@
                         <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="request.displayTime"> </app-timestamp>
                         <span *ngIf="referenceService.isSafariBrowser()">{{request.displayTime}}</span>
                       </td>
+                      <td id="center" class="xAmpColor"><a routerLink = "../admin-company-profile/{{request.emailId}}"><i class="fa fa-plus" id="create-account" aria-hidden="true"></i></a></td>
                     </tr>
                   </ng-container>
                 </tbody>
