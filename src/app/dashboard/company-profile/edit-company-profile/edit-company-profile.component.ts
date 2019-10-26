@@ -1322,6 +1322,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             this.addBlur();
                         }
                   }else{
+                      this.customResponse = new CustomResponse( 'INFO', "New Account Can Be Created For This Account", true );
                       this.setNewAccount(emailId);
                   }
               }
