@@ -17,6 +17,7 @@ import { TermsConditonComponent } from "./terms-conditon/terms-conditon.componen
 import { RequestDemoComponent } from "./request-demo/request-demo.component";
 
 import { AgmCoreModule } from "@agm/core";
+import { AccessAccountComponent } from './access-account/access-account.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { AgmCoreModule } from "@agm/core";
     VideoComponent,
     IntroComponent,
     TermsConditonComponent,
-    RequestDemoComponent
+    RequestDemoComponent,
+    AccessAccountComponent
   ],
   exports: []
 })

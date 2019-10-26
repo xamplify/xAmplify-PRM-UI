@@ -33,6 +33,7 @@ import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.co
 import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
+import { AccessAccountComponent } from './authentication/access-account/access-account.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -93,6 +94,7 @@ export const routes: Routes = [
     {path: 'scp/:alias', component:ShowLandingPageComponent},
     {path: 'clpl/:alias', component:ShowLandingPageComponent},
     { path: 'requestdemo', component: RequestDemoComponent },
+    { path: 'axAa/:alias', component: AccessAccountComponent },
     { path: '**', component: PageNotFoundComponent },
 ];
 

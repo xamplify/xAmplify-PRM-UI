@@ -103,46 +103,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
     }
     signUp() {
-      if (this.signUpForm.valid) {
-        try{
-        this.signUpUser = this.signUpForm.value;
-        this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
-        this.loading = true;
-        this.signUpUser.vendorSignUp = this.vendorSignup;
-        this.userService.signUp(this.signUpUser)
-            .subscribe(
-                data => {
-                    this.loading = false;
-                    if (data !== undefined) {
-                        if (data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')) {
-                            this.loading = false;
-                            this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
-                            this.router.navigate(['/login']);
-                        }
-                    } else {
-                        this.loading = false;
-                        this.isError = true;
-                        this.xtremandLogger.error(this.referenceService.errorPrepender + " signUp():" + data);
-                    }
-                },
-                error => {
-                    this.loading = false;
-                    if (error === "USERNAME IS ALREADY EXISTING") {
-                        this.formErrors['userName'] = error;
-                        // this.isLoading = false;
-                    } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL" || error.includes('User is already existing with this email')) {
-                        this.formErrors['emailId'] = 'Email Id already exists';
-                        // this.isLoading = false;
-                    } else {
-                        this.xtremandLogger.errorPage(error);
-                    }
-                },
-                () => this.xtremandLogger.log("Done")
-            );
-          }catch(error){ this.xtremandLogger.error('error'+error);}
-        } else {
-          this.checkValidationMessages()
-        }
+        
     }
 
     checkPassword(){

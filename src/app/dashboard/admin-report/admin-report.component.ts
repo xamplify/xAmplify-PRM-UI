@@ -36,6 +36,7 @@ export class AdminReportComponent implements OnInit {
     isListLoading = false;
     public searchKey: string;
     customResponse: CustomResponse = new CustomResponse();
+    copiedLinkCustomResponse:CustomResponse = new CustomResponse();
     roles: Roles = new Roles();
     
     sortcolumn: string = null;
@@ -55,6 +56,7 @@ export class AdminReportComponent implements OnInit {
     updateFormLoading = false;
     updateFormCustomResponse: CustomResponse = new CustomResponse();
     campaignAccess = new CampaignAccess();
+    userAlias:string = "";
     @ViewChild('dynamicEmailContentComponent') dynamicEmailContentComponent: DynamicEmailContentComponent;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
@@ -328,5 +330,21 @@ public authenticationService: AuthenticationService, public router:Router) {
   sendWelcomeEmail(response:any){
       this.dynamicEmailContentComponent.openModal(response.alias,response.emailId);
   }
+  
+  openLinkInPopup(alias:string){
+      this.copiedLinkCustomResponse = new CustomResponse();
+      this.userAlias = alias;
+      $('#user-alias-modal').modal('show');
+  }
+  
+  /*********Copy The Link */
+  copyAliasUrl(inputElement){
+      this.copiedLinkCustomResponse = new CustomResponse();
+      inputElement.select();
+      document.execCommand('copy');
+      inputElement.setSelectionRange(0, 0);
+      this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+
+    }
   
 }
