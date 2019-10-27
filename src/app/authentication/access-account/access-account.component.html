@@ -8,11 +8,12 @@
 	<div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
-	<div>
+	<div *ngIf="!userNotFound">
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<form class="register" [formGroup]="signUpForm" >
       <h4>Please add password to your account and access the platform</h4>
 			<div *ngIf="isError" class="alert alert-danger" (click)="toggleChild()">
-        <!-- <span>something went wrong. Please try again.</span> -->
+        <span>something went wrong. Please try again.</span>
         <span>Please fill the details.</span>
 			</div>
 			<div class="form-group col-xs-6 p0" style="border-right: 1px solid #fff0;">
@@ -26,9 +27,7 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
-				<input class="form-control placeholder-no-fix emailTF" type="email" placeholder="Email" required formControlName="emailId" (keyup)="validEmail($event)"/>
-        <div *ngIf="formErrors.emailId && !invalidVendor" class="alert alert-danger">{{ formErrors.emailId }}</div>
-        <div *ngIf="formErrors.emailId && invalidVendor" class="alert alert-danger">{{formErrors.emailId }} just <a [routerLink]="['../login']">log in</a> to your account.</div>
+				<input  class="form-control placeholder-no-fix emailTF" type="email" placeholder="Email" required formControlName="emailId" (keyup)="validEmail($event)"/>
 			</div>
 			<div class="form-group has-feedback" style="position: relative">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
@@ -56,11 +55,12 @@
 				<div id="register_tnc_error"></div>
 			</div>
 			<div class="actions">
-				<button type="button" class="btn btn-default" (click)="goToBack()">
-					<i class="fa fa-arrow-left" aria-hidden="true" style="margin-right: 5px"></i>Back</button>
-				<button type="submit" style="color:white" disabled="disabled"  id="register-submit-btn" class="btn btn-success uppercase pull-right signinTF" (click)="signUp()">Work In Progress</button>
+				<button type="submit" style="color:white"  id="register-submit-btn" class="btn btn-success uppercase pull-right signinTF" (click)="update()">Submit</button>
 			</div>
 		</form>
+	</div>
+	<div *ngIf="userNotFound">
+			<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 	</div>
 </div>
 <app-copyright></app-copyright>

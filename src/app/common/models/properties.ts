@@ -73,7 +73,8 @@ export class Properties {
 
   /* Authentication Module*/
 
-  FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a	temporary password.";
+  ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
+  FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
   FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
   SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";

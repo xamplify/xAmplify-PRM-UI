@@ -23,224 +23,210 @@ declare var $: any;
   providers: [User, CountryNames, RegularExpressions, Properties]
 })
 export class AccessAccountComponent implements OnInit {
+    userId:number = 0;
     signUpForm: FormGroup;
-loading = false;
-isError = false;
-vendorSignup = false;
-invalidVendor = false;
-mainLoader:boolean;
-customResponse: CustomResponse = new CustomResponse();
-formErrors = {
-    'firstName': '',
-    'lastName': '',
-    'emailId': '',
-    'address': '',
-    'city': '',
-    'country': '',
-    'password': '',
-    'confirmPassword': '',
-    'agree': ''
-};
+    loading = false;
+    isError = false;
+    vendorSignup = false;
+    invalidVendor = false;
+    mainLoader: boolean;
+    customResponse: CustomResponse = new CustomResponse();
+    userNotFound = false;
+    formErrors = {
+        'firstName': '',
+        'lastName': '',
+        'emailId': '',
+        'address': '',
+        'city': '',
+        'country': '',
+        'password': '',
+        'confirmPassword': '',
+        'agree': ''
+    };
 
-validationMessages = {
-    'firstName': {
-        'required': 'First name is required.',
-    },
-    'emailId': {
-        'required': 'Email is required.',
-        'pattern': 'Please enter a valid email address'
-    },
-    'address': {
-        'required': 'Address is required.',
-        'whitespace': 'Invalid Address',
-        'minlength': 'Address must be at least 4 characters long.',
-        'maxlength': 'Address cannot be more than 50 characters long.',
-        'pattern': 'Invalid Address'
-    },
-    'city': {
-        'required': 'City is required.',
-        'whitespace': 'Invalid City',
-        'minlength': 'City must be at least 4 characters long.',
-        'maxlength': 'City cannot be more than 50 characters long.',
-        'pattern': 'Invalid City'
-    },
-    'country': {
-        'required': 'Country is required.',
-        'invalidCountry': 'Country is required.'
-    },
-    'password': {
-        'required': 'Password is required.',
-        'minlength': '',
-        'maxlength': "Password shouldn't exceed 20 characters",
-        'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
-    },
-    'confirmPassword': {
-        'required': 'Confirm Password is required.',
-        'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
-    },
-    'agree': {
-        'required': 'You Must Agree to the Terms of Service & Privacy Policy.'
-    }
-};
-
-constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
-    private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
-    private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
-      if(this.router.url.includes('/signup/')) {  localStorage.removeItem('currentUser');}
-      if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
-      this.signUpForm = new FormGroup({
-        firstName: new FormControl(),
-        lastName: new FormControl(),
-        emailId: new FormControl(),
-        password: new FormControl(),
-        confirmPassword: new FormControl(),
-        agree : new FormControl()
-    });
-}
-goToBack(){
-  if(this.router.url.includes('/v-signup')) {  this.router.navigate(['/']); } else {  this.router.navigate(['/login']) }
-}
-signUp() {
-  if (this.signUpForm.valid) {
-    try{
-    this.signUpUser = this.signUpForm.value;
-    this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
-    this.loading = true;
-    this.signUpUser.vendorSignUp = this.vendorSignup;
-    this.userService.signUp(this.signUpUser)
-        .subscribe(
-            data => {
-                this.loading = false;
-                if (data !== undefined) {
-                    if (data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')) {
-                        this.loading = false;
-                        this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
-                        this.router.navigate(['/login']);
-                    }
-                } else {
-                    this.loading = false;
-                    this.isError = true;
-                    this.xtremandLogger.error(this.referenceService.errorPrepender + " signUp():" + data);
-                }
-            },
-            error => {
-                this.loading = false;
-                if (error === "USERNAME IS ALREADY EXISTING") {
-                    this.formErrors['userName'] = error;
-                    // this.isLoading = false;
-                } else if (error === "USER IS ALREADY EXISTING WITH THIS EMAIL" || error.includes('User is already existing with this email')) {
-                    this.formErrors['emailId'] = 'Email Id already exists';
-                    // this.isLoading = false;
-                } else {
-                    this.xtremandLogger.errorPage(error);
-                }
-            },
-            () => this.xtremandLogger.log("Done")
-        );
-      }catch(error){ this.xtremandLogger.error('error'+error);}
-    } else {
-      this.checkValidationMessages()
-    }
-}
-
-checkPassword(){
-    if(this.signUpForm.value.password.length > 20){
-        this.formErrors.password = this.validationMessages.password.maxlength;
-    }else if( this.signUpForm.value.password.includes(" ") ){
-        this.formErrors.password = "Password shouldn't contain spaces"
-    }
-}
-
-checkValidationMessages(){
-  if(!this.signUpForm.value.firstName) {this.formErrors.firstName = this.validationMessages.firstName.required; }
-  if(!this.signUpForm.value.emailId) {this.formErrors.emailId = this.validationMessages.emailId.required; }
-  if(!this.signUpForm.value.password) { this.formErrors.password = this.validationMessages.password.required; }
-  if(!this.signUpForm.value.confirmPassword) { this.formErrors.confirmPassword =this.validationMessages.confirmPassword.required; }
-  if(!this.signUpForm.value.agree) { this.formErrors.agree = this.validationMessages.agree.required; }
-}
-buildForm() {
-    this.signUpForm = this.formBuilder.group({
-        'emailId': [this.signUpUser.emailId, [Validators.required, Validators.pattern(this.regularExpressions.EMAIL_ID_PATTERN)]],
-        'password': [this.signUpUser.password, [Validators.required, Validators.minLength(6),Validators.maxLength(20), Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
-        'confirmPassword': [null, [Validators.required, Validators.pattern(this.regularExpressions.PASSWORD_PATTERN)]],
-        'agree': [false, Validators.required],
-        'firstName': [this.signUpUser.firstName, Validators.required],
-        'lastName': [this.signUpUser.lastName]
-        // 'fullName': [this.signUpUser.fullName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-        // 'address': [this.signUpUser.address, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50),])],//Validators.pattern(nameRegEx)
-        // 'city': [this.signUpUser.city, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50), Validators.pattern(this.regularExpressions.CITY_PATTERN)])],
-        // 'country': [this.countryNames.countries[0], Validators.compose([Validators.required, validateCountryName])],
-    }, {
-            validator: matchingPasswords('password', 'confirmPassword')
+    validationMessages = {
+        'firstName': {
+            'required': 'First name is required.',
+        },
+        'emailId': {
+            'required': 'Email is required.',
+            'pattern': 'Please enter a valid email address'
+        },
+        'address': {
+            'required': 'Address is required.',
+            'whitespace': 'Invalid Address',
+            'minlength': 'Address must be at least 4 characters long.',
+            'maxlength': 'Address cannot be more than 50 characters long.',
+            'pattern': 'Invalid Address'
+        },
+        'city': {
+            'required': 'City is required.',
+            'whitespace': 'Invalid City',
+            'minlength': 'City must be at least 4 characters long.',
+            'maxlength': 'City cannot be more than 50 characters long.',
+            'pattern': 'Invalid City'
+        },
+        'country': {
+            'required': 'Country is required.',
+            'invalidCountry': 'Country is required.'
+        },
+        'password': {
+            'required': 'Password is required.',
+            'minlength': '',
+            'maxlength': "Password shouldn't exceed 20 characters",
+            'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
+        },
+        'confirmPassword': {
+            'required': 'Confirm Password is required.',
+            'pattern': 'Use 6 or more characters with a mix of letters, numbers & symbols'
+        },
+        'agree': {
+            'required': 'You Must Agree to the Terms of Service & Privacy Policy.'
         }
-    );
-    this.signUpForm.valueChanges
-        .subscribe(data => this.onValueChanged(data));
-    this.onValueChanged(); // (re)set validation messages now
-}
+    };
 
-onValueChanged(data?: any) {
-    if (!this.signUpForm) { return; }
-    const form = this.signUpForm;
-    this.xtremandLogger.log(form.controls);
-    for (const field of Object.keys(this.formErrors)) {
-        // clear previous error message (if any)
-        this.formErrors[field] = '';
-        const control = form.get(field);
-        if (control && control.dirty && !control.valid) {
-            const messages = this.validationMessages[field];
-            for (const key of Object.keys(control.errors)) {
-                this.xtremandLogger.log(this.formErrors[field]);
-                this.formErrors[field] += messages[key] + ' ';
+    constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
+        private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
+        private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService ) {
+        this.signUpForm = new FormGroup( {
+            firstName: new FormControl(),
+            lastName: new FormControl(),
+            emailId: new FormControl(),
+            password: new FormControl(),
+            confirmPassword: new FormControl(),
+            agree: new FormControl()
+        } );
+    }
+    update() {
+        if ( this.signUpForm.valid ) {
+            try {
+                this.signUpUser = this.signUpForm.value;
+                this.loading = true;
+                let data = {};
+                data['id'] = this.userId;
+                data['firstName'] = this.signUpUser.firstName;
+                data['lastName'] = this.signUpUser.lastName;
+                data['password'] = this.signUpUser.password
+                this.userService.accessAccount(data)
+                .subscribe(
+                (result:any) => {
+                   if(result.statusCode==200){
+                       this.referenceService.userProviderMessage = this.properties.ACCOUNT_ACTIVATED_WITH_PASSWORD;
+                       this.router.navigate(['./login']);
+                   }else{
+                       this.loading = false;
+                       this.customResponse = new CustomResponse( 'ERROR', 'This user does not exists', true );
+                   }
+                },
+                (error:string) => {
+                    this.loading = false;
+                    this.customResponse = new CustomResponse( 'ERROR', 'Oops!Somethig went wrong.Please try after sometime', true );
+                });
+                
+
+            } catch ( error ) { this.xtremandLogger.error( 'error' + error ); }
+        } else {
+            this.checkValidationMessages()
+        }
+    }
+
+    checkPassword() {
+        if ( this.signUpForm.value.password.length > 20 ) {
+            this.formErrors.password = this.validationMessages.password.maxlength;
+        } else if ( this.signUpForm.value.password.includes( " " ) ) {
+            this.formErrors.password = "Password shouldn't contain spaces"
+        }
+    }
+
+    checkValidationMessages() {
+        if ( !this.signUpForm.value.firstName ) { this.formErrors.firstName = this.validationMessages.firstName.required; }
+        if ( !this.signUpForm.value.emailId ) { this.formErrors.emailId = this.validationMessages.emailId.required; }
+        if ( !this.signUpForm.value.password ) { this.formErrors.password = this.validationMessages.password.required; }
+        if ( !this.signUpForm.value.confirmPassword ) { this.formErrors.confirmPassword = this.validationMessages.confirmPassword.required; }
+        if ( !this.signUpForm.value.agree ) { this.formErrors.agree = this.validationMessages.agree.required; }
+    }
+    buildForm() {
+        this.signUpForm = this.formBuilder.group( {
+            'emailId': [{ value: this.signUpUser.emailId, disabled: true }, [Validators.required, Validators.pattern( this.regularExpressions.EMAIL_ID_PATTERN )]],
+            'password': [this.signUpUser.password, [Validators.required, Validators.minLength( 6 ), Validators.maxLength( 20 ), Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
+            'confirmPassword': [null, [Validators.required, Validators.pattern( this.regularExpressions.PASSWORD_PATTERN )]],
+            'agree': [false, Validators.required],
+            'firstName': [this.signUpUser.firstName, Validators.required],
+            'lastName': [this.signUpUser.lastName]
+        }, {
+                validator: matchingPasswords( 'password', 'confirmPassword' )
+            }
+        );
+        this.signUpForm.valueChanges
+            .subscribe( data => this.onValueChanged( data ) );
+        this.onValueChanged(); // (re)set validation messages now
+    }
+
+    onValueChanged( data?: any ) {
+        if ( !this.signUpForm ) { return; }
+        const form = this.signUpForm;
+        for ( const field of Object.keys( this.formErrors ) ) {
+            // clear previous error message (if any)
+            this.formErrors[field] = '';
+            const control = form.get( field );
+            if ( control && control.dirty && !control.valid ) {
+                const messages = this.validationMessages[field];
+                for ( const key of Object.keys( control.errors ) ) {
+                    this.xtremandLogger.log( this.formErrors[field] );
+                    this.formErrors[field] += messages[key] + ' ';
+                }
             }
         }
     }
-}
-toggleChild() {
-    this.isError = !this.isError;
-}
-validEmail(event:any){
-  this.invalidVendor = false;
-}
-getUserDatails(alias:string){
-  try{
-   this.userService.getSingUpUserDatails(alias).subscribe((data)=>{
-   this.signUpUser.firstName = data.firstName;
-   this.signUpUser.lastName = data.lastName;
-   this.signUpUser.emailId = data.emailId;
-   this.buildForm();
- },
-(error)=>{   this.mainLoader = false;this.xtremandLogger.error('error in signup page'+error);}
-);
-}catch(error){
-  this.signUpUser.firstName = '';
-  this.signUpUser.lastName = '';
-  this.signUpUser.emailId = '';
-  this.buildForm(); this.xtremandLogger.error('error in signup page'+error);
-  this.mainLoader = false;
- }
-}
-ngOnInit() {
-  try{
-    this.mainLoader = true;
-    this.authenticationService.navigateToDashboardIfUserExists();
-    setTimeout(()=>{  this.mainLoader = false;},900);
-    if(this.router.url.includes('/signup/')){
-        let alias = this.route.snapshot.params['alias'];
-        this.getUserDatails(alias);
+    toggleChild() {
+        this.isError = !this.isError;
     }
-    else {
-      this.buildForm();
-      this.mainLoader = false;
+    validEmail( event: any ) {
+        this.invalidVendor = false;
     }
-  }catch(error){  this.mainLoader = false;this.xtremandLogger.error('error'+error); }
-}
-ngAfterViewInit(){
-  $('body').tooltip({ selector: '[data-toggle="tooltip"]' });
-}
-ngOnDestroy(){
-  this.invalidVendor = false;
-  this.mainLoader = false;
-}
+    getUserDatails( alias: string ) {
+        try {
+            this.mainLoader = true;
+            this.userService.getUserByAlias( alias ).subscribe(( data ) => {
+                this.mainLoader = false;
+                if ( data.statusCode == 200 ) {
+                    this.userNotFound = false;
+                    let user = data.data;
+                    this.userId = user.id;
+                    this.signUpUser.firstName = user.firstName;
+                    this.signUpUser.lastName = user.lastName;
+                    this.signUpUser.emailId = user.emailId;
+                    this.buildForm();
+                } else {
+                    this.userNotFound = true;
+                    this.mainLoader = false;
+                    this.customResponse = new CustomResponse( 'ERROR', 'Oops!This is invalid link', true );
+                }
+
+            },
+                ( error ) => { this.mainLoader = false; this.xtremandLogger.error( 'error in signup page' + error ); }
+            );
+        } catch ( error ) {
+            this.signUpUser.firstName = '';
+            this.signUpUser.lastName = '';
+            this.signUpUser.emailId = '';
+            this.buildForm(); this.xtremandLogger.error( 'error in signup page' + error );
+            this.mainLoader = false;
+        }
+    }
+    ngOnInit() {
+        try {
+            this.mainLoader = true;
+            this.authenticationService.navigateToDashboardIfUserExists();
+            let alias = this.route.snapshot.params['alias'];
+            this.getUserDatails( alias );
+        } catch ( error ) { this.mainLoader = false; this.xtremandLogger.error( 'error' + error ); }
+    }
+    ngAfterViewInit() {
+        $( 'body' ).tooltip( { selector: '[data-toggle="tooltip"]' } );
+    }
+    ngOnDestroy() {
+        this.mainLoader = false;
+    }
 
 }

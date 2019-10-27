@@ -208,6 +208,12 @@ export class UserService {
       .map( this.extractData )
       .catch( this.handleError );
     }
+    
+    getUserByAlias(alias:string){
+        return this.http.get( this.URL+'getUserByAlias/'+alias)
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
     saveForm(userId:number,form:DealForms){
         return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
         .map( this.extractData )
@@ -236,6 +242,13 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    
+    accessAccount( data: any ) {
+        return this.http.post( this.URL + "accessAccount/updatePassword", data)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     
     private extractData( res: Response ) {
         const body = res.json();
