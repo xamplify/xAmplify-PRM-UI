@@ -232,6 +232,53 @@ public authenticationService: AuthenticationService, public router:Router) {
       this.listTop10RecentUsers();
   }
   
+  
+  activateOrDeactivate(report:any){
+      console.log(report);
+      let userStatus = report.userStatus;
+      let text = "";
+      let title = "";
+      if(userStatus=="UNAPPROVED" || userStatus=="SUSPEND" || userStatus=="DECLINE" || userStatus=="BLOCK"){
+          title = 'Are you sure to activate this account?';
+          text  = "This account status is "+userStatus;
+      }else if(userStatus=="APPROVED"){
+          title = 'Are you sure to de-activate this account?';
+          text  = "This account status is "+userStatus;
+      }
+      let self = this;
+      swal( {
+          title: title,
+          text: text,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#54a7e9',
+          cancelButtonColor: '#999',
+          confirmButtonText: 'Yes, Change it!',
+          allowOutsideClick: false
+      } ).then( function() {
+          self.loading = true;
+          self.activateOrDeactiveStatus(report);
+      }, function( dismiss: any ) {
+          console.log( 'you clicked on option' + dismiss );
+      } );
+      
+  }
+  
+  activateOrDeactiveStatus(report:any){
+      this.dashboardService.activateOrDeactiveStatus(report)
+      .subscribe(
+      ( data: any ) => {
+          this.loading = false;
+          this.search();
+          swal("Status Changed Successfully", "", "success");
+      },
+      error => {this.loading = false;console.error( error )},
+      () => {
+         
+          }
+      )
+  }
+  
   changeStatus(report:any){
       try {
           console.log( report );

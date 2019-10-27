@@ -249,6 +249,20 @@ export class DashboardService {
         .catch(this.handleError);
     }
     
+
+    activateOrDeactiveStatus(report:any){
+        let url = "";
+        if(report.userStatus=="APPROVED"){
+            url  = this.authenticationService.REST_URL+"superadmin/account/deactivate?access_token="+this.authenticationService.access_token;
+        }else if(report.userStatus=="UNAPPROVED" || report.userStatus=="SUSPEND"){
+            url  = this.authenticationService.REST_URL+"superadmin/account/activate?access_token="+this.authenticationService.access_token;
+        }
+        return this.http.post(url,report)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    
     listDemoRequests(pagination: Pagination) {
         console.log(pagination);
         const url = this.demoUrl+ 'list?access_token=' + this.authenticationService.access_token;
