@@ -162,6 +162,10 @@
                         <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
                             <i class="fa fa-clone cancelled-event"></i>
                         </a>
+                        
+                        <a (click)="downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'"  data-toggle="tooltip" data-placement="top" title="Download" data-rel="fancybox-button" >
+                            <i class="fa fa-download"></i>
+                        </a>
                         </span>
 
                         <a class="hidden"><i class="fa fa-trash"></i></a>
@@ -222,6 +226,9 @@
 												<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
 													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
+												 <a (click)="downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'"  data-toggle="tooltip" data-placement="top" title="Download" data-rel="fancybox-button" >
+                           							 <i class="fa fa-download"></i>
+                        						</a>
 											</div>
 										</div>
 									</div>
