@@ -57,37 +57,14 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     customUploadVieoUrl = this.customUploadRegularUrl+"v";
     marketoUploadUrl = this.uploadBaseUrl+"marketo";
     hubspotUploadUrl = this.uploadBaseUrl+"hubspot";
-
+    campaignAccess: CampaignAccess = new CampaignAccess();
     constructor(private emailTemplateService: EmailTemplateService,
         private emailTemplate: EmailTemplate, private router: Router, private authenticationService: AuthenticationService,
-        private logger: XtremandLogger, public refService: ReferenceService, public campaignAccess: CampaignAccess, private hubSpotService: HubSpotService) {
+        private logger: XtremandLogger, public refService: ReferenceService, private hubSpotService: HubSpotService) {
 
-    }
-    getOrgCampaignTypes() {
-        this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
-            data => {
-                this.campaignAccess.videoCampaign = data.video;
-                this.campaignAccess.emailCampaign = data.regular;
-                this.campaignAccess.socialCampaign = data.social;
-                this.campaignAccess.eventCampaign = data.event
-            });
-    }
-    getCompanyIdByUserId() {
-        try {
-            this.refService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
-                (result: any) => {
-                    if (result !== "") {
-                        console.log(result);
-                        this.refService.companyId = result;
-                        this.getOrgCampaignTypes();
-                    }
-                }, (error: any) => { console.log(error); }
-            );
-        } catch (error) { console.log(error); }
     }
     ngOnInit() {
         try {
-            if (!this.refService.companyId) { this.getCompanyIdByUserId() } else { this.getOrgCampaignTypes(); }
             this.listDefaultTemplates();
         }
         catch (error) {
@@ -97,12 +74,14 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
 
     listDefaultTemplates() {
         this.refService.loading(this.httpRequestLoader, true);
-        this.emailTemplateService.listDefaultTemplates()
+        this.emailTemplateService.listDefaultTemplates(this.authenticationService.user.id)
             .subscribe(
-                (data: any) => {
-                    if (!this.campaignAccess.eventCampaign) { data = this.hideEventTemplates(data); }
-                    this.allEmailTemplates = data;
-                    this.filteredEmailTemplates = data;
+                (response: any) => {
+                    let emailTemplates = response.data.emailTemplates;
+                    this.allEmailTemplates = emailTemplates ;
+                    this.campaignAccess = response.data.campaignAccess;
+                    this.allEmailTemplates = emailTemplates;
+                    this.filteredEmailTemplates = emailTemplates;
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 (error: string) => {

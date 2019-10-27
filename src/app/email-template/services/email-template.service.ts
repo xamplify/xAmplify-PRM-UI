@@ -74,8 +74,8 @@ export class EmailTemplateService {
 
     }
 
-     listDefaultTemplates(){
-        return this.http.get(this.URL+"admin/listDefaultTemplates?access_token="+this.authenticationService.access_token,"")
+     listDefaultTemplates(userId:any){
+        return this.http.get(this.URL+"admin/listDefaultTemplates/"+userId+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
