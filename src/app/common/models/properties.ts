@@ -88,6 +88,7 @@ export class Properties {
   BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
   USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
   USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
+  USER_ACCOUNT_ACTIVATION_ERROR_NEW = "Your account has not been activated. Please contact admin.";
   EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
   RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
   SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
