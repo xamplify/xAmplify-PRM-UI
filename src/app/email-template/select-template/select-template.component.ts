@@ -258,12 +258,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             for (var i = 0; i < this.allEmailTemplates.length; i++) {
                 var isBeeVideoTemplate = this.allEmailTemplates[i].beeVideoTemplate;
                 if (isBeeVideoTemplate) {
-                    /*if(this.allEmailTemplates[i].name.indexOf('Rich')>-1){
-                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
-                    }*/
-                    if (this.allEmailTemplates[i].id === 362 || this.allEmailTemplates[i].id === 369 || this.allEmailTemplates[i].id === 356 || this.allEmailTemplates[i].id === 365) {
-                        this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
-                    }
+                    this.filteredEmailTemplates.push(this.allEmailTemplates[i]);
                 }
             }
             this.logger.debug("Showing Rich Video Templates size of" + this.filteredEmailTemplates.length);
