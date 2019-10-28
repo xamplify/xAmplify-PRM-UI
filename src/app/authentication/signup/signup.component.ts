@@ -228,6 +228,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
   }
     ngOnInit() {
       try{
+         this.customResponse = new CustomResponse();
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
