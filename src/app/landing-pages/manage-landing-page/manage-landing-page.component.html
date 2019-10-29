@@ -75,6 +75,15 @@
 							<div  class="grid-box" id="landingPageListDiv_{{landingPage.id}}">
 								<img class="img-responsive center-block" src="assets/images/Landing-Pages/{{landingPage.imageName}}" alt="Not Found">
 								<h4 title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
+								<h6 *ngIf="!isPartnerLandingPage">Created On <b> <app-timestamp [isOnlyDate]="true"[dateAndTime]="landingPage.displayTime"> </app-timestamp></b></h6>
+								<h6 *ngIf="isPartnerLandingPage">Shared On <b> <app-timestamp [isOnlyDate]="true"[dateAndTime]="landingPage.displayTime"> </app-timestamp></b></h6>
+								<h6 title="{{landingPage.createdUser}}">By <b>{{landingPage.createdUser | slice:0:25}}</b>
+									<span *ngIf="landingPage.createdUser?.length>25">..</span>
+								</h6>
+								<h6 title="{{landingPage.companyName}}">
+									From <b>{{landingPage.companyName | slice:0:25}}</b>
+									<span *ngIf="landingPage.companyName?.length>25">..</span>
+								</h6>
 								<div class="bar">
 									<a *ngIf="!isPartnerLandingPage" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
 										<i class="fa fa-pencil-square-o"></i>
