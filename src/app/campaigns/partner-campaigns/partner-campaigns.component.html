@@ -163,15 +163,15 @@
                             <i class="fa fa-clone cancelled-event"></i>
                         </a>
                         
-                        <a (click)="downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
+                        <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
                         	 data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
                             <i class="fa fa-download"></i>
                         </a>
                         
-                          <a (click)="downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'LANDINGPAGE'" 
+                        <!--   <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'LANDINGPAGE'" 
                         	 data-toggle="tooltip" data-placement="top" title="Download Page" data-rel="fancybox-button" >
                             <i class="fa fa-download"></i>
-                        </a>
+                        </a> -->
                         
                         </span>
 
@@ -233,15 +233,15 @@
 												<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
 													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
-												<a (click)="downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
+												<a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
                         								 data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
                             					<i class="fa fa-download"></i>
                         						</a>
                         
-						                          <a (click)="downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'LANDINGPAGE'" 
+						                       <!--    <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'LANDINGPAGE'" 
 						                        	 data-toggle="tooltip" data-placement="top" title="Download Page" data-rel="fancybox-button" >
 						                            <i class="fa fa-download"></i>
-						                        </a>
+						                        </a> -->
 											</div>
 										</div>
 									</div>

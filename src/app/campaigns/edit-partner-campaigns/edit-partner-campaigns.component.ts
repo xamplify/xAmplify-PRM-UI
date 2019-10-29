@@ -1321,7 +1321,4 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       }
   }
 
-  downloadTemplate(campaignId:number){
-      window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
-  }
 }
