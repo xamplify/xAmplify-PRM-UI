@@ -198,7 +198,14 @@
 								<div class="portlet light">
 									<div class="portlet-body clearfix">
 										<div class="col-xs-12 p0">
-											<span class="btn btn-sm btn-primary pull-right" style="font-size:10px;cursor:default">{{campaignType}} CAMPAIGN
+											<span class="btn btn-sm btn-primary pull-right" style="font-size:10px;cursor:default">
+											<ng-container *ngIf="campaignType!='LANDINGPAGE'">
+											{{campaignType}}
+										</ng-container>
+										<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+											PAGE
+										</ng-container>
+											 CAMPAIGN
 												<br><span *ngIf="isPartnerCampaign === '(PARTNER)'">(THROUGH PARTNER)</span></span>
 											<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:15}} <span *ngIf="campaign.campaignName?.length>15">..</span>
 											</h4>
@@ -361,8 +368,14 @@
 									<div class="caption">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">VIEWERSHIP MAP</span>
 									</div>
-									<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}}
-											CAMPAIGN {{isPartnerCampaign}}</span>
+									<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">
+										<ng-container *ngIf="campaignType!='LANDINGPAGE'">
+											{{campaignType}}
+										</ng-container>
+										<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+											PAGE
+										</ng-container>
+										 CAMPAIGN {{isPartnerCampaign}}</span>
 									</div>
 								</div>
 								<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
@@ -377,7 +390,14 @@
 							<div class="portlet light">
 								<div class="portlet-body clearfix">
 									<div class="col-xs-12">
-										<span class="btn btn-sm btn-primary pull-right" style="cursor: default;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
+										<span class="btn btn-sm btn-primary pull-right" style="cursor: default;">
+										<ng-container *ngIf="campaignType!='LANDINGPAGE'">
+											{{campaignType}}
+										</ng-container>
+										<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+											PAGE
+										</ng-container>
+										 CAMPAIGN {{isPartnerCampaign}}</span>
 										<h4>{{campaign.campaignName}}</h4>
 										<h5 class="text-info mb10">
 											<!-- {{campaign.launchTime | date: 'fullDate'}} -->

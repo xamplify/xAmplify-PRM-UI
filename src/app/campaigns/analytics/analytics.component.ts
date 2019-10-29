@@ -82,6 +82,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   redistributedAccounts = new Set<number>();
   redistributedAccountsBySelectedUserId: Array<SocialStatus> = [];
   campaignType: string;
+  campaignTypeString:string;
   campaignId: number;
   maxViewsValue: number;
   barChartCliked = false;
