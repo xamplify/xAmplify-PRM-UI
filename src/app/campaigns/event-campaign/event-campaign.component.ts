@@ -369,6 +369,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
             console.log(this.timezonesCampaignEventTime[i].timezoneId);
           }
         }
+        
+        this.selectedFormData = result.data.formDTOs; 
+        this.eventCampaign.forms = this.selectedFormData;
+        for(var i=0; i< this.selectedFormData.length; i++){
+          this.selectedFormName = this.selectedFormData[i].name;
+          this.selectedFormId = this.selectedFormData[i].id;
+        }
+        
+        this.eventCampaign.eventUrl = 'https://www.xamplify.com';
+        
 
         this.loadContactLists(this.contactListsPagination);
         this.setTemplateId();
@@ -409,11 +419,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   }
 
   ngAfterViewChecked(){
-      this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
-      this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
-      for(var i=0; i< this.selectedFormData.length; i++){
+      if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
+        this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
+        this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+        for(var i=0; i< this.selectedFormData.length; i++){
           this.selectedFormName = this.selectedFormData[i].name;
           this.selectedFormId = this.selectedFormData[i].id;
+        }
       }
       this.changeDetectorRef.detectChanges();
   }
@@ -1868,6 +1880,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     
     publicVsPrivateSwitchStatusChange(){
         this.eventCampaign.publicEventCampaign = !this.eventCampaign.publicEventCampaign;
+        
+        if(this.eventCampaign.publicEventCampaign && this.eventCampaign.campaign && !this.statusMessage){
+            this.statusMessage = this.eventCampaign.campaign;
+        }else{
+            this.statusMessage = '';
+        }
     }
 
     resetTabClass(){
