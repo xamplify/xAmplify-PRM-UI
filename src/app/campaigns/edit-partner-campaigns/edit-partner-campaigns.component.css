@@ -85,3 +85,6 @@ fieldset {
   }
   @media screen and (min-width:601px){.modal-css{  width: 45% !important; right: 0 !important;} .modal-template {  width: 60% !important; right: 0 !important; }}
   @media screen and (max-width:600px){.modal-css {width: 100% !important; right: 0 !important;} .modal-template {  width: 100% !important; right: 0 !important; }}
+#download-template-i-font{
+	font-size: 17px;
+}

@@ -167,7 +167,11 @@
             </fieldset>
             <!-- ----------Email Template -->
             <fieldset *ngIf="campaignType!='LANDINGPAGE'">
-              <legend>Selected email template</legend>
+              <legend>
+              	Selected email template
+              	<a (click)="downloadTemplate(campaign.campaignId)"	 data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
+                        <i class="fa fa-download" id="download-template-i-font"></i></a>
+              </legend>
               <div class="row m0" (click)="previewEmailTemplate(campaign.emailTemplate)" style="cursor: pointer;">
                 <div class="col-xs-3">
                   <img src="{{campaign.emailTemplate.subject}}" height="100">
