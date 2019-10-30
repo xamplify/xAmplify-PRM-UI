@@ -2179,7 +2179,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
              this.listOfSelectedUserListIds.push(this.userListDTOObj[i].id);
          }
          
-         this.contactService.getValidUsersCount( this.listOfSelectedUserListIds )
+         if(this.listOfSelectedUserListIds.length > 0){
+          this.contactService.getValidUsersCount( this.listOfSelectedUserListIds )
              .subscribe(
              data => {
                  data = data;
@@ -2192,6 +2193,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
              },
              () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
              )
+         }
      } catch ( error ) {
          console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
      }

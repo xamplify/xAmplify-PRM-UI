@@ -3058,6 +3058,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     getValidUsersCount() {
         try {
+           if(this.selectedContactListIds.length > 0){
             this.contactService.getValidUsersCount( this.selectedContactListIds )
                 .subscribe(
                 data => {
@@ -3071,9 +3072,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 },
                 () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
                 )
+           }
         } catch ( error ) {
             console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
         }
+       
     }
     
 
