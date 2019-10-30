@@ -28,6 +28,7 @@ import { Properties } from '../../../common/models/properties';
 import { Country } from '../../../core/models/country';
 import { Timezone } from '../../../core/models/timezone';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
+import { Validators } from '@angular/forms';
 declare var $, flatpickr, videojs, swal: any;
 
 @Component({
@@ -77,6 +78,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   campaignNames = [];
   events = [];
   selectedSocialProviderId: number;
+  savedURL: string;
 
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties: Properties,
@@ -549,11 +551,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         },
         error => console.log(error),
         () => {
-          this.initializeSocialStatus();  
-          if(this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined){
-             this.populateRssFeed(this.referenceService.selectedFeed);
-             this.referenceService.selectedFeed = "";
-          }       
+          this.initializeSocialStatus();
+          if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
+            this.populateRssFeed(this.referenceService.selectedFeed);
+            this.referenceService.selectedFeed = "";
+          }
         });
   }
 
@@ -882,7 +884,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       }
       this.loadContactLists(this.contactListsPagination);
       this.loadCampaignNames(this.userId);
-    }     
+    }
   }
 
   ngOnDestroy() {
@@ -1128,7 +1130,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.router.navigate([navigateUrl]);
   }
 
-  populateRssFeed(feed: any){
+  populateRssFeed(feed: any) {
     this.socialStatus.statusMessage = feed.link;
     this.socialStatus.ogImage = feed.thumbnail ? feed.thumbnail : 'https://via.placeholder.com/100x100?text=preview';
     this.socialStatus.ogTitle = feed.title;
@@ -1136,5 +1138,60 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatus.validLink = true;
     this.socialStatus.ogt = true;
     this.socialStatusList[0] = this.socialStatus;
+  }
+
+  onKeyPress(event: KeyboardEvent) {
+    if (this.socialStatusList.length !== 0 && this.socialStatusList[0].statusMessage !== undefined) {
+      let enteredURL = this.socialStatusList[0].statusMessage.toLowerCase();
+      if (enteredURL.length === 0 || enteredURL.length === 0) {
+        this.socialStatus.statusMessage = ""
+        this.clearRssOgTagsFeed();
+      } else {
+        if (!this.isUrlValid(enteredURL)) {
+          this.socialStatus.statusMessage = enteredURL;
+          this.clearRssOgTagsFeed();
+        } else {
+          if (this.isUrlValid(enteredURL) && enteredURL !== this.savedURL) {
+            this.getOgTagsData(enteredURL);
+          }
+        }
+      }
+    }
+  }
+
+  isUrlValid(url: string): Boolean {
+    let regex = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$";
+    var pattern = new RegExp(regex);
+    return pattern.test(url);
+  }
+
+  getOgTagsData(url: string) {
+    let req = { "userId": this.userId, "q": url };
+    this.socialService.getOgMetaTags(req).subscribe(data => {
+      let response = data.data;
+      if (response !== undefined && response !== '') {
+        this.socialStatus.statusMessage = response.link;
+        this.socialStatus.ogImage = response.imageUrl ? response.imageUrl : 'https://via.placeholder.com/100x100?text=preview';
+        this.socialStatus.ogTitle = response.title;
+        this.socialStatus.ogDescription = response.description;
+        this.socialStatus.validLink = true;
+        this.socialStatus.ogt = true;
+        this.socialStatusList[0] = this.socialStatus;
+        this.savedURL = url;
+      }
+    }, error => {    
+      this.clearRssOgTagsFeed();  
+      console.log(error);
+    }, () => console.log("Campaign Names Loaded"));
+  }
+
+  clearRssOgTagsFeed() {
+    this.socialStatus.ogImage = ""
+    this.socialStatus.ogTitle = "";
+    this.socialStatus.ogDescription = "";
+    this.socialStatus.validLink = false;
+    this.socialStatus.ogt = false;
+    this.socialStatusList[0] = this.socialStatus;
+    this.savedURL = '';
   }
 }

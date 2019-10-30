@@ -251,4 +251,10 @@ export class SocialService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    getOgMetaTags(requestBody: any){
+      return this.http.post(this.URL + `rss/ogtags?access_token=${this.authenticationService.access_token}`, requestBody)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

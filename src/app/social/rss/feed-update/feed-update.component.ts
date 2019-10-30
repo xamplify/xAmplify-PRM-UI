@@ -84,7 +84,7 @@ export class FeedUpdateComponent implements OnInit {
   }
 
   navigateRssHome(){
-    this.navigateUrl.emit('/home/rss');
+    this.navigateUrl.emit('/home/rss/discover');
   }
 
   addFeed(feed) {

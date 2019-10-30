@@ -237,7 +237,7 @@
 					</div>
 					<div class="update-status-content col-xs-10 col-sm-11">
 						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-							[(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
+						 (keyup)="onKeyPress($event)" [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
 						<h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 
 						<section class="" [hidden]="isSocialCampaign && alias">
@@ -252,7 +252,9 @@
 
 						<section *ngIf="socialStatus.validLink" class="row">
 							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
-							<div class="col-sm-10"><a>{{socialStatus.statusMessage}}</a>
+							<div class="col-sm-10"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
+									<span *ngIf="socialStatus.statusMessage?.length>160">..</span>
+							</a>
 							<h6 contenteditable="true"><b>{{socialStatus.ogTitle}}</b></h6>
 							<p contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</p>
 							</div>
@@ -265,7 +267,7 @@
 							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-video-camera"></i>
 							</span>
-							<!-- <span class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)"  data-toggle="tooltip" data-placement="top">
+							<!-- <span class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-rss-square"></i>
 							</span> -->
 						</section>
@@ -661,10 +663,10 @@
 		<div class="modal-body" style="background: #f1f3fa">
 			<app-feed-update (selectedFeed)='addToPost($event)' (navigateUrl)='navigateRssHome($event)'></app-feed-update>
 		</div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
