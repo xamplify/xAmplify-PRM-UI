@@ -639,11 +639,22 @@ a.disabled {
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
 						<div class="portlet-body clearfix">
-							<!-- <button type="button" class="btn btn-default" (click)="listForms()">Select Form</button><br> -->
 							
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
 							
 							<section *ngIf="selectedFormId">
+							<a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a>
+							</section>
+						</div>
+					</div>
+					
+					<div class="boxes portlet light" *ngIf="reDistributeEvent && selectedFormId">
+						<div class="portlet-title" style="display:block">
+							<h4 class="pull-left f-w-600">Event Form</h4>
+						</div>
+						<div class="portlet-body clearfix">
+							<section *ngIf="selectedFormId">
+							<app-preview-popup #previewPopUpComponent></app-preview-popup>
 							<a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a>
 							</section>
 						</div>

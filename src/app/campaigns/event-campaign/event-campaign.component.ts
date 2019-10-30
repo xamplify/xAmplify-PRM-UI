@@ -259,8 +259,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   if(event===13) { this.searchEmailTemplate();}
  }
  ngOnInit() {
-    
-    this.authenticationService.isShowForms = true;
+    if(!this.reDistributeEvent){
+      this.authenticationService.isShowForms = true;
+    }
 
     this.detailsTab = true;
     this.resetTabClass()
@@ -378,6 +379,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         }
         
         this.eventCampaign.eventUrl = 'https://www.xamplify.com';
+        
+        if(this.eventCampaign.publicEventCampaign && this.eventCampaign.campaign && !this.statusMessage){
+            this.statusMessage = this.eventCampaign.campaign;
+        }else{
+            this.statusMessage = '';
+        }
         
 
         this.loadContactLists(this.contactListsPagination);
@@ -2262,7 +2269,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     this.enableSmsText =  this.smsService;
 }
  
- listForms() {
+ /*listForms() {
      this.referenceService.loading( this.httpRequestLoader, true );
      this.formsPagination.userId = this.loggedInUserId;
      this.formService.list( this.formsPagination ).subscribe(
@@ -2280,7 +2287,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
          ( error: any ) => { 
             this.logger.errorPage(error);
          } );
- }
+ }*/
  
  /*hideListFormModal(){
      $( '#listOfFormsModal' ).modal( 'hide' ); 
