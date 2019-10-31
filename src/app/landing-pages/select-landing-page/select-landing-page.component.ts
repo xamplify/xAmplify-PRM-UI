@@ -48,6 +48,7 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
           ( response: any ) => {
               let data = response.data;
               if(response.statusCode==200){
+                  console.log(data.landingPages);
                   pagination.totalRecords = data.totalRecords;
                   pagination = this.pagerService.getPagedItems( pagination, data.landingPages );
               }
