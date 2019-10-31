@@ -43,7 +43,7 @@
 			              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
 			              <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
 			              <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
-			               <li class="filter" *ngIf="authenticationService.module.hasPartnerLandingPageAccess" (click)="filterCampaigns('landingPage')" [class.active]="'landingPage' == campaignType">Page</li>
+			               <li class="filter" *ngIf="authenticationService.module.hasPartnerLandingPageAccess" (click)="filterCampaigns('landingPage')" [class.active]="'page' == campaignType">Page</li>
 			              <li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
