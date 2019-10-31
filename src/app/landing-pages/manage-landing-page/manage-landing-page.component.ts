@@ -88,6 +88,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     $.each(data.landingPages, function (index, landingPage) {
                         landingPage.displayTime = new Date(landingPage.createdDateInString);
                     });
+                    console.log(data.landingPages);
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
