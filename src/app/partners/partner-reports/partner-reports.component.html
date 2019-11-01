@@ -591,29 +591,29 @@
                   <tbody>
                     <tr *ngFor='let campaign of throughPartnerCampaignPagination.pagedItems; let i=index'>
                       <td style="width: 10%;" class="hidden-xs">
-                        <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
-                          alt="{{campaign.campaignType}} Campaign">
-
-                        <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
-                          alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
-                        <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
-                        <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                          alt="{{campaign.campaignType}} Campaign">
+
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
+                          alt="{{campaign.campaignType}} Campaign">
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
                           
-                          <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;"
+                          <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
                       </td>
