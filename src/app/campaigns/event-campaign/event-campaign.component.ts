@@ -259,7 +259,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   if(event===13) { this.searchEmailTemplate();}
  }
  ngOnInit() {
-    if(!this.reDistributeEvent){
+    if(!this.reDistributeEvent && !this.isEventUpdate){
       this.authenticationService.isShowForms = true;
     }
 

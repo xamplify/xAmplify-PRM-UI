@@ -163,7 +163,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     const formLabelDtos = this.form.formLabelDTOs;
     const formSubmit = new FormSubmit();
     formSubmit.id = this.form.id;
-    formSubmit.alias = this.formAlias;
+    formSubmit.alias = this.alias;
     $.each(formLabelDtos,function(index:number,field:ColumnInfo){
         const formField: any = { };
         formField.id = field.id;

@@ -95,7 +95,7 @@
         </a>
         <h4 class="modal-title" id="myModalLabel">You are RSVPing <span class="f-w-500">{{campaignRsvp.eventCampaignRsvp}}</span></h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="overflow-x: hidden;">
         <div style="font-size: 15px;">
          <!--  <span style="float:left;margin-bottom: 3px">Replying as: </span> -->
          <!-- <span style="margin-left: 6px;" class="bold"> {{replyUserName}}</span> -->
@@ -111,13 +111,11 @@
         <div *ngIf="authenticationService.formAlias" style="position: relative; right: 190px;">
            <app-form-preview #formPreviewComponent></app-form-preview>
         </div>
+        </div>
       <div class="modal-footer">
-        <div class="right-css" [class.alignCss]="campaignRsvp.eventCampaignRsvp!='YES' || !eventcampaign.inviteOthers">
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeRsvpModel()">Close</button>
         <button type="button" class="btn btn-secondary" [disabled]="rsvpSavingProcessing" (click)="saveEventCampaignRsvp()">Save changes</button>
-        </div>
       </div>
-    </div>
   </div>
 </div>
 </div>

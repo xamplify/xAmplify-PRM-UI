@@ -550,7 +550,7 @@ a.disabled {
 						</div>
 					</div>
 					
-					<div class="boxes portlet light">
+					<div class="boxes portlet light" [class.disabled]="isEventUpdate">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Public vs Private</h4>
 							<div class="pull-right" style="margin: 5px 5px 0px 0px;">
@@ -634,7 +634,7 @@ a.disabled {
 					</div>
 					
 					
-					<div class="boxes portlet light" *ngIf="authenticationService.module.hasFormAccess">
+					<div class="boxes portlet light" *ngIf="!reDistributeEvent && !isEventUpdate && authenticationService.module.hasFormAccess">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
@@ -648,7 +648,7 @@ a.disabled {
 						</div>
 					</div>
 					
-					<div class="boxes portlet light" *ngIf="reDistributeEvent && selectedFormId">
+					<div class="boxes portlet light" *ngIf="(reDistributeEvent || isEventUpdate) && selectedFormId">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
