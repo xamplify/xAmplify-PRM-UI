@@ -15,6 +15,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { ListLoaderValue } from '../../common/models/list-loader-value';
 import { VendorInvitation } from '../../dashboard/models/vendor-invitation';
+
 declare var $,swal, Highcharts, CKEDITOR: any;
 
 @Component({
@@ -24,6 +25,7 @@ declare var $,swal, Highcharts, CKEDITOR: any;
   providers: [Pagination, HomeComponent,HttpRequestLoader,SortOption, ListLoaderValue]
 })
 export class PartnerReportsComponent implements OnInit, OnDestroy {
+    landingPage: any;
   worldMapdataReport: any;
   companyId: number;
   paginationType: string;
@@ -66,6 +68,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.utilService.setRouterLocalStorage('partnerAnalytics');
       this.isListView = ! this.referenseService.isGridView;
+      this.getModuleAccess();
   }
 
   gotoMange() {
@@ -719,5 +722,22 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       this.isShowCKeditor = false;
       $('#approve-decline-modal').modal('hide');
     }
+  
+  getModuleAccess(){
+      this.authenticationService.getModulesByUserId()
+      .subscribe(
+          data => {
+              let response = data.data;
+              let statusCode = data.statusCode;
+              if(statusCode==200){
+                  this.landingPage = response.landingPage;
+              }
+          },
+          error => {
+             console.log("error in fetching module")
+          },
+          () => this.xtremandLogger.info("Finished getModuleAccess()")
+      );
+  }
 
 }
