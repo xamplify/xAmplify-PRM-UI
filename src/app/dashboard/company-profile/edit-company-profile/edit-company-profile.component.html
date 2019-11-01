@@ -29,7 +29,7 @@
                                                 <img class="img-grid" [src]="croppedImage">
                                             </span>
                                 <ng-template #showImage>
-                                    <img class="img-grid" *ngIf="companyLogoImageUrlPath" [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath" [width]="squareCropperSettings.croppedWidth" [height]="squareCropperSettings.croppedHeight" (error)="errorHandler($event)"></ng-template>
+                                    <img class="img-grid" *ngIf="companyLogoImageUrlPath" [src]="authenticationService.MEDIA_URL + companyLogoImageUrlPath"  (error)="errorHandler($event)"></ng-template>
                                 <a class="profile-pic" (click)="fileChangeEvent()"> &nbsp;&nbsp;<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"></i></a>
 
                                 <div class="profile-overlay">
