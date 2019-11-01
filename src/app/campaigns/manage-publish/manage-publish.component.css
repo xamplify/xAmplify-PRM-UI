@@ -222,6 +222,7 @@ img.inactive {
     height: 50px;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
+    border: 1px solid #ccc;
 }
 td h5 {
     margin: 5px 0;
@@ -341,4 +342,10 @@ td h5 {
 .bottomTableCss {
   margin-bottom: 300px !important;
 
+}
+
+.imageClass{
+	background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
 }
