@@ -36,6 +36,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     roles: Array<Role>;
     constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
+        /*if(this.router.url=="/logout"){
+            this.authenticationService.logout();
+        }*/
         if (this.referenceService.userProviderMessage !== "") {
             this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
         }

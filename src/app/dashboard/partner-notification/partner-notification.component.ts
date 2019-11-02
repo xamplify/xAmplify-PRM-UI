@@ -14,6 +14,8 @@ export class PartnerNotificationComponent implements OnInit {
   partnerCampaignsCountMap: any;
   loggedInUserId: number;
   hasRedistributeAccess:boolean;
+  isPageCampaignsSharedByVendor:boolean;
+  modulesCount:number = 3;
   constructor( public authenticationService: AuthenticationService,public referenceService:ReferenceService,
                private campaignService: CampaignService,
                private xtremandLogger: XtremandLogger  ) { }
@@ -23,6 +25,7 @@ export class PartnerNotificationComponent implements OnInit {
         this.campaignService.getPartnerCampaignsCountMapGroupByCampaignType(userId)
             .subscribe(
                 data => {
+                    console.log(data);
                     this.partnerCampaignsCountMap = data;
                 },
                 error => { },
@@ -34,7 +37,6 @@ export class PartnerNotificationComponent implements OnInit {
         this.campaignService.getPartnerCampaignsNotifications(this.loggedInUserId)
             .subscribe(
                 data => {
-                    console.log(data);
                     this.referenceService.eventCampaignTabAccess = data.event;
                 },
                 error => { },
@@ -44,6 +46,7 @@ export class PartnerNotificationComponent implements OnInit {
     
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.getModuleAccess();
     if(this.authenticationService.showRoles()=="Team Member" && this.authenticationService.module.isCampaign){
         this.campaignService.hasRedistributeAccess(this.loggedInUserId)
         .subscribe(
@@ -69,6 +72,24 @@ export class PartnerNotificationComponent implements OnInit {
   callRedistributedCampaignsDiv(superiorId:number){
       this.hasRedistributeAccess = true;
       this.getPartnerCampaignsCountMapGroupByCampaignType(superiorId);
+  }
+  
+  getModuleAccess(){
+      this.authenticationService.getModulesByUserId()
+      .subscribe(
+          data => {
+              let response = data.data;
+              let statusCode = data.statusCode;
+              if(statusCode==200){
+                  this.isPageCampaignsSharedByVendor = response.partnerLandingPage;
+              }
+          },
+          error => {
+              this.xtremandLogger.error(error);
+          },
+          () => this.xtremandLogger.info("Finished getModuleAccess()")
+      );
+  
   }
 
 }
