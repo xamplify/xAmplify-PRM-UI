@@ -231,8 +231,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      marketoInstanceError: boolean;
      isModelFormValid: boolean;
      templateSuccessMsg: any;
-     pushToMarketo = false;
-     pushToHubspot = false;
+   /*  pushToMarketo = false;
+     pushToHubspot = false;*/
+     pushToCRM = [];
 
      loadingMarketo: boolean;
      marketoButtonClass = "btn btn-default";
@@ -260,6 +261,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      filtereLandingPageIds: Array<number>;
      isLandingPageSwitch = false;
      senderMergeTag:SenderMergeTag = new SenderMergeTag();
+     isPushToCrm = false;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
@@ -709,7 +711,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               isValid = false;
           }
 
-        });
+     });
         
         if(isValid && (this.smsService || this.campaignType == 'sms')){
             if( this.smsText!=null && this.smsText.length > 0)
@@ -2045,8 +2047,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'country':country,
             'createdFromVideos':this.campaign.createdFromVideos,
             'nurtureCampaign':false,
-            'pushToMarketo':this.pushToMarketo,
-            'pushToHubspot':this.pushToHubspot,
+            'pushToCRM':this.pushToCRM,
             'smsService':this.smsService,
             'smsText':this.smsText,
             'landingPageId':this.selectedLandingPageRow
@@ -2759,7 +2760,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      * Push Leads to Marketo
      */
 
-    pushMarketo(event: any)
+  /*  pushMarketo(event: any)
     {
         this.pushToMarketo =  !this.pushToMarketo;
         console.log(this.pushToMarketo);
@@ -2779,14 +2780,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         {
             this.checkingHubSpotContactsAuthentication();
         }
-    }
+    }*/
     
     checkingHubSpotContactsAuthentication(){
           this.hubSpotService.configHubSpot().subscribe(data => {
               let response = data;
               if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                   console.log("isAuthorize true");
-                  this.pushToHubspot = true;
+                  this.pushToCRM.push('hubspot');
               }
               else{
                   if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
@@ -2829,14 +2830,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
                     {
                         if (customObjectResponse.statusCode == 8020){
-                            this.pushToMarketo =  true;
-                            console.log(this.pushToMarketo);
+                            this.pushToCRM.push('marketo');
 
                             this.templateError = false;
                             this.loading = false;
                         }else{
-                            this.pushToMarketo = false;
-
                             this.templateError = false;
                             this.loading = false;
                             alert("Custom Objects are not found")
@@ -2844,7 +2842,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                     }, error =>
                     {
-                        this.pushToMarketo = false;
                         this.templateError = error;
 
                         this.loadingMarketo = false;
@@ -2853,7 +2850,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
             else
             {
-                this.pushToMarketo = false;
 
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2863,7 +2859,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }, error =>
             {
-                this.pushToMarketo = false;
                 this.templateError = error;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2888,7 +2883,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             {
                 $("#closeButton").hide();
                 this.showMarketoForm = false;
-                this.pushToMarketo = true;
+                this.pushToCRM.push('marketo');
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
@@ -2896,7 +2891,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
             } else
             {
-                this.pushToMarketo = false;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
                 this.templateError = response.message;
@@ -2906,7 +2900,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }, error =>
         {
         this.templateError = error;
-            this.pushToMarketo = false;
             $("#closeButton").show();
             this.loadingMarketo = false;
         }
@@ -2990,7 +2983,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     closeModal()
     {
-        this.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
     spamCheck() {
@@ -3077,6 +3069,27 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
         }
        
+    }
+    
+    pushToCrm(){
+     this.isPushToCrm = !this.isPushToCrm;
+    }
+    
+    pushToCrmRequest(crmName: any, event: any){
+       console.log(event.target.checked);
+       if(event.target.checked){
+           
+           if(crmName == 'marketo'){
+               this.checkMarketoCredentials();
+           }else if(crmName == 'hubspot'){
+               this.checkingHubSpotContactsAuthentication();
+           }
+           
+           //this.pushToCRM.push(crmName);
+       }else{
+           this.pushToCRM = this.pushToCRM.filter(e => e !== crmName);
+           console.log(this.pushToCRM);
+       }
     }
     
 

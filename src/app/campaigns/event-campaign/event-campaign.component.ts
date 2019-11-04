@@ -155,7 +155,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
   loadingMarketo: boolean;
   marketoButtonClass = "btn btn-default";
   loading = false;
-  pushToMarketo = false;
+ // pushToMarketo = false;
  //ENABLE or DISABLE LEADS
  smsService = false;
  enableSMS:boolean;
@@ -165,6 +165,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit {
  validUsersCount: number;
  allUsersCount: number;
  listOfSelectedUserListIds = [];
+ isPushToCrm = false;
+ pushToCRM = [];
 
  senderMergeTag:SenderMergeTag = new SenderMergeTag();
 
@@ -1029,8 +1031,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
-       'pushToMarketo': eventCampaign.pushToMarketo,
-       'pushToHubspot': eventCampaign.pushToHubspot,
+       'pushToCRM': eventCampaign.pushToCRM,
        'smsService':this.smsService,
        'smsText':this.smsText
 
@@ -1901,7 +1902,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }
     }
     
-    pushHubspot(event: any)
+    /*pushHubspot(event: any)
     {
         this.eventCampaign.pushToHubspot =  !this.eventCampaign.pushToHubspot;
         console.log(this.eventCampaign.pushToHubspot);
@@ -1910,14 +1911,15 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         {
             this.checkingHubSpotContactsAuthentication();
         }
-    }
+    }*/
     
     checkingHubSpotContactsAuthentication(){
         this.hubSpotService.configHubSpot().subscribe(data => {
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                 console.log("isAuthorize true");
-                this.eventCampaign.pushToHubspot = true;
+                //this.eventCampaign.pushToHubspot = true;
+                this.eventCampaign.pushToCRM.push('hubspot');
             }
             else{
                 if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
@@ -1929,7 +1931,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }, () => console.log("HubSpot Configuration Checking done"));
     }
 
-    pushMarketo(event: any)
+/*    pushMarketo(event: any)
     {
         this.eventCampaign.pushToMarketo =  !this.eventCampaign.pushToMarketo;
         console.log(this.eventCampaign.pushToMarketo);
@@ -1939,7 +1941,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.checkMarketoCredentials();
         }
     }
-    
+ */   
     checkMarketoCredentials()
     {
         this.loadingMarketo = true;
@@ -1951,14 +1953,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
                     {
                         if (customObjectResponse.statusCode == 8020){
-                            this.eventCampaign.pushToMarketo =  true;
-                            console.log(this.eventCampaign.pushToMarketo);
+                            this.eventCampaign.pushToCRM.push('marketo');
+                            //this.pushToCRM.push('marketo');
 
                             this.templateError = false;
                             this.loading = false;
                         }else{
-                            this.eventCampaign.pushToMarketo = false;
-
                             this.templateError = false;
                             this.loading = false;
                             alert("Custom Objects are not found")
@@ -1966,7 +1966,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
 
                     }, error =>
                     {
-                        this.eventCampaign.pushToMarketo = false;
                         this.templateError = error;
 
                         this.loadingMarketo = false;
@@ -1975,7 +1974,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             }
             else
             {
-                this.eventCampaign.pushToMarketo = false;
+              //  this.eventCampaign.pushToMarketo = false;
 
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -1985,7 +1984,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             }
         }, error =>
             {
-                this.eventCampaign.pushToMarketo = false;
+              //  this.eventCampaign.pushToMarketo = false;
                 this.templateError = error;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2009,7 +2008,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             {
                 $("#closeButton").hide();
                 this.showMarketoForm = false;
-                this.eventCampaign.pushToMarketo = true;
+               // this.eventCampaign.pushToMarketo = true;
+                
+                this.eventCampaign.pushToCRM.push('hubspot');
+                
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
@@ -2017,7 +2019,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
             } else
             {
-                this.eventCampaign.pushToMarketo = false;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
                 this.templateError = response.message;
@@ -2027,7 +2028,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }, error =>
         {
         this.templateError = error;
-            this.eventCampaign.pushToMarketo = false;
             $("#closeButton").show();
             this.loadingMarketo = false;
         }
@@ -2120,7 +2120,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     closeMarketoModal()
     {
-        this.eventCampaign.pushToMarketo = false;
+       // this.eventCampaign.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
     
@@ -2198,6 +2198,27 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
          console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
      }
  }
+ 
+ pushToCrm(){
+     this.isPushToCrm = !this.isPushToCrm;
+    }
+    
+    pushToCrmRequest(crmName: any, event: any){
+       console.log(event.target.checked);
+       if(event.target.checked){
+           
+           if(crmName == 'marketo'){
+               this.checkMarketoCredentials();
+           }else if(crmName == 'hubspot'){
+               this.checkingHubSpotContactsAuthentication();
+           }
+           
+           //this.pushToCRM.push(crmName);
+       }else{
+           this.pushToCRM = this.pushToCRM.filter(e => e !== crmName);
+           console.log(this.pushToCRM);
+       }
+    }
  
 
 }
