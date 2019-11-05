@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {ActivatedRoute,Router} from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { CampaignService } from '../../campaigns/services/campaign.service';
@@ -21,7 +21,7 @@ export class PartnerNotificationComponent implements OnInit {
   width = "33.33333333%";
   constructor( public authenticationService: AuthenticationService,public referenceService:ReferenceService,
                private campaignService: CampaignService,
-               private xtremandLogger: XtremandLogger  ) { }
+               private xtremandLogger: XtremandLogger, public router: Router) { }
   
   
     getPartnerCampaignsCountMapGroupByCampaignType(userId: number){
@@ -84,6 +84,11 @@ export class PartnerNotificationComponent implements OnInit {
       this.getPartnerCampaignsCountMapGroupByCampaignType(superiorId);
       this.getPartnerCampaignsNotifications();   
 
+  }
+  
+  goToRedistributeDiv(campaignType:string){
+      let url = 'home/campaigns/partner/'+campaignType;
+      this.router.navigate([url]);
   }
   
 }
