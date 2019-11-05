@@ -5,60 +5,83 @@
   <h4 class="pull-left m10 f-w-600 text-primary">Campaigns that have been shared with you (Vendor Activity)</h4>
 </div>
 <div class="portlet-body clearfix">
-  <div [attr.class]="divClass" [ngStyle]="{ 'width': width }">
-    <a class="btn-block notification-box" [routerLink]="['/home/campaigns/partner/video']">
-      <span>
-         <img alt="Video Campaign" class="pricing-head-img img-responsive" src="assets/images/video-email.png">
-      </span>
-       <h4>Video</h4>
-      <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalVideoCampaign}}</span></h3>
-    </a>
-  </div>
-  <div [attr.class]="divClass" [ngStyle]="{ 'width': width }">
-    <a class="btn-block notification-box" [routerLink]="['/home/campaigns/partner/regular']">
-       <span>
-         <img alt="Regular Campaign" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
-      </span>
-      <h4>E-mail</h4>
-      <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalRegularCampaign}}</span></h3>
-    </a>
-  </div>
-  <div [attr.class]="divClass" [ngStyle]="{ 'width': width }">
-    <a class="btn-block notification-box" [routerLink]="['/home/campaigns/partner/social']">
-    <span>
-         <img alt="Social Campaign" class="pricing-head-img img-responsive" src="assets/images/social-campaign.png">
-      </span>
-      <h4>Social</h4>
-      <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalSocialCampaign}}</span></h3>
-    </a>
-  </div>
-  <div [attr.class]="divClass" *ngIf="isEventCampaignSharedByVendor" [ngStyle]="{ 'width': width }">
-      <a class="btn-block notification-box" [routerLink]="['/home/campaigns/partner/event']">
-        <span>
-         <img alt="Event Campaign" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png">
-      </span>
-        <h4>Event</h4>
-        <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalEventCampaign}}</span></h3>
-      </a>
-    </div>
-    
-    <div [attr.class]="divClass" *ngIf="isPageCampaignSharedByVendor" [ngStyle]="{ 'width': width }">
-      <a class="btn-block notification-box" [routerLink]="['/home/campaigns/partner/page']">
-        <span>
-         <img alt="Page Campaign" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
-      </span>
-        <h4>Page</h4>
-        <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalPageCampaign}}</span></h3>
-      </a>
-    </div>
-    
-  <!--   <div [attr.class]="divClass" *ngIf="isPageCampaignSharedByVendor" [ngStyle]="{ 'width': width }">
-      <a class="btn-success btn-block notification-box" [routerLink]="['/home/campaigns/partner/event']">
-        <span><i class="fa fa-mobile"></i></span>
-        <h4>SMS</h4>
-        <h3><span *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalPageCampaign}}</span></h3>
-      </a>
-    </div> -->
+     <div [attr.class]="divClass" [ngStyle]="{ 'width': width }">
+           <div class="pricing hover-effect pointer">
+               <div class="pricing-head ">
+                   <h4 id="image-style">
+                       <img alt="Video" class="pricing-head-img img-responsive" src="assets/images/video-email.png"></h4>
+               </div>
+               <div class="pricing-footer">
+                   <h4 id="notification-text">Video</h4>
+                   <h3 id="notification" *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalVideoCampaign}}</h3>
+               </div>
+           </div>
+  	 </div>
+  	 
+  	 <div [attr.class]="divClass" [ngStyle]="{ 'width': width }">
+           <div class="pricing hover-effect pointer">
+               <div class="pricing-head ">
+                   <h4 id="image-style">
+                       <img alt="Video" class="pricing-head-img img-responsive" src="assets/images/regular-email.png"></h4>
+               </div>
+               <div class="pricing-footer">
+                   <h4 id="notification-text">Email</h4>
+                   <h3 id="notification" *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalRegularCampaign}}</h3>
+               </div>
+           </div>
+  	 </div>
+  	 
+  	 <div [attr.class]="divClass" [ngStyle]="{ 'width': width }">
+           <div class="pricing hover-effect pointer">
+               <div class="pricing-head ">
+                   <h4 id="image-style">
+                       <img alt="Video" class="pricing-head-img img-responsive" src="assets/images/social-campaign.png"></h4>
+               </div>
+               <div class="pricing-footer">
+                   <h4 id="notification-text">Social</h4>
+                   <h3 id="notification" *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalSocialCampaign}}</h3>
+               </div>
+           </div>
+  	 </div>
+  	 
+  	 <div [attr.class]="divClass" [ngStyle]="{ 'width': width }" *ngIf="isEventCampaignSharedByVendor">
+           <div class="pricing hover-effect pointer">
+               <div class="pricing-head ">
+                   <h4 id="image-style">
+                       <img alt="Video" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png"></h4>
+               </div>
+               <div class="pricing-footer">
+                   <h4 id="notification-text">Event</h4>
+                   <h3 id="notification" *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalEventCampaign}}</h3>
+               </div>
+           </div>
+  	 </div>
+  	 
+  	 <div [attr.class]="divClass" [ngStyle]="{ 'width': width }"  *ngIf="isPageCampaignSharedByVendor">
+           <div class="pricing hover-effect pointer">
+               <div class="pricing-head ">
+                   <h4 id="image-style">
+                       <img alt="Video" class="pricing-head-img img-responsive" src="assets/images/landing-page.png"></h4>
+               </div>
+               <div class="pricing-footer">
+                   <h4 id="notification-text">Page</h4>
+                   <h3 id="notification" *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalPageCampaign}}</h3>
+               </div>
+           </div>
+  	 </div>
+  	 
+  	 <!--  <div [attr.class]="divClass" [ngStyle]="{ 'width': width }"  *ngIf="isPageCampaignSharedByVendor">
+           <div class="pricing hover-effect pointer">
+               <div class="pricing-head ">
+                   <h4 id="image-style">
+                       <img alt="Video" class="pricing-head-img img-responsive" src="assets/images/landing-page.png"></h4>
+               </div>
+               <div class="pricing-footer">
+                   <h4 id="notification-text">SMS</h4>
+                   <h3 id="notification" *ngIf="partnerCampaignsCountMap">{{partnerCampaignsCountMap.totalPageCampaign}}</h3>
+               </div>
+           </div>
+  	 </div> -->
 </div>
 </div>
 </div>

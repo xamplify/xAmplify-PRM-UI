@@ -45,6 +45,7 @@ export class PartnerNotificationComponent implements OnInit {
                     this.modulesCount = data.campaignTypesCount;
                     if(this.modulesCount==4){
                         this.divClass = "col-xs-12 col-sm-3";
+                        this.width = "25%";
                     }else if(this.modulesCount==5){
                         this.divClass = "col-xs-2";
                        this.width = "20%";
