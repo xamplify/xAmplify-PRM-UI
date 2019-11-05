@@ -474,6 +474,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             }
         }
+        
     }
 
     setActiveTabForVideo(){
