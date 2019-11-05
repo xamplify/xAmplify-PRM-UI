@@ -1108,7 +1108,7 @@ a.disabled {
                           {{eventCampaign?.emailTemplate?.name | slice:0:30}}<span  *ngIf="eventCampaign?.emailTemplate?.name.length>30">...</span>
                         </span>
                       </a>
-                      <a (click)="referenceService.downloadTemplate(eventCampaign.id)" data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
+                      <a  *ngIf="reDistributeEvent" (click)="referenceService.downloadTemplate(eventCampaign.id)" data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
                         <i class="fa fa-download" id="download-template-i-font"></i></a>
                     </td>
                     <td style="text-align: right" width="20%">
