@@ -291,6 +291,7 @@
 								</div>
 								</div>
 								<!-- ---End Of Admin Panel -->
+								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
 								<div class="col-md-6 col-lg-6">
 								<div class="form-group" [attr.class]="companyNameDivClass">
 									<label class="control-label">Company Name <font
@@ -324,6 +325,8 @@
 										[(ngModel)]="companyProfile.companyProfileName" /> </ng-container>
 								</div>
 								</div>
+								</div>
+								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
 								<div class="col-md-6 col-lg-6">	
 									<div class="form-group" [attr.class]="emailIdDivClass">
 										<label class="control-label"> Company Email</label> <input
@@ -342,6 +345,7 @@
 										class="form-control" maxlength="240"
 										[(ngModel)]="companyProfile.tagLine" /> <span
 										*ngIf="tagLineError" style="color: #f55d7a">{{tagLineErrorMessage}}</span>
+								</div>
 								</div>
 								</div>
 								<div class="col-md-6 col-lg-6">
