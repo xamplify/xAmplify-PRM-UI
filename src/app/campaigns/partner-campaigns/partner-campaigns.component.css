@@ -94,3 +94,9 @@ fieldset {
 @media only screen and (min-width:768px){ .modal-template { width: 65% !important;}}
 @media only screen and (max-width:600px){.mobile-left { float: left; margin: 1px;}}
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
+.imageClass{
+	background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
+}
+
