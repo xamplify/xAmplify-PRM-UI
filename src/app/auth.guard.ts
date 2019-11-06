@@ -198,8 +198,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1; 
-            let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner/")>-1);
-            if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerLandingPageAccess){
+            let hasPartnerFormAccess = isPartner && (url.indexOf("/partner/")>-1);
+            if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerFormAccess){
                 return true;
             }else{
                 console.log(campaignAccessDto);
@@ -210,14 +210,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         else if(urlType==this.landingPagesUrl){
             let hasLandingPageAccess = false;
+            let partnerLandingPageAccess = false;
             let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
             if(campaignAccessDto!=undefined){
                 hasLandingPageAccess = campaignAccessDto.landingPage;
+                partnerLandingPageAccess = campaignAccessDto.partnerLandingPage;
+                
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
-            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess){
+            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;
             }else{
                 console.log(campaignAccessDto);
