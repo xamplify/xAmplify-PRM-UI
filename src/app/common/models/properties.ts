@@ -128,4 +128,6 @@ export class Properties {
 
   xclientId: "6639d69f-523f-44ca-b809-a00daa26b367";
   xclientSecret: "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
+  
+  serverErrorMessage = "Oops! Something went wrong.Please try after sometime";
 }

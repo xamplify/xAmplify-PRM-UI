@@ -296,106 +296,14 @@
 													</div>
 												</div>
 											</div>
-											
-											
-											
-											<div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
-                                                <label class="control-label col-sm-4">Push To CRM</label>
-                                                <div class="col-sm-3">
-                                                    <div class="email-options-checkbox-group email-options-notify">
-                                                        <div class="email-options-checkbox clearfix">
-                                                            <div class="col-sm-1 ui-switch-custom-div">
-                                                                <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
-                                                                <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" 
-                                                                [size]="callActionSwitch.size" (click)="pushToCrm()"
-                                                                    id="falseAction">
-                                                                </switch>
-                                                               <!--  <switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)"
-                                                                    id="trueAction" *ngIf="pushToMarketo">
-                                                                </switch> -->
-                                                            </div>
-                                                            <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into Marketo">
-                                                                        <i class="fa fa-question-circle" style="font-size: 20px;float: left;margin: -18px 0 0 0px;"></i>
-                                                                    </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <div class="col-sm-5 " *ngIf="isPushToCrm">
-                                                    <div class="row ">
-                                                        <div div class="col-md-4" *ngIf="enableLeads">
-                                                            <div class="  cenetered-block1">
-                                                                <div class="">
-                                                                    <!-- <div>
-                                                                        <input class="pos" name="vehicle1" type="checkbox" value="">
-                                                                    </div> -->
-                                                                    <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('marketo', $event)">
-                                                                            <span class="checkmark"></span>
-                                                                          </label>
-                                                                    <img class="image-size" src="assets/images/crm/marketo-crm.png">
-                                                                    <div>
-                                                                        <h5 class="hidden-xs mr-2">Marketo</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div div class="col-md-4 ">
-                                                            <div class="cenetered-block1">
-                                                                <div class="">
-                                                                    <!-- <div>
-                                                                        <input class="pos" name="vehicle1" type="checkbox" value="">
-                                                                    </div> -->
-                                                                    <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)" >
-                                                                            <span class="checkmark"></span>
-                                                                          </label>
-                                                                    <img class="image-size" src="assets/images/crm/hubspot-crm.png">
-                                                                    <div>
-                                                                        <h5 class="hidden-xs mr-2">Hubspot</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                        </div>
-                                                        <div class="col-md-4" style="display:none">
-                                                            <div class=" cenetered-block1">
-                                                                <div class="">
-                                                                    <!-- <div class="">
-                                                                        <input class="pos" type="checkbox" name="vehicle1" value="">
-                                                                    </div> -->
-                                                                    <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('salesforce', $event)">
-                                                                            <span class="checkmark"></span>
-                                                                          </label>
-                                                                    <div>
-                                                                        <img class="image-size" src="assets/images/crm/salesforce-crm.png">
-                                                                    </div>
-                                                                    <div>
-                                                                        <h5 class="hidden-xs">Salesforce</h5>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-											
-											
-											
-											
-											
-
-											<!-- <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && enableLeads">
+											<div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && enableLeads">
 												<label class="control-label col-sm-4">Push Leads To Marketo</label>
 												<div class="col-sm-8">
 													<div class="email-options-checkbox-group email-options-notify">
 														<div class="email-options-checkbox clearfix">
 															<div class="col-sm-1 ui-switch-custom-div">
-															 <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch>
+															 <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
 															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
 															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)" id="falseAction" *ngIf="!pushToMarketo">
 																</switch>
@@ -419,7 +327,7 @@
 													<div class="email-options-checkbox-group email-options-notify">
 														<div class="email-options-checkbox clearfix">
 															<div class="col-sm-1 ui-switch-custom-div">
-															 <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch>
+															 <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
 															 <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
 															 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushHubspot(pushToHubspot)" id="falseAction" *ngIf="!pushToHubspot">
 																</switch>
@@ -435,7 +343,7 @@
 														</div>
 													</div>
 												</div>
-											</div> -->
+											</div>
 											
 											
 											<div class="form-group" *ngIf="!isOnlyPartner && refService.smsCampaign && enableSMS  && campaignType!='sms'">

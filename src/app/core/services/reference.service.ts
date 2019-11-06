@@ -17,6 +17,9 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 import { Campaign } from '../../campaigns/models/campaign';
 import { environment } from 'environments/environment';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { Properties } from '../../common/models/properties';
+import { CustomResponse } from '../../common/models/custom-response';
+
 declare var $: any;
 
 @Injectable()
@@ -112,6 +115,8 @@ export class ReferenceService {
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     superiorId:number = 0;
     selectedFeed: any;
+    customResponse = new CustomResponse();
+    properties = new Properties();
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
@@ -1834,5 +1839,11 @@ export class ReferenceService {
     downloadTemplate(campaignId:number){
         window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
     }
-  
+    
+
+    showServerErrorResponse(httpRequestLoader: HttpRequestLoader){
+        httpRequestLoader.isLoading = false;
+        httpRequestLoader.isServerError = true;
+        return new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true ); 
+    }
 }
