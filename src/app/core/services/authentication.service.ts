@@ -58,6 +58,7 @@ export class AuthenticationService {
     superiorId:number =0 ;
     formAlias: any;
     isFromRsvpPage = false;
+    formValues = [];
     
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;

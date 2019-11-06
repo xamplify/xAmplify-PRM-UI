@@ -58,7 +58,6 @@ export class FormPreviewComponent implements OnInit {
       }else{
           this.alias = this.route.snapshot.params['alias'];
       }
-     
       this.getFormFieldsByAlias(this.alias);
 
   }
@@ -88,6 +87,12 @@ export class FormPreviewComponent implements OnInit {
             this.addHeaderMessage("Oops! This form does not exists.",this.errorAlertClass);
           }
           this.processor.remove(this.processor);
+          
+          if(this.authenticationService.formValues.length > 0){
+              this.form.formLabelDTOs = this.authenticationService.formValues;
+          }
+         
+          
           this.ngxLoading = false;
         },
         (error: string) => {

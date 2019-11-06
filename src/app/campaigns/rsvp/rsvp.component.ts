@@ -47,9 +47,14 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       .subscribe(
       (response:any) => {
         this.eventcampaign = response;
+        console.log(response);
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
+        if(response.formValuesDTO){
+           // this.form.formLabelDTOs = response.formValuesDTO.fields;
+            this.authenticationService.formValues = response.formValuesDTO.fields;
+        }
         this.replyUserName = response.targetUserDTO.firstName;
         this.processor.remove(this.processor);
         this.eventStartTimeError();
