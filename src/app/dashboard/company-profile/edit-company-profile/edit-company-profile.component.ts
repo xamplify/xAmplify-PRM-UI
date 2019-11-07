@@ -28,6 +28,8 @@ import { UtilService } from 'app/core/services/util.service';
 import { ImageCroppedEvent } from '../../../common/image-cropper/interfaces/image-cropped-event.interface';
 import { ImageCropperComponent } from '../../../common/image-cropper/component/image-cropper.component';
 import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+import { CallActionSwitch } from '../../../videos/models/call-action-switch';
+
 
 declare var $,swal: any;
 
@@ -36,7 +38,7 @@ declare var $,swal: any;
     templateUrl: './edit-company-profile.component.html',
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
-    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess]
+    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess,CallActionSwitch]
 
 })
 export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -169,7 +171,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
-        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute) {
+        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute,public callActionSwitch: CallActionSwitch) {
         if(this.router.url.indexOf("/home/dashboard/admin-company-profile")>-1){
             this.userAlias = this.route.snapshot.params['alias'];
             if(this.userAlias!=undefined && $.trim(this.userAlias).length>0){
@@ -1314,9 +1316,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                       this.companyProfile.lastName = user.lastName;
                       this.setCompanyProfileViewData(data.companyProfile.companyName);
                         if(roleIds.indexOf(13)>-1){
-                            this.customResponse = new CustomResponse( 'ERROR', "This user is already a vendor and has company profile.So account cannot be created", true );
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor and has company profile.So account cannot be created", true );
                             this.addBlur();
-                        }else if(roleIds.indexOf(2)>-1){
+                        }else if(roleIds.indexOf(18)>-1){
+                            this.customResponse = new CustomResponse( 'ERROR', "This user is already vendor tier-1 and has company profile.So account cannot be created", true );
+                            this.addBlur();
+                        }
+                        else if(roleIds.indexOf(2)>-1){
                             this.customResponse = new CustomResponse( 'ERROR', "This user is already an orgadmin.So account cannot be created", true );
                             this.addBlur();
                         }
@@ -1425,7 +1431,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        if(!this.isFromAdminPanel){
            this.removeBlur();
        }
-      
+   }
+   
+   setVendorTier1(event:any){
+       //this.campaignAccess.vendorTier1 = event;
    }
 
 }
