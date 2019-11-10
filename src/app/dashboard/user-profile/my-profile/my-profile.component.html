@@ -16,12 +16,12 @@
 		opacity: 0.6;
 	}
 
-	.switch {
+	/* .switch {
 		position: relative;
 		display: inline-block;
 		width: 60px;
 		height: 34px;
-	}
+	} */
 
 	.switch input {
 		display: none;
@@ -259,6 +259,9 @@
 									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
 										<a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
 									</li>
+									<li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+										<a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
+									</li>
 								</ul>
 							</div>
 							<div class="portlet-body clearfix">
@@ -442,17 +445,11 @@
 												</div>
 											</div>
 											<button [disabled]="!dealSubmiteState" class="btn green-haze" (click)="saveDealTypes()">{{dealButtonText}}</button>
-
 										</form>
-
-
 									</div>
 
 									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
- 
-										
 										<section class="pricing py-5" *ngIf="integrationTabIndex == 0">
-										
 												<div class="row" style="background-color: white;">
 													<!-- Free Tier -->
 													<div class="col-lg-4" (click)="configmarketo()">
@@ -577,6 +574,130 @@
 										</form>
 									</div>
 									<!-- END PRIVACY SETTINGS TAB -->
+									
+									<!-- GDPR SETTINGS TAB -->
+									<div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
+										<form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid">
+											<table class="table table-light" style="border:0px!important;background-color:transparent!important">
+												<tbody>
+													<fieldset>
+													<legend>GDPR</legend>
+													<tr class="col-md-12 col-lg-12"><!--style="border: 1px solid #ddd;"-->
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 class="f-w-600" style="color: #847d7d;">EU General Data Protection
+																	Regulation(GDPR)&nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;"><a class="link">Privacy & consent</a>&nbsp; | <a
+																		class="link">Cookies & tracking</a> &nbsp;| <a class="link">Workflow &
+																		subscription</a>&nbsp;<i class="fa fa-external-link"></i> |
+																	<a class="link">Learn More</a>&nbsp;<i class="fa fa-external-link"></i></h5>
+																<h5 style="color: #847d7d;">
+																	<input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingMailsCheckBox" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to
+																	contacts who have legal basis to communicate. This setting doesn't apply to emails sent
+																	by the CRM
+																</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.gdprStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setGdpr($event)">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													</fieldset><br>
+													<fieldset *ngIf="gdprSetting.gdprStatus">
+													<legend>Available Options</legend>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600">Unsubscribe links &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">Add/Remove Unsubscribe links in email.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.unsubscribeStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600">GDPR-ready forms &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">GDPR-ready forms.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.formStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600"> GDPR Terms & Conditions &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">Terms & Condtions.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.termsAndConditionStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600"> GDPR Delete Functionality &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;"> GDPR Delete Functionality.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.deleteContactStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600"> GDPR Event &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;"> GDPR Event.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch [(status)]="gdprSetting.eventStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													</fieldset>
+												</tbody>
+											</table>
+											<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+												<button type="submit" class="btn green-haze" (click)="saveGdprSetting()">Save Changes</button>
+											</div>
+										</form>   
+									</div>
+									<!-- END GDPR SETTINGS TAB -->
 									<!--video default player settings-->
 									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
 										<div>

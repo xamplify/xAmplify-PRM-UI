@@ -25,6 +25,8 @@ import { DealType } from '../../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 import { DashboardService } from '../../dashboard.service';
 import { HubSpotService } from 'app/core/services/hubspot.service';
+import {GdprSetting} from '../../models/gdpr-setting';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -33,7 +35,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames],
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames,HttpRequestLoader],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -107,12 +109,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hubSpotRibbonText: string;
     hubSpotRedirectURL: string;
     activeTabName: string = "";
-
+/*****************GDPR************************** */
+gdprSetting:GdprSetting = new GdprSetting();
 
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService, private hubSpotService: HubSpotService) {
+        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
+         private hubSpotService: HubSpotService,public httpRequestLoader: HttpRequestLoader) {
         //   this.customConstructorCall();
     }
     cropperSettings() {
@@ -1272,4 +1276,36 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             window.location.href = this.hubSpotRedirectURL;
         }
     }
+
+    /*********************GDPR Setting********************** */
+    setGdpr(event:any){
+        this.gdprSetting.gdprStatus = event;
+        if(!event){
+            this.gdprSetting.allowMarketingMailsCheckBox = event;
+            this.gdprSetting.formStatus = event;
+            this.gdprSetting.eventStatus = event;
+            this.gdprSetting.deleteContactStatus = event;
+            this.gdprSetting.termsAndConditionStatus = event;
+            this.gdprSetting.unsubscribeStatus = event;
+        }
+    }
+
+
+    saveGdprSetting(){
+        this.gdprSetting.companyId = this.referenceService.companyId;
+        this.gdprSetting.createdUserId = this.loggedInUserId;
+        console.log(this.gdprSetting);
+        this.userService.saveGdprSetting(this.gdprSetting)
+        .subscribe(
+            data => {
+               this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+               this.referenceService.goToTop();
+            },
+            error => {
+                this.customResponse =  this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+            },
+            () => this.logger.info('Finished saveGdprSetting()')
+        )
+    }
+
 }

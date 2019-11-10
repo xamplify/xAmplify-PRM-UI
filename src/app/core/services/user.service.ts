@@ -9,6 +9,7 @@ import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
 import {RequestDemo} from '../../authentication/request-demo/request-demo';
+import {GdprSetting} from '../../dashboard/models/gdpr-setting';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,7 @@ export class UserService {
     loggedInUserData: User;
 
     URL = this.authenticationService.REST_URL;
+    GDPR_SETTING_URL = this.authenticationService.REST_URL+"gdpr/setting/"
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
 
@@ -248,6 +250,13 @@ export class UserService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+
+    saveGdprSetting(gdprSetting:GdprSetting){
+        return this.http.post(this.GDPR_SETTING_URL+"save?access_token="+this.authenticationService.access_token,gdprSetting)
+        .map(this.extractData)
+        .catch(this.handleError);
+       }
+    
 
     
     private extractData( res: Response ) {

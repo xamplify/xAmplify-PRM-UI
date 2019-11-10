@@ -6,6 +6,7 @@ import { CompanyProfile } from '../models/company-profile';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 
+
 @Injectable()
 export class CompanyProfileService {
 
@@ -48,7 +49,7 @@ export class CompanyProfileService {
       return this.httpClient.post(this.URL+"company-profile/upload-logo?userId="+this.authenticationService.user.id+"&access_token="+this.authenticationService.access_token,formData)
       .catch(this.handleError);
     }
-    
+    /***Uploading File Along With JSON**** */
     saveCompanyProfileByAdmin(file:any,companyProfile:CompanyProfile){
         const formData = new FormData();
         formData.append('file', file, file.name);
@@ -81,6 +82,7 @@ export class CompanyProfileService {
         .catch(this.handleError);
    }
 
+  
     private extractData( res: Response ) {
         let body = res.json();
         return body || {};
