@@ -577,7 +577,8 @@
 									
 									<!-- GDPR SETTINGS TAB -->
 									<div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
-										<form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid">
+										<app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
+										<form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
 											<table class="table table-light" style="border:0px!important;background-color:transparent!important">
 												<tbody>
 													<fieldset>
@@ -592,7 +593,7 @@
 																		subscription</a>&nbsp;<i class="fa fa-external-link"></i> |
 																	<a class="link">Learn More</a>&nbsp;<i class="fa fa-external-link"></i></h5>
 																<h5 style="color: #847d7d;">
-																	<input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingMails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to
+																	<input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to
 																	contacts who have legal basis to communicate. This setting doesn't apply to emails sent
 																	by the CRM
 																</h5>
@@ -619,7 +620,7 @@
 															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
 																<section>
 																	<switch  [(status)]="gdprSetting.unsubscribeStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
 																   </switch>
 																</section>
 															</div>
@@ -635,7 +636,7 @@
 															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
 																<section>
 																	<switch  [(status)]="gdprSetting.formStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
 																   </switch>
 																</section>
 															</div>
@@ -651,7 +652,7 @@
 															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
 																<section>
 																	<switch  [(status)]="gdprSetting.termsAndConditionStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
 																   </switch>
 																</section>
 															</div>
@@ -667,7 +668,7 @@
 															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
 																<section>
 																	<switch  [(status)]="gdprSetting.deleteContactStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
 																   </switch>
 																</section>
 															</div>
@@ -683,7 +684,7 @@
 															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
 																<section>
 																	<switch [(status)]="gdprSetting.eventStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
 																   </switch>
 																</section>
 															</div>
@@ -693,7 +694,8 @@
 												</tbody>
 											</table>
 											<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
-												<button type="submit" class="btn green-haze" (click)="saveGdprSetting()">Save Changes</button>
+												<button type="submit" class="btn green-haze" (click)="saveGdprSetting()"  *ngIf="!gdprSetting.isExists">Save Settings</button>
+												<button type="submit" class="btn green-haze" (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists">Update Settings</button>
 											</div>
 										</form>   
 									</div>

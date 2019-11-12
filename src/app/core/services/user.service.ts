@@ -256,6 +256,17 @@ export class UserService {
         .map(this.extractData)
         .catch(this.handleServerError);
        }
+    updateGdprSetting(gdprSetting: GdprSetting) {
+        return this.http.post(this.GDPR_SETTING_URL + "update?access_token=" + this.authenticationService.access_token, gdprSetting)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    getGdprSettingByCompanyId(companyId:number) {
+        return this.http.get(this.GDPR_SETTING_URL + "getByCompanyId/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
 
     private handleServerError(error: any) {
         return Observable.throw(error);

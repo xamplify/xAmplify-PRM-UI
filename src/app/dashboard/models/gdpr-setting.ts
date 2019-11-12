@@ -3,11 +3,13 @@ export class GdprSetting {
     id:number;
     companyId:number;
     createdUserId:number;
-    gdprStatus:boolean = false;
-    unsubscribeStatus:boolean=false;
-    formStatus:boolean=false;
-    termsAndConditionStatus:boolean=false;
-    deleteContactStatus:boolean=false;
-    eventStatus:boolean=false;
-    allowMarketingMails:boolean = false;
+    updatedUserId:number;
+    gdprStatus:boolean = true;
+    unsubscribeStatus:boolean=true;
+    formStatus:boolean=true;
+    termsAndConditionStatus:boolean=true;
+    deleteContactStatus:boolean=true;
+    eventStatus:boolean=true;
+    allowMarketingEmails:boolean = true;
+    isExists = false;
 }

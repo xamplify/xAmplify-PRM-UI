@@ -111,6 +111,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     activeTabName: string = "";
 /*****************GDPR************************** */
 gdprSetting:GdprSetting = new GdprSetting();
+gdprSettingLoaded = false;
 
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1262,6 +1263,9 @@ gdprSetting:GdprSetting = new GdprSetting();
     
     activateTab(activeTabName:any){
       this.activeTabName = activeTabName;
+      if(this.activeTabName=="gdpr"){
+         this.getGdprSettings();
+      }
     }
 
     ngOnDestroy() {
@@ -1280,33 +1284,70 @@ gdprSetting:GdprSetting = new GdprSetting();
     /*********************GDPR Setting********************** */
     setGdpr(event:any){
         this.gdprSetting.gdprStatus = event;
-        if(!event){
-            this.gdprSetting.allowMarketingMails = event;
-            this.gdprSetting.formStatus = event;
-            this.gdprSetting.eventStatus = event;
-            this.gdprSetting.deleteContactStatus = event;
-            this.gdprSetting.termsAndConditionStatus = event;
-            this.gdprSetting.unsubscribeStatus = event;
-        }
+        this.gdprSetting.unsubscribeStatus = event;
+        this.gdprSetting.formStatus = event;
+        this.gdprSetting.termsAndConditionStatus = event;
+        this.gdprSetting.deleteContactStatus = event;
+        this.gdprSetting.eventStatus = event;
     }
 
+    setAllGdprStatus(){
+        if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
+            && !this.gdprSetting.deleteContactStatus && !this.gdprSetting.eventStatus){
+                this.gdprSetting.gdprStatus = false;
+                this.gdprSetting.allowMarketingEmails = false;
+            }else{
+            this.gdprSetting.gdprStatus = true;
+            }
+        }
+    
+
+
+    getGdprSettings(){
+        this.gdprSetting = new GdprSetting();
+        if(this.referenceService.companyId>0){
+            this.referenceService.startLoader(this.httpRequestLoader);
+            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
+                .subscribe(
+                    response => {
+                        if(response.statusCode==200){
+                            this.gdprSetting = response.data;
+                            this.gdprSetting.isExists = true;
+                        }else{
+                            this.gdprSetting.isExists = false;
+                        }
+                        this.referenceService.stopLoader(this.httpRequestLoader);
+                    },
+                    (error: any) => {
+                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                    },
+                    () => this.logger.info('Finished getGdprSettings()')
+                );
+        }else{
+            this.customResponse = new CustomResponse('ERROR', 'Unable to get GDPR Settings.', true);
+            this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+        
+    }
 
     saveGdprSetting(){
+        this.referenceService.startLoader(this.httpRequestLoader);
         this.gdprSetting.companyId = this.referenceService.companyId;
         this.gdprSetting.createdUserId = this.loggedInUserId;
-        console.log(this.gdprSetting);
         this.userService.saveGdprSetting(this.gdprSetting)
         .subscribe(
             data => {
-               this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+                this.gdprSetting.isExists = true;
+                this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+                this.referenceService.stopLoader(this.httpRequestLoader);
             },
             (error: any)  => {
-                console.log(error);
                 let status = error.status;
                 if(status==409){
                     const body = error['_body'];
                     const response = JSON.parse(body);
                     this.customResponse = new CustomResponse('ERROR', response.message, true);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
                 }else{
                     this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
                 }
@@ -1314,6 +1355,28 @@ gdprSetting:GdprSetting = new GdprSetting();
             () => this.logger.info('Finished saveGdprSetting()')
         );
         this.referenceService.goToTop();
+    }
+
+
+    updateGdprSetting(){
+        console.log(this.gdprSetting);
+        this.referenceService.startLoader(this.httpRequestLoader);
+        this.gdprSetting.updatedUserId = this.loggedInUserId;
+        this.userService.updateGdprSetting(this.gdprSetting)
+            .subscribe(
+                data => {
+                    this.gdprSetting.isExists = true;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                },
+                () => this.logger.info('Finished updateGdprSetting()')
+            );
+        this.referenceService.goToTop();
+
+
     }
 
 }
