@@ -1281,7 +1281,7 @@ gdprSetting:GdprSetting = new GdprSetting();
     setGdpr(event:any){
         this.gdprSetting.gdprStatus = event;
         if(!event){
-            this.gdprSetting.allowMarketingMailsCheckBox = event;
+            this.gdprSetting.allowMarketingMails = event;
             this.gdprSetting.formStatus = event;
             this.gdprSetting.eventStatus = event;
             this.gdprSetting.deleteContactStatus = event;
@@ -1299,13 +1299,21 @@ gdprSetting:GdprSetting = new GdprSetting();
         .subscribe(
             data => {
                this.customResponse = new CustomResponse('SUCCESS',data.message,true);
-               this.referenceService.goToTop();
             },
-            error => {
-                this.customResponse =  this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+            (error: any)  => {
+                console.log(error);
+                let status = error.status;
+                if(status==409){
+                    const body = error['_body'];
+                    const response = JSON.parse(body);
+                    this.customResponse = new CustomResponse('ERROR', response.message, true);
+                }else{
+                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                }
             },
             () => this.logger.info('Finished saveGdprSetting()')
-        )
+        );
+        this.referenceService.goToTop();
     }
 
 }

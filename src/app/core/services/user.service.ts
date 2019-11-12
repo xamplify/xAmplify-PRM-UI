@@ -254,8 +254,13 @@ export class UserService {
     saveGdprSetting(gdprSetting:GdprSetting){
         return this.http.post(this.GDPR_SETTING_URL+"save?access_token="+this.authenticationService.access_token,gdprSetting)
         .map(this.extractData)
-        .catch(this.handleError);
+        .catch(this.handleServerError);
        }
+
+    private handleServerError(error: any) {
+        return Observable.throw(error);
+    }
+
     
 
     

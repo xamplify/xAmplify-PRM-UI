@@ -9,5 +9,5 @@ export class GdprSetting {
     termsAndConditionStatus:boolean=false;
     deleteContactStatus:boolean=false;
     eventStatus:boolean=false;
-    allowMarketingMailsCheckBox:boolean = false;
+    allowMarketingMails:boolean = false;
 }
