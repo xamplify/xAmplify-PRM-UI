@@ -175,6 +175,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  statusMessage: string;
  selectedFormName: string;
  selectedFormId: number;
+ formCreatedName: string = '';
  @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
   
 
@@ -222,7 +223,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
         });
     })
-    this.eventCampaign.eventUrl = 'https://www.xamplify.com';
+    this.eventCampaign.eventUrl = 'https://www.event-campaign/54ec45';
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -378,7 +379,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
           this.selectedFormId = this.selectedFormData[i].id;
         }
         
-        this.eventCampaign.eventUrl = 'https://www.xamplify.com';
+        this.eventCampaign.eventUrl = 'https://www.event-campaign/54ec45';
         
         if(this.eventCampaign.publicEventCampaign && this.eventCampaign.campaign && !this.statusMessage){
             this.statusMessage = this.eventCampaign.campaign;
@@ -429,9 +430,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
       if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
         this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
         this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+        //this.formCreatedName = this.eventCampaign.forms.createdName;
         for(var i=0; i< this.selectedFormData.length; i++){
           this.selectedFormName = this.selectedFormData[i].name;
           this.selectedFormId = this.selectedFormData[i].id;
+         // this.createdBy = this.selectedFormData[i].createdBy;
         }
       }
       this.changeDetectorRef.detectChanges();

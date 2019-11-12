@@ -127,6 +127,7 @@ export class PreviewPopupComponent implements OnInit {
       ( data: any ) => {
           if(data.statusCode===200){
               this.form = data.data;
+              console.log(data.data);
               this.formError = false;
           }else{
               this.formError = true;

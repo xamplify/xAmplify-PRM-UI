@@ -565,14 +565,14 @@ a.disabled {
 							</switch>
 							</div>
 						</div>
-						<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign">
+						<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 							<label>Event URL</label>
 							<input type="text" class="form-control" id="eventUrl" placeholder="Event Url" [(ngModel)]="eventCampaign.eventUrl" [ngModelOptions]="{standalone: true}">
 							
 							
 							
 					<!-- <div class="col-xs-12"> -->
-						<div *ngIf="socialStatusProviders?.length > 0">
+						<div *ngIf="socialStatusProviders?.length > 0"  [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable" style="margin: 5px 15px;">
 								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
 							</button>
@@ -634,7 +634,7 @@ a.disabled {
 					</div>
 					
 					
-					<div class="boxes portlet light" *ngIf="!reDistributeEvent && !isEventUpdate && authenticationService.module.hasFormAccess">
+					<div class="boxes portlet light" *ngIf="!reDistributeEvent && !isEventUpdate && authenticationService.module.hasFormAccess"  [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
 						<div class="portlet-title" style="display:block">
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
@@ -643,7 +643,8 @@ a.disabled {
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
 							
 							<section *ngIf="selectedFormId">
-							<a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a>
+							<span>Name: <a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a></span><br>
+							<!-- <span>By: Sravan</span> -->
 							</section>
 						</div>
 					</div>
@@ -655,7 +656,8 @@ a.disabled {
 						<div class="portlet-body clearfix">
 							<section *ngIf="selectedFormId">
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
-							<a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a>
+							<span>Name: <a (click)="previewForm(selectedFormId)">{{selectedFormName}}</a></span><br>
+							<!-- <span>By: Sravan</span> -->
 							</section>
 						</div>
 					</div>
