@@ -273,6 +273,9 @@
 														*ngIf="contactList.socialNetwork=='MANUAL'"
 														src="{{normalImage}}" alt="manual" style="height: 70px;">
 														<img
+														*ngIf="contactList.socialNetwork=='HUBSPOT'"
+														src="{{hubspotImage}}" alt="manual" style="height: 70px;">
+														<img
 														*ngIf="contactList.socialNetwork=='MARKETO'"
 														src="{{marketoImage}}" alt="manual" style="height: 70px;">
 														<img *ngIf="!contactList.emailValidationInd"
