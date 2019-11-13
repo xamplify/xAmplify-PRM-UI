@@ -259,7 +259,7 @@
 									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
 										<a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
 									</li>
-									<li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+									<li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
 										<a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
 									</li>
 								</ul>
