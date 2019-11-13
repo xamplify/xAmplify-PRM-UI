@@ -105,9 +105,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     public zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
     public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
     public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
-    public normalImage: string = 'assets/admin/pages/media/works/contacts.png';
-    public marketoImage:string = 'assets/admin/pages/media/works/marketo.png';
-    public hubspotImage: string = 'assets/admin/pages/media/works/hubspot-sample-logo.png';
+    public normalImage: string = 'assets/admin/pages/media/works/contacts2.png';
+    public marketoImage:string = 'assets/admin/pages/media/works/marketo-conatct.png';
+    public hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 
     sortOptions = [
         { 'name': 'Sort by', 'value': '', 'for': '' },
