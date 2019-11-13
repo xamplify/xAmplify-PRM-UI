@@ -1459,10 +1459,16 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                     $( '#ContactListTable_' + id ).addClass( 'contact-list-selected' );
                     for ( var i = 0; i < self.pagedItems.length; i++ ) {
                         var object = {
-                            "emailId": self.pagedItems[i].emailId,
                             "firstName": self.pagedItems[i].firstName,
                             "lastName": self.pagedItems[i].lastName,
                         }
+                        
+                        if(self.pagedItems[i].email){
+                            object['emailId'] = self.pagedItems[i].email;
+                        }else{
+                            object['emailId'] = self.pagedItems[i].emailId;
+                        }
+                        
                         console.log( object );
                         self.allselectedUsers.push( object );
                     }
@@ -1495,7 +1501,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
+    highlightRow( contactId: number, email: any, userEmail: any, firstName: any, lastName: any, event: any ) {
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -1503,10 +1509,15 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.selectedContactListIds.push( contactId );
             this.paginatedSelectedIds.push( contactId );
             var object = {
-                "emailId": email,
-                "firstName": firstName,
-                "lastName": lastName,
+                    "firstName": firstName,
+                    "lastName": lastName,
+                }
+            if(userEmail){
+                object['emailId'] = userEmail;
+            }else{
+                object['emailId'] = email;
             }
+            
             this.allselectedUsers.push( object );
             console.log( this.allselectedUsers );
         } else {

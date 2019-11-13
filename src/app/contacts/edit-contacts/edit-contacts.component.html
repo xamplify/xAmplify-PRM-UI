@@ -196,7 +196,7 @@
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
 															<li><a id="download_empy_csv"
-																(click)="downloadEmptyCsv()">Download CSV Template</a></li>
+																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8">Download CSV Template</a></li>
 															<li><a id="delete_button"
 																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>

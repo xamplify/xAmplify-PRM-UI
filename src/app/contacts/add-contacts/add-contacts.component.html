@@ -518,7 +518,7 @@
 
 													<td align="center" *ngIf="selectedAddContactsOption != 6"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1"
 														 class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}"
-														 name="campaignContact[]" value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)"
+														 name="campaignContact[]" value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.email,user.firstName,user.lastName,$event)"
 														/>
 													</td>
 													<td align="center" *ngIf="selectedAddContactsOption == 6"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1"
