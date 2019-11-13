@@ -34,6 +34,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     searchKey = "";
     campaignSuccessMessage = "";
     superiorId = 0;
+    loggedInUserId = 0;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -74,6 +75,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             this.superiorId = superiorId;
         }
+        this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {

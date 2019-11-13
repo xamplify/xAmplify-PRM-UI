@@ -168,14 +168,14 @@
 										<span  data-toggle="dropdown" title="Download"></span>
 										<ul class="dropdown-menu pull-right">
 												<li>
-												  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'html')"
-                        	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" >
+												  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}"
+                        	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" target="_blank">
                         	 							<i class="fa fa-file" style="width: 30px;"></i>
 														 Download Html
 													</a>
 											</li>
 											<li>
-											  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button">
+											  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"  target="_blank">
 												<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
 												Download Pdf
 												</a>
@@ -243,22 +243,21 @@
 													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
 												
-												<ng-container class="pull-right">
+												<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'">
 										         <div class="btn-group" id="download-template-grid">
 														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
 														<span  data-toggle="dropdown" title="Download"></span>
 														<ul class="dropdown-menu pull-right">
 																<li>
-																  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'html')" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
-				                        	 							data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" >
+																  	<a  href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}"  
+				                        	 							data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank" >
 				                        	 							<i class="fa fa-file" style="width: 30px;"></i>
 																		 Download Html
 																	</a>
 															</li>
 															<li>
-															  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'pdf')"
-																*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'"
-																data-toggle="tooltip" data-placement="top" data-rel="fancybox-button">
+															  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  
+																data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
 																<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
 																Download Pdf
 																</a>

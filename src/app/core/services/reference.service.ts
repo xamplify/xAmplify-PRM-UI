@@ -1837,7 +1837,10 @@ export class ReferenceService {
     }
 
     downloadTemplate(campaignId:number,type:string){
-        window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"/"+type+"?access_token="+this.authenticationService.access_token;
+        //window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"/"+type+"?access_token="+this.authenticationService.access_token;
+        //let url = this.authenticationService.REST_URL + "campaign/download/" + campaignId + "/" + this.authenticationService.getUserId() + "/" + type + "?access_token=" + this.authenticationService.access_token;
+        //let opner = window.open(url, '_blank');
+
     }
     
 
