@@ -1836,8 +1836,8 @@ export class ReferenceService {
 
     }
 
-    downloadTemplate(campaignId:number){
-        window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
+    downloadTemplate(campaignId:number,type:string){
+        window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"/"+type+"?access_token="+this.authenticationService.access_token;
     }
     
 

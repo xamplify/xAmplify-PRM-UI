@@ -162,19 +162,28 @@
                         <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
                             <i class="fa fa-clone cancelled-event"></i>
                         </a>
-                        
-                        <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
-                        	 data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
-                            <i class="fa fa-download"></i>
-                        </a>
-                        
-                        <!--   <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'LANDINGPAGE'" 
-                        	 data-toggle="tooltip" data-placement="top" title="Download Page" data-rel="fancybox-button" >
-                            <i class="fa fa-download"></i>
-                        </a> -->
-                        
+						  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'">
+						         <div class="btn-group pull-right" id="download-template">
+										<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
+										<span  data-toggle="dropdown" title="Download"></span>
+										<ul class="dropdown-menu pull-right">
+												<li>
+												  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'html')"
+                        	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" >
+                        	 							<i class="fa fa-file" style="width: 30px;"></i>
+														 Download Html
+													</a>
+											</li>
+											<li>
+											  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button">
+												<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
+												Download Pdf
+												</a>
+											</li>
+										</ul>
+								</div>
+                        </ng-container>
                         </span>
-
                         <a class="hidden"><i class="fa fa-trash"></i></a>
                         <!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
@@ -233,15 +242,35 @@
 												<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
 													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
-												<a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
+												
+												<ng-container class="pull-right">
+										         <div class="btn-group" id="download-template-grid">
+														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
+														<span  data-toggle="dropdown" title="Download"></span>
+														<ul class="dropdown-menu pull-right">
+																<li>
+																  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'html')" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
+				                        	 							data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" >
+				                        	 							<i class="fa fa-file" style="width: 30px;"></i>
+																		 Download Html
+																	</a>
+															</li>
+															<li>
+															  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'pdf')"
+																*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'"
+																data-toggle="tooltip" data-placement="top" data-rel="fancybox-button">
+																<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
+																Download Pdf
+																</a>
+															</li>
+														</ul>
+												</div>
+                        				</ng-container>
+												
+												<!-- <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
                         								 data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
                             					<i class="fa fa-download"></i>
-                        						</a>
-                        
-						                       <!--    <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'LANDINGPAGE'" 
-						                        	 data-toggle="tooltip" data-placement="top" title="Download Page" data-rel="fancybox-button" >
-						                            <i class="fa fa-download"></i>
-						                        </a> -->
+                        						</a> -->
 											</div>
 										</div>
 									</div>
