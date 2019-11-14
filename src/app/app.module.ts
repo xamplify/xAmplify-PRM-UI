@@ -58,12 +58,13 @@ import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HubSpotService } from './core/services/hubspot.service';
+import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
                ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
-                    ,LogSMSClickComponent,ShowLandingPageComponent, PageNotFoundComponent
+        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),

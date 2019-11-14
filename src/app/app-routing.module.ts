@@ -34,6 +34,7 @@ import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
 import { AccessAccountComponent } from './authentication/access-account/access-account.component';
+import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -95,6 +96,7 @@ export const routes: Routes = [
     {path: 'clpl/:alias', component:ShowLandingPageComponent},
     { path: 'requestdemo', component: RequestDemoComponent },
     { path: 'axAa/:alias', component: AccessAccountComponent },
+    { path: 'download/:type', component: DownloadTemplateComponent },
     { path: '**', component: PageNotFoundComponent },
 ];
 
