@@ -46,7 +46,7 @@
 										<label class="form-check-label">
 										<input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
 											class="form-check-input" (click)="columnInfo.value = radioButton.id" 
-											[checked]="radioButton.id === columnInfo.value">
+											[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue">
 										{{radioButton.name}}
 										</label>
 									</div>
@@ -59,6 +59,7 @@
 									<div class="form-check">
 										<label class="form-check-label">
 										<input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+										[checked]="checkBox.isChecked"
 											class="form-check-input" (click)="updateCheckBoxModel(columnInfo,checkBox,$event)">
 										{{checkBox.name}}
 										</label>

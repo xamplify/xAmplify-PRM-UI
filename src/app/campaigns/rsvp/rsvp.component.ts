@@ -51,9 +51,27 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
-        if(response.formValuesDTO){
+        if(response.formDTOs[0].formLabelDTOs){
            // this.form.formLabelDTOs = response.formValuesDTO.fields;
-            this.authenticationService.formValues = response.formValuesDTO.fields;
+            
+            
+            
+            response.formDTOs[0].formLabelDTOs.forEach((dto)=>{
+                if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
+                    dto.checkBoxChoices.forEach((value)=>{ value['isChecked'] = false;})
+                    
+                    dto.dropdownIds.forEach((ids)=>{
+                       dto.checkBoxChoices.forEach((check)=>{
+                           if(ids === check.id) { check.isChecked = true; }
+                       });
+                        
+                    });
+                }
+                
+            });
+            
+            this.authenticationService.formValues = response.formDTOs[0].formLabelDTOs;
+            console.log(this.authenticationService.formValues);
         }
         this.replyUserName = response.targetUserDTO.firstName;
         this.processor.remove(this.processor);
