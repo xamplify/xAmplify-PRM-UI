@@ -145,6 +145,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
  isSmsServiceAnalytics = false;
  @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
  senderMergeTag:SenderMergeTag = new SenderMergeTag();
+ leadData: any;
+  isDealPreview=false;
+  isDeal=false;
 
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
@@ -679,12 +682,12 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
        .subscribe( result => {
          const response = result.data.data;
         response.forEach((element, index) => {
-           element.time = new Date(element.sentTimeUtcString); 
+           element.time = new Date(element.sentTimeUtcString);
            console.log(element);
         });
         this.emailLogs.push(...response);
         this.loading =false;
-        
+
        },
       error => console.log(error),
       () => {
@@ -741,7 +744,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   /*     *ngIf="!interactiveDataTimeLineViewEnable"
        code in 796 line need to add for not showing interactive data timeline view */
 
-    
+
     if(this.campaignType != 'SMS'){
         this.redistributedAccountsBySelectedUserId = [];
          this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
@@ -751,7 +754,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         }else{
           this.listSMSLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
         }
-    
+
     this.redistributedAccountsBySelectedUserId = [];
      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
     this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
@@ -776,7 +779,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
       }
       console.log('campaign id : ' + this.campaignId);
       this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-     
+
       this.loading = false;
     }
        this.getDealState(campaignViews);
@@ -789,7 +792,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     if(campaignViews.userId!=null && campaignViews.campaignId!=null){
       const obj = {"campaignId":campaignViews.campaignId};
         this.campaignService.getCampaignById(obj).subscribe(data=>{
-        
+
             if(data.nurtureCampaign){
               this.campaignService.getCampaignById({"campaignId":data.parentCampaignId}).subscribe(parent_campaign=>{
                 console.log(parent_campaign)
@@ -821,16 +824,29 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
                 });
             })
             }
-          
+
         })
       }
 
       this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
+        console.log(data)
         this.dealId = data;
-        if(data == -1)
-            this.dealButtonText = "Register Lead"
-        else
-            this.dealButtonText = "Update Lead"
+        if(data == -1){
+            this.dealButtonText = "Register Lead";
+            this.isDeal = false;
+        }else{
+
+            this.dealRegService.getDealById(data,campaignViews.userId).subscribe(response=>{
+              console.log(response)
+              this.isDeal = response.data.deal;
+              if(response.data.deal){
+                this.dealButtonText = "Preview Deal";
+              } else {
+                this.dealButtonText = "Update Lead"
+              }
+              this.leadData = response.data;
+            })
+        }
        })
 
 
@@ -839,13 +855,24 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   }
 
    showDealRegistrationForm(){
-    this.isDealRegistration = true;
+    if(this.isDeal){
+      this.isDealRegistration = false;
+      this.isDealPreview = true;
+    } else {
+      this.isDealRegistration = true;
+      this.isDealPreview = false;
+    }
+
     console.log(this.isTimeLineView && !this.isDealRegistration);
+}
+previeDeal(){
+  this.isDealPreview = true;
 }
 
 showTimeLineView(){
     this.isDealRegistration = false;
     this.isTimeLineView = true;
+    this.isDealPreview = false;
     console.log(this.isDealRegistration);
 
     this.getDealState(this.selectedRow);
@@ -897,7 +924,7 @@ showTimeLineView(){
       this.xtremandLogger.error(err);
     }
   }
-  
+
   getEventCampaignById(campaignId: number) {
       try{
         this.campaignService.getEventCampaignById(campaignId)
@@ -950,7 +977,7 @@ showTimeLineView(){
           }else{
             this.getSmsLogCountByCampaign(this.campaignId);
           }
-        
+
         this.campaingContactLists = data.userLists;
         console.log(this.campaingContactLists);
         this.isPartnerCampaign = this.campaign.channelCampaign? '(PARTNER)' : '';
@@ -1524,7 +1551,7 @@ showTimeLineView(){
           this.downloadEmailLogs();
       }
   }
-  
+
   downloadEmailLogs() {
     try{
     this.loading = true;
@@ -1593,7 +1620,7 @@ showTimeLineView(){
         object["City"] = res[0];
         object["State"] = res[1];
         object["Country"] = res[2];
-        
+
       }
 
       if (this.downloadTypeName === 'campaignViews') {
@@ -1612,14 +1639,14 @@ showTimeLineView(){
                 object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
             }
         }else if(this.campaignType === 'SOCIAL'){
-            
+
             if(latestView != null){
                 let lastviewHours = this.referenceService.formatAMPM(latestView);
                 object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
             }else{
                 object["Latest View"] = ' ';
             }
-            
+
             object["Redistributed Count"] = this.downloadCsvList[i].viewsCount;
         } else{
          let hours = this.referenceService.formatAMPM(sentTime);
@@ -1635,7 +1662,7 @@ showTimeLineView(){
         object["Total Views"] = this.downloadCsvList[i].viewsCount;
         }
         }
-      
+
       if (this.downloadTypeName === 'sentEmails') {
           object["Campaign Name"] = this.downloadCsvList[i].campaignName;
           let hours = this.referenceService.formatAMPM(sentTime);
@@ -1719,7 +1746,7 @@ showTimeLineView(){
               tempalteObject = emailTemplate;
               campaign = this.campaign;
           }
-          
+
           let userId = 0;
           if(this.campaign.nurtureCampaign){
               userId = this.campaign.parentCampaignUserId;
@@ -1746,8 +1773,8 @@ showTimeLineView(){
                       });
                       body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
                   }
-                  
-                  
+
+
                  /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
                       body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
                   }*/
@@ -1840,9 +1867,9 @@ showTimeLineView(){
     }
 
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
-    
+
     search() {
-        
+
         if(this.paginationType == 'campaignViews' || this.paginationType == 'sentEmailData'){
             this.campaignViewsPagination.searchKey = this.searchKey;
             this.campaignViewsPagination.pageIndex = 1;
@@ -1880,8 +1907,8 @@ showTimeLineView(){
             this.rsvpDetailAnalyticsPagination.pageIndex = 1;
             this.getRsvpEmailNotOpenDetails();
         }
-        
-        
+
+
     }
 
   ngOnInit() {
@@ -1910,7 +1937,7 @@ showTimeLineView(){
     $('#emailSentListModal').modal('hide');
     $('#donutModelPopup').modal('hide');
   }
-  
+
   showLandingPagePreview(campaign:Campaign){
       if(campaign.nurtureCampaign){
           campaign.landingPage.showPartnerCompanyLogo = true;
@@ -1931,7 +1958,7 @@ showTimeLineView(){
     goToCampaignLandingPageAnalytics(campaignId:number){
         this.router.navigate(['home/pages/'+campaignId+'/campaign/analytics']);
     }
-  
+
   showAutoResponseAnalytics(campaign:any,selectedIndex:number){
       this.autoResponseAnalyticsPagination = new Pagination();
       $.each(this.campaignViews,function(index,row){
@@ -1944,8 +1971,8 @@ showTimeLineView(){
           this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination, campaign);
       }
   }
-  
-  
+
+
   listAutoResponseAnalytics(pagination:Pagination,campaign:any){
       this.referenceService.loading(this.autoResponeAnalyticsLoader, true);
       this.autoResponseAnalyticsPagination.campaignId = campaign.campaignId;
@@ -1972,12 +1999,12 @@ showTimeLineView(){
           () => this.xtremandLogger.info("Finished showAutoResponseAnalytics()")
       );
   }
-  
+
   setAutoResponsesPage( event: any,campaign:any ) {
       this.autoResponseAnalyticsPagination.pageIndex = event.page;
       this.listAutoResponseAnalytics( this.autoResponseAnalyticsPagination,campaign );
       }
-  
+
   getSmsSentCount(campaignId: number) {
       try{
       this.loading = true;
@@ -2027,7 +2054,7 @@ showTimeLineView(){
         )
       }catch(error){ this.xtremandLogger.error('error'+error);}
     }
-  
+
   getSmsLogCountByCampaign(campaignId: number) {
   try{
   this.loading = true;
@@ -2141,7 +2168,7 @@ toggleSmsAnalyticsView(event:string){
 
     this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
 
-    
+
 }
-  
+
 }
