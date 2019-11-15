@@ -207,7 +207,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.campaignService.getPartnerTemplatePreview(campaign.campaignId, this.authenticationService.getUserId()).subscribe(
             (response: any) => {
                 if (response.statusCode == 200) {
-                    let emailTemplateBody = response.data.body;
+                    let emailTemplateBody = response.data;
                     $(htmlContent).append(emailTemplateBody);
                     this.loadingEmailTemplate = false;
                 } else {
