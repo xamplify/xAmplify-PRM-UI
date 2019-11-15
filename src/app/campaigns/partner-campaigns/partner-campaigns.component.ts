@@ -63,6 +63,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    loadingEmailTemplate: boolean =false;
 
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
@@ -196,13 +197,30 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     showCampaignPreview(campaign:any){
-        if(campaign.campaignType === 'EVENT') {
-       //   this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
-          this.getEventCampaignId(campaign.campaignId);
-        } else {
-        //  this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
-           this.getCampaignById(campaign.campaignId);
-        }
+        this.loadingEmailTemplate = true;
+        this.campaignName = campaign.campaignName;
+        let htmlContent = "#email-template-content";
+        $(htmlContent).empty();
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#email_template_preivew").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.campaignService.getPartnerTemplatePreview(campaign.campaignId, this.authenticationService.getUserId()).subscribe(
+            (response: any) => {
+                if (response.statusCode == 200) {
+                    let emailTemplateBody = response.data.body;
+                    $(htmlContent).append(emailTemplateBody);
+                    this.loadingEmailTemplate = false;
+                } else {
+                    swal("Please Contact Admin!", "No Template Found", "error");
+                    $("#email_template_preivew").modal('hide');
+                }
+            },
+            (error: any) => {
+                swal("Please Contact Admin!", "Unable to load  template", "error"); 
+                this.loadingEmailTemplate = false;
+                this.xtremandLogger.log(error);
+                $("#email_template_preivew").modal('hide');
+            });
     }
     getCampaignById(campaignId) {
         //this.ngxloading = true;
