@@ -68,6 +68,15 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                     });
                 }
                 
+                if(dto['dropDownChoices']!==undefined && dto.dropDownChoices.length>0) {
+                    dto.dropDownChoices.forEach((value)=>{ value['selected'] = false;})
+                    
+                       dto.dropDownChoices.forEach((select)=>{
+                           if(dto.selectedValue === select.id) { select.selected = true; }
+                       });
+                        
+                }
+                
             });
             
             this.authenticationService.formValues = response.formDTOs[0].formLabelDTOs;

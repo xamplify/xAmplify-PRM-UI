@@ -70,7 +70,7 @@
 							 <!-- ---------------------------DropDown Menu----------------------------- -->
 							 <ng-container *ngIf="columnInfo.labelType=='select'">
 									<select class="form-control" [(ngModel)]="columnInfo.value" >
-									  <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.id">
+									  <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.id" [selected]="dropDownValue.selected == true">
 										{{dropDownValue.name}}</option>
 									</select>
 								  </ng-container>
