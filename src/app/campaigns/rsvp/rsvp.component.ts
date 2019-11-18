@@ -57,7 +57,8 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
             
             
             response.formDTOs[0].formLabelDTOs.forEach((dto)=>{
-                if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
+                if(dto.checkBoxChoices && dto.dropdownIds){
+                 if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
                     dto.checkBoxChoices.forEach((value)=>{ value['isChecked'] = false;})
                     
                     dto.dropdownIds.forEach((ids)=>{
@@ -66,13 +67,17 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                        });
                         
                     });
+                 }
                 }
                 
                 if(dto['dropDownChoices']!==undefined && dto.dropDownChoices.length>0) {
                     dto.dropDownChoices.forEach((value)=>{ value['selected'] = false;})
                     
                        dto.dropDownChoices.forEach((select)=>{
-                           if(dto.selectedValue === select.id) { select.selected = true; }
+                           if(dto.selectedValue === select.id) { 
+                               select.selected = true;
+                               dto.value = dto.selectedValue;
+                               }
                        });
                         
                 }
