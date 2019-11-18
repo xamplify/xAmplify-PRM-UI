@@ -565,14 +565,14 @@ a.disabled {
 							</switch>
 							</div>
 						</div>
-						<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+						<div class="portlet-body clearfix" *ngIf="eventCampaign.publicEventCampaign" [class.disabled]="(isPreviewEvent)">
 							<label>Event URL</label>
 							<input type="text" class="form-control" id="eventUrl" placeholder="Event Url" [(ngModel)]="eventCampaign.eventUrl" [ngModelOptions]="{standalone: true}">
 							
 							
 							
 					<!-- <div class="col-xs-12"> -->
-						<div *ngIf="socialStatusProviders?.length > 0"  [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+						<div *ngIf="socialStatusProviders?.length > 0"  [class.disabled]="(isPreviewEvent)">
 							<button type="button" class="btn btn-primary pull-right" (click)="isSocialEnable = !isSocialEnable" style="margin: 5px 15px;">
 								<i class="fa fa-share-alt fa-social" style="margin: 0 5px;"></i> Social Share
 							</button>
