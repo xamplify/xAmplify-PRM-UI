@@ -77,6 +77,8 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                            if(dto.selectedValue === select.id) { 
                                select.selected = true;
                                dto.value = dto.selectedValue;
+                               }else{
+                                   dto.value = dto.dropDownChoices[0].id;
                                }
                        });
                         
