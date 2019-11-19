@@ -1359,7 +1359,6 @@ gdprSettingLoaded = false;
 
 
     updateGdprSetting(){
-        console.log(this.gdprSetting);
         this.referenceService.startLoader(this.httpRequestLoader);
         this.gdprSetting.updatedUserId = this.loggedInUserId;
         this.userService.updateGdprSetting(this.gdprSetting)

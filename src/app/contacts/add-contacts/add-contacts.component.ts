@@ -21,6 +21,9 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { PaginationComponent } from '../../common/pagination/pagination.component';
 import { FileUtil } from '../../core/models/file-util';
 import { HubSpotService } from 'app/core/services/hubspot.service';
+import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { UserService } from '../../core/services/user.service';
+
 declare var swal, $, Papa: any;
 
 @Component( {
@@ -142,12 +145,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     hubSpotContactListName: string;
 
     paginatedSelectedIds = [];
-
+    gdprSetting: GdprSetting = new GdprSetting();
 
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
-        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames,private hubSpotService:HubSpotService ) {
+        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService) {
 
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
@@ -566,7 +569,32 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     
     askForPermission(contactOption:any) {
         this.contactOption = contactOption;
-        $('#tcModal').modal('show');
+        if (this.referenceService.companyId>0){
+            this.loading = true;
+            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            if(this.gdprSetting.termsAndConditionStatus){
+                                $('#tcModal').modal('show');
+                            }else{
+                                this.saveContactsWithPermission();
+                            }
+                        } else{
+                            $('#tcModal').modal('show');
+                        }
+                        this.loading = false;
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                        $('#tcModal').modal('show');
+                    },
+                    () => this.xtremandLogger.info('Finished getGdprSettings()')
+                );
+        }else{
+            $('#tcModal').modal('show');
+        }
    }
     
     saveContactsWithPermission(){

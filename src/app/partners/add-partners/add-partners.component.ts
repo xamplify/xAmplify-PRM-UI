@@ -23,6 +23,8 @@ import { PaginationComponent } from '../../common/pagination/pagination.componen
 import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
 import { HubSpotService } from 'app/core/services/hubspot.service';
+import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { UserService } from '../../core/services/user.service';
 declare var $, Papa, swal, Swal: any;
 
 @Component( {
@@ -167,11 +169,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public uploader: FileUploader = new FileUploader( { allowedMimeType: ["application/csv", "application/vnd.ms-excel", "text/plain", "text/csv"] });
 
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+    gdprSetting: GdprSetting = new GdprSetting();
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
-        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService ) {
+        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService ) {
 
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
@@ -603,7 +606,32 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }*/
     
     askForPermission() {
-        $('#tcModal').modal('show');
+        if (this.referenceService.companyId > 0) {
+            this.loading = true;
+            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            if (this.gdprSetting.termsAndConditionStatus) {
+                                $('#tcModal').modal('show');
+                            } else {
+                                this.saveContactsWithPermission();
+                            }
+                        } else {
+                            $('#tcModal').modal('show');
+                        }
+                        this.loading = false;
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                        $('#tcModal').modal('show');
+                    },
+                    () => this.xtremandLogger.info('Finished getGdprSettings()')
+                );
+        } else {
+            $('#tcModal').modal('show');
+        }
    }
     
     saveContactsWithPermission(){
