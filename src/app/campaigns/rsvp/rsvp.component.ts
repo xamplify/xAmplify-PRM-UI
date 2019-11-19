@@ -30,12 +30,13 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   responseMessage: string;
   isRsvp = false;
   totalGuests = 0;
-  type="";
-  replyUserName=""
+  type = "";
+  replyUserName = "";
   characterleft = 140;
   rsvpSavingProcessing = false;
   eventExpiredError = false;
   isCancelledEvent = false;
+  errorLogMessage = "";
   formAlias: any;
   form:Form = new Form();
 
@@ -46,17 +47,18 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.campaignService.getEventCampaignByAlias(alias)
       .subscribe(
       (response:any) => {
-        this.eventcampaign = response;
+       if(response.statusCode == 200){
+        this.eventcampaign = response.data;
         console.log(response);
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
-        if(response.formDTOs[0].formLabelDTOs){
+        if(this.eventcampaign.formDTOs[0].formLabelDTOs){
            // this.form.formLabelDTOs = response.formValuesDTO.fields;
             
             
             
-            response.formDTOs[0].formLabelDTOs.forEach((dto)=>{
+            this.eventcampaign.formDTOs[0].formLabelDTOs.forEach((dto)=>{
                 if(dto.checkBoxChoices && dto.dropdownIds){
                  if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
                     dto.checkBoxChoices.forEach((value)=>{ value['isChecked'] = false;})
@@ -86,21 +88,26 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                 
             });
             
-            this.authenticationService.formValues = response.formDTOs[0].formLabelDTOs;
+            this.authenticationService.formValues = this.eventcampaign.formDTOs[0].formLabelDTOs;
             console.log(this.authenticationService.formValues);
         }
-        this.replyUserName = response.targetUserDTO.firstName;
+        this.replyUserName = this.eventcampaign.targetUserDTO.firstName;
         this.processor.remove(this.processor);
         this.eventStartTimeError();
         
-        if(response.eventCancellation.cancelled){
+        if(this.eventcampaign.eventCancellation.cancelled){
             this.isCancelledEvent = true;
         }
         
-        this.formAlias = response.formDTOs[0].alias;
-        this.authenticationService.formAlias = response.formDTOs[0].alias;
+        this.formAlias = this.eventcampaign.formDTOs[0].alias;
+        this.authenticationService.formAlias = this.eventcampaign.formDTOs[0].alias;
         
-        
+       }
+       if(response.statusCode == 2000 || response.statusCode == 2001){
+           this.isCancelledEvent = true;
+           this.errorLogMessage = response.message;
+           console.log(this.errorLogMessage);
+       }
       },
       error => {
         console.log(error);

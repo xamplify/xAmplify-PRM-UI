@@ -1,10 +1,11 @@
 <div class="expired-event-class" *ngIf="eventExpiredError"> This event has concluded.</div>
+<div class="expired-event-class" *ngIf="isCancelledEvent">{{errorLogMessage}}</div>
 
 <div class="container-fluid" [hidden]="processor.isProcessing || eventExpiredError" style="margin-top: 2em">
-
-<div class="alert alert-danger fade in" *ngIf="isCancelledEvent" style="text-align: center;font-size: 15px;">
+<!-- <div style="background:red; text: white;">{{errorLogMessage}}</div> -->
+<!-- <div class="alert alert-danger fade in" *ngIf="isCancelledEvent" style="text-align: center;font-size: 15px;">
     <b>This event has been cancelled.</b>
-</div>
+</div> -->
 
 
 <div class="alert alert-success alert-dismissible fade in alertDanger" role="alert" *ngIf="responseMessage">
