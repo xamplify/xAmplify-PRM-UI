@@ -436,6 +436,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
           this.selectedFormId = this.selectedFormData[i].id;
          // this.createdBy = this.selectedFormData[i].createdBy;
         }
+      }else{
+          this.selectedFormName = null;
+          this.selectedFormId = null;
       }
       this.changeDetectorRef.detectChanges();
   }

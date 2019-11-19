@@ -152,10 +152,15 @@ export class PreviewPopupComponent implements OnInit {
       $('#form-preview-modal').modal('show');
   }
   
-  selectedForm(form: any){
-      this.selectedFormId = form.id;
-      this.selectedFormData = [];
-      this.selectedFormData.push(form);
+  selectedForm(form: any, event){
+     if(event.target.checked){
+       this.selectedFormId = form.id;
+       this.selectedFormData = [];
+       this.selectedFormData.push(form);
+     }else{
+         this.selectedFormId = null;
+         this.selectedFormData = [];
+     }
   }
 
 }
