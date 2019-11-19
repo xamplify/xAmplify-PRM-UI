@@ -101,8 +101,8 @@
 										<i class="fa fa-clipboard"></i>
 									</a>
 									<ng-container *ngIf="landingPage.formsCount>0">
-										<a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form(s) Count"><i class="fa fa-wpforms"></i></a>
-										<a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form(s) Count"><i class="fa fa-wpforms"></i></a>
+										<a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"></i></a>
+										<a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"></i></a>
 									<span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
 									</ng-container>
 									<a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
@@ -144,7 +144,7 @@
           <button type="button" class="close-circle" data-dismiss="modal">
             <i class="fa fa-times"></i>
           </button>
-          <h4 class="modal-title text-center">DIRECT LINK OF YOUR PAGE</h4>
+          <h4 class="modal-title text-center">DIRECT LINK FOR YOUR PAGE</h4>
         </div>
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
