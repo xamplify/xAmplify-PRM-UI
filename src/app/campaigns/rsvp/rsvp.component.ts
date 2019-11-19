@@ -197,6 +197,12 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   saveEventCampaignRsvp() {
     this.rsvpSavingProcessing = true;
     
+    if(this.formPreviewComponent){
+        this.form.formLabelDTOs = this.formPreviewComponent.form.formLabelDTOs;
+        this.form.id = this.formPreviewComponent.form.id;
+    }
+    this.changeDetectorRef.detectChanges();
+    
     let self = this;
     
     const formLabelDtos = this.form.formLabelDTOs;
