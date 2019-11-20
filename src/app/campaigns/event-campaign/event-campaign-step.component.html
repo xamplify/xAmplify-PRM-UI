@@ -645,9 +645,9 @@ a.disabled {
 							<section *ngIf="previewPopUpComponent?.selectedFormId">
 							<span>Name: <a (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name}}</a></span><br>
 							<span>Created Name: <b>{{previewPopUpComponent?.selectedFormData[0].createdName}}</b></span><br>
-							<span>Created Date: <b>
-							<app-timestamp [isOnlyDate]="previewPopUpComponent?.selectedFormData[0].createdDateString"> </app-timestamp></b>
-							</span>
+							<span>Created Date: <span><b>
+							<app-timestamp [dateAndTime]="previewPopUpComponent?.selectedFormData[0].createdDateString"> </app-timestamp></b>
+							</span></span>
 							<!-- <span>By: Sravan</span> -->
 							</section>
 						</div>
@@ -662,8 +662,8 @@ a.disabled {
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
 							<span>Name: <a (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name}}</a></span><br>
 							<span>Created Name: <b>{{previewPopUpComponent?.selectedFormData[0].createdName}}</b></span><br>
-							<span>Created Date: <b>
-							<app-timestamp [isOnlyDate]="previewPopUpComponent?.selectedFormData[0].createdDateString"> </app-timestamp></b>
+							<span>Created Date: <span><b>
+							<app-timestamp [dateAndTime]="previewPopUpComponent?.selectedFormData[0].createdDateString"> </app-timestamp></b></span>
 							</span>
 							<!-- <span>By: Sravan</span> -->
 							</section>
