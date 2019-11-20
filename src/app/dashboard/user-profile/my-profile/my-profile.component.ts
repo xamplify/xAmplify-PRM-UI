@@ -1289,6 +1289,9 @@ gdprSettingLoaded = false;
         this.gdprSetting.termsAndConditionStatus = event;
         this.gdprSetting.deleteContactStatus = event;
         this.gdprSetting.eventStatus = event;
+        if(!event){
+            this.gdprSetting.allowMarketingEmails = event;
+        }
     }
 
     setAllGdprStatus(){
