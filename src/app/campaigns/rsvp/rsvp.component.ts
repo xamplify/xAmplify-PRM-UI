@@ -76,8 +76,8 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                     dto.dropDownChoices.forEach((value)=>{ value['selected'] = false;})
                     
                        dto.dropDownChoices.forEach((select)=>{
-                           if(dto.selectedValue === select.id) { 
-                               select.selected = true;
+                           if(dto.selectedValue) { 
+                               //select.selected = true;
                                dto.value = dto.selectedValue;
                                }else{
                                    dto.value = dto.dropDownChoices[0].id;
