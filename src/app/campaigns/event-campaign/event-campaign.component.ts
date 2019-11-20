@@ -378,7 +378,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
           this.selectedFormName = this.selectedFormData[i].name;
           this.selectedFormId = this.selectedFormData[i].id;
         }
-        
+        console.log( this.selectedFormName);
+        console.log( this.selectedFormId);
+        if(this.previewPopUpComponent && this.selectedFormId && this.selectedFormData) { this.previewPopUpComponent['selectedFormId'] = this.selectedFormId; 
+        this.previewPopUpComponent.selectedFormData = this.selectedFormData;
+        }
         this.eventCampaign.eventUrl = 'https://www.event-campaign/54ec45';
         
         if(this.eventCampaign.publicEventCampaign && this.eventCampaign.campaign && !this.statusMessage){
@@ -427,7 +431,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   }
 
   ngAfterViewChecked(){
-      if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
+  /*    if( this.previewPopUpComponent && this.previewPopUpComponent.selectedFormData.length != 0 ){
         this.selectedFormData = this.previewPopUpComponent.selectedFormData; 
         this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
         //this.formCreatedName = this.eventCampaign.forms.createdName;
@@ -437,10 +441,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
          // this.createdBy = this.selectedFormData[i].createdBy;
         }
       }else{
-          this.selectedFormName = null;
-          this.selectedFormId = null;
+          if(!this.selectedFormName) { this.selectedFormName = null; }
+          if(!this.selectedFormId) { this.selectedFormId = null; }
       }
-      this.changeDetectorRef.detectChanges();
+      console.log( this.selectedFormName);
+      console.log( this.selectedFormId);
+      this.changeDetectorRef.detectChanges();*/
   }
   
   setTemplateId(){
@@ -1005,6 +1011,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   getCampaignData(eventCampaign:any){
     if(this.authenticationService.isOnlyPartner()){ eventCampaign.channelCampaign = false; }
     eventCampaign.user.userId = this.loggedInUserId;
+    this.selectedFormData = this.previewPopUpComponent.selectedFormData;
+    this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     if(eventCampaign.userListIds != undefined){
     for (let userListId of eventCampaign.userListIds) {
@@ -1112,6 +1120,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
   
   createEventCampaign(eventCampaign: any, launchOption: string) {
+    this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.loader = true;
     this.isFormSubmitted = true;

@@ -15,6 +15,7 @@ export class ColumnInfo {
     allCheckBoxChoicesCount = 0;
     dropDownChoices: Array<FormOption> = new Array<FormOption>();
     dropDownIds = [];
+    dropdownIds = [];
     allDropDownChoicesCount = 0;
     divId= "";
     divClass= "form-group";
