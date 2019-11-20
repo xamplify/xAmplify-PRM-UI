@@ -83,6 +83,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }else{
             this.onlyForms = true;
         }
+        this.isListView = ! this.referenceService.isGridView;
         this.listForms(this.pagination);
     }
 
