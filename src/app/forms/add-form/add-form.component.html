@@ -9,7 +9,7 @@
         <i class="fa fa-home"></i>
         <a [routerLink]="referenceService.homeRouter">Home</a>
         <i class="fa fa-angle-right"></i>
-        <a *ngIf="isAdd" [routerLink]="['../../design/add']">Create Design</a> <i class="fa fa-angle-right"></i>
+        <a *ngIf="isAdd" [routerLink]="['../../design/add']">Create Design</a> <i *ngIf="isAdd" class="fa fa-angle-right"></i>
       </li>
       <li *ngIf="!isAdd">
         <a [routerLink]="['../../forms/manage']">Manage Forms</a><i class="fa fa-angle-right"></i>
@@ -86,7 +86,7 @@
                       <i class="icon-globe theme-font hide"></i>
                       <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
                       <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
-	      				<a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
+	      				<a data-toggle="tooltip" data-placement="top" title="Change Form Details"
 							(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
 						</a>
 						</h4>
@@ -323,7 +323,7 @@
 	<div class="modal-dialog modal-lg" style="width: 75%; right: 0">
 		<div class="modal-content">
 			<div class="modal-header">
-			<button type="button" class="close-circle" (click)="closeModal()">
+			<button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
 				<i class="fa fa-times"></i>
 			</button>
 				<h4 class="modal-title text-center">{{formTitle}}</h4>

@@ -146,6 +146,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.removeBlurClass();
         }else{
             this.addBlurClass();
+            this.navigateBack();
         }
         $('#add-form-name-modal').modal('hide');
     }
@@ -533,7 +534,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#formNameDiv').addClass(this.formErrorClass);
         this.formNameErrorMessage = errorMessage;
         this.formNameClass = "invalid-form-name";
-            
     }
     
     private showSweetAlert(errorMessage:string){
