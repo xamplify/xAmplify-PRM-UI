@@ -643,7 +643,8 @@ a.disabled {
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
 							
 							<section *ngIf="previewPopUpComponent?.selectedFormId">
-							<span>Name: <b><a (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name}}</a></b></span><br>
+							<span>Name: <b><a title="{{previewPopUpComponent?.selectedFormData[0].name}}" (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name | slice:0:40}}<span
+													*ngIf="previewPopUpComponent?.selectedFormData[0].name?.length>40">..</span></a></b></span><br>
 							<span>Created Name: <b style="color: #5b9bd1" title="{{previewPopUpComponent?.selectedFormData[0].createdName}}">{{previewPopUpComponent?.selectedFormData[0].createdName | slice:0:20}} <span
 													*ngIf="previewPopUpComponent?.selectedFormData[0].createdName?.length>20">..</span></b></span><br>
 							<span>Created Date: <span><b style="color: #5b9bd1">
@@ -662,7 +663,8 @@ a.disabled {
 						<div class="portlet-body clearfix">
 							<section *ngIf="selectedFormId">
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
-							<span>Name: <b><a (click)="previewForm(selectedFormId)">{{selectedFormData[0].name}}</a></b></span><br>
+							<span>Name: <b><a (click)="previewForm(selectedFormId)" title="selectedFormData[0].name">{{selectedFormData[0].name | slice:0:40}} <span
+													*ngIf="selectedFormData[0].name?.length>40">..</span></a></b></span><br>
 							<span>Created Name: <b style="color: #5b9bd1" title="{{selectedFormData[0].createdName}}">{{selectedFormData[0].createdName | slice:0:40}} <span
 													*ngIf="selectedFormData[0].createdName?.length>40">..</span></b></span><br>
 							<span>Created Date: <span><b style="color: #5b9bd1">
