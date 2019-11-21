@@ -230,11 +230,6 @@ export class FormPreviewComponent implements OnInit {
   }
 
   updateCheckBoxModel(columnInfo:ColumnInfo,formOption:FormOption,event:any){
-    
-    if(columnInfo.dropdownIds){
-       columnInfo.value = columnInfo.dropdownIds;
-    }
-      
     if(columnInfo.value===undefined){
       columnInfo.value = Array<number>();
     }

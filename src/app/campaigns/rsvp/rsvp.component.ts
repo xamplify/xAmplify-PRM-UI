@@ -62,7 +62,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                 if(dto.checkBoxChoices && dto.dropdownIds){
                  if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
                     dto.checkBoxChoices.forEach((value)=>{ value['isChecked'] = false;})
-                    
+                    dto.value = dto.dropdownIds;
                     dto.dropdownIds.forEach((ids)=>{
                        dto.checkBoxChoices.forEach((check)=>{
                            if(ids === check.id) { check.isChecked = true; }
@@ -83,7 +83,13 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
                                    dto.value = dto.dropDownChoices[0].id;
                                }
                        });
-                        
+                }
+                if(dto['radioButtonChoices']!==undefined && dto.radioButtonChoices.length>0) {
+                       dto.radioButtonChoices.forEach((select)=>{
+                           if(dto.selectedValue) { 
+                               dto.value = dto.selectedValue;
+                               }
+                       });
                 }
                 
             });
@@ -208,7 +214,6 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.form.formLabelDTOs = this.formPreviewComponent.form.formLabelDTOs;
         this.form.id = this.formPreviewComponent.form.id;
     }
-    this.changeDetectorRef.detectChanges();
     
     let self = this;
     
