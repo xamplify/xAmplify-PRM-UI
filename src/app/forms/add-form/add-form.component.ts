@@ -55,7 +55,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     duplicateOrEmptyLabelErrorMessage = "Empty/duplicate field lables are not allowed";
     requiredMessage = "Required";
     duplicateLabelMessage = "Already exists";
-    minimumOneColumn = "Form should contain atleast one required field";
+    minimumOneColumn = "Your form should contain at least one required field";
     formErrorClass = "form-group form-error";
     defaultFormClass = "form-group";
     formNameErrorMessage = "";
@@ -63,7 +63,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     isAdd = true;
     portletBody = 'portlet-body';
     portletBodyBlur = 'portlet-body blur-content';
-    buttonName = "Save";
+    buttonName = "Save Form";
     existingFormName = "";
     isFullScreenView = false;
     toolTip = "Maximize";

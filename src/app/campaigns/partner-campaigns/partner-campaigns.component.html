@@ -303,8 +303,9 @@
           <h4 class="modal-title">{{campaignName}}</h4>
         </div>
         <div class="modal-body">
-		  <div id="email-template-content"></div>
-		  <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
+		  <div id="email-template-content">
+		   <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
+		  </div>
 		<!-- <ng-template [ngTemplateOutlet]="loader" *ngIf="loadingEmailTemplate"></ng-template> -->
 		</div>
         <div class="modal-footer">
