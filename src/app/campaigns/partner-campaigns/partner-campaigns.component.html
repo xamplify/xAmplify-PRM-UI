@@ -304,9 +304,8 @@
         </div>
         <div class="modal-body">
 		  <div id="email-template-content">
-		   <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
 		  </div>
-		<!-- <ng-template [ngTemplateOutlet]="loader" *ngIf="loadingEmailTemplate"></ng-template> -->
+		    <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
 		</div>
         <div class="modal-footer">
           <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
@@ -317,25 +316,6 @@
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>
-<!-- <ng-template #loader>
-	<div class="timeline-wrapper">
-		<div class="animated-background">
-			<div class="background-masker header-top"></div>
-			<div class="background-masker header-left"></div>
-			<div class="background-masker header-right"></div>
-			<div class="background-masker header-bottom"></div>
-			<div class="background-masker subheader-left"></div>
-			<div class="background-masker subheader-right"></div>
-			<div class="background-masker subheader-bottom"></div>
-			<div class="background-masker content-top"></div>
-			<div class="background-masker content-first-end"></div>
-			<div class="background-masker content-second-line"></div>
-			<div class="background-masker content-second-end"></div>
-			<div class="background-masker content-third-line"></div>
-			<div class="background-masker content-third-end"></div>
-		</div>
-	</div>
-</ng-template> -->
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 
 

@@ -209,7 +209,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 if (response.statusCode == 200) {
                     let emailTemplateBody = response.data;
                     $(htmlContent).append(emailTemplateBody);
-                    //this.loadingEmailTemplate = false;
+                    this.loadingEmailTemplate = false;
                 } else {
                     swal("Please Contact Admin!", "No Template Found", "error");
                     $("#email_template_preivew").modal('hide');
