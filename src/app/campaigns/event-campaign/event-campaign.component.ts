@@ -381,7 +381,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         console.log( this.selectedFormName);
         console.log( this.selectedFormId);
         if(this.previewPopUpComponent && this.selectedFormId && this.selectedFormData) { this.previewPopUpComponent['selectedFormId'] = this.selectedFormId; 
-        this.previewPopUpComponent.selectedFormData = this.selectedFormData;
+            this.previewPopUpComponent.selectedFormData = this.selectedFormData;
         }
         this.eventCampaign.eventUrl = 'https://www.event-campaign/54ec45';
         
@@ -423,6 +423,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.ckeConfig = {
       allowedContent: true,
     };
+    
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();

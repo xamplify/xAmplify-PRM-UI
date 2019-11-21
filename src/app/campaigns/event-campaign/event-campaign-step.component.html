@@ -643,10 +643,12 @@ a.disabled {
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
 							
 							<section *ngIf="previewPopUpComponent?.selectedFormId">
-							<span>Name: <a (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name}}</a></span><br>
-							<span>Created Name: <b>{{previewPopUpComponent?.selectedFormData[0].createdName}}</b></span><br>
-							<span>Created Date: <span><b>
-							<app-timestamp [dateAndTime]="previewPopUpComponent?.selectedFormData[0].createdDateString"> </app-timestamp></b>
+							<span>Name: <b><a (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name}}</a></b></span><br>
+							<span>Created Name: <b style="color: #5b9bd1" title="{{previewPopUpComponent?.selectedFormData[0].createdName}}">{{previewPopUpComponent?.selectedFormData[0].createdName | slice:0:20}} <span
+													*ngIf="previewPopUpComponent?.selectedFormData[0].createdName?.length>20">..</span></b></span><br>
+							<span>Created Date: <span><b style="color: #5b9bd1">
+							{{previewPopUpComponent?.selectedFormData[0].createdDateString | date:'mediumDate'}}, {{previewPopUpComponent?.selectedFormData[0].createdDateString | date:'shortTime'}}
+							</b>
 							</span></span>
 							<!-- <span>By: Sravan</span> -->
 							</section>
@@ -658,12 +660,13 @@ a.disabled {
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
 						<div class="portlet-body clearfix">
-							<section *ngIf="previewPopUpComponent?.selectedFormId">
+							<section *ngIf="selectedFormId">
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
-							<span>Name: <a (click)="previewForm(previewPopUpComponent?.selectedFormId)">{{previewPopUpComponent?.selectedFormData[0].name}}</a></span><br>
-							<span>Created Name: <b>{{previewPopUpComponent?.selectedFormData[0].createdName}}</b></span><br>
-							<span>Created Date: <span><b>
-							<app-timestamp [dateAndTime]="previewPopUpComponent?.selectedFormData[0].createdDateString"> </app-timestamp></b></span>
+							<span>Name: <b><a (click)="previewForm(selectedFormId)">{{selectedFormData[0].name}}</a></b></span><br>
+							<span>Created Name: <b style="color: #5b9bd1" title="{{selectedFormData[0].createdName}}">{{selectedFormData[0].createdName | slice:0:40}} <span
+													*ngIf="selectedFormData[0].createdName?.length>40">..</span></b></span><br>
+							<span>Created Date: <span><b style="color: #5b9bd1">
+							{{selectedFormData[0].createdDateString | date:'mediumDate'}}, {{selectedFormData[0].createdDateString | date:'shortTime'}}</b></span>
 							</span>
 							<!-- <span>By: Sravan</span> -->
 							</section>
