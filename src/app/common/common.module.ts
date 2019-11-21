@@ -35,6 +35,7 @@ import { PreviewPopupComponent } from '../forms/preview-popup/preview-popup.comp
 import { PreviewLandingPageComponent } from '../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-loader.component';
 import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
+import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-popup-loader.component';
 
 @NgModule({
     imports: [CommonModule, FormsModule, LoadingModule],
@@ -43,11 +44,11 @@ import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-lo
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
-        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,PreviewLandingPageComponent,LandingPageLoaderComponent, DashboardLoaderComponent],
+        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,PreviewLandingPageComponent,LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent],
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,PreviewLandingPageComponent,LandingPageLoaderComponent,DashboardLoaderComponent]
+        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,PreviewLandingPageComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent]
 })
 export class CommonComponentModule { }

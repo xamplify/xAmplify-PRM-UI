@@ -184,6 +184,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             //this.geoLocation();
             this.addContactuser.country = this.countryNames.countries[0];
         }
+
+        /**************Show Legal Basis Content*******************/
+
         $( '#addContactModal' ).modal( 'show' );
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
@@ -194,6 +197,10 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
     ngOnDestroy(){
         this.addContactModalClose();
+    }
+
+    getLegalBasisData(){
+        
     }
 
 }

@@ -1,5 +1,4 @@
 <style type="text/css">
-
 	.disabled {
 		pointer-events: none;
 		cursor: not-allowed !important;
@@ -305,7 +304,8 @@
         </div>
         <div class="modal-body">
 		  <div id="email-template-content"></div>
-		<ng-template [ngTemplateOutlet]="loader" *ngIf="loadingEmailTemplate"></ng-template>
+		  <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
+		<!-- <ng-template [ngTemplateOutlet]="loader" *ngIf="loadingEmailTemplate"></ng-template> -->
 		</div>
         <div class="modal-footer">
           <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
@@ -316,7 +316,7 @@
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>
-<ng-template #loader>
+<!-- <ng-template #loader>
 	<div class="timeline-wrapper">
 		<div class="animated-background">
 			<div class="background-masker header-top"></div>
@@ -334,7 +334,7 @@
 			<div class="background-masker content-third-end"></div>
 		</div>
 	</div>
-</ng-template>
+</ng-template> -->
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 
 

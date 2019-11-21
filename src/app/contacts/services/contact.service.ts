@@ -527,4 +527,10 @@ export class ContactService {
           }
        }
 
+    listLegalBasisData(companyId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `/gdpr/setting/legal_basis/${companyId}?access_token=${this.authenticationService.access_token}`,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }
