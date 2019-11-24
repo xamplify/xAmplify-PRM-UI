@@ -16,7 +16,7 @@ import { EventEmitter } from '@angular/core';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Campaign } from '../../campaigns/models/campaign';
 import { User } from '../../core/models/user';
-declare var swal: any;
+declare var swal,$: any;
 
 
 
@@ -65,6 +65,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     ngOnInit()
     {
+       this.changePointerStyle(true);
         this.loggedInUser = this.authenticationService.user;
         if (!this.isPartner)
             this.listLeadsBasedOnFilters();
@@ -73,8 +74,18 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
          
     }
+    
+    changePointerStyle(loading:boolean){
+        if(loading){
+            $('#deals-page-content-div').css('pointer-events', 'none');
+        }else{
+            $('#deals-page-content-div').css('pointer-events', 'visible');
+        }
+        
+    }
     ngOnChanges(changes: SimpleChanges)
     {
+        this.changePointerStyle(true);
         const filter: SimpleChange = changes.filter;
 
         this.filter = filter.currentValue;
@@ -236,14 +247,14 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
 
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -265,14 +276,14 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
 
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -291,12 +302,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -314,12 +326,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -338,12 +351,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -361,12 +375,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -384,12 +399,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -419,11 +435,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     });
 
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
 
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -449,11 +467,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     });
 
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
 
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -477,10 +497,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -504,10 +526,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -532,10 +556,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -558,10 +584,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -584,10 +612,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -615,10 +645,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                             element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 
@@ -636,12 +668,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.changePointerStyle(false);
                 },
                 (error: any) =>
                 {
                     this.httpRequestLoader.isServerError = true;
+                    this.changePointerStyle(false);
                 }
             );
 

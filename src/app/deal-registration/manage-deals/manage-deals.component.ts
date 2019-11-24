@@ -20,7 +20,7 @@ import { Roles } from '../../core/models/roles';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from 'app/core/services/user.service';
 
-
+declare var  $:any;
 
 
 @Component({
@@ -50,6 +50,7 @@ export class ManageDealsComponent implements OnInit
     totalDealsLoader: boolean = true;
     openedDealsLoader: boolean = true;
     closedDealsLoader: boolean = true;
+    allApisLoader:boolean = true;
     campaingnList: boolean = false;
     partnerList: boolean = false;
     selectedCampaignId: number = 0;
@@ -77,7 +78,7 @@ export class ManageDealsComponent implements OnInit
     isPartnerVersion: boolean;
     dealsOnHoldLoader: boolean = true;
     dealsOnHoldError: boolean;
-    totalLeadsLoader: boolean;
+    totalLeadsLoader: boolean = true;
     totalLeadsError: boolean;
     approvedDealsLoader: boolean = true;
     approvedDealsError: boolean;
@@ -194,6 +195,7 @@ export class ManageDealsComponent implements OnInit
     }
     switchVersions()
     {
+        this.startOrStopAllCountsLoader(true);
         this.resetAllDeals();
         if (this.isVendorVersion && !this.isOnlyPartner)
         {
@@ -248,6 +250,7 @@ export class ManageDealsComponent implements OnInit
 
     showCampaigns()
     {
+        $('#deals-page-content-div').css('pointer-events', 'none');
         this.clearPagination();
         if(this.isVendorVersion)
             this.listCampaigns(this.campaignsPagination);
@@ -267,6 +270,7 @@ export class ManageDealsComponent implements OnInit
     }
     showCampaignsByDeals()
     {
+        $('#deals-page-content-div').css('pointer-events', 'none');
         this.clearPagination();
         if(this.isVendorVersion)
             this.listCampaignsByDeals(this.campaignsPaginationByDeals);
@@ -290,16 +294,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalLeadsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getTotalLeads(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalLeads = data.data;
-                    this.totalLeadsLoader = false;
+                   // this.totalLeadsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.totalLeadsError = true;
-                    this.totalLeadsLoader = false;
+                   this.totalLeadsLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -313,16 +319,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalLeadsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getTotalLeadsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalLeads = data.data;
-                    this.totalLeadsLoader = false;
+                    //this.totalLeadsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.totalLeadsError = true;
                     this.totalLeadsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
@@ -337,16 +345,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getTotalDeals(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalDeals = data.data;
-                    this.totalDealsLoader = false;
+                   // this.totalDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.totalDealsError = true;
-                    this.totalDealsLoader = false;
+                   this.totalDealsLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -361,16 +371,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.totalDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getTotalDealsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
                     this.totalDeals = data.data;
-                    this.totalDealsLoader = false;
+                   //this.totalDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.totalDealsError = true;
                     this.totalDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
@@ -385,16 +397,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
                     this.openedDeals = data.data;
-                    this.openedDealsLoader = false;
+                   //this.openedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.openedDealsError = true;
                     this.openedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
@@ -409,16 +423,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.dealsOnHoldLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
                     this.dealsOnHold = data.data;
-                    this.dealsOnHoldLoader = false;
+                 //   this.dealsOnHoldLoader = false;
                 },
                 (error: any) =>
                 {
                     this.dealsOnHoldError = true;
-                    this.dealsOnHoldLoader = false;
+                   this.dealsOnHoldLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -434,16 +450,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
                     this.closedDeals = data.data;
-                    this.closedDealsLoader = false;
+                  //  this.closedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.closedDealsError = true;
                     this.closedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
@@ -460,16 +478,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
                     this.approvedDeals = data.data;
-                    this.approvedDealsLoader = false;
+                  //  this.approvedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.approvedDealsError = true;
                     this.approvedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
@@ -484,16 +504,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
                     this.approvedDeals = data.data;
-                    this.approvedDealsLoader = false;
+                  //  this.approvedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.approvedDealsError = true;
-                    this.approvedDealsLoader = false;
+                   this.approvedDealsLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -508,17 +530,19 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
                  
                     this.rejectedDeals = data.data;
-                    this.rejectedDealsLoader = false;
+                  //  this.rejectedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.rejectedDealsError = true;
-                    this.rejectedDealsLoader = false;
+                   this.rejectedDealsLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -533,16 +557,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.rejectedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
                     this.rejectedDeals = data.data;
-                    this.rejectedDealsLoader = false;
+                   // this.rejectedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.rejectedDealsError = true;
-                    this.rejectedDealsLoader = false;
+                   this.rejectedDealsLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -558,17 +584,19 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.openedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
                     console.log(data)
                     this.openedDeals = data.data;
-                    this.openedDealsLoader = false;
+                  //  this.openedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.openedDealsError = true;
-                    this.openedDealsLoader = false;
+                   this.openedDealsLoader = false;
+                   this.allApisLoader = false;
                 }
 
             );
@@ -583,16 +611,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.dealsOnHoldLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
                     this.dealsOnHold = data.data;
-                    this.dealsOnHoldLoader = false;
+                  //  this.dealsOnHoldLoader = false;
                 },
                 (error: any) =>
                 {
                     this.dealsOnHoldError = true;
-                    this.dealsOnHoldLoader = false;
+                  this.dealsOnHoldLoader = false;
+                  this.allApisLoader = false;
                 }
 
             );
@@ -608,16 +638,18 @@ export class ManageDealsComponent implements OnInit
         try
         {
             this.closedDealsLoader = true;
+            this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
                     this.closedDeals = data.data;
-                    this.closedDealsLoader = false;
+                 // this.closedDealsLoader = false;
                 },
                 (error: any) =>
                 {
                     this.closedDealsError = true;
                     this.closedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
@@ -627,17 +659,34 @@ export class ManageDealsComponent implements OnInit
         }
     }
 
+    
+    startOrStopAllCountsLoader(condition:boolean){
+        this.totalLeadsLoader = condition;
+        this.totalDealsLoader = condition;
+        this.openedDealsLoader = condition;
+        this.dealsOnHoldLoader = condition;
+        this.closedDealsLoader = condition;
+        this.approvedDealsLoader = condition;
+        this.rejectedDealsLoader = condition;
+        this.openedDealsLoader = condition;
+        this.closedDealsLoader = condition;
+        this.allApisLoader = condition;
+        if(condition){
+            $('#deals-page-content-div').css('pointer-events', 'none');
+        }else{
+            $('#deals-page-content-div').css('pointer-events', 'visible');
+        }
+       
+    }
     /*********************List Campaigns*****************/
     listCampaigns(pagination: Pagination)
     {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-
         this.dealRegistrationService.listCampaigns(pagination)
             .subscribe(
                 data =>
                 {
-
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     data.campaigns.forEach(element =>
@@ -645,9 +694,8 @@ export class ManageDealsComponent implements OnInit
                             element.expand = false;
                         });
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                   
-
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.startOrStopAllCountsLoader(false);
                 },
                 (error: any) =>
                 {
@@ -674,6 +722,7 @@ export class ManageDealsComponent implements OnInit
                     });
 
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.startOrStopAllCountsLoader(false);
                 },
                 (error: any) =>
                 {
@@ -691,7 +740,6 @@ export class ManageDealsComponent implements OnInit
             .subscribe(
                 data =>
                 {
-                   
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
@@ -701,7 +749,7 @@ export class ManageDealsComponent implements OnInit
                     });
                     console.log(this.sortOption.totalRecords);
                     this.referenceService.loading(this.httpRequestLoader, false);
-                   
+                   this.startOrStopAllCountsLoader(false);
                 },
                 (error: any) =>
                 {
@@ -730,6 +778,7 @@ export class ManageDealsComponent implements OnInit
                     });
                    
                     this.referenceService.loading(this.httpRequestLoader, false);
+                    this.startOrStopAllCountsLoader(false);
                 },
                 (error: any) =>
                 {
@@ -939,7 +988,6 @@ export class ManageDealsComponent implements OnInit
         this.filterDeals = "OPENED";
         this.leadList = true;
         this.campaingnList = false;
-
     }
     showDealsOnHold()
     {
@@ -1184,6 +1232,7 @@ export class ManageDealsComponent implements OnInit
     }
     showPartner()
     {
+        
         if( this.isCompanyPartner ){
             this.isVendorVersion = false;
             this.isPartnerVersion = true;
