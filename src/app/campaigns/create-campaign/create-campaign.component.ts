@@ -247,6 +247,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      smsTextDivClass: string;
      validUsersCount: number;
      allUsersCount: number;
+     isValidCrmOption = true;
 
      /************Landing Page Variables***************** */
      landingPageSearchInput:string = "";
@@ -345,7 +346,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             var fromNameLength = $.trim(this.campaign.fromName).length;
             var subjectLineLength = $.trim(this.campaign.subjectLine).length;
             var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
-            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0){
+            
+            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
                 this.isCampaignDetailsFormValid = true;
             }else{
                 this.isCampaignDetailsFormValid = false;
@@ -726,6 +728,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.isCampaignDetailsFormValid = false;
         }
+        
+        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && this.pushToCRM.length == 0){
+            this.isValidCrmOption = false;
+            this.isCampaignDetailsFormValid = false;
+        }else{
+            this.isValidCrmOption = true;
+            if(isValid){
+                this.isCampaignDetailsFormValid = true;
+            }else{
+                this.isCampaignDetailsFormValid = false;
+            }
+            
+        }
+        
         console.log("is Valid Form"+this.isCampaignDetailsFormValid);
       }
      validateEmail(emailId:string){
@@ -803,6 +819,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              }
          }
      }
+     
+     validatePushToCRM(){
+        if(this.isPushToCrm && this.campaign.channelCampaign && this.pushToCRM.length == 0){
+            this.isValidCrmOption = false;
+            this.validateForm();
+        }else{
+            this.isValidCrmOption = true;
+            this.validateForm();
+        }
+     }
+     
     loadCampaignNames(userId:number){
         this.campaignService.getCampaignNames(userId)
         .subscribe(
@@ -2789,6 +2816,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                   console.log("isAuthorize true");
                   this.pushToCRM.push('hubspot');
+                  this.validatePushToCRM();
               }
               else{
                   if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
@@ -2835,6 +2863,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                             this.templateError = false;
                             this.loading = false;
+                            this.validatePushToCRM();
                         }else{
                             this.templateError = false;
                             this.loading = false;
@@ -2885,6 +2914,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 $("#closeButton").hide();
                 this.showMarketoForm = false;
                 this.pushToCRM.push('marketo');
+                this.validatePushToCRM();
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
@@ -3074,6 +3104,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
     pushToCrm(){
      this.isPushToCrm = !this.isPushToCrm;
+     if(!this.isPushToCrm){
+         this.pushToCRM = [];
+     }
+     this.validatePushToCRM();
     }
     
     pushToCrmRequest(crmName: any, event: any){
@@ -3091,6 +3125,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.pushToCRM = this.pushToCRM.filter(e => e !== crmName);
            console.log(this.pushToCRM);
        }
+       this.validatePushToCRM();
     }
     
 
