@@ -147,7 +147,7 @@ export class ManageDealsComponent implements OnInit
     ngOnInit()
     {
        
-
+        this.startOrStopAllCountsLoader(true);
     }
     init(){
         this.isListView = !this.referenceService.isGridView;
@@ -293,8 +293,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.totalLeadsLoader = true;
-            this.allApisLoader = true;
+            //this.totalLeadsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getTotalLeads(this.superiorId).subscribe(
                 (data: any) =>
                 {
@@ -318,8 +318,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.totalLeadsLoader = true;
-            this.allApisLoader = true;
+            //this.totalLeadsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getTotalLeadsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
@@ -344,8 +344,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.totalDealsLoader = true;
-            this.allApisLoader = true;
+           // this.totalDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getTotalDeals(this.superiorId).subscribe(
                 (data: any) =>
                 {
@@ -370,8 +370,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.totalDealsLoader = true;
-            this.allApisLoader = true;
+           // this.totalDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getTotalDealsByPartner(this.superiorId).subscribe(
                 (data: any) =>
                 {
@@ -396,8 +396,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.openedDealsLoader = true;
-            this.allApisLoader = true;
+          //  this.openedDealsLoader = true;
+          //  this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
@@ -422,8 +422,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.dealsOnHoldLoader = true;
-            this.allApisLoader = true;
+            //this.dealsOnHoldLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
@@ -449,8 +449,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.closedDealsLoader = true;
-            this.allApisLoader = true;
+           // this.closedDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
@@ -477,8 +477,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.openedDealsLoader = true;
-            this.allApisLoader = true;
+           // this.openedDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
@@ -503,8 +503,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.openedDealsLoader = true;
-            this.allApisLoader = true;
+           // this.openedDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"approved").subscribe(
                 (data: any) =>
                 {
@@ -529,8 +529,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.closedDealsLoader = true;
-            this.allApisLoader = true;
+          //  this.closedDealsLoader = true;
+          //  this.allApisLoader = true;
             this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
@@ -556,8 +556,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.rejectedDealsLoader = true;
-            this.allApisLoader = true;
+          //  this.rejectedDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"rejected").subscribe(
                 (data: any) =>
                 {
@@ -583,8 +583,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.openedDealsLoader = true;
-            this.allApisLoader = true;
+           // this.openedDealsLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"opened").subscribe(
                 (data: any) =>
                 {
@@ -610,8 +610,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.dealsOnHoldLoader = true;
-            this.allApisLoader = true;
+           // this.dealsOnHoldLoader = true;
+           // this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"hold").subscribe(
                 (data: any) =>
                 {
@@ -637,8 +637,8 @@ export class ManageDealsComponent implements OnInit
     {
         try
         {
-            this.closedDealsLoader = true;
-            this.allApisLoader = true;
+           // this.closedDealsLoader = true;
+         //   this.allApisLoader = true;
             this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"closed").subscribe(
                 (data: any) =>
                 {
