@@ -615,7 +615,7 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.saveZohoSelectedContactsWithPermission();
         }else if(this.contactOption == 'salesForceContacts'){
             this.saveSalesForceContactsWithPermission();
-        }else if(this.contactOption == 'salesForceSelectedContacts'){
+        }else if(this.contactOption == 'salesforceSelectedContacts'){
             this.saveSalesForceSelectedContactsWithPermission();
         }else if(this.contactOption == 'marketoContacts'){
             this.saveMarketoContactsWithPermission();
