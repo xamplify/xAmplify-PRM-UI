@@ -198,6 +198,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         }
     }
     checkingCallToActionValues() {
+        
+        if(this.callAction.email_id){
+            this.callAction.email_id = this.callAction.email_id.trim();
+        }
+        
         if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
             && this.callAction.firstName && this.callAction.lastName) {
             this.callAction.isOverlay = false;

@@ -107,7 +107,7 @@ export class Properties {
   VIDEO_PROCESSING_MESSAGE ='Don\'t mind us. We\'re just processing your video.'
   CONTENT_UPLOAD_SIZE ='Unable to upload files because your files size is more than 12 MB';
   CONTENT_UPLOAD_FILETYPE='Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
-  CONTENT_PROCESS_MESSAGE = 'Your file has been uploaded. Please wait while we process it.';
+  CONTENT_PROCESS_MESSAGE = 'Your file(s) has been uploaded. Please wait while we process it.';
   SUPPORT_FILES ='These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.';
   CONTENT_DRAG_MESSAGE = 'Drag and drop files here or click to select files.';
   VIDEO_DRAG_MESSAGE ='Drag and drop a video file here or click to select a Video file.';
