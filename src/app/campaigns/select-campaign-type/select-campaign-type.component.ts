@@ -101,14 +101,12 @@ export class SelectCampaignTypeComponent implements OnInit{
          this.router.navigate(["/home/campaigns/create"]);
      }
      createEventCampaign(){
-       if(this.isOrgAdmin || this.hasSocialStatusRole ||this.isOnlyPartner || this.authenticationService.module.isVendor){
         this.refService.selectedCampaignType = "eventCampaign";
-        this.router.navigate(["/home/campaigns/event"]); }
+        this.router.navigate(["/home/campaigns/event"]); 
      }
      socialMediaCampaign(){
-       if(this.isOrgAdmin || this.hasSocialStatusRole ||this.isOnlyPartner || this.authenticationService.module.isVendor){
       //this.refService.selectedCampaignType = "socialCampaign";
-       this.router.navigate(["/home/campaigns/social"]); }
+       this.router.navigate(["/home/campaigns/social"]); 
      }
      createSMS_Campaign(){
       this.refService.selectedCampaignType = "sms";
