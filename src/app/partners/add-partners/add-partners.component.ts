@@ -435,11 +435,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             for ( let i = 0; i < this.newPartnerUser.length; i++ ) {
 
                 let userDetails = {
-                        "emailId": this.newPartnerUser[i].emailId,
                         "firstName": this.newPartnerUser[i].firstName,
                         "lastName": this.newPartnerUser[i].lastName,
                     }
-
+                
+                 if(this.newPartnerUser[i].emailId){
+                    userDetails["emailId"] = this.newPartnerUser[i].emailId;
+                  }else{
+                      userDetails["emailId"] =  this.newPartnerUser[i].email;
+                  }
+                
                 this.newUserDetails.push( userDetails );
 
                 if ( this.newPartnerUser[i].mobileNumber ) {
