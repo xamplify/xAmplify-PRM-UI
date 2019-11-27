@@ -72,23 +72,23 @@ export class DealRegistrationComponent implements OnInit
     customResponse: CustomResponse = new CustomResponse();
 
     phoneDivClass: string = "form-group";
-    phoneError = false;
+    phoneError = true;
     phoneErrorMessage = "";
     websiteError: boolean;
     websiteDivClass: any;
     websiteErrorMessage: string;
-    leadStreetError: boolean;
-    leadCityError: boolean;
-    leadStateError: boolean;
-    leadPostalCodeError: boolean;
-    countryError: boolean;
+    leadStreetError: boolean= true;
+    leadCityError: boolean= true;
+    leadStateError: boolean= true;
+    leadPostalCodeError: boolean= true;
+    countryError: boolean= true;
     opportunityAmountError: boolean;
     estimatedCloseDateError: boolean;
-    companyError: boolean;
-    firstNameError: boolean;
-    lastNameError: boolean;
-    titleError: boolean;
-    roleError:boolean;
+    companyError: boolean = true;
+    firstNameError: boolean= true;
+    lastNameError: boolean= true;
+    titleError: boolean= true;
+    roleError:boolean= true;
     dealTypeError: boolean;
     submitButtonText: string = "";
     ngxloading: boolean;
@@ -130,6 +130,7 @@ export class DealRegistrationComponent implements OnInit
 
     ngOnInit()
     {
+        
        this.utilService.getJSONLocation().subscribe(response=>console.log(response))
 
         flatpickr('.flatpickr', {
@@ -153,21 +154,25 @@ export class DealRegistrationComponent implements OnInit
                     this.form = forms[0];
 
                 }
-                this.getLeadData();
+              
 
 
             },
             error => console.log(error),
-            () => { });
-            this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
+            () => {this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
 
                 this.dealTypes = dealTypes.data;
-
-            });
+              
+                this.getLeadData();
+            },
+            error => console.log(error),
+            () => { });
+         });
+            
         }
         else
         {
-            this.getLeadData();
+           
             this.dealRegistrationService.getForms(this.campaign.userId).subscribe(forms =>
             {
                 this.forms = forms;
@@ -183,15 +188,21 @@ export class DealRegistrationComponent implements OnInit
 
             },
             error => console.log(error),
-            () => { })
+            () => { 
+                this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
+
+                    this.dealTypes = dealTypes.data;
+                   
+                    this.getLeadData();
+        
+                },
+                error => console.log(error),
+                () => { });
+            })
 
 
         }
-        this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
-
-            this.dealTypes = dealTypes.data;
-
-        });
+        
 
     }
 
@@ -322,7 +333,7 @@ export class DealRegistrationComponent implements OnInit
             console.log(this.properties)
         }
 
-
+        this.setDealTypeError();
         this.setFieldErrorStates();
 
 
@@ -409,6 +420,7 @@ export class DealRegistrationComponent implements OnInit
 
             });
         }
+        this.setDealTypeError();
         this.setFieldErrorStates()
 
     }
@@ -424,6 +436,10 @@ export class DealRegistrationComponent implements OnInit
             this.leadStreetError = false
         else
             this.leadStreetError = true;
+        if (this.dealRegistration.leadCity != null && this.dealRegistration.leadCity.length > 0)
+            this.leadCityError = false
+        else
+            this.leadCityError = true;
         if (this.dealRegistration.lastName != null && this.dealRegistration.lastName.length > 0)
             this.lastNameError = false
         else
@@ -453,41 +469,17 @@ export class DealRegistrationComponent implements OnInit
             this.estimatedCloseDateError = false
         else
             this.estimatedCloseDateError = true;
+        if (this.dealRegistration.title != null && this.dealRegistration.title.length > 0)
+            this.titleError = false
+        else
+            this.titleError = true;
         if (this.dealRegistration.opportunityAmount != null
         && parseFloat(this.dealRegistration.opportunityAmount) >0)
             this.opportunityAmountError = false
         else
             this.opportunityAmountError = true;
 
-        if(this.dealTypes.length == 0){
-            if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0)
-                this.dealTypeError = false
-            else
-                this.dealTypeError = true;
-        }else{
-            let dtFilter = this.dealTypes.filter(dt =>{
-                if(dt.dealType == this.dealRegistration.dealType)
-                return dt;
-            });
-            if(dtFilter!=null && dtFilter!=undefined){
-                this.dealType = this.successClass;
-                this.dealTypeError = false;
-            }else{
-
-
-            let fieldValue = $.trim($('#dealType').val());
-            console.log(fieldValue);
-            if (fieldValue.length > 0 && fieldValue != "Select Dealtype")
-            {
-                this.dealType = this.successClass;
-                this.dealTypeError = false;
-            } else
-            {
-                this.dealType = this.errorClass;
-                this.dealTypeError = true;
-            }
-        }
-        }
+       
         this.validateWebSite(0);
         this.validatePhone(0);
         this.properties.forEach(property =>
@@ -498,6 +490,14 @@ export class DealRegistrationComponent implements OnInit
 
         this.submitButtonStatus();
 
+    }
+    setDealTypeError(){
+        if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0
+            && this.dealRegistration.dealType != 'Select Dealtype')
+                this.dealTypeError = false
+            else
+                this.dealTypeError = true;
+        
     }
 
     opportunityAmountUpdate(event:string){
@@ -861,7 +861,7 @@ export class DealRegistrationComponent implements OnInit
             if (fieldId == "dealType")
             {
 
-                if (fieldValue.length > 0 && fieldValue != "null")
+                if (fieldValue.length > 0 && fieldValue != "Select Dealtype")
                 {
                     this.dealType = successClass;
                     this.dealTypeError = false;

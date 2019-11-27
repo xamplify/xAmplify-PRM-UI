@@ -118,7 +118,7 @@
               </label>
               <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                 <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
-                  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                  [ngModelOptions]="{standalone: true}" [disabled]="isVendor || isPreview" ></int-phone-prefix>
               </fieldset>
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
@@ -189,7 +189,7 @@
                 </font>
               </label>
               <input type="text" maxlength="100" id="website" name="website" class="form-control" [(ngModel)]="dealRegistration.website"
-                (blur)="validateField('website',false)" [disabled]="isVendor || isPreview" />
+                (input)="validateField('website',false)" [disabled]="isVendor || isPreview" />
               <span *ngIf="websiteError" style="color: #f55d7a">{{websiteErrorMessage}}</span>
             </div>
 
@@ -220,45 +220,16 @@
 
             <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}" id="dealType"
               (input)="validateField('dealType',false)" [disabled]="isVendor  || isPreview" >
-              <option [value]="'null'">-- Select Deal Type --</option>
+              <option [value]="'Select Dealtype'">-- Select Deal Type --</option>
               <option [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
               <option [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
               <option [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>
               <option [value]="'Services'" [selected]="dealRegistration.dealType == 'Services'">Services</option>
               <option *ngFor="let dt of dealTypes" [value]="dt.dealType" [selected]="dealRegistration.dealType == dt.dealType">{{dt.dealType}}</option>
             </select>
-            <!-- <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}" id="dealType"
-              (input)="validateField('dealType',false)" [disabled]="isVendor" *ngIf="dealTypes.length == 0">
-              <option [value]="null" [selected]="dealRegistration.dealType != 'New Customer'
-              || dealRegistration.dealType == 'New Product'
-              || dealRegistration.dealType == 'Upgrade'
-              || dealRegistration.dealType == 'Services'">-- Select Deal Type --</option>
-              <option [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
-              <option [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
-              <option [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>
-              <option [value]="'Services'" [selected]="dealRegistration.dealType == 'Services'">Services</option>
-
-            </select> -->
+          
           </div>
-          <!-- <div class="form-group" [attr.class]="dealType">
-            <label class="control-label">Deal Type
-              <font style="color: #f55d7a">
-                <b>*</b>
-              </font>
-            </label>
-
-                <select class="form-control"  [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}"
-                 id="dealType" (input)="validateField('dealType',false)" [disabled]="isVendor"
-               >
-               <option  [value]="null" >-- Select Dealtype --</option>
-                <option  [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
-                <option  [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
-                <option  [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>
-                <option  [value]="'Services'" [selected]="dealRegistration.dealType == 'Services'">Services</option>
-
-              </select>
-
-          </div> -->
+         
 
           <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
             <label class="control-label">Opportunity Amount
@@ -270,7 +241,8 @@
 
 
               <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
-                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (ngModelChange)="validateField('opportunityAmount',false)"
+                [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount',false)"
+                (ngModelChange)="validateField('opportunityAmount',false)"
                 [disabled]="isVendor|| isPreview" maxlength="20" />
             </div>
           </div>
@@ -302,7 +274,7 @@
         </div>
 
 
-        <div class="form-group" *ngIf="!isVendor">
+        <div class="form-group" *ngIf="!isVendor && !isPreview">
           <a class="dashboard-stat yellow-gold" style="padding: 9px 0;margin-top: 10px" (click)="addProperties()">
             <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
             Add Your Comments
@@ -310,7 +282,7 @@
         </div>
         <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: 4px;">
           <fieldset *ngIf="properties?.length>0">
-            <legend *ngIf="!isVendor">Add Your Comments</legend>
+            <legend *ngIf="!isVendor && !isPreview">Add Your Comments</legend>
             <legend *ngIf="isVendor">Partner Comments</legend>
             <div *ngFor="let property of properties;let i=index">
               <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'">
@@ -319,7 +291,7 @@
                     <h4 class="text-left" style="color:#fff">Comment-{{i+1}}</h4>
                   </div>
                   <div class="col-xs-6">
-                    <div class="pull-right" id="question-icons">
+                    <div class="pull-right" id="question-icons" *ngIf="!isPreview" >
                       <button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,property)" *ngIf="!isVendor">
                         <span class="glyphicon glyphicon-trash"></span>
                       </button>
@@ -342,7 +314,7 @@
                           </font>
                         </label>
                         <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key" [ngModelOptions]="{standalone: true}"
-                          id="question" (input)="validateQuestion(property)" [disabled]="property.isDisabled || isVendor" />
+                          id="question" (input)="validateQuestion(property)" [disabled]="property.isDisabled || isVendor || isPreview" />
                       </div>
                       <div class="form-group" [attr.class]="property.validationStausValue">
                         <label class="control-label">Comment
@@ -351,7 +323,7 @@
                           </font>
                         </label>
                         <textarea type="text" maxlength="1000" class="form-control" [(ngModel)]=" property.value" [ngModelOptions]="{standalone: true}"
-                          id="comment" (input)="validateComment(property)" [disabled]="property.isDisabled || isVendor"></textarea>
+                          id="comment" (input)="validateComment(property)" [disabled]="property.isDisabled || isVendor || isPreview"></textarea>
                       </div>
                     </div>
                   </form>
