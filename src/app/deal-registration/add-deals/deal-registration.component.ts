@@ -1077,11 +1077,9 @@ export class DealRegistrationComponent implements OnInit
         }
     }
     setFormValidateErrMsg(){
-        alert("ERROR")
      }
 
      clearFormValidateErrMsg(){
-        alert("SUCCES")
      }
 
      formatMobileNumber(mobile:string){
