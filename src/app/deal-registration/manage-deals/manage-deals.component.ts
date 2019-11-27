@@ -982,15 +982,28 @@ export class ManageDealsComponent implements OnInit
         this.campaingnList = false;
 
     }
-    showOpenedLeads()
+      showOpenedLeads()
     {
+        if (!this.isPartner)
+        {
+            this.getOpenedDeals();
+        }else {
+            this.getOpenedDealsByPartner();
+        }
         this.selectedTabIndex = 3;
         this.filterDeals = "OPENED";
         this.leadList = true;
         this.campaingnList = false;
+
     }
     showDealsOnHold()
     {
+        if (!this.isPartner)
+        {
+            this.getDealsOnHold();
+        }else {
+            this.getDealsOnHoldByPartner();
+        }
         this.selectedTabIndex = 5;
         this.filterDeals = "HOLD";
         this.leadList = true;
@@ -1000,6 +1013,12 @@ export class ManageDealsComponent implements OnInit
 
     showApprovedLeads()
     {
+        if (!this.isPartner)
+        {
+            this.getApprovedDeals();
+        }else {
+            this.getApprovedDealsByPartner();
+        }
         this.selectedTabIndex = 6;
         this.filterDeals = "APPROVED";
         this.leadList = true;
@@ -1008,6 +1027,12 @@ export class ManageDealsComponent implements OnInit
     }
     showRejectedLeads()
     {
+        if (!this.isPartner)
+        {
+            this.getRejectedDeals();
+        }else {
+            this.getRejectedDealsByPartner();
+        }
         this.selectedTabIndex = 7;
         this.filterDeals = "REJECTED";
         this.leadList = true;
@@ -1016,6 +1041,12 @@ export class ManageDealsComponent implements OnInit
     }
     showClosedLeads()
     {
+        if (!this.isPartner)
+        {
+            this.getClosedDeals();
+        }else {
+            this.getClosedDealsByPartner();
+        }
         this.selectedTabIndex = 4;
         this.filterDeals = "CLOSED";
         this.leadList = true;
