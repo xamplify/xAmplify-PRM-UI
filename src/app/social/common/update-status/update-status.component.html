@@ -227,7 +227,7 @@
 							</div>
 						</ng-template>
 						<ng-template #socialProfile>
-							<div class="profile-image-box" data-toggle="tooltip" data-placement="top"
+							<div *ngIf = "socialStatus.socialStatusProvider" class="profile-image-box" data-toggle="tooltip" data-placement="top"
 								[attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
 									socialStatus.socialStatusProvider.socialConnection.firstName">
 								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
