@@ -359,7 +359,7 @@ td h6 {
 	bottom:25px;
 }
 
-/* Naresh changes */
+/* Naresh changes */"src/app/landing-pages/manage-landing-page/manage-landing-page.component.html"
 
 .bar a {
     width: 25px !important;
@@ -369,4 +369,34 @@ td h6 {
 
 .bar a i{
     font-size: 12px !important;
+}
+.grid-box h6 {
+      text-align: left;
+    margin: 5px 0 5px 15px !important;
+}
+hr {
+    margin: 0px 0;
+    border: 0;
+    border-top: 0.5px solid #cec8c8 !important;
+    border-bottom: 0;
+    width: 86%!important;
+    /* padding-left: 17px; */
+    margin-left: 16px !important;
+}
+.box {
+    position: absolute;
+    top: 297px;
+    bottom: 0px;
+    right: 0px;
+    background-color: #f1f3fa;
+    color: #6f6b6b;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+}
+.bar a {
+    width: 25px !important;
+    height: 25px !important;
+    padding: 2px !important;
+    margin: 4px 4px!important;
 }

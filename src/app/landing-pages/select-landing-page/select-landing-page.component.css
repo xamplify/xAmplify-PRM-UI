@@ -216,3 +216,6 @@ h1 {
    border-radius: 8px 8px 0 0;
    background: #65b4d6;
   }
+.grid-box{
+	padding-bottom: 0px !important;
+}
