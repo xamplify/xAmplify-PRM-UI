@@ -66,7 +66,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 	    <div class="col-lg-8 content-wrapper">
 	        <div class="control-styles">
 	        	<ejs-multiselect [(ngModel)]='addContactuser.selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (input)="validatingGdprLegalOptions()"></ejs-multiselect>
+	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (ngModalChange)="validatingGdprLegalOptions()"></ejs-multiselect>
 	        </div>
 	    </div>
 	    </div>
@@ -219,8 +219,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
        <button class="btn btn-default" (click)="addContactModalClose()">Cancel</button>
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || isValidLegalOptions" (click)="addRow()">Add</button>
-      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || isValidLegalOptions" (click)="addEditContactRow()" >Save</button>
-      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || isValidLegalOptions" (click)="updateUser()" data-dismiss="modal" >Update</button>
+      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || !isValidLegalOptions" (click)="addEditContactRow()" >Save</button>
+      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || !isValidLegalOptions" (click)="updateUser()" data-dismiss="modal" >Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
