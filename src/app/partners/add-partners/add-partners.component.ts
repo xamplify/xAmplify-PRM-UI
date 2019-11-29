@@ -24,6 +24,7 @@ import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 declare var $, Papa, swal, Swal: any;
 
@@ -170,6 +171,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     public httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     gdprSetting: GdprSetting = new GdprSetting();
+    termsAndConditionStatus = true;
+    gdprStatus = true;    
+    legalBasisOptions :Array<LegalBasisOption>;
+    parentInput:any;
+    companyId: number = 0;
+    
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -181,6 +188,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.socialPartners = new SocialContact();
         this.addPartnerUser.country = ( this.countryNames.countries[0] );
         this.pageNumber = this.paginationComponent.numberPerPage[0];
+        
+        this.parentInput = {};
+        const currentUser = localStorage.getItem( 'currentUser' );
+        let campaginAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
+        this.companyId = campaginAccessDto.companyId;
     }
 
     onChangeAllPartnerUsers( event: Pagination ) {
@@ -611,31 +623,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }*/
     
     askForPermission() {
-        if (this.referenceService.companyId > 0) {
-            this.loading = true;
-            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
-                .subscribe(
-                    response => {
-                        if (response.statusCode == 200) {
-                            this.gdprSetting = response.data;
-                            if (this.gdprSetting.termsAndConditionStatus) {
-                                $('#tcModal').modal('show');
-                            } else {
-                                this.saveContactsWithPermission();
-                            }
-                        } else {
-                            $('#tcModal').modal('show');
-                        }
-                        this.loading = false;
-                    },
-                    (error: any) => {
-                        this.loading = false;
-                        $('#tcModal').modal('show');
-                    },
-                    () => this.xtremandLogger.info('Finished getGdprSettings()')
-                );
-        } else {
+        if(this.termsAndConditionStatus){
             $('#tcModal').modal('show');
+        }else{
+            this.saveContactsWithPermission();
         }
    }
     
@@ -2308,12 +2299,59 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }
+            
+            /********Check Gdpr Settings******************/
+            this.checkTermsAndConditionStatus();
+            this.getLegalBasisOptions();
         }
         catch ( error ) {
             this.xtremandLogger.error( "addPartner.component oninit " + error );
         }
     }
 
+    
+    checkTermsAndConditionStatus(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.userService.getGdprSettingByCompanyId(this.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            this.gdprStatus = this.gdprSetting.gdprStatus;
+                            this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
+                        } 
+                        this.parentInput['termsAndConditionStatus'] = this.termsAndConditionStatus;
+                        this.parentInput['gdprStatus'] = this.gdprStatus;
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                    },
+                    () => this.xtremandLogger.info('Finished getGdprSettings()')
+                );
+        }
+        
+    }
+    
+    getLegalBasisOptions(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.referenceService.getLegalBasisOptions(this.companyId)
+            .subscribe(
+                data => {
+                    this.legalBasisOptions = data.data;
+                    this.parentInput['legalBasisOptions'] = this.legalBasisOptions;
+                    this.loading = false;
+                },
+                (error: any) => {
+                   this.loading = false;
+                },
+                () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
+            );
+        }
+    
+    }
+    
     ngOnDestroy() {
         this.contactService.socialProviderName = "";
         this.referenceService.callBackURLCondition = '';

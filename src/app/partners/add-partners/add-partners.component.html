@@ -781,11 +781,11 @@ img:hover {
 
 	<!-- Modal -->
 	<div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-	<app-add-contact-modal [totalUsers]="contactService.allPartners"  [isContactTypeEdit]="true" [isUpdateUser] = "updatePartnerUser" (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"  [isContactTypeEdit]="true" [isUpdateUser] = "updatePartnerUser" (notifyParent)="addRow($event)" ></app-add-contact-modal>
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
-	<app-add-contact-modal [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser] = "updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser] = "updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
 </div>
 
 	<div id="zohoId">

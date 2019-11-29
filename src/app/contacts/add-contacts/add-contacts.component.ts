@@ -2444,8 +2444,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     }
     
-    
-    
     checkTermsAndConditionStatus(){
         if (this.companyId>0){
             this.loading = true;
@@ -2485,7 +2483,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
             );
         }
-        
     
     }
 
