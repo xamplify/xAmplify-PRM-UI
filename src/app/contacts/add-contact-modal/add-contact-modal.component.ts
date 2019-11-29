@@ -41,7 +41,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     public placeHolder: string = 'Select Legal Basis Options';
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
-    isValidLegalOptions = true;
+    isValidLegalOptions = false;
+    isShowRequiredFieldDiv = false;
 
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
@@ -98,21 +99,45 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.emailNotValid = false;
         }
     }
+    
+    validatingGdprLegalOptions(){
+        
+        if(this.addContactuser.selectedLegalBasisOptions.length == 0 && this.gdprStatus){
+            this.isValidLegalOptions = true; 
+        }else{
+          this.isValidLegalOptions = false;
+        }
+    }
 
     addRow() {
-        this.addContactModalClose();
-        this.notifyParent.emit( this.addContactuser );
+        this.validatingGdprLegalOptions()
+        if(!this.isValidLegalOptions){
+           this.addContactModalClose();
+           this.notifyParent.emit( this.addContactuser );
+        }else{
+            this.isShowRequiredFieldDiv = true;
+        }
     }
 
     addEditContactRow() {
-        this.addContactModalClose();
-        this.notifyParent.emit( this.addContactuser );
+        this.validatingGdprLegalOptions()
+        if(!this.isValidLegalOptions){
+          this.addContactModalClose();
+          this.notifyParent.emit( this.addContactuser );
+        }else{
+            this.isShowRequiredFieldDiv = true;
+        }
     }
 
     updateUser() {
-        $( '#addContactModal' ).modal( 'hide' );
-        this.contactService.isContactModalPopup = false;
-        this.notifyParent.emit( this.addContactuser );
+        this.validatingGdprLegalOptions()
+        if(!this.isValidLegalOptions){
+          $( '#addContactModal' ).modal( 'hide' );
+          this.contactService.isContactModalPopup = false;
+          this.notifyParent.emit( this.addContactuser );
+        }else{
+            this.isShowRequiredFieldDiv = true;
+        }
     }
 
     contactCompanyChecking( contactCompany: string ) {
@@ -147,14 +172,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
         }
     }*/
-    
-    validatingGdprLegalOptions(){
-        if(this.addContactuser.selectedLegalBasisOptions.length == 0){
-            this.isValidLegalOptions = false; 
-        }else{
-          this.isValidLegalOptions = true;
-        }
-    }
 
     ngOnInit() {
        try{
@@ -208,10 +225,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
-            
-            if(this.gdprStatus){
-                this.isValidLegalOptions = false;
-            }
            
         }
         $( '#addContactModal' ).modal( 'show' );
