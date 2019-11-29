@@ -41,6 +41,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     public placeHolder: string = 'Select Legal Basis Options';
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
+    isValidLegalOptions = true;
 
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
@@ -146,6 +147,14 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
         }
     }*/
+    
+    validatingGdprLegalOptions(){
+        if(this.addContactuser.selectedLegalBasisOptions.length == 0){
+            this.isValidLegalOptions = false; 
+        }else{
+          this.isValidLegalOptions = true;
+        }
+    }
 
     ngOnInit() {
        try{
@@ -199,6 +208,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
+            
+            if(this.gdprStatus){
+                this.isValidLegalOptions = false;
+            }
+           
         }
         $( '#addContactModal' ).modal( 'show' );
       
