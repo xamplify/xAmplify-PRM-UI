@@ -54,21 +54,25 @@ import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign
 import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
 import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
 import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
-import {FormPreviewComponent} from './forms/preview/form-preview.component';
+//import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+import { CommonComponentModule } from 'app/common/common.module';
 import { HubSpotService } from './core/services/hubspot.service';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
                ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
         , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent
+
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule],
     providers: [{
         provide: Http,
         useFactory: httpService,

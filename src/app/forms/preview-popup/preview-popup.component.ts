@@ -30,8 +30,11 @@ export class PreviewPopupComponent implements OnInit {
     pagination:Pagination = new Pagination();
     formsLoader:HttpRequestLoader = new HttpRequestLoader();
     showButton = false;
+    selectedFormData: Array<Form> = [];
+    selectedFormId: number;
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
+   console.log("Is Show forms in preview popup: " + this.authenticationService.isShowForms);
    }
 
   ngOnInit() {
@@ -125,6 +128,7 @@ export class PreviewPopupComponent implements OnInit {
       ( data: any ) => {
           if(data.statusCode===200){
               this.form = data.data;
+              console.log(data.data);
               this.formError = false;
           }else{
               this.formError = true;
@@ -147,6 +151,17 @@ export class PreviewPopupComponent implements OnInit {
       this.formError = false;
       this.ngxloading =false;
       $('#form-preview-modal').modal('show');
+  }
+  
+  selectedForm(form: any, event){
+     if(event.target.checked){
+       this.selectedFormId = form.id;
+       this.selectedFormData = [];
+       this.selectedFormData.push(form);
+     }else{
+         this.selectedFormId = null;
+         this.selectedFormData = [];
+     }
   }
 
 }

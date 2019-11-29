@@ -1,5 +1,5 @@
 
- <button *ngIf="authenticationService.module.hasFormAccess && showButton" class="btn btn-danger" id="right"  (click)="showForms()">
+ <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="btn btn-danger" id="right"  (click)="showForms()">
                   		Show Forms 
    </button>
       <!-- ----------------------List Available Forms------------------- -->
@@ -39,13 +39,18 @@
 					<table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
 						<thead>
 						  <tr>
+						     <th *ngIf="authenticationService.isShowForms">Select</th>
 							 <th>Form Details</th>
-							 <th class="text-center">Link</th>
-							 <th class="text-center">Copy & Preview</th>
+							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Link</th>
+							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Copy & Preview</th>
+							 <th class="text-center" *ngIf="authenticationService.isShowForms">Preview</th>
 						  </tr>
 						</thead>
 						<tbody>
 							<tr *ngFor="let form of pagination.pagedItems ;let i =index">
+							 <td *ngIf="authenticationService.isShowForms" align="center"><input type="checkbox"
+							 [checked]="selectedFormId === form.id"
+								(click)="selectedForm(form, $event)"></td>
 							  <td>
 								 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
 									{{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
@@ -57,13 +62,13 @@
 									From <b>{{form.companyName}}</b>
 								 </h6>
 							  </td>
-							  <td>
+							  <td *ngIf="!authenticationService.isShowForms">
 							  	<input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form.alias}}" #userinput>
 							  	<font class="success" id="copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
 							  </td>
 							  <td id="actions-row">
 								 <div class="actions-block override-actions">
-								 	<a data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
+								 	<a *ngIf="!authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
 									  <i class="fa fa-copy"></i>
 									</a>
 									
@@ -96,7 +101,7 @@
 		
           </div>
           <div class="modal-footer">
-			<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+			<a data-dismiss="modal" class="btn btn-default" style="float: right"><span *ngIf="!authenticationService.isShowForms">Close</span><span  *ngIf="authenticationService.isShowForms">Submit</span></a>
 		</div>
         </div>
       </div>
