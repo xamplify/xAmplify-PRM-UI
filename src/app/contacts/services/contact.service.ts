@@ -9,7 +9,7 @@ import { SalesforceListViewContact } from '../models/salesforce-list-view-contac
 import { User } from '../../core/models/user';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Pagination } from '../../core/models/pagination';
 import { EditUser } from '../models/edit-user';
 import 'rxjs/add/operator/catch';
@@ -41,7 +41,7 @@ export class ContactService {
     googleContactsUrl = this.authenticationService.REST_URL + 'googleOauth/';
     zohoContactsUrl = this.authenticationService.REST_URL + 'authenticateZoho';
     salesforceContactUrl = this.authenticationService.REST_URL + 'salesforce';
-    constructor( private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
+    constructor( private router: Router, private authenticationService: AuthenticationService, private _http: Http, private logger: XtremandLogger, private activatedRoute: ActivatedRoute, private refService: ReferenceService ) {
         console.log( logger );
     }
 
@@ -232,6 +232,22 @@ export class ContactService {
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }
+    
+    
+    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<Object> {
+        this.logger.info( validateUserIds );
+        var newUrl = this.contactsUrl + "makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+        return this._http.post( newUrl, validateUserIds )
+            .map(( response: any ) => response.json() );
+    }
+    
+    getValidUsersCount( selectedListIds: Array<number> ): Observable<Object> {
+        this.logger.info( selectedListIds );
+        var newUrl = this.contactsUrl + "valid-contacts-count?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
+        return this._http.post( newUrl, selectedListIds )
+            .map(( response: any ) => response.json() );
+    }
+    
 
     downloadContactList( contactListId: number ): Observable<Response> {
         this.logger.info( contactListId );
@@ -352,14 +368,14 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    socialContactsCallback(): Observable<String> {
-        let queryParam: string;
+    socialContactsCallback(queryParam: any): Observable<String> {
+        /*let queryParam: string;
         this.activatedRoute.queryParams.subscribe(
             ( param: any ) => {
                 let code = param['code'];
                 let denied = param['denied'];
                 queryParam = "?code=" + code;
-            });
+            });*/
         this.logger.info( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) );
         return this._http.get( this.authenticationService.REST_URL + this.socialCallbackName +"/callback" + queryParam  + "&userAlias=" + localStorage.getItem( 'userAlias' )  + "&isPartner=" + localStorage.getItem( 'isPartner' ) )
             .map( this.extractData )
@@ -510,5 +526,11 @@ export class ContactService {
             return Observable.throw( error );
           }
        }
+
+    listLegalBasisData(companyId: number) {
+        return this._http.get(this.authenticationService.REST_URL + `/gdpr/setting/legal_basis/${companyId}?access_token=${this.authenticationService.access_token}`,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 }

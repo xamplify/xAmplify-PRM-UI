@@ -15,6 +15,7 @@ import { UtilService } from 'app/core/services/util.service';
 
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
 declare var $,swal: any;
 
@@ -33,6 +34,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     searchKey = "";
     campaignSuccessMessage = "";
     superiorId = 0;
+    loggedInUserId = 0;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -59,8 +61,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignType:string;
     role = '';
     customResponse: CustomResponse = new CustomResponse();
-
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    loadingEmailTemplate: boolean =false;
 
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
@@ -73,6 +76,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             this.superiorId = superiorId;
         }
+        this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
@@ -95,7 +99,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.campaignType = "SOCIAL";
         }else if(this.campaignType=="event"){
           pagination.campaignType = "EVENT";
-        }else{
+        }else if(this.campaignType=="page" || this.campaignType=="landingPage"){
+            pagination.campaignType = "LANDINGPAGE";
+        }
+        else{
             pagination.campaignType = "NONE";
         }
         if ( this.role == "Vendor" ) {
@@ -182,18 +189,38 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         if ( this.role == "Vendor" ) {
             this.router.navigate( ['/home/campaigns/vendor/' + type] );
         } else {
+            if(type=="landingPage"){
+                type = "page";
+            }
             this.router.navigate( ['/home/campaigns/partner/' + type] );
         }
     }
 
     showCampaignPreview(campaign:any){
-        if(campaign.campaignType === 'EVENT') {
-       //   this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
-          this.getEventCampaignId(campaign.campaignId);
-        } else {
-        //  this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
-           this.getCampaignById(campaign.campaignId);
-        }
+        this.loadingEmailTemplate = true;
+        this.campaignName = campaign.campaignName;
+        let htmlContent = "#email-template-content";
+        $(htmlContent).empty();
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#email_template_preivew").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.campaignService.getPartnerTemplatePreview(campaign.campaignId, this.authenticationService.getUserId()).subscribe(
+            (response: any) => {
+                if (response.statusCode == 200) {
+                    let emailTemplateBody = response.data;
+                    $(htmlContent).append(emailTemplateBody);
+                    this.loadingEmailTemplate = false;
+                } else {
+                    swal("Please Contact Admin!", "No Template Found", "error");
+                    $("#email_template_preivew").modal('hide');
+                }
+            },
+            (error: any) => {
+                swal("Please Contact Admin!", "Unable to load  template", "error"); 
+                this.loadingEmailTemplate = false;
+                this.xtremandLogger.log(error);
+                $("#email_template_preivew").modal('hide');
+            });
     }
     getCampaignById(campaignId) {
         //this.ngxloading = true;
@@ -209,7 +236,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                         landingPage.partnerId = this.authenticationService.getUserId();
                         this.previewLandingPageComponent.showPreview(landingPage);
                     }else{
-                        swal("Landing Page Not Found","","error");
+                        swal("Page Not Found","","error");
                         this.ngxloading = false;
                     }
                     
@@ -245,6 +272,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                           response => {
                               if(response.statusCode==200){
                                   body = this.referenceService.replaceMyMergeTags(response.data, body);
+                                  body = body.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
                                   this.setUpdatedBody(body,emailTemplate,campaign);
                               }
                           },
@@ -256,8 +284,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                  }else{
                      this.setUpdatedBody(body,emailTemplate,campaign);
                  }
-              
-             
               },
               error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
               () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()")
@@ -274,7 +300,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
         (result)=>{
-          console.log(result.data.emailTemplateDTO.body)
           result.data.emailTemplateDTO.body = result.data.emailTemplateDTO.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           this.campaignName = result.data.campaign;
           
@@ -284,18 +309,32 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           let userProfile = this.authenticationService.userProfile;
           let partnerLogo = userProfile.companyLogo;
           let partnerCompanyUrl = userProfile.websiteUrl;
-          
           if(result.data.nurtureCampaign || userProfile.id!=result.data.id){
               result.data.emailTemplateDTO.body = this.referenceService.replacePartnerLogo(result.data.emailTemplateDTO.body,partnerLogo,partnerCompanyUrl,result.data);
           }
-          
-          
-          $("#email-template-content").append(result.data.emailTemplateDTO.body);
-          $('.modal .modal-body').css('overflow-y', 'auto');
-          $("#email_template_preivew").modal('show');
-          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+          let body = result.data.emailTemplateDTO.body;
+          let data = {};
+          data['emailId'] = this.authenticationService.userProfile.emailId;
+          this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                  response => {
+                      if(response.statusCode==200){
+                          body = body.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                          this.showPreviewBody(body);
+                      }
+                  },
+                  error => {
+                      this.xtremandLogger.error(error);
+                      this.showPreviewBody(body);
+                  }
+              );
          });
       }
+    showPreviewBody(body:string){
+        $("#email-template-content").append(body);
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#email_template_preivew").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    }
 
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
@@ -329,5 +368,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
 
     }
+    
 
 }

@@ -13,13 +13,13 @@
 				<a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
 	  </li>
        <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
-      		<a [routerLink]="['/home/landing-pages/manage']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+      		<a [routerLink]="['/home/pages/manage']">Manage Pages</a><i class="fa fa-angle-right"></i>
       	</li>
       	 <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='PartnerLandingPage'">
-      		<a [routerLink]="['/home/landing-pages/partner']">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+      		<a [routerLink]="['/home/pages/partner']">Manage Pages</a><i class="fa fa-angle-right"></i>
       	</li>
       <li>
-        <a>Landing Page Analytics</a>
+        <a>Page Analytics</a>
       </li>
     </ul>
   </div>
@@ -45,7 +45,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp uppercase">Landing Page Views</span>
+					<span class="caption-subject font-green-sharp uppercase">Page Views</span>
 				</div>
        		 <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
 					<span id="font" class="right">
@@ -75,7 +75,7 @@
           <div class="col-xs-12 p5" *ngIf="statusCode==404 && landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
 			<div class="alert alert-danger">
 				<strong>
-					<h4>Landing Page does not exists</h4>
+					<h4>Page does not exists</h4>
 				</strong>
 			</div>
 		</div>
@@ -95,7 +95,7 @@
             <div class="portlet light">
               <div class="portlet-title">
 					<div class="caption">
-						<span class="caption-subject font-red-sunglo uppercase">Landing Page Statistics</span>
+						<span class="caption-subject font-red-sunglo uppercase">Page Statistics</span>
 					</div>
 					<!-- <div class="inputs" align="right">
 						<a class="close-circle" (click)="refreshList(xtreme)" data-toggle="tooltip" data-placement="top" title="Refresh">
@@ -164,10 +164,10 @@
             <i class="fa fa-times"></i>
           </button>
           	<ng-container *ngIf="barChartPopUp">
-          		 <h4 class="modal-title text-center uppercase">Landing Page Statistics By {{videoUtilService.timePeriod}}</h4>
+          		 <h4 class="modal-title text-center uppercase">Page Statistics By {{videoUtilService.timePeriod}}</h4>
           	</ng-container>
           	<ng-container *ngIf="!barChartPopUp">
-          		 <h4 class="modal-title text-center uppercase">Landing Page Statistics By Country</h4>
+          		 <h4 class="modal-title text-center uppercase">Page Statistics By Country</h4>
           	</ng-container>
         </div>
         <div class="modal-body">

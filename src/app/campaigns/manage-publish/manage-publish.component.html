@@ -3,7 +3,7 @@
 		<a (click)="refService.hideDiv('scheduleCompleted')" class="close" aria-label="close">x</a>
 		<strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
 	</div>
-	<div class="page-bar">
+	<div class="page-bar"> 
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()">
 				<i class="fa fa-home"></i>
@@ -33,7 +33,7 @@
 							<li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == selectedCampaignTypeIndex" *ngIf="campaignAccess.socialCampaign">Social</li>
 							<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == selectedCampaignTypeIndex" *ngIf="campaignAccess.eventCampaign">Event</li>
 							<li class="filter" (click)="filterCampaigns('SMS',5)" [class.campaign-type-selected]="5 == selectedCampaignTypeIndex" *ngIf="campaignAccess.smsCampaign">SMS</li>
-							<li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign ||campaignAccess.partnerLandingPage ">Landing Page</li>
+							<li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign ||campaignAccess.partnerLandingPage || authenticationService.module.hasPartnerLandingPageAccess ">Page</li>
 							<li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6 col-sm-12 col-md-6">
@@ -79,22 +79,22 @@
 									<tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
 										<td style="width: 10%;">
 											<ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
+													<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Page Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SMS') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/sms.png" alt="SMS Campaign">
 											</ng-container>
 											
                     					</td>
@@ -273,19 +273,19 @@
 									<tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
 										<td class="hidden-xs" style="width: 10%;">
 											<ng-container *ngIf="campaign.campaignType.indexOf('VIDEO') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/video-email.png" alt="Video Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('REGULAR') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/regular-email.png" alt="Regular Campaign">
 											</ng-container>
 											<ng-container *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1">
-												<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
+												<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/social-campaign.png" alt="Social Campaign">
                       					</ng-container>
                       						<ng-container *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1">
-													<img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Landing Page Campaign">
+													<img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/landing-page.png" alt="Page Campaign">
 												</ng-container>
 					                      <ng-container *ngIf="campaign.campaignType.indexOf('EVENT') > -1">
-					                          <img [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
+					                          <img class="imageClass" [ngClass]="{'active': campaign.launched, 'inactive': !campaign.launched}" src="assets/images/event-campaign.png" alt="Event Campaign">
 					                      </ng-container>
 										</td>
 										<td>
@@ -435,7 +435,7 @@
 													</a>
 
 													<a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner"
-                         								 (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top" title="{{actionsDescription.campaign_report}}">
+                         								 (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right" title="{{actionsDescription.campaign_report}}">
 														<i class="fa fa-line-chart"></i>
 													</a>
 													<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"

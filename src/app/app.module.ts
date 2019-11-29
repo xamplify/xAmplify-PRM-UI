@@ -14,7 +14,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
-
 import { AppComponent } from './app.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
@@ -58,13 +57,18 @@ import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.co
 //import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
 import { CommonComponentModule } from 'app/common/common.module';
+import { HubSpotService } from './core/services/hubspot.service';
+import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-                   CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent,LogEventCampaignComponentSMS
-                    ,LogSMSClickComponent,ShowLandingPageComponent, PageNotFoundComponent
+                   CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent,FormPreviewComponent
+               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
+        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent
+
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
@@ -76,7 +80,7 @@ import { CommonComponentModule } from 'app/common/common.module';
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService],
     bootstrap: [AppComponent]
 
 })

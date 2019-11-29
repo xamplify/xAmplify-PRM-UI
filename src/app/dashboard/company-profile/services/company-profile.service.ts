@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CompanyProfile } from '../models/company-profile';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { CampaignAccess } from '../../../campaigns/models/campaign-access';
+
 
 @Injectable()
 export class CompanyProfileService {
@@ -47,7 +49,40 @@ export class CompanyProfileService {
       return this.httpClient.post(this.URL+"company-profile/upload-logo?userId="+this.authenticationService.user.id+"&access_token="+this.authenticationService.access_token,formData)
       .catch(this.handleError);
     }
+    /***Uploading File Along With JSON**** */
+    saveCompanyProfileByAdmin(file:any,companyProfile:CompanyProfile){
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        formData.append('accountDto', new Blob([JSON.stringify(companyProfile)],
+                {
+                    type: "application/json"
+                }));
+        return this.httpClient.post(this.authenticationService.REST_URL+"superadmin/saveUserAndCompanyProfile?access_token="+this.authenticationService.access_token,formData)
+        .catch(this.handleError);
+        
+    }
+    
+    getByEmailId( emailId: string ) {
+        let data = {};
+        data['emailId'] = emailId;
+        return this.http.post(this.URL+"getByEmailId?access_token="+this.authenticationService.access_token,data)
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
+    
+    upgradeToVendorRole( campaignAccess: CampaignAccess ) {
+        return this.http.post(this.URL+"upgradeToVendor?access_token="+this.authenticationService.access_token,campaignAccess)
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
+    
+    createNewVendorRole( companyProfile: CompanyProfile ) {
+        return this.http.post(this.authenticationService.REST_URL+"superadmin/account/create?access_token="+this.authenticationService.access_token,companyProfile)
+        .map(this.extractData)
+        .catch(this.handleError);
+   }
 
+  
     private extractData( res: Response ) {
         let body = res.json();
         return body || {};

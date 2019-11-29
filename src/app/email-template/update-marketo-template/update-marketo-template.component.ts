@@ -37,6 +37,7 @@ export class UpdateMarketoTemplateComponent implements OnInit
     coBrandingLogo: boolean = false;
     mycontent: string;
     emailTemplateTypes = ["VIDEO", "REGULAR"];
+    thirdPartyEmailTemplate: string;
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
         private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public refService: ReferenceService,
@@ -182,7 +183,11 @@ export class UpdateMarketoTemplateComponent implements OnInit
         if ($.trim(this.emailTemplate.body).length > 0)
         {
             console.log(this.emailTemplate);
-            this.emailTemplateService.updateMarketoEmailTemplate(this.emailTemplate)
+            if (this.thirdPartyEmailTemplate === "HubSpot") {
+                this.updateEmailTemplate(isOnDestroy, this.emailTemplate);
+            }
+            else if (this.thirdPartyEmailTemplate === "Marketo") {
+                this.emailTemplateService.updateMarketoEmailTemplate(this.emailTemplate)
                 .subscribe(
                     (data: any) =>
                     {
@@ -201,7 +206,6 @@ export class UpdateMarketoTemplateComponent implements OnInit
                                 this.videoTagsError = data.message;
                             }
                         }
-
                     },
                     (error: string) =>
                     {
@@ -210,10 +214,10 @@ export class UpdateMarketoTemplateComponent implements OnInit
                     },
                     () => this.logger.info("Finished updateHtmlTemplate()")
                 );
+            }            
         }
-
-
     }
+
     setCoBrandingLogo(event)
     {
         console.log(event)
@@ -274,6 +278,12 @@ export class UpdateMarketoTemplateComponent implements OnInit
     {
         try
         {
+            if (this.router.url.includes("hubspot")) {
+                this.thirdPartyEmailTemplate = "HubSpot";
+              }
+              else if (this.router.url.includes("marketo")) {
+                this.thirdPartyEmailTemplate = "Marketo";
+              }
             Metronic.init();
             Layout.init();
             Demo.init();
@@ -304,5 +314,35 @@ export class UpdateMarketoTemplateComponent implements OnInit
             
         }
 
+    }
+
+    updateEmailTemplate(isOnDestroy: boolean, emailTemplate: EmailTemplate){
+        if (this.thirdPartyEmailTemplate === "HubSpot") {
+            this.emailTemplateService.update(this.emailTemplate)
+            .subscribe(
+            (data: any) => {
+                this.refService.stopLoader(this.httpRequestLoader);
+                if(!isOnDestroy){
+                    if(data.statusCode==703){
+                        this.refService.isUpdated = true;
+                        this.emailTemplateService.emailTemplate = new EmailTemplate();
+                        this.router.navigate(["/home/emailtemplates/manage"]);
+                    }else{
+                        this.clickedButtonName = "";
+                        this.isVideoTagError = true;
+                        this.videoTagsError = data.message;
+                    }
+                }else{
+                    this.emailTemplateService.goToManage();
+                }
+
+            },
+            (error: string) => {
+                this.refService.stopLoader(this.httpRequestLoader);
+                this.logger.errorPage(error);
+            },
+            () => this.logger.info("Finished updateHtmlTemplate()")
+            );
+        }
     }
 }

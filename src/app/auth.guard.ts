@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     teamBaseUrl = 'team';
     opportunityBaseUrl = 'deals';
     formBaseUrl = 'forms';
-    landingPagesUrl = 'landing-pages';
+    landingPagesUrl = 'pages';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService ) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -41,13 +41,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
             this.authenticationService.user.campaignAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
             this.getUserByUserName(userName);
-            if(url.includes('home/error')){ this.router.navigateByUrl('/home/dashboard') }
+            if(url.includes('home/error')){ 
+                this.router.navigateByUrl('/home/dashboard') 
+              }
             else if(!this.authenticationService.user.hasCompany) {
-              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile") ){
+              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
                 return true;
               } else { this.goToAccessDenied();  }
+            }else if(url.includes("/home/design/add")){
+                return true;
             }
-            else if(url.indexOf("/dashboard")< 0){
+            else if(url.indexOf("/dashboard")< 0 ){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
@@ -194,8 +198,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1; 
-            let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner/")>-1);
-            if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerLandingPageAccess){
+            let hasPartnerFormAccess = isPartner && (url.indexOf("/partner/")>-1);
+            if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerFormAccess){
                 return true;
             }else{
                 console.log(campaignAccessDto);
@@ -206,14 +210,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         else if(urlType==this.landingPagesUrl){
             let hasLandingPageAccess = false;
+            let partnerLandingPageAccess = false;
             let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
             if(campaignAccessDto!=undefined){
                 hasLandingPageAccess = campaignAccessDto.landingPage;
+                partnerLandingPageAccess = campaignAccessDto.partnerLandingPage;
+                
             }
             let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
                             || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
             let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
-            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess){
+            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;
             }else{
                 console.log(campaignAccessDto);

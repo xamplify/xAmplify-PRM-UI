@@ -40,7 +40,7 @@ export class ShowLandingPageComponent implements OnInit {
   ngOnInit() {
       this.processor.set(this.processor);
       this.alias = this.route.snapshot.params['alias'];
-      if(this.router.url.includes("/showCampaignLandingPage/")){
+      if(this.router.url.includes("/showCampaignLandingPage/") || this.router.url.includes("/scp/")){
           this.getHtmlBodyCampaignLandingPageAlias(this.alias);
       }else if(this.router.url.includes("/clpl/")){
           this.redirectToOriginalUrl(this.alias);
@@ -173,7 +173,7 @@ export class ShowLandingPageComponent implements OnInit {
            }
           } else {
             this.hasLandingPage = false;
-            this.addHeaderMessage("Oops! This landing page does not exists.",this.errorAlertClass);
+            this.addHeaderMessage("Oops! This page does not exists.",this.errorAlertClass);
           }
           this.processor.remove(this.processor);
         },

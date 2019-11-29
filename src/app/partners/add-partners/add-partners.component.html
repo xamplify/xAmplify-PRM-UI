@@ -44,7 +44,7 @@ img:hover {
 
 </style>
 
-<div class="page-content">
+<div class="page-content" style="overflow: hidden !important;">
 
 <div class="my-container">
 		<ngx-loading [show]="loading || contactService.isLoadingList" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -67,7 +67,7 @@ img:hover {
 		<div class="portlet-body">
 			<form #f="ngForm">
 									<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
 								<div class="portlet light add-options">
 								<div class="portlet-title"> How would you like to add your Partners?</div>
 								<div class="portlet-body">
@@ -100,7 +100,7 @@ img:hover {
 										</div>
 										<div style="margin-top: 5px;">
 										<a (click)="downloadEmptyCsv()">
-										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download Csv File</b>
+										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download File</b>
 										</a>
 										</div>
                   </div>
@@ -115,13 +115,13 @@ img:hover {
 								</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
 									<div class="portlet light cloud-services pb0">
 									<div class="portlet-title">Import Partners from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
 
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
@@ -149,7 +149,7 @@ img:hover {
 									</div>
 									<div style="padding-bottom: 22px;"></div>
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
 						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
@@ -177,7 +177,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
@@ -204,7 +204,7 @@ img:hover {
 										</a>
 									</div>
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
 										<a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
@@ -228,6 +228,34 @@ img:hover {
 											</a>
 										</div>
 									</div>
+
+									<!-- Hubspot -->
+									<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
+										<a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
+										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
+											 class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
+											 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
+										</a>
+										<a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
+										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
+											 class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
+											 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
+										</a>
+										<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
+											<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
+												<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
+											</a>
+										</div> -->
+										<div style="position: relative" *ngIf="!hubspotImageNormal">
+											<a [class.disabled]="selectedAddPartnerOption != 9" (click)="checkingHubSpotContactsAuthentication()">
+												<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
+											</a>
+										</div>
+									</div>
+
+
 								<!-- <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
 									<a id="microsoftContact_button" style="background-color: white">
 										<img src="assets/images/crm/dynamicsCmgSoon.png"
@@ -753,11 +781,11 @@ img:hover {
 
 	<!-- Modal -->
 	<div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-	<app-add-contact-modal [totalUsers]="contactService.allPartners"  [isContactTypeEdit]="true" [isUpdateUser] = "updatePartnerUser" (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners"  [isContactTypeEdit]="true" [isUpdateUser] = "updatePartnerUser" (notifyParent)="addRow($event)" ></app-add-contact-modal>
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
-	<app-add-contact-modal [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser] = "updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser] = "updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
 </div>
 
 	<div id="zohoId">
@@ -1157,15 +1185,15 @@ img:hover {
 	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content" style="width: 80%;top: 100px;left: 60px">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you Sure?</h4>
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you sure?</h4>
 			</div>
 			<div class="modal-body">
 			<div>
-				<h4 class="modal-title f-w-600">You are agreeing xAmplify Terms&Conditions </h4>
+				<h4 class="modal-title f-w-600">You are agreeing to xAmplify's Terms and Conditions.</h4>
 			</div>
 			<div class="form-group" style="margin-top: 15px;">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-			  By onboarding a partner, you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore Moreover, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and  agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
 			<div *ngIf="!isCheckTC" style="color:red">You must agree</div>
@@ -1178,4 +1206,51 @@ img:hover {
 		</div>
 	</div>
 </div>
+
+<!-- HubSpot Modal -->
+<div class="modal right fade" id="ContactHubSpotModal" tabindex="-1" role="dialog" aria-labelledby="TestHubSpotModal">
+	<div class="modal-dialog modal-css" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="hideHuspotModal()" style="position: relative;top:-12px;"><i class="fa fa-times"></i></a>
+				<div class="col-sm-3" style="margin-top: 25px">
+					<img src="assets/images/crm/hubspot-logo.png" alt="Picture of a happy monkey" style="height: 60px" width="150px" />
+				</div>
+				<div class="col-sm-12 salesforce">
+					<h4 class="modal-title">Import from HubSpot:</h4>
+				</div>
+			</div>
+			<div class="modal-body">
+				<div class="clearfix">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="control-label col-sm-3" for="email">Select Option:</label>
+							<div class="col-sm-8">
+								<select class="opts form-control" id="hubspot-dropdown-1" (change)="onChangeHubSpotDropdown($event)">
+									<option selected value="DEFAULT">Select</option>
+									<option value="contacts">Contacts</option>
+									<option value="lists">Lists</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group" *ngIf="hubSpotContactListsData?.length > 0">
+							<label class="control-label col-sm-3" for="hubspot-dropdown-2">Select Option:</label>
+							<div class="col-sm-8">
+								<select class="form-control" id="hubspot-dropdown-2" (change)="onChangeHubSpotListsDropdown($event.target.value)">
+									<option selected value="DEFAULT">Select</option>
+									<option *ngFor="let item of hubSpotContactListsData" value='{{item.id}}'>{{item.name}}</option>
+								</select>
+							</div>
+						</div>
+					</form>
+				</div> 
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideHuspotModal()">Close</button>
+				<button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()" data-dismiss="modal">Submit</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 	

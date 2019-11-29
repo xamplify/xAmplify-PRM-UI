@@ -1,5 +1,4 @@
 <style type="text/css">
-
 	.disabled {
 		pointer-events: none;
 		cursor: not-allowed !important;
@@ -43,7 +42,7 @@
 			              <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
 			              <li class="filter" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social</li>
 			              <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
-			               <li class="filter" *ngIf="authenticationService.module.hasPartnerLandingPageAccess" (click)="filterCampaigns('landingPage')" [class.active]="'landingPage' == campaignType">Landing Page</li>
+			               <li class="filter" *ngIf="authenticationService.module.hasPartnerLandingPageAccess" (click)="filterCampaigns('landingPage')" [class.active]="'page' == campaignType">Page</li>
 			              <li class="filter" style="display: none;">Own Template</li>
 						</ul>
 						<div class="page-toolbar col-xs-6">
@@ -92,30 +91,30 @@
 								<tbody>
 									<tr *ngFor='let campaign of pagination.pagedItems; let i=index'>
 										<td style="width: 10%;" class="hidden-xs">
-											<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
 											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
 											 alt="{{campaign.campaignType}} Campaign">
 
-											<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
 											 alt="{{campaign.campaignType}} Campaign">
 											<img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
 											 alt="{{campaign.campaignType}} Campaign">
 
-											<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
 											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                       							 alt="{{campaign.campaignType}} Campaign">
 
-                      						<img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
+                      						<img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
 											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                       						 alt="{{campaign.campaignType}} Campaign">
                       						 
                       						 
-                      						 <img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;"
+                      						 <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;"
 											 alt="{{campaign.campaignType}} Campaign">
-											<img *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                       						 alt="{{campaign.campaignType}} Campaign">
                       						 
                       						 
@@ -162,8 +161,28 @@
                         <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
                             <i class="fa fa-clone cancelled-event"></i>
                         </a>
+						  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT' || campaign.campaignType === 'LANDINGPAGE'">
+						         <div class="btn-group pull-right" id="download-template">
+										<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
+										<span  data-toggle="dropdown" title="Download"></span>
+										<ul class="dropdown-menu pull-right">
+												<li>
+												  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}"
+                        	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" target="_blank">
+                        	 							<i class="fa fa-file" style="width: 30px;"></i>
+														 Download Html
+													</a>
+											</li>
+											<li>
+											  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"  target="_blank">
+												<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
+												Download Pdf
+												</a>
+											</li>
+										</ul>
+								</div>
+                        </ng-container>
                         </span>
-
                         <a class="hidden"><i class="fa fa-trash"></i></a>
                         <!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
 												<i class="fa fa-eye mr5"></i>
@@ -222,6 +241,34 @@
 												<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
 													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
+												
+												<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT' || campaign.campaignType === 'LANDINGPAGE'">
+										         <div class="btn-group" id="download-template-grid">
+														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
+														<span  data-toggle="dropdown" title="Download"></span>
+														<ul class="dropdown-menu pull-right">
+																<li>
+																  	<a  href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}"  
+				                        	 							data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank" >
+				                        	 							<i class="fa fa-file" style="width: 30px;"></i>
+																		 Download Html
+																	</a>
+															</li>
+															<li>
+															  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  
+																data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
+																<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
+																Download Pdf
+																</a>
+															</li>
+														</ul>
+												</div>
+                        				</ng-container>
+												
+												<!-- <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
+                        								 data-toggle="tooltip" data-placement="top" title="Download Template" data-rel="fancybox-button" >
+                            					<i class="fa fa-download"></i>
+                        						</a> -->
 											</div>
 										</div>
 									</div>
@@ -256,8 +303,10 @@
           <h4 class="modal-title">{{campaignName}}</h4>
         </div>
         <div class="modal-body">
-          <div id="email-template-content"></div>
-        </div>
+		  <div id="email-template-content">
+		  </div>
+		    <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
+		</div>
         <div class="modal-footer">
           <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
         </div>
@@ -267,7 +316,6 @@
 	<!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
   <app-scroll-top></app-scroll-top>
 </div>
-
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
 
 

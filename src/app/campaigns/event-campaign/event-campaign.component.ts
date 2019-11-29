@@ -25,11 +25,17 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CountryNames } from '../../common/models/country-names';
 import { Roles } from '../../core/models/roles';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+
 import { SocialStatusProvider } from "../../social/models/social-status-provider";
 import { SocialService } from "../../social/services/social.service";
 import { SocialStatus } from "../../social/models/social-status";
 import {FormService} from '../../forms/services/form.service';
 import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.component';
+
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { HubSpotService } from 'app/core/services/hubspot.service';
+
+
 declare var $,swal, flatpickr, CKEDITOR,require;
 import { Form } from 'app/forms/models/form';
 var moment = require('moment-timezone');
@@ -159,13 +165,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   loadingMarketo: boolean;
   marketoButtonClass = "btn btn-default";
   loading = false;
-  pushToMarketo = false;
+ // pushToMarketo = false;
  //ENABLE or DISABLE LEADS
  smsService = false;
  enableSMS:boolean;
  smsText: any;
  enableSmsText: boolean;
  smsTextDivClass: string
+
  
  socialStatusProviders = new Array<SocialStatusProvider>();
  selectedAccounts: number = 0;
@@ -179,6 +186,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
   
 
+ validUsersCount: number;
+ allUsersCount: number;
+ listOfSelectedUserListIds = [];
+ isPushToCrm = false;
+ pushToCRM = [];
+ isValidCrmOption = true;
+
+ senderMergeTag:SenderMergeTag = new SenderMergeTag();
+
+
+
   constructor(public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -186,6 +204,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     public emailTemplateService: EmailTemplateService,
     private pagerService: PagerService,
     private logger: XtremandLogger,
+    public hubSpotService: HubSpotService,
     private router: Router, public activatedRoute:ActivatedRoute,
     public properties: Properties, public eventError:EventError, public countryNames: CountryNames,
     public formService: FormService, private changeDetectorRef: ChangeDetectorRef) {
@@ -1105,11 +1124,13 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
-      'pushToMarketo': eventCampaign.pushToMarketo,
+
+     
       'smsService':this.smsService,
       'smsText':this.smsText,
       'socialStatusList': this.socialStatusList,
       'forms': this.selectedFormData
+
 
     
 
@@ -1427,10 +1448,31 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     $("#email-template-title").append(emailTemplateName);
     $('#email-template-title').prop('title', emailTemplate.name);
     let updatedBody = emailTemplate.body.replace("<div id=\"video-tag\">", "<div id=\"video-tag\" style=\"display:none\">");
-    $("#htmlContent").append(updatedBody);
-    $('.modal .modal-body').css('overflow-y', 'auto');
-    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-    $("#show_email_template_preivew").modal('show');
+    let data = {};
+    data['emailId'] = this.authenticationService.userProfile.emailId;
+    this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+            response => {
+                if(response.statusCode==200){
+                    if(this.eventCampaign.nurtureCampaign ||this.reDistributeEvent){
+                        updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                    }
+                    if(!this.eventCampaign.channelCampaign && !this.eventCampaign.nurtureCampaign){
+                        updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,"");
+                    }
+                    this.showPreviewBody(updatedBody);
+                }
+            },
+            error => {
+                this.showPreviewBody(updatedBody);
+            }
+        );
+  }
+  
+  showPreviewBody(updatedBody:string){
+      $("#htmlContent").append(updatedBody);
+      $('.modal .modal-body').css('overflow-y', 'auto');
+      $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+      $("#show_email_template_preivew").modal('show');
   }
 
   previewEventCampaignEmailTemplate(emailTemplateId: number) {
@@ -1873,6 +1915,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.recipientsTab = false;
             this.emailTemplatesTab = false;
             this.launchTab = true;
+            this.getValidUsersCount();
             }
 
     }
@@ -1912,25 +1955,25 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
 
     resetTabClass(){
-        if((this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0)){
+        if((this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length === 0 && this.parternUserListIds.length === 0) && this.isValidCrmOption){
             this.recipientsTabClass = "enableRecipientsTab";
-        } else if((this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) ){
+        } else if((this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0 && this.isValidCrmOption) ){
             this.recipientsTabClass = "recipientsTabComplate";
         } else{
             this.recipientsTabClass = "disableRecipientsTab";
         }
 
-        if( (this.eventCampaign.campaign && !this.eventError.eventTitleError &&  this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && !this.eventCampaign.emailTemplate.id ){
+        if( (this.eventCampaign.campaign && !this.eventError.eventTitleError &&  this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.isValidCrmOption && !this.eventCampaign.emailTemplate.id ){
             this.emailTemplatesTabClass = "enableEmailTemplate";
-        }else if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError))) &&(this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id){
+        }else if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError))) &&(this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.isValidCrmOption && this.eventCampaign.emailTemplate.id){
             this.emailTemplatesTabClass = "emailTemplateTabComplete";
         }else{
             this.emailTemplatesTabClass = "disableTemplateTab";
         }
 
-        if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && !this.checkLaunchOption){
+        if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.isValidCrmOption && this.eventCampaign.emailTemplate.id && !this.checkLaunchOption){
             this.launchTabClass = "enableLaunchTab";
-        }else if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.eventCampaign.emailTemplate.id && this.checkLaunchOption){
+        }else if( (this.eventCampaign.campaign && !this.eventError.eventTitleError && this.isValidCampaignName && this.eventCampaign.fromName && !this.eventError.eventSubjectLineError && this.eventCampaign.subjectLine && !this.eventError.eventHostByError && this.eventCampaign.campaignEventTimes[0].startTimeString && (this.eventCampaign.campaignEventTimes[0].endTimeString || this.eventCampaign.campaignEventTimes[0].allDay) && !this.eventError.eventSameDateError && this.datePassedError == '' && this.eventCampaign.campaignEventTimes[0].countryId && (this.eventCampaign.onlineMeeting || (this.eventCampaign.campaignLocation.location && !this.eventError.eventLocationError)) ) && (this.userListIds.length !=0 || this.parternUserListIds.length !=0) && this.isValidCrmOption && this.eventCampaign.emailTemplate.id && this.checkLaunchOption){
             this.launchTabClass = "emailLauchTabComplete";
         }else{
             this.launchTabClass = "disableLaunchTab";
@@ -1988,9 +2031,37 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }
     }
     
-    
+    /*pushHubspot(event: any)
+    {
+        this.eventCampaign.pushToHubspot =  !this.eventCampaign.pushToHubspot;
+        console.log(this.eventCampaign.pushToHubspot);
 
-    pushMarketo(event: any)
+        if (this.eventCampaign.pushToHubspot)
+        {
+            this.checkingHubSpotContactsAuthentication();
+        }
+    }*/
+    
+    checkingHubSpotContactsAuthentication(){
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                console.log("isAuthorize true");
+                //this.eventCampaign.pushToHubspot = true;
+                this.eventCampaign.pushToCRM.push('hubspot');
+                this.validatePushToCRM();
+            }
+            else{
+                if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                    window.location.href = response.data.redirectUrl;
+                }                
+            }            
+        }, (error: any) => {
+            console.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => console.log("HubSpot Configuration Checking done"));
+    }
+
+/*    pushMarketo(event: any)
     {
         this.eventCampaign.pushToMarketo =  !this.eventCampaign.pushToMarketo;
         console.log(this.eventCampaign.pushToMarketo);
@@ -2000,7 +2071,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             this.checkMarketoCredentials();
         }
     }
-    
+ */   
     checkMarketoCredentials()
     {
         this.loadingMarketo = true;
@@ -2012,14 +2083,13 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
                     {
                         if (customObjectResponse.statusCode == 8020){
-                            this.eventCampaign.pushToMarketo =  true;
-                            console.log(this.eventCampaign.pushToMarketo);
+                            this.eventCampaign.pushToCRM.push('marketo');
+                            this.validatePushToCRM()
+                            //this.pushToCRM.push('marketo');
 
                             this.templateError = false;
                             this.loading = false;
                         }else{
-                            this.eventCampaign.pushToMarketo = false;
-
                             this.templateError = false;
                             this.loading = false;
                             alert("Custom Objects are not found")
@@ -2027,7 +2097,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
 
                     }, error =>
                     {
-                        this.eventCampaign.pushToMarketo = false;
                         this.templateError = error;
 
                         this.loadingMarketo = false;
@@ -2036,7 +2105,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             }
             else
             {
-                this.eventCampaign.pushToMarketo = false;
+              //  this.eventCampaign.pushToMarketo = false;
 
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2046,7 +2115,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             }
         }, error =>
             {
-                this.eventCampaign.pushToMarketo = false;
+              //  this.eventCampaign.pushToMarketo = false;
                 this.templateError = error;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2070,7 +2139,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
             {
                 $("#closeButton").hide();
                 this.showMarketoForm = false;
-                this.eventCampaign.pushToMarketo = true;
+               // this.eventCampaign.pushToMarketo = true;
+                
+                this.eventCampaign.pushToCRM.push('hubspot');
+                
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
@@ -2078,7 +2150,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
                 setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
             } else
             {
-                this.eventCampaign.pushToMarketo = false;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
                 this.templateError = response.message;
@@ -2088,7 +2159,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }, error =>
         {
         this.templateError = error;
-            this.eventCampaign.pushToMarketo = false;
             $("#closeButton").show();
             this.loadingMarketo = false;
         }
@@ -2181,7 +2251,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     closeMarketoModal()
     {
-        this.eventCampaign.pushToMarketo = false;
+       // this.eventCampaign.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
     
@@ -2285,6 +2355,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     this.enableSmsText =  this.smsService;
 }
  
+
  /*listForms() {
      this.referenceService.loading( this.httpRequestLoader, true );
      this.formsPagination.userId = this.loggedInUserId;
@@ -2318,6 +2389,71 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
      this.previewPopUpComponent.previewForm(id);
     }
  
+
+ getValidUsersCount() {
+     try {
+         for(var i=0; i< this.userListDTOObj.length; i++){
+             this.listOfSelectedUserListIds.push(this.userListDTOObj[i].id);
+         }
+         
+         if(this.listOfSelectedUserListIds.length > 0){
+          this.contactService.getValidUsersCount( this.listOfSelectedUserListIds )
+             .subscribe(
+             data => {
+                 data = data;
+                 this.validUsersCount = data['validContactsCount'];
+                 this.allUsersCount = data['allContactsCount'];
+                 console.log( "valid contacts Data:" + data['validContactsCount'] );
+             },
+             ( error: any ) => {
+                 console.log( error );
+             },
+             () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+             )
+         }
+     } catch ( error ) {
+         console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+     }
+ }
  
+ 
+ validatePushToCRM(){
+     if(this.isPushToCrm && this.eventCampaign.channelCampaign && this.eventCampaign.pushToCRM.length == 0){
+         this.isValidCrmOption = false;
+     }else{
+         this.isValidCrmOption = true;
+     }
+     
+     this.resetTabClass();
+  }
+ 
+ 
+ pushToCrm(){
+     this.isPushToCrm = !this.isPushToCrm;
+     if(!this.isPushToCrm){
+         this.eventCampaign.pushToCRM = [];
+     }
+     this.validatePushToCRM();
+    }
+    
+    pushToCrmRequest(crmName: any, event: any){
+       console.log(event.target.checked);
+       if(event.target.checked){
+           
+           if(crmName == 'marketo'){
+               this.checkMarketoCredentials();
+           }else if(crmName == 'hubspot'){
+               this.checkingHubSpotContactsAuthentication();
+           }
+           
+           //this.pushToCRM.push(crmName);
+       }else{
+           this.eventCampaign.pushToCRM = this.eventCampaign.pushToCRM.filter(e => e !== crmName);
+           console.log(this.eventCampaign.pushToCRM);
+       }
+       
+       this.validatePushToCRM();
+    }
+
 
 }

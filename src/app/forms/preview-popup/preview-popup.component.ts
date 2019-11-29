@@ -38,7 +38,7 @@ export class PreviewPopupComponent implements OnInit {
    }
 
   ngOnInit() {
-      if(this.router.url=="/home/emailtemplates/create" || this.router.url=="/home/landing-pages/add"){
+      if(this.router.url=="/home/emailtemplates/create" || this.router.url=="/home/pages/add"){
           this.showButton = true;
       }
   }
@@ -110,6 +110,7 @@ export class PreviewPopupComponent implements OnInit {
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
   
   copyInputMessage(inputElement,index:number){
+      $(".success").hide();
       $('#copied-message-'+index).hide();
       inputElement.select();
       document.execCommand('copy');

@@ -8,6 +8,8 @@ import { ReferenceService } from './reference.service';
 import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
+import {RequestDemo} from '../../authentication/request-demo/request-demo';
+import {GdprSetting} from '../../dashboard/models/gdpr-setting';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,7 @@ export class UserService {
     loggedInUserData: User;
 
     URL = this.authenticationService.REST_URL;
+    GDPR_SETTING_URL = this.authenticationService.REST_URL+"gdpr/setting/"
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
 
@@ -207,6 +210,12 @@ export class UserService {
       .map( this.extractData )
       .catch( this.handleError );
     }
+    
+    getUserByAlias(alias:string){
+        return this.http.get( this.URL+'getUserByAlias/'+alias)
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
     saveForm(userId:number,form:DealForms){
         return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
         .map( this.extractData )
@@ -230,6 +239,42 @@ export class UserService {
       return this.httpClient.post(url,formData)
       .catch(this.handleError);
     }
+    saveDemoRequest(requestDemo:RequestDemo){
+        return this.http.post( this.URL+"save/requestDemo",requestDemo)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    
+    accessAccount( data: any ) {
+        return this.http.post( this.URL + "accessAccount/updatePassword", data)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    saveGdprSetting(gdprSetting:GdprSetting){
+        return this.http.post(this.GDPR_SETTING_URL+"save?access_token="+this.authenticationService.access_token,gdprSetting)
+        .map(this.extractData)
+        .catch(this.handleServerError);
+       }
+    updateGdprSetting(gdprSetting: GdprSetting) {
+        return this.http.post(this.GDPR_SETTING_URL + "update?access_token=" + this.authenticationService.access_token, gdprSetting)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    getGdprSettingByCompanyId(companyId:number) {
+        return this.http.get(this.GDPR_SETTING_URL + "getByCompanyId/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    private handleServerError(error: any) {
+        return Observable.throw(error);
+    }
+
+    
+
+    
     private extractData( res: Response ) {
         const body = res.json();
         // return body || {};

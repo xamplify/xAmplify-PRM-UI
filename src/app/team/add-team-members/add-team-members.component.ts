@@ -499,6 +499,9 @@ export class AddTeamMembersComponent implements OnInit {
         if(!this.isOnlyPartner){
             team.video = true;
             team.emailTemplate = true;
+            team.design = true;
+            team.form = true;
+            team.landingPage = true;
             team.stats = true;
             team.socialShare = true;
             team.partners = true;
@@ -514,6 +517,9 @@ export class AddTeamMembersComponent implements OnInit {
         team.video = false;
         team.campaign = false;
         team.emailTemplate = false;
+        team.landingPage = false;
+        team.form = false;
+        team.design = false;
         team.stats = false;
         team.contact = false;
         team.socialShare = false;
@@ -627,12 +633,12 @@ export class AddTeamMembersComponent implements OnInit {
 
          validateHeaders(headers){
            if(this.contactAccess && !this.isOnlyPartner){
-               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="EMAIL" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
+               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CONTACTS" && headers[4]=="CAMPAIGN" && headers[5]=="STATS" && headers[6]=="DESIGN" && headers[7]=="SOCIAL_SHARE" && headers[8]=="PARTNERS");
            }else if(this.isOnlyPartner){
             return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" &&headers[2]=="CONTACTS" && headers[3]=="CAMPAIGN");
             }
            else{
-               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="EMAIL" && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS");
+               return (headers[0]=="EMAIL_ID" && headers[1]=="ALL" && headers[2]=="VIDEO" && headers[3]=="CAMPAIGN" && headers[4]=="STATS" && headers[5]=="DESIGN" && headers[6]=="SOCIAL_SHARE" && headers[7]=="PARTNERS");
            }
          }
 
@@ -731,13 +737,13 @@ export class AddTeamMembersComponent implements OnInit {
                         teamMember.contact = this.setDefaultValue(row[3]);
                         teamMember.campaign   =this.setDefaultValue(row[4]);
                         teamMember.stats = this.setDefaultValue(row[5]);
-                        teamMember.emailTemplate = this.setDefaultValue(row[6]);
+                        teamMember.design = this.setDefaultValue(row[6]);
                         teamMember.socialShare = this.setDefaultValue(row[7]);
                         teamMember.partners = this.setDefaultValue(row[8]);
                     }else{
                         teamMember.campaign   =this.setDefaultValue(row[3]);
                         teamMember.stats = this.setDefaultValue(row[4]);
-                        teamMember.emailTemplate = this.setDefaultValue(row[5]);
+                        teamMember.design = this.setDefaultValue(row[5]);
                         teamMember.socialShare = this.setDefaultValue(row[6]);
                         teamMember.partners = this.setDefaultValue(row[7]);
                     }

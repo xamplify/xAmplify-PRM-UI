@@ -27,6 +27,8 @@ import { EmailTemplateService } from '../../email-template/services/email-templa
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -38,7 +40,7 @@ var moment = require('moment-timezone');
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
-
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     selectedEmailTemplateId = 0;
     selectedLandingPageId = 0;
     campaign: Campaign;
@@ -164,6 +166,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     isOnlyPartner = false;
     isOrgAdminAndPartner =false;
     isVendorAndPartner = false;
+    validUsersCount: number;
+    allUsersCount: number;
+    
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
 
     constructor(private router: Router,
@@ -516,6 +521,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                                 response => {
                                     if(response.statusCode==200){
                                         this.campaign.myMergeTagsInfo = response.data;
+                                        body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
                                         this.setMergeTagsInfo(body);
                                     }
                                 },
@@ -636,7 +642,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     getRepliesData(){
-        for(var i=0;i<this.replies.length;i++){
+        for(var i=0;i< this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
@@ -715,7 +721,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     getOnClickData(){
-        for(var i=0;i<this.urls.length;i++){
+        for(var i=0;i< this.urls.length;i++){
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
@@ -830,6 +836,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             $('#' + contactListId).parent().closest('tr').removeClass('highlight');
         }
         this.contactsUtility();
+        this.getValidUsersCount();
         event.stopPropagation();
     }
 
@@ -1091,6 +1098,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                   this.selectedUserlistIds.push(contactId);
               }
                 this.contactsUtility();
+                this.getValidUsersCount();
                 event.stopPropagation();
             }else{
                 this.emptyContactsMessage = "Contacts are in progress";
@@ -1293,5 +1301,26 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
 
+  getValidUsersCount() {
+      try {
+         if(this.selectedUserlistIds.length > 0){
+          this.contactService.getValidUsersCount( this.selectedUserlistIds )
+              .subscribe(
+              data => {
+                  data = data;
+                  this.validUsersCount = data['validContactsCount'];
+                  this.allUsersCount = data['allContactsCount'];
+                  console.log( "valid contacts Data:" + data['validContactsCount'] );
+              },
+              ( error: any ) => {
+                  console.log( error );
+              },
+              () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+              )
+         }
+      } catch ( error ) {
+          console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+      }
+  }
 
 }

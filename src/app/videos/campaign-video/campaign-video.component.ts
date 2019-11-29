@@ -206,13 +206,20 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }
-                        else if (updatedBody.includes('src="https://xamp.io/vod/images/xtremand-video.gif"')) {
+                        else if (updatedBody.includes('src="https://xamp.io/vod/images/xtremand-video.gif"') || updatedBody.includes('src="https://release.xamp.io/vod/images/xtremand-video.gif"')) {
                             this.templateName = 'beeTemplate';
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
+                            
+                            
+                            updatedBody = updatedBody.replace('src="https://release.xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
+                                    '<div id="overlay-logo-bee" style="position: absolute;z-index: 9;"><a href='+this.logoLink+' target="_blank" >'+
+                                    '<img id="image" style="position:absolute;top:10px;float: right;left: 525px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            
+                            
                             updatedBody = updatedBody.replace('src="https://xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee" style="position: absolute;z-index: 9;"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image" style="position:absolute;top:10px;float: right;left: 413px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            '<img id="image" style="position:absolute;top:10px;float: right;left: 525px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank" tabindex="-1">', '');

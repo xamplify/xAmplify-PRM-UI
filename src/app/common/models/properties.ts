@@ -45,6 +45,7 @@ export class Properties {
   SOCIAL_ACCOUNT_REMOVED_SUCCESS = "Your social account has been removed successfully.";
   SOCIAL_ACCOUNT_REMOVED_ERROR = "An error occured while removing your social Account.";
   CONTACT_LIST_VALIDATION ='Please select how you would like to add your contacts.';
+  CONTACT_EMAIL_VALIDATE_SUCCESS = "Selected Contacts have been validated successfully.";
 
   /* For Partners*/
   PARTNER_LIST_CREATE_SUCCESS = "Your partner list has been created successfully and we are processing your partner list";
@@ -68,10 +69,12 @@ export class Properties {
 
   PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
   PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
+  PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partners have been validated successfully.";
 
   /* Authentication Module*/
 
-  FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a	temporary password.";
+  ACCOUNT_ACTIVATED_WITH_PASSWORD = 'Thanks for adding password. Please login to access the platform.'
+  FORGOT_PASSWORD_MAIL_SEND_SUCCESS = "Check your inbox for a temporary password.";
   FORGOT_PASSWORD_MAIL_SEND_ERROR = "An error occured while sending mail.";
 
   SIGN_UP_SUCCESS = "Thanks for signing up! Please check your inbox for our account activation email.";
@@ -85,6 +88,7 @@ export class Properties {
   BAD_CREDENTIAL_ERROR = "Username or password is incorrect.";
   USER_ACCOUNT_DOESNOT_EXIST = "The email address that you've entered doesn't match any account. Sign for an account.";
   USER_ACCOUNT_ACTIVATION_ERROR = "Your account has not been activated. Please check your inbox for our activation email.";
+  USER_ACCOUNT_ACTIVATION_ERROR_NEW = "Your account has not been activated. Please contact admin.";
   EMPTY_CREDENTIAL_ERROR = "Username or password can't be empty.";
   RESEND_ACTIVATION_MAIL = 'Please check your inbox	for	our	account activation email.'
   SOMTHING_WENT_WRONG = 'Something went wrong. Please try again.';
@@ -103,7 +107,7 @@ export class Properties {
   VIDEO_PROCESSING_MESSAGE ='Don\'t mind us. We\'re just processing your video.'
   CONTENT_UPLOAD_SIZE ='Unable to upload files because your files size is more than 12 MB';
   CONTENT_UPLOAD_FILETYPE='Please upload supported file types like image files, gifs,doc,htm, pdf, xls.';
-  CONTENT_PROCESS_MESSAGE = 'Your file has been uploaded. Please wait while we process it.';
+  CONTENT_PROCESS_MESSAGE = 'Your file(s) has been uploaded. Please wait while we process it.';
   SUPPORT_FILES ='These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.';
   CONTENT_DRAG_MESSAGE = 'Drag and drop files here or click to select files.';
   VIDEO_DRAG_MESSAGE ='Drag and drop a video file here or click to select a Video file.';
@@ -124,4 +128,6 @@ export class Properties {
 
   xclientId: "6639d69f-523f-44ca-b809-a00daa26b367";
   xclientSecret: "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
+  
+  serverErrorMessage = "Oops! Something went wrong.Please try after sometime";
 }

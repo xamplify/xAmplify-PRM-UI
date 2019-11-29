@@ -20,6 +20,7 @@
                                     <input type="text" [(ngModel)]="searchValue" value="{{searchValue}}" class="form-control" placeholder="Search by Topic , Website or RSS Link" 
                                     (keyup.enter)="navigateSearchPage(searchValue)" style="padding: 20px;padding-left: 49px">
                                 </div>
+                                <p *ngIf="errorMessage">{{errorMessage}}</p>
                                 <p *ngIf="!loading && searchResponse?.statusCode !== 8105">We couldn't find any results matching this search.</p>
                                 <app-rss-loader *ngIf="loading"></app-rss-loader>
                                 <div *ngIf="searchResponse?.statusCode === 8105">
@@ -49,16 +50,21 @@
                                                                             <div class="popover-content p10">
                                                                               <ul class="list-group m0" id="popover_{{item.id}}">
                                                                                   <li class="list-group-item" *ngIf="item.addNewCategory">
-<form>
-  <div class="form-group">
-    <label for="customCollectionName">Feed name</label>
-    <input type="text" #customCollectionName class="form-control" id="customCollectionName" aria-describedby="emailHelp" placeholder="e.g. Tech" autocomplete="off">
-  </div>
-  <button class="btn btn-primary" (click)="followSource(customCollectionName.value, item.id)">Submit</button>
-  <button (click)="item.addNewCategory = false" class="btn btn-secondary">Cancel</button>
-</form>
+                                                                                    <form>
+                                                                                    <div class="form-group">
+                                                                                        <label for="customCollectionName">Feed name</label>
+                                                                                        <input type="text" #customCollectionName class="form-control" id="customCollectionName" aria-describedby="emailHelp" placeholder="e.g. Tech" autocomplete="off">
+                                                                                    </div>
+                                                                                    <button class="btn btn-primary" (click)="followSource(customCollectionName.value, item.id)">Submit</button>
+                                                                                    <button (click)="item.addNewCategory = false" class="btn btn-secondary">Cancel</button>
+                                                                                    </form>
                                                                                   </li>
                                                                                 <ng-container *ngIf="!item.addNewCategory">
+                                                                                  <li class="list-group-item" *ngFor="let collectionName of item.collectionNames">
+                                                                                      <a><i class="fa fa-rss" aria-hidden="true"></i> {{collectionName}} 
+                                                                                        <button class="btn-xs pull-right" (click)="followSource(collectionName, item.id)">Add</button>
+                                                                                      </a>
+                                                                                  </li>
                                                                                   <li class="list-group-item" *ngFor="let category of item.categories">
                                                                                       <a><i class="fa fa-rss" aria-hidden="true"></i> {{category.title}} 
                                                                                         <button class="btn-xs pull-right" (click)="followSource(category.title, item.id)">Add</button>

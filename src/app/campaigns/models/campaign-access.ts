@@ -10,4 +10,5 @@ export class CampaignAccess {
   landingPageCampaign = false;
   partnerLandingPage = false;
   companyId = 0;
+  userId = 0;
 }

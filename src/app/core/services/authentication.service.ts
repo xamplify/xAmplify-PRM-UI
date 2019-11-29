@@ -411,11 +411,18 @@ export class AuthenticationService {
         return userId;
     }
 
+    getModulesByUserId(){
+        let userId = this.getUserId();
+        console.log(userId);
+        return this.http.get(this.REST_URL + 'module/getAvailableModules/'+userId+'?access_token=' + this.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+        }
    
     
     connect() {
-        let url = this.REST_URL + "socket";
-        let socket = new SockJs( url );
+        let url = this.REST_URL + "socket";//`http://release.xamp.io/websocket-backend-example/socket`
+        let socket = new SockJs(url);
         let stompClient = Stomp.over( socket );
         return stompClient;
     }

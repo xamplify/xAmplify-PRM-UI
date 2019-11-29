@@ -36,6 +36,9 @@ import { Properties } from '../../common/models/properties';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { HubSpotService } from 'app/core/services/hubspot.service';
+
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
@@ -228,7 +231,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      marketoInstanceError: boolean;
      isModelFormValid: boolean;
      templateSuccessMsg: any;
-     pushToMarketo = false;
+   /*  pushToMarketo = false;
+     pushToHubspot = false;*/
+     pushToCRM = [];
 
      loadingMarketo: boolean;
      marketoButtonClass = "btn btn-default";
@@ -240,6 +245,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      smsText: any;
      enableSmsText: boolean;
      smsTextDivClass: string;
+     validUsersCount: number;
+     allUsersCount: number;
+     isValidCrmOption = true;
 
      /************Landing Page Variables***************** */
      landingPageSearchInput:string = "";
@@ -253,6 +261,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      showLandingPage: boolean;
      filtereLandingPageIds: Array<number>;
      isLandingPageSwitch = false;
+     senderMergeTag:SenderMergeTag = new SenderMergeTag();
+     isPushToCrm = false;
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -260,7 +271,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
-                private landingPageService:LandingPageService
+                private landingPageService:LandingPageService, public hubSpotService: HubSpotService
             ){
 
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
@@ -335,7 +346,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             var fromNameLength = $.trim(this.campaign.fromName).length;
             var subjectLineLength = $.trim(this.campaign.subjectLine).length;
             var preHeaderLength  =  $.trim(this.campaign.preHeader).length;
-            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0){
+            
+            if(campaignNameLength>0 &&  fromNameLength>0 && subjectLineLength>0 && preHeaderLength>0 && this.isValidCrmOption){
                 this.isCampaignDetailsFormValid = true;
             }else{
                 this.isCampaignDetailsFormValid = false;
@@ -464,6 +476,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             }
         }
+        
     }
 
     setActiveTabForVideo(){
@@ -701,7 +714,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
               isValid = false;
           }
 
-        });
+     });
         
         if(isValid && (this.smsService || this.campaignType == 'sms')){
             if( this.smsText!=null && this.smsText.length > 0)
@@ -715,6 +728,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.isCampaignDetailsFormValid = false;
         }
+        
+        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && this.pushToCRM.length == 0){
+            this.isValidCrmOption = false;
+            this.isCampaignDetailsFormValid = false;
+        }else{
+            this.isValidCrmOption = true;
+            if(isValid){
+                this.isCampaignDetailsFormValid = true;
+            }else{
+                this.isCampaignDetailsFormValid = false;
+            }
+            
+        }
+        
         console.log("is Valid Form"+this.isCampaignDetailsFormValid);
       }
      validateEmail(emailId:string){
@@ -792,6 +819,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              }
          }
      }
+     
+     validatePushToCRM(){
+        if(this.isPushToCrm && this.campaign.channelCampaign && this.pushToCRM.length == 0){
+            this.isValidCrmOption = false;
+            this.validateForm();
+        }else{
+            this.isValidCrmOption = true;
+            this.validateForm();
+        }
+     }
+     
     loadCampaignNames(userId:number){
         this.campaignService.getCampaignNames(userId)
         .subscribe(
@@ -1710,6 +1748,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         body = body.replace(value,self.authenticationService.MEDIA_URL + self.refService.companyProfileImage);
                     });
                     body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.refService.companyProfileImage);
+                   /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                        body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                    }*/
                     let emailTemplateName = emailTemplate.name;
                     if(emailTemplateName.length>50){
                         emailTemplateName = emailTemplateName.substring(0, 50)+"...";
@@ -2034,7 +2075,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'country':country,
             'createdFromVideos':this.campaign.createdFromVideos,
             'nurtureCampaign':false,
-            'pushToMarketo':this.pushToMarketo,
+            'pushToCRM':this.pushToCRM,
             'smsService':this.smsService,
             'smsText':this.smsText,
             'landingPageId':this.selectedLandingPageRow
@@ -2488,6 +2529,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.contactListTabClass = this.successTabClass;
                 this.videoTabClass  = this.successTabClass;
                 this.emailTemplateTabClass = this.successTabClass;
+                this.getValidUsersCount()
                 this.listSocialStatusProviders();
                 this.statusMessage = this.campaign.campaignName;
                 if(!this.isAdd && this.selectedTemplateBody!==undefined){
@@ -2746,7 +2788,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      * Push Leads to Marketo
      */
 
-    pushMarketo(event: any)
+  /*  pushMarketo(event: any)
     {
         this.pushToMarketo =  !this.pushToMarketo;
         console.log(this.pushToMarketo);
@@ -2756,6 +2798,36 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.checkMarketoCredentials();
         }
     }
+    
+    pushHubspot(event: any)
+    {
+        this.pushToHubspot =  !this.pushToHubspot;
+        console.log(this.pushToHubspot);
+
+        if (this.pushToHubspot)
+        {
+            this.checkingHubSpotContactsAuthentication();
+        }
+    }*/
+    
+    checkingHubSpotContactsAuthentication(){
+          this.hubSpotService.configHubSpot().subscribe(data => {
+              let response = data;
+              if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                  console.log("isAuthorize true");
+                  this.pushToCRM.push('hubspot');
+                  this.validatePushToCRM();
+              }
+              else{
+                  if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                      window.location.href = response.data.redirectUrl;
+                  }                
+              }            
+          }, (error: any) => {
+              console.error(error, "Error in HubSpot checkIntegrations()");
+          }, () => console.log("HubSpot Configuration Checking done"));
+      }
+    
  smsServices(){
         
         this.smsService =  !this.smsService;
@@ -2787,14 +2859,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 this.emailTemplateService.checkCustomObjects(this.authenticationService.getUserId()).subscribe(customObjectResponse =>
                     {
                         if (customObjectResponse.statusCode == 8020){
-                            this.pushToMarketo =  true;
-                            console.log(this.pushToMarketo);
+                            this.pushToCRM.push('marketo');
 
                             this.templateError = false;
                             this.loading = false;
+                            this.validatePushToCRM();
                         }else{
-                            this.pushToMarketo = false;
-
                             this.templateError = false;
                             this.loading = false;
                             alert("Custom Objects are not found")
@@ -2802,7 +2872,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
                     }, error =>
                     {
-                        this.pushToMarketo = false;
                         this.templateError = error;
 
                         this.loadingMarketo = false;
@@ -2811,7 +2880,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
             else
             {
-                this.pushToMarketo = false;
 
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2821,7 +2889,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }, error =>
             {
-                this.pushToMarketo = false;
                 this.templateError = error;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
@@ -2846,7 +2913,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             {
                 $("#closeButton").hide();
                 this.showMarketoForm = false;
-                this.pushToMarketo = true;
+                this.pushToCRM.push('marketo');
+                this.validatePushToCRM();
                 this.templateError = false;
                 this.templateSuccessMsg = response.message;
                 this.loadingMarketo = false;
@@ -2854,7 +2922,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 setTimeout(function () { $("#templateRetrieve").modal('hide') }, 3000);
             } else
             {
-                this.pushToMarketo = false;
                 $("#templateRetrieve").modal('show');
                 $("#closeButton").show();
                 this.templateError = response.message;
@@ -2864,7 +2931,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }, error =>
         {
         this.templateError = error;
-            this.pushToMarketo = false;
             $("#closeButton").show();
             this.loadingMarketo = false;
         }
@@ -2948,7 +3014,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     closeModal()
     {
-        this.pushToMarketo = false;
         $("#templateRetrieve").modal('hide');
     }
     spamCheck() {
@@ -3013,6 +3078,56 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
         }
     }
+    
+    getValidUsersCount() {
+        try {
+           if(this.selectedContactListIds.length > 0){
+            this.contactService.getValidUsersCount( this.selectedContactListIds )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.validUsersCount = data['validContactsCount'];
+                    this.allUsersCount = data['allContactsCount'];
+                    console.log( "valid contacts Data:" + data['validContactsCount'] );
+                },
+                ( error: any ) => {
+                    console.log( error );
+                },
+                () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+                )
+           }
+        } catch ( error ) {
+            console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+        }
+       
+    }
+    
+    pushToCrm(){
+     this.isPushToCrm = !this.isPushToCrm;
+     if(!this.isPushToCrm){
+         this.pushToCRM = [];
+     }
+     this.validatePushToCRM();
+    }
+    
+    pushToCrmRequest(crmName: any, event: any){
+       console.log(event.target.checked);
+       if(event.target.checked){
+           
+           if(crmName == 'marketo'){
+               this.checkMarketoCredentials();
+           }else if(crmName == 'hubspot'){
+               this.checkingHubSpotContactsAuthentication();
+           }
+           
+           //this.pushToCRM.push(crmName);
+       }else{
+           this.pushToCRM = this.pushToCRM.filter(e => e !== crmName);
+           console.log(this.pushToCRM);
+       }
+       this.validatePushToCRM();
+    }
+    
 
 
 }

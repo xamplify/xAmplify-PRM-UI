@@ -195,19 +195,18 @@
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
+															<li><a id="download_empy_csv"
+																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8">Download CSV Template</a></li>
 															<li><a id="delete_button"
 																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
 														</ul>
 													</div>
 													</div>
-
-													<a class="pull-right" style="padding-right: 16px;" (click)="downloadEmptyCsv()">
-				<button type="button" class="btn btn-default" download [ngStyle]="{'width':refService.isMobileScreenSize()? '100%': 'unset'}">
-         Download CSV Template
-          <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
-				</button>
-			</a>
+										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0"
+															(click)="saveAs()" style="margin-right: 5px; background-color: white; color: #777070">
+															Save As<!-- <i class="fa fa-save"></i> -->
+														</button>
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
@@ -248,14 +247,14 @@
 											</div>
 							 	<div class="col-sm-12 col-md-6 p0 pull-right" style="margin-top: 10px;">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
-									style="float: left; cursor: pointer; margin-left: 50px;"
+									style="float: left; cursor: pointer; margin-left: 120px;"
 									data-toggle="modal" data-target="#filterModal">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 								</div>
 								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
-									style="float: left; cursor: pointer; margin-left: 50px;">
+									style="float: left; cursor: pointer; margin-left: 110px;">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Remove a filter"
 										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
@@ -818,14 +817,17 @@
 								</div>
 								<div class="btn-group pull-right"
 									style="margin-top: 4px; color: #000000;"
-									*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || ( hasContactRole && loggedInUserId == uploadedUserId )">
+									*ngIf="contactsByType.selectedCategory == 'invalid'">
 									<span class="dropdown-toggle" data-toggle="dropdown" style="color: #FFF; box-shadow:none; margin-top: 8px; float:right;">
 										<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 									</span>
 									<ul class="dropdown-menu pull-right">
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
 											(click)="invalidContactsShowAlert()"> Delete </a></li>
-										<li><a id="delete_button"
+										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+													id="validate_email_button" (click)="validateUndeliverableContacts()">
+													Mark as valid email(s) </a></li>
+										<li><a id="export_button"
 										(click) = "downloadContactTypeList()"> Export To Excel </a></li>
 									</ul>
 								</div>
@@ -1145,22 +1147,22 @@
 	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content" style="top: 100px;">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you Sure?</h4>
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you sure?</h4>
 			</div>
 			<div class="modal-body">
 			<div>
-				<h4 class="modal-title f-w-600">You are agreeing xAmplify Terms&Conditions </h4>
+				<h4 class="modal-title f-w-600">You are agreeing to xAmplify's Terms and Conditions.</h4>
 			</div>
 			
 			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-			  By onboarding a partner, you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore Moreover, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
 			
 			<div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
-			   By adding a contact(s), you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a>, and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore Moreover, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			   By adding a contact(s), you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
 			

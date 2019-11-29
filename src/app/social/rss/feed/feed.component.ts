@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SocialService } from '../../services/social.service';
+import { Router } from '@angular/router';
 
+declare var $: any;
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
@@ -9,7 +11,9 @@ import { SocialService } from '../../services/social.service';
 export class FeedComponent implements OnInit {
 @Input('feed') feed: any;
 link: any;
-  constructor(private socialService: SocialService) { 
+isRssWelcome = false;
+  constructor(public socialService: SocialService, public router:Router) {
+    this.isRssWelcome = this.router.url.includes('/home/rss/welcome');
   }
 
   addFeed(){
@@ -17,6 +21,6 @@ link: any;
   }
 
   ngOnInit() {
-        
+    this.feed.description = this.feed.description.replace(/<img[^>]*>/g,"");
   }
 }

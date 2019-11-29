@@ -16,12 +16,12 @@
 		opacity: 0.6;
 	}
 
-	.switch {
+	/* .switch {
 		position: relative;
 		display: inline-block;
 		width: 60px;
 		height: 34px;
-	}
+	} */
 
 	.switch input {
 		display: none;
@@ -169,9 +169,9 @@
 										<h6 class='bold'>(Org Admin)</h6>
 									</div>
 									<div class="col-xs-5">
-										<label class="switch" style="top: 0px;left: 20px;">
+										<label class="switch" style="top: -8px;left: 20px;">
 											<input type="checkbox" [(ngModel)]="status" (change)="changeStatus()" id="status">
-											<span class="slider-new round"></span>
+											<span class="slider round" style="margin:0px !important"></span>
 										</label>
 									</div>
 								</a>
@@ -234,36 +234,40 @@
 					<div class="col-md-12">
 						<div class="portlet light">
 							<div class="portlet-title tabbable-line">
-								<div class="caption caption-md">
+								<div class="caption caption-md col-xs-12">
 									<i class="icon-globe theme-font hide"></i>
 									<span class="caption-subject font-blue-madison bold uppercase">Account Profile</span>
 								</div>
-								<ul class="nav nav-tabs left-css">
-									<li class="active">
-										<a href="#tab_1_1" data-toggle="tab" (click)="clearCustomResponse()">Personal Info</a>
+								<ul class="nav nav-tabs left-css" style="float: none !important;">
+									<li [ngClass]="{'active': activeTabName == 'personalInfo'}">
+										<a (click)="activateTab('personalInfo');clearCustomResponse()">Personal Info</a>
 									</li>
-									<li>
-										<a [class.disabled]="authenticationService.isSuperAdmin()" href="#tab_1_3" data-toggle="tab" (click)="clearCustomResponse()"><span
+									<li [ngClass]="{'active': activeTabName == 'password'}">
+										<a [class.disabled]="authenticationService.isSuperAdmin()" (click)="activateTab('password');clearCustomResponse()"><span
 											 class="hidden-xs">Change</span> Password</a>
 									</li>
-									<li [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
-										<a href="#tab_1_4" data-toggle="tab" (click)="clearCustomResponse()">Settings</a>
+									<li [ngClass]="{'active': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
+										<a (click)="activateTab('settings');clearCustomResponse()">Settings</a>
 									</li>
-									<li [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
+									<li [ngClass]="{'active': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
 									 (click)="videojsCall()">
-										<a href="#tab_1_5" data-toggle="tab"><span class="hidden-xs">Default</span> Player Settings</a>
+										<a (click)="activateTab('playerSettings');"><span class="hidden-xs">Default</span> Player Settings</a>
 									</li>
-									<li class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
-										<a href="#tab_1_6" data-toggle="tab" (click)="clearCustomResponse()">Form/Deal Types</a>
+									<li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+										<a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
 									</li>
-									<li class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
-										<a href="#tab_1_7" data-toggle="tab" (click)="clearCustomResponse()"> Integrations</a>
+									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+										<a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
+									</li>
+									<li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+										<a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
 									</li>
 								</ul>
 							</div>
 							<div class="portlet-body clearfix">
 								<div class="tab-content">
-									<div class="tab-pane active" id="tab_1_1">
+								<!-- removed id="tab_1_1" from below code -->
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
 										<form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
 											<div class="form-group">
 												<label class="control-label">First Name</label>
@@ -311,7 +315,7 @@
 										</form>
 									</div>
 
-									<div class="tab-pane" id="tab_1_6">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'dealTypes'}">
 										<app-response-message [customResponse]="customResponseForm" *ngIf="customResponseForm.isVisible"></app-response-message>
 
 										<form role="form">
@@ -441,22 +445,16 @@
 												</div>
 											</div>
 											<button [disabled]="!dealSubmiteState" class="btn green-haze" (click)="saveDealTypes()">{{dealButtonText}}</button>
-
 										</form>
-
-
 									</div>
 
-									<div class="tab-pane" id="tab_1_7">
- 
-										
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'integrations'}">
 										<section class="pricing py-5" *ngIf="integrationTabIndex == 0">
-										
 												<div class="row" style="background-color: white;">
 													<!-- Free Tier -->
 													<div class="col-lg-4" (click)="configmarketo()">
 														<div class="card mb-5 mb-lg-0">
-															<div class="card-body" style="padding:10px;min-height: 300px">
+															<div class="card-body" style="padding:10px">
 																<!-- <div class="triangle-up-right">
 																	
 																</div> -->
@@ -466,7 +464,7 @@
 																<div class="ribbon draft" style="left:10px" >
 																	<span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
 																</div>
-																<div style="height: 200px;">
+																<div style="height: 120px;">
 																	<div>
 																		<img src="assets/images/crm/Mark-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
 																	</div>
@@ -477,15 +475,39 @@
 															</div>
 														</div>
 													</div>
+
+														
+												<div class="col-lg-4" (click)="configHubSpot()">
+													<div class="card mb-5 mb-lg-4">
+														<div class="card-body" style="padding:10px;">
+															<!-- <div class="triangle-up-right">
+																
+															</div> -->
+															<h5 class="card-title  text-uppercase text-center"
+															style="padding-top: 4%;">HubSpot</h5>
+															
+															<div class="ribbon draft" style="left:10px" >
+																<span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
+															</div>
+															<div style="height: 120px;">
+																<div>
+																	<img src="assets/images/crm/huspot-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
+																</div>
+															</div>
+
+															<a  class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configure'" >configure</a>
+															<a  class="btn btn-block btn-primary text-uppercase" *ngIf="hubSpotRibbonText == 'configured'" >re configure</a>
+														</div>
+													</div>
+												</div>
 												</div>	
 											
 										</section>
 										<div *ngIf="integrationTabIndex == 1">
 										<app-marketo-authentication (closeEvent)="closeMarketoForm($event)"></app-marketo-authentication>
 										</div>
-
 									</div>
-									<div class="tab-pane" id="tab_1_3">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
 										<form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
 											<div class="form-group" *ngIf="userData.hasPassword">
 												<label class="control-label">Current Password</label>
@@ -527,7 +549,7 @@
 										</form>
 									</div>
 									<!-- PRIVACY SETTINGS TAB -->
-									<div class="tab-pane hidden-xs" id="tab_1_4">
+									<div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
 										<form action="#">
 											<table class="table table-light">
 												<tr>
@@ -552,8 +574,134 @@
 										</form>
 									</div>
 									<!-- END PRIVACY SETTINGS TAB -->
+									
+									<!-- GDPR SETTINGS TAB -->
+									<div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
+										<app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
+										<form action="#" novalidate="" class="ng-untouched ng-pristine ng-valid" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+											<table class="table table-light" style="border:0px!important;background-color:transparent!important">
+												<tbody>
+													<fieldset>
+													<legend>GDPR</legend>
+													<tr class="col-md-12 col-lg-12"><!--style="border: 1px solid #ddd;"-->
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 class="f-w-600" style="color: #847d7d;">EU General Data Protection
+																	Regulation(GDPR)&nbsp;&nbsp;<i class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">
+																<a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank">Privacy & consent</a>&nbsp; |
+																 <a	class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank">Cookies & tracking</a> &nbsp;|
+																<a class="link" href="https://www.xamplify.com/" target="_blank">Learn More</a>&nbsp;</h5>
+																<h5 style="color: #847d7d;">
+																	<input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to
+																	contacts who have legal basis to communicate. This setting doesn't apply to emails sent
+																	by the CRM
+																</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.gdprStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setGdpr($event)">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													</fieldset><br>
+													<fieldset *ngIf="gdprSetting.gdprStatus">
+													<legend>Available Options</legend>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600">Unsubscribe links &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">Add/Remove Unsubscribe links in email.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.unsubscribeStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600">GDPR-ready forms &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">GDPR-ready forms.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.formStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600"> GDPR Terms & Conditions &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;">Terms & Condtions.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.termsAndConditionStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600"> GDPR Delete Functionality &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;"> GDPR Delete Functionality.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch  [(status)]="gdprSetting.deleteContactStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													<tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
+														<div class="flex row">
+															<div class="col-md-9 col-lg-9">
+																<h5 style="color: #847d7d;" class="f-w-600"> GDPR Event &nbsp;&nbsp;<i
+																		class="fa fa-info-circle"></i></h5>
+																<h5 style="color: #847d7d;"> GDPR Event.</h5>
+															</div>
+															<div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
+																<section>
+																	<switch [(status)]="gdprSetting.eventStatus" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																	[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size" (statusChange)="setAllGdprStatus()">
+																   </switch>
+																</section>
+															</div>
+														</div>
+													</tr>
+													</fieldset>
+												</tbody>
+											</table>
+											<div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
+												<button type="submit" class="btn green-haze" (click)="saveGdprSetting()"  *ngIf="!gdprSetting.isExists">Save Settings</button>
+												<button type="submit" class="btn green-haze" (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists">Update Settings</button>
+											</div>
+										</form>   
+									</div>
+									<!-- END GDPR SETTINGS TAB -->
 									<!--video default player settings-->
-									<div class="tab-pane" id="tab_1_5">
+									<div class="tab-pane" [ngClass]="{'active': activeTabName == 'playerSettings'}">
 										<div>
 											<div>
 												<form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">

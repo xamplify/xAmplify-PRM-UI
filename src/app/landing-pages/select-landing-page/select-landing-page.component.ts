@@ -65,7 +65,7 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
   
   showLandingPage(id:number){
       this.landingPageService.id = id;
-      this.router.navigate(["/home/landing-pages/add"]);
+      this.router.navigate(["/home/pages/add"]);
     }
   ngOnDestroy() {
    }

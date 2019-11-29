@@ -55,6 +55,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if(userName!=undefined){
+       // this.connectToWebSocket();
+        
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
             this.refService.topNavbarUserService = true;
             this.utilService.topnavBareLoading = true;
@@ -136,25 +138,20 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return (text && EMAIL_REGEXP.test(text));
   }
+  public notifications = 0;
+  
   connectToWebSocket(){
-      let error_callback = function(error) {
-          // display the error's message header:
-          alert(error.headers.message);
-        };
+      
+   // Open connection with server socket
       let stompClient = this.authenticationService.connect();
-      let headers = {
-              login: 'mahisravan07@gmail.com',
-              passcode: 'Sravan@07',
-              // additional header
-              'client-id': 'my-trusted-client'
-            };
-
-      stompClient.connect(headers, error_callback);
-   /*   stompClient.connect(headers, frame => {
+      stompClient.connect({}, frame => {
+          console.log("********************************************WebSocket*********************")
+          // Subscribe to notification topic
           stompClient.subscribe('/topic/notification', notifications => {
-          });
-
-      });*/
+              // Update notifications attribute with the recent messsage sent from the server
+              this.notifications = JSON.parse(notifications.body).count;
+          })
+      });
   }
 
   getUnreadNotificationsCount() {

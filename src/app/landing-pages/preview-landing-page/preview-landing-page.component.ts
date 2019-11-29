@@ -43,11 +43,11 @@ export class PreviewLandingPageComponent implements OnInit {
                       $(htmlContent).append(response.message);
                       this.loading = false;
                   }else{
-                      swal("Please Contact Admin!", "No Landing Page Found", "error");
+                      swal("Please Contact Admin!", "No Page Found", "error");
                       $("#landing-page-preview-modal").modal('hide');
                   }
               },
-              ( error: any ) => { swal("Please Contact Admin!", "Unable to load landing page", "error");this.loading = false;
+              ( error: any ) => { swal("Please Contact Admin!", "Unable to load  page", "error");this.loading = false;
               $("#landing-page-preview-modal").modal('hide'); } );
   }
   

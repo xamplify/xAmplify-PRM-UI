@@ -24,7 +24,8 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { TeamMemberService } from '../../team/services/team-member.service';
 import { FileUtil } from '../../core/models/file-util';
 import { SocialPagerService } from '../services/social-pager.service';
-
+import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { UserService } from '../../core/services/user.service';
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $,Swal,await, Papa: any;
 
 @Component( {
@@ -187,12 +188,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         { 'name': 'like', 'value': 'Contains' },
     ];
     filterCondition = this.filterConditions[0];
-
+    gdprSetting: GdprSetting = new GdprSetting();
     constructor( public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
         private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-        public teamMemberService: TeamMemberService ) {
+        public teamMemberService: TeamMemberService,public userService:UserService ) {
 
         this.addContactuser.country = ( this.countryNames.countries[0] );
         this.contactsByType.selectedCategory = "all";
@@ -481,7 +482,32 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
      askForPermission(contactOption:any) {
          this.contactOption = contactOption;
-         $('#tcModal').modal('show');
+         if (this.refService.companyId > 0) {
+             this.loading = true;
+             this.userService.getGdprSettingByCompanyId(this.refService.companyId)
+                 .subscribe(
+                     response => {
+                         if (response.statusCode == 200) {
+                             this.gdprSetting = response.data;
+                             if (this.gdprSetting.termsAndConditionStatus) {
+                                 $('#tcModal').modal('show');
+                             } else {
+                                 this.saveContactsWithPermission();
+                             }
+                         } else {
+                             $('#tcModal').modal('show');
+                         }
+                         this.loading = false;
+                     },
+                     (error: any) => {
+                         this.loading = false;
+                         $('#tcModal').modal('show');
+                     },
+                     () => this.xtremandLogger.info('Finished getGdprSettings()')
+                 );
+         } else {
+             $('#tcModal').modal('show');
+         }
     }
      
      
@@ -1707,6 +1733,39 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             event.stopPropagation();
         } catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "checkingSelectedInvalidUsers()" );
+        }
+    }
+    
+    validateUndeliverableContacts() {
+        try {
+            this.resetResponse();
+            this.loading = true;
+            this.xtremandLogger.info( this.selectedInvalidContactIds );
+            this.contactService.validateUndelivarableEmailsAddress( this.selectedInvalidContactIds )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.loading = false;
+                    this.xtremandLogger.log( data );
+                    console.log( "update Contacts ListUsers:" + data );
+                    this.checkingLoadContactsCount = true;
+                    this.editContactListLoadAllUsers( this.selectedContactListId, this.pagination );
+                    this.listOfSelectedContactListByType( this.contactsByType.selectedCategory );
+                    this.selectedInvalidContactIds.length = 0;
+                    if(this.isPartner){
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true );
+                    }else {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true );  
+                    }
+                },
+                ( error: any ) => {
+                    console.log( error );
+                    this.loading = false;
+                },
+                () => this.xtremandLogger.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+                )
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
         }
     }
 

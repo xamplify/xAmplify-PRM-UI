@@ -83,11 +83,11 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                 }
                                 req.send( data );
                             };
-                            var title = "Add Landing Page Name";
+                            var title = "Add Page Name";
                             var landingPageName = "";
                             if ( !defaultLandingPage ) {
                                 landingPageName = landingPage.name;
-                                title = "Update Landing Page Name";
+                                title = "Update Page Name";
                             }
                             var save = function( jsonContent: string, htmlContent: string ) {
                                 self.landingPage.htmlBody = htmlContent;
@@ -223,7 +223,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                     } );
                             }
                         }else{
-                            swal("Please Contact Admin!", "No Landing Page Found", "error");
+                            swal("Please Contact Admin!", "No Page Found", "error");
                         }
                         this.referenceService.loading( this.httpRequestLoader, false );
                     },
@@ -246,7 +246,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                     this.referenceService.stopLoader(this.httpRequestLoader);
                     if(!isOnDestroy){
                         this.referenceService.isCreated = true;
-                        this.router.navigate(["/home/landing-pages/manage"]);
+                        this.router.navigate(["/home/pages/manage"]);
                     }else{
                         this.landingPageService.goToManage();
                     }
@@ -272,7 +272,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                     this.referenceService.stopLoader(this.httpRequestLoader);
                     if(!isDestroy){
                         this.referenceService.isUpdated = true;
-                        this.router.navigate(["/home/landing-pages/manage"]);
+                        this.router.navigate(["/home/pages/manage"]);
                     }else{
                         this.landingPageService.goToManage();
                     }
@@ -287,7 +287,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                         this.logger.errorPage(error);
                     }
                     },
-                () => console.log( "Landing Page Saved" )
+                () => console.log( "Page Saved" )
                 );
     }
     

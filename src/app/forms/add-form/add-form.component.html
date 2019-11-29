@@ -9,23 +9,26 @@
         <i class="fa fa-home"></i>
         <a [routerLink]="referenceService.homeRouter">Home</a>
         <i class="fa fa-angle-right"></i>
+        <a *ngIf="isAdd" [routerLink]="['../../design/add']">Create Design</a> <i *ngIf="isAdd" class="fa fa-angle-right"></i>
+      </li>
+      <li *ngIf="!isAdd">
+        <a [routerLink]="['../../forms/manage']">Manage Forms</a><i class="fa fa-angle-right"></i>
       </li>
       <li>
         <a>Create Form</a>
       </li>
-      
     </ul>
   </div>
   <div class="row">
     <div class="col-md-12">
       <div class="portlet light" id="portlet-height">
-          <button type="button" class="close-circle" [routerLink]="['/home/forms/manage']" aria-hidden="true">
+          <button  type="button" class="close-circle" (click)="navigateBack()"  aria-hidden="true">
             <i class="fa fa-times"></i>
           </button>
       	<h4 [attr.class]="formNameClass"><b>CREATE FORM</b>
-	      	<a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
+	      	<!-- <a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
 				(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
-			</a>
+			</a> -->
 		</h4>
 		
 		
@@ -58,7 +61,7 @@
                   <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                       <i class="icon-globe theme-font hide"></i>
-                      <span class="caption-subject font-blue-madison bold uppercase">Pre-defined
+                      <span class="caption-subject font-blue-madison bold uppercase">Predefined 
                         fields</span>
                     </div>
                   </div>
@@ -83,7 +86,7 @@
                       <i class="icon-globe theme-font hide"></i>
                       <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
                       <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
-	      				<a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
+	      				<a data-toggle="tooltip" data-placement="top" title="Change Form Details"
 							(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
 						</a>
 						</h4>
@@ -306,7 +309,7 @@
             </div><!-- End Of Row---- -->
             <div id="bottom-right">
                 <button [disabled]="!form.isValid"  type="submit" class="btn green-haze"  (click)="validateForm()">{{buttonName}}</button>
-                <button type="button" class="btn btn-primay" [routerLink]="['/home/forms/manage']" aria-hidden="true">Cancel</button>
+                <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
               </div>
           </div>
         </div>
@@ -320,7 +323,7 @@
 	<div class="modal-dialog modal-lg" style="width: 75%; right: 0">
 		<div class="modal-content">
 			<div class="modal-header">
-			<button type="button" class="close-circle" (click)="closeModal()">
+			<button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
 				<i class="fa fa-times"></i>
 			</button>
 				<h4 class="modal-title text-center">{{formTitle}}</h4>

@@ -32,6 +32,10 @@ import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms
 import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
 import {FormPreviewComponent} from './forms/preview/form-preview.component';
 import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
+import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
+import { AccessAccountComponent } from './authentication/access-account/access-account.component';
+import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
@@ -58,7 +62,8 @@ export const routes: Routes = [
             { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
             { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
             { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
-            { path: 'landing-pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
+            { path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
+            { path: 'design', loadChildren: 'app/design/design.module#DesignModule',  data: { preload: true } },
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
@@ -87,7 +92,11 @@ export const routes: Routes = [
     {path: 'l/:alias', component:ShowLandingPageComponent},
     {path: 'pl/:alias', component:ShowLandingPageComponent},
     {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
+    {path: 'scp/:alias', component:ShowLandingPageComponent},
     {path: 'clpl/:alias', component:ShowLandingPageComponent},
+    { path: 'requestdemo', component: RequestDemoComponent },
+    { path: 'axAa/:alias', component: AccessAccountComponent },
+    { path: 'download/:type', component: DownloadTemplateComponent },
     { path: '**', component: PageNotFoundComponent },
 ];
 

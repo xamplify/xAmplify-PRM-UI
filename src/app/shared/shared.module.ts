@@ -27,6 +27,7 @@ import { CommonComponentModule } from '../common/common.module';
 import { NgxCurrencyModule } from "ngx-currency";
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { DragulaModule } from 'ng2-dragula';
+
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),

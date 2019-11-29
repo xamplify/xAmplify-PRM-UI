@@ -4,6 +4,10 @@
       <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
           [routerLink]="referenceService.homeRouter">Home</a>
         <i class="fa fa-angle-right"></i></li>
+        <li  *ngIf="onlyForms">
+        	<a [routerLink]="['../../design/add']">Create Design</a> <i class="fa fa-angle-right"></i>
+        </li>
+        
       <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a
           [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
           <ng-container *ngIf="pagination.campaignForm">
@@ -16,8 +20,8 @@
           	       <a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
           </ng-container>
           
-          	   <li *ngIf="!pagination.landingPageCampaignForm">
-          	       <a  routerLink="{{landingPagesRouterLink}}">Manage Landing Pages</a><i class="fa fa-angle-right"></i>
+          	   <li *ngIf="!pagination.landingPageCampaignForm && !onlyForms">
+          	       <a  routerLink="{{landingPagesRouterLink}}">Manage  Pages</a><i class="fa fa-angle-right"></i>
             	<li style="color: #808080">Manage Forms</li>
     </ul>
   </div>
@@ -83,7 +87,7 @@
                 <tbody>
                   <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                     <td class="hidden-xs" style="width: 10%;">
-                      <img class="img-class" src="assets/images/form.png"
+                      <img class="img-class-list" src="assets/images/form.png"
                         alt="{{form.name}}">
                     </td>
                     <td>
@@ -222,7 +226,7 @@
           <button type="button" class="close-circle" data-dismiss="modal">
             <i class="fa fa-times"></i>
           </button>
-          <h4 class="modal-title text-center">DIRECT LINK OF YOUR FORM</h4>
+          <h4 class="modal-title text-center">DIRECT LINK FOR YOUR FORM</h4>
         </div>
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">

@@ -111,7 +111,7 @@
 							</div>
 						</a>
 					</div>
-					
+
 					<div class="pl10 pr10 col-xs-12"[ngClass]="{'col-sm-6': campaignType === 'LANDINGPAGE','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
 							*ngIf="(campaignType === 'LANDINGPAGE') && campaign.landingPageId>0">
 					<a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
@@ -119,7 +119,7 @@
 							<i class="fa fa-envelope-open"></i>
 						</div>
 						<div class="camp-details">
-							<div class="camp-title">Landing Page Info</div>
+							<div class="camp-title">Page Info</div>
 							<div class="camp-number">
 								<b class="m0" title={{campaign.landingPage.name}}>{{campaign.landingPage.name
 									| slice: 0: 25}}</b> <span
@@ -137,20 +137,20 @@
 								<i class="fa fa-wpforms"></i>
 								<span class="badge" id="notification">{{campaign.formsCount}}</span>
 						</a>
-						<a *ngIf="campaign.campaignLandingPageAnalyticsCount>0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+						<a *ngIf="campaign.campaignLandingPageAnalyticsCount>0" (click)="goToCampaignLandingPageAnalytics(campaign.campaignId)" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
 							<i class="fa fa-line-chart"></i>
 							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
 						</a>
-						<a class="disabled"  *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Landing Page Analytics">
+						<a class="disabled"  *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
 							<i class="fa fa-line-chart"></i>
 							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
 						</a>
 						</div>
 					</a>
 				</div>
-					
+
 					<div [hidden]="campaignType === 'SOCIAL' || campaignType === 'LANDINGPAGE'" class="pl10 pr10 col-xs-6 blur" [ngClass]="{'col-sm-4': campaignType === 'VIDEO', 'col-sm-6': campaignType === 'REGULAR'}"
-					 *ngIf="campaign.selectedEmailTemplateId==0">
+					 *ngIf="campaign.selectedEmailTemplateId == 0">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" style="cursor: default;">
 							<div class="visual">
 								<i class="fa fa-envelope-open"></i>
@@ -198,7 +198,14 @@
 								<div class="portlet light">
 									<div class="portlet-body clearfix">
 										<div class="col-xs-12 p0">
-											<span class="btn btn-sm btn-primary pull-right" style="font-size:10px;cursor:default">{{campaignType}} CAMPAIGN
+											<span class="btn btn-sm btn-primary pull-right" style="font-size:10px;cursor:default">
+											<ng-container *ngIf="campaignType!='LANDINGPAGE'">
+											{{campaignType}}
+										</ng-container>
+										<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+											PAGE
+										</ng-container>
+											 CAMPAIGN
 												<br><span *ngIf="isPartnerCampaign === '(PARTNER)'">(THROUGH PARTNER)</span></span>
 											<h4 title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:15}} <span *ngIf="campaign.campaignName?.length>15">..</span>
 											</h4>
@@ -361,8 +368,14 @@
 									<div class="caption">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">VIEWERSHIP MAP</span>
 									</div>
-									<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">{{campaignType}}
-											CAMPAIGN {{isPartnerCampaign}}</span>
+									<div><span style="float: right;font-size: 14px;color: #fff;background: #00a6e8;padding: 0px 17px;margin-right: 1px;margin-top:2px;">
+										<ng-container *ngIf="campaignType!='LANDINGPAGE'">
+											{{campaignType}}
+										</ng-container>
+										<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+											PAGE
+										</ng-container>
+										 CAMPAIGN {{isPartnerCampaign}}</span>
 									</div>
 								</div>
 								<div class="portlet-body text-center" style="min-height: 300px;" [ngClass]="{'forbidden' :!isDataShare ?true:null}">
@@ -377,7 +390,14 @@
 							<div class="portlet light">
 								<div class="portlet-body clearfix">
 									<div class="col-xs-12">
-										<span class="btn btn-sm btn-primary pull-right" style="cursor: default;">{{campaignType}} CAMPAIGN {{isPartnerCampaign}}</span>
+										<span class="btn btn-sm btn-primary pull-right" style="cursor: default;">
+										<ng-container *ngIf="campaignType!='LANDINGPAGE'">
+											{{campaignType}}
+										</ng-container>
+										<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+											PAGE
+										</ng-container>
+										 CAMPAIGN {{isPartnerCampaign}}</span>
 										<h4>{{campaign.campaignName}}</h4>
 										<h5 class="text-info mb10">
 											<!-- {{campaign.launchTime | date: 'fullDate'}} -->
@@ -978,12 +998,10 @@
 							<img src="/assets/images/user.png" width="48px" class="user-profile-image">
 							<span *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-
-                  class="btn btn-success" *ngIf="campaignType=='VIDEO' && totalTimeSpent != '00:00:00'"
+                  [disabled]="totalTimeSpent == '00:00:00'" title=" totalTimeSpent == '00:00:00'?Please watch the video to {{dealButtonText}} : {{dealButtonText}} "
+                  class="btn btn-success" *ngIf="campaignType=='VIDEO' "
                   >{{dealButtonText}}</button>
-                  <button style="position: absolute; left: 350px; margin-top: 7px;opacity: 0.8;"
-                  class="btn btn-success" *ngIf="campaignType=='VIDEO' && totalTimeSpent == '00:00:00'"
-                  data-toggle="tooltip" data-placement="top" title="Please watch the video to {{dealButtonText}}">{{dealButtonText}}</button>
+
 
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
 									class="btn btn-success" *ngIf="campaignType!='VIDEO'" >{{dealButtonText}}</button>
@@ -1018,7 +1036,7 @@
 										</div>
 									</a>
 								</div>
-								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ">
+								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE' ">
 									<a class="text-center">
 										<div><img src="assets/images/video-watched.png" style="margin: 0px 11px;width: 52px;"></div>
 										<div>Views</div>
@@ -1027,7 +1045,7 @@
 										</div>
 									</a>
 								</div>
-								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL'">
+								<div class="col-sm-3 col-xs-6" [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE'">
 									<a class="text-center">
 										<div><img src="assets/images/total-time-spent.png" style="margin: 4px 15px;width: 45px;"></div>
 										<div>Time Spent</div>
@@ -1863,13 +1881,35 @@
 
 <!-- --_Deal Registration -->
 <div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
- data-backdrop="static" *ngIf="isDealRegistration" style="display: block">
+ data-backdrop="static" *ngIf="isDealRegistration && !isDealPreview" style="display: block">
 	<div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
 		<div class="modal-content">
 			<div class="modal-body" style="overflow:unset">
         <a (click)="showTimeLineView()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
           <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
         <app-add-leads [campaign]="campaign" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- --Lead Registration -->
+<div class="modal right" id="leadFormModel" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" data-keyboard="false"
+	data-backdrop="static" *ngIf="isDealPreview"
+	style="display: block">
+
+	<div class="modal-dialog modal-css" role="document"
+		style="float: right; position: relative">
+		<div class="modal-content">
+			<div class="modal-body">
+				<a (click)="showTimeLineView()" class="pull-right close-circle"
+					style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
+					<span class="glyphicon glyphicon-remove"
+					style="z-index: 1; font-size: 13px;" aria-hidden="true"></span>
+				</a>
+				<app-deal-registration [campaign]="campaign" [lead]="selectedRow"
+					[dealId]="dealId" [isPreview]="true"></app-deal-registration>
+
 			</div>
 		</div>
 	</div>

@@ -31,16 +31,21 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
 import { DealRegistrationService } from '../deal-registration/services/deal-registration.service';
 import { MarketoAuthenticationComponent } from './marketo-authentication/marketo-authentication.component';
 import { CKEditorModule } from "ng2-ckeditor";
-import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
+import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component'
+import { SharedContactsModule } from 'app/shared/shared-contacts.module';
+import { DemoRequestComponent } from './demo-request/demo-request.component';
+import { DynamicEmailContentComponent } from './dynamic-email-content/dynamic-email-content.component';
 
 @NgModule({
-    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule],
+    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 
         VendorReportsComponent, AdminReportComponent,
         MarketoAuthenticationComponent,
-        VendorRequestReportComponent
+        VendorRequestReportComponent,
+        DemoRequestComponent,
+        DynamicEmailContentComponent
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]

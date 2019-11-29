@@ -45,7 +45,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
             const roles = this.authService.getRoles();
             if ( roles ) {
-                
                 if(roles.indexOf(this.roleName.companyPartnerRole) > -1) {
                     this.authService.isCompanyPartner = true;
                 }else{
@@ -136,11 +135,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.formAccess = data.form;
                         this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
                         /**********Form**************/
-                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && this.formAccess ) {
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
                         }
                         /**********Landing Page**************/
-                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPage ) {
+                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 || roles.indexOf( this.roleName.landingPageRole ) > -1 ) && data.landingPage ) {
                             this.authService.module.hasLandingPageAccess = true;
                         }
                        /*************Landing Page Campaign*************/ 

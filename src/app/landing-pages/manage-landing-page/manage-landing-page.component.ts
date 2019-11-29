@@ -47,17 +47,17 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if ( this.referenceService.isCreated ) {
-            this.message = "Landing page created successfully";
+            this.message = "Page created successfully";
             this.showMessageOnTop(this.message );
         } else if ( this.referenceService.isUpdated) {
-            this.message = "Landing page updated successfully";
+            this.message = "Page updated successfully";
             this.showMessageOnTop( this.message );
         }
         
     }
     
     ngOnInit() {
-        if(this.router.url.includes('home/landing-pages/partner')){
+        if(this.router.url.includes('home/pages/partner')){
             this.isPartnerLandingPage = true;
         }else{
             this.selectedLandingPageTypeIndex = 0;
@@ -85,6 +85,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 if(this.statusCode==200){
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
+                    $.each(data.landingPages, function (index, landingPage) {
+                        landingPage.displayTime = new Date(landingPage.createdDateInString);
+                    });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
                 this.referenceService.loading( this.httpRequestLoader, false );
@@ -173,7 +176,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     editLandingPage(id:number){
         this.landingPageService.id = id;
-        this.router.navigate(["/home/landing-pages/add"]);
+        this.router.navigate(["/home/pages/add"]);
       }
     
     deleteById(landingPage:LandingPage){
@@ -232,10 +235,10 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/forms/partner/lf/'+alias]);
     }
     goToLandingPageAnalytics(id:number){
-        this.router.navigate(['/home/landing-pages/'+id+'/analytics']);
+        this.router.navigate(['/home/pages/'+id+'/analytics']);
     }
     goToPartnerLandingPageAnalytics(alias:string){
-        this.router.navigate(['/home/landing-pages/partner/'+alias+'/analytics']);
+        this.router.navigate(['/home/pages/partner/'+alias+'/analytics']);
     }
 
     

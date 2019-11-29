@@ -98,14 +98,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isValidContactName: boolean;
     noSaveButtonDisable: boolean;
     public totalRecords: number;
+    loading = false;
 
     searchContactType = "";
 
     public zohoImage: string = 'assets/admin/pages/media/works/zoho-contacts.png';
     public googleImage: string = 'assets/admin/pages/media/works/google-contacts.png';
     public salesforceImage: string = 'assets/admin/pages/media/works/salesforce-contacts.png';
-    public normalImage: string = 'assets/admin/pages/media/works/contacts.png';
-    public marketoImage:string = 'assets/admin/pages/media/works/marketo.png'
+    public normalImage: string = 'assets/admin/pages/media/works/contacts2.png';
+    public marketoImage:string = 'assets/admin/pages/media/works/marketo-conatct.png';
+    public hubspotImage: string = 'assets/admin/pages/media/works/hubspot-contact.png';
 
     sortOptions = [
         { 'name': 'Sort by', 'value': '', 'for': '' },
@@ -987,6 +989,41 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "ManageContactsComponent", "removingInvalidUsersAlert()" );
+        }
+    }
+    
+    
+    validateUndeliverableContacts() {
+        try {
+            this.resetResponse();
+            this.loading = true;
+            this.xtremandLogger.info( this.selectedInvalidContactIds );
+            this.contactService.validateUndelivarableEmailsAddress( this.selectedInvalidContactIds )
+                .subscribe(
+                data => {
+                    data = data;
+                    this.loading = false;
+                    this.xtremandLogger.log( data );
+                    console.log( "update Contacts ListUsers:" + data );
+                    this.contactsCount();
+                    this.contactCountLoad = true;
+                    this.listContactsByType( this.contactsByType.selectedCategory );
+                    if(this.isPartner){
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true );
+                    }else {
+                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true );  
+                    }
+                },
+                ( error: any ) => {
+                    console.log( error );
+                    this.loading = false;
+                },
+                () => this.xtremandLogger.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+                )
+            this.invalidDeleteSucessMessage = false;
+            this.invalidDeleteErrorMessage = false;
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
         }
     }
 

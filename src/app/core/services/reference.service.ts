@@ -17,6 +17,9 @@ import { EmailTemplate } from '../../email-template/models/email-template';
 import { Campaign } from '../../campaigns/models/campaign';
 import { environment } from 'environments/environment';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { Properties } from '../../common/models/properties';
+import { CustomResponse } from '../../common/models/custom-response';
+
 declare var $: any;
 
 @Injectable()
@@ -79,6 +82,7 @@ export class ReferenceService {
     isRedistributionCampaignPage = false;
     campaignType = 'REGULAR';
     videoTag ="";
+    videoSrcTag = "";
     emailMergeTags = "  For First Name : {{firstName}} \n  For Last Name : {{lastName}} \n  For Full Name : {{fullName}} \n  For Email Id : {{emailId}}";
     coBrandingTag = "";
     coBrandingImageTag
@@ -102,6 +106,7 @@ export class ReferenceService {
     eventCampaign = false;
     loadingPreview = false;
     eventCampaignId: number;
+    isHubspotCallBack = false;
     dealId = 0;
     smsCampaign = false;
     serverErrorMessage = 'Oops!There is some technical error,Please try after sometime';
@@ -109,12 +114,16 @@ export class ReferenceService {
     eventCampaignTabAccess: boolean = false;
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     superiorId:number = 0;
+    selectedFeed: any;
+    customResponse = new CustomResponse();
+    properties = new Properties();
     constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
         private router: Router, public deviceService: Ng2DeviceService,private route:ActivatedRoute) {
         console.log('reference service constructor');
         this.videoTag = "<img src=\""+authenticationService.imagesHost+"xtremand-video.gif\">";
         this.coBrandingTag = "<img src=\""+authenticationService.imagesHost+"co-branding.png\">";
         this.coBrandingImageTag = "img src=\""+authenticationService.imagesHost+"co-branding.png\"";
+        this.videoSrcTag = "img src=\""+authenticationService.imagesHost+"xtremand-video.gif\"";
 
     }
     getBrowserInfoForNativeSet(){
@@ -1732,6 +1741,7 @@ export class ReferenceService {
              updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal,myMergeTags.senderCompany);
              updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyUrlGlobal, myMergeTags.myCompanyUrl);
              updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyContactNumberGlobal,myMergeTags.myCompanyContactNumber);
+            // updatedBody = updatedBody.replace(this.senderMergeTag.aboutUsGlobal,myMergeTags.aboutUs);
          }
          return updatedBody;
      }
@@ -1746,7 +1756,7 @@ export class ReferenceService {
      hasMyMergeTagsExits(body:string){
          return body.indexOf(this.senderMergeTag.senderFirstName)>-1 || body.indexOf(this.senderMergeTag.senderLastName)>-1 || body.indexOf(this.senderMergeTag.senderFullName)>-1 ||
          body.indexOf(this.senderMergeTag.senderEmailId)>-1 || body.indexOf(this.senderMergeTag.senderContactNumber)>-1 || body.indexOf(this.senderMergeTag.senderCompany)>-1 
-         || body.indexOf(this.senderMergeTag.senderCompanyUrl)>-1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber)>-1;
+         || body.indexOf(this.senderMergeTag.senderCompanyUrl)>-1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber)>-1 ||  body.indexOf(this.senderMergeTag.aboutUs)>-1 ;
      }
      
      formatAMPM(date) {
@@ -1826,5 +1836,25 @@ export class ReferenceService {
 
     }
 
-  
+    downloadTemplate(campaignId:number,type:string){
+        //window.location.href = this.authenticationService.REST_URL+"campaign/download/"+campaignId+"/"+this.authenticationService.getUserId()+"/"+type+"?access_token="+this.authenticationService.access_token;
+        //let url = this.authenticationService.REST_URL + "campaign/download/" + campaignId + "/" + this.authenticationService.getUserId() + "/" + type + "?access_token=" + this.authenticationService.access_token;
+        //let opner = window.open(url, '_blank');
+        let url = this.authenticationService.APP_URL+"/download/"+type;
+        window.open(url, "_blank");
+
+    }
+    
+
+    showServerErrorResponse(httpRequestLoader: HttpRequestLoader){
+        httpRequestLoader.isLoading = false;
+        httpRequestLoader.isServerError = true;
+        return new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true ); 
+    }
+    
+    getLegalBasisOptions(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + "gdpr/setting/legal_basis/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

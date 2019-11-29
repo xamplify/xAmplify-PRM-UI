@@ -12,7 +12,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 declare var swal, $, Promise: any;
 @Injectable()
 export class CampaignService {
-
+   
     campaign: Campaign;
     eventCampaign:any;
     reDistributeCampaign: Campaign;
@@ -558,6 +558,7 @@ export class CampaignService {
             data['email'] = campaign.email;
             data['subjectLine'] = campaign.subjectLine;
             data['nurtureCampaign'] = nutrureCampaign;
+            data['channelCampaign'] = campaign.channelCampaign;
             data['preHeader'] = campaign.preHeader;
             if(campaign.campaignTypeInString=='LANDINGPAGE'){
                 data['landingPageId'] = selectedLandingPageId;
@@ -701,4 +702,11 @@ export class CampaignService {
       .map(this.extractData)
       .catch(this.handleError);   
   }
+
+    getPartnerTemplatePreview(campaignId: any, userId: number) {
+        var url = this.URL + "admin/getPartnerTemplate/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

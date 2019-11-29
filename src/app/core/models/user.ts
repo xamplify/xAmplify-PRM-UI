@@ -43,4 +43,5 @@ export class User {
     partnerType: string = "";
     category: string = "";
     campaignAccessDto:CampaignAccess = new CampaignAccess();
+    selectedLegalBasisOptions = [];
 }

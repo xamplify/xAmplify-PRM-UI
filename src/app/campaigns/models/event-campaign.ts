@@ -56,10 +56,13 @@ export class EventCampaign {
 
     hostedBy: string = "";
     nurtureCampaign: boolean = false;
+
     pushToMarketo = false;
     socialStatusList: Array<SocialStatus> = [];
     forms: Array<Form> = [];
-    
+   
+    pushToCRM = [];
+
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());

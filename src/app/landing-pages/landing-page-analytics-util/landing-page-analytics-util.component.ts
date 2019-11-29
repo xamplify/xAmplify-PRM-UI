@@ -109,8 +109,11 @@ export class LandingPageAnalyticsUtilComponent implements OnInit {
         this.listAnalytics( this.pagination,"" );
     }
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
-    refreshList(pagination:Pagination){
-        this.listAnalytics(pagination,"");
+    refreshList(){
+        this.pagination.pageIndex = 1;
+        this.pagination.searchKey = "";
+        this.sortOption.searchKey = "";
+        this.listAnalytics(this.pagination,"");
     }
     
     

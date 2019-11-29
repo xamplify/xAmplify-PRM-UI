@@ -7,7 +7,10 @@ export class TeamMember{
     lastName:string;
     contact:boolean = false;
     emailTemplate:boolean = false;
+    form:boolean = false;
+    landingPage:boolean = false;
     campaign:boolean = false;
+    design:boolean = false;
     video:boolean = false;
     stats:boolean = false;
     socialShare:boolean = false;
