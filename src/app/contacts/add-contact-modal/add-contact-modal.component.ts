@@ -41,8 +41,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     public placeHolder: string = 'Select Legal Basis Options';
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
-    isValidLegalOptions = false;
-    isShowRequiredFieldDiv = false;
+    isValidLegalOptions = true;
 
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
@@ -99,44 +98,55 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.emailNotValid = false;
         }
     }
-    
-    validatingGdprLegalOptions(){
-        
-        if(this.addContactuser.selectedLegalBasisOptions.length == 0 && this.gdprStatus){
-            this.isValidLegalOptions = true; 
-        }else{
-          this.isValidLegalOptions = false;
-        }
-    }
 
     addRow() {
-        this.validatingGdprLegalOptions()
-        if(!this.isValidLegalOptions){
-           this.addContactModalClose();
-           this.notifyParent.emit( this.addContactuser );
+        this.validateGdprLegalBasis();
+    }
+    
+    validateLegalBasisOptions(){
+        if(this.addContactuser.legalBasis.length==0){
+            this.isValidLegalOptions = false;
         }else{
-            this.isShowRequiredFieldDiv = true;
+            this.isValidLegalOptions = true;
         }
+    }
+    
+    validateGdprLegalBasis(){
+        if(this.gdprStatus){
+            if(this.addContactuser.legalBasis.length>0){
+                this.isValidLegalOptions = true;
+               this.closeAndEmitData();
+            }else{
+                this.isValidLegalOptions = false;
+            }
+        }else{
+            this.closeAndEmitData();
+        }
+    
+    }
+    closeAndEmitData(){
+        this.addContactModalClose();
+        this.notifyParent.emit( this.addContactuser );
     }
 
     addEditContactRow() {
-        this.validatingGdprLegalOptions()
-        if(!this.isValidLegalOptions){
-          this.addContactModalClose();
-          this.notifyParent.emit( this.addContactuser );
-        }else{
-            this.isShowRequiredFieldDiv = true;
-        }
+        this.validateGdprLegalBasis();
     }
 
     updateUser() {
-        this.validatingGdprLegalOptions()
-        if(!this.isValidLegalOptions){
-          $( '#addContactModal' ).modal( 'hide' );
-          this.contactService.isContactModalPopup = false;
-          this.notifyParent.emit( this.addContactuser );
+        if(this.gdprStatus){
+            if(this.addContactuser.legalBasis.length>0){
+                this.isValidLegalOptions = true;
+                $( '#addContactModal' ).modal( 'hide' );
+                this.contactService.isContactModalPopup = false;
+                this.notifyParent.emit( this.addContactuser );
+            }else{
+                this.isValidLegalOptions = false;
+            }
         }else{
-            this.isShowRequiredFieldDiv = true;
+            $( '#addContactModal' ).modal( 'hide' );
+            this.contactService.isContactModalPopup = false;
+            this.notifyParent.emit( this.addContactuser );
         }
     }
 
@@ -172,7 +182,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
         }
     }*/
-
+    
+ 
     ngOnInit() {
        try{
         //this.geoLocation();
@@ -202,6 +213,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.zipCode = this.contactDetails.zipCode;
             this.addContactuser.country = this.contactDetails.country;
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
+            this.addContactuser.legalBasis = this.contactDetails.legalBasis;
            /* if ( this.addContactuser.mobileNumber == undefined ) {
                 //this.addContactuser.mobileNumber = "+1";
                 this.geoLocation()
@@ -225,6 +237,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
+            
            
         }
         $( '#addContactModal' ).modal( 'show' );
