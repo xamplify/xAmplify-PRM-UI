@@ -1851,4 +1851,10 @@ export class ReferenceService {
         httpRequestLoader.isServerError = true;
         return new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true ); 
     }
+    
+    getLegalBasisOptions(companyId:number){
+        return this.http.get(this.authenticationService.REST_URL + "gdpr/setting/legal_basis/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

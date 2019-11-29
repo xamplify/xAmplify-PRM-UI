@@ -57,6 +57,20 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
           </div>
         </div>
+        <!-- ------------Legal Basis------------ -->
+        <div class="form-group" *ngIf="gdprStatus">
+         <label class="control-label col-xs-2 col-sm-2" for="selectedLegalBasisOptions" style="color: #00bcd4; right: 11px !important">
+                <span class="star"> *</span>
+            </label>
+	    <div id="multiselect-sample" class="control-section">
+	    <div class="col-lg-8 content-wrapper">
+	        <div class="control-styles">
+	        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
+	        </div>
+	    </div>
+	    </div>
+    </div>
 
         <div class="form-group">
            <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">

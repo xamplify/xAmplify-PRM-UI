@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 
 import { AddContactsComponent } from '../contacts/add-contacts/add-contacts.component';
 import { ManageContactsComponent } from '../contacts/manage-contacts/manage-contacts.component';
@@ -15,7 +14,7 @@ import { SharedLibraryModule } from '../shared/shared-library.module';
 import { AddContactModalComponent } from '../contacts/add-contact-modal/add-contact-modal.component';
 
 @NgModule({
-        imports: [CommonModule, RouterModule,AngularMultiSelectModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
+        imports: [CommonModule, RouterModule, ReactiveFormsModule, FormsModule, SharedModule, CommonComponentModule, SharedLibraryModule ],
         declarations: [AddContactsComponent, ManageContactsComponent,EditContactsComponent,SocialContactsCallbackComponent, AddContactModalComponent],
         exports: [FormsModule, CommonModule, RouterModule, AddContactsComponent,ManageContactsComponent,EditContactsComponent,
                   SocialContactsCallbackComponent, AddContactModalComponent],

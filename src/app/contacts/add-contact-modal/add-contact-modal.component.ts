@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,AfterViewInit,OnDestroy,ViewChild } from '@angular/core';
 import { User } from '../../core/models/user';
 import { Router } from '@angular/router';
 import { CountryNames } from '../../common/models/country-names';
@@ -6,6 +6,9 @@ import { RegularExpressions } from '../../common/models/regular-expressions';
 import { ContactService } from '../../contacts/services/contact.service';
 import { VideoFileService } from '../../videos/services/video-file.service'
 import { ReferenceService } from '../../core/services/reference.service';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
+
 declare var $: any;
 
 @Component( {
@@ -15,14 +18,12 @@ declare var $: any;
     providers: [CountryNames, RegularExpressions]
 })
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
-
     @Input() contactDetails: any;
     @Input() isContactTypeEdit: boolean;
     isPartner: boolean;
     @Input() isUpdateUser: boolean;
     @Input() totalUsers: any;
     @Output() notifyParent: EventEmitter<any>;
-
     addContactuser: User = new User();
     validEmailPatternSuccess = true;
     emailNotValid: boolean;
@@ -33,9 +34,18 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     checkingContactTypeName = '';
     locationDetails: any;
     locationCountry = '';
+    /*********Legal Basis Options******/
+    @Input() gdprInput:any;
+    legalBasisOptions :Array<LegalBasisOption>;
+    public selectedLegalBasisOptions = [];
+    public fields: any;
+    public placeHolder: string = 'Select Legal Basis Options';
+    termsAndConditionStatus: boolean = true;
+    gdprStatus:boolean = true;
+
 
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService ) {
+                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger ) {
         this.notifyParent = new EventEmitter();
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
 
@@ -184,10 +194,15 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             //this.geoLocation();
             this.addContactuser.country = this.countryNames.countries[0];
         }
-
         /**************Show Legal Basis Content*******************/
-
+        this.fields = { text: 'name', value: 'id' };
+        if(this.gdprInput!=undefined){
+            this.legalBasisOptions = this.gdprInput.legalBasisOptions;
+            this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
+            this.gdprStatus = this.gdprInput.gdprStatus;
+        }
         $( '#addContactModal' ).modal( 'show' );
+      
        } catch ( error ) {
            console.error( error, "addcontactOneAttimeModalComponent()", "ngOnInit()" );
        }
@@ -197,10 +212,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     }
     ngOnDestroy(){
         this.addContactModalClose();
-    }
-
-    getLegalBasisData(){
-        
     }
 
 }

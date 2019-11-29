@@ -22,6 +22,7 @@ import { PaginationComponent } from '../../common/pagination/pagination.componen
 import { FileUtil } from '../../core/models/file-util';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 
 declare var swal, $, Papa: any;
@@ -37,8 +38,7 @@ declare var swal, $, Papa: any;
         '../../../assets/css/numbered-textarea.css', '../../../assets/css/phone-number-plugin.css'],
     providers: [FileUtil, SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
 })
-export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
-
+export class AddContactsComponent implements OnInit, OnDestroy {
     settingSocialNetwork: string;
     isUnLinkSocialNetwork: boolean = false;
     public contactLists: Array<ContactList>;
@@ -146,12 +146,17 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     paginatedSelectedIds = [];
     gdprSetting: GdprSetting = new GdprSetting();
+    termsAndConditionStatus = true;
+    gdprStatus = true;    
+    legalBasisOptions :Array<LegalBasisOption>;
+    parentInput:any;
+    companyId: number = 0;
 
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService) {
-
+        this.parentInput = {};
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
         let currentUrl = this.router.url;
@@ -191,6 +196,10 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
         };
+        
+        const currentUser = localStorage.getItem( 'currentUser' );
+        let campaginAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
+        this.companyId = campaginAccessDto.companyId;
     }
 
     validateContactName( contactName: string ) {
@@ -569,32 +578,12 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
     
     askForPermission(contactOption:any) {
         this.contactOption = contactOption;
-        if (this.referenceService.companyId>0){
-            this.loading = true;
-            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
-                .subscribe(
-                    response => {
-                        if (response.statusCode == 200) {
-                            this.gdprSetting = response.data;
-                            if(this.gdprSetting.termsAndConditionStatus){
-                                $('#tcModal').modal('show');
-                            }else{
-                                this.saveContactsWithPermission();
-                            }
-                        } else{
-                            $('#tcModal').modal('show');
-                        }
-                        this.loading = false;
-                    },
-                    (error: any) => {
-                        this.loading = false;
-                        $('#tcModal').modal('show');
-                    },
-                    () => this.xtremandLogger.info('Finished getGdprSettings()')
-                );
-        }else{
+        if(this.termsAndConditionStatus){
             $('#tcModal').modal('show');
+        }else{
+            this.saveContactsWithPermission();
         }
+        
    }
     
     saveContactsWithPermission(){
@@ -2446,14 +2435,61 @@ export class AddContactsComponent implements OnInit, AfterViewInit, OnDestroy {
             if ( this.socialContactType == "google" ) {
                 this.getGoogleContactsUsers();
             }
+            /********Check Gdpr Settings******************/
+            this.checkTermsAndConditionStatus();
+            this.getLegalBasisOptions();
         }
         catch ( error ) {
             this.xtremandLogger.error( "addContacts.component error " + error );
         }
 
     }
-    ngAfterViewInit() {
+    
+    
+    
+    checkTermsAndConditionStatus(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.userService.getGdprSettingByCompanyId(this.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            this.gdprStatus = this.gdprSetting.gdprStatus;
+                            this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
+                        } 
+                        this.parentInput['termsAndConditionStatus'] = this.termsAndConditionStatus;
+                        this.parentInput['gdprStatus'] = this.gdprStatus;
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                    },
+                    () => this.xtremandLogger.info('Finished getGdprSettings()')
+                );
+        }
+        
     }
+    
+    getLegalBasisOptions(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.referenceService.getLegalBasisOptions(this.companyId)
+            .subscribe(
+                data => {
+                    this.legalBasisOptions = data.data;
+                    this.parentInput['legalBasisOptions'] = this.legalBasisOptions;
+                    this.loading = false;
+                },
+                (error: any) => {
+                   this.loading = false;
+                },
+                () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
+            );
+        }
+        
+    
+    }
+
     toggle( i: number ) {
         const className = $( '#more_' + i ).attr( 'class' );
         if ( className === 'hidden' ) {
