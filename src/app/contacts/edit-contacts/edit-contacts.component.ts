@@ -26,6 +26,7 @@ import { FileUtil } from '../../core/models/file-util';
 import { SocialPagerService } from '../services/social-pager.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { UserService } from '../../core/services/user.service';
+import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $,Swal,await, Papa: any;
 
 @Component( {
@@ -189,6 +190,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ];
     filterCondition = this.filterConditions[0];
     gdprSetting: GdprSetting = new GdprSetting();
+    termsAndConditionStatus = true;
+    gdprStatus = true;    
+    legalBasisOptions :Array<LegalBasisOption>;
+    parentInput:any;
+    companyId: number = 0;
     constructor( public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -224,6 +230,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
         this.hasAllAccess = this.refService.hasAllAccess();
         this.loggedInUserId = this.authenticationService.getUserId();
+        
+        this.parentInput = {};
+        const currentUser = localStorage.getItem( 'currentUser' );
+        let campaginAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
+        this.companyId = campaginAccessDto.companyId;
     }
 
     onChangeAllContactUsers( event: Pagination ) {
@@ -482,32 +493,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
      askForPermission(contactOption:any) {
          this.contactOption = contactOption;
-         if (this.refService.companyId > 0) {
-             this.loading = true;
-             this.userService.getGdprSettingByCompanyId(this.refService.companyId)
-                 .subscribe(
-                     response => {
-                         if (response.statusCode == 200) {
-                             this.gdprSetting = response.data;
-                             if (this.gdprSetting.termsAndConditionStatus) {
-                                 $('#tcModal').modal('show');
-                             } else {
-                                 this.saveContactsWithPermission();
-                             }
-                         } else {
-                             $('#tcModal').modal('show');
-                         }
-                         this.loading = false;
-                     },
-                     (error: any) => {
-                         this.loading = false;
-                         $('#tcModal').modal('show');
-                     },
-                     () => this.xtremandLogger.info('Finished getGdprSettings()')
-                 );
-         } else {
+         if(this.termsAndConditionStatus){
              $('#tcModal').modal('show');
+         }else{
+             this.saveContactsWithPermission();
          }
+     
     }
      
      
@@ -2851,11 +2842,56 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             Layout.init(); // init current layout
             Demo.init(); // init demo features
             Portfolio.init();
+            /********Check Gdpr Settings******************/
+            this.checkTermsAndConditionStatus();
+            this.getLegalBasisOptions();
 
         }
         catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "ngOnInit()" );
         }
+    }
+    
+    checkTermsAndConditionStatus(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.userService.getGdprSettingByCompanyId(this.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            this.gdprStatus = this.gdprSetting.gdprStatus;
+                            this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
+                        } 
+                        this.parentInput['termsAndConditionStatus'] = this.termsAndConditionStatus;
+                        this.parentInput['gdprStatus'] = this.gdprStatus;
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                    },
+                    () => this.xtremandLogger.info('Finished getGdprSettings()')
+                );
+        }
+        
+    }
+    
+    getLegalBasisOptions(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.refService.getLegalBasisOptions(this.companyId)
+            .subscribe(
+                data => {
+                    this.legalBasisOptions = data.data;
+                    this.parentInput['legalBasisOptions'] = this.legalBasisOptions;
+                    this.loading = false;
+                },
+                (error: any) => {
+                   this.loading = false;
+                },
+                () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
+            );
+        }
+    
     }
 
     ngOnDestroy() {

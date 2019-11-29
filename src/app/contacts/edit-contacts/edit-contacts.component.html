@@ -1059,11 +1059,11 @@
 
 
 <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
-	<app-add-contact-modal [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
-	<app-add-contact-modal [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
 
 <app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>

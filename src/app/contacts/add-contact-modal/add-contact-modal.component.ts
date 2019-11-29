@@ -237,8 +237,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;
             this.gdprStatus = this.gdprInput.gdprStatus;
-            
-           
         }
         $( '#addContactModal' ).modal( 'show' );
       
