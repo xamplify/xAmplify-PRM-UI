@@ -156,7 +156,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
         private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService) {
-        this.parentInput = {};
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
         let currentUrl = this.router.url;
@@ -196,7 +195,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
         };
-        
+        this.parentInput = {};
         const currentUser = localStorage.getItem( 'currentUser' );
         let campaginAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
         this.companyId = campaginAccessDto.companyId;

@@ -37,7 +37,6 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     /*********Legal Basis Options******/
     @Input() gdprInput:any;
     legalBasisOptions :Array<LegalBasisOption>;
-    public selectedLegalBasisOptions = [];
     public fields: any;
     public placeHolder: string = 'Select Legal Basis Options';
     termsAndConditionStatus: boolean = true;
