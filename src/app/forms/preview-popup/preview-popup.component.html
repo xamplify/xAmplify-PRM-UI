@@ -62,13 +62,13 @@
 									From <b>{{form.companyName}}</b>
 								 </h6>
 							  </td>
-							  <td *ngIf="!authenticationService.isShowForms">
+							  <td [hidden]="authenticationService.isShowForms">
 							  	<input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form.alias}}" #userinput>
 							  	<font class="success" id="copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
 							  </td>
 							  <td id="actions-row">
 								 <div class="actions-block override-actions">
-								 	<a *ngIf="!authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
+								 	<a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
 									  <i class="fa fa-copy"></i>
 									</a>
 									
