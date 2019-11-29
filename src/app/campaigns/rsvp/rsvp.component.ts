@@ -208,7 +208,6 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   saveEventCampaignRsvp() {
-    this.rsvpSavingProcessing = true;
     
     if(this.formPreviewComponent){
         this.form.formLabelDTOs = this.formPreviewComponent.form.formLabelDTOs;
@@ -218,10 +217,16 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     let self = this;
     
     const formLabelDtos = this.form.formLabelDTOs;
-    const formSubmit = new FormSubmit();
-    formSubmit.id = this.form.id;
-    formSubmit.alias = this.alias;
-    $.each(formLabelDtos,function(index:number,field:ColumnInfo){
+    const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length===0) );
+    const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass=='error')).length;
+    if(requiredFormLabels.length>0 ||invalidEmailIdsFieldsCount>0){
+      this.formPreviewComponent.addHeaderMessage('Please fill required fields',this.formPreviewComponent.errorAlertClass);
+    }else{
+     this.rsvpSavingProcessing = true;
+     const formSubmit = new FormSubmit();
+     formSubmit.id = this.form.id;
+     formSubmit.alias = this.alias;
+     $.each(formLabelDtos,function(index:number,field:ColumnInfo){
         const formField: any = { };
         formField.id = field.id;
         formField.value = $.trim(field.value);
@@ -253,6 +258,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       },
       () => console.log("Campaign Names Loaded")
       );
+    }
   }
   closeRsvpModel(){
     this.campaignRsvp.message = null;

@@ -57,7 +57,7 @@
               <th>Date</th>
               <th>RSVP</th>
               <th>Message</th>
-              <th>Guests</th>
+              <th *ngIf="eventcampaign.inviteOthers">Guests</th>
             </tr>
           </thead>
           <tbody>
@@ -68,7 +68,7 @@
                <span *ngIf="rsvp?.message?.length>18">...</span>
                <span *ngIf="!rsvp?.message">-</span>
               </td>
-              <td>
+              <td *ngIf="eventcampaign.inviteOthers">
               <span *ngIf="rsvp.eventCampaignRsvp === 'YES'">
               {{rsvp.additionalCount}}
               </span>
