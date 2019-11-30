@@ -20,7 +20,7 @@ import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms
     imports: [
         CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule
     ],
-    declarations: [AddFormComponent, ManageFormComponent, FormAnalyticsComponent,FormAnalyticsComponent, CampaignFormAnalyticsComponent, LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent],
+    declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent],
     providers: [FormService]
 } )
 export class FormsModule { }
