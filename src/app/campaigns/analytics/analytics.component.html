@@ -762,9 +762,8 @@
 			</ng-template>
 		</div>
 	</div>
+	<app-form-analytics-util [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util>
 </div>
-
-
 
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
 	<div id="timeline-view" class="page-content" *ngIf="isTimeLineView">
@@ -1914,5 +1913,4 @@
 		</div>
 	</div>
 </div>
-<app-form-analytics></app-form-analytics>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>

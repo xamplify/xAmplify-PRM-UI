@@ -42,5 +42,6 @@ export class Pagination {
 	partnerLandingPageForm = false;
 	formId = 0;
 	loader:HttpRequestLoader = new HttpRequestLoader();
+	publicEventLeads = false;
 	
 }

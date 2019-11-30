@@ -148,6 +148,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
  leadData: any;
   isDealPreview=false;
   isDeal=false;
+  exportingObject:any={};
 
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
@@ -979,7 +980,6 @@ showTimeLineView(){
           }
 
         this.campaingContactLists = data.userLists;
-        console.log(this.campaingContactLists);
         this.isPartnerCampaign = this.campaign.channelCampaign? '(PARTNER)' : '';
         this.loading = false;
       },
@@ -1025,6 +1025,14 @@ showTimeLineView(){
               this.getSmsSentSuccessCount(this.campaignId);
               this.getSmsSentFailureCount(this.campaignId);
           }
+        this.exportingObject['campaignAlias'] = this.campaignId;
+        this.exportingObject['formAlias'] = 'lvXASz6A';
+        if(this.campaignType = 'EVENT'){
+            this.exportingObject['isPublicEventLeads'] = true;
+        }else{
+            this.exportingObject['isPublicEventLeads'] = false;
+        }
+        
         this.loading = false;
       }
       )

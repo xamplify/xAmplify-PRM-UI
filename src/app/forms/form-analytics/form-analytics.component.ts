@@ -35,21 +35,11 @@ export class FormAnalyticsComponent implements OnInit {
         this.campaignAlias = this.route.snapshot.params['campaignAlias'];
         this.partnerLandingPageAlias =this.route.snapshot.params['partnerLandingPageAlias'];
         this.formId =this.route.snapshot.params['formId'];
-        if(this.campaignAlias!=undefined){
-            this.pagination.campaignId = parseInt(this.campaignAlias);
-            this.campaignForms = true;
-            this.routerLink = "/home/forms/clpf/"+this.pagination.campaignId;
-        }else if(this.partnerLandingPageAlias!=undefined){
-            this.pagination.landingPageAlias = this.partnerLandingPageAlias;
-            this.routerLink = "/home/forms/partner/lf/"+this.partnerLandingPageAlias;
-            this.pagination.formId = this.formId;
-            this.alias = "";
-            this.pagination.partnerLandingPageForm = true;
-        }
         this.exportingObject['formAlias'] = this.alias;
         this.exportingObject['campaignAlias'] = this.campaignAlias;
         this.exportingObject['partnerLandingPageAlias'] = this.partnerLandingPageAlias;
         this.exportingObject['formId'] = this.formId;
+        this.exportingObject['isPublicEventLeads'] = false;
     }
     
 

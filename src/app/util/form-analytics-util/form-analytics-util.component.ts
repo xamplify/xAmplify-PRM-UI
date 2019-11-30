@@ -18,7 +18,7 @@ declare var $: any, swal: any;
     selector: 'app-form-analytics-util',
     templateUrl: './form-analytics-util.component.html',
     styleUrls: ['./form-analytics-util.component.css'],
-    providers: [Pagination, HttpRequestLoader]
+    providers: [Pagination, HttpRequestLoader,FormService]
 } )
 export class FormAnalyticsUtilComponent implements OnInit {
     formId: any;
@@ -46,11 +46,24 @@ export class FormAnalyticsUtilComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.alias = this.importedObject['formAlias'];
-        this.campaignAlias = this.importedObject['campaignAlias'];
-        this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
-        this.formId = this.importedObject['formId'];
-        this.listSubmittedData( this.pagination );
+        let objectLength = Object.keys(this.importedObject).length;
+        if(objectLength>0){
+            this.alias = this.importedObject['formAlias'];
+            this.campaignAlias = this.importedObject['campaignAlias'];
+            this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
+            this.formId = this.importedObject['formId'];
+            this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
+            if(this.campaignAlias!=undefined){
+                this.pagination.campaignId = parseInt(this.campaignAlias);
+            }else if(this.partnerLandingPageAlias!=undefined){
+                this.pagination.landingPageAlias = this.partnerLandingPageAlias;
+                this.pagination.formId = this.formId;
+                this.alias = "";
+                this.pagination.partnerLandingPageForm = true;
+            }
+            this.listSubmittedData( this.pagination );
+        }
+        
     }
 
     listSubmittedData( pagination: Pagination ) {
