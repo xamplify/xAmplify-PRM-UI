@@ -217,13 +217,18 @@
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Campaign
 													</a>
+													<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length==6 && campaign.campaignType.indexOf('EVENT') > -1"
+													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
+														<i class="fa fa-files-o" style="width: 30px;"></i>
+														Copy Url
+													</a>
 														</li>
 														<li   *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign">
 														<a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign"
-                                (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button">
-                                <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon"></i>
-                                Preview & Delete Partner(s)
-                              </a>
+						                                (click)="goToPreviewPartners(campaign)" data-rel="fancybox-button">
+						                                <i class="fa fa-handshake-o" style="width: 30px;" id="partner-icon"></i>
+						                                Preview & Delete Partner(s)
+						                              </a>
 														</li>
 														</ng-container>
 													<li  ><a (click)="showCampaignPreview(campaign)">
@@ -334,6 +339,11 @@
                                 data-rel="fancybox-button" title="Copy campaign" (click)="openSaveAsModal(campaign)">
                                 <i class="fa fa-files-o"></i> Copy campaign
                               </a>
+                              
+                              <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length==6 && campaign.campaignType.indexOf('EVENT') > -1"
+													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
+								<i class="fa fa-files-o" style="width: 30px;"></i>Copy Url
+								</a>
                             </li>
                           </ng-container>
                           <li>
@@ -730,5 +740,26 @@
   </div>
 </div>
 </div>
-
+ <!-- ----------------------Copy Link Modal------------------- -->
+  <div class="modal right " id="public-event-url-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title text-center">DIRECT LINK FOR YOUR CAMPAIGN</h4>
+        </div>
+        <div class="modal-body">
+          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+          </app-response-message>
+          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}rsvp/{{publicEventAlias}}?type=YES" #publicEventCampaignUrlInput>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)">Copy Link</a>
+          <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
 <app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>

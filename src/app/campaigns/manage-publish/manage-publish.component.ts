@@ -76,6 +76,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     cancelEventButton = false;
     isloading: boolean;
     previewCampaign: any;
+    copiedLinkCustomResponse: CustomResponse = new CustomResponse();
+    publicEventAlias:string = "";
     constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
@@ -454,6 +456,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     
     goToFormAnalytics(id:number){
         this.router.navigate(['/home/forms/cf/'+id]);
+    }
+    
+    openEventUrlModal(campaign:Campaign){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        this.publicEventAlias = campaign.publicEventAlias;
+        $('#public-event-url-modal').modal('show');
+    }
+    copyUrl(inputElement){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
     }
 
 }

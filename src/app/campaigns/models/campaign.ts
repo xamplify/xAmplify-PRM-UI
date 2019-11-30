@@ -71,5 +71,6 @@ export class Campaign {
 
     myMergeTagsInfo:any;
     dipCampaign = false;
+    publicEventAlias:string = "";
 
 }
