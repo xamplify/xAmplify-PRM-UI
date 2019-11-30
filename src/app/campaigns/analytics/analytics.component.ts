@@ -1026,7 +1026,7 @@ showTimeLineView(){
               this.getSmsSentFailureCount(this.campaignId);
           }
         this.exportingObject['campaignAlias'] = this.campaignId;
-        this.exportingObject['formAlias'] = 'lvXASz6A';
+        this.exportingObject['formAlias'] = this.campaign.formAlias;
         if(this.campaignType = 'EVENT'){
             this.exportingObject['isPublicEventLeads'] = true;
         }else{
