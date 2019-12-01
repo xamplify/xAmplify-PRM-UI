@@ -105,7 +105,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     integrationTabIndex = 0;
     @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
     integrateRibbonText: string;
-   
+
     hubSpotRibbonText: string;
     hubSpotRedirectURL: string;
     activeTabName: string = "";
@@ -1044,6 +1044,42 @@ gdprSettingLoaded = false;
         this.submitBUttonStateChange();
 
     }
+    showAlert(i, question){
+      if(question.id ){
+          this.deleteQuestion(i,question);
+
+      }else{
+          this.remove(i, question.id);
+      }
+    }
+    deleteQuestion(i, question){
+      try {
+        this.logger.info( "Question in sweetAlert() " + question.id );
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, delete it!'
+
+        }).then( function( myData: any ) {
+            console.log( "deleteQuestion showAlert then()" + question );
+            self.userService.deleteQuestion(question).subscribe(result => {
+              console.log(result)
+              self.remove(i, question.id);
+              self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+          },error=> console.log(error))
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' );
+        });
+    } catch ( error ) {
+      console.log( error );
+    }
+
+    }
     validateQuestion(question: DealQuestions) {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
@@ -1094,13 +1130,14 @@ gdprSettingLoaded = false;
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
                 this.userService.listForm(this.loggedInUserId).subscribe(form => {
                     this.dealForms = form;
-                    if (form[0]) {
-                        this.form = form[0];
-                        this.questions = this.form.campaignDealQuestionDTOs;
-                        this.submitButtonText = "Update Form";
-                        this.ngxloading = false;
-                    } else
-                        this.submitButtonText = "Save Form";
+                    this.initializeForm();
+                    // if (form[0]) {
+                    //     this.form = form[0];
+                    //     this.questions = this.form.campaignDealQuestionDTOs;
+                    //     this.submitButtonText = "Update Form";
+                    //     this.ngxloading = false;
+                    // } else
+                    //     this.submitButtonText = "Save Form";
                     this.ngxloading = false;
                 })
             })
@@ -1115,6 +1152,7 @@ gdprSettingLoaded = false;
             this.form.campaignDealQuestionDTOs = this.questions;
             this.userService.updateForm(this.loggedInUserId, this.form).subscribe(result => {
                 this.ngxloading = false;
+                this.initializeForm();
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 
             }, (error) => {
@@ -1260,7 +1298,7 @@ gdprSettingLoaded = false;
         if (event === "0")
             this.integrationTabIndex = 0;
     }
-    
+
     activateTab(activeTabName:any){
       this.activeTabName = activeTabName;
       if(this.activeTabName=="gdpr"){
@@ -1303,7 +1341,7 @@ gdprSettingLoaded = false;
             this.gdprSetting.gdprStatus = true;
             }
         }
-    
+
 
 
     getGdprSettings(){
@@ -1330,7 +1368,7 @@ gdprSettingLoaded = false;
             this.customResponse = new CustomResponse('ERROR', 'Unable to get GDPR Settings.', true);
             this.referenceService.stopLoader(this.httpRequestLoader);
         }
-        
+
     }
 
     saveGdprSetting(){

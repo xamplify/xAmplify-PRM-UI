@@ -2040,8 +2040,8 @@ data-backdrop="static">
 			 <div style="text-align: right;">
 				 <button class="btn btn-default" (click)="clearValues()">Clear</button>
 
-				 <button [attr.class]="marketoButtonClass" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
-			 
+				 <button [attr.class]="marketoButtonClass" [class.disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
+
 				</div>
 		 </div>
 	 </div>

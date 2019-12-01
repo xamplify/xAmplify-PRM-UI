@@ -184,14 +184,14 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
-    
+
     getEventAccessTab(uRl){
         const url = this.URL + uRl;
         return this.http.get( url,'' )
         .map( this.extractData )
         .catch( this.handleError );
     }
-    
+
     loadVendorDetails(uRl, pagination: Pagination) {
         const url = this.authenticationService.REST_URL + uRl;
         return this.http.post(url, pagination)
@@ -210,7 +210,7 @@ export class UserService {
       .map( this.extractData )
       .catch( this.handleError );
     }
-    
+
     getUserByAlias(alias:string){
         return this.http.get( this.URL+'getUserByAlias/'+alias)
         .map( this.extractData )
@@ -231,6 +231,11 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    deleteQuestion(question:any){
+        return this.http.post( this.authenticationService.REST_URL+"users/question/remove?access_token=" + this.authenticationService.access_token,question)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
 
     saveUserProfileLogo(file:any){
       const formData = new FormData();
@@ -244,7 +249,7 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
-    
+
     accessAccount( data: any ) {
         return this.http.post( this.URL + "accessAccount/updatePassword", data)
             .map( this.extractData )
@@ -272,9 +277,9 @@ export class UserService {
         return Observable.throw(error);
     }
 
-    
 
-    
+
+
     private extractData( res: Response ) {
         const body = res.json();
         // return body || {};

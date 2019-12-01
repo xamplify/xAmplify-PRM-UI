@@ -148,7 +148,11 @@
           </ng-container>
         </tbody>
       </table>
-     
+      <ng-container>
+        <div  *ngIf="pagination.pagedItems.length == 0" class="alert alert-info">
+          <strong>No campaigns found</strong>
+        </div>
+      </ng-container>
       <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
         <div *ngIf="pagination.pagedItems.length !== 0" style="padding: 0 13px;">
           <app-pagination [pagination]="pagination" [type]="'deal-leads'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
@@ -166,7 +170,7 @@
                 <app-manage-comments [lead]="commentForLead"  (isCommentSection)="addCommentModalClose($event)"></app-manage-comments>
   </div>
 <!-- <div *ngIf="isDealAnalytics">
-  <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics> 
+  <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics>
 
 </div> -->
 

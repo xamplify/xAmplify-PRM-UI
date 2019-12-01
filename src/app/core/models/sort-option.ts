@@ -10,7 +10,7 @@ export class SortOption {
         { 'name': 'Created On(ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Created On(DESC)', 'value': 'createdTime-DESC' }
     ];
-    
+
     partnerCampaignDetailsSortDropDown = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
@@ -31,8 +31,8 @@ export class SortOption {
         { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
         { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' }
       ];
-    
-    dealPartnersSortDropDown = [
+
+    leadPartnersSortDropDown = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
         { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
@@ -43,9 +43,21 @@ export class SortOption {
         { 'name': 'Leads Count(ASC)', 'value': 'count-ASC' },
         { 'name': 'Leads Count(DESC)', 'value': 'count-DESC' }
       ];
-    
-    
-    
+
+    dealPartnersSortDropDown = [
+        { 'name': 'Sort By', 'value': '' },
+        { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
+        { 'name': 'Email ID(Z-A)', 'value': 'emailId-DESC' },
+        { 'name': 'First Name(ASC)', 'value': 'firstName-ASC' },
+        { 'name': 'First Name(DESC)', 'value': 'firstName-DESC' },
+        { 'name': 'Last Name(ASC)', 'value': 'lastName-ASC' },
+        { 'name': 'Last Name(DESC)', 'value': 'lastName-DESC' },
+        { 'name': 'Deals Count(ASC)', 'value': 'count-ASC' },
+        { 'name': 'Deals Count(DESC)', 'value': 'count-DESC' }
+      ];
+
+
+
     leadsSortDropDown = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email ID(A-Z)', 'value': 'emailId-ASC' },
@@ -61,12 +73,12 @@ export class SortOption {
         { 'name': 'Created Date(ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Created Date(DESC)', 'value': 'createdTime-DESC' }
       ];
-    
+
       leadCampaignsSortDropDown = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
         { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-       
+
         { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
         { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
         { 'name': 'Lead Count(ASC)', 'value': 'count-ASC' },
@@ -76,13 +88,13 @@ export class SortOption {
           { 'name': 'Sort By', 'value': '' },
           { 'name': 'Campaign Name(A-Z)', 'value': 'campaign-ASC' },
           { 'name': 'Campaign Name(Z-A)', 'value': 'campaign-DESC' },
-         
+
           { 'name': 'Launch Date(ASC)', 'value': 'createdTime-ASC' },
           { 'name': 'Launch Date(DESC)', 'value': 'createdTime-DESC' },
           { 'name': 'Deal Count(ASC)', 'value': 'count-ASC' },
           { 'name': 'Deal Count(DESC)', 'value': 'count-DESC' }
            ]
-           
+
     dealCampaignsSortDropDownOld = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Name(A-Z)', 'value': 'campaign-ASC' },
@@ -98,7 +110,7 @@ export class SortOption {
         { 'name': 'Deals Count(ASC)', 'value': 'count-ASC' },
         { 'name': 'Deals Count(DESC)', 'value': 'count-DESC' }
          ];
-    
+
     manageFormsSortOptions = [
                       { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
                       { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
@@ -107,14 +119,14 @@ export class SortOption {
                       { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
                       { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
                   ];
-    
+
     partnerLandingPageSortOptions = [
                                      { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
                                      { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
                                      { 'name': 'Shared On (ASC)', 'value': 'createdTime-ASC' },
                                      { 'name': 'Shared On (DESC)', 'value': 'createdTime-DESC' }
                                      ];
-    
+
     demoRequestSortOptions = [
                                      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
                                      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
@@ -125,10 +137,10 @@ export class SortOption {
                                      { 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
                                      { 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
                                      ];
-   
-   
-   
-   
+
+
+
+
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
         { 'name': '24', 'value': '24' },
@@ -138,14 +150,15 @@ export class SortOption {
     public selectedSortedOption: any = this.sortByDropDown[0];
     public defaultSortOption:any = this.partnerCampaignDetailsSortDropDown[0];
     public dealsPartnerSortOption:any = this.dealPartnersSortDropDown[0];
-    public leadsSortOption:any = this.leadsSortDropDown[0]; 
-    public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[0];    
+    public leadPartnerSortOption:any = this.leadPartnersSortDropDown[0];
+    public leadsSortOption:any = this.leadsSortDropDown[0];
+    public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[0];
     public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
     public formsSortOption: any = this.manageFormsSortOptions[3];
-    public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];  
-    public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];    
+    public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];
+    public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;
-        
+
 }

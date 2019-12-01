@@ -253,7 +253,7 @@
 									 (click)="videojsCall()">
 										<a (click)="activateTab('playerSettings');"><span class="hidden-xs">Default</span> Player Settings</a>
 									</li>
-									<li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+									<li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
 										<a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
 									</li>
 									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
@@ -344,7 +344,8 @@
 											</div>
 											<div class="col-xs-12">
 												<div class="form-group">
-													<a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addQuestion()">
+                          <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addQuestion()"
+                          *ngIf="questions.length==0" >
 														<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
 														Add your questions
 													</a>
@@ -377,10 +378,11 @@
 															</div>
 															<div class="col-xs-2">
 																<div class="pull-right" id="question-icons">
-																	<button type="button" class="btn-danger button-blue" (click)="remove(i+1,question.id)">
+																	<button type="button" class="btn-danger button-blue" (click)="showAlert(i+1,question)">
 																		<span class="glyphicon glyphicon-trash"></span>
 																	</button>
-																	<button type="button" class="btn-primary button-blue" (click)="addQuestion()">
+                                  <button type="button" class="btn-primary button-blue" (click)="addQuestion()"
+                                  *ngIf="questions.length== i+1" >
 																		<span class="glyphicon glyphicon-plus"></span>
 																	</button>
 
@@ -397,7 +399,8 @@
 										<form role="form">
 											<div class="col-xs-12">
 												<div class="form-group">
-													<a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addDealtype()">
+                          <a class="dashboard-stat " style="padding: 9px 0;margin-top: 10px" (click)="addDealtype()"
+                          *ngIf="dealtypes.length== 0">
 														<i class="fa fa-plus-square p0" style="margin: 0 5px;"></i>
 														Add Deal Types
 													</a>
@@ -433,7 +436,7 @@
 																	<button type="button" class="btn-danger button-blue" (click)="removeDealType(i+1,dealType.id)">
 																		<span class="glyphicon glyphicon-trash"></span>
 																	</button>
-																	<button type="button" class="btn-primary button-blue" (click)="addDealtype()">
+																	<button type="button" class="btn-primary button-blue" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
 																		<span class="glyphicon glyphicon-plus"></span>
 																	</button>
 
@@ -456,11 +459,11 @@
 														<div class="card mb-5 mb-lg-0">
 															<div class="card-body" style="padding:10px">
 																<!-- <div class="triangle-up-right">
-																	
+
 																</div> -->
 																<h5 class="card-title  text-uppercase text-center"
 																style="padding-top: 4%;">Marketo</h5>
-																
+
 																<div class="ribbon draft" style="left:10px" >
 																	<span [style.background-color]="integrateRibbonText == 'configured' ? 'green':'yello'">{{integrateRibbonText}}</span>
 																</div>
@@ -476,16 +479,16 @@
 														</div>
 													</div>
 
-														
+
 												<div class="col-lg-4" (click)="configHubSpot()">
 													<div class="card mb-5 mb-lg-4">
 														<div class="card-body" style="padding:10px;">
 															<!-- <div class="triangle-up-right">
-																
+
 															</div> -->
 															<h5 class="card-title  text-uppercase text-center"
 															style="padding-top: 4%;">HubSpot</h5>
-															
+
 															<div class="ribbon draft" style="left:10px" >
 																<span [style.background-color]="hubSpotRibbonText == 'configured' ? 'green':'yello'">{{hubSpotRibbonText}}</span>
 															</div>
@@ -500,8 +503,8 @@
 														</div>
 													</div>
 												</div>
-												</div>	
-											
+												</div>
+
 										</section>
 										<div *ngIf="integrationTabIndex == 1">
 										<app-marketo-authentication (closeEvent)="closeMarketoForm($event)"></app-marketo-authentication>
@@ -574,7 +577,7 @@
 										</form>
 									</div>
 									<!-- END PRIVACY SETTINGS TAB -->
-									
+
 									<!-- GDPR SETTINGS TAB -->
 									<div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'gdpr'}">
 										<app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
@@ -697,7 +700,7 @@
 												<button type="submit" class="btn green-haze" (click)="saveGdprSetting()"  *ngIf="!gdprSetting.isExists">Save Settings</button>
 												<button type="submit" class="btn green-haze" (click)="updateGdprSetting()" *ngIf="gdprSetting.isExists">Update Settings</button>
 											</div>
-										</form>   
+										</form>
 									</div>
 									<!-- END GDPR SETTINGS TAB -->
 									<!--video default player settings-->

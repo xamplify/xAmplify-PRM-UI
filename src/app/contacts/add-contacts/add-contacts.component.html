@@ -1008,7 +1008,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMarketoModal()">Close</button>
-					<button type="button" class="btn btn-primary" [disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance" (click)="getMarketoContacts()">Authorize</button>
+					<button type="button" class="btn btn-primary" [class.disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance" (click)="getMarketoContacts()">Authorize</button>
 				</div>
 			</div>
 		</div>

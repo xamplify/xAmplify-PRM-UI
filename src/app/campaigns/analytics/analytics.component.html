@@ -997,8 +997,12 @@
 							<img src="/assets/images/user.png" width="48px" class="user-profile-image">
 							<span *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
 									<button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  [disabled]="totalTimeSpent == '00:00:00'" title=" totalTimeSpent == '00:00:00'?Please watch the video to {{dealButtonText}} : {{dealButtonText}} "
-                  class="btn btn-success" *ngIf="campaignType=='VIDEO' "
+                  [disabled]="userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00' " title=" Please watch the video to {{dealButtonText}} "
+                  class="btn btn-success" *ngIf="campaignType=='VIDEO' && userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00'"
+                  >{{dealButtonText}}</button>
+                  <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+                   title=" {{dealButtonText}} "
+                  class="btn btn-success" *ngIf="campaignType=='VIDEO' && !(userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00')"
                   >{{dealButtonText}}</button>
 
 

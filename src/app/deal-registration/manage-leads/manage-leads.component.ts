@@ -46,7 +46,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
     pageText ="";
 
 
-    leadStatusArray = ["APPROVED", "OPENED", "HOLD", "REJECTED", "CLOSED"];
+    leadStatusArray = ["APPROVED", "OPENED", "HOLD", "REJECTED"];
     isCommentSection = false;
     isDealRegistration = false;
     campaign: Campaign;
@@ -72,16 +72,16 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         else
             this.listLeadsBasedOnFiltersByPartner();
 
-         
+
     }
-    
+
     changePointerStyle(loading:boolean){
         if(loading){
             $('#deals-page-content-div').css('pointer-events', 'none');
         }else{
             $('#deals-page-content-div').css('pointer-events', 'visible');
         }
-        
+
     }
     ngOnChanges(changes: SimpleChanges)
     {
@@ -96,7 +96,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         else
             this.listLeadsBasedOnFiltersByPartner();
 
-           
+
     }
     listLeadsBasedOnFilters()
     {
@@ -147,13 +147,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.listHoldLeads(this.pagination);
                 break;
             }
-            case "CLOSED": {
-                this.isDealSection = true;
-                this.pageText = "";
-                this.pageHeader = "CLOSED DEALS";
-                this.listClosedLeads(this.pagination);
-                break;
-            }
+            // case "CLOSED": {
+            //     this.isDealSection = true;
+            //     this.pageText = "";
+            //     this.pageHeader = "CLOSED DEALS";
+            //     this.listClosedLeads(this.pagination);
+            //     break;
+            // }
             default: {
                 this.isDealSection = false;
                 this.pageText = "TOTAL LEADS";
@@ -214,13 +214,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.listHoldLeadsByPartner(this.pagination);
                 break;
             }
-            case "CLOSED": {
-                this.isDealSection = true;
-                this.pageText = "";
-                this.pageHeader = "CLOSED DEALS";
-                this.listClosedLeadsByPartner(this.pagination);
-                break;
-            }
+            // case "CLOSED": {
+            //     this.isDealSection = true;
+            //     this.pageText = "";
+            //     this.pageHeader = "CLOSED DEALS";
+            //     this.listClosedLeadsByPartner(this.pagination);
+            //     break;
+            // }
 
             default: {
                 this.isDealSection = false;
@@ -386,30 +386,30 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             );
 
     }
-    listClosedLeads(pagination: Pagination)
-    {
+    // listClosedLeads(pagination: Pagination)
+    // {
 
-        this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.authenticationService.getUserId();
+    //     this.referenceService.loading(this.httpRequestLoader, true);
+    //     pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listLeadsByStatus(pagination,"closed")
-            .subscribe(
-                data =>
-                {
-                    this.sortOption.totalRecords = data.totalRecords;
-                    pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    this.referenceService.loading(this.httpRequestLoader, false);
-                    this.changePointerStyle(false);
-                },
-                (error: any) =>
-                {
-                    this.httpRequestLoader.isServerError = true;
-                    this.changePointerStyle(false);
-                }
-            );
+    //     this.dealRegistrationService.listLeadsByStatus(pagination,"closed")
+    //         .subscribe(
+    //             data =>
+    //             {
+    //                 this.sortOption.totalRecords = data.totalRecords;
+    //                 pagination.totalRecords = data.totalRecords;
+    //                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+    //                 this.referenceService.loading(this.httpRequestLoader, false);
+    //                 this.changePointerStyle(false);
+    //             },
+    //             (error: any) =>
+    //             {
+    //                 this.httpRequestLoader.isServerError = true;
+    //                 this.changePointerStyle(false);
+    //             }
+    //         );
 
-    }
+    // }
 
 
     listAllLeadsByPartner(pagination: Pagination)
@@ -566,34 +566,35 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             );
 
     }
-    listClosedLeadsByPartner(pagination: Pagination)
-    {
+    // listClosedLeadsByPartner(pagination: Pagination)
+    // {
 
-        this.referenceService.loading(this.httpRequestLoader, true);
-        pagination.userId = this.authenticationService.getUserId();
+    //     this.referenceService.loading(this.httpRequestLoader, true);
+    //     pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listPartnerLeadsByStatus(pagination,"closed")
-            .subscribe(
-                data =>
-                {
-                    this.sortOption.totalRecords = data.totalRecords;
-                    pagination.totalRecords = data.totalRecords;
-                    pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
-                        element.dealButtonText = "Update Deal "
-                    });
-                    this.referenceService.loading(this.httpRequestLoader, false);
-                    this.changePointerStyle(false);
-                },
-                (error: any) =>
-                {
-                    this.httpRequestLoader.isServerError = true;
-                    this.changePointerStyle(false);
-                }
-            );
+    //     this.dealRegistrationService.listPartnerLeadsByStatus(pagination,"closed")
+    //         .subscribe(
+    //             data =>
+    //             {
+    //                 this.sortOption.totalRecords = data.totalRecords;
+    //                 pagination.totalRecords = data.totalRecords;
+    //                 pagination = this.pagerService.getPagedItems(pagination, data.leads);
+    //                 pagination.pagedItems.forEach(element =>
+    //                 {
+    //                     element.dealButtonText = "Update Deal "
+    //                 });
+    //                 this.referenceService.loading(this.httpRequestLoader, false);
+    //                 this.changePointerStyle(false);
+    //             },
+    //             (error: any) =>
+    //             {
+    //                 this.httpRequestLoader.isServerError = true;
+    //                 this.changePointerStyle(false);
+    //             }
+    //         );
 
-    }
+    // }
+
     listHoldLeadsByPartner(pagination: Pagination)
     {
 
