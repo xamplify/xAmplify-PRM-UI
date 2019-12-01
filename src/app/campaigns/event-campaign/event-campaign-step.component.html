@@ -769,9 +769,9 @@ a.disabled {
 							<h4 class="pull-left f-w-600">Event Form</h4>
 						</div>
 						<div class="portlet-body clearfix">
-							<section *ngIf="selectedFormId">
+							<section *ngIf="selectedFormId && selectedFormData?.length>0">
 							<app-preview-popup #previewPopUpComponent></app-preview-popup>
-							<span>Name: <b><a (click)="previewForm(selectedFormId)" title="selectedFormData[0].name">{{selectedFormData[0].name | slice:0:40}} <span
+							<span>Name: <b><a (click)="previewForm(selectedFormId)" title="{{selectedFormData[0].name}}">{{selectedFormData[0].name | slice:0:40}} <span
 													*ngIf="selectedFormData[0].name?.length>40">..</span></a></b></span><br>
 							<span>Created Name: <b style="color: #5b9bd1" title="{{selectedFormData[0].createdName}}">{{selectedFormData[0].createdName | slice:0:40}} <span
 													*ngIf="selectedFormData[0].createdName?.length>40">..</span></b></span><br>

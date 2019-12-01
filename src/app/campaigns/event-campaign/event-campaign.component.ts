@@ -1031,8 +1031,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   getCampaignData(eventCampaign:any){
     if(this.authenticationService.isOnlyPartner()){ eventCampaign.channelCampaign = false; }
     eventCampaign.user.userId = this.loggedInUserId;
-    this.selectedFormData = this.previewPopUpComponent.selectedFormData;
-    this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+    eventCampaign.forms = this.selectedFormData;
+   // this.selectedFormData = this.previewPopUpComponent.selectedFormData;
+   // this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     if(eventCampaign.userListIds != undefined){
     for (let userListId of eventCampaign.userListIds) {
@@ -1130,10 +1131,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'smsText':this.smsText,
       'socialStatusList': this.socialStatusList,
       'forms': this.selectedFormData
-
-
-    
-
     }
     
     eventCampaign = customEventCampaign;
@@ -1142,11 +1139,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
   
   createEventCampaign(eventCampaign: any, launchOption: string) {
-    this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+    //this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.loader = true;
     this.isFormSubmitted = true;
-    
     this.socialStatusList = [];
     this.socialStatusProviders.forEach(data => {
             if(data.selected){
