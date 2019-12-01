@@ -1031,9 +1031,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   getCampaignData(eventCampaign:any){
     if(this.authenticationService.isOnlyPartner()){ eventCampaign.channelCampaign = false; }
     eventCampaign.user.userId = this.loggedInUserId;
-    eventCampaign.forms = this.selectedFormData;
-   // this.selectedFormData = this.previewPopUpComponent.selectedFormData;
-   // this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+    if(this.router.url.includes('campaigns/re-distribute')){
+        console.log(this.selectedFormData);
+    }else{
+        this.selectedFormData = this.previewPopUpComponent.selectedFormData;
+        this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+    }
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     if(eventCampaign.userListIds != undefined){
     for (let userListId of eventCampaign.userListIds) {
@@ -1041,7 +1044,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       eventCampaign.userLists.push(contactList);
     }
     }
-   console.log(eventCampaign);
    let timeZoneId = "";
    if (eventCampaign.campaignScheduleType === "NOW" || eventCampaign.campaignScheduleType ==="SAVE") {
    //  eventCampaign.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -1139,7 +1141,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
   
   createEventCampaign(eventCampaign: any, launchOption: string) {
-    //this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+   // this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
     this.referenceService.loading(this.httpRequestLoader, true);
     this.loader = true;
     this.isFormSubmitted = true;

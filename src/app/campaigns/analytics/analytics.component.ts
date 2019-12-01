@@ -152,6 +152,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   inputObject:any = {};
   partnerLeadInfoRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   leadInfoTitle = "Leads Info";
+  partnerLeadResponeStatus = 404;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -2189,17 +2190,13 @@ viewPartnerLeads(item:any){
     let partnerId = item.userId;
     this.campaignService.getRedistributedCampaignIds(partnerId, campaignId).subscribe(
             (response: any) => {
-                console.log(response);
+                this.partnerLeadResponeStatus = response.statusCode;
                 if (response.statusCode == 200) {
                     let redistributedCampaignIds = response.data;
                     this.inputObject['formAlias'] = this.campaign.formAlias;
                     this.inputObject['isPublicEventLeads'] = true;
                     this.inputObject['campaignAlias'] = redistributedCampaignIds[0];
                     this.inputObject['title'] = this.leadInfoTitle;
-                    this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
-                } else {
-                   let message = "<div class='alert alert-danger'>No leads found</div>";
-                    $(htmlContent).append(message);
                 }
                 this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
             },

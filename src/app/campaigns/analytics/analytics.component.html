@@ -1933,7 +1933,8 @@
         </div>
         <div class="modal-body">
 		  <div id="partner-lead-info-content" *ngIf="!partnerLeadInfoRequestLoader.isLoading">
-		 	 <app-form-analytics-util [importedObject]="inputObject"></app-form-analytics-util>
+		 	 <app-form-analytics-util [importedObject]="inputObject" *ngIf="partnerLeadResponeStatus==200"></app-form-analytics-util>
+		 	 <div class="alert alert-danger" *ngIf="partnerLeadResponeStatus==404">No leads found</div>
 		  </div>
 		   <app-list-loader *ngIf="partnerLeadInfoRequestLoader.isLoading"></app-list-loader>
 		</div>
