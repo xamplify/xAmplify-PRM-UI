@@ -62,7 +62,6 @@ export class CampaignService {
     }
 
     getCampaignById(data: any) {
-         console.log(data)
         return this.http.post(this.URL + "admin/getCampaignById?access_token=" + this.authenticationService.access_token,data)
             .map(this.extractData)
             .catch(this.handleError);
@@ -706,6 +705,12 @@ export class CampaignService {
     getPartnerTemplatePreview(campaignId: any, userId: number) {
         var url = this.URL + "admin/getPartnerTemplate/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    getRedistributedCampaignIds(partnerId: number,campaignId:number) {
+        return this.http.get(this.URL + "getRedistributedCampaignIdsByCampaignId/" + campaignId + "/"+partnerId+"?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }

@@ -619,6 +619,7 @@
 														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaign.dipCampaign">
 															Auto Responses
 														</th>
+														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign && campaign.publicEventCampaign">Leads Info</th> 
 													</tr>
 												</thead>
 												<tbody>
@@ -700,6 +701,9 @@
 										                        </a>
 										                      </div>
                    											 </td>
+                   											 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign && campaign.publicEventCampaign">
+																<span (click)="viewPartnerLeads(item);$event.stopPropagation();"><b><i class="fa fa-user-secret" aria-hidden="true" id="leads-info-font-size"></i></b></span>
+															</td>
 														</tr>
 														<tr [ngClass]="{'hidden': !item.expanded}" id="autoresponse-tr">
 														 	 <td [attr.colspan]="colspanValue">
@@ -1917,4 +1921,26 @@
 		</div>
 	</div>
 </div>
+<!-- ---------------Partner Lead Analytics -->
+ <div class="modal right fade" id="partner-leads-info-modal">
+    <div class="modal-dialog modal-lg modal-template" style="right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title">Leads Info</h4>
+        </div>
+        <div class="modal-body">
+		  <div id="partner-lead-info-content" *ngIf="!partnerLeadInfoRequestLoader.isLoading">
+		 	 <app-form-analytics-util [importedObject]="inputObject"></app-form-analytics-util>
+		  </div>
+		   <app-list-loader *ngIf="partnerLeadInfoRequestLoader.isLoading"></app-list-loader>
+		</div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>

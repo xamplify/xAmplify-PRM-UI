@@ -149,7 +149,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   isDealPreview=false;
   isDeal=false;
   exportingObject:any={};
-
+  inputObject:any = {};
+  partnerLeadInfoRequestLoader:HttpRequestLoader = new HttpRequestLoader();
 
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -1027,7 +1028,7 @@ showTimeLineView(){
           }
         this.exportingObject['campaignAlias'] = this.campaignId;
         this.exportingObject['formAlias'] = this.campaign.formAlias;
-        if(this.campaignType = 'EVENT'){
+        if(this.campaignType == 'EVENT'){
             this.exportingObject['isPublicEventLeads'] = true;
         }else{
             this.exportingObject['isPublicEventLeads'] = false;
@@ -2175,8 +2176,44 @@ toggleSmsAnalyticsView(event:string){
     this.pagination.pageIndex = 1;
 
     this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+}
 
-
+/**************Parnter Public Event Campaign Lead Info**************/
+viewPartnerLeads(item:any){
+    this.inputObject = {};
+    this.referenceService.startLoader(this.partnerLeadInfoRequestLoader);
+    let htmlContent = "#partner-lead-info-content";
+    $(htmlContent).empty();
+    $('.modal .modal-body').css('overflow-y', 'auto');
+    $("#partner-leads-info-modal").modal('show');
+    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    let campaignId = item.campaignId;
+    let partnerId = item.userId;
+    this.campaignService.getRedistributedCampaignIds(partnerId, campaignId).subscribe(
+            (response: any) => {
+                console.log(response);
+                if (response.statusCode == 200) {
+                    let redistributedCampaignIds = response.data;
+                    this.inputObject['formAlias'] = this.campaign.formAlias;
+                    this.inputObject['isPublicEventLeads'] = true;
+                    this.inputObject['campaignAlias'] = redistributedCampaignIds[0];
+                    this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
+                } else {
+                   let message = "<div class='alert alert-danger'>No leads found</div>";
+                    $(htmlContent).append(message);
+                }
+                this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
+            },
+            (error: any) => {
+                swal("Please Contact Admin!", "Unable to load data", "error"); 
+                this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
+                this.xtremandLogger.log(error);
+                $("#partner-leads-info-modal").modal('hide');
+            });
+    
+    
+    
+    
 }
 
 }

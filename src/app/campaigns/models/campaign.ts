@@ -73,5 +73,6 @@ export class Campaign {
     dipCampaign = false;
     publicEventAlias:string = "";
     formAlias:string = "";
+    publicEventCampaign:boolean = false;
 
 }
