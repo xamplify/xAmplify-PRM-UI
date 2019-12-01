@@ -36,6 +36,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     campaignForms = false;
     routerLink = "/home/forms/manage";
     @Input() importedObject:any;
+    title:string = "";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -53,6 +54,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
             this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
             this.formId = this.importedObject['formId'];
             this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
+            this.title = this.importedObject['title'];
             if(this.campaignAlias!=undefined){
                 this.pagination.campaignId = parseInt(this.campaignAlias);
             }else if(this.partnerLandingPageAlias!=undefined){
@@ -74,7 +76,10 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 const data = response.data;
                 this.statusCode = response.statusCode;
                 if ( response.statusCode == 200 ) {
-                    this.formName = data.formName;
+                    //this.formName = data.formName;
+                    if(this.title==undefined){
+                        this.title = data.formName;
+                    }
                     this.columns = data.columns;
                     this.selectedSortedOption = this.columns[0];
                     this.formDataRows = data.submittedData;

@@ -151,7 +151,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   exportingObject:any={};
   inputObject:any = {};
   partnerLeadInfoRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-
+  leadInfoTitle = "Leads Info";
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -1026,14 +1026,12 @@ showTimeLineView(){
               this.getSmsSentSuccessCount(this.campaignId);
               this.getSmsSentFailureCount(this.campaignId);
           }
-        this.exportingObject['campaignAlias'] = this.campaignId;
-        this.exportingObject['formAlias'] = this.campaign.formAlias;
         if(this.campaignType == 'EVENT'){
             this.exportingObject['isPublicEventLeads'] = true;
-        }else{
-            this.exportingObject['isPublicEventLeads'] = false;
+            this.exportingObject['campaignAlias'] = this.campaignId;
+            this.exportingObject['formAlias'] = this.campaign.formAlias;
+            this.exportingObject['title'] = this.leadInfoTitle;
         }
-        
         this.loading = false;
       }
       )
@@ -2197,6 +2195,7 @@ viewPartnerLeads(item:any){
                     this.inputObject['formAlias'] = this.campaign.formAlias;
                     this.inputObject['isPublicEventLeads'] = true;
                     this.inputObject['campaignAlias'] = redistributedCampaignIds[0];
+                    this.inputObject['title'] = this.leadInfoTitle;
                     this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
                 } else {
                    let message = "<div class='alert alert-danger'>No leads found</div>";
