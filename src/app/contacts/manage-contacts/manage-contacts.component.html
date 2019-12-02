@@ -720,7 +720,7 @@
 														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:14}}
 														<span *ngIf="contact.category?.length>14">..</span>
 														</td>
-														<td class="hidden-xs" *ngIf="!isPartner">
+														<td class="hidden-xs">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
 																style="pointer-events: none !important; cursor: auto;">
 																<int-phone-prefix [(ngModel)]="contact.mobileNumber"
@@ -753,7 +753,7 @@
 															</h5>
 														</td>
 														<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{contact.unsubscribedReason}}</td>
-														<td  align="center" *ngIf="isPartner">
+														<td  align="center">
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
