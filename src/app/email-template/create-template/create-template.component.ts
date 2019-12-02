@@ -233,7 +233,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         }*/
         if (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
-            mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );
+            mergeTags.push( { name: 'Event Start Time', value: '{{event_start_time}}' } );
             mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' } );
             /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
             mergeTags.push( { name: 'Address', value: '{{address}}' } );
