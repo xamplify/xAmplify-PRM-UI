@@ -334,9 +334,7 @@
 									</div>
 								</div>
 							</div>
-
 							<div class="col-xs-12 col-md-6">
-
 								<section class="pull-right" style="margin-bottom: 10px; margin-top: 3px;">
 									<button id="sample_editable_1_new" class="btn green" (click)="saveContacts()">
 										Save <i class="fa fa-save"></i>
@@ -346,8 +344,24 @@
 									</button>
 								</section>
 							</div>
-
 						</div>
+						<div class="row" *ngIf="gdprStatus && filePreview">
+						<br><br>
+								<div class="col-xs-12 col-md-6">
+								<div class="form-group">
+									<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options*</label>
+									  <div id="multiselect-sample" class="control-section">
+									    <div class="col-lg-8 content-wrapper">
+									        <div class="control-styles">
+									        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+									        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
+									        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
+									        </div>
+									    </div>
+									    </div>
+								</div>
+							</div>
+						</div>	
 						<div *ngIf="uploadedCsvFileName">
 							<strong class="csv-list-name"> {{uploadedCsvFileName}} </strong>
 						</div>

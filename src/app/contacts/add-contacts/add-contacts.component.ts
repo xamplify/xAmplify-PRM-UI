@@ -151,7 +151,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     legalBasisOptions :Array<LegalBasisOption>;
     parentInput:any;
     companyId: number = 0;
-
+    isValidLegalOptions = true;
+    selectedLegalBasisOptions = [];
+    filePreview = false;
+    public fields: any;
+    public placeHolder: string = 'Select Legal Basis Options';
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -214,7 +218,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
             this.isValidContactName = false;
-            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+            this.validateLegalBasisOptions();
+           // $( "button#sample_editable_1_new" ).prop( 'disabled', false );
         }
     }
 
@@ -1017,8 +1022,25 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         () => this.xtremandLogger.info( "addcontactComponent saveCsvContactList() finished" )
         )
     }
+    
+    validateLegalBasisOptions(){
+        this.isValidLegalOptions = true;
+        //$('#sample_editable_1_new').prop("disabled",false);
+        if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
+            this.isValidLegalOptions = false;
+            if(!this.isValidContactName){
+                $('#sample_editable_1_new').prop("disabled",true);
+            }else{
+                $('#sample_editable_1_new').prop("disabled",false);
+            }
+           
+        }else{
+            $('#sample_editable_1_new').prop("disabled",false);
+        }
+    }
 
     saveContacts() {
+        this.validateLegalBasisOptions();
         this.noOptionsClickError = false;
         if ( this.selectedAddContactsOption == 0 ) {
             this.saveContactList();
@@ -1116,6 +1138,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.clipBoard = false;
         this.clipboardUsers.length = 0;
         this.selectedAddContactsOption = 8;
+        this.filePreview = false;
     }
 
     /*removeCsv() {
@@ -1263,7 +1286,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             this.contactService.socialProviderName = "";
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                             $( "button#cancel_button" ).prop( 'disabled', false );
-                            $( "#Gfile_preview" ).show();
+                           // $( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1657,7 +1681,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
                             $( "button#cancel_button" ).prop( 'disabled', false );
-                            $( "#Gfile_preview" ).show();
+                           // $( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( "#myModal .close" ).click()
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1750,7 +1775,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 this.socialContactUsers.push( socialContact );
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                            $( "#Gfile_preview" ).show();
+                            //$( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( "#myModal .close" ).click()
                             $( "button#cancel_button" ).prop( 'disabled', false );
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -2056,7 +2082,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 this.socialContactUsers.push( socialContact );
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                            $( "#Gfile_preview" ).show();
+                          //  $( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( "button#cancel_button" ).prop( 'disabled', false );
                             this.hideModal();
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -2130,7 +2157,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                 this.socialContactUsers.push( socialContact );
                             }
                             $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                            $( "#Gfile_preview" ).show();
+                           // $( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( "button#cancel_button" ).prop( 'disabled', false );
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
@@ -2469,11 +2497,13 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     getLegalBasisOptions(){
         if (this.companyId>0){
+            this.fields = { text: 'name', value: 'id' };
             this.loading = true;
             this.referenceService.getLegalBasisOptions(this.companyId)
             .subscribe(
                 data => {
                     this.legalBasisOptions = data.data;
+                    console.log(this.legalBasisOptions);
                     this.parentInput['legalBasisOptions'] = this.legalBasisOptions;
                     this.loading = false;
                 },
@@ -2665,6 +2695,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveMarketoContactsWithPermission(){
         this.loading = true;
+        let self = this;
+        $.each(this.socialContact.contacts,function(index:number,contact:User){
+           contact.legalBasis = self.selectedLegalBasisOptions;
+        });
         this.contactService.saveMarketoContactList( this.socialContact )
         .subscribe(
         data => {
@@ -2712,6 +2746,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     saveMarketoSelectedContactsWithPermission(){
         this.loading = true;
+        let self = this;
+        $.each(this.allselectedUsers,function(index:number,contact:User){
+            contact.legalBasis = self.selectedLegalBasisOptions;
+         });
         this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
         .subscribe(
         data => {
@@ -2776,7 +2814,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.socialContactUsers.push( socialContact );
                     }
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Gfile_preview" ).show();
+                   // $( "#Gfile_preview" ).show();
+                    this.showFilePreview();
                     $( "#myModal .close" ).click()
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -3100,7 +3139,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.socialContactUsers.push( socialContact );
                     }
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Gfile_preview" ).show();
+                    //$( "#Gfile_preview" ).show();
+                    this.showFilePreview();
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     this.hideHubSpotModal();
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -3203,4 +3243,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         () => this.xtremandLogger.info( "addcontactComponent saveHubSpotSelectedContactsWithPermission() finished" )
         )
     }
+    
+    showFilePreview(){
+        $("#Gfile_preview" ).show();
+        this.filePreview = true;
+    }
+    
+    
 }
