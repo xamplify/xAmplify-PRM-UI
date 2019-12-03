@@ -215,6 +215,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.isValidContactName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
+            alert("scuu");
         } else {
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
             this.isValidContactName = false;
@@ -266,8 +267,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.model.contactListName = outputstring;
             }
             this.validateContactName( this.model.contactListName );
+            this.validateLegalBasisOptions();
             this.removeCsvName = true;
-            $( "button#sample_editable_1_new" ).prop( 'disabled', false );
+           // $( "button#sample_editable_1_new" ).prop( 'disabled', false );
             $( "#file_preview" ).show();
             $( "button#cancel_button" ).prop( 'disabled', false );
             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1207,6 +1209,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '#ZgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
         $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+         
+        
     }
 
     googleContacts() {

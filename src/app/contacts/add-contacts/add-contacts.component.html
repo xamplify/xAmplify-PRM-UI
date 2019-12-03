@@ -345,7 +345,7 @@
 								</section>
 							</div>
 						</div>
-						<div class="row" *ngIf="gdprStatus && filePreview">
+						<div class="row" *ngIf="(gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)">
 						<br><br>
 								<div class="col-xs-12 col-md-6">
 								<div class="form-group">
