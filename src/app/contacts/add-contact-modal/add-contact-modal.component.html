@@ -63,7 +63,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
                 <span class="star">*</span>
             </label>
 	    <div id="multiselect-sample" class="control-section">
-	    <div class="col-lg-8 content-wrapper">
+	    <div class="col-lg-8 content-wrapper" id="custom-width">
 	        <div class="control-styles">
 	        	<ejs-multiselect [(ngModel)]='addContactuser.legalBasis' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
 	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>

@@ -460,6 +460,10 @@
 																<td class='pt10 pb10'>Company:</td>
 																<td class='pt10 pb10'>{{newContact.contactCompany}}</td>
 															</tr>
+															<tr style="border-bottom: 1px solid #dcdcdc" *ngIf="gdprStatus">
+																<td class='pt10 pb10'>Legal Basis:</td>
+																<td class='pt10 pb10'>{{newContact.legalBasisString}}</td>
+															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
 																<td class='pt10 pb10'>Job Title:</td>
 																<td class='pt10 pb10'>{{newContact.jobTitle}}</td>

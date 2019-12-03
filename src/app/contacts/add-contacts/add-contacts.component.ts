@@ -215,7 +215,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.isValidContactName = true;
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "red" );
-            alert("scuu");
         } else {
             $( ".ng-valid[required], .ng-valid.required" ).css( "color", "Black" );
             this.isValidContactName = false;
@@ -1028,18 +1027,25 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     
     validateLegalBasisOptions(){
-        this.isValidLegalOptions = true;
-        //$('#sample_editable_1_new').prop("disabled",false);
-        if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
-            this.isValidLegalOptions = false;
-            if(!this.isValidContactName){
+        if(this.selectedAddContactsOption>0){
+            this.isValidLegalOptions = true;
+            if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
+                this.isValidLegalOptions = false;
+                if(this.isValidContactName){
+                    $('#sample_editable_1_new').prop("disabled",true);
+                }else{
+                    $('#sample_editable_1_new').prop("disabled",false);
+                }
+               
+            }else{
+                $('#sample_editable_1_new').prop("disabled",false);
+            }
+        }else{
+            if(this.isValidContactName){
                 $('#sample_editable_1_new').prop("disabled",true);
             }else{
                 $('#sample_editable_1_new').prop("disabled",false);
             }
-           
-        }else{
-            $('#sample_editable_1_new').prop("disabled",false);
         }
     }
 
@@ -1165,6 +1171,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }*/
 
     addRow( event ) {
+        if(this.gdprStatus){
+            let filteredLegalBasisOptions = $.grep( this.legalBasisOptions, function(e){ return  event.legalBasis.indexOf(e.id)>-1 });
+            let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
+            event.legalBasisString = selectedLegalBasisOptionsArray;
+        }
         this.newUsers.push( event );
         this.selectedAddContactsOption = 0;
         this.noOptionsClickError = false;

@@ -44,4 +44,5 @@ export class User {
     category: string = "";
     campaignAccessDto:CampaignAccess = new CampaignAccess();
     legalBasis = [];
+    legalBasisString = [];
 }
