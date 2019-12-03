@@ -583,7 +583,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center hidden-xs"></th>
+														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
 															<!-- <th class='text-center'>MORE</th> -->
 														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
@@ -713,7 +713,7 @@
 																		*ngIf="contact.isShowDetails">Less</span>
 																</button>
 															</td> -->
-															<td align="center">
+															<td align="center" *ngIf="gdprStatus">
 															<button  id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
@@ -737,7 +737,7 @@
 														</tr>
 														<tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-												<td colspan="8">
+												<td colspan="8" *ngIf="gdprStatus">
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
@@ -951,7 +951,7 @@
 												</td>
 												<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
 												<td align="center">
-                           <button id='more_less_button_{{i}}'
+                           							<button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 																<span *ngIf="!allcontacts.isShowDetails">More</span> <span
 																	*ngIf="allcontacts.isShowDetails">Less</span>
