@@ -1149,6 +1149,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.clipboardUsers.length = 0;
         this.selectedAddContactsOption = 8;
         this.filePreview = false;
+        this.selectedLegalBasisOptions = [];
     }
 
     /*removeCsv() {
@@ -1172,9 +1173,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     addRow( event ) {
         if(this.gdprStatus){
-            let filteredLegalBasisOptions = $.grep( this.legalBasisOptions, function(e){ return  event.legalBasis.indexOf(e.id)>-1 });
-            let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
-            event.legalBasisString = selectedLegalBasisOptionsArray;
+            if(this.legalBasisOptions.length>0){
+                let filteredLegalBasisOptions = $.grep(this.legalBasisOptions, function(e){ return  event.legalBasis.indexOf(e.id)>-1 });
+                let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
+                event.legalBasisString = selectedLegalBasisOptionsArray;
+            }
+            
         }
         this.newUsers.push( event );
         this.selectedAddContactsOption = 0;

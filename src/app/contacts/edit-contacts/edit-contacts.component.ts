@@ -1588,6 +1588,18 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 ( data: any ) => {
                     this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
                     this.contacts = data.listOfUsers;
+                    if(this.gdprStatus){
+                        let self = this;
+                        $.each(this.contacts,function(index,contact){
+                            if(self.legalBasisOptions.length>0){
+                                let filteredLegalBasisOptions = $.grep(self.legalBasisOptions, function(e){ return  contact.legalBasis.indexOf(e.id)>-1 });
+                                let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
+                                contact.legalBasisString = selectedLegalBasisOptionsArray;
+                                console.log(contact.legalBasisString);
+                            }
+                        });
+                    }
+                    
                     //this.contactService.allPartners = data.listOfUsers;
                     this.totalRecords = data.totalRecords;
                     this.xtremandLogger.log( data );
@@ -2819,6 +2831,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     ngOnInit() {
     
         try {
+            this.getLegalBasisOptions();
             this.loadContactListsNames();
             if(this.isPartner){
               this.listTeamMembers();
@@ -2844,8 +2857,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             Portfolio.init();
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
-            this.getLegalBasisOptions();
-
         }
         catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "ngOnInit()" );
