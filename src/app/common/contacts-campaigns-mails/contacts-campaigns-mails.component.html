@@ -44,7 +44,12 @@
 							<td align="center" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
 							<span *ngIf="campaign.campaignName?.length>25">..</span>
 							</td>
-							<td align="center">{{campaign.campaignType | titlecase}}</td>
+							<td align="center">
+							<span *ngIf="campaign.campaignType !='REGULAR'">
+							  {{campaign.campaignType | titlecase}}
+							</span>
+							<span *ngIf="campaign.campaignType =='REGULAR'">Email</span>
+							</td>
 							<td align="center" class="hidden-xs" title="{{campaign.fromName}}">
                 {{campaign.fromName | slice:0:20}}<span *ngIf="campaign.fromName?.length>20">..</span>
 							</td>
