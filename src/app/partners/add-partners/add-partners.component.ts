@@ -176,7 +176,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     legalBasisOptions :Array<LegalBasisOption>;
     parentInput:any;
     companyId: number = 0;
-    
+    selectedLegalBasisOptions = [];
+    public fields: any;
+    public placeHolder: string = 'Select Legal Basis Options';
+    isValidLegalOptions = true;
+    filePreview = false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -396,12 +400,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( socialUsers[i].emailId !== null && this.validateEmailAddress( socialUsers[i].emailId ) ) {
                 let email = socialUsers[i].emailId.toLowerCase();
                 socialUsers[i].emailId = email;
+                this.setLegalBasisOptions(socialUsers[i]);
                 users.push( socialUsers[i] );
             }
            }else{
                if ( socialUsers[i].email !== null && this.validateEmailAddress( socialUsers[i].email ) ) {
                    let email = socialUsers[i].email.toLowerCase();
                    socialUsers[i].emailId = email;
+                   this.setLegalBasisOptions(socialUsers[i]);
                    users.push( socialUsers[i] );
                }
            }
@@ -670,6 +676,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.dublicateEmailId = false;
         this.clipBoard = false;
         this.selectedAddPartnerOption = 5;
+        this.filePreview = false;
+        this.selectedLegalBasisOptions = [];
+        this.isValidLegalOptions = true;
     }
 
     loadPartnerList( pagination: Pagination ) {
@@ -1311,7 +1320,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.socialPartnerUsers.push( socialContact );
                             }
                             this.contactService.socialProviderName = "";
-                            $( "#Gfile_preview" ).show();
+                          //  $( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1460,7 +1470,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
                             }
-                            $( "#Gfile_preview" ).show();
+                           // $( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( "#myModal .close" ).click()
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1551,7 +1562,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
                             }
-                            $( "#Gfile_preview" ).show();
+                            //$( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( "#myModal .close" ).click()
                             $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1773,7 +1785,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                                 this.socialPartnerUsers.push( socialContact );
                             }
-                            $( "#Gfile_preview" ).show();
+                            //$( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             this.hideModal();
                             /*$( '#salesforceModal' ).modal( 'hide' );
                             $( 'body' ).removeClass( 'modal-open' );
@@ -1852,8 +1865,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                                 this.socialPartnerUsers.push( socialContact );
                             }
                             this.hideModal();
-
-                            $( "#Gfile_preview" ).show();
+                            //$( "#Gfile_preview" ).show();
+                            this.showFilePreview();
                             $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                             $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
                             $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -1906,43 +1919,56 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     saveContacts() {
-        if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4 ) {
-            this.savePartnerUsers();
-        }
+        this.validateLegalBasisOptions();
+        if(this.isValidLegalOptions){
+            if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4 ) {
+                this.savePartnerUsers();
+            }
 
-        if ( this.selectedAddPartnerOption == 3 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveGoogleContacts();
-            } else
-                this.saveGoogleContactSelectedUsers();
-        }
+            if ( this.selectedAddPartnerOption == 3 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveGoogleContacts();
+                } else
+                    this.saveGoogleContactSelectedUsers();
+            }
 
-        if ( this.selectedAddPartnerOption == 6 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveZohoContacts();
-            } else
-                this.saveZohoContactSelectedUsers();
-        }
+            if ( this.selectedAddPartnerOption == 6 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveZohoContacts();
+                } else
+                    this.saveZohoContactSelectedUsers();
+            }
 
-        if ( this.selectedAddPartnerOption == 7 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveSalesforceContacts();
-            } else
-                this.saveSalesforceContactSelectedUsers();
-        }
-        if ( this.selectedAddPartnerOption == 8 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveMarketoContacts();
-            } else
-                this.saveMarketoContactSelectedUsers();
-        }
+            if ( this.selectedAddPartnerOption == 7 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveSalesforceContacts();
+                } else
+                    this.saveSalesforceContactSelectedUsers();
+            }
+            if ( this.selectedAddPartnerOption == 8 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveMarketoContacts();
+                } else
+                    this.saveMarketoContactSelectedUsers();
+            }
 
-        if(this.selectedAddPartnerOption == 9){
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveHubSpotContacts();
-            } else{
-                this.saveHubSpotContactSelectedUsers();
-            }                
+            if(this.selectedAddPartnerOption == 9){
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveHubSpotContacts();
+                } else{
+                    this.saveHubSpotContactSelectedUsers();
+                }                
+            }
+        }
+       
+    }
+    
+    validateLegalBasisOptions(){
+        this.isValidLegalOptions = true;
+        if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
+            this.isValidLegalOptions = false;
+        }else{
+            this.isValidLegalOptions = true;
         }
     }
 
@@ -2336,6 +2362,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     getLegalBasisOptions(){
         if (this.companyId>0){
             this.loading = true;
+            this.fields = { text: 'name', value: 'id' };
             this.referenceService.getLegalBasisOptions(this.companyId)
             .subscribe(
                 data => {
@@ -2533,7 +2560,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
                         this.socialPartnerUsers.push(socialPartner);
                     }
-                    $( "#Gfile_preview" ).show();
+                    //$( "#Gfile_preview" ).show();
+                    this.showFilePreview();
                     $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
                     $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px' );
                     $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -2974,7 +3002,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             
             
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
-                    $( "#Gfile_preview" ).show();
+                   // $( "#Gfile_preview" ).show();
+                    this.showFilePreview();
                     $( "button#cancel_button" ).prop( 'disabled', false );
                     this.hideHubSpotModal();
                     $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
@@ -3023,5 +3052,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     {
         $("#ContactHubSpotModal").hide();
         this.cancelPartners();
+    }
+    
+    setLegalBasisOptions(contact:User){
+        if(this.gdprStatus){
+            contact.legalBasis = this.selectedLegalBasisOptions;
+        }
+    }
+    showFilePreview(){
+        $("#Gfile_preview" ).show();
+        this.filePreview = true;
     }
 }

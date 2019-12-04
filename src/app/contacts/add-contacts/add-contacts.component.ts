@@ -1150,6 +1150,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.selectedAddContactsOption = 8;
         this.filePreview = false;
         this.selectedLegalBasisOptions = [];
+        this.isValidLegalOptions = true;
     }
 
     /*removeCsv() {

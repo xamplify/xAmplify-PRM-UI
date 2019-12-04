@@ -19,6 +19,7 @@ import { environment } from 'environments/environment';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
+import { User } from '../../core/models/user';
 
 declare var $: any;
 
@@ -1856,5 +1857,15 @@ export class ReferenceService {
         return this.http.get(this.authenticationService.REST_URL + "gdpr/setting/legal_basis/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
+    }
+    
+    setLegalBasisOptions(input:any,gdprStatus:boolean,selectedLegalBasisOptions:any){
+        if(gdprStatus){
+            let self = this;
+            $.each(input,function(index:number,contact:User){
+                contact.legalBasis = selectedLegalBasisOptions;
+             });
+        }
+    
     }
 }

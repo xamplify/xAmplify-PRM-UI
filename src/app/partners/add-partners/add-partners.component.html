@@ -329,6 +329,21 @@ img:hover {
 				Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
 			</h4>
 		</div>
+			<!-----Legal Basis Options -->
+			<div *ngIf=" (gdprStatus && filePreview) || (clipBoard&&gdprStatus) || (gdprStatus && selectedAddPartnerOption==2)" class="col-sm-6 form-group" id="customWidth">
+				<div class="form-group">
+				<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options <span class="danger">*</span></label>
+				  <div id="multiselect-sample" class="control-section">
+				    <div class="col-lg-8 content-wrapper">
+				        <div class="control-styles">
+				        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+				        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)='validateLegalBasisOptions()'></ejs-multiselect>
+				        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
+				        </div>
+				    </div>
+				    </div>
+			</div>
+			</div>
 
 		<div class="row" id="Gfile_preview">
 			<div class="col-md-12">

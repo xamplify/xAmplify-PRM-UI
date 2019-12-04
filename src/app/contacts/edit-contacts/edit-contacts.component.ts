@@ -195,6 +195,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     legalBasisOptions :Array<LegalBasisOption>;
     parentInput:any;
     companyId: number = 0;
+    selectedLegalBasisOptions = [];
+    public fields: any;
+    public placeHolder: string = 'Select Legal Basis Options';
+    isValidLegalOptions = true;
     constructor( public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,

@@ -372,6 +372,21 @@
 													style="background-color: #26a69a; color: white"
 													(click)="clipboardShowPreview()">SHOW PREVIEW</button>
 											</div>
+											<!-- ---Legal Basis Options -->
+											<div *ngIf="(clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="col-sm-9 form-group">
+												<div class="form-group">
+												<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options*</label>
+												  <div id="multiselect-sample" class="control-section">
+												    <div class="col-lg-8 content-wrapper">
+												        <div class="control-styles">
+												        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+												        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
+												        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
+												        </div>
+												    </div>
+												    </div>
+											</div>
+											</div>
 											<div class="col-sm-9">
 												<textarea *ngIf="!isPartner" class="textareaNumber" [(ngModel)]="clipboardTextareaText"
 													placeholder="FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Address,City,State,Zip,Country,Phone"
