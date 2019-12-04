@@ -941,6 +941,8 @@ showTimeLineView(){
                this.campaign.emailTemplate = this.eventCampaign.emailTemplateDTO;
                this.campaign.selectedEmailTemplateId = this.eventCampaign.emailTemplateDTO.id;
              }
+       /****** For leads count info ******/
+           this.getLeadsCount();
         },
         error => console.log(error),
         () => { }
@@ -2206,10 +2208,21 @@ viewPartnerLeads(item:any){
                 this.xtremandLogger.log(error);
                 $("#partner-leads-info-modal").modal('hide');
             });
-    
-    
-    
-    
+     
 }
+
+getLeadsCount(){
+    try{
+     this.campaignService.getLeadsCount(this.campaignId)
+     .subscribe(
+       data => {
+           console.log(data);
+           this.campaignReport.yesLeadCount = data.YES;
+           this.campaignReport.noLeadCount = data.NO;
+           this.campaignReport.maybeLeadCount = data.MAYBE;
+      },
+      (error:any)=>{this.xtremandLogger.error('error'+error); })
+    }catch(error) { this.xtremandLogger.error('error'+error);}
+ }
 
 }

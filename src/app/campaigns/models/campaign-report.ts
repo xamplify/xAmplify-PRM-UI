@@ -62,5 +62,9 @@ export class CampaignReport {
     selectedPartnerLastName: string;
     selectedPartnerEmailId: string;
     selectedPartnerUserId: any;
+    
+    yesLeadCount: number = 0;
+    noLeadCount: number = 0;
+    maybeLeadCount: number = 0;
 
 }

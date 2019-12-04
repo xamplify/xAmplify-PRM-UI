@@ -766,7 +766,53 @@
 			</ng-template>
 		</div>
 	</div>
+	<fieldset style = "color: #31bdf2; background: white;">
+	<div class="col-xs-12 p0">
+	<p class="col-xs-8" style = "color: #31bdf2;">Leads Data</p>
+	    <div class="col-xs-4 p0">
+	                       <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+								<button class="portlet light color1-invert crcb" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+									<div class="portlet-body text-center">
+										<i class="fa fa-envelope fs30"></i>
+										<h1 class="fs14">
+											<b>{{campaignReport.yesLeadCount}}</b>
+											<span>Yes</span>
+										</h1>
+
+									</div>
+								</button>
+							</div>
+							<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+								<button class="portlet light color1-invert crcb" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+									<div class="portlet-body text-center">
+										<i class="fa fa-times-circle fs30"></i>
+										<h1 class="fs14">
+											<b>{{campaignReport.noLeadCount}}</b>
+											<span>No</span>
+										</h1>
+
+									</div>
+								</button>
+							</div>
+							<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+								<button class="portlet light color1-invert crcb" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+									<div class="portlet-body text-center">
+										<i class="fa fa-question-circle fs30"></i>
+										<h1 class="fs14">
+											<b>{{campaignReport.maybeLeadCount}}</b>
+											<span>Maybe</span>
+										</h1>
+
+									</div>
+								</button>
+							</div>
+	</div>
+	</div>
+	
+				
+	
 	<app-form-analytics-util [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util>
+    </fieldset>
 </div>
 
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">

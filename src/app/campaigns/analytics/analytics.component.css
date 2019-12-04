@@ -567,7 +567,7 @@ tr>td>h6 {
  }
  
  .rsvp_tile_padding{
- padding: 2px 2px 0px 4px;
+ padding: 2px 2px 5px 4px;
  }
  
  .highlet{
@@ -655,4 +655,10 @@ tr>td>h6 {
 }
 #leads-info-font-size{
 	font-size: 25px;
+}
+.fs14{
+	font-size:14px !important;
+}
+.fs30{
+	font-size: 30px !important;
 }
