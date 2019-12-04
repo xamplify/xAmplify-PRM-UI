@@ -14,6 +14,22 @@
           <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsListName">
           <span style="color:red">{{saveAsError}}</span>
         </div>
+        
+         <!-- ------------Legal Basis------------ -->
+        <div class="form-group" *ngIf="gdprStatus">
+        <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
+	    <div id="multiselect-sample" class="control-section">
+	    <div class="col-lg-14">
+	        <div class="control-styles">
+	        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
+	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
+	        </div>
+	    </div>
+	    </div>
+    </div>
+        
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>

@@ -39,11 +39,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     legalBasisOptions :Array<LegalBasisOption>;
     public fields: any;
     public placeHolder: string = 'Select Legal Basis Options';
+    isValidLegalOptions = true;
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
-    isValidLegalOptions = true;
-
-
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger ) {
         this.notifyParent = new EventEmitter();

@@ -2263,7 +2263,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.saveAsError = 'This list name is already taken.';
         } else {
             if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
-              this.editContactComponent.saveDuplicateContactList(this.saveAsListName);
+              this.editContactComponent.saveDuplicateContactList(this.saveAsListName, []);
               $('#saveAsAddPartnerModal').modal('hide');
             }
             else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }

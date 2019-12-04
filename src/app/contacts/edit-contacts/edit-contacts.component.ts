@@ -2165,7 +2165,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
       this.saveAsListName = undefined;
       this.refService.namesArray = undefined;
     }
-    saveDuplicateContactList( name: string ) {
+    saveDuplicateContactList( name: string,selectedLegalBasisOptions:any) {
        try {
             
            if ( name != "" ) {
@@ -2180,6 +2180,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     } else {
                         listUsers = this.totalListUsers;
                     }
+                    $.each(listUsers,function(index,value:User){
+                        value.legalBasis = selectedLegalBasisOptions;
+                    });
+                    console.log(listUsers);
                     this.contactService.saveContactList( listUsers, name, this.isPartner )
                         .subscribe(
                         data => {

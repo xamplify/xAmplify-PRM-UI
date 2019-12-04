@@ -1034,7 +1034,7 @@ img:hover {
 </div>
 </div>
 
-<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" [gdprInput]="parentInput" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
 <!-- <div class="modal right fade" id="saveAsAddPartnerModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">

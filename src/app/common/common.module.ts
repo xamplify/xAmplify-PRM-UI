@@ -40,10 +40,12 @@ import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-
 import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
 import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-popup-loader.component';
 import { FormAnalyticsUtilComponent } from '../util/form-analytics-util/form-analytics-util.component';
+import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
+import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
 
 
 @NgModule({
-    imports: [CommonModule, FormsModule, LoadingModule],
+    imports: [CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule],
     declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
