@@ -1609,18 +1609,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 ( data: any ) => {
                     this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() data => " + JSON.stringify( data ) );
                     this.contacts = data.listOfUsers;
-                    if(this.gdprStatus){
-                        let self = this;
-                        $.each(this.contacts,function(index,contact){
-                            if(self.legalBasisOptions.length>0){
-                                let filteredLegalBasisOptions = $.grep(self.legalBasisOptions, function(e){ return  contact.legalBasis.indexOf(e.id)>-1 });
-                                let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
-                                contact.legalBasisString = selectedLegalBasisOptionsArray;
-                                console.log(contact.legalBasisString);
-                            }
-                        });
-                    }
-                    
+                    this.setLegalBasisOptionString(this.contacts);
                     //this.contactService.allPartners = data.listOfUsers;
                     this.totalRecords = data.totalRecords;
                     this.xtremandLogger.log( data );
@@ -1670,6 +1659,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             )
         } catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "loadingAllUsersInList()" );
+        }
+    }
+    
+    setLegalBasisOptionString(list:any){
+        if(this.gdprStatus){
+            let self = this;
+            $.each(list,function(index,contact){
+                if(self.legalBasisOptions.length>0){
+                    let filteredLegalBasisOptions = $.grep(self.legalBasisOptions, function(e){ return  contact.legalBasis.indexOf(e.id)>-1 });
+                    let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
+                    contact.legalBasisString = selectedLegalBasisOptionsArray;
+                }
+            });
         }
     }
 
@@ -2453,6 +2455,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 ( data: any ) => {
                     console.log( data.listOfUsers );
                     this.totalListUsers = data.listOfUsers;
+                  //  this.setLegalBasisOptionString(data.listOfUsers);
                 },
                 error => this.xtremandLogger.error( error ),
                 () => this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )

@@ -1007,29 +1007,9 @@
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr>
-																<td class='pt10 pb10 bold'>Phone:</td>
-																<td class='pt10 pb10'>
-																	<div *ngIf="allcontacts.mobileNumber"
-																		[class.disabled]="true"
-																		style="pointer-events: none !important; cursor: auto;">
-																		<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"
-																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																	</div>
-																</td>
-															</tr>
-															<tr>
-																<td class='pt10 pb10 bold'>Address: </td>
-																<td align="center" class="hidden-xs">
-																	<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-																	<h5 class='m0'>
-																		{{allcontacts.city}}<span
-																			*ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}
-																	</h5>
-																	<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
-																		class='mt0'>
-																		{{allcontacts.zipCode}}<span
-																			*ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}
-																	</h5>
+																<td class='pt10 pb10 bold'>Legal Basis : </td>
+																&nbsp;<td align="center" class="pt10 pb10">
+																<!-- 	{{allContacts.legalBasisString}} -->
 																</td>
 															</tr>
 														</tbody>
