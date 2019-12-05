@@ -1177,7 +1177,7 @@
 </div>
 
 
-<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"

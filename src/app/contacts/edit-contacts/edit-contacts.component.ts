@@ -192,7 +192,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     gdprSetting: GdprSetting = new GdprSetting();
     termsAndConditionStatus = true;
     gdprStatus = true;    
-    legalBasisOptions :Array<LegalBasisOption> = new Array<LegalBasisOption>();
+    legalBasisOptions :Array<LegalBasisOption>;
     parentInput:any;
     companyId: number = 0;
     selectedLegalBasisOptions = [];
@@ -791,7 +791,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     
     updateListFromCsvWithPermission(){
         this.loading = true;
-        if(this.selectedLegalBasisOptions.length>0){
+        if(this.selectedLegalBasisOptions!=undefined && this.selectedLegalBasisOptions.length>0){
             this.setLegalBasisOptions(this.users);
         }
         console.log(this.users);
