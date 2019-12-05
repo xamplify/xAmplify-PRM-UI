@@ -454,7 +454,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
                 let userDetails = {
                         "firstName": this.newPartnerUser[i].firstName,
-                        "lastName": this.newPartnerUser[i].lastName,
+                        "lastName": this.newPartnerUser[i].lastName
                     }
                 
                  if(this.newPartnerUser[i].emailId){
@@ -501,6 +501,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 }
             }
             this.newPartnerUser = this.validateSocialContacts( this.newPartnerUser );
+            console.log(this.newPartnerUser);
             if ( existedEmails.length === 0 ) {
                 if ( this.isCompanyDetails ) {
                     if ( this.validCsvContacts ) {
@@ -1965,10 +1966,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     
     validateLegalBasisOptions(){
         this.isValidLegalOptions = true;
-        if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
+        if(this.selectedAddPartnerOption!=1 && this.gdprStatus && this.selectedLegalBasisOptions.length==0){
             this.isValidLegalOptions = false;
-        }else{
-            this.isValidLegalOptions = true;
         }
     }
 
@@ -3055,7 +3054,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
     
     setLegalBasisOptions(contact:User){
-        if(this.gdprStatus){
+        if(this.gdprStatus && this.selectedLegalBasisOptions.length>0){
             contact.legalBasis = this.selectedLegalBasisOptions;
         }
     }

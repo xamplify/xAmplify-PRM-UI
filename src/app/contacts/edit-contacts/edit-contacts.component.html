@@ -357,6 +357,23 @@
 											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
 											email pattern Contacts found.. !!!</strong>
 									</div>
+									
+										<!-- ---Legal Basis Options -->
+											<div *ngIf="(isValidClipBoardData&&gdprStatus)" class="col-sm-6 form-group" id="customWidth">
+												<div class="form-group">
+												<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options <span class="danger">*</span></label>
+												  <div id="multiselect-sample" class="control-section">
+												    <div class="col-lg-8 content-wrapper">
+												        <div class="control-styles">
+												        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+												        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
+												        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
+												        </div>
+												    </div>
+												    </div>
+											</div>
+											</div>
+									
 									<div class="row" *ngIf="clickBoard">
 										<div class="col-sm-12" style="padding-left:0px">
 											<h3 class="col-xs-12">Copy from text -- paste below</h3>
@@ -371,21 +388,6 @@
 												<button class=" col-sm-3 btn btn-default" type="button"
 													style="background-color: #26a69a; color: white"
 													(click)="clipboardShowPreview()">SHOW PREVIEW</button>
-											</div>
-											<!-- ---Legal Basis Options -->
-											<div *ngIf="(clipBoard&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="col-sm-9 form-group">
-												<div class="form-group">
-												<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options*</label>
-												  <div id="multiselect-sample" class="control-section">
-												    <div class="col-lg-8 content-wrapper">
-												        <div class="control-styles">
-												        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
-												        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-												        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
-												        </div>
-												    </div>
-												    </div>
-											</div>
 											</div>
 											<div class="col-sm-9">
 												<textarea *ngIf="!isPartner" class="textareaNumber" [(ngModel)]="clipboardTextareaText"
@@ -898,7 +900,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center hidden-xs" ></th>
+														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->

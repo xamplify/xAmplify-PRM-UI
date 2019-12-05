@@ -67,5 +67,10 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 	   white-space: nowrap;
 }
 
-
+#customWidth{
+	width: 53%;
+}
+.danger{
+	color:red;
+}
 

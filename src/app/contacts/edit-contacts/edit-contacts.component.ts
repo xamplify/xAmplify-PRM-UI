@@ -199,6 +199,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     public fields: any;
     public placeHolder: string = 'Select Legal Basis Options';
     isValidLegalOptions = true;
+    isValidClipBoardData = false;
     constructor( public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
         public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -989,6 +990,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     clipboardShowPreview() {
+        this.isValidClipBoardData = false;
         var selectedDropDown = $( "select.options:visible option:selected " ).val();
         var splitValue;
         if ( this.clipboardTextareaText == undefined ) {
@@ -1301,10 +1303,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing started at: <b>" + startTime + "</b></h5>" );
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Processing Finished at: <b>" + endTime + "</b></h5>" );
             $( "#clipBoardValidationMessage" ).append( "<h5 style='color:#07dc8f;'><i class='fa fa-check' aria-hidden='true'></i>" + "Total Number of records Found: <b>" + allTextLines.length + "</b></h5>" );
+            this.isValidClipBoardData = true;
         } else {
             $( "button#sample_editable_1_new" ).prop( 'disabled', true );
             $( "#clipBoardValidationMessage" ).show();
             this.filePrevew = false;
+            this.isValidClipBoardData = false;
         }
         this.xtremandLogger.info( this.users );
     }
@@ -1365,8 +1369,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         "emailId": this.users[i].emailId,
                         "firstName": this.users[i].firstName,
                         "lastName": this.users[i].lastName,
+                        "legalBasis":this.selectedLegalBasisOptions
                     }
-
                 this.newUserDetails.push( userDetails );
 
                 if ( this.users[i].country === "Select Country" ) {
@@ -1504,16 +1508,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     }
 
     saveContacts( contactListId: number ) {
-        if ( this.selectedAddContactsOption == 0 ) {
-            this.updateContactList( this.contactListId );
-        }
+        this.validateLegalBasisOptions();
+        if(this.isValidLegalOptions){
+            if ( this.selectedAddContactsOption == 0 ) {
+                this.updateContactList( this.contactListId );
+            }
 
-        if ( this.selectedAddContactsOption == 1 ) {
-            this.updateContactListFromClipBoard( this.contactListId );
-        }
+            if ( this.selectedAddContactsOption == 1 ) {
+                this.updateContactListFromClipBoard( this.contactListId );
+            }
 
-        if ( this.selectedAddContactsOption == 2 ) {
-            this.updateCsvContactList( this.contactListId );
+            if ( this.selectedAddContactsOption == 2 ) {
+                this.updateCsvContactList( this.contactListId );
+            }
         }
     }
 
@@ -1527,6 +1534,9 @@ export class EditContactsComponent implements OnInit, OnDestroy {
         this.isHeaderCheckBoxChecked = false;
         this.dublicateEmailId = false;
         this.clickBoard = false;
+        this.isValidClipBoardData = false;
+        this.isValidLegalOptions = true;
+        this.selectedLegalBasisOptions = [];
     }
 
     checkAll( ev: any ) {
@@ -2897,6 +2907,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     getLegalBasisOptions(){
         if (this.companyId>0){
             this.loading = true;
+            this.fields = { text: 'name', value: 'id' };
             this.refService.getLegalBasisOptions(this.companyId)
             .subscribe(
                 data => {
@@ -2941,6 +2952,13 @@ export class EditContactsComponent implements OnInit, OnDestroy {
          }
         }catch ( error ) {
             this.xtremandLogger.error( error, "editContactComponent", "ngOnDestroy()" );
+        }
+    }
+    
+    validateLegalBasisOptions(){
+        this.isValidLegalOptions = true;
+        if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
+            this.isValidLegalOptions = false;
         }
     }
 }
