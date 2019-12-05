@@ -161,7 +161,7 @@
                         <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
                             <i class="fa fa-clone cancelled-event"></i>
                         </a>
-						  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT' || campaign.campaignType === 'LANDINGPAGE'">
+						  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign) || campaign.campaignType === 'LANDINGPAGE'">
 						         <div class="btn-group pull-right" id="download-template">
 										<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
 										<span  data-toggle="dropdown" title="Download"></span>
@@ -173,7 +173,7 @@
 														 Download Html
 													</a>
 											</li>
-											<li>
+											<li *ngIf="campaign.campaignType != 'EVENT'">
 											  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"  target="_blank">
 												<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
 												Download Pdf
@@ -242,7 +242,7 @@
 													<i class="fa fa-clone" style="cursor:not-allowed"></i>
 												</a>
 												
-												<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT' || campaign.campaignType === 'LANDINGPAGE'">
+												<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign) || campaign.campaignType === 'LANDINGPAGE'">
 										         <div class="btn-group" id="download-template-grid">
 														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
 														<span  data-toggle="dropdown" title="Download"></span>
@@ -254,7 +254,7 @@
 																		 Download Html
 																	</a>
 															</li>
-															<li>
+															<li *ngIf="campaign.campaignType != 'EVENT'">
 															  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  
 																data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
 																<i class="fa fa-file-pdf-o" style="width: 30px;"></i>

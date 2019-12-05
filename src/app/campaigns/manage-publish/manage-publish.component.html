@@ -217,7 +217,7 @@
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Campaign
 													</a>
-													<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length==6 && campaign.campaignType.indexOf('EVENT') > -1"
+													<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign"
 													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Url
@@ -340,7 +340,7 @@
                                 <i class="fa fa-files-o"></i> Copy campaign
                               </a>
                               
-                              <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length==6 && campaign.campaignType.indexOf('EVENT') > -1"
+                              <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign"
 													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
 								<i class="fa fa-files-o" style="width: 30px;"></i>Copy Url
 								</a>
