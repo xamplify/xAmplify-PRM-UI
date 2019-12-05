@@ -357,9 +357,8 @@
 											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
 											email pattern Contacts found.. !!!</strong>
 									</div>
-									
 										<!-- ---Legal Basis Options -->
-											<div *ngIf="(isValidClipBoardData&&gdprStatus)" class="col-sm-6 form-group" id="customWidth">
+											<div *ngIf="(isValidClipBoardData&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="col-sm-6 form-group" id="customWidth">
 												<div class="form-group">
 												<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options <span class="danger">*</span></label>
 												  <div id="multiselect-sample" class="control-section">
@@ -601,7 +600,8 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
-															<!-- <th class='text-center'>MORE</th> -->
+														<th class="text-center hidden-xs" *ngIf="isPartner"></th>
+														<!-- <th class='text-center'>MORE</th> -->
 														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
 													</thead>
@@ -901,6 +901,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
+														<th class="text-center hidden-xs" *ngIf="isPartner"></th>
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->

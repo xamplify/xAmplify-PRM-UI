@@ -192,7 +192,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     gdprSetting: GdprSetting = new GdprSetting();
     termsAndConditionStatus = true;
     gdprStatus = true;    
-    legalBasisOptions :Array<LegalBasisOption>;
+    legalBasisOptions :Array<LegalBasisOption> = new Array<LegalBasisOption>();
     parentInput:any;
     companyId: number = 0;
     selectedLegalBasisOptions = [];
@@ -339,6 +339,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                      user.zipCode = allTextLines[i][8].trim();
                                      user.country = allTextLines[i][9].trim();
                                      user.mobileNumber = allTextLines[i][10].trim();
+                                     user.legalBasis = self.selectedLegalBasisOptions;
                                      /*user.description = allTextLines[i][9];*/
                                      self.users.push( user );
                                      self.csvContacts.push( user );
@@ -379,6 +380,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                                          user.zipCode = allTextLines[i][12].trim();
                                          user.country = allTextLines[i][13].trim();
                                          user.mobileNumber = allTextLines[i][14].trim();
+                                         user.legalBasis = self.selectedLegalBasisOptions;
                                          self.users.push( user );
                                          self.csvContacts.push( user );
 
@@ -789,6 +791,10 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     
     updateListFromCsvWithPermission(){
         this.loading = true;
+        if(this.selectedLegalBasisOptions.length>0){
+            this.setLegalBasisOptions(this.users);
+        }
+        console.log(this.users);
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify( this.users ) );
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
@@ -2957,8 +2963,17 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     
     validateLegalBasisOptions(){
         this.isValidLegalOptions = true;
-        if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
+        if(this.selectedAddContactsOption!=0 && this.gdprStatus && this.selectedLegalBasisOptions.length==0){
             this.isValidLegalOptions = false;
+        }
+    }
+    
+    setLegalBasisOptions(input:any){
+        if(this.gdprStatus){
+            let self = this;
+            $.each(input,function(index:number,contact:User){
+                contact.legalBasis = self.selectedLegalBasisOptions;
+             });
         }
     }
 }
