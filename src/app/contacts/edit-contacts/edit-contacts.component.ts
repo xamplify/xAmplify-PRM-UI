@@ -1449,6 +1449,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
     
     updateListFromClipBoardWithPermission(){
         this.loading = true;
+        this.setLegalBasisOptions(this.users);
         this.contactService.updateContactList( this.contactListId, this.users )
             .subscribe(
             data => {
