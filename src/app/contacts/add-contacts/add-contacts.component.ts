@@ -1027,8 +1027,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     
     validateLegalBasisOptions(){
+        this.isValidLegalOptions = true;
         if(this.selectedAddContactsOption>0){
-            this.isValidLegalOptions = true;
             if(this.gdprStatus && this.selectedLegalBasisOptions.length==0){
                 this.isValidLegalOptions = false;
                 if(this.isValidContactName){
@@ -1051,57 +1051,60 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     saveContacts() {
         this.validateLegalBasisOptions();
-        this.noOptionsClickError = false;
-        if ( this.selectedAddContactsOption == 0 ) {
-            this.saveContactList();
-        }
+        if(this.isValidLegalOptions){
+            this.noOptionsClickError = false;
+            if ( this.selectedAddContactsOption == 0 ) {
+                this.saveContactList();
+            }
 
-        if ( this.selectedAddContactsOption == 1 ) {
-            this.saveClipBoardContactList();
-        }
+            if ( this.selectedAddContactsOption == 1 ) {
+                this.saveClipBoardContactList();
+            }
 
-        if ( this.selectedAddContactsOption == 2 ) {
-            this.saveCsvContactList();
-        }
-        if ( this.selectedAddContactsOption == 3 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveSalesforceContacts();
-            } else
-                this.saveSalesforceContactSelectedUsers();
-        }
+            if ( this.selectedAddContactsOption == 2 ) {
+                this.saveCsvContactList();
+            }
+            if ( this.selectedAddContactsOption == 3 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveSalesforceContacts();
+                } else
+                    this.saveSalesforceContactSelectedUsers();
+            }
 
-        if ( this.selectedAddContactsOption == 4 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveGoogleContacts();
-            } else
-                this.saveGoogleContactSelectedUsers();
-        }
+            if ( this.selectedAddContactsOption == 4 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveGoogleContacts();
+                } else
+                    this.saveGoogleContactSelectedUsers();
+            }
 
-        if ( this.selectedAddContactsOption == 5 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveZohoContacts();
-            } else
-                this.saveZohoContactSelectedUsers();
-        }
-        if ( this.selectedAddContactsOption == 6 ) {
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveMarketoContacts();
-            } else
-                this.saveMarketoContactSelectedUsers();
-        }
+            if ( this.selectedAddContactsOption == 5 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveZohoContacts();
+                } else
+                    this.saveZohoContactSelectedUsers();
+            }
+            if ( this.selectedAddContactsOption == 6 ) {
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveMarketoContacts();
+                } else
+                    this.saveMarketoContactSelectedUsers();
+            }
 
+            
+            if(this.selectedAddContactsOption == 9){
+                if ( this.allselectedUsers.length == 0 ) {
+                    this.saveHubSpotContacts();
+                } else{
+                    this.saveHubSpotContactSelectedUsers();
+                }                
+            }
+            
+            if ( this.selectedAddContactsOption == 8 ) {
+                this.noOptionsClickError = true;
+            }
+        }
         
-        if(this.selectedAddContactsOption == 9){
-            if ( this.allselectedUsers.length == 0 ) {
-                this.saveHubSpotContacts();
-            } else{
-                this.saveHubSpotContactSelectedUsers();
-            }                
-        }
-        
-        if ( this.selectedAddContactsOption == 8 ) {
-            this.noOptionsClickError = true;
-        }
     }
 
     cancelContacts() {
