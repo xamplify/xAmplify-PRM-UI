@@ -1928,10 +1928,10 @@ showTimeLineView(){
             this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
             this.rsvpDetailAnalyticsPagination.pageIndex = 1;
             this.getRsvpEmailNotOpenDetails();
-        }
-
+        } 
 
     }
+    
 
   ngOnInit() {
     try{
@@ -2308,6 +2308,18 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
           (error:any)=>{this.xtremandLogger.error('error'+error);
           this.httpRequestLoader.isLoading = false;})
         }catch(error) { this.xtremandLogger.error('error'+error);}
+ }
+
+leadDetailsSearch(){
+    if(this.leadType == 'eventLeads'){
+        this.leadsDetailPagination.searchKey = this.searchKey;
+        this.leadsDetailPagination.pageIndex = 1;
+        this.getEventLeadsDetails('YES'); 
+     }else{
+         this.partnerLeadsDetailPagination.searchKey = this.searchKey;
+         this.partnerLeadsDetailPagination.pageIndex = 1;
+         this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId); 
+     }
  }
 
 expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
