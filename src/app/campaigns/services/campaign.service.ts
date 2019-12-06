@@ -462,6 +462,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
+    getEventLeadsDetails(pagination: Pagination,campaignId: number,detailType: string) {
+        const url = this.URL + "campaign/"+ campaignId +"/leads-details?access_token=" + this.authenticationService.access_token + "&type="+ detailType;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

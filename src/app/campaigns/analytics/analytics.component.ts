@@ -152,7 +152,13 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   inputObject:any = {};
   partnerLeadInfoRequestLoader:HttpRequestLoader = new HttpRequestLoader();
   leadInfoTitle = "Leads Info";
+  leadDetailType = 'yes';
   partnerLeadResponeStatus = 404;
+  isShowPartnerLeads = false;
+  leadsDetailPagination: Pagination = new Pagination();
+  leadsFormHeaders = [];
+  leadsFormDetails = [];
+  
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -2183,11 +2189,12 @@ toggleSmsAnalyticsView(event:string){
 viewPartnerLeads(item:any){
     this.inputObject = {};
     this.referenceService.startLoader(this.partnerLeadInfoRequestLoader);
-    let htmlContent = "#partner-lead-info-content";
+   /* let htmlContent = "#partner-lead-info-content";
     $(htmlContent).empty();
     $('.modal .modal-body').css('overflow-y', 'auto');
     $("#partner-leads-info-modal").modal('show');
-    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);*/
+    this.isShowPartnerLeads = true;
     let campaignId = item.campaignId;
     let partnerId = item.userId;
     this.campaignService.getRedistributedCampaignIds(partnerId, campaignId).subscribe(
@@ -2220,9 +2227,51 @@ getLeadsCount(){
            this.campaignReport.yesLeadCount = data.YES;
            this.campaignReport.noLeadCount = data.NO;
            this.campaignReport.maybeLeadCount = data.MAYBE;
+           this.getEventLeadsDetails('YES');
       },
       (error:any)=>{this.xtremandLogger.error('error'+error); })
     }catch(error) { this.xtremandLogger.error('error'+error);}
  }
+
+eventLeadsDetailsSetPage( event: any ) {
+    this.leadsDetailPagination.pageIndex = event.page;
+    this.getEventLeadsDetails(this.leadDetailType);
+}
+
+
+getEventLeadsDetails(detailType: any){
+   this.leadDetailType = detailType;
+   this.httpRequestLoader.isLoading = true;
+    try{
+        this.campaignService.getEventLeadsDetails(this.leadsDetailPagination, this.campaignId, this.leadDetailType)
+        .subscribe(
+          data => {
+              console.log(data);
+              this.leadsFormHeaders = data.headers;
+              this.leadsFormDetails = data.data;
+              this.leadsFormDetails.forEach((value)=>{ value['expanded'] = false;})
+              this.leadsDetailPagination.totalRecords = data.totalRecords;
+              this.leadsDetailPagination = this.pagerService.getPagedItems(this.leadsDetailPagination, data.data);
+              this.httpRequestLoader.isLoading = false;
+         },
+         (error:any)=>{this.xtremandLogger.error('error'+error); })
+       }catch(error) { this.xtremandLogger.error('error'+error);}
+}
+
+expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
+    $.each( this.leadsFormDetails, function( index, row ) {
+        if ( selectedIndex != index ) {
+            row.expanded = false;
+            $( '#form-data-row-' + index ).css( "background-color", "#fff" );
+        }
+    } );
+    selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
+    if ( selectedFormDataRow.expanded ) {
+        $( '#form-data-row-' + selectedIndex ).css( "background-color", "#d3d3d357" );
+    } else {
+        $( '#form-data-row-' + selectedIndex ).css( "background-color", "#fff" );
+    }
+
+}
 
 }

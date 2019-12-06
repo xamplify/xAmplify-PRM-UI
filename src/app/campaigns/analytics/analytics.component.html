@@ -19,7 +19,7 @@
 <app-detail-view *ngIf="showRsvpDetails" [campaignReport]="campaignReport" [detailType]="rsvpResposeType" [campaignType]="campaignType"
  [campaign]="campaign" [details]="rsvpDetailsList"></app-detail-view>
 <ngx-loading [show]="loading" [config]="{fullScreenBackdrop:true , backdropBorderRadius: '14px' }"></ngx-loading>
-<div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails" [class.ml0]="authenticationService.isSuperAdmin()">
+<div class="page-content" *ngIf="!isTimeLineView && !showRsvpDetails && !isShowPartnerLeads" [class.ml0]="authenticationService.isSuperAdmin()">
 	<div class="page-bar square-box" style="margin: 0 0px 15px;border-radius: 0;">
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
@@ -40,7 +40,7 @@
 		</ul>
 		<!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 	</div>
-	<div class="portlet light clearfix">
+	<div class="portlet light clearfix" *ngIf="!isShowPartnerLeads">
 		<div class="portlet-body">
 			<div *ngIf="hasClientError && !mainLoader" class="client-error">Something went wrong, Please refresh the page</div>
 			<div *ngIf="customResponse.responseType === 'ERROR'; else NOERROR" class="m10">
@@ -702,7 +702,9 @@
 										                      </div>
                    											 </td>
                    											 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign && campaign.publicEventCampaign">
-																<span (click)="viewPartnerLeads(item);$event.stopPropagation();"><b><i class="fa fa-user-secret" aria-hidden="true" id="leads-info-font-size"></i></b></span>
+																<span (click)="viewPartnerLeads(item);$event.stopPropagation();"><b><i class="fa fa-user-secret" aria-hidden="true" id="leads-info-font-size"></i>
+																<span class="badge badge-default" style="background-color: #00a6e8 !important;position: absolute;right: 42px;margin-top: -15px;">{{item.totalLeadsCount}}</span>
+																</b></span>
 															</td>
 														</tr>
 														<tr [ngClass]="{'hidden': !item.expanded}" id="autoresponse-tr">
@@ -766,12 +768,46 @@
 			</ng-template>
 		</div>
 	</div>
-	<fieldset style = "color: #31bdf2; background: white;">
+	<fieldset style = "color: #31bdf2; background: white;" *ngIf="!isShowPartnerLeads">
 	<div class="col-xs-12 p0">
-	<p class="col-xs-8" style = "color: #31bdf2;">Leads Data</p>
+	<div class="portlet-title col-xs-12" style="padding: 10px 0px 9px 0px;">
+									<div class="caption col-xs-8">
+										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
+											<span>YOUR LEADS DETAILS</span>
+										</span>
+									</div>
+
+
+								<div class="col-xs-3" style="margin-top: -7px;padding-right: 0px;">
+									<input type="text" [(ngModel)]="searchKey"
+										[ngModelOptions]="{standalone: true}" class="form-control"
+										placeholder="Search"
+										(keypress)="eventHandler($event.keyCode)">
+									<button class="search-box-item-clear"
+										*ngIf="searchKey" (click)="searchKey=''">
+										<span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
+										</button>
+									<button type="submit" class="search-box-item-click" style="right: 1px"
+										(click)="search()">
+										<i class="fa fa-search" style="padding: 4px; color: black !important"></i>
+									</button>
+								</div>
+
+								<div [class.disabled]="campaignViewsPagination.pagedItems?.length == 0" class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
+										<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
+											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
+										</span>
+										<ul class="dropdown-menu pull-right">
+											<li><a> Export To Excel </a>
+											<!-- <a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()"> Export To Excel </a> --></li>
+										</ul>
+									</div>
+								</div>
+								<hr>
+		<div class="col-xs-8"></div>
 	    <div class="col-xs-4 p0">
 	                       <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+								<button class="portlet light color1-invert crcb" (click)="getEventLeadsDetails('YES')" [class.selectedBox]="leadDetailType === 'YES'" [disabled]="!isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-envelope fs30"></i>
 										<h1 class="fs14">
@@ -783,7 +819,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+								<button class="portlet light color1-invert crcb" (click)="getEventLeadsDetails('NO')"  [class.selectedBox]="leadDetailType === 'NO'" [disabled]="!isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-times-circle fs30"></i>
 										<h1 class="fs14">
@@ -795,7 +831,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+								<button class="portlet light color1-invert crcb" (click)="getEventLeadsDetails('MAYBE')"  [class.selectedBox]="leadDetailType === 'MAYBE'" [disabled]="!isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-question-circle fs30"></i>
 										<h1 class="fs14">
@@ -809,9 +845,90 @@
 	</div>
 	</div>
 	
-				
+				 	 
+  <div class="row" id="responsive">
+	<div class="col-xs-12 p0">
+			<div class="portlet light">
+			<!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
+				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+					<table class="table tgrid">
+						<thead>
+							<tr>
+								<ng-container *ngFor="let column of leadsFormHeaders;let i  = index">
+									<ng-container *ngIf="i<=3">
+										<th id="th-width">{{column}}<!-- <span class="required" *ngIf="column.required">*</span> --></th>
+									</ng-container>
+								</ng-container>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<ng-container *ngFor="let formDataRow of leadsFormDetails;let rowIndex = index">
+								<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
+									<ng-container *ngFor="let columnValue of leadsFormHeaders;let columnIndex = index">
+									
+										<td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td>
+									</ng-container>
+									<td>
+										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
+											title="View More Columns" *ngIf="leadsFormHeaders.length>4">
+											<i class="fa"
+												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"></i>
+										</a>
+									</td>
+								</tr>
+								<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
+									<td colspan="5">
+										<table id="expanded-table" class="table tgrid table-bordered">
+											<tr *ngFor="let column of leadsFormHeaders;let i  = index;">
+												<th *ngIf="i>=4">
+													{{column}}<span class="required" *ngIf="column.required">*</span>
+												</th>
+												<td *ngIf="i>=4">
+													{{formDataRow[column]}}
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</ng-container>
+						</tbody>
+					</table>
+				</div>
+
+				<div *ngIf="leadsDetailPagination.pagedItems.length !== 0" class="pg8">
+					<app-pagination [pagination]="leadsDetailPagination" (notifyParent)="eventLeadsDetailsSetPage($event)"
+						[hidden]="httpRequestLoader.isLoading"></app-pagination>
+				</div>
+				<!-- End of 24 -->
+				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+					<strong>No Data Found.</strong>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-12 p5" *ngIf="statusCode==404">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Form does not exists</h4>
+				</strong>
+			</div>
+		</div>
+
+
+		<div class="col-xs-12 p5" *ngIf="statusCode==403">
+			<div class="alert alert-danger">
+				<strong>
+					<h4>Access Denied</h4>
+				</strong>
+			</div>
+		</div>
+
+	<app-scroll-top></app-scroll-top>
+</div>		
 	
-	<app-form-analytics-util [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util>
+	<!-- <app-form-analytics-util [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util> -->
     </fieldset>
 </div>
 
@@ -1968,7 +2085,23 @@
 	</div>
 </div>
 <!-- ---------------Partner Lead Analytics -->
- <div class="modal right fade" id="partner-leads-info-modal">
+<div id="timeline-view" class="page-content" *ngIf="isShowPartnerLeads">
+   <div class="page-bar" style="min-height: 572px;border: 1px solid #CCC;">
+     <h4 class="pull-left" style="padding-left: 10px;">Your Lead Info</h4>
+    <a (click)="isShowPartnerLeads = false" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
+			aria-hidden="true"></span></a>
+	 <div class="col-xs-12 caption-subject font-red-sunglo">
+		  <div id="partner-lead-info-content" *ngIf="!partnerLeadInfoRequestLoader.isLoading">
+		 	 <app-form-analytics-util [importedObject]="inputObject" *ngIf="partnerLeadResponeStatus==200"></app-form-analytics-util>
+		 	 <div class="alert alert-danger" *ngIf="partnerLeadResponeStatus==404">No leads found</div>
+		  </div>
+		   <app-list-loader *ngIf="partnerLeadInfoRequestLoader.isLoading"></app-list-loader>
+		</div>
+   </div>
+</div>
+
+
+ <!-- <div class="modal right fade" id="partner-leads-info-modal">
     <div class="modal-dialog modal-lg modal-template" style="right:0;min-width: 991px;">
       <div class="modal-content">
         <div class="modal-header">
@@ -1989,5 +2122,5 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
