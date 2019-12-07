@@ -48,8 +48,9 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   isCancelledEvent: boolean = false;
 
   public searchKey: string;
+  public leadsSearchKey: string;
 
-    ngxloading: boolean;
+  ngxloading: boolean;
   isTimeLineView: boolean;
   campaign: Campaign;
   isChannelCampaign: boolean;
@@ -1888,7 +1889,9 @@ showTimeLineView(){
            }
     }
 
-    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
+    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { 
+        this.search();
+    } }
 
     search() {
 
@@ -2272,6 +2275,8 @@ getEventLeadsDetails(detailType: any){
    this.leadType = 'eventLeads';
    this.httpRequestLoader.isLoading = true;
     try{
+        
+        this.leadsDetailPagination.maxResults = 1000;
         this.campaignService.getEventLeadsDetails(this.leadsDetailPagination, this.campaignId, this.leadDetailType)
         .subscribe(
           data => {
@@ -2294,6 +2299,7 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
     this.partnerLeadDetailType = detailType;
     this.httpRequestLoader.isLoading = true;
      try{
+         this.leadsDetailPagination.maxResults = 1000;
          this.campaignService.getPartnerEventLeadsDetails(this.partnerLeadsDetailPagination, this.campaignId, selectedLeadPartnerId, this.partnerLeadDetailType)
          .subscribe(
            data => {
@@ -2310,13 +2316,17 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
         }catch(error) { this.xtremandLogger.error('error'+error);}
  }
 
+leadEventHandler( keyCode: any ) { if ( keyCode === 13 ) { 
+    this.leadDetailsSearch();
+} }
+
 leadDetailsSearch(){
     if(this.leadType == 'eventLeads'){
-        this.leadsDetailPagination.searchKey = this.searchKey;
+        this.leadsDetailPagination.searchKey = this.leadsSearchKey;
         this.leadsDetailPagination.pageIndex = 1;
         this.getEventLeadsDetails('YES'); 
      }else{
-         this.partnerLeadsDetailPagination.searchKey = this.searchKey;
+         this.partnerLeadsDetailPagination.searchKey = this.leadsSearchKey;
          this.partnerLeadsDetailPagination.pageIndex = 1;
          this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId); 
      }

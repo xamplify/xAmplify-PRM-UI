@@ -35,6 +35,7 @@ import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show
 import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
 import { AccessAccountComponent } from './authentication/access-account/access-account.component';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -84,6 +85,7 @@ export const routes: Routes = [
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'rsvp/:alias', component: RsvpComponent },
+    { path: 'rsvp-response', component: PublicPageResponseComponent },
     { path: 'smsShowCampaign/:alias', component: LogRegularCampaignComponentSMS },
     { path: 'smsCampaignVideo/:alias', component: CampaignSMSVideoComponent },
     { path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
