@@ -201,14 +201,14 @@
                           <div class="form-group">
                             <label class="control-label">Field Label</label><span class="required">*</span>
                             <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control"
-                              (input)="updateHiddenLabelId(selectedColumn)" maxlength="50" />
+                              (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
                           </div>
                           <!-- ----------------Filed PlaceHolder Text-------------- -->
                           <div class="form-group"
                             *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea'">
                             <label class="control-label">Field Placeholder Text</label>
                             <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control"
-                              maxlength="50" />
+                              maxlength="1000" />
                           </div>
                           <div class="form-group">                           
                             <label class="control-label">Required</label>
@@ -242,7 +242,7 @@
                                     <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
                                     <input type="text" class="form-control" [(ngModel)]="radioButton.name"
                                       [ngModelOptions]="{standalone: true}"
-                                      (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="50">
+                                      (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
                                     <button type="button" class="btn btn-success  btn-xs"
                                       (click)="addChoice(selectedColumn,index)">
                                       <span class="glyphicon glyphicon-plus"></span>
@@ -264,7 +264,7 @@
                                     <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
                                     <input type="text" class="form-control" [(ngModel)]="checkBox.name"
                                       [ngModelOptions]="{standalone: true}"
-                                      (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="50">
+                                      (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
                                     <button type="button" class="btn btn-success  btn-xs"
                                       (click)="addChoice(selectedColumn,index)">
                                       <span class="glyphicon glyphicon-plus"></span>
@@ -285,7 +285,7 @@
                                     <br>
                                     <input type="text" class="form-control" [(ngModel)]="dropDown.name"
                                       [ngModelOptions]="{standalone: true}"
-                                      (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="50">
+                                      (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="1000">
                                     <button type="button" class="btn btn-success  btn-xs"
                                       (click)="addChoice(selectedColumn,index)">
                                       <span class="glyphicon glyphicon-plus"></span>
@@ -330,11 +330,11 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-group" id="formNameDiv">
-		           	<input type="text" class="form-control" [(ngModel)]="form.name" id="formName"  placeholder="Enter Form Name" maxlength="50"  (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
+		           	<input type="text" class="form-control" [(ngModel)]="form.name" id="formName"  placeholder="Enter Form Name" maxlength="1000"  (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
 					<span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
 	          	</div>
 	          	<div class="form-group">	
-	          		<textarea class="form-control" placeholder="Description"  [(ngModel)]="form.description" id="description" maxlength="255" ></textarea>
+	          		<textarea class="form-control" placeholder="Description"  [(ngModel)]="form.description" id="description" maxlength="1000" ></textarea>
 	          	</div>
 			</div>
 			<div class="modal-footer">

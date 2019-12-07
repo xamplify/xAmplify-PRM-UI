@@ -131,12 +131,12 @@
                     </label>
                     <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
                       <input type="{{columnInfo.labelType}}" class="form-control"
-                        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="50" disabled="disabled">
+                        placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
                     </ng-container>
 
                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
                       <textarea rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}"
-                        maxlength="250" disabled="disabled"></textarea>
+                        maxlength="1000" disabled="disabled"></textarea>
                     </ng-container>
                     <!-- ---------------------------Radio Button----------------------------- -->
                     <ng-container *ngIf="columnInfo.labelType=='radio'">
