@@ -42,6 +42,7 @@ import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-pop
 import { FormAnalyticsUtilComponent } from '../util/form-analytics-util/form-analytics-util.component';
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { PublicPageResponseComponent } from './public-page-response/public-page-response.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
         TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent,FormAnalyticsUtilComponent],
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
+        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent],
 
 
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,

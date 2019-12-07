@@ -1,6 +1,6 @@
 <div [hidden]="processor.isProcessing" class="mobile-camp">
-<div class="container" *ngIf="hasFormExists">
-	<div class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" id="signupbox">
+<div class="" *ngIf="hasFormExists">
+	<div class="col-xs-12 col-sm-12 p0">
 			<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="panel panel-info">
 		
@@ -31,12 +31,12 @@
 							</label>
 							<ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
 									<input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" 
-									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000" (input)="validateEmail(columnInfo)">
+									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="255" (input)="validateEmail(columnInfo)">
 									 <span class="required" *ngIf="columnInfo.divClass=='error'">Please enter a valid email address</span>
 							</ng-container>	
 
 							<ng-container *ngIf="columnInfo.labelType=='textarea'">
-								<textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000"></textarea>		
+								<textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="255"></textarea>		
 							</ng-container>	
 							<!-- ---------------------------Radio Button----------------------------- -->
 							<ng-container *ngIf="columnInfo.labelType=='radio'">
