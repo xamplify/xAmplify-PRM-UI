@@ -1,6 +1,5 @@
 <div class="expired-event-class" *ngIf="eventExpiredError"> This event has concluded.</div>
 <div class="expired-event-class" *ngIf="isCancelledEvent">{{errorLogMessage}}</div>
-
 <div class="container-fluid" [hidden]="processor.isProcessing || eventExpiredError" style="margin-top: 2em">
 <!-- <div style="background:red; text: white;">{{errorLogMessage}}</div> -->
 <!-- <div class="alert alert-danger fade in" *ngIf="isCancelledEvent" style="text-align: center;font-size: 15px;">
@@ -15,11 +14,11 @@
 </div>
 
 <div class="col-xs-12 col-sm-7 p0"  [hidden]="!eventcampaign">
-    <fieldset style="min-height: 464px;min-width: 549px;"><div #dataContainer></div></fieldset>
+    <fieldset class="fieldrsvp"><div #dataContainer></div></fieldset>
 </div>
 <ng-container *ngIf="eventcampaign">
-<div class="col-xs-12 col-sm-5" >
-<div class=" col-xs-12 col-sm-12">
+<div class="col-xs-12 col-sm-5 p0" >
+<div class=" col-xs-12 col-sm-12 p0">
   <div class="portlet light">
     <div class="portlet-title title-css-no-border">
       <div *ngIf="isRsvp; then rsvp_exist else rsvp_new"></div>
@@ -28,7 +27,7 @@
         <button class="btn btn-secondary pull-right" [disabled] = "isCancelledEvent" (click)="isRsvp = !isRsvp">Change</button>
       </ng-template>
       <ng-template #rsvp_new>
-        <h4 class="pull-left">Submit: your details</h4>
+        <h4 class="pull-left">Submit your details</h4>
         <div class="pull-right" [class.disabled]="isCancelledEvent">
           <button class="btn btn-secondary" [disabled] = "isCancelledEvent" [class.selectedType]="campaignRsvp.eventCampaignRsvp ==='YES'" (click)="campaignRsvp.eventCampaignRsvp = 'YES'">Yes</button>
           <button class="btn btn-secondary" [disabled] = "isCancelledEvent" [class.selectedType]="campaignRsvp.eventCampaignRsvp ==='NO'" (click)="campaignRsvp.eventCampaignRsvp = 'NO'">No</button>
@@ -51,7 +50,7 @@
 
 
 
-<div class="col-xs-12 col-sm-12">
+<div class="col-xs-12 col-sm-12 p0">
     <div class="portlet light">
       <!-- <div class="portlet-title">
         <h4>You are RSVPing <span class="f-w-500">{{campaignRsvp.eventCampaignRsvp}}</span></h4>
@@ -90,7 +89,7 @@
 
 
 
-<div class="col-xs-12 col-sm-12">
+<div class="col-xs-12 col-sm-12 p0">
     <div class="portlet light">
       <div class="portlet-title">
         <h4>RSVP history</h4>

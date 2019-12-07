@@ -97,6 +97,7 @@ export class FormPreviewComponent implements OnInit {
         },
         (error: string) => {
           this.processor.remove(this.processor);
+          this.ngxLoading = false;
           this.logger.errorPage(error);
           this.referenceService.showServerError(this.httpRequestLoader);
         }
