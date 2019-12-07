@@ -55,3 +55,14 @@ button {
     font-size: 26px;
     margin: 132px 50px 0px 50px;
 }
+
+.footer{
+	text-align: right;
+}
+.save-button-align-class{
+	 margin-right: -100px;
+}
+.title-css-no-border{
+	border-bottom: 0 !important;
+	margin-bottom: -5px !important;
+}

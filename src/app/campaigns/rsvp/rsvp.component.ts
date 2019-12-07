@@ -6,7 +6,7 @@ import { Processor } from '../../core/models/processor';
 import { CampaignRsvp } from '../models/campaign-rsvp';
 import { CampaignService } from '../../campaigns/services/campaign.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
-import {FormPreviewComponent} from '../../forms/preview/form-preview.component';
+import { FormPreviewComponent } from '../../forms/preview/form-preview.component';
 import { FormSubmit } from '../../forms/models/form-submit';
 import { FormSubmitField } from '../../forms/models/form-submit-field';
 import { ColumnInfo } from '../../forms/models/column-info';
@@ -26,6 +26,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('formPreviewComponent') formPreviewComponent: FormPreviewComponent;
   alias: string;
   eventcampaign: any;
+  isDataLoaded = false;
   campaignRsvp: CampaignRsvp = new CampaignRsvp();
   responseMessage: string;
   isRsvp = false;
@@ -53,6 +54,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
+        this.isDataLoaded = true;
         if(this.eventcampaign.formDTOs[0].formLabelDTOs){
            // this.form.formLabelDTOs = response.formValuesDTO.fields;
             
@@ -287,6 +289,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.alias = this.route.snapshot.params['alias'];
         this.type = this.route.snapshot.queryParams['type'];
         this.getEventCampaign(this.alias);
+        this.campaignRsvp.eventCampaignRsvp = 'YES';
        }catch(error){
         console.error(error);
        }
@@ -294,6 +297,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   
   ngOnDestroy() {
       this.authenticationService.isFromRsvpPage = false;
+      this.isDataLoaded = false;
   }
 
 }
