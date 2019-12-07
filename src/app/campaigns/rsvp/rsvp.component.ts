@@ -284,7 +284,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngOnInit() {
     try{
         this.authenticationService.isFromRsvpPage = true;
-        $('body').css('cssText', 'background-color: white !important');
+        $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
         this.processor.set(this.processor);
         this.alias = this.route.snapshot.params['alias'];
         this.type = this.route.snapshot.queryParams['type'];
