@@ -306,6 +306,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   ngOnDestroy() {
       this.authenticationService.isFromRsvpPage = false;
       this.isDataLoaded = false;
+      this.responseMessage = '';
   }
 
 }
