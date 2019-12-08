@@ -11,6 +11,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ContactList } from '../../contacts/models/contact-list';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../../contacts/services/contact.service';
+import { Properties } from '../../common/models/properties';
 
 declare var swal, $: any;
 
@@ -18,7 +19,7 @@ declare var swal, $: any;
   selector: 'app-add-more-receivers',
   templateUrl: './add-more-receivers.component.html',
   styleUrls: ['./add-more-receivers.component.css'],
-  providers: [Pagination, HttpRequestLoader]
+  providers: [Pagination, HttpRequestLoader,Properties]
 
 })
 export class AddMoreReceiversComponent implements OnInit {
@@ -28,6 +29,11 @@ export class AddMoreReceiversComponent implements OnInit {
     contactListLoader:HttpRequestLoader = new HttpRequestLoader();
     contactListDetailLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
+    sendingRequest = false;
+    sendSuccess = false;
+    responseMessage = "";
+    responseImage = "";
+    responseClass = "success";
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -39,7 +45,6 @@ export class AddMoreReceiversComponent implements OnInit {
         { 'name': 'All', 'value': '0' },
                                ]
     contactItemsSize:any = this.numberOfContactsPerPage[0];
-    isCampaignDraftContactList:boolean = false;
     selectedRowClass:string = "";
     selectedContactListIds = [];
     isHeaderCheckBoxChecked:boolean = false;
@@ -54,13 +59,39 @@ export class AddMoreReceiversComponent implements OnInit {
     selectedContactLists: any;
     id:number;
     previewContactListId : number;
+    campaign:Campaign = new Campaign();
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
-          public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService) { }
+          public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties) { }
 
   ngOnInit() {
   }
   
+  
+  resetAllFields(){
+      this.customResponse = new CustomResponse();
+      this.contactsPagination  = new Pagination();
+      this.selectedContactListIds = [];
+      this.userListDTOObj = [];
+      this.contactsUsersPagination = new Pagination();
+      this.id = 0;
+      this.previewContactListId = 0;
+      this.isHeaderCheckBoxChecked =false;
+      this.selectedRowClass = "";
+      this.isContactList = false;
+      this.campaignContactLists =new Array<ContactList>();
+      this.contactListTabName = "";
+      this.contactListSelectMessage = "";
+      this.emptyContactListMessage = "No data found";
+      this.showContactType = false;
+      this.campaign = new Campaign();
+      this.sendingRequest = false;
+      this.sendSuccess = false;
+      this.responseMessage = "";
+      this.responseImage = "";
+      this.responseClass = "";
+  }
   showPopup(campaign:Campaign){
+      this.resetAllFields();
       let modalId = "#new-list-modal";
       $('.modal .modal-body').css('overflow-y', 'auto');
       $(modalId).modal('show');
@@ -68,6 +99,7 @@ export class AddMoreReceiversComponent implements OnInit {
       this.contactsPagination.filterKey = "isPartnerUserList";
       this.contactsPagination.filterValue = false;
       this.contactsPagination.campaignId = campaign.campaignId;
+      this.campaign.campaignId = campaign.campaignId;
       this.contactsPagination.addingMoreLists = true;
       this.loadCampaignContacts(this.contactsPagination);
   }
@@ -312,14 +344,41 @@ export class AddMoreReceiversComponent implements OnInit {
   send(){
       this.customResponse = new CustomResponse();
       if(this.selectedContactListIds.length>0){
-          this.customResponse = new CustomResponse( 'INFO', 'Work In Progress', true );
+          this.sendingRequest = true;
+          this.campaign.userListIds = this.selectedContactListIds;
+          this.campaign.userId = this.authenticationService.getUserId();
+          this.campaign.scheduleCampaign ='SAVE';
+          console.log(this.campaign);
+          this.campaignService.sendEventToContactList(this.campaign).subscribe(
+                  (response: any) => {
+                      this.sendingRequest = false;
+                      this.sendSuccess = true;
+                      this.responseMessage = response.message;
+                      if(response.statusCode==200){
+                          this.responseImage = "assets/images/event-success.png";
+                          this.responseClass = "event-success";
+                      }else{
+                          this.responseImage = "assets/images/event-error.ico";
+                          this.responseClass = "event-error";
+                      }
+                      
+                  },
+                  (error: any) => {
+                      this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+                      this.sendingRequest = false;
+                  });
+          
+          
       }else{
           this.customResponse = new CustomResponse( 'ERROR', 'Please select list', true );
       }
   }
 
 
-
+closeMoreInvitesPopup(){
+    $('#new-list-modal').modal('hide');
+    this.resetAllFields();
+}
 
 
 }

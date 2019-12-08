@@ -2,18 +2,24 @@
     <div class="modal-dialog modal-lg modal-template" style="right:0;width: 75%">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+          <button type="button" class="close-circle" (click)="closeMoreInvitesPopup()" aria-hidden="true">
             <i class="fa fa-times"></i>
           </button>
           <h4 class="modal-title">{{title}}</h4>
         </div>
         <div class="modal-body">
-		  <div id="new-list-modal-content">
+        
+        <div class="thank-you-pop" *ngIf="sendSuccess">
+			<img src="{{responseImage}}" alt="">
+			<h4 [attr.class]="responseClass">{{responseMessage}}</h4>
+ 		</div>
+		  <div id="new-list-modal-content" *ngIf="!sendSuccess">
 		  	<div class="col-xs-12">
 		  	<div style="position: relative; top: -10px">
    				 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   			</div>
-						<div class="col-xs-12 text-center" style="margin-top: 10px;">
+  			<app-modal-popup-loader *ngIf="sendingRequest"></app-modal-popup-loader>
+						<div class="col-xs-12 text-center" style="margin-top: 10px;" *ngIf="!sendingRequest">
 							<div class="row pb10" id="user_list_table_view">
 								<app-loader [model]="contactListLoader.isHorizontalCss" *ngIf="contactListLoader.isLoading"></app-loader>
 								<app-error-pages *ngIf="contactListLoader.isServerError"></app-error-pages>
@@ -109,9 +115,9 @@
 					</div>
 		  </div>
 		</div>
-        <div class="modal-footer">
-         <a class="btn btn-primary" (click)="send()">Send</a>
-          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        <div class="modal-footer" *ngIf="!sendingRequest && !contactListLoader.isLoading">
+         <a class="btn btn-primary" (click)="send()" *ngIf="!sendSuccess">Send</a>
+          <a (click)="closeMoreInvitesPopup()" class="btn btn-default" style="float: right">Close</a>
         </div>
       </div>
     </div>
