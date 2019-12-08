@@ -27,6 +27,7 @@ export class AddMoreReceiversComponent implements OnInit {
     title:string="Please Select List(s)";
     contactListLoader:HttpRequestLoader = new HttpRequestLoader();
     contactListDetailLoader:HttpRequestLoader = new HttpRequestLoader();
+    customResponse: CustomResponse = new CustomResponse();
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -309,7 +310,12 @@ export class AddMoreReceiversComponent implements OnInit {
     }
   
   send(){
-      alert("send");
+      this.customResponse = new CustomResponse();
+      if(this.selectedContactListIds.length>0){
+          this.customResponse = new CustomResponse( 'INFO', 'Work In Progress', true );
+      }else{
+          this.customResponse = new CustomResponse( 'ERROR', 'Please select list', true );
+      }
   }
 
 

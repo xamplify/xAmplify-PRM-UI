@@ -10,6 +10,9 @@
         <div class="modal-body">
 		  <div id="new-list-modal-content">
 		  	<div class="col-xs-12">
+		  	<div style="position: relative; top: -10px">
+   				 <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  			</div>
 						<div class="col-xs-12 text-center" style="margin-top: 10px;">
 							<div class="row pb10" id="user_list_table_view">
 								<app-loader [model]="contactListLoader.isHorizontalCss" *ngIf="contactListLoader.isLoading"></app-loader>
@@ -107,7 +110,7 @@
 		  </div>
 		</div>
         <div class="modal-footer">
-        <a href="javascript:void(0)" (click)="send()" class="btn btn-info">Send</a>
+         <a class="btn btn-primary" (click)="send()">Send</a>
           <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
         </div>
       </div>
@@ -132,7 +135,7 @@
 					<app-error-pages *ngIf="contactListDetailLoader.isServerError"></app-error-pages>
 					<div class="modal-footer">
               <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true"
-             (notifyParent)="setPagePagination($event,'contactUsers')"></app-pagination>
+             (notifyParent)="setPagePagination($event)"></app-pagination>
 						<button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>

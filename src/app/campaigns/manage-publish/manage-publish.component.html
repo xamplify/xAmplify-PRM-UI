@@ -222,7 +222,7 @@
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Url
 													</a>
-													<a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && campaign.campaignType.indexOf('EVENT') > -1"
+													<a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign"
 													 data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">
 														<i class="fa fa-users" style="width: 30px;"></i>
 														Invite More
