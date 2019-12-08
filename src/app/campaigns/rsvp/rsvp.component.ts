@@ -40,6 +40,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   errorLogMessage = "";
   formAlias: any;
   form:Form = new Form();
+  selectedType: string;
 
   constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -242,6 +243,8 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     
     this.campaignRsvp.formSubmitDTO = formSubmit;
     
+    this.campaignRsvp.eventCampaignRsvp = this.selectedType;
+    
     this.campaignRsvp.additionalCount = this.totalGuests;
     this.campaignService.saveEventCampaignRsvp(this.campaignRsvp)
       .subscribe(
@@ -280,6 +283,11 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       /* this.authenticationService.formAlias = this.formAlias;*/
   }
   
+  
+  setCampaignRsvpType(rspvType: any){
+      this.campaignRsvp.eventCampaignRsvp = rspvType;
+      this.selectedType = rspvType;
+  }
 
   ngOnInit() {
     try{
@@ -287,9 +295,9 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
         this.processor.set(this.processor);
         this.alias = this.route.snapshot.params['alias'];
-        this.type = this.route.snapshot.queryParams['type'];
+        //this.type = this.route.snapshot.queryParams['type'];
+        this.campaignRsvp.eventCampaignRsvp = this.route.snapshot.queryParams['type'];
         this.getEventCampaign(this.alias);
-        this.campaignRsvp.eventCampaignRsvp = 'YES';
        }catch(error){
         console.error(error);
        }
