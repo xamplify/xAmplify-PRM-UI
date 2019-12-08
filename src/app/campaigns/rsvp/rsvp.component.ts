@@ -249,7 +249,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.campaignService.saveEventCampaignRsvp(this.campaignRsvp)
       .subscribe(
       response => {
-        this.totalGuests = 1;
+        this.totalGuests = 0;
         $('#myModal').modal('hide');
         this.campaignRsvp.message = '';
         this.responseMessage = 'Thank you for the RSVP';
