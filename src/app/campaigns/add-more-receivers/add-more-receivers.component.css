@@ -1,0 +1,4 @@
+.table tr.contact-list-selected td {
+	background-color: #00a6e8 !important;
+	color: white;
+}
