@@ -290,7 +290,7 @@ export class AddMoreReceiversComponent implements OnInit {
                     });
                      html+='</tbody>';
                      html+='</table>';
-                    $('#users-modal-body').append(html);
+                     $('#users-modal-body').append(html);
                     this.referenceService.loading(this.contactListDetailLoader, false);
                 },
                 error => {this.referenceService.showServerErrorMessage(this.contactListDetailLoader)},

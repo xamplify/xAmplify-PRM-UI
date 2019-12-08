@@ -127,9 +127,8 @@
 							</h4>
 						</div>
 					</div>
-					<div class="modal-body" id="users-modal-body" *ngIf="!contactListDetailLoader.isLoading && !contactListDetailLoader.isServerError">
-					</div>
 					<app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader>
+						<div class="modal-body" id="users-modal-body"></div>
 					<app-error-pages *ngIf="contactListDetailLoader.isServerError"></app-error-pages>
 					<div class="modal-footer">
               <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true"
