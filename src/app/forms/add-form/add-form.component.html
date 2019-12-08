@@ -127,13 +127,13 @@
                                     <!-- ---------------------------Text/Email----------------------------- -->
                                     <ng-container
                                       *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
-                                      <input type="{{columnInfo.labelType}}" autoComplete="off" maxlength="0"
+                                      <input type="{{columnInfo.labelType}}" autoComplete="off" maxlength="1000"
                                         id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}"
                                         class="form-control disabled" />
                                     </ng-container>
                                     <!-- ---------------------------TextArea----------------------------- -->
                                     <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                      <textarea rows="4" cols="4" autoComplete="off" maxlength="0"
+                                      <textarea rows="4" cols="4" autoComplete="off" maxlength="1000"
                                         placeholder="{{columnInfo.placeHolder}}" class="form-control disabled"
                                         id="{{columnInfo.labelId}}"></textarea>
                                     </ng-container>

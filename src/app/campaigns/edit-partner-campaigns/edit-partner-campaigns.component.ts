@@ -1039,6 +1039,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             contactsPagination.editCampaign = false;
         }
+        console.log(contactsPagination);
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data: any) => {

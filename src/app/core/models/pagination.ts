@@ -43,5 +43,6 @@ export class Pagination {
 	formId = 0;
 	loader:HttpRequestLoader = new HttpRequestLoader();
 	publicEventLeads = false;
+	addingMoreLists = false;
 	
 }

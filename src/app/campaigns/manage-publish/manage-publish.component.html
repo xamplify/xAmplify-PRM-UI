@@ -217,10 +217,15 @@
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Campaign
 													</a>
-													<a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign"
+													<a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign"
 													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Url
+													</a>
+													<a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && campaign.campaignType.indexOf('EVENT') > -1"
+													 data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">
+														<i class="fa fa-users" style="width: 30px;"></i>
+														Invite More
 													</a>
 														</li>
 														<li   *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign">
@@ -763,3 +768,4 @@
     </div>
   </div>
 <app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+<app-add-more-receivers #addMoreReceivers></app-add-more-receivers>

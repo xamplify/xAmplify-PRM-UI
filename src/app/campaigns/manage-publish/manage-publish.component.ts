@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { CampaignService } from '../services/campaign.service';
@@ -15,7 +15,7 @@ import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from '../models/campaign-access';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
-
+import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
 declare var swal, $: any;
 
 @Component({
@@ -78,6 +78,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     previewCampaign: any;
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     publicEventAlias:string = "";
+    @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
@@ -469,6 +470,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         document.execCommand('copy');
         inputElement.setSelectionRange(0, 0);
         this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+    }
+    inviteMore(campaign:Campaign){
+        this.adddMoreReceiversComponent.showPopup(campaign);
+        
     }
 
 }

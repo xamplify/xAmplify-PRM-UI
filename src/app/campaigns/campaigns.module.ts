@@ -31,6 +31,7 @@ import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-co
 import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
 import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
 import { SharedRssModule } from "app/shared/shared-rss.module";
+import { AddMoreReceiversComponent } from './add-more-receivers/add-more-receivers.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { SharedRssModule } from "app/shared/shared-rss.module";
     CalendarComponent,
     DealRegistrationComponent,
     ManageDealCommentsComponent,
-    AddLeadsComponent
+    AddLeadsComponent,
+    AddMoreReceiversComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
 ],

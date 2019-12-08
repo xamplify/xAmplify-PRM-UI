@@ -740,4 +740,10 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getContactListToInvite(userId:number,pagination:Pagination) {
+        return this.http.post(this.URL + "campaign/getMoreContactLists/"+userId+"?access_token=" + this.authenticationService.access_token,pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }
