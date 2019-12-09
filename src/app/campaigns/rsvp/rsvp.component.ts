@@ -41,6 +41,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   formAlias: any;
   form:Form = new Form();
   selectedType: string;
+  selectedUtmType: string;
 
   constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
@@ -112,6 +113,10 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.authenticationService.formAlias = this.eventcampaign.formDTOs[0].alias;
         
        }
+       /*if(this.selectedUtmType === 'public'){
+           this.eventcampaign.inviteOthers = false;
+       }*/
+       
        if(response.statusCode == 2000 || response.statusCode == 2001){
            this.isCancelledEvent = true;
            this.errorLogMessage = response.message;
@@ -253,6 +258,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         $('#myModal').modal('hide');
         this.campaignRsvp.message = '';
         this.responseMessage = 'Thank you for the RSVP';
+        this.referenceService.goToTop();
         this.getEventCampaign(this.alias);
         this.rsvpSavingProcessing = false;
       },
@@ -298,6 +304,8 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         //this.type = this.route.snapshot.queryParams['type'];
         this.campaignRsvp.eventCampaignRsvp = this.route.snapshot.queryParams['type'];
         this.selectedType = this.route.snapshot.queryParams['type'];
+        this.selectedUtmType = this.route.snapshot.queryParams['UTM_src'];
+        console.log(this.selectedType,this.selectedUtmType);
         this.getEventCampaign(this.alias);
        }catch(error){
         console.error(error);

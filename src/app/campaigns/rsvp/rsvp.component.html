@@ -13,21 +13,23 @@
     <span aria-hidden="true">×</span>
   </a> Thank you for the RSVP
 </div>
-<div class="col-xs-12 col-sm-7 p0"  [hidden]="!eventcampaign">
+<div class="col-xs-12 col-sm-7 p0" [hidden]="!eventcampaign">
+<div class="col-xs-12 p0" *ngIf="!referenceService.isMobileScreenSize()" >
     <fieldset class="fieldrsvp"><div #dataContainer></div></fieldset>
+</div>
 </div>
 <ng-container *ngIf="eventcampaign">
 <div class="col-xs-12 col-sm-5 p0" >
-<div class=" col-xs-12 col-sm-12 p0">
-  <div class="portlet light">
-    <div class="portlet-title title-css-no-border">
+<div class=" col-xs-12 col-sm-12 p0" *ngIf="!referenceService.isMobileScreenSize()">
+  <div class="portlet light" *ngIf="selectedUtmType != 'public'">
+    <div class="portlet-title title-css-no-border" style="padding: 9px!important;">
       <div *ngIf="isRsvp; then rsvp_exist else rsvp_new"></div>
       <ng-template #rsvp_exist>
-        <h4 class="pull-left">You Have RSVPed <b>{{eventcampaign.campaignEventRsvps[0].eventCampaignRsvp}}</b></h4>
+        <h4 class="pull-left" style="color:#fff">You Have RSVPed <b>{{eventcampaign.campaignEventRsvps[0].eventCampaignRsvp}}</b></h4>
         <button class="btn btn-secondary pull-right" [disabled] = "isCancelledEvent" (click)="isRsvp = !isRsvp">Change</button>
       </ng-template>
       <ng-template #rsvp_new>
-        <h4 class="pull-left">Submit your details</h4>
+        <h4 class="pull-left" style="color:#fff">Submit your details</h4>
         <div class="pull-right" [class.disabled]="isCancelledEvent">
           <button class="btn btn-secondary" [disabled] = "isCancelledEvent" [class.selectedType]="campaignRsvp.eventCampaignRsvp ==='YES'" (click)="setCampaignRsvpType('YES')">Yes</button>
           <button class="btn btn-secondary" [disabled] = "isCancelledEvent" [class.selectedType]="campaignRsvp.eventCampaignRsvp ==='NO'" (click)="setCampaignRsvpType('NO')">No</button>
@@ -64,20 +66,21 @@
         <div class="col-xs-12 col-sm-12 p0" *ngIf="authenticationService.formAlias">
            <app-form-preview #formPreviewComponent></app-form-preview>
         </div>
-        <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
+         <div class="col-sm-12 col-md-12">
+         <textarea [(ngModel)]="campaignRsvp.message"  (input)="characterSize()" [ngModelOptions]="{standalone: true}" maxlength="140" placeholder="Add a comment..."></textarea>
         <label class="text-area-css">{{characterleft}} characters left</label>
         <div style="margin-bottom: 7px;" *ngIf="campaignRsvp.eventCampaignRsvp=='YES' && isDataLoaded">
          <ng-container *ngIf="eventcampaign.inviteOthers">
          <button style="min-width: 35px !important;" class="btn btn-primary default-btn-css" [disabled]="totalGuests==0" (click)="totalGuests = totalGuests-1">-</button>
          <button class="btn btn-defult default-btn-css totalguests">{{totalGuests}}</button>
          <button style="margin-left: -4px;" class="btn btn-primary default-btn-css" [disabled]="totalGuests==11" (click)="totalGuests = totalGuests+1">+</button>
-         <span class="bold">Total guests</span> (in addition to you)
+         <span class="bold" style="color:#fff">Total guests (in addition to you)</span> 
          </ng-container>
+        </div></div>
         </div>
-        </div>
-      <div class="footer">
+      <div class="footer" style=" padding-right: 17px;">
         <!-- <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeRsvpModel()">Close</button> -->
-        <button [class.save-button-align-class]="campaignRsvp.eventCampaignRsvp !='YES'" (click)="campaignRsvp.eventCampaignRsvp = 'YES'" type="button" class="btn btn-primary" [disabled]="rsvpSavingProcessing" (click)="saveEventCampaignRsvp()">Submit</button>
+        <button style="margin-bottom:10px;" [class.save-button-align-class]="!eventcampaign.inviteOthers" (click)="campaignRsvp.eventCampaignRsvp = 'YES'" type="button" class="btn btn-primary" [disabled]="rsvpSavingProcessing" (click)="saveEventCampaignRsvp()">Submit</button>
       </div>
       </div>
     </div>
@@ -89,10 +92,10 @@
 
 
 
-<div class="col-xs-12 col-sm-12 p0">
+<div class="col-xs-12 col-sm-12 p0" *ngIf="selectedUtmType !='public'">
     <div class="portlet light">
       <div class="portlet-title">
-        <h4>RSVP history</h4>
+        <h4 style="color:#fff">RSVP history</h4>
       </div>
       <div class="portlet-body">
         <table class="table table-condensed table-hover">

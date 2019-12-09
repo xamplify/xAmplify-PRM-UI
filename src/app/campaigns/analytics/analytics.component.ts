@@ -2238,6 +2238,7 @@ getLeadsCount(){
            this.campaignReport.yesLeadCount = data.YES;
            this.campaignReport.noLeadCount = data.NO;
            this.campaignReport.maybeLeadCount = data.MAYBE;
+           this.campaignReport.leadAdditionalCount = data.additionalCount;
            this.getEventLeadsDetails('YES');
       },
       (error:any)=>{this.xtremandLogger.error('error'+error); })
@@ -2255,6 +2256,7 @@ getPartnerLeadsCount(selectedLeadPartnerId: number){
            this.campaignReport.yesPartnerLeadCount = data.YES;
            this.campaignReport.noPartnerLeadCount = data.NO;
            this.campaignReport.maybePartnerLeadCount = data.MAYBE;
+           this.campaignReport.partnerLeadAdditionalCount = data.additionalCount;
            this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId);
       },
       (error:any)=>{this.xtremandLogger.error('error'+error); })
@@ -2327,7 +2329,6 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
                this.partnerLeadsFormHeaders = data.headers;
                this.partnerLeadsFormDetails = data.data;
                this.partnerLeadsFormDetails.forEach((value)=>{ value['expanded'] = false;})
-               
                
                /*if(this.partnerLeadDetailType == 'YES'){
                    this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.yesPartnerLeadCount;

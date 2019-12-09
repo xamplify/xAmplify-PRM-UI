@@ -52,6 +52,7 @@ export class FormPreviewComponent implements OnInit {
 
   ngOnInit() {
      $('.mobile-camp').removeClass('mobile-camp');
+     $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
       this.processor.set(this.processor);
       if(this.authenticationService.formAlias){
           this.alias = this.authenticationService.formAlias;

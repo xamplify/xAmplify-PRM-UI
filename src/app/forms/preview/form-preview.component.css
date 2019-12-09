@@ -19,7 +19,10 @@
 #bottom-right {
 	float: right;
 }
-
+.control-label {
+    margin-top: 1px;
+    color: #fff!important;
+}
 #header-center{
 	text-align: center;
 }
@@ -37,4 +40,19 @@
     }
 #line-height{
 	line-height: 15px;
-}    
+}  
+.panel .panel-body {
+    font-size: 13px;
+    color: #fff!important;
+}
+.panel {
+	background-color: transparent !important;
+}
+.panel-info {
+    border-color: #ffffff !important;
+}
+.panel-info > .panel-heading {
+    color: #fff!important;
+    background-color: transparent!important;
+    border-color: #bce8f1;
+}

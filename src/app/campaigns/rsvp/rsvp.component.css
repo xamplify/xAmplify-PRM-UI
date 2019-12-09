@@ -72,3 +72,27 @@ button {
     margin: 0 0px !important;
     border: none !important;
 }
+
+.portlet.light {
+    padding: 0px;
+    background-color: transparent!important;
+}
+.portlet.light .portlet-body {
+    padding-top: 0px!important;
+}
+.portlet.light, .dashboard-stat2 {
+    border: 1px solid #CCC;
+    padding: 0px !important;
+}
+.table thead tr th {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff!important;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+    color: #fff!important;
+}
