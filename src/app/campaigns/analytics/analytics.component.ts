@@ -955,7 +955,9 @@ showTimeLineView(){
                this.campaign.selectedEmailTemplateId = this.eventCampaign.emailTemplateDTO.id;
              }
        /****** For leads count info ******/
-           this.getLeadsCount();
+         if(this.campaign.publicEventCampaign){
+             this.getLeadsCount();
+         }
         },
         error => console.log(error),
         () => { }
@@ -2269,6 +2271,16 @@ partnerEventLeadsDetailsSetPage( event: any ) {
     this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId);
 }
 
+partnerEventLeadsDetailsSetPageDropdown(event: Pagination){
+    this.leadsDetailPagination = event;
+    this.getEventLeadsDetails(this.partnerLeadDetailType);
+}
+
+eventLeadsDetailsSetPageDropdown(event: Pagination){
+    this.leadsDetailPagination = event;
+    this.getEventLeadsDetails(this.leadDetailType);
+}
+
 
 getEventLeadsDetails(detailType: any){
    this.leadDetailType = detailType;
@@ -2276,7 +2288,7 @@ getEventLeadsDetails(detailType: any){
    this.httpRequestLoader.isLoading = true;
     try{
         
-        this.leadsDetailPagination.maxResults = 1000;
+        //this.leadsDetailPagination.maxResults = 1000;
         this.campaignService.getEventLeadsDetails(this.leadsDetailPagination, this.campaignId, this.leadDetailType)
         .subscribe(
           data => {
@@ -2284,7 +2296,17 @@ getEventLeadsDetails(detailType: any){
               this.leadsFormHeaders = data.headers;
               this.leadsFormDetails = data.data;
               this.leadsFormDetails.forEach((value)=>{ value['expanded'] = false;})
+              
+              /*if(this.leadDetailType == 'YES'){
+                  this.leadsDetailPagination.totalRecords = this.campaignReport.yesLeadCount;
+              }else if(this.leadDetailType == 'NO'){
+                  this.leadsDetailPagination.totalRecords = this.campaignReport.noLeadCount;
+              }else if(this.leadDetailType == 'MAYBE'){
+                  this.leadsDetailPagination.totalRecords = this.campaignReport.maybeLeadCount;
+              }*/
+              
               this.leadsDetailPagination.totalRecords = data.totalRecords;
+             // this.leadsDetailPagination.offset = data.offset;
               this.leadsDetailPagination = this.pagerService.getPagedItems(this.leadsDetailPagination, data.data);
               this.httpRequestLoader.isLoading = false;
          },
@@ -2299,7 +2321,7 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
     this.partnerLeadDetailType = detailType;
     this.httpRequestLoader.isLoading = true;
      try{
-         this.leadsDetailPagination.maxResults = 1000;
+         //this.leadsDetailPagination.maxResults = 1000;
          this.campaignService.getPartnerEventLeadsDetails(this.partnerLeadsDetailPagination, this.campaignId, selectedLeadPartnerId, this.partnerLeadDetailType)
          .subscribe(
            data => {
@@ -2307,6 +2329,18 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
                this.partnerLeadsFormHeaders = data.headers;
                this.partnerLeadsFormDetails = data.data;
                this.partnerLeadsFormDetails.forEach((value)=>{ value['expanded'] = false;})
+               
+               
+               /*if(this.partnerLeadDetailType == 'YES'){
+                   this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.yesPartnerLeadCount;
+               }else if(this.partnerLeadDetailType == 'NO'){
+                   this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.noPartnerLeadCount;
+               }else if(this.partnerLeadDetailType == 'MAYBE'){
+                   this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.maybePartnerLeadCount;
+               }*/
+               
+               
+               //this.partnerLeadsDetailPagination.offset = data.offset;
                this.partnerLeadsDetailPagination.totalRecords = data.totalRecords;
                this.partnerLeadsDetailPagination = this.pagerService.getPagedItems(this.partnerLeadsDetailPagination, data.data);
                this.httpRequestLoader.isLoading = false;
@@ -2324,11 +2358,11 @@ leadDetailsSearch(){
     if(this.leadType == 'eventLeads'){
         this.leadsDetailPagination.searchKey = this.leadsSearchKey;
         this.leadsDetailPagination.pageIndex = 1;
-        this.getEventLeadsDetails('YES'); 
+        this.getEventLeadsDetails(this.leadDetailType); 
      }else{
          this.partnerLeadsDetailPagination.searchKey = this.leadsSearchKey;
          this.partnerLeadsDetailPagination.pageIndex = 1;
-         this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId); 
+         this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId); 
      }
  }
 
