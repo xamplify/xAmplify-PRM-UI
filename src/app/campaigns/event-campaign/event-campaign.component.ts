@@ -1044,8 +1044,10 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     if(this.router.url.includes('campaigns/re-distribute')){
         console.log(this.selectedFormData);
     }else{
-        this.selectedFormData = this.previewPopUpComponent.selectedFormData;
-        this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+       if(this.authenticationService.module.hasFormAccess){
+          this.selectedFormData = this.previewPopUpComponent.selectedFormData;
+          this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
+       }
     }
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
     if(eventCampaign.userListIds != undefined){
