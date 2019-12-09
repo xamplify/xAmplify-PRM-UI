@@ -67,7 +67,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 	        <div class="control-styles">
 	        	<ejs-multiselect [(ngModel)]='addContactuser.legalBasis' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
 	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select atleast one option</span>
+	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
 	        </div>
 	    </div>
 	    </div>

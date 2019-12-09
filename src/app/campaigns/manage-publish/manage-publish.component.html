@@ -222,7 +222,7 @@
 														<i class="fa fa-files-o" style="width: 30px;"></i>
 														Copy Url
 													</a>
-													<a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign"
+													<a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)"
 													 data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">
 														<i class="fa fa-users" style="width: 30px;"></i>
 														Invite More
@@ -758,7 +758,7 @@
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
           </app-response-message>
-          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}rsvp/{{publicEventAlias}}?type=YES" #publicEventCampaignUrlInput>
+          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}rsvp/{{publicEventAlias}}?type=YES&utm_source=public" #publicEventCampaignUrlInput>
         </div>
         <div class="modal-footer">
           <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)">Copy Link</a>

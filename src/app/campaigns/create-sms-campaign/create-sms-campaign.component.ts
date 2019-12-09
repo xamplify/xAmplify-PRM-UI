@@ -1874,7 +1874,7 @@ export class CreateSmsCampaignComponent implements OnInit,OnDestroy{
                 'required': 'please select the launch time'
             },
             'contactListId': {
-                'pattern': 'please select atleast one contact list'
+                'pattern': 'please select at least one contact list'
             },
             'countryId': {
                 'required': 'Country is required.',
