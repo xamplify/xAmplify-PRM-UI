@@ -19,10 +19,10 @@
 			 <a class="close-circle" (click)="refreshForm()" data-toggle="tooltip" data-placement="top"  title="Refresh">
 						<i class="fa fa-refresh" id="line-height"></i>
 				</a>
-				<div class="panel-title">{{form.name}}</div>
+				<div class="panel-title" title="{{form.name}}">{{form.name | slice:0:30}}<span *ngIf="form.name?.length>30">..</span></div>
 			</div>
 			<div class="panel-body">
-			 <h5>{{form.description}}</h5>
+			 <h5 title="{{form.description}}">{{form.description  | slice:0:40}} <span *ngIf="form.description?.length>40">..</span></h5>
 				<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
 				<ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
 						<div class="form-group">
