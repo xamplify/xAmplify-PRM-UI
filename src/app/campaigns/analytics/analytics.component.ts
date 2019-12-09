@@ -2287,8 +2287,6 @@ getEventLeadsDetails(detailType: any){
    this.leadType = 'eventLeads';
    this.httpRequestLoader.isLoading = true;
     try{
-        
-        //this.leadsDetailPagination.maxResults = 1000;
         this.campaignService.getEventLeadsDetails(this.leadsDetailPagination, this.campaignId, this.leadDetailType)
         .subscribe(
           data => {
