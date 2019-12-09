@@ -60,7 +60,7 @@ button {
 	text-align: right;
 }
 .save-button-align-class{
-	 margin-right: -100px;
+	 margin-right: -20px;
 }
 .title-css-no-border{
 	border-bottom: 0 !important;
@@ -99,3 +99,18 @@ button {
 .table-hover>tbody>tr:hover {
     background-color: transparent!important;
 }
+
+
+
+@media (max-width: 767px) {
+	.small{
+	border: none; padding-top: 10px; margin-bottom: 10px;
+	 clear: both;
+	}
+	
+}
+
+.small{
+	border: 1px solid #fff; padding-top: 10px; margin-bottom: 10px;
+	clear: both;
+	}
