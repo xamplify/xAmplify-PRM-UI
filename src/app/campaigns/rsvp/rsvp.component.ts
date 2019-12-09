@@ -304,7 +304,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         //this.type = this.route.snapshot.queryParams['type'];
         this.campaignRsvp.eventCampaignRsvp = this.route.snapshot.queryParams['type'];
         this.selectedType = this.route.snapshot.queryParams['type'];
-        this.selectedUtmType = this.route.snapshot.queryParams['UTM_src'];
+        this.selectedUtmType = this.route.snapshot.queryParams['utm_source'];
         console.log(this.selectedType,this.selectedUtmType);
         this.getEventCampaign(this.alias);
        }catch(error){
