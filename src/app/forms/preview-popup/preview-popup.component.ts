@@ -46,6 +46,7 @@ export class PreviewPopupComponent implements OnInit {
           this.pagination.campaignType = 'EVENT';
       }
       
+      console.log(this.pagination.campaignType);
   }
   
   

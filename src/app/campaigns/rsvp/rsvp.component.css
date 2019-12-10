@@ -75,7 +75,7 @@ button {
 
 .portlet.light {
     padding: 0px;
-    background-color: transparent!important;
+    background-color: rgba(0, 0, 0, 0.2)!important;
 }
 .portlet.light .portlet-body {
     padding-top: 0px!important;
@@ -105,7 +105,8 @@ button {
 @media (max-width: 767px) {
 	.small{
 	border: none; padding-top: 10px; margin-bottom: 10px;
-	 clear: both;
+	 clear: both; 
+	 background: rgba(0, 0, 0, 0.2);
 	}
 	
 }
@@ -113,4 +114,5 @@ button {
 .small{
 	border: 1px solid #fff; padding-top: 10px; margin-bottom: 10px;
 	clear: both;
+	background: rgba(0, 0, 0, 0.2);
 	}

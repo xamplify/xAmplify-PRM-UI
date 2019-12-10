@@ -23,6 +23,7 @@ declare var $: any;
 })
 export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('dataContainer') dataContainer: ElementRef;
+  @ViewChild('dataContainerDup') dataContainerDup: ElementRef;
   @ViewChild('formPreviewComponent') formPreviewComponent: FormPreviewComponent;
   alias: string;
   eventcampaign: any;
@@ -54,6 +55,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.eventcampaign = response.data;
         console.log(response);
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
+        this.dataContainerDup.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.isRsvp = this.eventcampaign.campaignEventRsvps.length>0 ? true: false;
         this.campaignRsvp.alias = this.alias;
         this.isDataLoaded = true;
@@ -229,6 +231,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     const invalidEmailIdsFieldsCount = formLabelDtos.filter((item) => (item.divClass=='error')).length;
     if(requiredFormLabels.length>0 ||invalidEmailIdsFieldsCount>0){
       this.formPreviewComponent.addHeaderMessage('Please fill required fields',this.formPreviewComponent.errorAlertClass);
+      this.referenceService.goToTop();
     }else{
      this.rsvpSavingProcessing = true;
      const formSubmit = new FormSubmit();

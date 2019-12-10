@@ -47,7 +47,7 @@
     color: #fff!important;
 }
 .panel {
-	background-color: transparent !important;
+	background-color: rgba(0, 0, 0, 0.2) !important;
 }
 .panel-info {
     border-color: #ffffff !important;
