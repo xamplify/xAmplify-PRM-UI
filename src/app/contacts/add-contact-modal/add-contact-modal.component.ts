@@ -231,6 +231,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
         /**************Show Legal Basis Content*******************/
         this.fields = { text: 'name', value: 'id' };
+        console.log(this.gdprInput)
         if(this.gdprInput!=undefined){
             this.legalBasisOptions = this.gdprInput.legalBasisOptions;
             this.termsAndConditionStatus = this.gdprInput.termsAndConditionStatus;

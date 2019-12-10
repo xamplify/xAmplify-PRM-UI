@@ -196,7 +196,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.parentInput = {};
         const currentUser = localStorage.getItem( 'currentUser' );
         let campaginAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
-        this.companyId = campaginAccessDto.companyId;
+        if(campaginAccessDto!=undefined){
+            this.companyId = campaginAccessDto.companyId;
+        }
     }
 
     onChangeAllPartnerUsers( event: Pagination ) {

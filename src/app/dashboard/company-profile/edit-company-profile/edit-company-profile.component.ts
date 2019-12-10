@@ -403,7 +403,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 console.log(data);
                 this.authenticationService.user = data;
                 this.authenticationService.userProfile = data;
-                
                 const currentUser = localStorage.getItem( 'currentUser' );
                 const userToken = {
                         'userName': userName,
@@ -412,10 +411,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         'refreshToken': JSON.parse( currentUser )['refreshToken'],
                         'expiresIn':  JSON.parse( currentUser )['expiresIn'],
                         'hasCompany': data.hasCompany,
-                        'roles': data.roles
+                        'roles': data.roles,
+                        'campaignAccessDto':data.campaignAccessDto
                     };
                     localStorage.clear();
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
+                    console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 
               },
               error => {console.log( error ); this.router.navigate(['/su'])},
@@ -476,7 +477,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'refreshToken': JSON.parse(currentUser)['refreshToken'],
                                 'expiresIn': JSON.parse(currentUser)['expiresIn'],
                                 'hasCompany': self.authenticationService.user.hasCompany,
-                                'roles': JSON.parse(currentUser)['roles']
+                                'roles': JSON.parse(currentUser)['roles'],
+                                'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto']
                             };
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
