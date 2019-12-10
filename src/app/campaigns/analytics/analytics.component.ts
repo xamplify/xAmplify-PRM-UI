@@ -2295,7 +2295,13 @@ getEventLeadsDetails(detailType: any){
               console.log(data);
               this.leadsFormHeaders = data.headers;
               this.leadsFormDetails = data.data;
-              this.leadsFormDetails.forEach((value)=>{ value['expanded'] = false;})
+              this.leadsFormDetails.forEach((value)=>{ 
+                  value['expanded'] = false;
+                  if( value['RSVP Time UTC String']!=undefined){
+                      value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
+                  }
+                  
+              })
               
               /*if(this.leadDetailType == 'YES'){
                   this.leadsDetailPagination.totalRecords = this.campaignReport.yesLeadCount;
@@ -2328,7 +2334,13 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
                console.log(data);
                this.partnerLeadsFormHeaders = data.headers;
                this.partnerLeadsFormDetails = data.data;
-               this.partnerLeadsFormDetails.forEach((value)=>{ value['expanded'] = false;})
+               this.partnerLeadsFormDetails.forEach((value)=>{ 
+                   value['expanded'] = false;
+                   if( value['RSVP Time UTC String']!=undefined){
+                       value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
+                   }
+                   
+               })
                
                /*if(this.partnerLeadDetailType == 'YES'){
                    this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.yesPartnerLeadCount;

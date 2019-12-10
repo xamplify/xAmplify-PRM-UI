@@ -891,7 +891,13 @@
 													{{column}}<span class="required" *ngIf="column.required">*</span>
 												</th>
 												<td *ngIf="i>=4">
-													{{formDataRow[column]}}
+													 <ng-container *ngIf="column=='RSVP Time'">
+														<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="formDataRow[column]"> </app-timestamp>
+                        								<span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
+													</ng-container>
+													<ng-container *ngIf="column!='RSVP Time'">
+															{{formDataRow[column]}}
+													</ng-container>
 												</td>
 											</tr>
 										</table>
@@ -2222,7 +2228,13 @@
 													{{column}}<span class="required" *ngIf="column.required">*</span>
 												</th>
 												<td *ngIf="i>=4">
-													{{formDataRow[column]}}
+													 <ng-container *ngIf="column=='RSVP Time'">
+														<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false" [dateAndTime]="formDataRow[column]"> </app-timestamp>
+                        								<span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[column]}}</span>
+													</ng-container>
+													<ng-container *ngIf="column!='RSVP Time'">
+															{{formDataRow[column]}}
+													</ng-container>
 												</td>
 											</tr>
 										</table>
