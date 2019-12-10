@@ -349,6 +349,10 @@
 													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
 								<i class="fa fa-files-o" style="width: 30px;"></i>Copy Url
 								</a>
+							<a (click)="goToFormAnalytics(campaign.campaignId)"	 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+								<i class="fa fa-wpforms"></i>
+							</a>
+							<span class="badge" id="notification-list">{{campaign.formsCount}}</span>
                             </li>
                           </ng-container>
                           <li>
@@ -443,6 +447,14 @@
 													</a>
 													<span class="badge" id="notification-list">{{campaign.formsCount}}</span>
 												</ng-container>
+												<a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign"
+													 data-rel="fancybox-button" (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
+														<i class="fa fa-files-o"></i>
+													</a>
+													<a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)"
+													 data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">
+														<i class="fa fa-users"></i>
+													</a>
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
