@@ -2397,15 +2397,9 @@ expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
 
 downloadLeadList() {
     try {
-        let selectedleadType;
-        if(this.leadType == 'eventLeads'){
-            selectedleadType = this.partnerLeadDetailType;
-        }else{
-            selectedleadType = this.leadDetailType;
-        }
-        this.campaignService.downloadLeadList( this.campaignId, selectedleadType)
+        this.campaignService.downloadLeadList( this.campaignId, this.leadDetailType)
             .subscribe(
-            data => this.downloadFile( data, selectedleadType ),
+            data => this.downloadFile( data, this.leadDetailType ),
             ( error: any ) => {
                 this.xtremandLogger.error( error );
                 this.xtremandLogger.errorPage( error );
@@ -2427,7 +2421,41 @@ downloadFile( data: any, selectedleadType: any) {
     } else {
         let a = document.createElement( 'a' );
         a.href = url;
-        a.download = selectedleadType + " " + ' List.csv';
+        a.download = selectedleadType + " lead " + ' List.csv';
+        document.body.appendChild( a );
+        a.click();
+        document.body.removeChild( a );
+    }
+    window.URL.revokeObjectURL( url );
+}
+
+downloadPartnerLeadList() {
+    try {
+        this.campaignService.downloadPartnerLeadList( this.campaignId, this.selectedLeadPartnerId, this.partnerLeadDetailType)
+            .subscribe(
+            data => this.downloadPartnerFile( data, this.partnerLeadDetailType ),
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.info( "download completed" )
+            );
+    } catch ( error ) {
+        this.xtremandLogger.error( error, "ManageContactsComponent", "downloadList()" );
+    }
+}
+
+downloadPartnerFile( data: any, selectedleadType: any) {
+    let parsedResponse = data.text();
+    let blob = new Blob( [parsedResponse], { type: 'text/csv' });
+    let url = window.URL.createObjectURL( blob );
+
+    if ( navigator.msSaveOrOpenBlob ) {
+        navigator.msSaveBlob( blob, 'UserList.csv' );
+    } else {
+        let a = document.createElement( 'a' );
+        a.href = url;
+        a.download = selectedleadType + " partner_lead " + ' List.csv';
         document.body.appendChild( a );
         a.click();
         document.body.removeChild( a );
