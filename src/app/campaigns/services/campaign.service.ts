@@ -475,6 +475,14 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
+    downloadLeadList( campaignId: number, leadType: any): Observable<Response> {
+        this.logger.info( campaignId );
+        return this.http.get( this.URL + "campaign/" + campaignId + "/download-leads-details?access_token=" + this.authenticationService.access_token + "&type=" + leadType)
+            .map(( response: any ) => response );
+    }
+
+
+    
     getPartnerEventLeadsDetails(pagination: Pagination,campaignId: number, partnerId: number, detailType: string) {
         const url = this.URL + "campaign/"+ campaignId + "/" + partnerId +"/partner-leads-details?access_token=" + this.authenticationService.access_token + "&type="+ detailType;
         return this.http.post(url, pagination)
@@ -541,8 +549,8 @@ export class CampaignService {
         let day = currentTime.getDate() < 10 ? '0' + currentTime.getDate() : currentTime.getDate();
         return $.trim(month + "/" + day + "/" + year);
     }
-
-
+    
+    
 
     addEmailId(campaign: Campaign, selectedEmailTemplateId: number, selectedLandingPageId :number, nurtureCampaign: boolean) {
         try {

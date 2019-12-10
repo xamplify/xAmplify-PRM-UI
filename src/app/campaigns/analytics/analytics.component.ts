@@ -2395,12 +2395,17 @@ expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
 
 }
 
-
-downloadLeadList( contactListId: number, contactListName: any ) {
+downloadLeadList() {
     try {
-        this.contactService.downloadContactList( contactListId )
+        let selectedleadType;
+        if(this.leadType == 'eventLeads'){
+            selectedleadType = this.partnerLeadDetailType;
+        }else{
+            selectedleadType = this.leadDetailType;
+        }
+        this.campaignService.downloadLeadList( this.campaignId, selectedleadType)
             .subscribe(
-            data => this.downloadFile( data, contactListName ),
+            data => this.downloadFile( data, selectedleadType ),
             ( error: any ) => {
                 this.xtremandLogger.error( error );
                 this.xtremandLogger.errorPage( error );
@@ -2412,7 +2417,7 @@ downloadLeadList( contactListId: number, contactListName: any ) {
     }
 }
 
-downloadFile( data: any, contactListName: any) {
+downloadFile( data: any, selectedleadType: any) {
     let parsedResponse = data.text();
     let blob = new Blob( [parsedResponse], { type: 'text/csv' });
     let url = window.URL.createObjectURL( blob );
@@ -2422,15 +2427,13 @@ downloadFile( data: any, contactListName: any) {
     } else {
         let a = document.createElement( 'a' );
         a.href = url;
-        a.download = contactListName + " " + ' List.csv';
+        a.download = selectedleadType + " " + ' List.csv';
         document.body.appendChild( a );
         a.click();
         document.body.removeChild( a );
     }
     window.URL.revokeObjectURL( url );
 }
-
-
 
 
 }
