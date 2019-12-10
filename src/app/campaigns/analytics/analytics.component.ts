@@ -2395,4 +2395,42 @@ expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
 
 }
 
+
+downloadLeadList( contactListId: number, contactListName: any ) {
+    try {
+        this.contactService.downloadContactList( contactListId )
+            .subscribe(
+            data => this.downloadFile( data, contactListName ),
+            ( error: any ) => {
+                this.xtremandLogger.error( error );
+                this.xtremandLogger.errorPage( error );
+            },
+            () => this.xtremandLogger.info( "download completed" )
+            );
+    } catch ( error ) {
+        this.xtremandLogger.error( error, "ManageContactsComponent", "downloadList()" );
+    }
+}
+
+downloadFile( data: any, contactListName: any) {
+    let parsedResponse = data.text();
+    let blob = new Blob( [parsedResponse], { type: 'text/csv' });
+    let url = window.URL.createObjectURL( blob );
+
+    if ( navigator.msSaveOrOpenBlob ) {
+        navigator.msSaveBlob( blob, 'UserList.csv' );
+    } else {
+        let a = document.createElement( 'a' );
+        a.href = url;
+        a.download = contactListName + " " + ' List.csv';
+        document.body.appendChild( a );
+        a.click();
+        document.body.removeChild( a );
+    }
+    window.URL.revokeObjectURL( url );
+}
+
+
+
+
 }
