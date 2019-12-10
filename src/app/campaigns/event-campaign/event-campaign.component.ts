@@ -262,7 +262,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
              this.isValidCampaignName = true;
          }
      }else{
-         console.log(this.editedCampaignName.toLowerCase()+":::::::::"+lowerCaseCampaignName);
          if($.inArray(lowerCaseCampaignName, list) > -1 && this.editedCampaignName.toLowerCase()!=lowerCaseCampaignName){
              this.isValidCampaignName = false;
          }else{
