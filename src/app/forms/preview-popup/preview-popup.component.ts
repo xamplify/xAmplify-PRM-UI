@@ -41,6 +41,11 @@ export class PreviewPopupComponent implements OnInit {
       if(this.router.url=="/home/emailtemplates/create" || this.router.url=="/home/pages/add"){
           this.showButton = true;
       }
+      
+      if(this.authenticationService.isShowForms){
+          this.pagination.campaignType = 'EVENT';
+      }
+      
   }
   
   
