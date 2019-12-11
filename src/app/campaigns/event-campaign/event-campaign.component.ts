@@ -318,6 +318,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         if(result.data.parentCampaignId) { this.parentCampaignIdValue = result.data.parentCampaignId; this.parentCampaignId =true; this.isPartnerUserList = false;}
         this.editedCampaignName = this.eventCampaign.campaign;
         this.validateCampaignName(this.eventCampaign.campaign);
+        if(this.reDistributeEvent){
+            let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
+            if(existingTeamMemberEmailIds.indexOf(this.eventCampaign.email)<0){
+                    const userProfile = this.authenticationService.userProfile;
+                    this.eventCampaign.email = userProfile.emailId;
+            }
+        }
         console.log( this.eventCampaign);
         this.eventCampaign.emailTemplate = result.data.emailTemplateDTO;
         if(!this.eventCampaign.emailTemplate) { this.eventCampaign.emailTemplate = new EmailTemplate(); }
@@ -1294,10 +1301,13 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
   }
 
   setFromName() {
-    const user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId === this.eventCampaign.email)[0];
-    this.eventCampaign.fromName = $.trim(user.firstName + " " + user.lastName);
-    this.setEmailIdAsFromName();
-    this.eventHostByError();
+      if(!this.reDistributeEvent){
+          const user = this.teamMemberEmailIds.filter((teamMember) => teamMember.emailId === this.eventCampaign.email)[0];
+          this.eventCampaign.fromName = $.trim(user.firstName + " " + user.lastName);
+          this.setEmailIdAsFromName();
+          this.eventHostByError();
+      }
+   
   }
 
   fileChange(event: any) {

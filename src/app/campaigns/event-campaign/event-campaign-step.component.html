@@ -127,21 +127,20 @@ a.disabled {
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">From
-								Email</label>
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">From	Email</label>
 							<div class="col-sm-9">
-								<select *ngIf="!reDistributeEvent && !reDistributeEventManage && !isPreviewEvent"
-									[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate)? '' : null"
-									class="form-control" [(ngModel)]="eventCampaign.email"
-									[ngModelOptions]="{standalone: true}" (change)="setFromName()">
-									<option *ngFor="let teamMember of teamMemberEmailIds"
-										[ngValue]="teamMember.emailId">
-										{{teamMember.emailId}}</option>
+								<select *ngIf="!reDistributeEventManage && !isPreviewEvent"	[attr.disabled]="(isPreviewEvent || reDistributeEventManage || isEventUpdate)? '' : null"
+									class="form-control" [(ngModel)]="eventCampaign.email"	[ngModelOptions]="{standalone: true}" (change)="setFromName()">
+									<option *ngFor="let teamMember of teamMemberEmailIds"[ngValue]="teamMember.emailId">
+										{{teamMember.emailId}}
+									</option>
 								</select>
-								<input [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null" *ngIf="reDistributeEvent || isPreviewEvent || reDistributeEventManage" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
+								<input [attr.disabled]="(isPreviewEvent || reDistributeEventManage)? '' : null" *ngIf="isPreviewEvent || reDistributeEventManage" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
+						
+						
 						<div class="form-group">
 							<label class="col-sm-3 labal-css color-css">Subject Line <font
 								style="color: red"> <b>*</b>
