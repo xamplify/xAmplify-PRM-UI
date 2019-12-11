@@ -53,6 +53,13 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
       (response:any) => {
        if(response.statusCode == 200){
         this.eventcampaign = response.data;
+        
+        if(response.data.targetUserDTO.emailId){
+           this.authenticationService.isPartnerRsvp = true;
+        }
+        
+        console.log("isPartnerRsvp:=" + this.authenticationService.isPartnerRsvp);
+        
         console.log(response);
         this.dataContainer.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
         this.dataContainerDup.nativeElement.innerHTML = this.addURLs(this.eventcampaign.emailTemplateDTO.body);
@@ -317,6 +324,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   
   ngOnDestroy() {
       this.authenticationService.isFromRsvpPage = false;
+      this.authenticationService.isPartnerRsvp = false;
       this.isDataLoaded = false;
       this.responseMessage = '';
   }
