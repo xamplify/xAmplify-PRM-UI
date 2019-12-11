@@ -57,3 +57,7 @@
     background-color: transparent!important;
     border-color: #bce8f1;
 }
+.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+}
