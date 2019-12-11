@@ -786,7 +786,7 @@
 										placeholder="Search"
 										(keypress)="leadEventHandler($event.keyCode)">
 									<button class="search-box-item-clear"
-										*ngIf="searchKey" (click)="leadsSearchKey=''">
+										*ngIf="leadsSearchKey" (click)="leadsSearchKey=''">
 										<span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
 										</button>
 									<button type="submit" class="search-box-item-click" style="right: 1px"
