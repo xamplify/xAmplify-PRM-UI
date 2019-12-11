@@ -165,6 +165,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   partnerLeadsFormDetails = [];
   selectedLeadPartnerId: number;
   leadType: string;
+  isLeadListDownloadProcessing = false;
   
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
@@ -2409,55 +2410,45 @@ expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
 
 downloadLeadList() {
     try {
+        this.isLeadListDownloadProcessing = true;
         this.campaignService.downloadLeadList( this.campaignId, this.leadDetailType)
             .subscribe(
-            data => this.downloadFile( data, this.leadDetailType ),
+            data => this.downloadFile( data, this.leadDetailType, 'lead' ),
             ( error: any ) => {
                 this.xtremandLogger.error( error );
                 this.xtremandLogger.errorPage( error );
+                this.isLeadListDownloadProcessing = false;
             },
             () => this.xtremandLogger.info( "download completed" )
             );
     } catch ( error ) {
         this.xtremandLogger.error( error, "ManageContactsComponent", "downloadList()" );
+        this.isLeadListDownloadProcessing = false;
     }
-}
-
-downloadFile( data: any, selectedleadType: any) {
-    let parsedResponse = data.text();
-    let blob = new Blob( [parsedResponse], { type: 'text/csv' });
-    let url = window.URL.createObjectURL( blob );
-
-    if ( navigator.msSaveOrOpenBlob ) {
-        navigator.msSaveBlob( blob, 'UserList.csv' );
-    } else {
-        let a = document.createElement( 'a' );
-        a.href = url;
-        a.download = selectedleadType + " lead " + ' List.csv';
-        document.body.appendChild( a );
-        a.click();
-        document.body.removeChild( a );
-    }
-    window.URL.revokeObjectURL( url );
 }
 
 downloadPartnerLeadList() {
     try {
+        this.isLeadListDownloadProcessing = true;
         this.campaignService.downloadPartnerLeadList( this.campaignId, this.selectedLeadPartnerId, this.partnerLeadDetailType)
             .subscribe(
-            data => this.downloadPartnerFile( data, this.partnerLeadDetailType ),
+            data => {
+               this.downloadFile( data, this.partnerLeadDetailType, 'partner_lead' );
+               },
             ( error: any ) => {
                 this.xtremandLogger.error( error );
                 this.xtremandLogger.errorPage( error );
+                this.isLeadListDownloadProcessing = false;
             },
             () => this.xtremandLogger.info( "download completed" )
             );
     } catch ( error ) {
-        this.xtremandLogger.error( error, "ManageContactsComponent", "downloadList()" );
+        this.xtremandLogger.error( error, "AnalyticsComponent", "downloadLeadList()" );
+        this.isLeadListDownloadProcessing = false;
     }
 }
 
-downloadPartnerFile( data: any, selectedleadType: any) {
+downloadFile( data: any, selectedleadType: any, name: any) {
     let parsedResponse = data.text();
     let blob = new Blob( [parsedResponse], { type: 'text/csv' });
     let url = window.URL.createObjectURL( blob );
@@ -2467,13 +2458,13 @@ downloadPartnerFile( data: any, selectedleadType: any) {
     } else {
         let a = document.createElement( 'a' );
         a.href = url;
-        a.download = selectedleadType + " partner_lead " + ' List.csv';
+        a.download = selectedleadType + "_" + name + ' List.csv';
         document.body.appendChild( a );
         a.click();
         document.body.removeChild( a );
     }
     window.URL.revokeObjectURL( url );
+    this.isLeadListDownloadProcessing = false;
 }
-
 
 }
