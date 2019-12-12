@@ -7,6 +7,12 @@
 	margin: 1px;
 	font-size: 20px;
 }
+.required-text{
+	color: red;
+	margin: 1px;
+	font-size: 14px;
+	text-shadow: 2px 2px 5px #000000;
+}
 
 @media screen and (min-width:601px){
  .mobile-camp{  margin: -169px auto 21px; background: #f1f1f1;  padding: 180px; }

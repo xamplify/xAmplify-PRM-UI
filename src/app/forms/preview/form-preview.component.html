@@ -33,7 +33,7 @@
 									<input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}"
 									[class.disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp"
 									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000" (input)="validateEmail(columnInfo)">
-									 <span class="required" *ngIf="columnInfo.divClass=='error'">Please enter a valid email address</span>
+									 <span class="required-text" *ngIf="columnInfo.divClass=='error'">Please enter a valid email address</span>
 							</ng-container>	
 
 							<ng-container *ngIf="columnInfo.labelType=='textarea'">
