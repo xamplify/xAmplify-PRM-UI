@@ -1,11 +1,11 @@
-<ngx-loading [show]="rsvpSavingProcessing"
-	[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="expired-event-class" *ngIf="eventExpiredError">This
 	event has concluded.</div>
 <div class="expired-event-class" *ngIf="isCancelledEvent">{{errorLogMessage}}</div>
 <div class="container-fluid"
 	[hidden]="processor.isProcessing || eventExpiredError"
 	style="margin-top: 2em">
+	<ngx-loading [show]="rsvpSavingProcessing"
+	[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<!-- <div style="background:red; text: white;">{{errorLogMessage}}</div> -->
 	<!-- <div class="alert alert-danger fade in" *ngIf="isCancelledEvent" style="text-align: center;font-size: 15px;">
     <b>This event has been cancelled.</b>
