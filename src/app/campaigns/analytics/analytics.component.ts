@@ -2303,17 +2303,7 @@ getEventLeadsDetails(detailType: any){
                   }
                   
               })
-              
-              /*if(this.leadDetailType == 'YES'){
-                  this.leadsDetailPagination.totalRecords = this.campaignReport.yesLeadCount;
-              }else if(this.leadDetailType == 'NO'){
-                  this.leadsDetailPagination.totalRecords = this.campaignReport.noLeadCount;
-              }else if(this.leadDetailType == 'MAYBE'){
-                  this.leadsDetailPagination.totalRecords = this.campaignReport.maybeLeadCount;
-              }*/
-              
               this.leadsDetailPagination.totalRecords = data.totalRecords;
-             // this.leadsDetailPagination.offset = data.offset;
               this.leadsDetailPagination = this.pagerService.getPagedItems(this.leadsDetailPagination, data.data);
               this.httpRequestLoader.isLoading = false;
          },
@@ -2328,7 +2318,6 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
     this.partnerLeadDetailType = detailType;
     this.httpRequestLoader.isLoading = true;
      try{
-         //this.leadsDetailPagination.maxResults = 1000;
          this.campaignService.getPartnerEventLeadsDetails(this.partnerLeadsDetailPagination, this.campaignId, selectedLeadPartnerId, this.partnerLeadDetailType)
          .subscribe(
            data => {
@@ -2342,17 +2331,6 @@ getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
                    }
                    
                })
-               
-               /*if(this.partnerLeadDetailType == 'YES'){
-                   this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.yesPartnerLeadCount;
-               }else if(this.partnerLeadDetailType == 'NO'){
-                   this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.noPartnerLeadCount;
-               }else if(this.partnerLeadDetailType == 'MAYBE'){
-                   this.partnerLeadsDetailPagination.totalRecords = this.campaignReport.maybePartnerLeadCount;
-               }*/
-               
-               
-               //this.partnerLeadsDetailPagination.offset = data.offset;
                this.partnerLeadsDetailPagination.totalRecords = data.totalRecords;
                this.partnerLeadsDetailPagination = this.pagerService.getPagedItems(this.partnerLeadsDetailPagination, data.data);
                this.httpRequestLoader.isLoading = false;
@@ -2465,6 +2443,14 @@ downloadFile( data: any, selectedleadType: any, name: any) {
     }
     window.URL.revokeObjectURL( url );
     this.isLeadListDownloadProcessing = false;
+}
+
+closePartnerLeadPage(){
+    this.isShowPartnerLeads = false; 
+    this.leadType = 'eventLeads'; 
+    this.leadsSearchKey='';
+    this.partnerLeadsFormHeaders = [];
+    this.partnerLeadsFormDetails = [];
 }
 
 }

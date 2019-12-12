@@ -851,7 +851,7 @@
   <div class="row" id="responsive">
 	<div class="col-xs-12 p0">
 			<div class="portlet light">
-			<div *ngIf="leadsFormHeaders?.length == 0" class="alert alert-info">
+			<div *ngIf="!httpRequestLoader.isLoading && leadsFormHeaders?.length == 0" class="alert alert-info">
 										<strong>No Records Found.</strong>
 									</div>
 			 <div class="alert alert-info flex" *ngIf="isLeadListDownloadProcessing">
@@ -2141,7 +2141,7 @@
 											<!-- <a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()"> Export To Excel </a> --></li>
 										</ul>
 									</div>
-									 <a (click)="isShowPartnerLeads = false; leadType = 'eventLeads'; leadsSearchKey=''" 
+									 <a (click)="closePartnerLeadPage()" 
 									 class="pull-right close-circle" style="background-color: #abbdfb;color:#fff!important;margin: -26px 8px;padding-top: 3px;padding-left: 5px;"> <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;"
 			aria-hidden="true"></span></a>
 								</div>
@@ -2192,7 +2192,7 @@
   <div class="row" id="responsive">
 	<div class="col-xs-12 p0">
 			<div class="portlet light">
-			<div *ngIf="partnerLeadsFormHeaders?.length == 0" class="alert alert-info">
+			<div *ngIf="!httpRequestLoader.isLoading && partnerLeadsFormHeaders?.length == 0" class="alert alert-info">
 										<strong>No Records Found.</strong>
 									</div>
 					<div class="alert alert-info flex" *ngIf="isLeadListDownloadProcessing">
