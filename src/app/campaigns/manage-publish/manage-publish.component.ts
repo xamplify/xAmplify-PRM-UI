@@ -16,6 +16,8 @@ import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from '../models/campaign-access';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
+import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
+
 declare var swal, $: any;
 
 @Component({
@@ -79,6 +81,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     publicEventAlias:string = "";
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
+    @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
     constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
@@ -473,7 +476,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     inviteMore(campaign:Campaign){
         this.adddMoreReceiversComponent.showPopup(campaign);
-        
+    }
+    sendEventEmail(campaign:Campaign){
+        this.publicEventEmailPopupComponent.showPopup(campaign);
     }
 
 }

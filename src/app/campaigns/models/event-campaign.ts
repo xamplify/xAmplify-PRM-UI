@@ -62,6 +62,8 @@ export class EventCampaign {
     forms: Array<Form> = [];
    
     pushToCRM = [];
+    
+    emailIds = [];
 
 
     constructor() {
