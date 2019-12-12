@@ -2232,7 +2232,8 @@ viewPartnerLeads(item:any){
 
 getLeadsCount(){
     try{
-     this.campaignService.getLeadsCount(this.campaignId)
+      this.httpRequestLoader.isLoading = true;
+      this.campaignService.getLeadsCount(this.campaignId)
      .subscribe(
        data => {
            console.log(data);
@@ -2242,12 +2243,15 @@ getLeadsCount(){
            this.campaignReport.leadAdditionalCount = data.additionalCount;
            this.getEventLeadsDetails('YES');
       },
-      (error:any)=>{this.xtremandLogger.error('error'+error); })
+      (error:any)=>{this.xtremandLogger.error('error'+error);
+      this.httpRequestLoader.isLoading = false;})
     }catch(error) { this.xtremandLogger.error('error'+error);}
  }
 
 getPartnerLeadsCount(selectedLeadPartnerId: number){
     this.isShowPartnerLeads = true;
+    this.httpRequestLoader.isLoading = true;
+    this.referenceService.goToTop();
     this.selectedLeadPartnerId = selectedLeadPartnerId;
     try{
      this.campaignService.getPartnerLeadsCount(this.campaignId, selectedLeadPartnerId)
@@ -2260,7 +2264,8 @@ getPartnerLeadsCount(selectedLeadPartnerId: number){
            this.campaignReport.partnerLeadAdditionalCount = data.additionalCount;
            this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId);
       },
-      (error:any)=>{this.xtremandLogger.error('error'+error); })
+      (error:any)=>{this.xtremandLogger.error('error'+error);
+      this.httpRequestLoader.isLoading = false;})
     }catch(error) { this.xtremandLogger.error('error'+error);}
  }
 
@@ -2445,12 +2450,21 @@ downloadFile( data: any, selectedleadType: any, name: any) {
     this.isLeadListDownloadProcessing = false;
 }
 
+clearLeadValues(){
+    this.leadsFormHeaders = [];
+    this.leadsFormDetails = [];
+}
+
+clearPartnerleadValues(){
+    this.partnerLeadsFormHeaders = [];
+    this.partnerLeadsFormDetails = [];
+}
+
 closePartnerLeadPage(){
     this.isShowPartnerLeads = false; 
     this.leadType = 'eventLeads'; 
     this.leadsSearchKey='';
-    this.partnerLeadsFormHeaders = [];
-    this.partnerLeadsFormDetails = [];
+    this.clearPartnerleadValues();
 }
 
 }
