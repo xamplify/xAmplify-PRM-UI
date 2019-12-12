@@ -261,7 +261,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   sendRequestForVendorEmail(){
       this.loading = true;
       this.isError = false;
-      this.onAddingEmailId();
+      this.refService.onAddingEmailIds(this.emailIds);
       this.vendoorInvitation.emailIds = this.emailIds;
      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
@@ -303,27 +303,5 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       this.emailIds = [];
       this.isValidationMessage = false;
   }
-  public onAddingEmailId() {
-      console.log( this.emailIds );
-      const emailIds = this.emailIds;
-      let newEmailIds = [];
-      for ( let i = 0; i < emailIds.length; i++ ) {
-          const tag = emailIds[i];
-          if ( tag['value'] !== undefined ) {
-              newEmailIds[i] = tag['value'];
-          }
-          // else {
-          //     newEmailIds[i] = tag;
-          // }
-      }
-      this.emailIds = newEmailIds;
-      console.log( this.emailIds );
-      const otherEmailIds = newEmailIds.map( v => v.toLowerCase() );
-      var uniqueEmailids = [];
-      $.each( otherEmailIds, function( i, el ) {
-          if ( $.inArray( el, uniqueEmailids ) === -1 ) uniqueEmailids.push( el );
-      });
-      if ( uniqueEmailids.length < this.emailIds.length ) { this.emailIds.pop(); }
-    }
-
+  
 }

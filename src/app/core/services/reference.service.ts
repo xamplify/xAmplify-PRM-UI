@@ -1868,4 +1868,24 @@ export class ReferenceService {
         }
     
     }
+    
+    onAddingEmailIds(emailIds:any) {
+        let newEmailIds = [];
+        for ( let i = 0; i < emailIds.length; i++ ) {
+            const tag = emailIds[i];
+            if ( tag['value'] !== undefined ) {
+                newEmailIds[i] = tag['value'];
+            }
+            // else {
+            //     newEmailIds[i] = tag;
+            // }
+        }
+        const otherEmailIds = newEmailIds.map( v => v.toLowerCase() );
+        var uniqueEmailids = [];
+        $.each( otherEmailIds, function( i, el ) {
+            if ( $.inArray( el, uniqueEmailids ) === -1 ) uniqueEmailids.push( el );
+        });
+        if ( uniqueEmailids.length < emailIds.length ) { emailIds.pop(); }
+      }
+
 }
