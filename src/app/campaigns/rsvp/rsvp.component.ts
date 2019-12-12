@@ -126,7 +126,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
            this.eventcampaign.inviteOthers = false;
        }*/
        
-       if(response.statusCode == 2000 || response.statusCode == 2001){
+       if(response.statusCode == 2000 || response.statusCode == 2001 || response.statusCode == 2002){
            this.isCancelledEvent = true;
            this.errorLogMessage = response.message;
            console.log(this.errorLogMessage);
