@@ -8,10 +8,8 @@
 				<h4 class="modal-title left" id="myModalLabel">{{selectedCampaign?.campaignName}}</h4>
 			</div>
 			<div class="modal-body">
-			<div class="thank-you-pop" *ngIf="sent">
-				<div class="alert alert-success">
-  						<strong>Email sent successfully</strong>
-					</div>
+			<div *ngIf="sent">
+				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
  			</div>
 			<div id="modal-content" *ngIf="!sent">
 			<app-modal-popup-loader *ngIf="processing"></app-modal-popup-loader>
@@ -35,19 +33,12 @@
 		              [onTextChangeDebounce]="40"
 		              required >
      			 </tag-input>
-
 			</div>
-				<!-- <div class="form-group">
-				<label for="subjectLine">Email subject <span class="text-danger">*</span></label>
-				<input type="text" id="subjectLine"
-					[(ngModel)]="vendoorInvitation.subject" (input)="validateVendoorInvitation()" [ngModelOptions]="{standalone: true}"
-					placeholder="Subject Line" class="form-control" name="subjectLine" maxlength="200" />
-				</div> -->
-
+				 <div id="email-template-content"></div>
   </div>
     <div class="modal-footer" *ngIf="!processing">
       <button class="btn btn-default" (click)="closePopup()" data-dismiss="modal">Close</button>
-      <button type="submit" class="btn green" [disabled]="emailIds.length ==0" (click)="send()" *ngIf="!sent">Send</button>
+      <button type="submit" class="btn green" [disabled]="emailIds.length ==0 && subject?.length==0" (click)="send()" *ngIf="!sent">Send</button>
     </div>
     </div>
 		</div>

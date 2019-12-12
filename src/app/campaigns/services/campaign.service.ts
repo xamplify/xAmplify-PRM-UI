@@ -773,4 +773,10 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getEmailTemplateByCampaignId(data:any){
+        return this.http.post(this.URL + "campaign/getCampaignEmailTemplate?access_token=" + this.authenticationService.access_token,data)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 }

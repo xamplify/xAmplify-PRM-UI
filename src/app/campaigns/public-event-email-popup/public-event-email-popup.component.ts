@@ -11,6 +11,8 @@ import { EventCampaign } from '../models/event-campaign';
 import { CampaignService } from '../services/campaign.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+
 declare var swal, $: any;
 @Component( {
     selector: 'app-public-event-email-popup',
@@ -33,16 +35,39 @@ export class PublicEventEmailPopupComponent implements OnInit {
     modalPopupId = "public-event-email-modal-popup";
     sent = false;
     processing = false;
-    customResponse:CustomResponse =  new CustomResponse();
-    constructor(public referenceService: ReferenceService,private campaignService:CampaignService,public properties:Properties) { }
+    customResponse: CustomResponse = new CustomResponse();
+    success = true;
+    constructor( public referenceService: ReferenceService, private campaignService: CampaignService, public properties: Properties, private logger: XtremandLogger ) { }
 
     ngOnInit() {
     }
 
     showPopup( campaign: Campaign ) {
         this.selectedCampaign = campaign;
+        $( '#email-template-content' ).html( '' );
+        this.processing = true;
         $( '#' + this.modalPopupId ).modal( 'show' );
+        let eventCampaign = new EventCampaign();
+        eventCampaign.id = campaign.campaignId;
+        this.campaignService.getEmailTemplateByCampaignId( eventCampaign ).subscribe(
+            ( response: any ) => {
+                if ( response.statusCode == 200 ) {
+                    this.processing = false;
+                    let emailContent = response.data;
+                    $( '#email-template-content').append( response.data );
+                } else {
+                    this.sent = true;
+                    this.processing = false;
+                    this.success = false;
+                    this.customResponse = new CustomResponse( 'ERROR', response.message, true );
+                }
 
+            },
+            ( error: any ) => {
+                this.logger.error( "Error in showPopup(" + campaign.campaignId + ")" );
+                this.processing = false;
+                this.customResponse = new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true );
+            } );
     }
 
     private must_be_email( control: FormControl ) {
@@ -67,33 +92,44 @@ export class PublicEventEmailPopupComponent implements OnInit {
     }
 
     closePopup() {
+        $( '#' + this.modalPopupId ).modal( 'hide' );
         this.emailIds = [];
         this.subject = "";
         this.sent = false;
+        this.subject = "";
         this.processing = false;
         this.customResponse = new CustomResponse();
-        $( '#' + this.modalPopupId ).modal( 'hide' );
     }
 
-    send(){
+    send() {
+        $( '#email-template-content').html('');
         this.processing = true;
-        this.referenceService.onAddingEmailIds(this.emailIds);
+        this.referenceService.onAddingEmailIds( this.emailIds );
         let eventCampaign = new EventCampaign();
-        let values = this.emailIds.map(function(a) {return a.value;});
+        let values = this.emailIds.map( function( a ) { return a.value; } );
         eventCampaign.emailIds = values;
         eventCampaign.id = this.selectedCampaign.campaignId;
-        this.campaignService.sendPublicEventEmail(eventCampaign).subscribe(
-                (response: any) => {
-                    this.sent = true;    
+        this.campaignService.sendPublicEventEmail( eventCampaign ).subscribe(
+            ( response: any ) => {
+                if ( response.statusCode == 200 ) {
+                    this.sent = true;
                     this.processing = false;
-                },
-                (error: any) => {
+                    this.success = true;
+                    this.customResponse = new CustomResponse( 'SUCCESS', 'Email sent successfully', true );
+                } else {
+                    this.sent = true;
                     this.processing = false;
-                    this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
-                });
+                    this.success = false;
+                    this.customResponse = new CustomResponse( 'ERROR', response.message, true );
+                }
+
+            },
+            ( error: any ) => {
+                this.logger.error( "Error in send()" );
+                this.processing = false;
+                this.customResponse = new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true );
+            } );
     }
-    
-    
-    
+
 
 }
