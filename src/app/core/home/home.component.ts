@@ -264,7 +264,11 @@ export class HomeComponent implements OnInit {
   
   ngOnInit() {
       try {
-          this.setTitle(this.currentUser['logedInCustomerCompanyNeme'] + ' - xAmplify');
+          if(this.currentUser['logedInCustomerCompanyNeme'] != undefined){
+            this.setTitle(this.currentUser['logedInCustomerCompanyNeme'] + ' - xAmplify');
+          }else{
+              this.setTitle('xAmplify'); 
+          }
           this.userId = this.currentUser['userId'];
           this.token = this.currentUser['accessToken'];
           const roleNames = this.currentUser['roles'];
