@@ -10,6 +10,7 @@ import { Roles } from '../../core/models/roles';
 import { Pagination } from '../../core/models/pagination';
 import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
 import { TeamMember } from "app/team/models/team-member";
+import { Title }     from '@angular/platform-browser';
 
 
 declare var $: any;
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
   userId: any;
   token: any;
   constructor(
+    private titleService: Title,
     public referenceService: ReferenceService,
     public userService: UserService,
     public dealsService:DealRegistrationService,
@@ -256,10 +258,13 @@ export class HomeComponent implements OnInit {
          
       }
   }
- 
+  public setTitle( newTitle: string) {
+      this.titleService.setTitle( newTitle );
+    } 
   
   ngOnInit() {
       try {
+          this.setTitle(this.currentUser['logedInCustomerCompanyNeme'] + ' - xAmplify');
           this.userId = this.currentUser['userId'];
           this.token = this.currentUser['accessToken'];
           const roleNames = this.currentUser['roles'];

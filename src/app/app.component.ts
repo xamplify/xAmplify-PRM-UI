@@ -35,16 +35,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         );
     }
     
-    public setTitle( newTitle: string) {
-        this.titleService.setTitle( newTitle );
-      } 
     
     ngOnInit() {
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application
-        const currentUser = localStorage.getItem( 'currentUser' );
-        this.setTitle(JSON.parse( currentUser )['logedInCustomerCompanyNeme'] + ' - xAmplify');
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };

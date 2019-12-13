@@ -357,6 +357,7 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         localStorage.removeItem("campaignRouter");
         localStorage.removeItem("superiorId");
+        localStorage.removeItem("logedInCustomerCompanyNeme");
         localStorage.clear();
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
