@@ -58,6 +58,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     createCampaignUrl = 'https://xamplify.io/embed/Oen4LJ';
     redistributeCampaignUrl='https://xamplify.io/embed/W4UacK';
     addContactsUrl = 'https://xamplify.io/embed/epPjw1';
+    logedInCustomerCompanyName: string;
 
     videoFile:any;
 
@@ -151,7 +152,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
       try{
-        this.loggedInUserId = this.authenticationService.getUserId();
+          const currentUser = localStorage.getItem( 'currentUser' );
+          this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
+          this.loggedInUserId = this.authenticationService.getUserId();
         this.getDefaultPage(this.loggedInUserId);
         this.welcome_text = this.authenticationService.isOnlyPartner() ? this.partner_welcome_text: this.vendor_welcome_text;
       }catch(error){ console.log(error);this.xtremandLogger.error(error);

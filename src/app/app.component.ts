@@ -3,6 +3,7 @@ import { NavigationCancel, Event, NavigationEnd, NavigationError, NavigationStar
 import { EnvService } from 'app/env.service';
 import { UserService } from "./core/services/user.service";
 import { AuthenticationService } from "./core/services/authentication.service";
+import { Title }     from '@angular/platform-browser';
 
 import { SlimLoadingBarService } from 'ng2-slim-loading-bar';
 declare var QuickSidebar, $: any;
@@ -14,7 +15,7 @@ declare var QuickSidebar, $: any;
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
-    constructor(public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
+    constructor(private titleService: Title,public userService: UserService,public authenticationService: AuthenticationService, public env: EnvService, private slimLoadingBarService: SlimLoadingBarService, private router: Router) {
         // logger.level = logger.Level.LOG;
     }
     
@@ -34,10 +35,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         );
     }
     
+    public setTitle( newTitle: string) {
+        this.titleService.setTitle( newTitle );
+      } 
+    
     ngOnInit() {
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application
+        const currentUser = localStorage.getItem( 'currentUser' );
+        this.setTitle(JSON.parse( currentUser )['logedInCustomerCompanyNeme'] + ' - xAmplify');
         this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
         };

@@ -75,7 +75,7 @@
   <div class="page-content" *ngIf="authenticationService.isOnlyUser()">
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
       <div class="col-xs-12 col-sm-6 p0">
-        <h4 class="text-primary f-w-600 m10">{{properties.APP_WELCOME_MESSAGE}}</h4>
+        <h4 class="text-primary f-w-600 m10">Welcome to {{logedInCustomerCompanyName}}</h4>
       </div>
     </div>
 
@@ -107,7 +107,7 @@
     </div>
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
       <div class="col-xs-12 col-sm-6 p0">
-        <h4 class="text-primary f-w-600 m10">{{properties.APP_WELCOME_MESSAGE}}</h4>
+        <h4 class="text-primary f-w-600 m10">Welcome to {{logedInCustomerCompanyName}}</h4>
       </div>
       <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage">
         <div style="display: flex;float: right;">

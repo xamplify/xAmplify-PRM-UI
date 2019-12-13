@@ -60,6 +60,7 @@ export class AuthenticationService {
     isFromRsvpPage = false;
     formValues = [];
     isPartnerRsvp = false;
+    logedInCustomerCompanyNeme: string;
     
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;
@@ -110,7 +111,8 @@ export class AuthenticationService {
                         'expiresIn': this.map.expires_in,
                         'hasCompany': res.json().hasCompany,
                         'roles': res.json().roles,
-                        'campaignAccessDto':res.json().campaignAccessDto
+                        'campaignAccessDto':res.json().campaignAccessDto,
+                        'logedInCustomerCompanyNeme':res.json().companyName
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
@@ -118,6 +120,7 @@ export class AuthenticationService {
                     this.expires_in = this.map.expires_in;
                     this.user = res.json();
                     this.userProfile = res.json();
+                    this.logedInCustomerCompanyNeme =res.json().companyName;
                 }));
     }
     getUserByUserName(userName: string) {

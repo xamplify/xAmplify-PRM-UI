@@ -412,7 +412,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         'expiresIn':  JSON.parse( currentUser )['expiresIn'],
                         'hasCompany': data.hasCompany,
                         'roles': data.roles,
-                        'campaignAccessDto':data.campaignAccessDto
+                        'campaignAccessDto':data.campaignAccessDto,
+                        'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName']
                     };
                     localStorage.clear();
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
@@ -478,7 +479,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'expiresIn': JSON.parse(currentUser)['expiresIn'],
                                 'hasCompany': self.authenticationService.user.hasCompany,
                                 'roles': JSON.parse(currentUser)['roles'],
-                                'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto']
+                                'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto'],
+                                'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName']
                             };
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
