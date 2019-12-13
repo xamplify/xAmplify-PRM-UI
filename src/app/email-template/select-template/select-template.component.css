@@ -89,8 +89,8 @@
 }
  .grid-box img {
      margin: 0 auto;
-     height: 390px!important;
-     width: 100%!important;
+    /*  height: 390px!important;
+     width: 100%!important; */
      border-radius: 5px;
 }
 @media screen and (max-width:600px){.modal-template { width:100% !important; right:0} }
