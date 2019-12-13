@@ -419,7 +419,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             this.marketoEmailTemplates.map(template => {
                 template.marketoTemplate = true;
                 template.body = template.content;
-                template.subject = "assets/images/bee-template/rich-co-branding-news-letter.png";
+                template.subject = "assets/images/bee-template/imported-image.jpg";
             });
             this.showMarketoTemplates();
         },
@@ -538,6 +538,11 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             this.isSaveMarketoTemplatesButtonState = true;
         else
             this.isSaveMarketoTemplatesButtonState = false;
+        if(count == this.filteredEmailTemplates.length){
+            this.selectAllTemplates = true;
+        }else{
+            this.selectAllTemplates = false;
+        }
 
     }
 
@@ -652,7 +657,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.hubSpotEmailTemplates.map(template => {
                     template.hubSpotTemplate = true;
                     template.body = template.content;
-                    template.subject = "assets/images/bee-template/rich-co-branding-news-letter.png";
+                    template.subject = "assets/images/bee-template/imported-image.jpg";
                 });
                 this.filteredEmailTemplates = new Array<EmailTemplate>();
                 for (var i = 0; i < response.templates.length; i++) {
