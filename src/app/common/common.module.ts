@@ -43,6 +43,7 @@ import { FormAnalyticsUtilComponent } from '../util/form-analytics-util/form-ana
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { PublicPageResponseComponent } from './public-page-response/public-page-response.component';
+import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
 
 
 @NgModule({
@@ -54,7 +55,7 @@ import { PublicPageResponseComponent } from './public-page-response/public-page-
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
         TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
         PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
-        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent],
+        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent],
 
 
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
@@ -63,7 +64,7 @@ import { PublicPageResponseComponent } from './public-page-response/public-page-
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
 
         ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent]
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent]
 
 })
 export class CommonComponentModule { }

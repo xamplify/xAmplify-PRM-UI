@@ -17,7 +17,6 @@ import {FormService} from '../../forms/services/form.service';
 import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
-import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.component';
 declare var BeePlugin,swal,$:any;
 
 @Component({
@@ -47,7 +46,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     pagination:Pagination = new Pagination();
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
-    @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
     console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);

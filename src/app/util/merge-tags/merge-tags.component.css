@@ -1,0 +1,29 @@
+#bottom-right{
+	float: right;
+}
+#right{
+	float: right;
+	margin-bottom: 10px;
+}
+#left{
+	float: left;;
+}
+#search{
+	margin-right: 35px;
+}
+#search-icon{
+	position: relative;
+	right: -11px;
+}
+#search-text{
+	height:34px;
+}
+#circle{
+	margin-top: 4px;
+}
+.merge-tag-success-message{
+	color: green;
+}
+#merge-tag-text{
+	width: 50%;
+}

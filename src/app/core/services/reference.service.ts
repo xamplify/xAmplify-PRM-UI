@@ -1887,5 +1887,14 @@ export class ReferenceService {
         });
         if ( uniqueEmailids.length < emailIds.length ) { emailIds.pop(); }
       }
-
+    
+    copyInputMessage(inputElement,index:number,successMessageClass:string,id:string){
+        let messageId = id+index;
+        $("."+successMessageClass).hide();
+        $('#'+messageId).hide();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        $('#'+messageId).show(500);
+    }
 }

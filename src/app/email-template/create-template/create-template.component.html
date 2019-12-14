@@ -22,6 +22,7 @@
                           <ng-template #Other>Update</ng-template> Template</a>
                      </li>
                   </ul>
+                  <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>
                   <!--   <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate"></app-preview-popup> -->
                   <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your email templates">
                   	<i class="fa fa-plus-circle"></i>
