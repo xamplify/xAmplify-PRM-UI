@@ -852,18 +852,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }*/
         this.contactsPagination.pageIndex = 1;
         this.clearSelectedContactList();
+        this.setCoBrandingLogo(event);
         if(event){
+            this.setPartnerEmailNotification(event);
             this.removeTemplateAndAutoResponse();
             if(this.campaignType!='landingPage'){
                 this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.NONE;
             }
-            this.setCoBrandingLogo(event);
            // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
         }else{
             this.loadContacts();
-            this.setCoBrandingLogo(event);
             this.removePartnerRules();
+            this.setPartnerEmailNotification(true);
         }
     }
 
@@ -901,8 +902,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.filterCoBrandedLandingPages(event);
         }
-       
-    
 
     }
 
@@ -1996,8 +1995,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         } else {
             this.campaign.regularEmail = false;
         }
-        this.getRepliesData();
-        this.getOnClickData();
+        if(this.campaign.emailNotification){
+            this.getRepliesData();
+            this.getOnClickData();
+        }else{
+            this.replies = [];
+            this.urls = [];
+        }
+        
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
         let scheduleTime:any;
@@ -2054,6 +2059,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
             'channelCampaign':this.campaign.channelCampaign,
+            'emailNotification':this.campaign.emailNotification,
             'enableCoBrandingLogo':this.campaign.enableCoBrandingLogo,
             'socialSharingIcons': true,
             'userId': this.loggedInUserId,
@@ -3128,6 +3134,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
        this.validatePushToCRM();
     }
     
+   setPartnerEmailNotification(event:any){
+        this.campaign.emailNotification = event;
+    }
 
 
 }

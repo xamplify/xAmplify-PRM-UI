@@ -177,7 +177,6 @@
 												</div>
 											</div>
 
-
 											<div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
 												<label class="control-label col-sm-4">Co-Branding Logo</label>
 												<div class="col-sm-8">
@@ -187,6 +186,19 @@
 													</switch>
 													<span style="cursor: pointer;color: #54a7e9;">
 														<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Enable your Partner's logo to be displayed in redistributed campaigns" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+													</span>
+												</div>
+											</div>
+											
+											<div class="form-group" *ngIf="!isOnlyPartner  && campaign.channelCampaign && campaignType!='sms'">
+												<label class="control-label col-sm-4">Email Notification</label>
+												<div class="col-sm-8">
+													<switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+													 (statusChange)="setPartnerEmailNotification($event)">
+													</switch>
+													<span style="cursor: pointer;color: #54a7e9;">
+														<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Sending email notifications to your partners about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
 													</span>
 												</div>
 											</div>
@@ -236,6 +248,7 @@
 													 (input)="validateForm();validateField('preHeader');" maxlength="200" />
 												</div>
 											</div>
+											
 											<div class="form-group">
 												<label class="control-label col-sm-4">Notify Me When</label>
 												<div class="col-sm-8">
@@ -252,6 +265,20 @@
 																<label>Email is opened</label>
 															</div>
 														</div>
+														
+														<div class="email-options-checkbox clearfix">
+															<div class="col-sm-1 ui-switch-custom-div">
+																<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch> -->
+																<switch [status]="campaign.emailOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+																 (statusChange)="setEmailOpened($event)">
+																</switch>
+															</div>
+															<div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
+																<label>Email is opened</label>
+															</div>
+														</div>
+														
 														<div class="email-options-checkbox clearfix" *ngIf="campaignType=='sms'">
 															<div class="col-sm-1 ui-switch-custom-div">
 																<!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.emailOpened" name="emailOpened"  (change)=setEmailOpened($event)></ui-switch> -->
@@ -1334,7 +1361,8 @@
                   </ng-container>
                   <a> <span *ngIf="userListDTOObj?.length>2" (click)="resetActive($event, 40, 'step-4')">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span></a>
 					<br>
-					<span style="color: cornflowerblue;font-weight: 600;">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+					<span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+					<span *ngIf="!campaign.emailNotification" id="red-font">No email will be sent to partners.</span>
 				</td>
 								<td style="text-align: right" width="20%">
 									<a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>
@@ -1389,8 +1417,8 @@
 		</fieldset>
 	</div>
 	<!-- --Adding Work Flow------------- -->
-	<div class="col-xs-12">
-		<div>
+	<div class="col-xs-12" *ngIf="campaign.emailNotification">
+	<div>
     <div class="row" style="margin-bottom: 5px;margin-top: -9px;">
       <div class="col-xs-6">
         <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;padding: 9px 0;">

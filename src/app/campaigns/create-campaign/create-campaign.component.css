@@ -1934,3 +1934,9 @@ legend {
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
 }
+#blue-font{
+	color: cornflowerblue;font-weight: 600;
+}
+#red-font{
+	color: red;font-weight: 600;
+}

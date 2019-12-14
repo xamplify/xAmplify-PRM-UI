@@ -16,6 +16,7 @@ export class Campaign {
     selectedVideoId: number = 0;;
     userListIds: number[] = [];
     userId: number;
+    emailNotification = false;
     emailOpened = false;
     videoPlayed = false;
     socialSharingIcons: boolean;
