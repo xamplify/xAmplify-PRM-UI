@@ -129,13 +129,13 @@ a.disabled {
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">From	Email</label>
 							<div class="col-sm-9">
-								<select *ngIf="!reDistributeEventManage && !isPreviewEvent"	[attr.disabled]="(isPreviewEvent || reDistributeEventManage || isEventUpdate)? '' : null"
+								<select *ngIf="!isPreviewEvent"	[attr.disabled]="(isPreviewEvent || isEventUpdate)? '' : null"
 									class="form-control" [(ngModel)]="eventCampaign.email"	[ngModelOptions]="{standalone: true}" (change)="setFromName()">
 									<option *ngFor="let teamMember of teamMemberEmailIds"[ngValue]="teamMember.emailId">
 										{{teamMember.emailId}}
 									</option>
 								</select>
-								<input [attr.disabled]="(isPreviewEvent || reDistributeEventManage)? '' : null" *ngIf="isPreviewEvent || reDistributeEventManage" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
+								<input [attr.disabled]="(isPreviewEvent)? '' : null" *ngIf="isPreviewEvent" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
 									[ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
@@ -186,7 +186,7 @@ a.disabled {
 						</div>
 						<div class="form-group"
 							*ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-							<label class="control-label col-sm-3">Co-Branding Logo</label>
+							<label class="col-sm-3">Co-Branding Logo</label>
 							<div class="col-sm-9">
 								<switch class="pull-left"
 									[status]="eventCampaign.enableCoBrandingLogo"
@@ -204,6 +204,20 @@ a.disabled {
 								</span>
 							</div>
 						</div>
+						
+						
+							<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign">
+								<label class="col-sm-3">Email Notification</label>
+								<div class="col-sm-8">
+									<switch class="pull-left" [status]="eventCampaign.emailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+									 (statusChange)="setPartnerEmailNotification($event)">
+									</switch>
+									<span style="cursor: pointer;color: #54a7e9;">
+										<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Sending email notifications to your partners about your campaign" style="padding: 8px;"></i>
+									</span>
+								</div>
+							</div>
 						
 											<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
                                                 <label class="control-label col-sm-3">Push To Marketing Automation</label>
@@ -1193,7 +1207,8 @@ a.disabled {
                       <a>
                         <span *ngIf="userListDTOObj?.length>2">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span>
                       </a><br>
-                      <span *ngIf="listOfSelectedUserListIds.length>0" style="color: cornflowerblue;font-weight: 600;">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                      <span *ngIf="listOfSelectedUserListIds.length>0 && eventCampaign.emailNotification" style="color: cornflowerblue;font-weight: 600;">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                      <span *ngIf="!eventCampaign.emailNotification && !reDistributeEvent" style="color: red;font-weight: 600;">No email will be sent to partners.</span>
                     </td>
                     <td style="text-align: right" width="20%">
                       <a  [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate" [class.disabled]="isPreviewEvent" class="btn btn-primary btn-sm" style="color:#fff" (click)="resetTabs('recipients')">Change</a>
@@ -1236,7 +1251,7 @@ a.disabled {
         </div>
         </fieldset>
 
-		  <div class="col-xs-12 mb10 p0">
+		  <div class="col-xs-12 mb10 p0" *ngIf="eventCampaign.emailNotification || reDistributeEvent">
           <fieldset class="col-xs-12">
             <legend style="color: #2c3f52;">Add Your Work Flow</legend>
             <div style="margin-bottom:70px;">

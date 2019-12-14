@@ -298,7 +298,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
       this.isAdd = false;
       this.eventRouterPage =true;
       const alias = this.activatedRoute.snapshot.params['id'];
-      if(this.reDistributeEvent){ this.campaignService.reDistributeEvent = true; }
+      if(this.reDistributeEvent){ this.campaignService.reDistributeEvent = true; this.eventCampaign.emailNotification = true}
       this.campaignService.getEventCampaignById(alias).subscribe(
         (result)=>{
         this.campaignService.eventCampaign = result.data;
@@ -686,6 +686,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.clearSelectedContactList();
     this.clearSelectedTemplate();
     this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
+    this.setPartnerEmailNotification(true);
       this.contactListsPagination.pageIndex = 1;
       if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
@@ -710,6 +711,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
       this.resetTabClass();
     }
 
+  }
+  
+  setPartnerEmailNotification(event){
+      this.eventCampaign.emailNotification = event;
   }
   contactListMethod(contactListsPagination:Pagination){
     this.contactService.loadContactLists(contactListsPagination)
@@ -1055,7 +1060,14 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.eventCampaign.forms = this.previewPopUpComponent.selectedFormData;
        }
     }
-    if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ this.getRepliesData(); }
+    if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ 
+        if(this.eventCampaign.emailNotification || this.reDistributeEvent){
+            this.getRepliesData();
+        }else{
+            this.eventCampaign.campaignReplies = [];
+        }
+       }
+   
     if(eventCampaign.userListIds != undefined){
     for (let userListId of eventCampaign.userListIds) {
       let contactList = new ContactList(userListId);
@@ -1088,7 +1100,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    eventCampaign.fromName = this.referenceService.replaceMultipleSpacesWithSingleSpace(eventCampaign.fromName);
 
 
-   console.log(this.timeZoneSetValue);
    eventCampaign.campaignEventTimes[0].country = this.countries.find(x => x.id == eventCampaign.campaignEventTimes[0].countryId).name;
    eventCampaign.country = this.countries.find(x => x.id == eventCampaign.countryId).name;
    eventCampaign.toPartner = !eventCampaign.channelCampaign;
@@ -1120,6 +1131,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'subjectLine':eventCampaign.subjectLine,
       'updateMessage':eventCampaign.updateMessage,
       'channelCampaign':eventCampaign.channelCampaign,
+      'emailNotification':eventCampaign.emailNotification,
       'enableCoBrandingLogo':eventCampaign.enableCoBrandingLogo,
       'countryId': eventCampaign.countryId,
       'email':eventCampaign.email,
@@ -1144,14 +1156,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'userLists' : eventCampaign.userLists,
       'userListIds':eventCampaign.userListIds,
       'campaignReplies': eventCampaign.campaignReplies,
-
-     
       'smsService':this.smsService,
       'smsText':this.smsText,
       'socialStatusList': this.socialStatusList,
       'forms': this.selectedFormData
     }
-    
     eventCampaign = customEventCampaign;
    }
    return eventCampaign;
