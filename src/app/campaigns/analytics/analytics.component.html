@@ -361,7 +361,7 @@
 
 
 				<section *ngIf="campaignType !== 'EVENT'">
-					<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader || hasClientError">
+					<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader || hasClientError || !campaign.emailNotification">
 						<div class="p-5x">
 							<div class="portlet light">
 								<div class="portlet-title">
@@ -408,7 +408,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6 p-5x emails-info" [hidden]="mainLoader || hasClientError">
+					<div class="col-xs-12 col-sm-6 p-5x emails-info" [hidden]="mainLoader || hasClientError || !campaign.emailNotification">
 						<div class="p-5x" [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO'}">
 							<button class="portlet light color1-invert crcb" (click)="sentEmailModal()" [ngClass]="{'forbidden' :!isDataShare ?true:null}"
 							 [disabled]="campaignReport.emailSentCount < 1 || !isPartnerEnabledAnalyticsAccess">
@@ -486,7 +486,7 @@
 							</div>
 						</div>
 					</section>
-					<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader || hasClientError">
+					<div class="col-xs-12 col-sm-6 p-5x" [hidden]="campaignType !== 'VIDEO' || mainLoader || hasClientError || !campaign.emailNotification">
 						<div class="col-xs-12 p-5x">
 							<div class="portlet light" style="padding-bottom: 36px !important;">
 								<div class="portlet-title">
@@ -544,7 +544,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="portlet light" [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader">
+							<div class="portlet light" [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification">
 								<div class="portlet-title col-xs-12">
 									<div class="caption col-xs-8">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
