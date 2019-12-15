@@ -20,6 +20,7 @@ export class EventCampaign {
     channelCampaign: boolean = false;
     emailOpened: boolean = true;
     emailNotification: boolean = true;
+    linkOpened = false;
     socialSharingIcons: boolean = true;
     fromName: string;
     email: string = "";

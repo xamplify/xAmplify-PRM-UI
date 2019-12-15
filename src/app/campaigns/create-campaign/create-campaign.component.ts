@@ -2060,6 +2060,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'replyVideo': true,
             'channelCampaign':this.campaign.channelCampaign,
             'emailNotification':this.campaign.emailNotification,
+            'linkOpened':this.campaign.linkOpened,
             'enableCoBrandingLogo':this.campaign.enableCoBrandingLogo,
             'socialSharingIcons': true,
             'userId': this.loggedInUserId,
@@ -3136,7 +3137,16 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     
    setPartnerEmailNotification(event:any){
         this.campaign.emailNotification = event;
+        if(!event){
+            this.campaign.emailOpened = false;
+            this.campaign.videoPlayed = false;
+            this.campaign.linkOpened = false;
+        }
     }
+   
+   setLinkOpened(event:any){
+       this.campaign.linkOpened =event;
+   }
 
 
 }

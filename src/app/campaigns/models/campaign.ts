@@ -19,6 +19,7 @@ export class Campaign {
     emailNotification = false;
     emailOpened = false;
     videoPlayed = false;
+    linkOpened = false;
     socialSharingIcons: boolean;
     replyVideo = false;
     selectedEmailTemplateId: number=0;

@@ -636,17 +636,7 @@ a.disabled {
 						<div class="portlet-body clearfix"
 							[attr.disabled]="(isPreviewEvent)">
 							<ul>
-								<li><label> <switch
-											[status]="eventCampaign.rsvpReceived"
-											[onText]="callActionSwitch.onTextValue"
-											[offText]="callActionSwitch.offTextValue"
-											[disabled]="isPreviewEvent"
-											[onColor]="callActionSwitch.onGreenColorSwitch"
-											[offColor]="callActionSwitch.onDefaultColorSwitch"
-											[size]="callActionSwitch.bsize"
-											(statusChange)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived">
-										</switch> Notify me when guests RSVP
-								</label></li>
+							<ng-container *ngIf="eventCampaign.emailNotification || !eventCampaign.channelCampaign">
 								<li><label> <switch
 											[status]="eventCampaign.emailOpened"
 											[onText]="callActionSwitch.onTextValue"
@@ -658,15 +648,43 @@ a.disabled {
 											(statusChange)="eventCampaign.emailOpened = !eventCampaign.emailOpened">
 										</switch> Notify me when email is opened
 								</label></li>
-								<li><label>
-                <switch [status]="eventCampaign.inviteOthers"
-                [disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
-                [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
-                [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-                (statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
-              </switch>
-                Allow recipients to bring guests
-              </label></li>
+								
+								<li><label> <switch
+											[status]="eventCampaign.linkOpened"
+											[onText]="callActionSwitch.onTextValue"
+											[offText]="callActionSwitch.offTextValue"
+											[disabled]="isPreviewEvent"
+											[onColor]="callActionSwitch.onGreenColorSwitch"
+											[offColor]="callActionSwitch.onDefaultColorSwitch"
+											[size]="callActionSwitch.bsize"
+											(statusChange)="eventCampaign.linkOpened = !eventCampaign.linkOpened">
+										</switch> Notify me when link is opened
+								</label></li>
+								</ng-container>
+								<li><label> <switch
+											[status]="eventCampaign.rsvpReceived"
+											[onText]="callActionSwitch.onTextValue"
+											[offText]="callActionSwitch.offTextValue"
+											[disabled]="isPreviewEvent"
+											[onColor]="callActionSwitch.onGreenColorSwitch"
+											[offColor]="callActionSwitch.onDefaultColorSwitch"
+											[size]="callActionSwitch.bsize"
+											(statusChange)="eventCampaign.rsvpReceived = !eventCampaign.rsvpReceived">
+										</switch> Notify me when guests RSVP
+								</label></li>
+								
+								<li><label> <switch
+											[status]="eventCampaign.inviteOthers"
+											[disabled]="isPreviewEvent || reDistributeEvent || reDistributeEventManage"
+											[onText]="callActionSwitch.onTextValue"
+											[offText]="callActionSwitch.offTextValue"
+											[disabled]="(isPreviewEvent || reDistributeEvent) || reDistributeEvent"
+											[onColor]="callActionSwitch.onGreenColorSwitch"
+											[offColor]="callActionSwitch.onDefaultColorSwitch"
+											[size]="callActionSwitch.bsize"
+											(statusChange)="eventCampaign.inviteOthers = !eventCampaign.inviteOthers">
+										</switch> Allow recipients to bring guests
+								</label></li>
 							</ul>
 						</div>
 					</div>

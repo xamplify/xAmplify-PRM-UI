@@ -715,6 +715,10 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
   
   setPartnerEmailNotification(event){
       this.eventCampaign.emailNotification = event;
+      if(!event){
+          this.eventCampaign.emailOpened = false;
+          this.eventCampaign.linkOpened = false;
+      }
   }
   contactListMethod(contactListsPagination:Pagination){
     this.contactService.loadContactLists(contactListsPagination)
@@ -1132,6 +1136,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'updateMessage':eventCampaign.updateMessage,
       'channelCampaign':eventCampaign.channelCampaign,
       'emailNotification':eventCampaign.emailNotification,
+      'linkOpened':eventCampaign.linkOpened,
       'enableCoBrandingLogo':eventCampaign.enableCoBrandingLogo,
       'countryId': eventCampaign.countryId,
       'email':eventCampaign.email,
