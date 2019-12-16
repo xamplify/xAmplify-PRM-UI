@@ -206,7 +206,7 @@ a.disabled {
 						</div>
 						
 						
-							<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign">
+							<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && !reDistributeEvent && !reDistributeEventManage">
 								<label class="col-sm-3">Email Notification</label>
 								<div class="col-sm-8">
 									<switch class="pull-left" [status]="eventCampaign.emailNotification" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
@@ -1269,7 +1269,7 @@ a.disabled {
         </div>
         </fieldset>
 
-		  <div class="col-xs-12 mb10 p0" *ngIf="eventCampaign.emailNotification || reDistributeEvent">
+		  <div class="col-xs-12 mb10 p0" *ngIf="eventCampaign.emailNotification || reDistributeEvent || !eventCampaign.channelCampaign">
           <fieldset class="col-xs-12">
             <legend style="color: #2c3f52;">Add Your Work Flow</legend>
             <div style="margin-bottom:70px;">
