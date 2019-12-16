@@ -1995,7 +1995,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         } else {
             this.campaign.regularEmail = false;
         }
-        if(this.campaign.emailNotification){
+        if(this.campaign.emailNotification || !this.campaign.channelCampaign){
             this.getRepliesData();
             this.getOnClickData();
         }else{
