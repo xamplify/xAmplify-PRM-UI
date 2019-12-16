@@ -265,7 +265,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
       try {
           if(this.currentUser['logedInCustomerCompanyNeme'] != undefined){
-            this.setTitle(this.currentUser['logedInCustomerCompanyNeme'] + ' - xAmplify');
+            this.setTitle(this.currentUser['logedInCustomerCompanyNeme']);
           }else{
               this.setTitle('xAmplify'); 
           }

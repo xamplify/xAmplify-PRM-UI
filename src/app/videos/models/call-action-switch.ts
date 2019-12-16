@@ -1,6 +1,8 @@
 export class CallActionSwitch {
     onTextValue = 'ON';
     offTextValue = 'OFF';
+    yesTextValue = 'YES';
+    noTextValue = 'NO';
     onColorBswitch = 'success';
     offColorBswitch = 'warning';
     size = 'small';

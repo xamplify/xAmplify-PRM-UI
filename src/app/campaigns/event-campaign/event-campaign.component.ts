@@ -686,7 +686,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.clearSelectedContactList();
     this.clearSelectedTemplate();
     this.eventCampaign.channelCampaign = !this.eventCampaign.channelCampaign;
-    this.setPartnerEmailNotification(true);
+   // this.setPartnerEmailNotification(true);
       this.contactListsPagination.pageIndex = 1;
       if(!this.eventCampaign.channelCampaign){
           this.eventCampaign.enableCoBrandingLogo = false;
@@ -1065,11 +1065,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
        }
     }
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ 
-        if(this.eventCampaign.emailNotification || this.reDistributeEvent || !this.eventCampaign.channelCampaign){
-            this.getRepliesData();
-        }else{
-            this.eventCampaign.campaignReplies = [];
-        }
+        this.getRepliesData();
        }
    
     if(eventCampaign.userListIds != undefined){
@@ -1135,7 +1131,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'subjectLine':eventCampaign.subjectLine,
       'updateMessage':eventCampaign.updateMessage,
       'channelCampaign':eventCampaign.channelCampaign,
-      'emailNotification':eventCampaign.emailNotification,
+      'emailNotification':true,
       'linkOpened':eventCampaign.linkOpened,
       'enableCoBrandingLogo':eventCampaign.enableCoBrandingLogo,
       'countryId': eventCampaign.countryId,
