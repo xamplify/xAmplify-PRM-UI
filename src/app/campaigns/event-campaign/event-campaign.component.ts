@@ -1065,7 +1065,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
        }
     }
     if(this.eventCampaign.campaignReplies && this.eventCampaign.campaignReplies.length>0){ 
-        if(this.eventCampaign.emailNotification || this.reDistributeEvent){
+        if(this.eventCampaign.emailNotification || this.reDistributeEvent || !this.eventCampaign.channelCampaign){
             this.getRepliesData();
         }else{
             this.eventCampaign.campaignReplies = [];
