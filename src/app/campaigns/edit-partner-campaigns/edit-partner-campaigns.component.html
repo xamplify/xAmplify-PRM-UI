@@ -143,6 +143,19 @@
                           <label style="margin: 5px 0;">Email is opened</label>
                         </div>
                       </div>
+                      
+                      <div class="email-options-checkbox clearfix">
+                        <div class="col-sm-4 ui-switch-custom-div">
+                          <switch [status]="campaign.linkOpened" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+                            [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                            [size]="callActionSwitch.size" (statusChange)="setLinkOpened($event)">
+                          </switch>
+                        </div>
+                        <div class="col-sm-8" style="margin-bottom: 10px;">
+                          <label style="margin: 5px 0;">Link is opened</label>
+                        </div>
+                      </div>
+                      
                       <div class="email-options-checkbox clearfix" *ngIf="campaignType=='VIDEO'">
                         <div class="col-sm-4 ui-switch-custom-div">
                           <switch [status]="campaign.videoPlayed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"

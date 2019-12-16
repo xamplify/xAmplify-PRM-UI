@@ -611,6 +611,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
             'channelCampaign': false,
+            'linkOpened':this.campaign.linkOpened,
+            'emailNotification':true,
             'enableCoBrandingLogo': this.campaign.enableCoBrandingLogo,
             'socialSharingIcons': true,
             'userId': this.authenticationService.getUserId(),
@@ -1322,6 +1324,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       } catch ( error ) {
           console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
       }
+  }
+  
+  setLinkOpened(event){
+      this.campaign.linkOpened = event;
   }
 
 }
