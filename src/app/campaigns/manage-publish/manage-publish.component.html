@@ -445,8 +445,8 @@
 													</a>
 												</ng-container>
 												<ng-container *ngIf="campaign.launched">
-												<ng-container *ngIf="campaign.formsCount>0" >
-													<a (click)="goToFormAnalytics(campaign.campaignId)"
+												<ng-container *ngIf="campaign.formsCount>0 && !campaign.defaultForm" >
+													<a  (click)="goToFormAnalytics(campaign.campaignId)"
 													 data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
 														<i class="fa fa-wpforms"></i>
 													</a>
