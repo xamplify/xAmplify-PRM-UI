@@ -214,15 +214,16 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             
                             updatedBody = updatedBody.replace('src="https://release.xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
                                     '<div id="overlay-logo-bee" style="position: absolute;z-index: 9;"><a href='+this.logoLink+' target="_blank" >'+
-                                    '<img id="image" style="position:absolute;top:10px;float: right;left: 525px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                                    '<img id="image" style="position:absolute;top:10px;float: right;left: 440px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             
                             
                             updatedBody = updatedBody.replace('src="https://xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee" style="position: absolute;z-index: 9;"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image" style="position:absolute;top:10px;float: right;left: 525px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            '<img id="image" style="position:absolute;top:10px;float: right;left: 440px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank" tabindex="-1">', '');
+                            updatedBody = updatedBody.replace('javascript:void(0) target="_blank" style="outline:none" tabindex="-1">', '');
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             checkVideoTag = 'beeTemplate';
