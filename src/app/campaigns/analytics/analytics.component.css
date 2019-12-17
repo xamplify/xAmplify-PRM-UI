@@ -662,3 +662,9 @@ tr>td>h6 {
 .fs30{
 	font-size: 30px !important;
 }
+
+
+.pull-right>.dropdown-menu {
+    right: 38px!important;
+    left: auto;
+}
