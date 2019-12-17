@@ -150,6 +150,8 @@
 													<i class="fa fa-eye mr5"></i>
                         </a>
 						<span >
+						
+						<ng-container *ngIf="campaign.allowRedistribution">
 						<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
                             <i class="fa fa-clone"></i>
                         </a>
@@ -161,6 +163,13 @@
                         <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
                             <i class="fa fa-clone cancelled-event"></i>
                         </a>
+                        </ng-container>
+                        <ng-container *ngIf="!campaign.allowRedistribution">
+                        	  <a  data-toggle="tooltip" data-placement="top" title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute" data-rel="fancybox-button" >
+                            <i class="fa fa-clone cancelled-event"></i>
+                        </a>
+                        </ng-container>
+                        
 						  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
 						         <div class="btn-group pull-right" id="download-template">
 										<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
@@ -232,15 +241,24 @@
 											<a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="preview campaign">
 													<i class="fa fa-eye mr4"></i>
                                                  </a>
-												<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
-													<i class="fa fa-clone"></i>
-												</a>
-												<a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
-													<i class="fa fa-clone"></i>
-												</a>
-												<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
-													<i class="fa fa-clone" style="cursor:not-allowed"></i>
-												</a>
+                                                 
+                                                <ng-container *ngIf="campaign.allowRedistribution">
+													<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+														<i class="fa fa-clone"></i>
+													</a>
+													<a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
+														<i class="fa fa-clone"></i>
+													</a>
+													<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton" data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button">
+														<i class="fa fa-clone" style="cursor:not-allowed"></i>
+													</a>
+												</ng-container>
+												
+												 <ng-container *ngIf="!campaign.allowRedistribution">
+                        	  						<a  data-toggle="tooltip" data-placement="top" title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute" data-rel="fancybox-button" >
+                           								 <i class="fa fa-clone cancelled-event"></i>
+                        							</a>
+                        						</ng-container>
 												
 												<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
 										         <div class="btn-group" id="download-template-grid">
