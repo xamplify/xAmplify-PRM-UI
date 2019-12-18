@@ -105,9 +105,11 @@
 											<h5 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:35 }}<span *ngIf="campaign.createdBy?.length>35">...</span></b></h5>
 											<h5 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:20 }}<span *ngIf="campaign.companyName?.length>20">...</span></b></h5>
 											<h5 *ngIf="campaign.nurtureCampaign" [title]="campaign.vendorOrganizationName">Originated By <b>{{campaign.vendorOrganizationName | slice:0:20 }}<span *ngIf="campaign.vendorOrganizationName?.length>20">...</span></b></h5>
-										    <h5 class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign">Through Campaign</h5>
-										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">To Campaign</h5>
-										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</h5>
+										    <span class="view-banner" *ngIf="campaign.launched && campaign.channelCampaign">Through Campaign</span>
+										    <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign">To Campaign</span>
+										    <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #5cb85c;">Public</span>
+										    <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 0px;background-color: #d9534f;">Private</span>
+										    <h5 class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: #d9534f;">Cancelled</h5>
 										    <h5 class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="background-color: #f76c1a !important">Draft</h5>
 										    <h5 class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'">Scheduled</h5>
 										</td>
@@ -134,6 +136,9 @@
                         <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
                       </b>
 											</span>
+										<!-- <br>
+									     <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: 2px;background-color: #5cb85c;">Public</span>
+										 <span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: 2px;background-color: #d9534f;">Private</span> -->
 										</td>
 										<td class="center">
 										<app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign.createdDate"> </app-timestamp>
@@ -394,6 +399,8 @@
 										    <span class="view-banner" *ngIf="campaign.launched && !campaign.channelCampaign && !campaign.nurtureCampaign" style="position: relative;top: -3px;">To Campaign</span>
 										    <span class="view-banner" *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')" style="position: relative;top: -3px; background-color: #f76c1a !important">Draft</span>
 											<span class="view-banner" *ngIf="!campaign.launched && campaign.scheduleType==='SCHEDULE'" style="position: relative;top: -3px;">Scheduled</span>
+											<span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #5cb85c;">Public</span>
+											<span class="view-banner" *ngIf="campaign.launched && campaign.campaignType ==='EVENT' && !campaign.publicEventCampaign" style="position: relative;top: -3px;background-color: #d9534f;">Private</span>
 											</h4>
 											<h6 [title]="campaign.createdBy">By <b>{{campaign.createdBy | slice:0:15}}<span *ngIf="campaign.createdBy?.length>15">...</span></b></h6>
 											<h6 [title]="campaign.companyName">From <b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
