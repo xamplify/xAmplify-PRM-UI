@@ -63,13 +63,13 @@ export class Properties {
   PARTNERS_UPDATE_SUCCESS = "Your Partner has been updated successfully.";
   PARTNERS_UPDATE_ERROR = "An error occured while updating your partner.";
 
-  PARTNERS_DELETE_SUCCESS = "Your Partners have been deleted successfully.";
+  PARTNERS_DELETE_SUCCESS = "Your Partner(s) have been deleted successfully.";
   PARTNERS_LIST_DELETE_SUCCESS = 'Your Partner list has been deleted successfully.'
   PARTNERS_DELETE_ERROR = "An error occured while deleting your partner.";
 
   PARTNERS_SAVE_SUCCESS = "Your Partner(s) have been saved successfully.";
   PARTNERS_SAVE_ERROR = "An error occured while saving your partners.";
-  PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partners have been validated successfully.";
+  PARTNERS_EMAIL_VALIDATE_SUCCESS = "Selected Partner(s) have been validated successfully.";
 
   /* Authentication Module*/
 
