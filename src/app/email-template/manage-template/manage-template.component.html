@@ -146,7 +146,7 @@
 										</ng-container>
 										<h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft">DRAFT</h5>
 										<h5 class="badge badge-secondary m0" *ngIf="emailTemplate.spamScore"
-										[ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
+										[ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
 										 data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</h5>
 										<h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'">PARTNER</h5>
 										<!-- <h5 class="view-banner"
@@ -207,31 +207,41 @@
 						*ngFor="let emailTemplate of pagination.pagedItems ;let i =index"
 						id="emailTemplateListDiv_{{emailTemplate.id}}">
 						<div class="grid-box">
+						<!-- <span class="ribbon1">
+						<span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'">Email Co-Branding</span>
+                        <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
+                        </span> -->
+                       <!--  new template image size style
+                        style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" -->
 							<img src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
 							<h4 class="ellipsis mt5 mb5 f-w-600"
 								title="{{emailTemplate.name}}">
 								{{emailTemplate.name | slice:0:25}} <span
 									*ngIf="emailTemplate.name?.length>25">...</span><br><br>
-							<span class="view-banner-listView">
-                <!-- {{emailTemplate.emailTemplateType}} -->
+							<!-- <span class="view-banner-listView">
+                {{emailTemplate.emailTemplateType}}
                 <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else OtherType">Email Co-Branding</span>
                 <ng-template #OtherType>{{emailTemplate.emailTemplateType}}</ng-template>
-              </span>
-              <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore"
-              [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-               data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
+              </span> -->
 							</h4>
 							<!-- <h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5> -->
 							<div>
 								<h6 *ngIf="emailTemplate.type=='PARTNER'">
 									Shared On <b> <app-timestamp [isOnlyDate]="true"
-											[dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
-									</b>
+											[dateAndTime]="emailTemplate.createdDate"> </app-timestamp></b>
+											<span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore"
+              								  [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
+             								  data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
+									
 								</h6>
 								<h6 *ngIf="emailTemplate.type!='PARTNER'">
 									Created On <b> <app-timestamp [isOnlyDate]="true"
 											[dateAndTime]="emailTemplate.createdDate"> </app-timestamp>
 									</b>
+									<span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore"
+              [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
+               data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
+               
 								</h6>
 								<ng-container *ngIf="emailTemplate.type!='PARTNER'">
 								<h6 title="{{emailTemplate.createdBy}}">
