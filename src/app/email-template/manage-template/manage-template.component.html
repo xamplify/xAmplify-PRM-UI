@@ -218,11 +218,11 @@
 								title="{{emailTemplate.name}}">
 								{{emailTemplate.name | slice:0:25}} <span
 									*ngIf="emailTemplate.name?.length>25">...</span><br><br>
-							<!-- <span class="view-banner-listView">
-                {{emailTemplate.emailTemplateType}}
+							<span class="view-banner-listView">
+               <!--  {{emailTemplate.emailTemplateType}} -->
                 <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else OtherType">Email Co-Branding</span>
                 <ng-template #OtherType>{{emailTemplate.emailTemplateType}}</ng-template>
-              </span> -->
+              </span>
 							</h4>
 							<!-- <h5 class="view-banner">{{emailTemplate.emailTemplateType}}</h5> -->
 							<div>
