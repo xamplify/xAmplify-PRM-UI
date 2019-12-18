@@ -97,6 +97,7 @@ a.disabled {
 							</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="eventTitle"
+								    maxlength="250"
 									placeholder="Event Title" [(ngModel)]="eventCampaign.campaign"
 									[ngModelOptions]="{standalone: true}"
 									[ngClass]="{'has-error': eventError.eventTitleError}"
