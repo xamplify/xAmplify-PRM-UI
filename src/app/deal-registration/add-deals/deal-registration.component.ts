@@ -15,6 +15,7 @@ import { UtilService } from '../../core/services/util.service';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { DealComments } from '../models/deal-comments';
 import { DealQuestions } from '../models/deal-questions';
+import { UserService } from 'app/core/services/user.service';
 
 
 
@@ -94,9 +95,11 @@ export class DealRegistrationComponent implements OnInit
     ngxloading: boolean;
     loggenInUserId: any;
     forms: DealForms[] = [];
+    questions: DealQuestions[] = [];
     form: DealForms;
     answers: DealAnswer[] = [];
     dealTypes:DealType[] =  [];
+    defaultDealTypes = ['Select Dealtype','New Customer','New Product','Upgrade','Services'];
     formId: number;
     propertiesQuestions: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
 
@@ -118,9 +121,11 @@ export class DealRegistrationComponent implements OnInit
     // templateSuccessMsg: any;
     // pushToMarketo = false;
     marketo=false;
+    propertiesComments:Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
         , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames,public utilService:UtilService
-        ,public callActionSwitch: CallActionSwitch
+        ,public callActionSwitch: CallActionSwitch,
+        public userService: UserService
 
     )
     {
@@ -130,7 +135,6 @@ export class DealRegistrationComponent implements OnInit
 
     ngOnInit()
     {
-        
        this.utilService.getJSONLocation().subscribe(response=>console.log(response))
 
         flatpickr('.flatpickr', {
@@ -138,63 +142,57 @@ export class DealRegistrationComponent implements OnInit
             dateFormat: 'm/d/Y',
             minDate: new Date()
         });
+        // $(".phone-input input").height( "32px")
+        $(".flagInput").click(function(){
+          let count = 0
+            $(".flagInput .dropdown-content").each(function() {
+                count++;
+            });
+            if(count != 0){
+              $("int-phone-prefix input").prop({disabled: true});
+            }else{
+              $("int-phone-prefix input").prop({disabled: false});
+            }
+        })
         this.loggenInUserId = this.authenticationService.user.id;
 
         if (this.dealId == -1)
         {
-
-
-            this.dealRegistrationService.getForms(this.campaign.userId).subscribe(forms =>
-            {
-                this.forms = forms;
-
-
-                if (forms.length > 0)
+            this.userService.listForm(this.campaign.userId).subscribe(questions =>
                 {
-                    this.form = forms[0];
+                   console.log(questions);
+                });
 
-                }
-              
-
-
+          this.userService.listForm(this.campaign.userId).subscribe(questions =>
+            {
+                this.questions = questions;
             },
             error => console.log(error),
             () => {this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
 
                 this.dealTypes = dealTypes.data;
-              
+
                 this.getLeadData();
             },
             error => console.log(error),
             () => { });
          });
-            
+
         }
         else
         {
-           
-            this.dealRegistrationService.getForms(this.campaign.userId).subscribe(forms =>
+          this.userService.listForm(this.campaign.userId).subscribe(questions =>
             {
-                this.forms = forms;
-
-
-                if (forms.length > 0)
-                {
-                    this.form = forms[0];
-
-                }
-
-
-
+                this.questions = questions;
             },
             error => console.log(error),
-            () => { 
+            () => {
                 this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
 
                     this.dealTypes = dealTypes.data;
-                   
+
                     this.getLeadData();
-        
+
                 },
                 error => console.log(error),
                 () => { });
@@ -202,7 +200,7 @@ export class DealRegistrationComponent implements OnInit
 
 
         }
-        
+
 
     }
 
@@ -260,6 +258,7 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.role = data.role;
         this.dealRegistration.isDeal=data.deal;
         this.dealRegistration.role = data.role;
+
         // if(data.pushToMarketo)
         //     this.dealRegistration.pushToMarketo = data.pushToMarketo;
         // else
@@ -278,14 +277,16 @@ export class DealRegistrationComponent implements OnInit
             console.log(date);
         this.dealRegistration.estimatedCloseDate = date
 
+        if(!this.defaultDealTypes.includes(this.dealRegistration.dealType) && !this.dealTypes.includes(this.dealRegistration.dealType)){
+            let d = new DealType();
+            d.dealType = this.dealRegistration.dealType;
+            this.dealTypes.push(d);
+        }
+
         this.dealRegistration.properties = data.properties;
         this.properties = data.properties;
         let i=1;
-        this.dealRegistration.properties.forEach(property =>
-        {
-             property.divId= "property-"+ i++;
-            property.isSaved = true;
-        })
+
         if (this.isVendor == 'manage-leads')
         {
             this.dealRegistration.properties.forEach(property =>
@@ -297,8 +298,6 @@ export class DealRegistrationComponent implements OnInit
                 property.isDisabled = true;
             })
         }
-
-
         this.dealRegistration.opportunityAmount = data.opportunityAmount;
         let countryIndex = this.countryNames.countries.indexOf(data.leadCountry);
         if (countryIndex > -1)
@@ -312,11 +311,18 @@ export class DealRegistrationComponent implements OnInit
         if (data.deal)
         {
           this.propertiesQuestions  = this.properties.filter(p=>p.propType == 'QUESTION')
+          this.propertiesComments  = this.properties.filter(p=>p.propType == 'PROPERTY')
+          this.propertiesComments.forEach(property =>
+            {
+                 property.divId= "property-"+ i++;
+                property.isSaved = true;
+            })
+          console.log(this.propertiesQuestions)
 
-        } else if (this.form != undefined)
+        } else if (this.questions.length>0)
         {
 
-            this.form.campaignDealQuestionDTOs.forEach(q =>
+            this.questions.forEach(q =>
             {
               let property = new DealDynamicProperties();
               property.id=q.id;
@@ -330,7 +336,7 @@ export class DealRegistrationComponent implements OnInit
                 }
 
             });
-            console.log(this.properties)
+            console.log(this.propertiesQuestions)
         }
 
         this.setDealTypeError();
@@ -403,9 +409,9 @@ export class DealRegistrationComponent implements OnInit
         {
             this.dealRegistration.leadCountry = this.countryNames.countries[0];
         }
-        if (this.form != undefined)
+        if (this.questions.length > 0 )
         {
-            this.form.campaignDealQuestionDTOs.forEach(q =>
+            this.questions.forEach(q =>
             {
               let property = new DealDynamicProperties();
               property.key = q.question;
@@ -479,14 +485,19 @@ export class DealRegistrationComponent implements OnInit
         else
             this.opportunityAmountError = true;
 
-       
+
         this.validateWebSite(0);
         this.validatePhone(0);
-        this.properties.forEach(property =>
+        this.propertiesQuestions.forEach(property =>
         {
             this.validateQuestion(property);
-            this.validateComment(property);
+
         })
+        this.propertiesComments.forEach(property =>
+            {
+
+                this.validateComment(property);
+            })
 
         this.submitButtonStatus();
 
@@ -497,7 +508,7 @@ export class DealRegistrationComponent implements OnInit
                 this.dealTypeError = false
             else
                 this.dealTypeError = true;
-        
+
     }
 
     opportunityAmountUpdate(event:string){
@@ -507,16 +518,14 @@ export class DealRegistrationComponent implements OnInit
     addProperties()
     {
         this.property = new DealDynamicProperties();
-        let length = this.properties.length;
+        let length = this.propertiesComments.length;
         length = length + 1;
         var id = 'property-' + length;
         this.property.divId = id;
         this.property.propType = 'PROPERTY';
         this.property.isSaved = false;
-
-
-
-        this.properties.push(this.property);
+        this.property.error = true;
+        this.propertiesComments.push(this.property);
 
         this.submitButtonStatus()
 
@@ -527,7 +536,7 @@ export class DealRegistrationComponent implements OnInit
             console.log(id)
         var index = 1;
 
-        this.properties = this.properties.filter(property => property.divId !== 'property-' + i)
+        this.propertiesComments = this.propertiesComments.filter(property => property.divId !== 'property-' + i)
             .map(property =>
             {
                 property.divId = 'property-' + index++;
@@ -548,16 +557,7 @@ export class DealRegistrationComponent implements OnInit
         this.dealRegistration.estimatedClosedDateString = this.dealRegistration.estimatedCloseDate;
         var obj = [];
         let answers: DealAnswer[] = [];
-        this.properties.forEach(property =>
-          {
-              var question = {
-                  id: property.id,
-                  key: property.key,
-                  value: property.value,
-                  propType:'PROPERTY'
-              }
-              obj.push(question)
-          })
+
           if(this.dealRegistration.isDeal){
           this.propertiesQuestions.forEach(property =>
             {
@@ -569,6 +569,16 @@ export class DealRegistrationComponent implements OnInit
                 }
                 obj.push(question)
             })
+            this.propertiesComments.forEach(property =>
+                {
+                    var question = {
+                        id: property.id,
+                        key: property.key,
+                        value: property.value,
+                        propType:'PROPERTY'
+                    }
+                    obj.push(question)
+                })
           }else{
             this.propertiesQuestions.forEach(property =>
               {
@@ -579,6 +589,15 @@ export class DealRegistrationComponent implements OnInit
                   }
                   obj.push(question)
               })
+              this.propertiesComments.forEach(property =>
+                {
+                    var question = {
+                        key: property.key,
+                        value: property.value,
+                        propType:'PROPERTY'
+                    }
+                    obj.push(question)
+                })
           }
 
         this.dealRegistration.answers = answers;
@@ -648,10 +667,13 @@ export class DealRegistrationComponent implements OnInit
     validateQuestion(property: DealDynamicProperties)
     {
 
-        if (property.key.length > 0)
+        if (property.key.length > 0){
             property.validationStausKey = this.successClass;
-        else
+            property.error = false;
+        }else{
             property.validationStausKey = this.errorClass;
+            property.error = true;
+        }
 
         this.submitButtonStatus()
     }
@@ -659,10 +681,13 @@ export class DealRegistrationComponent implements OnInit
     validateComment(property: DealDynamicProperties)
     {
 
-        if (property.value.length > 0)
-            property.validationStausValue = this.successClass;
-        else
-            property.validationStausValue = this.errorClass;
+        if (property.key.length > 0 && property.value.length > 0){
+            property.validationStausKey = this.successClass;
+            property.error = false;
+        }else{
+            property.validationStausKey = this.errorClass;
+            property.error = true;
+        }
         this.submitButtonStatus()
 
 
@@ -886,31 +911,24 @@ export class DealRegistrationComponent implements OnInit
             && !this.companyError && !this.firstNameError && !this.lastNameError
             && !this.titleError &&!this.roleError && !this.dealTypeError && !this.phoneError)
         {
-
-
-            var count = 0;
-            this.properties.forEach(propery =>
+            let qCount =0;
+            let cCount=0;
+            this.propertiesQuestions.forEach(propery =>
             {
-                if (propery.validationStausKey == this.successClass && propery.validationStausValue == this.successClass)
-                    count++;
-            })
-
-            if (count == this.properties.length)
-            {
-              var countQ = 0;
-              this.propertiesQuestions.forEach(p =>
-                {
-                    if (!p.error)
-                        countQ++;
-                })
-
-                if (countQ == this.propertiesQuestions.length)
-                {
-                        this.isDealRegistrationFormValid = true;
-                }
-                else
+                if (propery.error){
                     this.isDealRegistrationFormValid = false;
-            }
+                    qCount++;
+                }
+            })
+            this.propertiesComments.forEach(propery =>
+            {
+                if (propery.error){
+                    this.isDealRegistrationFormValid = false;
+                    cCount++;
+                }
+            })
+            if(qCount == 0 && cCount == 0)
+                this.isDealRegistrationFormValid = true;
             else
                 this.isDealRegistrationFormValid = false;
         } else
@@ -994,7 +1012,7 @@ export class DealRegistrationComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your leads URL.';
+                this.websiteErrorMessage = 'Please add your lead\'s URL.';
         }
     }
 

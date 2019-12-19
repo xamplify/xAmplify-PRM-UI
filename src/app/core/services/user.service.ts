@@ -216,12 +216,12 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
       }
-    saveForm(userId:number,form:DealForms){
+    saveForm(userId:number,form:any){
         return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
         .map( this.extractData )
         .catch( this.handleError );
     }
-    updateForm(userId:number,form:DealForms){
+    updateForm(userId:number,form:any){
         return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/update?access_token=" + this.authenticationService.access_token ,form)
         .map( this.extractData )
         .catch( this.handleError );

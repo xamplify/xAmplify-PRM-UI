@@ -46,7 +46,7 @@ export class ManageDealsComponent implements OnInit
     totalLeads: number = 0;
     dealsOnHold: number = 0;
     approvedDeals: number = 0;
-    
+
     totalDealsLoader: boolean = true;
     openedDealsLoader: boolean = true;
     closedDealsLoader: boolean = true;
@@ -252,6 +252,7 @@ export class ManageDealsComponent implements OnInit
     {
         $('#deals-page-content-div').css('pointer-events', 'none');
         this.clearPagination();
+        this.clearFields();
         if(this.isVendorVersion)
             this.listCampaigns(this.campaignsPagination);
 
@@ -270,6 +271,7 @@ export class ManageDealsComponent implements OnInit
     }
     showCampaignsByDeals()
     {
+        this.clearFields();
         $('#deals-page-content-div').css('pointer-events', 'none');
         this.clearPagination();
         if(this.isVendorVersion)
@@ -819,7 +821,17 @@ export class ManageDealsComponent implements OnInit
             this.listCampaigns(pagination);
             }
             else{
+              this.campaignsPaginationByDeals.pageIndex = 1;
+              if (this.sortOption.itemsSize.value == 0)
+              {
+                this.campaignsPaginationByDeals.maxResults = pagination.totalRecords;
+              } else
+              {
+                this.campaignsPaginationByDeals.maxResults = this.sortOption.itemsSize.value;
+              }
+              let sortedValue = this.sortOption.selectedSortedOption.value;
                 this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
+                this.setSortColumns(this.campaignsPaginationByDeals, sortedValue);
                 this.listCampaignsByDeals(this.campaignsPaginationByDeals);
             }
         }else{
@@ -827,8 +839,17 @@ export class ManageDealsComponent implements OnInit
                 this.listCampaignsByPartner(this.campaignsPagination);
             }
             else{
+              this.campaignsPaginationByDeals.pageIndex = 1;
                 this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
-
+                if (this.sortOption.itemsSize.value == 0)
+                {
+                  this.campaignsPaginationByDeals.maxResults = pagination.totalRecords;
+                } else
+                {
+                  this.campaignsPaginationByDeals.maxResults = this.sortOption.itemsSize.value;
+                }
+                let sortedValue = this.sortOption.selectedSortedOption.value;
+                this.setSortColumns(this.campaignsPaginationByDeals, sortedValue);
                 this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
             }
         }

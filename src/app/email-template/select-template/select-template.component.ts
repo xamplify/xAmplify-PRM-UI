@@ -376,7 +376,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         this.marketoInstanceClass = "form-group";
 
     }
-    checkMarketoCredentials() {
+    checkMarketoCredentials(state=false) {
         this.loading = true;
         this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
             if (response.statusCode == 8000) {
@@ -385,7 +385,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.templateError = false;
                 this.loading = false;
             }
-            else {
+            else if(state) {
 
 
                 $("#templateRetrieve").modal('show');
@@ -403,7 +403,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
     getTemplatesFromMarketo() {
         this.clearValues();
 
-        this.checkMarketoCredentials();
+        this.checkMarketoCredentials(true);
 
 
 
@@ -502,9 +502,15 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         }
     }
     setSelectedTemplates(event: any) {
-        this.selectedTemplates;
-        this.selectAllTemplates;
-        this.saveMarketoTemplatesButtonState();
+      this.selectedTemplates;
+
+      this.saveMarketoTemplatesButtonState();
+      let selectedTemps = this.filteredEmailTemplates.filter(i=>i.isSelectedMarketoTemplate);
+      if(selectedTemps.length == this.filteredEmailTemplates.length){
+        this.selectAllTemplates = true;
+      }else {
+        this.selectAllTemplates = false;
+      }
     }
     selectAll(event: any) {
         if (event) {

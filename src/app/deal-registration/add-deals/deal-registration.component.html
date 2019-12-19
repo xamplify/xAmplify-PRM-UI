@@ -118,7 +118,8 @@
               </label>
               <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                 <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
-                  [ngModelOptions]="{standalone: true}" [disabled]="isVendor || isPreview" ></int-phone-prefix>
+                  [ngModelOptions]="{standalone: true}" [disabled]="isVendor || isPreview"
+                  class="phone-input"></int-phone-prefix>
               </fieldset>
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
@@ -220,16 +221,12 @@
 
             <select class="form-control" [(ngModel)]="dealRegistration.dealType" [ngModelOptions]="{standalone: true}" id="dealType"
               (input)="validateField('dealType',false)" [disabled]="isVendor  || isPreview" >
-              <option [value]="'Select Dealtype'">-- Select Deal Type --</option>
-              <option [value]="'New Customer'" [selected]="dealRegistration.dealType == 'New Customer'">New Customer</option>
-              <option [value]="'New Product'" [selected]="dealRegistration.dealType == 'New Product'">New Product</option>
-              <option [value]="'Upgrade'" [selected]="dealRegistration.dealType == 'Upgrade'">Upgrade</option>
-              <option [value]="'Services'" [selected]="dealRegistration.dealType == 'Services'">Services</option>
+              <option *ngFor="let dt of defaultDealTypes" [value]="dt" [selected]="dealRegistration.dealType == dt">{{dt!='Select Dealtype'?dt:'-- Select Deal Type --'}}</option>
               <option *ngFor="let dt of dealTypes" [value]="dt.dealType" [selected]="dealRegistration.dealType == dt.dealType">{{dt.dealType}}</option>
             </select>
-          
+
           </div>
-         
+
 
           <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
             <label class="control-label">Opportunity Amount
@@ -280,11 +277,11 @@
             Add Your Comments
           </a>
         </div>
-        <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: 4px;">
-          <fieldset *ngIf="properties?.length>0">
+        <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: 4px;" *ngIf="!isVendor && !isPreview">
+          <fieldset *ngIf="propertiesComments?.length>0">
             <legend *ngIf="!isVendor && !isPreview">Add Your Comments</legend>
             <legend *ngIf="isVendor">Partner Comments</legend>
-            <div *ngFor="let property of properties;let i=index">
+            <div *ngFor="let property of propertiesComments;let i=index">
               <div class="portlet light dashboard-stat2" *ngIf="property.propType == 'PROPERTY'">
                 <div class="portlet-title custom-change-css" [ngClass]="{'colorBlue':isEven(i+1), 'colorRed':!isEven(i+1)}">
                   <div class="col-xs-6">
@@ -314,7 +311,7 @@
                           </font>
                         </label>
                         <input type="text" maxlength="100" class="form-control" [(ngModel)]=" property.key" [ngModelOptions]="{standalone: true}"
-                          id="question" (input)="validateQuestion(property)" [disabled]="property.isDisabled || isVendor || isPreview" />
+                          id="question" (input)="validateComment(property)" [disabled]="property.isDisabled || isVendor || isPreview" />
                       </div>
                       <div class="form-group" [attr.class]="property.validationStausValue">
                         <label class="control-label">Comment

@@ -256,7 +256,7 @@
 									<li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
 										<a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
 									</li>
-									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'">
+									<li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
 										<a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
 									</li>
 									<li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
@@ -320,13 +320,13 @@
 
 										<form role="form">
 
-											<div class="form-group">
+											<!-- <div class="form-group">
 												<label class="control-label">Form Name</label>
 												<input type="text" placeholder="Form Name" class="form-control" [(ngModel)]="form.name" [ngModelOptions]="{standalone: true}"
 												 required (input)="validateDealForm(form)" />
-												<!-- <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div> -->
-											</div>
-											<div class="col-xs-12">
+												 <div *ngIf="formErrors.firstName" class="alert alert-danger">{{ formErrors.firstName }}</div>
+											</div> -->
+											<div class="col-xs-12" *ngIf="false"  >
 
 												<div *ngFor="let question of defaultQuestions;let i=index">
 
@@ -433,7 +433,7 @@
 															</div>
 															<div class="col-xs-2">
 																<div class="pull-right" id="question-icons">
-																	<button type="button" class="btn-danger button-blue" (click)="removeDealType(i+1,dealType.id)">
+																	<button type="button" class="btn-danger button-blue" (click)="deleteDealType(i+1,dealType)">
 																		<span class="glyphicon glyphicon-trash"></span>
 																	</button>
 																	<button type="button" class="btn-primary button-blue" (click)="addDealtype()" *ngIf="dealtypes.length== i+1">
@@ -447,7 +447,7 @@
 													</div>
 												</div>
 											</div>
-											<button [disabled]="!dealSubmiteState" class="btn green-haze" (click)="saveDealTypes()">{{dealButtonText}}</button>
+											<button [disabled]="!dealSubmiteState || this.dealtypes.length == 0" class="btn green-haze" (click)="saveDealTypes()">{{dealButtonText}}</button>
 										</form>
 									</div>
 

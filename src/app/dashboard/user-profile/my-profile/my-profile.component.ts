@@ -987,21 +987,25 @@ gdprSettingLoaded = false;
     //Forms section
 
     initializeForm() {
+
         this.userService.listForm(this.loggedInUserId).subscribe(result => {
-            this.dealForms = result;
-            console.log(this.dealForms)
-            if (result[0]) {
+
+            console.log(result)
+            if (result.length > 0 ) {
                 this.form = result[0];
-                this.questions = this.form.campaignDealQuestionDTOs;
+                this.questions = result;
                 let index = 1;
                 this.questions = this.questions.map(q => {
                     q.divId = 'question-' + index++;
                     return q;
                 });
-                this.submitButtonText = "Update Form";
+                this.submitButtonText = "Update Questions";
 
-            } else
-                this.submitButtonText = "Save Form";
+            } else{
+              this.questions = [];
+              this.submitButtonText = "Save Questions";
+            }
+
             this.submitBUttonStateChange();
         })
         this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
@@ -1101,72 +1105,59 @@ gdprSettingLoaded = false;
         this.submitBUttonStateChange();
     }
     submitBUttonStateChange() {
-        let countForm = 0;
-        if (this.form.name != null && this.form.name != undefined && this.form.name.length > 0) {
+            let countForm = 0;
             this.questions.forEach(question => {
 
                 if (question.error)
                     countForm++;
             })
-            if (countForm > 0)
+            if (countForm > 0 || this.questions.length == 0)
                 this.formSubmiteState = false;
             else
                 this.formSubmiteState = true;
-        } else {
-            this.formSubmiteState = false;
-        }
+
     }
     saveForm() {
         this.ngxloading = true;
+        let self = this;
+        let data=[]
+         this.questions.forEach(question => {
+          const q= new DealQuestions();
+          console.log(self.authenticationService.getUserId())
+           q.question = question.question;
+          if (question.id ){
+            let obj = {
+              id : question.id,
+              question : question.question,
+              updatedBy : self.authenticationService.getUserId()
+            }
+            data.push(obj);
 
-        if (this.form.id == null) {
-            this.form.createdBy = this.loggedInUserId;
-            this.questions.forEach(question => {
-                question.createdBy == this.loggedInUserId;
-            })
-            this.form.campaignDealQuestionDTOs = this.questions;
-            this.userService.saveForm(this.loggedInUserId, this.form).subscribe(result => {
+          }else{
+            let obj = {
+              question : question.question,
+              createdBy : self.authenticationService.getUserId()
+            }
+            data.push(obj);
+          }
 
-                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-                this.userService.listForm(this.loggedInUserId).subscribe(form => {
-                    this.dealForms = form;
-                    this.initializeForm();
-                    // if (form[0]) {
-                    //     this.form = form[0];
-                    //     this.questions = this.form.campaignDealQuestionDTOs;
-                    //     this.submitButtonText = "Update Form";
-                    //     this.ngxloading = false;
-                    // } else
-                    //     this.submitButtonText = "Save Form";
-                    this.ngxloading = false;
-                })
-            })
-        } else {
-            this.form.updatedBy = this.loggedInUserId;
-            this.questions.forEach(question => {
-                if (question.id != null || question.id != undefined)
-                    question.createdBy == this.loggedInUserId;
-                else
-                    question.updatedBy == this.loggedInUserId;
-            })
-            this.form.campaignDealQuestionDTOs = this.questions;
-            this.userService.updateForm(this.loggedInUserId, this.form).subscribe(result => {
-                this.ngxloading = false;
-                this.initializeForm();
-                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+      })
 
-            }, (error) => {
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
-                this.userService.listForm(this.loggedInUserId).subscribe(form => {
-                    this.dealForms = form;
-                    if (form[0]) {
-                        this.form = form[0];
-                        this.questions = this.form.campaignDealQuestionDTOs;
-                    }
-                });
-            })
-        }
+      this.userService.saveForm(this.authenticationService.getUserId(),data).subscribe(result => {
+
+          this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+          this.initializeForm();
+          // this.userService.listForm(this.loggedInUserId).subscribe(form => {
+          //     this.dealForms = form;
+          //     this.initializeForm();
+
+          //     this.ngxloading = false;
+          // })
+      }, (error: any) => {
+        console.log(error);
+        this.ngxloading = false;
+    }, () => { this.ngxloading = false;});
+
     }
 
     //Deal types
@@ -1185,11 +1176,46 @@ gdprSettingLoaded = false;
 
         this.dealtypes.push(this.dealtype);
         this.dealTypeButtonStateChange();
+    }
 
+    deleteDealType(i, dealType){
+      try {
+        this.logger.info( "Deal Type in sweetAlert() " + dealType.id );
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#54a7e9',
+            cancelButtonColor: '#999',
+            confirmButtonText: 'Yes, delete it!'
 
+        }).then( function( myData: any ) {
+            console.log( "dealType showAlert then()" + dealType );
+            self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
+              console.log(result)
+              self.removeDealType(i, dealType.id);
+              self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+          }, (error) => {
+            self.ngxloading = false;
 
+        }, () => {
+            self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
+
+                self.dealtypes = dealTypes.data;
+
+            });
+        })
+        }, function( dismiss: any ) {
+            console.log( 'you clicked on option' );
+        });
+    } catch ( error ) {
+      console.log( error );
+    }
     }
     removeDealType(i, id) {
+
         if (id)
             console.log(id)
         console.log(i)
@@ -1224,25 +1250,36 @@ gdprSettingLoaded = false;
             if (dealType.error)
                 countForm++;
         })
-        if (countForm > 0)
+        if (countForm > 0 || this.dealtypes.length == 0)
             this.dealSubmiteState = false;
         else
             this.dealSubmiteState = true;
 
     }
     saveDealTypes() {
+      if(this.dealtypes.length > 0){
         this.ngxloading = true;
-
-
-
+        let dtArr = []
         this.dealtypes.forEach(dealtype => {
-            if (dealtype.id != null && dealtype.id != undefined)
-                dealtype.updatedBy == this.loggedInUserId;
-            else
-                dealtype.createdBy == this.loggedInUserId;
+            if (dealtype.id ){
+               let obj = {
+                    "id": dealtype.id,
+                    "dealType": dealtype.dealType,
+                    "updatedBy": this.authenticationService.getUserId()
+                  }
+                  dtArr.push(obj);
+            }else{
+                let obj = {
+                    "id": dealtype.id,
+                    "dealType": dealtype.dealType,
+                    "createdBy": this.authenticationService.getUserId()
+                  }
+                  dtArr.push(obj);
+            }
         })
+        console.log(dtArr)
 
-        this.dealRegSevice.saveDealTypes(this.dealtypes, this.loggedInUserId).subscribe(result => {
+        this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
             this.ngxloading = false;
             this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 
@@ -1257,6 +1294,7 @@ gdprSettingLoaded = false;
 
             });
         })
+      }
 
     }
 

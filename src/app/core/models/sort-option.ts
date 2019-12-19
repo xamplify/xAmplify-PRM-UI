@@ -153,6 +153,7 @@ export class SortOption {
     public leadPartnerSortOption:any = this.leadPartnersSortDropDown[0];
     public leadsSortOption:any = this.leadsSortDropDown[0];
     public dealCampaignSortOption:any = this.dealCampaignsSortDropDown[0];
+    public leadCampaignSortOption:any = this.leadCampaignsSortDropDown[0];
     public  campaignPartnersRemoveAccessDefaultSortOption:any = this.campaignPartnersRemoveAccessSortDropDown[0];
     public formsSortOption: any = this.manageFormsSortOptions[3];
     public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];

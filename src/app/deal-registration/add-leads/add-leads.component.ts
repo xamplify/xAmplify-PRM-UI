@@ -34,7 +34,7 @@ export class AddLeadsComponent implements OnInit
     @Input() lead: any;
     @Input() dealId: any;
     @Input() parent: any;
-    
+
     dealRegistration: DealRegistration;
     isServerError: boolean = false;
     leadData: any;
@@ -118,11 +118,11 @@ export class AddLeadsComponent implements OnInit
 
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
         , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames,public callActionSwitch: CallActionSwitch
-        ,private emailTemplateService:EmailTemplateService 
+        ,private emailTemplateService:EmailTemplateService
     )
     {
         this.dealRegistration = new DealRegistration();
-      
+
 
     }
 
@@ -134,6 +134,17 @@ export class AddLeadsComponent implements OnInit
             dateFormat: 'm/d/Y',
             minDate: new Date()
         });
+        $(".flagInput").click(function(){
+          let count = 0
+            $(".flagInput .dropdown-content").each(function() {
+                count++;
+            });
+            if(count != 0){
+              $("int-phone-prefix input").prop({disabled: true});
+            }else{
+              $("int-phone-prefix input").prop({disabled: false});
+            }
+        })
 
 
         this.loggenInUserId = this.authenticationService.user.id;
@@ -420,7 +431,7 @@ export class AddLeadsComponent implements OnInit
         // if(!this.dealRegistration.pushToMarketo)
         //       this.dealRegistration.pushToMarketo = this.pushToMarketo;
         //       console.log( this.dealRegistration)
-       
+
         if (this.dealRegistration.id != null)
         {
             this.dealRegistrationService.updateLead(this.dealRegistration).subscribe(data =>
@@ -762,7 +773,7 @@ export class AddLeadsComponent implements OnInit
             if (!this.URL_PATTERN.test(this.dealRegistration.website))
             {
                 this.addWebSiteError(x);
-                this.websiteErrorMessage = "Please enter a valid company’s URL.";
+                this.websiteErrorMessage = "Please enter a valid companyï¿½s URL.";
             } else
             {
                 this.removeWebSiteError();
@@ -771,11 +782,11 @@ export class AddLeadsComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your company’s URL.';
+                this.websiteErrorMessage = 'Please add your companyï¿½s URL.';
         }
     }
 
-   
+
     validateForm(form: any)
     {
         console.log(form);
@@ -793,7 +804,7 @@ export class AddLeadsComponent implements OnInit
         var returnDate = "";
 
         var dd = date.getDate();
-        var mm = date.getMonth() + 1; //because January is 0! 
+        var mm = date.getMonth() + 1; //because January is 0!
         var yyyy = date.getFullYear();
 
 
@@ -828,8 +839,8 @@ export class AddLeadsComponent implements OnInit
 //             this.checkMarketoCredentials();
 //          }
 //     }
-   
-       
+
+
 //   clearValues()
 //   {
 //       this.clientId = '';
@@ -848,7 +859,7 @@ export class AddLeadsComponent implements OnInit
 //           if (response.statusCode == 8000)
 //           {
 //             console.log(this.pushToMarketo);
-          
+
 //               this.showMarketoForm = false;
 //             //   if(!this.dealRegistration.pushToMarketo)
 //             //   this.dealRegistration.pushToMarketo = this.pushToMarketo;
@@ -876,7 +887,7 @@ export class AddLeadsComponent implements OnInit
 //           })
 //   }
 
-  
+
 //   submitMarketoCredentials()
 //   {
 //       this.loading = true;
@@ -893,7 +904,7 @@ export class AddLeadsComponent implements OnInit
 //           {
 //             $("#closeButton").hide();
 //               this.showMarketoForm = false;
-              
+
 //               this.templateError = false;
 //               this.templateSuccessMsg = response.message;
 //               this.loading = false;
@@ -924,8 +935,8 @@ export class AddLeadsComponent implements OnInit
 
 
 //   }
-  
- 
+
+
 //   validateModelForm(fieldId: any)
 //   {
 //       var errorClass = "form-group has-error has-feedback";
@@ -968,14 +979,14 @@ export class AddLeadsComponent implements OnInit
 //       this.toggleSubmitButtonState();
 //   }
 
- 
+
 //   saveMarketoTemplatesButtonState()
 //   {
 
 
 //   }
 
- 
+
 //   toggleSubmitButtonState()
 //   {
 //       if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
