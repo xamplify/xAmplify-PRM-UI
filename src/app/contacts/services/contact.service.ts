@@ -53,7 +53,7 @@ export class ContactService {
     }
     
     loadPreviewCampaignUsersOfContactList( contactListId: number, campaignId: number, pagination: Pagination ) {
-        return this._http.post( this.contactsUrl + contactListId + "/"+ campaignId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
+        return this._http.post( this.contactsUrl + campaignId + "/"+ contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )
             .catch( this.handleError );
     }
