@@ -994,7 +994,7 @@ export class DealRegistrationComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your lead�s URL.';
+                this.websiteErrorMessage = 'Please add your leads URL.';
         }
     }
 
