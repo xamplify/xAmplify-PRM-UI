@@ -117,16 +117,20 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     return false;
                 }
             }
+            
+            /************ Below code for event campaign merge tags required condition auther: Naresh **************/
+            
+            /*********** For now commenting the merge tags required code ***********/
 
-            if ( emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
+       /*  if ( emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.eventTitle ) < 0 ) {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_title}} merge tag.", "error" );
                     return false;
                 }
-                /* if(jsonContent.indexOf(self.eventDescription)< 0){
+                 if(jsonContent.indexOf(self.eventDescription)< 0){
                            swal("","Whoops! We’re unable to save this template because you deleted the {{event_description}} merge tag.","error");
                            return false;
-                      }*/
+                      }
                 if ( jsonContent.indexOf( self.eventStartTime ) < 0 ) {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_start_time}} merge tag.", "error" );
                     return false;
@@ -136,11 +140,11 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_end_time}}﻿ merge tag.", "error" );
                     return false;
                 }
-/*                if ( jsonContent.indexOf( self.eventLocation ) < 0 ) {
+                if ( jsonContent.indexOf( self.eventLocation ) < 0 ) {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{address}} merge tag.", "error" );
                     return false;
-                }*/
-            }
+                }
+            }*/
 
             if ( !isDefaultTemplate ) {
                 var buttons = $( '<div>' )

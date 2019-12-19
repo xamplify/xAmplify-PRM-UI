@@ -1112,11 +1112,11 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           }else{
               this.previewContactListId = id;
           }
-          this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
+          this.contactService.loadPreviewCampaignUsersOfContactList( id, this.campaign.campaignId,this.contactsUsersPagination).subscribe(
                   (data:any) => {
                       console.log(data);
                       console.log(pagination);
-                      this.contactListItems = data.listOfUsers;
+                      this.contactListItems = data.data;
                       console.log(this.contactListItems);
                       pagination.totalRecords = data.totalRecords;
                       this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);

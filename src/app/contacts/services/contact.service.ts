@@ -51,6 +51,12 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    loadPreviewCampaignUsersOfContactList( contactListId: number, campaignId: number, pagination: Pagination ) {
+        return this._http.post( this.contactsUrl + contactListId + "/contacts?access_token=" + this.authenticationService.access_token, pagination )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     defaultPartnerList(userId: number){
         return this._http.get( this.url + `default-partner-list/${userId}?access_token=${this.authenticationService.access_token}` )
