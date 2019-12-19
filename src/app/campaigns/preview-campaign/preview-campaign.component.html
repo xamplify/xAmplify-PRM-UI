@@ -472,7 +472,7 @@ data-backdrop="static">
               data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Analytics">
               <i class="fa fa-line-chart"></i>
             </a>
-            <a *ngIf="(campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+            <a *ngIf="((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign"
               data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
               <i class="fa fa-files-o"></i>
             </a>
@@ -486,7 +486,7 @@ data-backdrop="static">
               data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)" data-toggle="tooltip" data-placement="top" title="Analytics">
               <i class="fa fa-line-chart"></i>
             </a>
-            <a *ngIf="(campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign"
+            <a *ngIf="((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign"
               data-rel="fancybox-button" (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
               <i class="fa fa-files-o"></i>
             </a>
