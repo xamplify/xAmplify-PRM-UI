@@ -1995,14 +1995,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         } else {
             this.campaign.regularEmail = false;
         }
-        if(this.campaign.emailNotification || !this.campaign.channelCampaign){
-            this.getRepliesData();
-            this.getOnClickData();
-        }else{
-            this.replies = [];
-            this.urls = [];
-        }
-        
+        this.getRepliesData();
+        this.getOnClickData();
         this.selectedContactListIds = this.refService.removeDuplicates(this.selectedContactListIds);
         let timeZoneId = "";
         let scheduleTime:any;
