@@ -117,8 +117,6 @@
 											<img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                       						 alt="{{campaign.campaignType}} Campaign">
                       						 
-                      						 
-                      						 
                      					 </td>
 										<td>
 											<h4 class="ellipsis mt5 mb5 f-w-600" style="font-size: 14px;" title="{{campaign.campaignName}}">{{campaign.campaignName | slice:0:25}}
@@ -137,65 +135,64 @@
 												<b>Received On</b>
 											</span>
 											<span align="right" title="Received On"><b>
-                          <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
-                        </b>
+                          						<app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.displayTime"> </app-timestamp>
+                       						 </b>
 											</span>
 										</td>
 										<td>
 											<div class="actions-block override-actions" style="text-align: center !important;">
 												<a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
 													<i class="fa fa-eye mr5"></i>
-                        </a>
-                        <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
+                       							 </a>
+                       							 <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
 													<i class="fa fa-eye mr5"></i>
-                        </a>
-						<span >
-						
-						<ng-container *ngIf="campaign.allowRedistribution">
-						<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
-                            <i class="fa fa-clone"></i>
-                        </a>
-
-                        <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
-                            <i class="fa fa-clone"></i>
-                        </a>
-
-                        <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
-                            <i class="fa fa-clone cancelled-event"></i>
-                        </a>
-                        </ng-container>
-                        <ng-container *ngIf="!campaign.allowRedistribution">
-                        	  <a  data-toggle="tooltip" data-placement="top" title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute" data-rel="fancybox-button" >
-                            <i class="fa fa-clone cancelled-event"></i>
-                        </a>
-                        </ng-container>
+                        							</a>
+											<span>
+											<ng-container *ngIf="campaign.allowRedistribution">
+											<a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
+					                            <i class="fa fa-clone"></i>
+					                        </a>
+					
+					                        <a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button" >
+					                            <i class="fa fa-clone"></i>
+					                        </a>
+					
+					                        <a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"  data-toggle="tooltip" data-placement="top" title="Not available for cancelled event" data-rel="fancybox-button" >
+					                            <i class="fa fa-clone cancelled-event"></i>
+					                        </a>
+					                        </ng-container>
+					                        <ng-container *ngIf="!campaign.allowRedistribution">
+					                        	  <a  data-toggle="tooltip" data-placement="top" title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute" data-rel="fancybox-button" >
+					                            <i class="fa fa-clone cancelled-event"></i>
+					                        </a>
+					                        </ng-container>
                         
-						  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
-						         <div class="btn-group pull-right" id="download-template">
-										<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
-										<span  data-toggle="dropdown" title="Download"></span>
-										<ul class="dropdown-menu pull-right">
-												<li>
-												  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}"
-                        	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" target="_blank">
-                        	 							<i class="fa fa-file" style="width: 30px;"></i>
-														 Download Html
-													</a>
-											</li>
-											<li *ngIf="campaign.campaignType != 'EVENT'">
-											  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"  target="_blank">
-												<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
-												Download Pdf
-												</a>
-											</li>
-										</ul>
-								</div>
-                        </ng-container>
-                        </span>
-                        <a class="hidden"><i class="fa fa-trash"></i></a>
-                        <!-- <a (click)="showCampaignPreview(campaign.campaignId)" title="Preview">
-												<i class="fa fa-eye mr5"></i>
-										  	</a>  -->
+										  <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
+										         <div class="btn-group pull-right" id="download-template" *ngIf="campaign.allowDownload">
+														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
+														<span  data-toggle="dropdown" title="Download"></span>
+														<ul class="dropdown-menu pull-right">
+																<li>
+																  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}"
+				                        	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" target="_blank">
+				                        	 							<i class="fa fa-file" style="width: 30px;"></i>
+																		 Download Html
+																	</a>
+															</li>
+															<li *ngIf="campaign.campaignType != 'EVENT'">
+															  	<a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}"  data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"  target="_blank">
+																<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
+																Download Pdf
+																</a>
+															</li>
+														</ul>
+												</div>
+											<a *ngIf="!campaign.allowDownload"  data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download" data-rel="fancybox-button" >
+					                            <i class="fa fa-download cancelled-event"></i>
+					                        </a>
+					                   </ng-container>
+                        		</span>
+                        			<a class="hidden"><i class="fa fa-trash"></i></a>
 											</div>
 										</td>
 									</tr>
@@ -261,7 +258,7 @@
                         						</ng-container>
 												
 												<ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
-										         <div class="btn-group" id="download-template-grid">
+										         <div class="btn-group" id="download-template-grid" *ngIf="campaign.allowDownload" >
 														<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
 														<span  data-toggle="dropdown" title="Download"></span>
 														<ul class="dropdown-menu pull-right">
@@ -281,6 +278,9 @@
 															</li>
 														</ul>
 												</div>
+												<a *ngIf="!campaign.allowDownload"  data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download" data-rel="fancybox-button" >
+					                           		 <i class="fa fa-download cancelled-event"></i>
+					                        	</a>
                         				</ng-container>
 												
 												<!-- <a (click)="referenceService.downloadTemplate(campaign.campaignId)" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 

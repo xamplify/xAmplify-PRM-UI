@@ -76,5 +76,6 @@ export class Campaign {
     publicEventAlias:string = "";
     formAlias:string = "";
     publicEventCampaign:boolean = false;
+    allowDownload = false;
 
 }
