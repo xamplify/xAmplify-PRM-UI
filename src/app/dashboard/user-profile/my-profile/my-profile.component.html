@@ -503,6 +503,30 @@
 														</div>
 													</div>
 												</div>
+												<div class="col-lg-4" (click)="configSalesforce()">
+													<div class="card mb-5 mb-lg-4">
+														<div class="card-body" style="padding:10px;">
+															<!-- <div class="triangle-up-right">
+
+															</div> -->
+															<h5 class="card-title  text-uppercase text-center"
+															style="padding-top: 4%;">Salesforce</h5>
+
+															<div class="ribbon draft" style="left:10px" >
+																<span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
+															</div>
+															<div style="height: 120px;">
+																<div>
+																	<img src="assets/images/crm/huspot-amplify.png"  style="margin-top:20px; text-align: center;width:100%">
+																</div>
+															</div>
+
+															<a  class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configure'" >configure</a>
+															<a  class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configured'" >re configure</a>
+														</div>
+													</div>
+												</div>
+												
 												</div>
 
 										</section>

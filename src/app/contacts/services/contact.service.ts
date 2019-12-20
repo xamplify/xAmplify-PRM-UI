@@ -539,4 +539,16 @@ export class ContactService {
             .catch(this.handleError);
     }
 
+    getSfFormFields(){
+        return this._http.get( this.authenticationService.REST_URL + "/salesforce/formfields/" + this.authenticationService.getUserId() + "?access_token=" +this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    displaySfForm(dealId:number){
+        return this._http.get( this.authenticationService.REST_URL + "/salesforce/ui/formfields/" + this.authenticationService.getUserId()+"/"+ dealId + "?access_token=" +this.authenticationService.access_token)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
 }

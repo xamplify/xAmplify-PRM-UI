@@ -26,4 +26,7 @@ export class ColumnInfo {
 /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";
+
+    sfCustomField:boolean;
+    labelLength:string;
 }

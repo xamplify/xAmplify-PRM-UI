@@ -44,6 +44,7 @@ import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { PublicPageResponseComponent } from './public-page-response/public-page-response.component';
 import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
+import { FlatpickrComponent } from './flatpickr/flatpickr.component';
 
 
 @NgModule({
@@ -55,7 +56,7 @@ import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
         TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
         PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
-        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent],
+        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent],
 
 
     exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
@@ -64,7 +65,7 @@ import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
 
         ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent]
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent]
 
 })
 export class CommonComponentModule { }

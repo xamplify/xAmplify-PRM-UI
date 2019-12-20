@@ -1,5 +1,6 @@
 import { DealDynamicProperties } from "./deal-dynamic-properties";
 import { DealAnswer } from "./deal-answers";
+import { SfCustomFieldsDataDTO } from "./sfcustomfieldsdata";
 
 export class DealRegistration{
   id:number; 
@@ -30,4 +31,17 @@ export class DealRegistration{
   parentCampaignId:number;
   //pushToMarketo=true;
 
+
+  // Sf Custom Form Fields
+   description: string;
+   stage:string;
+   probability:string;
+   nextStep:string;
+   leadSource:string;
+   deliveryInstallationStatus:string;
+   trackingNumber:string;
+   orderNumber:string;
+   currentGenerator:string;
+   mainCompetitor:string;
+   sfCustomFieldsDataDto: Array<SfCustomFieldsDataDTO> = new Array<SfCustomFieldsDataDTO>();
 }

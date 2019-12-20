@@ -27,17 +27,18 @@ import { CommonComponentModule } from '../common/common.module';
 import { NgxCurrencyModule } from "ngx-currency";
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { DragulaModule } from 'ng2-dragula';
+import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule,DragulaModule],
-        declarations: [LoaderComponent, CountLoaderComponent],
+        declarations: [LoaderComponent, CountLoaderComponent,SfDealComponent],
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule ,LoaderComponent, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
-                  NgxCurrencyModule,CountLoaderComponent,DragulaModule],
+                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,SfDealComponent],
         providers: [],
 })
 

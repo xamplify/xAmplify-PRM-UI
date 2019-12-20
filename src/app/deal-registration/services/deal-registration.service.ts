@@ -391,6 +391,14 @@ export class DealRegistrationService
             .catch(this.handleError);
     }
 
+    isSfEnabledForParentCampaign(dealId:number)
+    {
+        var url = this.URL + "validate-sf-enabled/"+dealId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     private extractData(res: Response)
     {
         let body = res.json();

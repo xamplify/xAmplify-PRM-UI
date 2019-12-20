@@ -27,6 +27,7 @@ import { DashboardService } from '../../dashboard.service';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import {GdprSetting} from '../../models/gdpr-setting';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
+import { IntegrationService } from 'app/core/services/integration.service';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -109,6 +110,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hubSpotRibbonText: string;
     hubSpotRedirectURL: string;
     activeTabName: string = "";
+    sfRibbonText: string;
+    sfRedirectURL: string;
 /*****************GDPR************************** */
 gdprSetting:GdprSetting = new GdprSetting();
 gdprSettingLoaded = false;
@@ -117,7 +120,7 @@ gdprSettingLoaded = false;
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
-         private hubSpotService: HubSpotService,public httpRequestLoader: HttpRequestLoader) {
+         private hubSpotService: HubSpotService,public httpRequestLoader: HttpRequestLoader,private integrationService:IntegrationService) {
         //   this.customConstructorCall();
     }
     cropperSettings() {
@@ -271,7 +274,7 @@ gdprSettingLoaded = false;
 
     ngOnInit() {
         try {
-            if(this.referenceService.isHubspotCallBack == true){
+            if(this.referenceService.integrationCallBackStatus == true){
               this.activeTabName = 'integrations';
             }else{
               this.activeTabName = 'personalInfo';
@@ -1327,6 +1330,22 @@ gdprSettingLoaded = false;
             this.hubSpotRibbonText = "configure";
             this.logger.error(error, "Error in HubSpot checkIntegrations()");
         }, () => this.logger.log("HubSpot Configuration Checking done"));
+
+        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.sfRibbonText = "configured";
+            }
+            else {
+                this.sfRibbonText = "configure";
+            }
+            if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                this.sfRedirectURL = response.data.redirectUrl;
+            }
+        },error =>{
+            this.sfRibbonText = "configure";
+            this.logger.error(error, "Error in checkIntegrations()");
+        }, () => this.logger.log("Integration Configuration Checking done"));
     }
 
     configmarketo() {
@@ -1354,6 +1373,12 @@ gdprSettingLoaded = false;
     configHubSpot() {
         if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
             window.location.href = this.hubSpotRedirectURL;
+        }
+    }
+
+    configSalesforce() {
+        if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
+            window.location.href = this.sfRedirectURL;
         }
     }
 

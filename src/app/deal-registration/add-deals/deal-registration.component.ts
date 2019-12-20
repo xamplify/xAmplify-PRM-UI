@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
 import { DealRegistration } from '../models/deal-registraton';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -16,6 +16,8 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { DealComments } from '../models/deal-comments';
 import { DealQuestions } from '../models/deal-questions';
 import { UserService } from 'app/core/services/user.service';
+import { SfCustomFieldsDataDTO } from '../models/sfcustomfieldsdata';
+import { SfDealComponent } from '../sf-deal/sf-deal.component';
 
 
 
@@ -28,7 +30,7 @@ declare var flatpickr: any, $: any, swal: any;
     providers: [CountryNames,CallActionSwitch],
 
 })
-export class DealRegistrationComponent implements OnInit
+export class DealRegistrationComponent implements OnInit, AfterViewInit
 {
 
 
@@ -104,6 +106,10 @@ export class DealRegistrationComponent implements OnInit
     propertiesQuestions: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
 
 
+    @ViewChild(SfDealComponent)
+    sfDealComponent: SfDealComponent;
+    showSfDealFields: boolean = false;
+
     // isMarketoLead=false;
     // showMarketoForm: boolean;
     // clientId: string;
@@ -139,7 +145,7 @@ export class DealRegistrationComponent implements OnInit
 
         flatpickr('.flatpickr', {
             enableTime: false,
-            dateFormat: 'm/d/Y',
+            dateFormat: 'Y/m/d',
             minDate: new Date()
         });
         // $(".phone-input input").height( "32px")
@@ -558,6 +564,10 @@ export class DealRegistrationComponent implements OnInit
         var obj = [];
         let answers: DealAnswer[] = [];
 
+        if (this.showSfDealFields) {
+            this.setSfFormFieldValues();
+        }
+
           if(this.dealRegistration.isDeal){
           this.propertiesQuestions.forEach(property =>
             {
@@ -904,6 +914,14 @@ export class DealRegistrationComponent implements OnInit
     }
     submitButtonStatus()
     {
+        if(this.showSfDealFields){
+            this.opportunityAmountError = false;
+            this.titleError= false;
+            this.estimatedCloseDateError=false;
+            this.dealTypeError= false;
+            this.properties.length=0;
+            this.propertiesQuestions.length=0;
+        }
 
         if (!this.websiteError && !this.leadStreetError && !this.leadCityError
             && !this.leadStateError && !this.leadPostalCodeError && !this.countryError
@@ -1143,6 +1161,66 @@ export class DealRegistrationComponent implements OnInit
 
         return (country + " -" + city + "- " + number).trim();
      }
+
+     setSfFormFieldValues() {
+        if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
+            let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
+            if (formLabelDTOs.length !== 0) {
+                let sfCustomFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === true);
+                let sfDefaultFields = formLabelDTOs.filter(fLabel => fLabel.sfCustomField === false);
+
+                for (let formLabel of sfDefaultFields) {
+                    if (formLabel.labelId === "Name") {
+                        this.dealRegistration.title = formLabel.value;
+                    } else if (formLabel.labelId === "Description") {
+                        this.dealRegistration.description = formLabel.value;
+                    } else if (formLabel.labelId === "Type") {
+                        this.dealRegistration.dealType = formLabel.value;
+                    } else if (formLabel.labelId === "LeadSource") {
+                        this.dealRegistration.leadSource = formLabel.value;
+                    } else if (formLabel.labelId === "Amount") {
+                        this.dealRegistration.opportunityAmount = formLabel.value;
+                    } else if (formLabel.labelId === "CloseDate") {
+                        this.dealRegistration.estimatedClosedDateString = formLabel.value;
+                    } else if (formLabel.labelId === "NextStep") {
+                        this.dealRegistration.nextStep = formLabel.value;
+                    } else if (formLabel.labelId === "StageName") {
+                        this.dealRegistration.stage = formLabel.value;
+                    } else if (formLabel.labelId === "Probability") {
+                        this.dealRegistration.probability = formLabel.value;
+                    } else if (formLabel.labelId === "OrderNumber__c") {
+                        this.dealRegistration.orderNumber = formLabel.value;
+                    } else if (formLabel.labelId === "MainCompetitors__c") {
+                        this.dealRegistration.mainCompetitor = formLabel.value;
+                    } else if (formLabel.labelId === "CurrentGenerators__c") {
+                        this.dealRegistration.currentGenerator = formLabel.value;
+                    } else if (formLabel.labelId === "TrackingNumber__c") {
+                        this.dealRegistration.trackingNumber = formLabel.value;
+                    } else if (formLabel.labelId === "DeliveryInstallationStatus__c") {
+                        this.dealRegistration.deliveryInstallationStatus = formLabel.value;
+                    }
+                }
+
+                let sfCfDataList = [];
+                for (let formLabel of sfCustomFields) {
+                    let sfCfData = new SfCustomFieldsDataDTO();
+                    sfCfData.sfCfLabelId = formLabel.labelId;
+                    sfCfData.value = formLabel.value;
+                    sfCfDataList.push(sfCfData);
+                }
+                this.dealRegistration.sfCustomFieldsDataDto = sfCfDataList;
+            }
+        }
+    }
+
+    ngAfterViewInit() {
+        this.dealRegistrationService.isSfEnabledForParentCampaign(this.dealId).subscribe(result => {
+            this.showSfDealFields = result;
+        },
+            error => {
+                console.log(error);
+            });
+    }
 
 }
 

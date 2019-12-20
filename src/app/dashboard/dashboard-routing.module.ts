@@ -39,7 +39,8 @@ const routes: Routes = [
   { path: 'vendors',component:VendorReportsComponent},
   { path: 'admin-report',component:AdminReportComponent},
   { path: 'vendor-request',component:VendorRequestReportComponent},
-  { path: 'hubspot-callback',component:SocialContactsCallbackComponent}
+  { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
+  { path: 'isalesforce-callback',component:SocialContactsCallbackComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

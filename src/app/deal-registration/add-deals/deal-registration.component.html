@@ -198,6 +198,10 @@
           </div>
 
         </div>
+        <div [hidden]= "!showSfDealFields">
+          <app-sf-deal [dealId]="dealId"></app-sf-deal>
+        </div>
+        <div [hidden] = "showSfDealFields">
         <div class=" row portlet light" style="margin-bottom: 50px;border: 1px solid darkslategrey;margin: 10px;padding: 10px">
           <h4 class="caption" class="portlet-title">Deal Details</h4>
           <div class="form-group" [attr.class]="title" style="margin-bottom: 20px">
@@ -337,9 +341,10 @@
           </fieldset>
         </div>
         <hr>
+        </div>
         <div class="pull-right" *ngIf="!isVendor && !isPreview">
-          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
-          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
         </div>
       </form>

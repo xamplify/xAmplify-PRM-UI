@@ -61,6 +61,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CommonComponentModule } from 'app/common/common.module';
 import { HubSpotService } from './core/services/hubspot.service';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+import { IntegrationService } from './core/services/integration.service';
 
 
 @NgModule({
@@ -80,7 +81,7 @@ import { DownloadTemplateComponent } from './campaigns/download-template/downloa
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService],
     bootstrap: [AppComponent]
 
 })
