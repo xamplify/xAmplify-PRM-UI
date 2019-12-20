@@ -124,7 +124,7 @@
 				<div class='col-xs-10'>
 			        <input type="text"  [(ngModel)]="analyticsComponent.searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="analyticsComponent.eventHandler($event.keyCode)">
-			        <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey=''">
+			        <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey='';analyticsComponent.search()">
 					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>

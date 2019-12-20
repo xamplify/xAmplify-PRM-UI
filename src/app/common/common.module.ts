@@ -45,10 +45,11 @@ import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { PublicPageResponseComponent } from './public-page-response/public-page-response.component';
 import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
 import { FlatpickrComponent } from './flatpickr/flatpickr.component';
+import { InternationalPhoneModule } from 'ng4-intl-phone';
 
 
 @NgModule({
-    imports: [CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule],
+    imports: [InternationalPhoneModule, CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule],
     declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
@@ -59,7 +60,7 @@ import { FlatpickrComponent } from './flatpickr/flatpickr.component';
         ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent],
 
 
-    exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
+    exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,

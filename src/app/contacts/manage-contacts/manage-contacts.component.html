@@ -665,7 +665,7 @@
 														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
 														<th *ngIf="isPartner" class="hidden-xs">TYPE</th>
 														<th *ngIf="isPartner" class="hidden-xs">CATEGORY</th>
-														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner"></th>
@@ -720,15 +720,15 @@
 														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:14}}
 														<span *ngIf="contact.category?.length>14">..</span>
 														</td>
-														<td class="hidden-xs" *ngIf="!isPartner">
+														<!-- <td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
 																style="pointer-events: none !important; cursor: auto;">
 																<int-phone-prefix [(ngModel)]="contact.mobileNumber"
 																	[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-															</div> <!-- <h5>
+															</div> <h5>
                                 <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-                              </h5> -->
-														</td>
+                              </h5>
+														</td> -->
 														<td class="text-center hidden-xs" *ngIf="!isPartner">{{contact.jobTitle}}</td>
 													<!-- 	<td class="text-center hidden-xs">
 															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">
@@ -797,7 +797,7 @@
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
-															<tr>
+															<!-- <tr>
 																<td class='pt10 pb10 bold'>Phone:</td>
 																<td class='pt10 pb10'>
 																	<div *ngIf="contact.mobileNumber"
@@ -807,7 +807,7 @@
 																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
 																	</div>
 																</td>
-															</tr>
+															</tr> -->
 															<tr>
 																<td class='pt10 pb10 bold'>Address: </td>
 																<td align="center" class="hidden-xs">

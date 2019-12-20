@@ -596,7 +596,7 @@
 														<th *ngIf="isPartner">REGION</th>
 														<th *ngIf="isPartner">TYPE</th>
 														<th *ngIf="isPartner">CATEGORY</th>
-														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
@@ -617,15 +617,15 @@
 															<td>
 															<app-user-info  [userInfo]="newContact"> </app-user-info>
 															</td>
-															<td class="hidden-xs">
+															<!-- <td class="hidden-xs">
 															<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                               <int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
                               </div>
-																<!-- <h5>
+																<h5>
 																	<span *ngIf="newContact?.mobileNumber; else NA"
 																		class="textWhite">{{newContact.mobileNumber}}</span>
-																</h5> -->
-															</td>
+																</h5>
+															</td> -->
 															<td class="hidden-xs">
 																<h5 class='mb0 textWhite ellipsis' title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
 																<span *ngIf="newContact.jobTitle?.length>25">...</span>
@@ -698,14 +698,14 @@
 															<td *ngIf="!isPartner">
 															<app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
-															<td class="hidden-xs" *ngIf="!isPartner">
+														<!-- 	<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
-																<!-- <h5>
+																<h5>
 																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-																</h5> -->
-															</td>
+																</h5>
+															</td> -->
 															<td class="hidden-xs" *ngIf="!isPartner">
 																<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 																<span *ngIf="contact.jobTitle?.length>25">...</span>
@@ -897,7 +897,7 @@
 														<th *ngIf="isPartner">REGION</th>
 														<th *ngIf="isPartner">TYPE</th>
 														<th *ngIf="isPartner">CATEGORY</th>
-														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+													<!-- 	<th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
@@ -905,6 +905,7 @@
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
+												<th *ngIf="!isPartner"></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -941,21 +942,21 @@
 														<td *ngIf="isPartner" title="allcontacts.category">{{allcontacts.category | slice:0:14}}
 														<span *ngIf="allcontacts.category?.length>14">..</span>
 														</td>
-												<td class="hidden-xs" *ngIf="!isPartner">
+												<!-- <td class="hidden-xs" *ngIf="!isPartner">
 												<div *ngIf="allcontacts.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
-													<!-- <h5>
+													<h5>
 														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
-													</h5> -->
-												</td>
+													</h5>
+												</td> -->
 												<td class="hidden-xs" *ngIf="!isPartner">
 													<h5 class='mb0 ellipsis' title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
 													<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 													</h5>
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
-												<td class="hidden-xs" *ngIf="!isPartner">
+												<td class="hidden-xs center" *ngIf="!isPartner">
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address  | slice:0:30}}
 													<span *ngIf="allcontacts.address?.length>30">..</span>
 													</h5>

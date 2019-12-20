@@ -4,7 +4,7 @@ declare var $: any;
 @Component( {
     selector: 'app-user-info',
     templateUrl: './user-info.component.html',
-    styleUrls: ['./user-info.component.css']
+    styleUrls: ['./user-info.component.css', '../../../assets/css/phone-number-plugin.css']
 })
 export class UserInfoComponent implements OnInit {
     @Input() userInfo: any;
