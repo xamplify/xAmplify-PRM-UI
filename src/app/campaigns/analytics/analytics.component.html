@@ -786,9 +786,9 @@
 										placeholder="Search"
 										(keypress)="leadEventHandler($event.keyCode)">
 									<button class="search-box-item-clear"
-										*ngIf="leadsSearchKey" (click)="leadsSearchKey=''">
+										*ngIf="leadsSearchKey" (click)="leadsSearchKey=''; leadDetailsSearch()">
 										<span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
-										</button>
+								    </button>
 									<button type="submit" class="search-box-item-click" style="right: 1px"
 										(click)="leadDetailsSearch()">
 										<i class="fa fa-search" style="padding: 4px; color: black !important"></i>
@@ -2123,7 +2123,7 @@
 										placeholder="Search"
 										(keypress)="leadEventHandler($event.keyCode)">
 									<button class="search-box-item-clear"
-										*ngIf="leadsSearchKey" (click)="leadsSearchKey=''">
+										*ngIf="leadsSearchKey" (click)="leadsSearchKey=''; leadDetailsSearch()">
 										<span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
 										</button>
 									<button type="submit" class="search-box-item-click" style="right: 1px"
