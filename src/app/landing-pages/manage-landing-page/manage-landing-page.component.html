@@ -10,7 +10,10 @@
 				 <i class="fa fa-angle-right"></i>
 				 </ng-container>
 			</li>
-			<li><a>Manage Pages</a></li>
+			<li>
+			<a *ngIf="!isPartnerLandingPage">Manage Pages</a>
+			<a *ngIf="isPartnerLandingPage">Pages Shared By Vendors</a>
+			</li>
 		</ul>
 	</div>
 	<div id="custom-response-div">
@@ -22,11 +25,13 @@
 				<div class="portlet-title">
 					    <div class="row">
 					    <div class="colxs-12 col-sm-4">
-						<div *ngIf="!isPartnerLandingPage"> 
+						<div> 
 							<ul class="mix-filter">
 								<li class="filter"  (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
-								<li class="filter"  (click)="showAllLandingPages('Regular',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular</li>
-								<li class="filter"   (click)="showAllLandingPages('Co-Branded',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Co-Branded</li>
+								<ng-container *ngIf="!isPartnerLandingPage">
+									<li class="filter"  (click)="showAllLandingPages('Regular',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular</li>
+									<li class="filter"   (click)="showAllLandingPages('Co-Branded',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Co-Branded</li>
+								</ng-container>
 								<li class="filter"   (click)="showAllLandingPages('PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Public</li>
 								<li class="filter"   (click)="showAllLandingPages('PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Private</li>
 							</ul>

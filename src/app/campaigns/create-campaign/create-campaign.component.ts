@@ -930,12 +930,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
     
     listCoBrandedLandingPages(){
-        this.landingPagePagination.filterValue = "Co-Branded";
+        this.landingPagePagination.filterKey = "Co-Branded";
         this.listLandingPages(this.landingPagePagination);
     }
     
     listAllLandingPages(){
-        this.landingPagePagination.filterValue = "All";
+        this.landingPagePagination.filterKey = "All";
         this.listLandingPages(this.landingPagePagination);
     }
     
