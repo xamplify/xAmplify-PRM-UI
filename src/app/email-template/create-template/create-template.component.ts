@@ -104,6 +104,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         var save = function( jsonContent: string, htmlContent: string ) {
             self.emailTemplate = new EmailTemplate();
             self.emailTemplate.body = htmlContent;
+            console.log(self.emailTemplate.body);
             self.emailTemplate.jsonBody = jsonContent;
             if ( emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.videoGif ) < 0 ) {

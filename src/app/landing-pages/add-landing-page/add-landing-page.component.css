@@ -41,3 +41,8 @@
 .success{
 	color: green;
 }
+.page-type{
+	color: #575757;
+    font-size: 17px;
+    font-weight: 500;
+}

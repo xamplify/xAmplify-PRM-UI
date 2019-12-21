@@ -48,6 +48,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         if(this.id>0){
             var names: any = [];
             let self = this;
+            var pageType = "";
             self.loggedInUserId = this.authenticationService.getUserId();
             this.referenceService.loading( this.httpRequestLoader, true );
             landingPageService.getAvailableNames( self.loggedInUserId ).subscribe(
@@ -64,6 +65,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                             this.landingPage = new LandingPage();
                             this.landingPage.thumbnailPath = landingPage.thumbnailPath;
                             this.landingPage.coBranded = landingPage.coBranded;
+                            this.landingPage.type = landingPage.type;
                             var request = function( method, url, data, type, callback ) {
                                 var req = new XMLHttpRequest();
                                 req.onreadystatechange = function() {
@@ -87,6 +89,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                             var landingPageName = "";
                             if ( !defaultLandingPage ) {
                                 landingPageName = landingPage.name;
+                                pageType = landingPage.type;
                                 title = "Update Page Name";
                             }
                             var save = function( jsonContent: string, htmlContent: string ) {
@@ -94,17 +97,38 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                 self.landingPage.jsonBody = jsonContent;
                                 if ( !defaultLandingPage ) {
                                     self.name = landingPageName;
+                                    var dropDown = '<div class="form-group">';
+                                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label>';
+                                    dropDown+='<select class="form-control" id="pageType">';
+                                    if(pageType=="PRIVATE"){
+                                        dropDown+='<option value="PRIVATE" selected>PRIVATE</option>';
+                                        dropDown+='<option value="PUBLIC">PUBLIC</option>';
+                                    }else{
+                                        dropDown+='<option value="PUBLIC" selected>PUBLIC</option>';
+                                        dropDown+='<option value="PRIVATE">PRIVATE</option>';
+                                    }
+                                    dropDown+='</select>';
+                                    dropDown+='<span class="help-block" id="pageTypeSpanError" style="color:#a94442"></span>';
+                                    dropDown+='</div><br>';
                                     var buttons = $( '<div>' )
                                         .append( ' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' )
+                                           .append(dropDown)
                                         .append( self.createButton( 'Save As', function() {
                                             self.clickedButtonName = "SAVE_AS";
                                             self.saveLandingPage(false);
                                         } ) ).append( self.createButton( 'Update', function() {
-                                            self.ngxloading = true;
-                                            self.clickedButtonName = "UPDATE";
-                                           // self.referenceService.startLoader( self.httpRequestLoader );
-                                            swal.close();
-                                            self.updateLandingPage(false);
+                                            let selectedPageType = $('#pageType option:selected').val();
+                                            if(self.landingPage.type==selectedPageType){
+                                                $('#pageTypeSpanError').empty();
+                                                self.ngxloading = true;
+                                                self.clickedButtonName = "UPDATE";
+                                                // self.referenceService.startLoader( self.httpRequestLoader );
+                                                 swal.close();
+                                                 self.updateLandingPage(false);
+                                            }else{
+                                                $('#pageTypeSpanError').text('Page Type cannot be changed');
+                                            }
+                                           
                                         } ) ).append( self.createButton( 'Cancel', function() {
                                             self.clickedButtonName = "CANCEL";
                                             swal.close();
@@ -114,6 +138,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                 } else {
                                     var buttons = $( '<div>' )
                                         .append( ' <div class="form-group"><input class="form-control" type="text" value="' + landingPageName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' )
+                                           .append( ' <div class="form-group"><label style="color: #575757;font-size: 17px; font-weight: 500;">Select Page Type</label><select class="form-control" id="pageType"><option value="PUBLIC">PUBLIC</option><option value="PRIVATE">PRIVATE</option></select></div><br>' )
                                         .append( self.createButton( 'Save', function() {
                                             self.clickedButtonName = "SAVE";
                                             self.saveLandingPage(false);
@@ -130,7 +155,9 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                                     } );
                                 }
                                 
-                                
+                                $('#pageType').on('change',function(event){
+                                    $('#pageTypeSpanError').empty();
+                                });
                                 
                                 $( '#templateNameId' ).on( 'input', function( event ) {
                                     let value = $.trim( event.target.value );
@@ -240,6 +267,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
+        this.landingPage.type = $('#pageType option:selected').val();
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.save(this.landingPage) .subscribe(
                 data => {
@@ -289,6 +317,8 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                     },
                 () => console.log( "Page Saved" )
                 );
+    
+      
     }
     
     updateCompanyLogo(landingPage:LandingPage){

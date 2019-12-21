@@ -1,3 +1,4 @@
+import{LandingPageType} from './landing-page-type.enum';
 export class LandingPage {
     id:number;
     name:string;
@@ -16,5 +17,6 @@ export class LandingPage {
     showPartnerCompanyLogo:boolean=false;
     showYourPartnersLogo:boolean = false;
     partnerLandingPage = false;
+    type:LandingPageType;
 
 }
