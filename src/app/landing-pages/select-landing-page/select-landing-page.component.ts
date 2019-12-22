@@ -30,13 +30,13 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
 
   ngOnInit() {
       this.selectedLandingPageTypeIndex = 0;
-      this.pagination.filterValue = "All";
+      this.pagination.filterKey = "All";
       this.listLandingPages(this.pagination);
   }
   
   showAllLandingPages(type:string,index:number){
       this.selectedLandingPageTypeIndex = index;
-      this.pagination.filterValue = type;
+      this.pagination.filterKey = type;
       this.listLandingPages(this.pagination);
   }
   

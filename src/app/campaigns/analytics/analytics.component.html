@@ -32,8 +32,10 @@
 				 class="fa fa-angle-right"></i></li>
 			<li style="color: #888;" *ngIf="isDataShare" title="{{campaign.campaignName}}">
 				{{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
-				<b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b><b
-				 *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b></li>
+				<b *ngIf="isNavigatedThroughAnalytics" style="color:#0195da">(Data Sharing Enabled)</b>
+				<b *ngIf="!isPartnerEnabledAnalyticsAccess" style="color:#0195da">(Interactive Data)</b>
+				<b *ngIf="!campaign.emailNotification" style="color:#ed1d24">(Notify Partners is OFF)</b>
+			</li>
 			<li style="color: #888;" *ngIf="!isDataShare" title="{{campaign.campaignName}}">
 				{{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
 				<b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
@@ -133,7 +135,7 @@
 						<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showLandingPagePreview(campaign)">
 							<i class="fa fa-eye"></i>
 						</a>
-						<a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+						<!-- <a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
 								<i class="fa fa-wpforms"></i>
 								<span class="badge" id="notification">{{campaign.formsCount}}</span>
 						</a>
@@ -144,7 +146,7 @@
 						<a class="disabled"  *ngIf="campaign.campaignLandingPageAnalyticsCount==0" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
 							<i class="fa fa-line-chart"></i>
 							<span class="badge" id="notification">{{campaign.campaignLandingPageAnalyticsCount}}</span>
-						</a>
+						</a> -->
 						</div>
 					</a>
 				</div>
@@ -385,7 +387,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-12 col-sm-6 p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType !== 'VIDEO'">
+					<div class="col-xs-12 col-sm-6 p-5x" [hidden]="mainLoader || hasClientError" *ngIf="campaignType !== 'VIDEO' &&campaign.emailNotification ">
 						<div class="p-5x">
 							<div class="portlet light">
 								<div class="portlet-body clearfix">

@@ -12,7 +12,7 @@
 			<li *ngIf="campaignForms">
 				<a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
 			</li>
-			<li *ngIf="pagination.partnerLandingPageForm">
+			<li *ngIf="pagination.partnerLandingPageForm || isPartnerNavigation">
 				<a [routerLink]="['/home/pages/partner']">Manage Pages</a><i class="fa fa-angle-right"></i>
 			</li>
 			<li>
@@ -20,7 +20,7 @@
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a>Analytics</a> 
+				<a class="default-cursor">Analytics</a> 
 			</li>
 		</ul>
 	</div>

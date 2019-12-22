@@ -25,6 +25,7 @@ export class FormAnalyticsComponent implements OnInit {
     searchKey = "";
     campaignForms = false;
     routerLink = "/home/forms/manage";
+    isPartnerNavigation = false;
     exportingObject:any={};
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService,public router: Router
@@ -40,6 +41,13 @@ export class FormAnalyticsComponent implements OnInit {
         this.exportingObject['partnerLandingPageAlias'] = this.partnerLandingPageAlias;
         this.exportingObject['formId'] = this.formId;
         this.exportingObject['isPublicEventLeads'] = false;
+        if(this.router.url.includes('home/forms/partner')){
+            this.isPartnerNavigation = true;
+            this.routerLink = "/home/forms/partner/lf/"+this.partnerLandingPageAlias;
+        }else{
+            this.isPartnerNavigation = false;
+            this.routerLink = "/home/forms/manage";
+        }
     }
     
 
