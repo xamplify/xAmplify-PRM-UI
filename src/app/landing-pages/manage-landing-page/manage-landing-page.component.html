@@ -87,7 +87,7 @@
 								<img class="img-responsive center-block" src="assets/images/Landing-Pages/{{landingPage.imageName}}" alt="Not Found">
 								<div class="box">
 									<h4 id="landing-page-title" title="{{landingPage.name}}">{{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
-									<span id="span-banner">{{landingPage.type}}</span>
+									<span class="span-banner">{{landingPage.type}}</span>
 									<h6 *ngIf="!isPartnerLandingPage">Created On <b> <app-timestamp [isOnlyDate]="true"[dateAndTime]="landingPage.displayTime"> </app-timestamp></b></h6>
 									<h6 *ngIf="isPartnerLandingPage">Shared On <b> <app-timestamp [isOnlyDate]="true"[dateAndTime]="landingPage.displayTime"> </app-timestamp></b></h6>
 									<h6 title="{{landingPage.createdUser}}">By <b>{{landingPage.createdUser | slice:0:25}}</b>
