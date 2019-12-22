@@ -608,8 +608,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listActiveSocialAccounts(this.loggedInUserId);
         if(this.isAdd){
            this.loadContacts();
-           /************Load Email Templates If Campaign Type is 'regular/video' *******************/
            if(this.campaignType=='landingPage'){
+               this.landingPagePagination.filterKey = "PRIVATE";
                this.listLandingPages(this.landingPagePagination);
            }else{
                if(this.isOnlyPartner){
@@ -2872,7 +2872,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         }else{
                             this.templateError = false;
                             this.loading = false;
-                            alert("Custom Objects are not found")
+                            swal("Custom Objects are not found!", "", "error");
                         }
 
                     }, error =>

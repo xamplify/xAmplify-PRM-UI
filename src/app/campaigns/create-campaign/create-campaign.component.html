@@ -1153,7 +1153,10 @@
 									<br>
                                       <span style="float:left"  title="{{campaign?.landingPage?.createdUser}}">
                                           <b>By:</b> <span>{{campaign?.landingPage?.createdUser|slice:0:12}}<span *ngIf="campaign?.landingPage?.createdUser?.length>12">...</span></span>
-                                      </span>
+                                      </span><br>
+                                      <span id="span-tag">
+                                 			 {{campaign?.landingPage?.type}}
+                              			</span>
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
@@ -1201,6 +1204,9 @@
                            <br>
                               <span  style="float:left" title="{{landingPage.createdUser}}">
                                   <b>By:</b><span>{{landingPage.createdUser|slice:0:12}}<span *ngIf="landingPage.createdUser?.length>12">...</span></span>
+                              </span><br>
+                               <span id="span-tag">
+                                  {{landingPage.type}}
                               </span>
                             <div class="item__actions">
                               <span> <a style="float:left;right: -6px;" class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
