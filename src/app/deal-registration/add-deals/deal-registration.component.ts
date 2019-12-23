@@ -145,7 +145,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
         flatpickr('.flatpickr', {
             enableTime: false,
-            dateFormat: 'Y/m/d',
+            dateFormat: 'Y-m-d',
             minDate: new Date()
         });
         // $(".phone-input input").height( "32px")
