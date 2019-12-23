@@ -730,7 +730,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isCampaignDetailsFormValid = false;
         }
         
-        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && (this.pushToCRM.length == 0 || this.pushToCRM.length == 1)){
+        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
             this.isValidCrmOption = false;
             this.isCampaignDetailsFormValid = false;
         }else{
@@ -822,7 +822,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      
      validatePushToCRM(){
-        if(this.isPushToCrm && this.campaign.channelCampaign && (this.pushToCRM.length == 0 || this.pushToCRM.length == 1)){
+        if(this.isPushToCrm && this.campaign.channelCampaign && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
             this.isValidCrmOption = false;
             this.validateForm();
         }else{
@@ -3114,7 +3114,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      this.isPushToCrm = !this.isPushToCrm;
      if(!this.isPushToCrm){
          this.pushToCRM = [];
-         this.pushToCRM.push('salesforce');
+         //this.pushToCRM.push('salesforce');
+         this.checkSalesforceIntegration();
      }
     // this.checkSalesforceIntegration();
      this.validatePushToCRM();
