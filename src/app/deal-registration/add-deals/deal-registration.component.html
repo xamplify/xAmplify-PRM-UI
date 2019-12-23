@@ -342,7 +342,12 @@
         </div>
         <hr>
         </div>
-        <div class="pull-right" *ngIf="!isVendor && !isPreview">
+        <div class="pull-right" *ngIf="!isVendor && !isPreview && !showSfDealFields">
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
+          <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid " (click)="save()" class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
+          <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
+        </div>
+        <div class="pull-right" *ngIf="!isVendor && !isPreview && showSfDealFields">
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="!dealRegistration.isDeal">REGISTER DEAL</button>
           <button type="submit" id="saveDeal" [disabled]=" !isDealRegistrationFormValid || sfDealComponent?.isDealRegistrationFormValid" (click)="save()" class="btn green-haze" *ngIf="dealRegistration.isDeal">UPDATE DEAL</button>
           <!--  <button type="submit" id="updateDeal" (click)="update()"class="btn green-haze">Update</button> -->
