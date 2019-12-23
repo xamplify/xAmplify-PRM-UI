@@ -698,7 +698,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
           this.eventCampaign.enableCoBrandingLogo = true;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
           this.loadEmailTemplates(this.emailTemplatesPagination);
-          //this.checkSalesforceIntegration();
+          this.checkSalesforceIntegration();
       }
       if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
       if(!this.eventCampaign.channelCampaign){
@@ -2462,7 +2462,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
      if(!this.isPushToCrm){
          this.eventCampaign.pushToCRM = [];
      }
-     this.checkSalesforceIntegration();
+     //this.checkSalesforceIntegration();
      this.validatePushToCRM();
     }
     
@@ -2486,7 +2486,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     
     checkSalesforceIntegration(): any {
-        
+        this.pushToCRM = [];
         this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
