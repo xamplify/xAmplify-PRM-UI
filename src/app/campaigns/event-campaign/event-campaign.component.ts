@@ -2461,6 +2461,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
      this.isPushToCrm = !this.isPushToCrm;
      if(!this.isPushToCrm){
          this.eventCampaign.pushToCRM = [];
+         this.eventCampaign.pushToCRM.push('salesforce');
      }
      //this.checkSalesforceIntegration();
      this.validatePushToCRM();
@@ -2478,7 +2479,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
            
            //this.pushToCRM.push(crmName);
        }else{
+          if(crmName == 'marketo' || crmName == 'hubspot' ){
            this.eventCampaign.pushToCRM = this.eventCampaign.pushToCRM.filter(e => e !== crmName);
+           }
            console.log(this.eventCampaign.pushToCRM);
        }
        
