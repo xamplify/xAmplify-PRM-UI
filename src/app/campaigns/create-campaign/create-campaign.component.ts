@@ -3115,8 +3115,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      if(!this.isPushToCrm){
          this.pushToCRM = [];
      }
-     this.validatePushToCRM();
      this.checkSalesforceIntegration();
+     this.validatePushToCRM();
     }
     
     pushToCrmRequest(crmName: any, event: any){

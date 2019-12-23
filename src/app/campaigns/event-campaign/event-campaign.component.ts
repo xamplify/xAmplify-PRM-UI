@@ -2462,8 +2462,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
      if(!this.isPushToCrm){
          this.eventCampaign.pushToCRM = [];
      }
-     this.validatePushToCRM();
      this.checkSalesforceIntegration();
+     this.validatePushToCRM();
     }
     
     pushToCrmRequest(crmName: any, event: any){
