@@ -17,6 +17,7 @@ import { CampaignAccess } from '../models/campaign-access';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
+import { UserService } from '../../core/services/user.service';
 
 declare var swal, $: any;
 
@@ -82,7 +83,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     publicEventAlias:string = "";
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
-    constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
+    constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
@@ -298,6 +299,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.pagination.pagedItems.splice(position, 1);
                 this.pagination.pageIndex = 1;
                 this.listCampaign(this.pagination);
+                this.listNotifications();
             },
             error => { this.logger.errorPage(error) },
             () => console.log("Campaign Deleted Successfully")
@@ -480,5 +482,31 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     sendEventEmail(campaign:Campaign){
         this.publicEventEmailPopupComponent.showPopup(campaign);
     }
+    
+    listNotifications() {
+        try{
+          this.userService.listNotifications(this.authenticationService.getUserId())
+              .subscribe(
+              data => {
+                  console.log("list Notifications in manage publish page "+data);
+                  this.getUnreadNotificationsCount();
+              },
+              error => console.log(error),
+              () => console.log('Finished')
+              );
+          }catch(error) {console.error('error'+error); }
+      }
+    getUnreadNotificationsCount() {
+    	   try{
+    	    this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
+    	      .subscribe(
+    	      data => {
+    	        this.userService.unreadNotificationsCount = data;
+    	      },
+    	      error => this.logger.log(error),
+    	      () => this.logger.log('Finished')
+    	      );
+    	    }catch(error) {this.logger.error('error'+error); }
+    	  }
 
 }
