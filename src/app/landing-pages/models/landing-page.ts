@@ -2,6 +2,7 @@ import{LandingPageType} from './landing-page-type.enum';
 export class LandingPage {
     id:number;
     name:string;
+    seoName:string;
     thumbnailPath:string;
     description:string;
     jsonBody:string;

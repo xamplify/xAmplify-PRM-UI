@@ -221,9 +221,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
           this.landingPage = landingPage;
           this.copiedLinkCustomResponse = new CustomResponse();
           if(this.isPartnerLandingPage){
-              this.landingPageAliasUrl = this.authenticationService.APP_URL+"pl/"+this.landingPage.alias;
+              this.landingPageAliasUrl = this.authenticationService.APP_URL+"pl/"+this.landingPage.alias+"/"+this.landingPage.seoName;
           }else{
-              this.landingPageAliasUrl = this.authenticationService.APP_URL+"l/"+this.landingPage.alias;
+              this.landingPageAliasUrl = this.authenticationService.APP_URL+"l/"+this.landingPage.alias+"/"+this.landingPage.seoName;
           }
           $('#landing-page-url-modal').modal('show');
       }

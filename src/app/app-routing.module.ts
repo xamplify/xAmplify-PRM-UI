@@ -91,6 +91,8 @@ export const routes: Routes = [
     { path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
     { path: 'logs/:alias', component: LogSMSClickComponent },
     {path: 'f/:alias', component:FormPreviewComponent},
+    {path: 'l/:alias/:seoName', component:ShowLandingPageComponent},
+    {path: 'pl/:alias/:seoName', component:ShowLandingPageComponent},
     {path: 'l/:alias', component:ShowLandingPageComponent},
     {path: 'pl/:alias', component:ShowLandingPageComponent},
     {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
