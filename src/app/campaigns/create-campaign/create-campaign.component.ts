@@ -38,6 +38,7 @@ import { LandingPage } from '../../landing-pages/models/landing-page';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -271,7 +272,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
-                private landingPageService:LandingPageService, public hubSpotService: HubSpotService
+                private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService
             ){
 
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
@@ -861,10 +862,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
            // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
+            this.checkSalesforceIntegration();
         }else{
             this.loadContacts();
             this.removePartnerRules();
             this.setPartnerEmailNotification(true);
+            
         }
     }
 
@@ -3144,6 +3147,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    
    setLinkOpened(event:any){
        this.campaign.linkOpened =event;
+   }
+   
+   checkSalesforceIntegration(): any {
+      
+       this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
+           let response = data;
+           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+              this.pushToCRM.push('salesforce');
+              console.log("isPushToSalesforce ::::" + this.pushToCRM);
+           }
+       },error =>{
+           this.logger.error(error, "Error in salesforce checkIntegrations()");
+       }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
    }
 
 

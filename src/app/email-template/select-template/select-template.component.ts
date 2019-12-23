@@ -419,7 +419,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
             this.marketoEmailTemplates.map(template => {
                 template.marketoTemplate = true;
                 template.body = template.content;
-                template.subject = "assets/images/bee-template/imported-image.jpg";
+                template.subject = "assets/images/bee-template/imported-marketo.jpg";
             });
             this.showMarketoTemplates();
         },
@@ -663,7 +663,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.hubSpotEmailTemplates.map(template => {
                     template.hubSpotTemplate = true;
                     template.body = template.content;
-                    template.subject = "assets/images/bee-template/imported-image.jpg";
+                    template.subject = "assets/images/bee-template/imported-hubspot.jpg";
                 });
                 this.filteredEmailTemplates = new Array<EmailTemplate>();
                 for (var i = 0; i < response.templates.length; i++) {

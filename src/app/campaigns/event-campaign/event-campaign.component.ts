@@ -35,6 +35,7 @@ import {PreviewPopupComponent} from '../../forms/preview-popup/preview-popup.com
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { EnvService } from 'app/env.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
 import { Form } from 'app/forms/models/form';
@@ -197,7 +198,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
 
 
-  constructor(public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
+  constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
     public authenticationService: AuthenticationService,
@@ -697,6 +698,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
           this.eventCampaign.enableCoBrandingLogo = true;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
           this.loadEmailTemplates(this.emailTemplatesPagination);
+          this.checkSalesforceIntegration();
       }
       if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
       if(!this.eventCampaign.channelCampaign){
@@ -2480,6 +2482,19 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
        }
        
        this.validatePushToCRM();
+    }
+    
+    checkSalesforceIntegration(): any {
+        
+        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+               this.pushToCRM.push('salesforce');
+               console.log("isPushToSalesforce ::::" + this.pushToCRM);
+            }
+        },error =>{
+            this.logger.error(error, "Error in salesforce checkIntegrations()");
+        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
     }
 
 
