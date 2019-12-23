@@ -153,7 +153,7 @@
 														<i class="fa fa-pencil-square-o"></i>
 													</a>
 												</ng-container> -->
-												<ng-container *ngIf="campaign.launched">
+												<ng-container *ngIf="campaign.launched && campaign.campaignType.indexOf('LANDINGPAGE') < 0">
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
@@ -468,7 +468,7 @@
 														<i class="fa fa-users"></i>
 													</a>
 												<a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
-														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0"
+														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.redistributedCount>0 && campaign.campaignType.indexOf('LANDINGPAGE') < 0"
                          								 (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="right" title="Show Redistributed Campaigns">
 														<b style="color: white">{{campaign.redistributedCount}}</b>
 													</a>
