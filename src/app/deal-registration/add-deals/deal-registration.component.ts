@@ -18,6 +18,7 @@ import { DealQuestions } from '../models/deal-questions';
 import { UserService } from 'app/core/services/user.service';
 import { SfCustomFieldsDataDTO } from '../models/sfcustomfieldsdata';
 import { SfDealComponent } from '../sf-deal/sf-deal.component';
+import { Observable } from 'rxjs';
 
 
 
@@ -27,11 +28,10 @@ declare var flatpickr: any, $: any, swal: any;
     selector: 'app-deal-registration',
     templateUrl: './deal-registration.component.html',
     styleUrls: ['./deal-registration.component.css'],
-    providers: [CountryNames,CallActionSwitch],
+    providers: [CountryNames, CallActionSwitch],
 
 })
-export class DealRegistrationComponent implements OnInit, AfterViewInit
-{
+export class DealRegistrationComponent implements OnInit, AfterViewInit {
 
 
     @Input() campaign: Campaign;
@@ -64,7 +64,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     phone: string;
     email: string;
     title: string;
-    role:string;
+    role: string;
 
     lastName: string;
     firstName: string;
@@ -80,18 +80,18 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     websiteError: boolean;
     websiteDivClass: any;
     websiteErrorMessage: string;
-    leadStreetError: boolean= true;
-    leadCityError: boolean= true;
-    leadStateError: boolean= true;
-    leadPostalCodeError: boolean= true;
-    countryError: boolean= true;
+    leadStreetError: boolean = true;
+    leadCityError: boolean = true;
+    leadStateError: boolean = true;
+    leadPostalCodeError: boolean = true;
+    countryError: boolean = true;
     opportunityAmountError: boolean;
     estimatedCloseDateError: boolean;
     companyError: boolean = true;
-    firstNameError: boolean= true;
-    lastNameError: boolean= true;
-    titleError: boolean= true;
-    roleError:boolean= true;
+    firstNameError: boolean = true;
+    lastNameError: boolean = true;
+    titleError: boolean = true;
+    roleError: boolean = true;
     dealTypeError: boolean;
     submitButtonText: string = "";
     ngxloading: boolean;
@@ -100,8 +100,8 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     questions: DealQuestions[] = [];
     form: DealForms;
     answers: DealAnswer[] = [];
-    dealTypes:DealType[] =  [];
-    defaultDealTypes = ['Select Dealtype','New Customer','New Product','Upgrade','Services'];
+    dealTypes: DealType[] = [];
+    defaultDealTypes = ['Select Dealtype', 'New Customer', 'New Product', 'Upgrade', 'Services'];
     formId: number;
     propertiesQuestions: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
 
@@ -126,22 +126,20 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     // isModelFormValid: boolean;
     // templateSuccessMsg: any;
     // pushToMarketo = false;
-    marketo=false;
-    propertiesComments:Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
+    marketo = false;
+    propertiesComments: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
-        , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames,public utilService:UtilService
-        ,public callActionSwitch: CallActionSwitch,
+        , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames, public utilService: UtilService
+        , public callActionSwitch: CallActionSwitch,
         public userService: UserService
 
-    )
-    {
+    ) {
         this.dealRegistration = new DealRegistration();
 
     }
 
-    ngOnInit()
-    {
-       this.utilService.getJSONLocation().subscribe(response=>console.log(response))
+    ngOnInit() {
+        this.utilService.getJSONLocation().subscribe(response => console.log(response))
 
         flatpickr('.flatpickr', {
             enableTime: false,
@@ -149,60 +147,56 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
             minDate: new Date()
         });
         // $(".phone-input input").height( "32px")
-        $(".flagInput").click(function(){
-          let count = 0
-            $(".flagInput .dropdown-content").each(function() {
+        $(".flagInput").click(function () {
+            let count = 0
+            $(".flagInput .dropdown-content").each(function () {
                 count++;
             });
-            if(count != 0){
-              $("int-phone-prefix input").prop({disabled: true});
-            }else{
-              $("int-phone-prefix input").prop({disabled: false});
+            if (count != 0) {
+                $("int-phone-prefix input").prop({ disabled: true });
+            } else {
+                $("int-phone-prefix input").prop({ disabled: false });
             }
         })
         this.loggenInUserId = this.authenticationService.user.id;
 
-        if (this.dealId == -1)
-        {
-            this.userService.listForm(this.campaign.userId).subscribe(questions =>
-                {
-                   console.log(questions);
+        if (this.dealId == -1) {
+            this.userService.listForm(this.campaign.userId).subscribe(questions => {
+                console.log(questions);
+            });
+
+            this.userService.listForm(this.campaign.userId).subscribe(questions => {
+                this.questions = questions;
+            },
+                error => console.log(error),
+                () => {
+                    this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
+
+                        this.dealTypes = dealTypes.data;
+
+                        this.getLeadData();
+                    },
+                        error => console.log(error),
+                        () => { });
                 });
 
-          this.userService.listForm(this.campaign.userId).subscribe(questions =>
-            {
-                this.questions = questions;
-            },
-            error => console.log(error),
-            () => {this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
-
-                this.dealTypes = dealTypes.data;
-
-                this.getLeadData();
-            },
-            error => console.log(error),
-            () => { });
-         });
-
         }
-        else
-        {
-          this.userService.listForm(this.campaign.userId).subscribe(questions =>
-            {
+        else {
+            this.userService.listForm(this.campaign.userId).subscribe(questions => {
                 this.questions = questions;
             },
-            error => console.log(error),
-            () => {
-                this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
-
-                    this.dealTypes = dealTypes.data;
-
-                    this.getLeadData();
-
-                },
                 error => console.log(error),
-                () => { });
-            })
+                () => {
+                    this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
+
+                        this.dealTypes = dealTypes.data;
+
+                        this.getLeadData();
+
+                    },
+                        error => console.log(error),
+                        () => { });
+                })
 
 
         }
@@ -211,41 +205,33 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     }
 
 
-    getLeadData()
-    {
-        if (this.dealId == -1)
-        {
+    getLeadData() {
+        if (this.dealId == -1) {
             this.dealRegistrationService.getLeadData(this.lead)
                 .subscribe(
-                    data =>
-                    {
+                    data => {
                         this.setDefaultLeadData(data);
 
                     },
-                    (error: any) =>
-                    {
+                    (error: any) => {
                         this.isServerError = true;
                     }
                 );
-        } else
-        {
-            this.dealRegistrationService.getDealById(this.dealId,this.loggenInUserId).
-                subscribe(data =>
-                {
+        } else {
+            this.dealRegistrationService.getDealById(this.dealId, this.loggenInUserId).
+                subscribe(data => {
                     console.log(data.data)
 
                     this.setLeadData(data.data);
 
                 },
-                    (error: any) =>
-                    {
+                    (error: any) => {
                         this.isServerError = true;
                     })
         }
     }
 
-    setLeadData(data: any)
-    {
+    setLeadData(data: any) {
         console.log(data)
         this.dealRegistration.id = data.id;
         this.dealRegistration.firstName = data.firstName;
@@ -262,7 +248,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         this.dealRegistration.dealType = data.dealType;
         this.dealRegistration.title = data.title;
         this.dealRegistration.role = data.role;
-        this.dealRegistration.isDeal=data.deal;
+        this.dealRegistration.isDeal = data.deal;
         this.dealRegistration.role = data.role;
 
         // if(data.pushToMarketo)
@@ -271,19 +257,19 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         //     this.dealRegistration.pushToMarketo =false;
 
         //this.pushToMarketo = this.dealRegistration.pushToMarketo;
-        if(this.dealRegistration.isDeal)
+        if (this.dealRegistration.isDeal)
             this.submitButtonText = "UPDATE DEAL";
         else
             this.submitButtonText = "REGISTER DEAL";
-        let date:any;
-        if(data.estimatedClosedDate != null && data.deal)
-             date = this.getFormatedDate(new Date(data.estimatedClosedDate));
+        let date: any;
+        if (data.estimatedClosedDate != null && data.deal)
+            date = this.getFormatedDate(new Date(data.estimatedClosedDate));
         else
             date = this.getFormatedDate(new Date());
-            console.log(date);
+        console.log(date);
         this.dealRegistration.estimatedCloseDate = date
 
-        if(!this.defaultDealTypes.includes(this.dealRegistration.dealType) && !this.dealTypes.includes(this.dealRegistration.dealType)){
+        if (!this.defaultDealTypes.includes(this.dealRegistration.dealType) && !this.dealTypes.includes(this.dealRegistration.dealType)) {
             let d = new DealType();
             d.dealType = this.dealRegistration.dealType;
             this.dealTypes.push(d);
@@ -291,54 +277,44 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
         this.dealRegistration.properties = data.properties;
         this.properties = data.properties;
-        let i=1;
+        let i = 1;
 
-        if (this.isVendor == 'manage-leads')
-        {
-            this.dealRegistration.properties.forEach(property =>
-            {
+        if (this.isVendor == 'manage-leads') {
+            this.dealRegistration.properties.forEach(property => {
                 property.isDisabled = true;
             })
-            this.properties.forEach(property =>
-            {
+            this.properties.forEach(property => {
                 property.isDisabled = true;
             })
         }
         this.dealRegistration.opportunityAmount = data.opportunityAmount;
         let countryIndex = this.countryNames.countries.indexOf(data.leadCountry);
-        if (countryIndex > -1)
-        {
+        if (countryIndex > -1) {
             this.dealRegistration.leadCountry = this.countryNames.countries[countryIndex];
-        } else
-        {
+        } else {
             this.dealRegistration.leadCountry = this.countryNames.countries[0];
         }
 
-        if (data.deal)
-        {
-          this.propertiesQuestions  = this.properties.filter(p=>p.propType == 'QUESTION')
-          this.propertiesComments  = this.properties.filter(p=>p.propType == 'PROPERTY')
-          this.propertiesComments.forEach(property =>
-            {
-                 property.divId= "property-"+ i++;
+        if (data.deal) {
+            this.propertiesQuestions = this.properties.filter(p => p.propType == 'QUESTION')
+            this.propertiesComments = this.properties.filter(p => p.propType == 'PROPERTY')
+            this.propertiesComments.forEach(property => {
+                property.divId = "property-" + i++;
                 property.isSaved = true;
             })
-          console.log(this.propertiesQuestions)
+            console.log(this.propertiesQuestions)
 
-        } else if (this.questions.length>0)
-        {
+        } else if (this.questions.length > 0) {
 
-            this.questions.forEach(q =>
-            {
-              let property = new DealDynamicProperties();
-              property.id=q.id;
-              property.key = q.question;
-              property.propType  = 'QUESTION';
-              this.propertiesQuestions.push(property);
-                if (property.value == null || property.value.length == 0)
-                {
-                  property.error = true;
-                  property.class = this.errorClass;
+            this.questions.forEach(q => {
+                let property = new DealDynamicProperties();
+                property.id = q.id;
+                property.key = q.question;
+                property.propType = 'QUESTION';
+                this.propertiesQuestions.push(property);
+                if (property.value == null || property.value.length == 0) {
+                    property.error = true;
+                    property.class = this.errorClass;
                 }
 
             });
@@ -350,33 +326,25 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
 
     }
-    mapAnswers(answers: DealAnswer[])
-    {
+    mapAnswers(answers: DealAnswer[]) {
         this.formId = answers[0].formId;
-        this.dealRegistrationService.getFormById(this.campaign.userId, this.formId).subscribe(form =>
-        {
+        this.dealRegistrationService.getFormById(this.campaign.userId, this.formId).subscribe(form => {
             this.form = form;
-            console.log( this.form)
-            console.log( answers)
-            this.properties.forEach(property =>
-            {
+            console.log(this.form)
+            console.log(answers)
+            this.properties.forEach(property => {
                 this.validateQuestion(property);
                 this.validateComment(property);
             })
-            answers.forEach(answer =>
-            {
-                this.form.campaignDealQuestionDTOs.forEach(q =>
-                {
-                    if (q.id == answer.questionId)
-                    {
+            answers.forEach(answer => {
+                this.form.campaignDealQuestionDTOs.forEach(q => {
+                    if (q.id == answer.questionId) {
                         q.answer = answer.answer;
                         q.answerId = answer.id;
-                        if (q.answer.length > 0)
-                        {
+                        if (q.answer.length > 0) {
                             q.class = this.successClass;
                             q.error = false;
-                        } else
-                        {
+                        } else {
                             q.class = this.errorClass;
                             q.error = true;
                         }
@@ -387,12 +355,11 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
 
         },
-        error => console.log(error),
-        () => { })
+            error => console.log(error),
+            () => { })
 
     }
-    setDefaultLeadData(data: any)
-    {
+    setDefaultLeadData(data: any) {
         this.dealRegistration.firstName = data.firstName;
         this.dealRegistration.lastName = data.lastName;
         this.dealRegistration.leadCountry = data.country;
@@ -403,29 +370,24 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         this.dealRegistration.company = data.contactCompany;
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.lead.emailId;
-       // this.dealRegistration.pushToMarketo = false;
+        // this.dealRegistration.pushToMarketo = false;
         //this.pushToMarketo = this.dealRegistration.pushToMarketo;
         var date = new Date();
-        this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);
+        this.dealRegistration.estimatedCloseDate = this.getFormatedDate(date);
         let countryIndex = this.countryNames.countries.indexOf(data.country);
-        if (countryIndex > -1)
-        {
+        if (countryIndex > -1) {
             this.dealRegistration.leadCountry = this.countryNames.countries[countryIndex];
-        } else
-        {
+        } else {
             this.dealRegistration.leadCountry = this.countryNames.countries[0];
         }
-        if (this.questions.length > 0 )
-        {
-            this.questions.forEach(q =>
-            {
-              let property = new DealDynamicProperties();
-              property.key = q.question;
-              property.propType  = 'QUESTION';
-              this.dealRegistration.properties.push(property);
-              console.log(this.dealRegistration.properties)
-                if (q.answer == null || q.answer.length == 0)
-                {
+        if (this.questions.length > 0) {
+            this.questions.forEach(q => {
+                let property = new DealDynamicProperties();
+                property.key = q.question;
+                property.propType = 'QUESTION';
+                this.dealRegistration.properties.push(property);
+                console.log(this.dealRegistration.properties)
+                if (q.answer == null || q.answer.length == 0) {
                     q.error = true;
                     q.class = this.errorClass;
                 }
@@ -437,8 +399,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
     }
 
-    setFieldErrorStates()
-    {
+    setFieldErrorStates() {
 
         if (this.dealRegistration.firstName != null && this.dealRegistration.firstName.length > 0)
             this.firstNameError = false;
@@ -486,7 +447,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         else
             this.titleError = true;
         if (this.dealRegistration.opportunityAmount != null
-        && parseFloat(this.dealRegistration.opportunityAmount) >0)
+            && parseFloat(this.dealRegistration.opportunityAmount) > 0)
             this.opportunityAmountError = false
         else
             this.opportunityAmountError = true;
@@ -494,35 +455,32 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
         this.validateWebSite(0);
         this.validatePhone(0);
-        this.propertiesQuestions.forEach(property =>
-        {
+        this.propertiesQuestions.forEach(property => {
             this.validateQuestion(property);
 
         })
-        this.propertiesComments.forEach(property =>
-            {
+        this.propertiesComments.forEach(property => {
 
-                this.validateComment(property);
-            })
+            this.validateComment(property);
+        })
 
         this.submitButtonStatus();
 
     }
-    setDealTypeError(){
+    setDealTypeError() {
         if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0
             && this.dealRegistration.dealType != 'Select Dealtype')
-                this.dealTypeError = false
-            else
-                this.dealTypeError = true;
+            this.dealTypeError = false
+        else
+            this.dealTypeError = true;
 
     }
 
-    opportunityAmountUpdate(event:string){
+    opportunityAmountUpdate(event: string) {
         this.dealRegistration.opportunityAmount = event.replace('$', '').replace(',', '');
         console.log(this.dealRegistration.opportunityAmount);
     }
-    addProperties()
-    {
+    addProperties() {
         this.property = new DealDynamicProperties();
         let length = this.propertiesComments.length;
         length = length + 1;
@@ -536,15 +494,13 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         this.submitButtonStatus()
 
     }
-    remove(i, id)
-    {
+    remove(i, id) {
         if (id)
             console.log(id)
         var index = 1;
 
         this.propertiesComments = this.propertiesComments.filter(property => property.divId !== 'property-' + i)
-            .map(property =>
-            {
+            .map(property => {
                 property.divId = 'property-' + index++;
                 return property;
             });
@@ -553,8 +509,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
     }
 
-    save()
-    {
+    save() {
         this.ngxloading = true;
         this.isLoading = true;
         this.dealRegistration.campaignId = this.lead.campaignId;
@@ -568,47 +523,43 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
             this.setSfFormFieldValues();
         }
 
-          if(this.dealRegistration.isDeal){
-          this.propertiesQuestions.forEach(property =>
-            {
+        if (this.dealRegistration.isDeal) {
+            this.propertiesQuestions.forEach(property => {
                 var question = {
                     id: property.id,
                     key: property.key,
                     value: property.value,
-                    propType:'QUESTION'
+                    propType: 'QUESTION'
                 }
                 obj.push(question)
             })
-            this.propertiesComments.forEach(property =>
-                {
-                    var question = {
-                        id: property.id,
-                        key: property.key,
-                        value: property.value,
-                        propType:'PROPERTY'
-                    }
-                    obj.push(question)
-                })
-          }else{
-            this.propertiesQuestions.forEach(property =>
-              {
-                  var question = {
-                      key: property.key,
-                      value: property.value,
-                      propType:'QUESTION'
-                  }
-                  obj.push(question)
-              })
-              this.propertiesComments.forEach(property =>
-                {
-                    var question = {
-                        key: property.key,
-                        value: property.value,
-                        propType:'PROPERTY'
-                    }
-                    obj.push(question)
-                })
-          }
+            this.propertiesComments.forEach(property => {
+                var question = {
+                    id: property.id,
+                    key: property.key,
+                    value: property.value,
+                    propType: 'PROPERTY'
+                }
+                obj.push(question)
+            })
+        } else {
+            this.propertiesQuestions.forEach(property => {
+                var question = {
+                    key: property.key,
+                    value: property.value,
+                    propType: 'QUESTION'
+                }
+                obj.push(question)
+            })
+            this.propertiesComments.forEach(property => {
+                var question = {
+                    key: property.key,
+                    value: property.value,
+                    propType: 'PROPERTY'
+                }
+                obj.push(question)
+            })
+        }
 
         this.dealRegistration.answers = answers;
         this.dealRegistration.properties = obj;
@@ -616,14 +567,12 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         // if(!this.dealRegistration.pushToMarketo)
         //       this.dealRegistration.pushToMarketo = this.pushToMarketo;
         //       console.log( this.dealRegistration)
-        if (this.dealRegistration.id != null)
-        {
-            this.dealRegistrationService.updateDeal(this.dealRegistration).subscribe(data =>
-            {
-                if(this.dealRegistration.isDeal){
-                   // this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+        if (this.dealRegistration.id != null) {
+            this.dealRegistrationService.updateDeal(this.dealRegistration).subscribe(data => {
+                if (this.dealRegistration.isDeal) {
+                    // this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                     this.dealReg.emit(2);
-                }else{
+                } else {
                     //this.customResponse = new CustomResponse('SUCCESS', "Deal Registered Successfully", true);
                     this.dealReg.emit(1);
                     this.dealRegistration.isDeal = true;
@@ -633,54 +582,45 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
                 this.referenceService.goToTop();
                 this.submitButtonText = "Update Deal";
                 this.dealRegistration.properties.forEach(p => p.isSaved = true);
-            }, error =>
-                {
+            }, error => {
                     this.ngxloading = false;
                     this.logger.errorPage(error)
                 })
-        } else
-        {
-            this.dealRegistrationService.saveDeal(this.dealRegistration).subscribe(data =>
-            {
+        } else {
+            this.dealRegistrationService.saveDeal(this.dealRegistration).subscribe(data => {
                 this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                 this.isLoading = false;
-                if (data.data != undefined)
-                {
+                if (data.data != undefined) {
                     this.dealRegistration.id = data.data;
                     this.referenceService.dealId = this.dealRegistration.id;
                     this.dealRegistration.properties.forEach(p => p.isSaved = true);
                     this.submitButtonText = "Update Deal";
                 }
                 this.referenceService.goToTop();
-            }, error =>
-                {
+            }, error => {
                     this.ngxloading = false;
                     this.logger.errorPage(error)
                 })
         }
     }
-    validateEmail(emailId: string)
-    {
+    validateEmail(emailId: string) {
 
         var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
-        if (regex.test(emailId))
-        {
+        if (regex.test(emailId)) {
             this.isValidEmail = true;
 
-        } else
-        {
+        } else {
             this.isValidEmail = false;
 
         }
     }
 
-    validateQuestion(property: DealDynamicProperties)
-    {
+    validateQuestion(property: DealDynamicProperties) {
 
-        if (property.key.length > 0){
+        if (property.key.length > 0) {
             property.validationStausKey = this.successClass;
             property.error = false;
-        }else{
+        } else {
             property.validationStausKey = this.errorClass;
             property.error = true;
         }
@@ -688,13 +628,12 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         this.submitButtonStatus()
     }
 
-    validateComment(property: DealDynamicProperties)
-    {
+    validateComment(property: DealDynamicProperties) {
 
-        if (property.key.length > 0 && property.value.length > 0){
+        if (property.key.length > 0 && property.value.length > 0) {
             property.validationStausKey = this.successClass;
             property.error = false;
-        }else{
+        } else {
             property.validationStausKey = this.errorClass;
             property.error = true;
         }
@@ -704,204 +643,158 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     }
 
 
-    validateField(fieldId: any, isFormElement: boolean)
-    {
+    validateField(fieldId: any, isFormElement: boolean) {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
 
 
 
 
-        if (isFormElement && fieldId.key  != null && fieldId.key  != undefined)
-        {
+        if (isFormElement && fieldId.key != null && fieldId.key != undefined) {
 
             let fieldValue = $.trim($('#question_' + fieldId.id).val());
-            if (fieldValue.length > 0)
-            {
+            if (fieldValue.length > 0) {
                 fieldId.class = successClass;
                 fieldId.error = false;
-            } else
-            {
+            } else {
                 fieldId.class = errorClass;
                 fieldId.error = true;
             }
-        } else
-        {
+        } else {
             let fieldValue = $.trim($('#' + fieldId).val());
-            if (fieldId == "website")
-            {
-                this.marketo=true;
+            if (fieldId == "website") {
+                this.marketo = true;
                 this.validateWebSite(1)
 
             }
-            if (fieldId == "leadStreet")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "leadStreet") {
+                if (fieldValue.length > 0) {
                     this.leadStreet = successClass;
                     this.leadStreetError = false;
-                } else
-                {
+                } else {
                     this.leadStreet = errorClass;
                     this.leadStreetError = true;
                 }
 
-            } if (fieldId == "leadCity")
-            {
-                if (fieldValue.length > 0)
-                {
+            } if (fieldId == "leadCity") {
+                if (fieldValue.length > 0) {
                     this.leadCity = successClass;
                     this.leadCityError = false;
-                } else
-                {
+                } else {
                     this.leadCity = errorClass;
                     this.leadCityError = true;
                 }
 
-            } if (fieldId == "leadState")
-            {
-                if (fieldValue.length > 0)
-                {
+            } if (fieldId == "leadState") {
+                if (fieldValue.length > 0) {
                     this.leadState = successClass;
                     this.leadStateError = false;
-                } else
-                {
+                } else {
                     this.leadState = errorClass;
                     this.leadStateError = true;
                 }
 
-            } if (fieldId == "leadPostalCode")
-            {
-                if (fieldValue.length > 0 && parseInt(fieldValue))
-                {
+            } if (fieldId == "leadPostalCode") {
+                if (fieldValue.length > 0 && parseInt(fieldValue)) {
                     this.leadPostalCode = successClass;
                     this.leadPostalCodeError = false
-                } else
-                {
+                } else {
                     this.leadPostalCode = errorClass;
                     this.leadPostalCodeError = true
                 }
 
-            } if (fieldId == "leadCountry")
-            {
+            } if (fieldId == "leadCountry") {
 
-                if (fieldValue.length > 0 && fieldValue != "Select Country")
-                {
+                if (fieldValue.length > 0 && fieldValue != "Select Country") {
                     this.country = successClass;
                     this.countryError = false;
-                } else
-                {
+                } else {
                     this.country = errorClass;
                     this.countryError = true;
                 }
 
-            } if (fieldId == "opportunityAmount")
-            {
-                fieldValue = fieldValue.replace('$','').replace(',','');
+            } if (fieldId == "opportunityAmount") {
+                fieldValue = fieldValue.replace('$', '').replace(',', '');
 
-                if (fieldValue.length > 0 && parseFloat(fieldValue)>0)
-                {
+                if (fieldValue.length > 0 && parseFloat(fieldValue) > 0) {
                     this.opportunityAmount = successClass;
                     this.opportunityAmountError = false;
-                } else
-                {
+                } else {
                     this.opportunityAmount = errorClass;
                     this.opportunityAmountError = true;
                 }
 
             }
-            if (fieldId == "estimatedCloseDate")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "estimatedCloseDate") {
+                if (fieldValue.length > 0) {
                     this.estimatedCloseDate = successClass;
                     this.estimatedCloseDateError = false;
-                } else
-                {
+                } else {
                     this.estimatedCloseDate = errorClass;
                     this.estimatedCloseDateError = true;
                 }
 
             }
-            if (fieldId == "company")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "company") {
+                if (fieldValue.length > 0) {
                     this.company = successClass;
                     this.companyError = false;
-                } else
-                {
+                } else {
                     this.company = errorClass;
                     this.companyError = true;
                 }
 
             }
-            if (fieldId == "firstName")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "firstName") {
+                if (fieldValue.length > 0) {
                     this.firstName = successClass;
                     this.firstNameError = false;
-                } else
-                {
+                } else {
                     this.firstName = errorClass;
                     this.firstNameError = true;
                 }
 
             }
-            if (fieldId == "lastName")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "lastName") {
+                if (fieldValue.length > 0) {
                     this.lastName = successClass;
                     this.lastNameError = false;
-                } else
-                {
+                } else {
                     this.lastName = errorClass;
                     this.lastNameError = true;
                 }
 
             }
-            if (fieldId == "title")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "title") {
+                if (fieldValue.length > 0) {
                     this.title = successClass;
                     this.titleError = false;
-                } else
-                {
+                } else {
                     this.title = errorClass;
                     this.titleError = true;
                 }
 
             }
-            if (fieldId == "role")
-            {
-                if (fieldValue.length > 0)
-                {
+            if (fieldId == "role") {
+                if (fieldValue.length > 0) {
                     this.role = successClass;
                     this.roleError = false;
-                } else
-                {
+                } else {
                     this.role = errorClass;
                     this.roleError = true;
                 }
 
             }
 
-            if (fieldId == "phone")
-            {
+            if (fieldId == "phone") {
                 this.validatePhone(1);
             }
-            if (fieldId == "dealType")
-            {
+            if (fieldId == "dealType") {
 
-                if (fieldValue.length > 0 && fieldValue != "Select Dealtype")
-                {
+                if (fieldValue.length > 0 && fieldValue != "Select Dealtype") {
                     this.dealType = successClass;
                     this.dealTypeError = false;
-                } else
-                {
+                } else {
                     this.dealType = errorClass;
                     this.dealTypeError = true;
                 }
@@ -912,55 +805,48 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
         this.submitButtonStatus();
     }
-    submitButtonStatus()
-    {
-        if(this.showSfDealFields){
+    submitButtonStatus() {
+        if (this.showSfDealFields) {
             this.opportunityAmountError = false;
-            this.titleError= false;
-            this.estimatedCloseDateError=false;
-            this.dealTypeError= false;
-            this.properties.length=0;
-            this.propertiesQuestions.length=0;
+            this.titleError = false;
+            this.estimatedCloseDateError = false;
+            this.dealTypeError = false;
+            this.properties.length = 0;
+            this.propertiesQuestions.length = 0;
         }
 
         if (!this.websiteError && !this.leadStreetError && !this.leadCityError
             && !this.leadStateError && !this.leadPostalCodeError && !this.countryError
             && !this.opportunityAmountError && !this.estimatedCloseDateError
             && !this.companyError && !this.firstNameError && !this.lastNameError
-            && !this.titleError &&!this.roleError && !this.dealTypeError && !this.phoneError)
-        {
-            let qCount =0;
-            let cCount=0;
-            this.propertiesQuestions.forEach(propery =>
-            {
-                if (propery.error){
+            && !this.titleError && !this.roleError && !this.dealTypeError && !this.phoneError) {
+            let qCount = 0;
+            let cCount = 0;
+            this.propertiesQuestions.forEach(propery => {
+                if (propery.error) {
                     this.isDealRegistrationFormValid = false;
                     qCount++;
                 }
             })
-            this.propertiesComments.forEach(propery =>
-            {
-                if (propery.error){
+            this.propertiesComments.forEach(propery => {
+                if (propery.error) {
                     this.isDealRegistrationFormValid = false;
                     cCount++;
                 }
             })
-            if(qCount == 0 && cCount == 0)
+            if (qCount == 0 && cCount == 0)
                 this.isDealRegistrationFormValid = true;
             else
                 this.isDealRegistrationFormValid = false;
-        } else
-        {
+        } else {
 
             this.isDealRegistrationFormValid = false;
         }
 
     }
-    addPhoneError(x)
-    {
+    addPhoneError(x) {
         this.phoneError = true;
-        if (x != 0)
-        {
+        if (x != 0) {
             this.phoneErrorMessage = "Phone number is mandatory";
 
             this.phoneDivClass = this.errorClass;
@@ -968,8 +854,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         this.phone = this.errorClass;
 
     }
-    removePhoneError()
-    {
+    removePhoneError() {
         this.phoneError = false;
         this.phoneDivClass = this.successClass;
         this.phoneErrorMessage = "";
@@ -977,16 +862,14 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
 
     }
 
-    addWebSiteError(x)
-    {
+    addWebSiteError(x) {
         this.websiteError = true;
         if (x != 0)
             this.websiteDivClass = this.errorClass;
         this.website = this.errorClass;
 
     }
-    removeWebSiteError()
-    {
+    removeWebSiteError() {
         this.websiteError = false;
         this.websiteDivClass = this.successClass;
         this.websiteErrorMessage = "";
@@ -994,59 +877,46 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     }
 
 
-    validatePhone(x)
-    {
-        if (this.dealRegistration.phone)
-        {
+    validatePhone(x) {
+        if (this.dealRegistration.phone) {
 
-            if (!this.PHONE_NUMBER_PATTERN.test(this.dealRegistration.phone) || this.dealRegistration.phone.length < 8)
-            {
+            if (!this.PHONE_NUMBER_PATTERN.test(this.dealRegistration.phone) || this.dealRegistration.phone.length < 8) {
                 this.addPhoneError(x);
                 this.phoneErrorMessage = "Invalid Contact Number"
-            } else
-            {
+            } else {
                 this.phone = this.successClass;
                 this.removePhoneError();
             }
-        } else
-        {
+        } else {
             this.addPhoneError(x);
         }
     }
 
-    validateWebSite(x)
-    {
-        if (this.dealRegistration.website != null && $.trim(this.dealRegistration.website).length > 0)
-        {
-            if (!this.URL_PATTERN.test(this.dealRegistration.website))
-            {
+    validateWebSite(x) {
+        if (this.dealRegistration.website != null && $.trim(this.dealRegistration.website).length > 0) {
+            if (!this.URL_PATTERN.test(this.dealRegistration.website)) {
                 this.addWebSiteError(x);
                 this.websiteErrorMessage = "Please enter a valid URL.";
-            } else
-            {
+            } else {
                 this.removeWebSiteError();
             }
-        } else
-        {
+        } else {
             this.websiteError = true;
             if (x != 0)
                 this.websiteErrorMessage = 'Please add your lead\'s URL.';
         }
     }
 
-    validateForm(form: any)
-    {
+    validateForm(form: any) {
         console.log(form);
     }
 
-    isEven(n)
-    {
+    isEven(n) {
         if (n % 2 === 0) { return true; }
         return false;
     }
 
-    getFormatedDate(date: Date)
-    {
+    getFormatedDate(date: Date) {
         //return string
         var returnDate = "";
 
@@ -1055,34 +925,29 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         var yyyy = date.getFullYear();
 
 
-        if (mm < 10)
-        {
+        if (mm < 10) {
             returnDate += `0${mm}/`;
-        } else
-        {
+        } else {
             returnDate += `${mm}/`;
         }
         //Interpolation date
-        if (dd < 10)
-        {
+        if (dd < 10) {
             returnDate += `0${dd}/`;
-        } else
-        {
+        } else {
             returnDate += `${dd}/`;
         }
         returnDate += yyyy;
         return returnDate;
     }
-    commentsection(property: DealDynamicProperties)
-    {
+    commentsection(property: DealDynamicProperties) {
         property.isCommentSection = !property.isCommentSection;
     }
 
-    deleteComment(i:number,question:DealDynamicProperties){
+    deleteComment(i: number, question: DealDynamicProperties) {
         try {
-            this.logger.info( "Comment in sweetAlert() " + question.id );
+            this.logger.info("Comment in sweetAlert() " + question.id);
             let self = this;
-            swal( {
+            swal({
                 title: 'Are you sure?',
                 text: "You won't be able to undo this action!",
                 type: 'warning',
@@ -1091,34 +956,34 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
                 cancelButtonColor: '#999',
                 confirmButtonText: 'Yes, delete it!'
 
-            }).then( function( myData: any ) {
-                console.log( "deleteComment showAlert then()" + question );
-                self.dealRegistrationService.deleteProperty(question).subscribe(response=>{
+            }).then(function (myData: any) {
+                console.log("deleteComment showAlert then()" + question);
+                self.dealRegistrationService.deleteProperty(question).subscribe(response => {
                     self.remove(i, question.id)
 
-                },error=> this.logger.error( error, "DealRegistrationComponent", "deleteComment()" ))
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
+                }, error => this.logger.error(error, "DealRegistrationComponent", "deleteComment()"))
+            }, function (dismiss: any) {
+                console.log('you clicked on option' + dismiss);
             });
-        } catch ( error ) {
-            this.logger.error( error, "DealRegistrationComponent", "deleteCommentAlert()" );
+        } catch (error) {
+            this.logger.error(error, "DealRegistrationComponent", "deleteCommentAlert()");
         }
     }
-    showAlert(i:number,question:DealDynamicProperties){
-        if(question.isSaved ){
-            this.deleteComment(i,question);
+    showAlert(i: number, question: DealDynamicProperties) {
+        if (question.isSaved) {
+            this.deleteComment(i, question);
 
-        }else{
+        } else {
             this.remove(i, question.id);
         }
     }
-    setFormValidateErrMsg(){
-     }
+    setFormValidateErrMsg() {
+    }
 
-     clearFormValidateErrMsg(){
-     }
+    clearFormValidateErrMsg() {
+    }
 
-     formatMobileNumber(mobile:string){
+    formatMobileNumber(mobile: string) {
         var value = mobile.toString().trim().replace(/^/, '');
 
 
@@ -1143,7 +1008,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
                 city = value.slice(3, 5);
                 number = value.slice(5);
                 break;
-                case 13: // +CCCPP####### -> CCC (PP) ###-####
+            case 13: // +CCCPP####### -> CCC (PP) ###-####
                 country = value.slice(0, 3);
                 city = value.slice(3, 5);
                 number = value.slice(5);
@@ -1160,9 +1025,9 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
         number = number.slice(0, 3) + '-' + number.slice(3);
 
         return (country + " -" + city + "- " + number).trim();
-     }
+    }
 
-     setSfFormFieldValues() {
+    setSfFormFieldValues() {
         if (this.sfDealComponent.form !== undefined || this.sfDealComponent.form !== null) {
             let formLabelDTOs = this.sfDealComponent.form.formLabelDTOs;
             if (formLabelDTOs.length !== 0) {
@@ -1216,6 +1081,9 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit
     ngAfterViewInit() {
         this.dealRegistrationService.isSfEnabledForParentCampaign(this.dealId).subscribe(result => {
             this.showSfDealFields = result;
+            if(JSON.stringify(this.showSfDealFields) === '{}'){
+                this.showSfDealFields = false;
+            }
         },
             error => {
                 console.log(error);

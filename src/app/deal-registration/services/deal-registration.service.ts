@@ -391,7 +391,7 @@ export class DealRegistrationService
             .catch(this.handleError);
     }
 
-    isSfEnabledForParentCampaign(dealId:number)
+    isSfEnabledForParentCampaign(dealId:number): Observable<boolean>
     {
         var url = this.URL + "validate-sf-enabled/"+dealId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
