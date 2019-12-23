@@ -926,15 +926,15 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
 
 
         if (mm < 10) {
-            returnDate += `0${mm}/`;
+            returnDate += `0${mm}-`;
         } else {
-            returnDate += `${mm}/`;
+            returnDate += `${mm}-`;
         }
         //Interpolation date
         if (dd < 10) {
-            returnDate += `0${dd}/`;
+            returnDate += `0${dd}-`;
         } else {
-            returnDate += `${dd}/`;
+            returnDate += `${dd}-`;
         }
         returnDate += yyyy;
         return returnDate;
