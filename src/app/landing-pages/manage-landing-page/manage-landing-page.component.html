@@ -24,16 +24,20 @@
 			<div class="portlet light clearfix">
 				<div class="portlet-title">
 					    <div class="row">
-					    <div class="colxs-12 col-sm-6">
+					    <div class="colxs-12 col-sm-7">
 						<div> 
 							<ul class="mix-filter">
 								<li class="filter"  (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
 								<ng-container *ngIf="!isPartnerLandingPage">
-									<li class="filter"  (click)="showAllLandingPages('Regular',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular</li>
-									<li class="filter"   (click)="showAllLandingPages('Co-Branded',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Co-Branded</li>
+									<li class="filter"  (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)</li>
+									<li class="filter"  (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)</li>
+									<li class="filter"   (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)</li>
+									<li class="filter"   (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)</li>
 								</ng-container>
-								<li class="filter"   (click)="showAllLandingPages('PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Public</li>
-								<li class="filter"   (click)="showAllLandingPages('PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Private</li>
+								<ng-container *ngIf="isPartnerLandingPage">
+								<li class="filter"   (click)="showAllLandingPages('PUBLIC',5)" [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public</li>
+								<li class="filter"   (click)="showAllLandingPages('PRIVATE',6)" [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private</li>
+								</ng-container>
 							</ul>
 						</div>
 						</div>
