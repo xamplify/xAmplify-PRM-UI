@@ -730,7 +730,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isCampaignDetailsFormValid = false;
         }
         
-        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && this.pushToCRM.length == 0){
+        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && (this.pushToCRM.length == 0 || this.pushToCRM.length == 1)){
             this.isValidCrmOption = false;
             this.isCampaignDetailsFormValid = false;
         }else{
