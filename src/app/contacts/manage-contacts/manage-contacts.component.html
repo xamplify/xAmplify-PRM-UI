@@ -215,7 +215,7 @@
 
 														<button
 															class="glyphicon glyphicon-remove search-box-item-clear"
-															*ngIf="searchKey" (click)="searchKey=''"></button>
+															*ngIf="searchKey" (click)="searchKey='';search('contactList')"></button>
 														<button type="submit" class="search-box-item-click"
 															(click)="search('contactList')">
 															<i class="fa fa-search"></i>
@@ -573,7 +573,7 @@
 
 												<button
 													class="glyphicon glyphicon-remove search-box-item-clear"
-													*ngIf="searchKey" (click)="searchKey=''"></button>
+													*ngIf="searchKey" (click)="searchKey='';search('contacts')"></button>
 												<button type="submit" class="search-box-item-click"
 													(click)="search('contacts')">
 													<i class="fa fa-search"></i>

@@ -303,7 +303,7 @@ img:hover {
     <div class="col-xs-12 p0"   *ngIf="referenceService.isMobileScreenSize()">
         <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
         class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
-        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+        <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
         <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
     </div>
 	<div class="col-xs-12" style="padding: 0 0 10px 0">
@@ -607,7 +607,7 @@ img:hover {
               <div class="input-icon right">
                   <input type="text"  [(ngModel)]="searchKey"  [ngModelOptions]="{standalone: true}"
                    class="form-control" placeholder="Search for a Partner" (keypress)="eventHandler($event.keyCode)">
-              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
               <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important"></i></button>
               </div>
             </div>

@@ -46,7 +46,7 @@
                          <!-- <i class="icon-magnifier" style="cursor:pointer;font-size:18px;" (click)="searchVideoTitelName()"></i> -->
                           <input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode)">
-                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey=''"></button>
+                          <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchVideoTitelName()"></button>
                           <button type="submit" class="search-box-item-click" (click)="searchVideoTitelName()"><i class="fa fa-search"></i></button>
                        </div>
                      </div>
