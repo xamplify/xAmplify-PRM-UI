@@ -2486,11 +2486,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     
     checkSalesforceIntegration(): any {
-        this.pushToCRM = [];
+        this.eventCampaign.pushToCRM = [];
         this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-               this.pushToCRM.push('salesforce');
+                this.eventCampaign.pushToCRM.push('salesforce');
                console.log("isPushToSalesforce ::::" + this.pushToCRM);
             }
         },error =>{
