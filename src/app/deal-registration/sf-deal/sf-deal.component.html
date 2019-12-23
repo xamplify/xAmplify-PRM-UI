@@ -8,7 +8,7 @@
 
       <!-- ---------------------------TextBox & Email----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-        <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+        <input type="{{columnInfo.labelType}}"  [class.disabled] = "columnInfo.labelId === 'Name'" class="form-control" placeholder="{{columnInfo.placeHolder}}"
           id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="{{columnInfo.labelLength}}"
           (input)="validateField(columnInfo)">
         <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
