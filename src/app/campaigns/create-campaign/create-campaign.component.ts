@@ -862,7 +862,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
            // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
-            this.checkSalesforceIntegration();
+            //this.checkSalesforceIntegration();
         }else{
             this.loadContacts();
             this.removePartnerRules();
@@ -3116,6 +3116,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
          this.pushToCRM = [];
      }
      this.validatePushToCRM();
+     this.checkSalesforceIntegration();
     }
     
     pushToCrmRequest(crmName: any, event: any){

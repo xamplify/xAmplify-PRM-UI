@@ -698,7 +698,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
           this.eventCampaign.enableCoBrandingLogo = true;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
           this.loadEmailTemplates(this.emailTemplatesPagination);
-          this.checkSalesforceIntegration();
+          //this.checkSalesforceIntegration();
       }
       if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
       if(!this.eventCampaign.channelCampaign){
@@ -2463,6 +2463,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
          this.eventCampaign.pushToCRM = [];
      }
      this.validatePushToCRM();
+     this.checkSalesforceIntegration();
     }
     
     pushToCrmRequest(crmName: any, event: any){
