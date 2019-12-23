@@ -2447,7 +2447,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
  
  
  validatePushToCRM(){
-     if(this.isPushToCrm && this.eventCampaign.channelCampaign && this.eventCampaign.pushToCRM.length == 0){
+     if(this.isPushToCrm && this.eventCampaign.channelCampaign && (this.eventCampaign.pushToCRM.length == 0 || this.eventCampaign.pushToCRM.length == 1)){
          this.isValidCrmOption = false;
      }else{
          this.isValidCrmOption = true;

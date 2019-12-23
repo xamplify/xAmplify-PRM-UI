@@ -822,7 +822,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      
      validatePushToCRM(){
-        if(this.isPushToCrm && this.campaign.channelCampaign && this.pushToCRM.length == 0){
+        if(this.isPushToCrm && this.campaign.channelCampaign && (this.pushToCRM.length == 0 || this.pushToCRM.length == 1)){
             this.isValidCrmOption = false;
             this.validateForm();
         }else{
