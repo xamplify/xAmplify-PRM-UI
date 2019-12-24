@@ -2493,7 +2493,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.eventCampaign.pushToCRM = [];
         this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
             let response = data;
-            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize && this.enableLeads) {
                 this.eventCampaign.pushToCRM.push('salesforce');
                console.log("isPushToSalesforce ::::" + this.pushToCRM);
             }

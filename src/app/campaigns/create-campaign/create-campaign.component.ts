@@ -3156,7 +3156,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       this.pushToCRM = [];
        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
            let response = data;
-           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+           if (response.data.isAuthorize !== undefined && response.data.isAuthorize && this.enableLeads) {
               this.pushToCRM.push('salesforce');
               console.log("isPushToSalesforce ::::" + this.pushToCRM);
            }
