@@ -668,3 +668,8 @@ tr>td>h6 {
     right: 38px!important;
     left: auto;
 }
+
+#table-header {
+	font-size: 12px;
+	font-weight: 500;
+}

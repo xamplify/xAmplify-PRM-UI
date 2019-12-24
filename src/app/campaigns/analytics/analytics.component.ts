@@ -224,6 +224,7 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     } else{
        this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign,this.isSmsServiceAnalytics)
          .subscribe(data => {
+             console.log(data);
             this.listCampaignViewsDataInsert(data.campaignviews);
            },
           error => console.log(error),

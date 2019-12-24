@@ -135,7 +135,7 @@
 						<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showLandingPagePreview(campaign)">
 							<i class="fa fa-eye"></i>
 						</a>
-						<a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Analytics">
+						<a *ngIf="campaign.formsCount>0" routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Count">
 								<i class="fa fa-wpforms"></i>
 								<span class="badge" id="notification">{{campaign.formsCount}}</span>
 						</a>
@@ -597,31 +597,35 @@
 											<table class="table tgrid">
 												<thead>
 													<tr>
-														<th style="font-size: 12px;font-weight: 500; width: 25%;">Name</th>
-														<th style="font-size: 12px;font-weight: 500;">Campaign Name</th>
+														<th id="table-header" style="width: 25%;">Name</th>
+														<th id="table-header">Campaign Name</th>
 														<!-- 	<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">Redistribution Time</th> -->
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">invites</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Email opened</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">No</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">MayBe</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">invites</th>
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Email opened</th>
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">No</th>
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">MayBe</th>
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
+														<th id="table-header" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response
 															Type</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">ATTENDEES <br><h6 class="m0"
+														<th id="table-header" *ngIf="campaignType==='EVENT'">ATTENDEES <br><h6 class="m0"
 															 style="font-size:9px"><b>( including guests )</b></h6>
 														</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest
+														<th id="table-header" *ngIf="campaignType==='VIDEO' || campaignType!=='EVENT'">Latest
 															View</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType!=='EVENT'">
+														<th id="table-header" *ngIf="campaignType!=='EVENT'">
 															<span *ngIf="campaignType==='VIDEO'">Views</span>
 															<span *ngIf="campaignType==='REGULAR' || campaignType==='LANDINGPAGE'">Email Opened</span>
 															<span *ngIf="campaignType==='SOCIAL'">Redistributed</span>
 														</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaign.dipCampaign">
+														<th id="table-header" *ngIf="campaign.dipCampaign">
 															Auto Responses
 														</th>
-														<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT' && isChannelCampaign && campaign.publicEventCampaign">Leads Info</th> 
+														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && campaign.publicEventCampaign">Leads Info</th> 
+														<ng-container *ngIf="campaignType==='LANDINGPAGE'">
+															<th id="table-header">Page Analytics</th> 
+															<th id="table-header" *ngIf="campaign.formsCount>0">Form Count</th> 
+														</ng-container>
 													</tr>
 												</thead>
 												<tbody>
@@ -709,6 +713,29 @@
 																<span class="badge badge-default" style="background-color: #00a6e8 !important;position: absolute;right: 42px;margin-top: -15px;">{{item.totalLeadsCount}}</span>
 																</b></span>
 															</td>
+															<!-- ----------Landing Page Forms----------- -->
+															<ng-container *ngIf="campaignType=='LANDINGPAGE'">
+																	<td class="text-center" (click)="$event.stopPropagation();">
+																		<div class="actions-block override-actions" id="landing-page-icons">
+																		<a *ngIf="item.pageAnalyticsCount>0" routerLink="/home/pages/{{campaign.campaignId}}/{{item.userId}}/campaign/analytics" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
+																			<i class="fa fa-line-chart"></i>
+																			<span class="badge" id="notification">{{item.pageAnalyticsCount}}</span>
+																		</a>
+																		<a *ngIf="item.pageAnalyticsCount==0"   data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Page Analytics">
+																			<i class="fa fa-line-chart"></i>
+																			<span class="badge" id="notification">{{item.pageAnalyticsCount}}</span>
+																		</a>
+																		</div>
+																	</td>
+																	<td class="text-center" *ngIf="campaign.formsCount>0">
+																		<div class="actions-block override-actions" id="landing-page-icons">
+																		<a routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Count">
+																			<i class="fa fa-wpforms"></i>
+																			<span class="badge" id="notification">{{campaign.formsCount}}</span>
+																		</a>
+																		</div>
+																	</td>
+															</ng-container>
 														</tr>
 														<tr [ngClass]="{'hidden': !item.expanded}" id="autoresponse-tr">
 														 	 <td [attr.colspan]="colspanValue">

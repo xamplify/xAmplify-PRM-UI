@@ -116,7 +116,7 @@
 									<a *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showLandingPageLink(landingPage)">
 										<i class="fa fa-clipboard"></i>
 									</a>
-									<ng-container *ngIf="landingPage.formsCount>0">
+									<ng-container *ngIf="landingPage.formsCount>0 && !(isPartnerLandingPage && landingPage.type=='PRIVATE')">
 										<a *ngIf="!isPartnerLandingPage" data-rel="fancybox-button" (click)="goToFormAnalytics(landingPage.id)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"></i></a>
 										<a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i class="fa fa-wpforms"></i></a>
 									<span class="badge" id="notification-list">{{landingPage.formsCount}}</span>

@@ -44,5 +44,6 @@ export class Pagination {
 	loader:HttpRequestLoader = new HttpRequestLoader();
 	publicEventLeads = false;
 	addingMoreLists = false;
+	partnerId:number=0;
 	
 }

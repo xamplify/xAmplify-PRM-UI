@@ -8,6 +8,7 @@ export class LandingPageAnalyticsPostDto {
     filterValue:string;
     analyticsTypeString:string;
     landingPageAlias:string = "";
+    partnerId:number;
     
     
 }

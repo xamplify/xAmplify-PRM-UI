@@ -23,6 +23,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     landingPageId: number = 0;
     landingPageAlias:string = "";
     campaignId:number = 0;
+    partnerId:number = 0;
     pagination: Pagination = new Pagination();
     countryPagination:Pagination = new Pagination();
     barChartPagination:Pagination = new Pagination();
@@ -54,6 +55,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.landingPageAlias = this.route.snapshot.params['alias'];
+        this.partnerId = this.route.snapshot.params['partnerId'];
         if(this.campaignId!=undefined){
             this.pagination.campaignId = this.campaignId;
             this.landingPageId = 0;
@@ -61,6 +63,8 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.landingPageAnalyticsPostDto.analyticsTypeString = "Campaign";
             this.landingPageAnalyticsPostDto.campaignId = this.campaignId;
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
+            this.landingPageAnalyticsPostDto.partnerId = this.partnerId;
+            this.pagination.partnerId = this.partnerId;
         }else if(this.landingPageId!=undefined){
             this.pagination.landingPageId = this.landingPageId;
             this.pagination.campaignId = 0;
@@ -95,6 +99,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
             this.landingPageAnalyticsPostDto.userId = this.pagination.userId;
             this.landingPageAnalyticsPostDto.campaignId = this.campaignId;
             this.landingPageAnalyticsPostDto.landingPageAlias = this.landingPageAlias;
+            this.landingPageAnalyticsPostDto.partnerId = this.partnerId;
             this.landingPageService.getBarCharViews(this.landingPageAnalyticsPostDto).subscribe(
                     ( response: any ) => {
                         this.barChartStatusCode = response.statusCode;
@@ -120,6 +125,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     
     listAnalytics(pagination:Pagination){
         this.referenceService.loading( pagination.loader, true );
+        pagination.partnerId = this.partnerId;
         this.landingPageService.listAnalytics( pagination,this.countryCode ).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;
@@ -219,6 +225,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     
     listBarChartAnalytics(pagination:Pagination,timePeriod:string,filterValue:any){
         this.referenceService.loading( pagination.loader, true );
+        pagination.partnerId = this.partnerId;
         this.landingPageService.listBarChartAnalytics(pagination,timePeriod,filterValue,this.landingPageAnalyticsPostDto.analyticsTypeString).subscribe(
             ( response: any ) => {
                 this.statusCode = response.statusCode;
