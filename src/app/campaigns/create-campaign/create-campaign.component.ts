@@ -3154,15 +3154,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    
    checkSalesforceIntegration(): any {
       this.pushToCRM = [];
-       this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
+      if(this.enableLeads){ 
+      this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
            let response = data;
-           if (response.data.isAuthorize !== undefined && response.data.isAuthorize && this.enableLeads) {
+           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
               this.pushToCRM.push('salesforce');
               console.log("isPushToSalesforce ::::" + this.pushToCRM);
            }
        },error =>{
            this.logger.error(error, "Error in salesforce checkIntegrations()");
        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+     }
    }
 
 
