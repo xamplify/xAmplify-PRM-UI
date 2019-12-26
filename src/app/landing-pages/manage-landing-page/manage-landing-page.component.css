@@ -440,8 +440,11 @@ hr {
 .bar a {
 	width: 25px !important;
 	height: 25px !important;
-	padding: 2px !important;
-	margin: 4px 3px !important;
+/****** 	below code commented by Naresh For buttons alignment   ******/
+	/* padding: 2px !important;
+	margin: 4px 3px !important; */
+	padding: 2px 0px 0px 0px !important;
+    margin: 4px 2px 0px 0px !important;
 }
 
 
