@@ -298,6 +298,9 @@ img:hover {
 				 <li><a id="exportToExcel"
 					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
 						To Excel</a></li>
+				 <li><a id="exportToExcel"
+					*ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard && editContactComponent.selectedContactListIds.length != 0" (click)="showAlert()">
+					Delete</a></li>
 			</ul>
     </div>
     <div class="col-xs-12 p0"   *ngIf="referenceService.isMobileScreenSize()">

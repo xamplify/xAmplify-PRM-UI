@@ -3064,4 +3064,55 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("#Gfile_preview" ).show();
         this.filePreview = true;
     }
+    
+    removeContactListUsers() {
+        try {
+            this.xtremandLogger.info( this.editContactComponent.selectedContactListIds );
+            this.contactService.removeContactListUsers( this.partnerListId, this.editContactComponent.selectedContactListIds )
+                .subscribe(
+                ( data: any ) => {
+                    data = data;
+                    console.log( "update Partner ListUsers:" + data );
+                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
+                    this.loadPartnerList(this.pagination);
+                    this.editContactComponent.selectedContactListIds.length = 0;
+                },
+                ( error: any ) => {
+                    if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                        this.customResponse = new CustomResponse( 'ERROR', error._body, true );
+                    } else {
+                        this.xtremandLogger.errorPage( error );
+                    }
+                    console.log( error );
+                },
+                () => this.xtremandLogger.info( "delete completed" )
+                );
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddPartnerComponent", "deleting partner()" );
+        }
+    }
+
+    showAlert() {
+        this.xtremandLogger.info( "userIdForChecked" + this.editContactComponent.selectedContactListIds );
+        if ( this.editContactComponent.selectedContactListIds.length != 0 ) {
+            this.xtremandLogger.info( "contactListId in sweetAlert() " + this.partnerListId );
+            let self = this;
+                swal( {
+                    title: 'Are you sure?',
+                    text: "You won't be able to undo this action!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    swalConfirmButtonColor: '#54a7e9',
+                    swalCancelButtonColor: '#999',
+                    confirmButtonText: 'Yes, delete it!'
+
+                }).then( function( myData: any ) {
+                    console.log( "ManageContacts showAlert then()" + myData );
+                    self.removeContactListUsers();
+                }, function( dismiss: any ) {
+                    console.log( 'you clicked on option' + dismiss );
+                });
+        }
+    }
+    
 }
