@@ -41,6 +41,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     landingPageId = 0;
     landingPageCampaignId = 0;
     partnerLandingPageAlias = "";
+    partnerId = 0;
     statusCode = 200;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
@@ -66,6 +67,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.landingPageId = this.route.snapshot.params['landingPageId'];
         this.landingPageCampaignId  = this.route.snapshot.params['landingPageCampaignId'];
         this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
+        this.partnerId =  this.route.snapshot.params['partnerId'];
         if(this.campaignId!=undefined){
             this.pagination.campaignId = this.campaignId;
             this.pagination.campaignForm = true;
@@ -76,6 +78,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }else if(this.landingPageCampaignId>0){
             this.pagination.campaignId = this.landingPageCampaignId;
             this.pagination.landingPageCampaignForm = true;
+            this.pagination.partnerId = this.partnerId;
         }else if(this.partnerLandingPageAlias!=undefined){
             this.pagination.landingPageAlias = this.partnerLandingPageAlias;
             this.pagination.partnerLandingPageForm = true;
@@ -258,7 +261,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         if(this.pagination.campaignForm){
             this.router.navigate(['/home/forms/'+form.alias+'/'+this.campaignId+'/analytics']);
         }else if(this.pagination.landingPageCampaignForm){
-            this.router.navigate(['/home/forms/'+form.alias+'/'+this.landingPageCampaignId+'/analytics']);
+            if(this.partnerId>0){
+                this.router.navigate(['/home/forms/'+form.alias+'/'+this.landingPageCampaignId+'/'+this.partnerId+'/analytics']);
+            }else{
+                this.router.navigate(['/home/forms/'+form.alias+'/'+this.landingPageCampaignId+'/analytics']);
+            }
         }else if(this.pagination.landingPageForm){
             this.router.navigate(['/home/forms/lf/'+form.alias+'/'+this.landingPageId+'/analytics']);
         }else if(this.pagination.partnerLandingPageForm){

@@ -24,6 +24,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     formId: any;
     partnerLandingPageAlias: any;
     loggedInUserId: number = 0;
+    partnerId:number = 0;
     alias: string = "";
     campaignAlias: string = "";
     formName = "";
@@ -53,10 +54,12 @@ export class FormAnalyticsUtilComponent implements OnInit {
             this.campaignAlias = this.importedObject['campaignAlias'];
             this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
             this.formId = this.importedObject['formId'];
+            this.partnerId = this.importedObject['partnerId'];
             this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
             this.title = this.importedObject['title'];
             if(this.campaignAlias!=undefined){
                 this.pagination.campaignId = parseInt(this.campaignAlias);
+                this.pagination.partnerId = this.partnerId;
             }else if(this.partnerLandingPageAlias!=undefined){
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.formId = this.formId;

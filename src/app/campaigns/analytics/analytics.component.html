@@ -729,7 +729,7 @@
 																	</td>
 																	<td class="text-center" *ngIf="campaign.formsCount>0">
 																		<div class="actions-block override-actions" id="landing-page-icons">
-																		<a routerLink="/home/forms/clpf/{{campaign.campaignId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Count">
+																		<a routerLink="/home/forms/clpf/{{campaign.campaignId}}/{{item.userId}}" data-rel="fancybox-button"  data-toggle="tooltip" data-placement="top" title="Form Count">
 																			<i class="fa fa-wpforms"></i>
 																			<span class="badge" id="notification">{{campaign.formsCount}}</span>
 																		</a>
