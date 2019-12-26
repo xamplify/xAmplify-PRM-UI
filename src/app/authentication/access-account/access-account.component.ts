@@ -115,7 +115,7 @@ export class AccessAccountComponent implements OnInit {
                        this.router.navigate(['./login']);
                    }else{
                        this.loading = false;
-                       this.customResponse = new CustomResponse( 'ERROR', 'This user does not exists', true );
+                       this.customResponse = new CustomResponse( 'ERROR',result.message, true );
                    }
                 },
                 (error:string) => {
@@ -172,7 +172,6 @@ export class AccessAccountComponent implements OnInit {
             if ( control && control.dirty && !control.valid ) {
                 const messages = this.validationMessages[field];
                 for ( const key of Object.keys( control.errors ) ) {
-                    this.xtremandLogger.log( this.formErrors[field] );
                     this.formErrors[field] += messages[key] + ' ';
                 }
             }
@@ -200,7 +199,7 @@ export class AccessAccountComponent implements OnInit {
                 } else {
                     this.userNotFound = true;
                     this.mainLoader = false;
-                    this.customResponse = new CustomResponse( 'ERROR', 'Oops!This is invalid link', true );
+                    this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                 }
 
             },

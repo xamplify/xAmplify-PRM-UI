@@ -44,6 +44,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
     barChartPopUp:boolean =false;
     barChartFilterErrorMessage:string="";
     landingPageAnalyticsPostDto:LandingPageAnalyticsPostDto = new LandingPageAnalyticsPostDto();
+    partnerEmailId:string = "";
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
@@ -132,6 +133,7 @@ export class LandingPageAnalyticsComponent implements OnInit {
                 if(this.statusCode==200){
                     const data = response.data;
                     pagination.totalRecords = data.totalRecords;
+                    this.partnerEmailId = data.partnerEmailId;
                     this.sortOption.totalRecords = data.totalRecords;
                     $.each(data.landingPageAnalytics,function(index,analytics){
                         if($.trim(analytics.openedTimeInString).length>0){
