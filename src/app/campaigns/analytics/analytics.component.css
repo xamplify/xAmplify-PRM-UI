@@ -673,3 +673,6 @@ tr>td>h6 {
 	font-size: 12px;
 	font-weight: 500;
 }
+.set-overflow-none{
+	overflow: hidden !important;
+}
