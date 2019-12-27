@@ -37,8 +37,8 @@ export class SfDealComponent implements OnInit {
     });
   }
 
-  validateField(columnInfo: ColumnInfo) {    
-    this.validateRequiredFields();
+  validateField(columnInfo: ColumnInfo) {
+    this.validateAllFields();
   }
 
   updateCheckBoxModel(columnInfo: ColumnInfo, formOption: FormOption, event: any) {
@@ -50,32 +50,32 @@ export class SfDealComponent implements OnInit {
     } else {
       columnInfo.value = "false";
     }
-    this.validateRequiredFields();
+    this.validateAllFields();
   }
 
   selectOnChangeEvent(event: any) {
-    this.validateRequiredFields();
+    this.validateAllFields();
   }
 
-  validateRequiredFields() {
+  validateAllFields() {
     let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
     if (reqFieldsCheck.length === 0) {
-      this.isDealRegistrationFormValid = false;      
+      this.isDealRegistrationFormValid = false;
     } else {
       this.isDealRegistrationFormValid = true;
     }
-    if(!this.isDealRegistrationFormValid){
+    if (!this.isDealRegistrationFormValid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
-        if(!this.isDealRegistrationFormValid){
+        if (!this.isDealRegistrationFormValid) {
           this.validateEmailId(emailObj);
-        }        
+        }
       }
       let allPercentages = this.form.formLabelDTOs.filter(column => column.labelType === "percent");
       for (let percentObj of allPercentages) {
-        if(!this.isDealRegistrationFormValid){
-          this.validatePercentage(percentObj);
-        }        
+        if (!this.isDealRegistrationFormValid) {
+          this.validatePercentageValue(percentObj);
+        }
       }
     }
   }
@@ -90,8 +90,16 @@ export class SfDealComponent implements OnInit {
     }
   }
 
-  validatePercentage(columnInfo: ColumnInfo) {
-    if (columnInfo.value !== null) {
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  validatePercentageValue(columnInfo: ColumnInfo) {
+    if (columnInfo.value !== null && columnInfo.value !== "") {
       var x = parseFloat($.trim(columnInfo.value));
       if (isNaN(x) || x < 0 || x > 100) {
         columnInfo.errorMessage = "Please enter a value between 0 and 100";

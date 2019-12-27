@@ -3,13 +3,3 @@
   background: #eeeeee;
   cursor: not-allowed !important;
   }
-
-.percent::-webkit-inner-spin-button, 
-.percent::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}
-
-.percent[type=number] {
-  -moz-appearance:textfield;
-}
