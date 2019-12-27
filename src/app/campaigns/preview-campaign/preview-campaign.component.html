@@ -7,8 +7,8 @@ data-backdrop="static">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close-circle" data-dismiss="modal" (click)="closeModalpreview()"><i class="fa fa-times"></i></button>
-        <h4 class="modal-title" id="myModalLabel" *ngIf="previewCampaignType !=='EVENT'"><b>{{campaign?.campaignName}}</b></h4>
-        <h4 class="modal-title" id="myModalLabel" *ngIf="previewCampaignType ==='EVENT'"><b>{{campaign?.campaign}}</b></h4>
+        <h4 class="modal-title" id="myModalLabel" *ngIf="previewCampaignType !=='EVENT'" title="{{campaign?.campaignName}}"><b>{{campaign?.campaignName | slice:0:50}} <span *ngIf="campaign?.campaignName?.length>50">...</span></b></h4>
+        <h4 class="modal-title" id="myModalLabel" *ngIf="previewCampaignType ==='EVENT'" title="{{campaign?.campaign}}"><b>{{campaign?.campaign | slice:0:50}} <span *ngIf="campaign?.campaign?.length>50">...</span></b></h4>
       </div>
       <div class="modal-body">
         <ng-container *ngIf="campaign && !deleteCampaignAlert">
@@ -27,8 +27,8 @@ data-backdrop="static">
                 <i class="fa fa-bullhorn"></i>
               </div>
               <div class="media-body">
-                <h5 *ngIf="previewCampaignType !=='EVENT'">{{campaign.campaignName}}</h5>
-                <h5 *ngIf="previewCampaignType ==='EVENT'">{{campaign.campaign}}</h5>
+                <h5 *ngIf="previewCampaignType !=='EVENT'" title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice:0:30}} <span *ngIf="campaign?.campaignName?.length>30">...</span></h5>
+                <h5 *ngIf="previewCampaignType ==='EVENT'" title="{{campaign?.campaign}}">{{campaign?.campaign | slice:0:30}} <span *ngIf="campaign?.campaign?.length>30">...</span></h5>
                 <h6>
                   <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
                   <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
