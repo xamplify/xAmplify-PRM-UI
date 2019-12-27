@@ -4,6 +4,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { LandingPage } from '../models/landing-page';
 import { LandingPageGetDto } from '../models/landing-page-get-dto';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import {ReferenceService} from '../../core/services/reference.service';
 declare var swal, $: any;
 
 @Component({
@@ -14,7 +15,8 @@ declare var swal, $: any;
 
 })
 export class PreviewLandingPageComponent implements OnInit {
-  constructor(public landingPageService: LandingPageService,public authenticationService: AuthenticationService) { }
+    currentUrl:string = "";
+  constructor(public landingPageService: LandingPageService,public authenticationService: AuthenticationService,public referenceService:ReferenceService) { }
   loading = false;
   ngOnInit() {
   }
@@ -22,6 +24,7 @@ export class PreviewLandingPageComponent implements OnInit {
   
   showPreview(landingPage:LandingPage){
       this.loading = true;
+      this.currentUrl = this.referenceService.getCurrentRouteUrl();
       let landingPageDto = new LandingPageGetDto();
       landingPageDto.landingPageId = landingPage.id;
       landingPageDto.showPartnerCompanyLogo = landingPage.showPartnerCompanyLogo;
@@ -34,7 +37,6 @@ export class PreviewLandingPageComponent implements OnInit {
       let title = "#landing-page-preview-title";
       $(title).empty();
       $("#landing-page-preview-modal").modal('show');
-      console.log(landingPageDto);
       this.landingPageService.getHtmlContent(landingPageDto).subscribe(
               ( response: any ) => {
                   if(response.statusCode==200){

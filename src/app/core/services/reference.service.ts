@@ -1897,4 +1897,8 @@ export class ReferenceService {
         inputElement.setSelectionRange(0, 0);
         $('#'+messageId).show(500);
     }
+    
+    getCurrentRouteUrl(){
+        return this.router.url;
+    }
 }
