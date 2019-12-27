@@ -321,7 +321,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         this.validateCampaignName(this.eventCampaign.campaign);
         if(this.reDistributeEvent){
             let existingTeamMemberEmailIds =  this.teamMemberEmailIds.map(function(a) {return a.emailId;});
-            if(existingTeamMemberEmailIds.indexOf(this.eventCampaign.email)<0){
+            if(existingTeamMemberEmailIds.indexOf(this.eventCampaign.email)< 0){
                     const userProfile = this.authenticationService.userProfile;
                     this.eventCampaign.email = userProfile.emailId;
             }
@@ -514,7 +514,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
      else { this.setStartTimeErrorMessage(false, ''); }
 
      if(this.reDistributeEvent){
-         if(startDate < currentDate){
+         if(this.eventCampaign.isEventStarted){
           this.eventError.eventExpiredError = true;
          }
      }

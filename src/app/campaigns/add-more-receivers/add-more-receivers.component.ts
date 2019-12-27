@@ -34,6 +34,7 @@ export class AddMoreReceiversComponent implements OnInit {
     responseMessage = "";
     responseImage = "";
     responseClass = "success";
+    eventRedistributionMessage: string;
     /***************Contact List************************/
     isContactList:boolean = false;
     contactsPagination:Pagination = new Pagination();
@@ -101,6 +102,9 @@ export class AddMoreReceiversComponent implements OnInit {
       this.contactsPagination.campaignId = campaign.campaignId;
       this.campaign.campaignId = campaign.campaignId;
       this.contactsPagination.addingMoreLists = true;
+      if(this.eventRedistributionMessage){
+          this.customResponse = new CustomResponse('INFO', this.eventRedistributionMessage, true);
+      }
       this.loadCampaignContacts(this.contactsPagination);
   }
   

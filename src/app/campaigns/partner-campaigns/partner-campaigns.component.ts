@@ -16,6 +16,7 @@ import { UtilService } from 'app/core/services/util.service';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
 
 declare var $,swal: any;
 
@@ -63,6 +64,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     loadingEmailTemplate: boolean =false;
 
 
@@ -351,7 +353,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.navigateSocialCampaign(campaign);
         } else if(campaign.campaignType.indexOf('EVENT') > -1) {
           this.campaignService.reDistributeEvent = true;
-          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+          if(campaign.redistributedCount != 0 && !campaign.isEventStarted && !campaign.showCancelButton){
+              this.inviteMore(campaign);
+          }else{
+            this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+          }
         }
         else {
         const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
@@ -369,5 +375,9 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
     }
     
-
+    inviteMore(campaign:Campaign){
+        this.adddMoreReceiversComponent.eventRedistributionMessage = "This Campaign already redistributed would you like to add more contacts?";
+        this.adddMoreReceiversComponent.showPopup(campaign);
+    }
+    
 }
