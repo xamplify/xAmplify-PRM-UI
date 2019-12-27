@@ -184,9 +184,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
         }
     }
-    ngOnDestroy() {
-
-    }
+   
     filterCampaigns(type: string) {
         if ( this.role == "Vendor" ) {
             this.router.navigate( ['/home/campaigns/vendor/' + type] );
@@ -379,5 +377,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         this.adddMoreReceiversComponent.eventRedistributionMessage = "This Campaign already redistributed would you like to add more contacts?";
         this.adddMoreReceiversComponent.showPopup(campaign);
     }
+    
+    ngOnDestroy() {
+        this.adddMoreReceiversComponent.eventRedistributionMessage = ""
+    }
+    
     
 }
