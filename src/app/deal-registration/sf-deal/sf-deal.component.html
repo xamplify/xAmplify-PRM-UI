@@ -20,8 +20,20 @@
             <span class=" required" *ngIf="columnInfo.divClass=='error'">Please select the closed date</span>
         </ng-container>
 
-       
+       <!-- ---------------------------Percentage----------------------------- -->
+       <ng-container *ngIf="columnInfo.labelType=='percent'">
+        <input type="number" class="form-control" placeholder="{{columnInfo.placeHolder}}"
+          id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
+          (input)="validateField(columnInfo)" [ngClass]="'percent'">
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
+      </ng-container>
 
+       <!-- ---------------------------Currency----------------------------- -->
+       <ng-container *ngIf="columnInfo.labelType=='currency'">
+        <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" [(ngModel)]="columnInfo.value"
+                [ngModelOptions]="{standalone: true}" id="{{columnInfo.labelId}}" (input)="validateField(columnInfo)" (ngModelChange)="validateField(columnInfo)" maxlength="20">
+        <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
+      </ng-container>
       <!-- ---------------------------Text Area----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='textarea'">
         <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control"
