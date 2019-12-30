@@ -1,5 +1,4 @@
-.disabled {
-  pointer-events: none;
-  background: #eeeeee;
+.disabled{
   cursor: not-allowed !important;
-  }
+  pointer-events: none;
+}

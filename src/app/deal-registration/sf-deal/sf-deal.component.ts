@@ -16,6 +16,8 @@ export class SfDealComponent implements OnInit {
 
   @Input() dealId: any;
   @Input() campaign: any;
+  @Input() isPreview = false;
+  @Input() isVendor = false;
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormValid: boolean = true;
@@ -67,15 +69,11 @@ export class SfDealComponent implements OnInit {
     if (!this.isDealRegistrationFormValid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
-        if (!this.isDealRegistrationFormValid) {
           this.validateEmailId(emailObj);
-        }
       }
       let allPercentages = this.form.formLabelDTOs.filter(column => column.labelType === "percent");
       for (let percentObj of allPercentages) {
-        if (!this.isDealRegistrationFormValid) {
           this.validatePercentageValue(percentObj);
-        }
       }
     }
   }
@@ -92,14 +90,12 @@ export class SfDealComponent implements OnInit {
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
+    //charCode == 46 || 
+    return ((charCode >= 48 && charCode <= 57));
   }
 
   validatePercentageValue(columnInfo: ColumnInfo) {
-    if (columnInfo.value !== null && columnInfo.value !== "") {
+    if (columnInfo.value !== null && columnInfo.value !== "" && columnInfo.value !== undefined) {
       var x = parseFloat($.trim(columnInfo.value));
       if (isNaN(x) || x < 0 || x > 100) {
         columnInfo.errorMessage = "Please enter a value between 0 and 100";

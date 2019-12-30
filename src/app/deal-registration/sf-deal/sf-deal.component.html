@@ -8,7 +8,7 @@
 
       <!-- ---------------------------TextBox & Email----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-        <input type="{{columnInfo.labelType}}" [class.disabled]="columnInfo.labelId === 'Name'" class="form-control"
+        <input type="{{columnInfo.labelType}}" [disabled]="columnInfo.labelId === 'Name' || isPreview || isVendor" class="form-control"
           placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value"
           maxlength="{{columnInfo.labelLength}}" (input)="validateField(columnInfo)">
         <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
@@ -16,7 +16,7 @@
 
       <!-- ---------------------------Date----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='date'">
-        <app-flatpickr [(dataField)]="columnInfo.value" (input)="validateField(columnInfo)"></app-flatpickr>
+        <app-flatpickr  [(dataField)]="columnInfo.value" [class.disabled]= "isVendor || isPreview" (input)="validateField(columnInfo)"></app-flatpickr>
         <span class=" required" *ngIf="columnInfo.divClass=='error'">Please select the closed date</span>
       </ng-container>
 
@@ -24,7 +24,7 @@
       <ng-container *ngIf="columnInfo.labelType=='percent'">
         <input type="text" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}"
           [(ngModel)]="columnInfo.value" (input)="validateField(columnInfo)" (keypress)="numberOnly($event)"
-          maxlength="{{columnInfo.labelLength}}">
+          maxlength="{{columnInfo.labelLength}}" [disabled] ="isVendor || isPreview">
         <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
       </ng-container>
 
@@ -33,14 +33,14 @@
         <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency"
           [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}" id="{{columnInfo.labelId}}"
           (input)="validateField(columnInfo)" (ngModelChange)="validateField(columnInfo)"
-          maxlength="{{columnInfo.labelLength}}">
+          maxlength="{{columnInfo.labelLength}}" [disabled] ="isVendor || isPreview">
         <span class="required" *ngIf="columnInfo.divClass=='error'">{{columnInfo.errorMessage}}</span>
       </ng-container>
       <!-- ---------------------------Text Area----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='textarea'">
         <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control"
           placeholder="{{columnInfo.placeHolder}}" maxlength="{{columnInfo.labelLength}}"
-          (input)="validateField(columnInfo)"></textarea>
+          (input)="validateField(columnInfo)" [disabled] ="isVendor || isPreview"></textarea>
       </ng-container>
       <!-- ---------------------------Radio Button----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='radio'">
@@ -49,7 +49,7 @@
             <label class="form-check-label">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" class="form-check-input"
                 (click)="columnInfo.value = radioButton.id"
-                [checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue">
+                [checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue" [disabled] ="isVendor || isPreview">
               {{radioButton.name}}
             </label>
           </div>
@@ -62,7 +62,7 @@
           <div class="form-check">
             <label class="form-check-label">
               <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}" [checked]="columnInfo.value==='true'"
-                class="form-check-input" (click)="updateCheckBoxModel(columnInfo,checkBox,$event)">
+                class="form-check-input" (click)="updateCheckBoxModel(columnInfo,checkBox,$event)" [disabled] ="isVendor || isPreview">
               {{checkBox.name}}
             </label>
           </div>
@@ -71,7 +71,7 @@
       </ng-container>
       <!-- ---------------------------DropDown Menu----------------------------- -->
       <ng-container *ngIf="columnInfo.labelType=='select'">
-        <select class="form-control" [(ngModel)]="columnInfo.value" (ngModelChange)="selectOnChangeEvent($event)">
+        <select class="form-control" [(ngModel)]="columnInfo.value" [disabled] ="isVendor || isPreview" (ngModelChange)="selectOnChangeEvent($event)">
           <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.name">
             {{dropDownValue.name}}</option>
         </select>
