@@ -21,7 +21,9 @@ export class GeoLocationAnalytics {
     url:string;
     formId:number;
     analyticsType:GeoLocationAnalyticsType;
+    analyticsTypeString:string = "";
     landingPageId:number;  
     partnerLandingPageAlias:string = "";
     partnerCompanyId:number;
+    openedInBrowser = false;
 }
