@@ -54,6 +54,7 @@ export class PreviewLandingPageComponent implements OnInit {
                         landingPageAnalytics.analyticsType = GeoLocationAnalyticsType.PARTNER_LANDING_PAGE;
                         landingPageAnalytics.analyticsTypeString = 'PARTNER_LANDING_PAGE';
                         landingPageAnalytics.partnerLandingPageAlias = landingPage.alias;
+                        landingPageAnalytics.userId = this.authenticationService.getUserId();
                         this.saveGeoLocationAnalyticsComponent.getLocationDetails(landingPageAnalytics);
                     }
                     this.loading = false;
