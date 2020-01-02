@@ -1515,7 +1515,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 ) {
+        if ( this.selectedAddContactsOption != 6 ) {
             if ( ev.target.checked ) {
                 console.log( "checked" );
                 $( '[name="campaignContact[]"]' ).prop( 'checked', true );
@@ -2825,19 +2825,19 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i; 
-                    if ( this.validateEmailAddress( this.getMarketoConatacts[i].emailId ) ) {
-                        socialContact.emailId = this.getMarketoConatacts[i].emailId;
+                    if ( this.validateEmailAddress( this.getMarketoConatacts[i].email ) ) {
+                        socialContact.email = this.getMarketoConatacts[i].email;
                         socialContact.firstName = this.getMarketoConatacts[i].firstName;
                         socialContact.lastName = this.getMarketoConatacts[i].lastName;
 
                         socialContact.country = this.getMarketoConatacts[i].country;
                         socialContact.city = this.getMarketoConatacts[i].city;
                         socialContact.state = this.getMarketoConatacts[i].state;
-                        socialContact.zipCode = this.getMarketoConatacts[i].zipCode;
+                        socialContact.postalCode = this.getMarketoConatacts[i].postalCode;
                         socialContact.address = this.getMarketoConatacts[i].address;
                         socialContact.company = this.getMarketoConatacts[i].company;
                         socialContact.title = this.getMarketoConatacts[i].title;
-                        socialContact.mobileNumber = this.getMarketoConatacts[i].mobileNumber;
+                        socialContact.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
 
                         this.socialContactUsers.push( socialContact );
                     }
@@ -2965,11 +2965,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 "country": user.country,
                 "city": user.city,
                 "state": user.state,
-                "zipCode": user.zipCode,
+                "postalCode": user.postalCode,
                 "address": user.address,
                 "company": user.company,
                 "title": user.title,
-                "mobileNumber": user.mobileNumber
+                "mobilePhone": user.mobilePhone
             }
             this.allselectedUsers.push( object );
             console.log( this.allselectedUsers );
@@ -3009,17 +3009,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         "country": self.pagedItems[i].country,
                         "city": self.pagedItems[i].city,
                         "state": self.pagedItems[i].state,
-                        "zipCode": self.pagedItems[i].zipCode,
+                        "postalCode": self.pagedItems[i].postalCode,
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
-                        "mobileNumber": self.pagedItems[i].mobileNumber
+                        "mobilePhone": self.pagedItems[i].mobilePhone
                     }
                     console.log( object );
                     self.allselectedUsers.push( object );
                 }
             });
-            this.allselectedUsers = this.removeDuplicates( this.allselectedUsers, 'emailId' );
+            this.allselectedUsers = this.removeDuplicates( this.allselectedUsers, 'email' );
             this.selectedContactListIds = this.referenceService.removeDuplicates( this.selectedContactListIds );
             this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
         } else {
@@ -3163,7 +3163,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];                    
                 socialContact.id = i;
-                    if ( this.validateEmailAddress(response.contacts[i].emailId ) ) {
+                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
                         this.socialContactUsers.push( socialContact );
                     }
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );

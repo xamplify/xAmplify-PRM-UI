@@ -2044,7 +2044,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if (this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9)
+        if (this.selectedAddPartnerOption != 8)
         {
         if ( ev.target.checked ) {
             console.log( "checked" );
@@ -2544,20 +2544,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     let socialPartner = new SocialContact();
                     let user = new User();
                     socialPartner.id = i;
-                    if (this.validateEmailAddress(this.getMarketoConatacts[i].emailId))
+                    if (this.validateEmailAddress(this.getMarketoConatacts[i].email))
                     {
-                        socialPartner.emailId = this.getMarketoConatacts[i].emailId;
+                        socialPartner.emailId = this.getMarketoConatacts[i].email;
                         socialPartner.firstName = this.getMarketoConatacts[i].firstName;
                         socialPartner.lastName = this.getMarketoConatacts[i].lastName;
 
                         socialPartner.country = this.getMarketoConatacts[i].country;
                         socialPartner.city = this.getMarketoConatacts[i].city;
                         socialPartner.state = this.getMarketoConatacts[i].state;
-                        socialPartner.zipCode = this.getMarketoConatacts[i].zipCode;
+                        socialPartner.postalCode = this.getMarketoConatacts[i].postalCode;
                         socialPartner.address = this.getMarketoConatacts[i].address;
                         socialPartner.company = this.getMarketoConatacts[i].company;
                         socialPartner.title = this.getMarketoConatacts[i].title;
-                        socialPartner.mobileNumber = this.getMarketoConatacts[i].mobileNumber;
+                        socialPartner.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
 
                         this.socialPartnerUsers.push(socialPartner);
                     }
@@ -2696,17 +2696,17 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.selectedContactListIds.push(user.id);
             var object = {
                 "id": user.id,
-                "emailId": user.emailId,
+                "email": user.emailId,
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "country": user.country,
                 "city": user.city,
                 "state": user.state,
-                "zipCode": user.zipCode,
+                "postalCode": user.postalCode,
                 "address": user.address,
                 "company": user.company,
                 "title": user.title,
-                "mobileNumber": user.mobileNumber
+                "mobilePhone": user.mobilePhone
             }
             this.allselectedUsers.push(object);
             console.log(this.allselectedUsers);
@@ -2754,23 +2754,23 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     var object = {
 
                         "id": self.pagedItems[i].id,
-                        "emailId": self.pagedItems[i].emailId,
+                        "email": self.pagedItems[i].emailId,
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                         "country": self.pagedItems[i].country,
                         "city": self.pagedItems[i].city,
                         "state": self.pagedItems[i].state,
-                        "zipCode": self.pagedItems[i].zipCode,
+                        "postalCode": self.pagedItems[i].postalCode,
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
-                        "mobileNumber": self.pagedItems[i].mobileNumber
+                        "mobilePhone": self.pagedItems[i].mobilePhone
                     }
                     console.log(object);
                     self.allselectedUsers.push(object);
                 }
             });
-            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'emailId');
+            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'email');
             this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
         } else
         {
@@ -2983,20 +2983,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     let socialPartner = new SocialContact();
                     let user = new User();
                     socialPartner.id = i;
-                    if (this.validateEmailAddress(response.contacts[i].emailId))
+                    if (this.validateEmailAddress(response.contacts[i].email))
                     {
-                        socialPartner.emailId = response.contacts[i].emailId;
+                        socialPartner.emailId = response.contacts[i].email;
                         socialPartner.firstName = response.contacts[i].firstName;
                         socialPartner.lastName = response.contacts[i].lastName;
 
                         socialPartner.country = response.contacts[i].country;
                         socialPartner.city = response.contacts[i].city;
                         socialPartner.state = response.contacts[i].state;
-                        socialPartner.zipCode = response.contacts[i].zipCode;
+                        socialPartner.postalCode = response.contacts[i].postalCode;
                         socialPartner.address = response.contacts[i].address;
                         socialPartner.company = response.contacts[i].company;
                         socialPartner.title = response.contacts[i].title;
-                        socialPartner.mobileNumber = response.contacts[i].mobileNumber;
+                        socialPartner.mobilePhone = response.contacts[i].mobilePhone;
 
                         this.socialPartnerUsers.push(socialPartner);
                     }

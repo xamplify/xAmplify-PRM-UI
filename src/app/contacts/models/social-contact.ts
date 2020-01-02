@@ -22,10 +22,11 @@ export class SocialContact{
     country:string;
     city: string;
     state: string;
-    zipCode: number;
+    postalCode: number;
     address: string;
     company: string;
     mobileNumber: string;
+    mobilePhone: string;
     title:string;
     website:string;
     userId:number;
