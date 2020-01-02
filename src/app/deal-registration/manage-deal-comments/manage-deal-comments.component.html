@@ -330,7 +330,8 @@
 
 
 
-<div style="margin-bottom: 50px;width: 92%;max-height: 400px; overflow-y: auto;    overflow-x: hidden;" class="comment-area" id="comment-area">
+<div style="margin-bottom: 50px;width: 92%;max-height: 400px; overflow-y: auto;    overflow-x: hidden;
+    max-width: 1150px;" class="comment-area" id="comment-area">
     <ul class="comment-section" *ngFor="let c of commentList" style="margin: 0px;padding-left: 8%">
 
         <li class="comment user-comment  col-md-12" *ngIf="c.user.id == loggedInUserId" style="float: right;margin-top: 10px;
@@ -373,7 +374,7 @@
     </ul>
 </div>
 
-<div class="write-new" style="margin-bottom: 50px;width: 85%">
+<div class="write-new" style="margin-bottom: 50px;width: 85%;    max-width: 1150px;">
 
 
     <textarea placeholder="Write your comment here" name="comment" [(ngModel)]="comment.comment" (input)="validateComment(comment.comment)"></textarea>
