@@ -2825,8 +2825,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     let socialContact = new SocialContact();
                     let user = new User();
                     socialContact.id = i; 
-                    if ( this.validateEmailAddress( this.getMarketoConatacts[i].email ) ) {
-                        socialContact.email = this.getMarketoConatacts[i].email;
+                    if ( this.validateEmailAddress( this.getMarketoConatacts[i].emailId ) ) {
+                        socialContact.emailId = this.getMarketoConatacts[i].emailId;
                         socialContact.firstName = this.getMarketoConatacts[i].firstName;
                         socialContact.lastName = this.getMarketoConatacts[i].lastName;
 

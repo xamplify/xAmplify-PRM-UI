@@ -351,11 +351,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.navigateSocialCampaign(campaign);
         } else if(campaign.campaignType.indexOf('EVENT') > -1) {
           this.campaignService.reDistributeEvent = true;
-          if(campaign.redistributedCount != 0 && !campaign.isEventStarted && !campaign.showCancelButton){
+          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+          /*if(campaign.redistributedCount != 0 && !campaign.isEventStarted && !campaign.showCancelButton){
               this.inviteMore(campaign);
           }else{
             this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-          }
+          }*/
         }
         else {
         const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
