@@ -2838,6 +2838,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         socialContact.company = this.getMarketoConatacts[i].company;
                         socialContact.title = this.getMarketoConatacts[i].title;
                         socialContact.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
+                        socialContact.mobileNumber = this.getMarketoConatacts[i].mobilePhone;
+                        
 
                         this.socialContactUsers.push( socialContact );
                     }
@@ -2969,7 +2971,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 "address": user.address,
                 "company": user.company,
                 "title": user.title,
-                "mobilePhone": user.mobilePhone
+                "mobilePhone": user.mobilePhone,
+                "mobileNumber": user.mobilePhone
             }
             this.allselectedUsers.push( object );
             console.log( this.allselectedUsers );
@@ -3013,7 +3016,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
-                        "mobilePhone": self.pagedItems[i].mobilePhone
+                        "mobilePhone": self.pagedItems[i].mobilePhone,
+                        "mobileNumber": self.pagedItems[i].mobilePhone
                     }
                     console.log( object );
                     self.allselectedUsers.push( object );
