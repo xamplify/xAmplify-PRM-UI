@@ -375,7 +375,7 @@ img:hover {
 							<tbody>
 								<tr *ngFor="let user of pagedItems;let i = index"
 									class='row_{{i}}'>
-									<td *ngIf="selectedAddPartnerOption != 8" align="center"><input type="checkbox"
+									<td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9" align="center"><input type="checkbox"
 										[checked]="selectedContactListIds.indexOf(user.id)>-1"
 										class="chk"
 										[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"
@@ -383,7 +383,7 @@ img:hover {
 										value="{{user.id}}" id="{{user.id}}"
 										(click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
 									</td>
-									<td *ngIf="selectedAddPartnerOption == 8" align="center"><input type="checkbox"
+									<td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9" align="center"><input type="checkbox"
 										[checked]="selectedContactListIds.indexOf(user.id)>-1"
 										class="chk"
 										[class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1"

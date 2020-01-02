@@ -2044,7 +2044,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if (this.selectedAddPartnerOption != 8)
+        if (this.selectedAddPartnerOption != 8 && this.selectedAddPartnerOption != 9)
         {
         if ( ev.target.checked ) {
             console.log( "checked" );
