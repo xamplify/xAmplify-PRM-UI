@@ -1515,7 +1515,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     checkAll( ev: any ) {
-        if ( this.selectedAddContactsOption != 6 ) {
+        if ( this.selectedAddContactsOption != 6 && this.selectedAddContactsOption != 9 ) {
             if ( ev.target.checked ) {
                 console.log( "checked" );
                 $( '[name="campaignContact[]"]' ).prop( 'checked', true );

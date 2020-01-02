@@ -543,8 +543,8 @@
 														 class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}"
 														 name="campaignContact[]" value="{{user.id}}" id="{{user.id}}" (click)="highlightMarketoRow(user)" />
 													</td>
-													<td *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9">{{user.emailId}}</td>
-													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">{{user.email}}</td>
+													<td>{{user.emailId}}</td>
+													<!-- <td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">{{user.email}}</td> -->
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
 												</tr>
