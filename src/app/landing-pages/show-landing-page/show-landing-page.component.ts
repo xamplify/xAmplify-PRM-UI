@@ -87,6 +87,7 @@ export class ShowLandingPageComponent implements OnInit {
             if (this.deviceInfo.device === 'unknown') {
                 this.deviceInfo.device = 'computer';
             }
+            landingPageAnalytics.openedInBrowser = true;
             landingPageAnalytics.openedTime =new Date();
             landingPageAnalytics.deviceType = this.deviceInfo.device;
             landingPageAnalytics.os = this.deviceInfo.os;
