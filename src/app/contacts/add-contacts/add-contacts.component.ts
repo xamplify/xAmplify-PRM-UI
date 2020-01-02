@@ -2833,11 +2833,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         socialContact.country = this.getMarketoConatacts[i].country;
                         socialContact.city = this.getMarketoConatacts[i].city;
                         socialContact.state = this.getMarketoConatacts[i].state;
-                        socialContact.postalCode = this.getMarketoConatacts[i].postalCode;
+                        socialContact.zipCode = this.getMarketoConatacts[i].zipCode;
                         socialContact.address = this.getMarketoConatacts[i].address;
                         socialContact.company = this.getMarketoConatacts[i].company;
                         socialContact.title = this.getMarketoConatacts[i].title;
-                        socialContact.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
+                        socialContact.mobileNumber = this.getMarketoConatacts[i].mobileNumber;
 
                         this.socialContactUsers.push( socialContact );
                     }
@@ -2965,11 +2965,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 "country": user.country,
                 "city": user.city,
                 "state": user.state,
-                "postalCode": user.postalCode,
+                "zipCode": user.zipCode,
                 "address": user.address,
                 "company": user.company,
                 "title": user.title,
-                "mobilePhone": user.mobilePhone
+                "mobileNumber": user.mobileNumber
             }
             this.allselectedUsers.push( object );
             console.log( this.allselectedUsers );
@@ -3009,17 +3009,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         "country": self.pagedItems[i].country,
                         "city": self.pagedItems[i].city,
                         "state": self.pagedItems[i].state,
-                        "postalCode": self.pagedItems[i].postalCode,
+                        "zipCode": self.pagedItems[i].zipCode,
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
-                        "mobilePhone": self.pagedItems[i].mobilePhone
+                        "mobileNumber": self.pagedItems[i].mobileNumber
                     }
                     console.log( object );
                     self.allselectedUsers.push( object );
                 }
             });
-            this.allselectedUsers = this.removeDuplicates( this.allselectedUsers, 'email' );
+            this.allselectedUsers = this.removeDuplicates( this.allselectedUsers, 'emailId' );
             this.selectedContactListIds = this.referenceService.removeDuplicates( this.selectedContactListIds );
             this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
         } else {

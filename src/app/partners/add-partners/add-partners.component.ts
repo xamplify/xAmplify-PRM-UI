@@ -2553,11 +2553,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         socialPartner.country = this.getMarketoConatacts[i].country;
                         socialPartner.city = this.getMarketoConatacts[i].city;
                         socialPartner.state = this.getMarketoConatacts[i].state;
-                        socialPartner.postalCode = this.getMarketoConatacts[i].postalCode;
+                        socialPartner.zipCode = this.getMarketoConatacts[i].zipCode;
                         socialPartner.address = this.getMarketoConatacts[i].address;
                         socialPartner.company = this.getMarketoConatacts[i].company;
                         socialPartner.title = this.getMarketoConatacts[i].title;
-                        socialPartner.mobilePhone = this.getMarketoConatacts[i].mobilePhone;
+                        socialPartner.mobileNumber = this.getMarketoConatacts[i].mobileNumber;
 
                         this.socialPartnerUsers.push(socialPartner);
                     }
@@ -2696,17 +2696,17 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.selectedContactListIds.push(user.id);
             var object = {
                 "id": user.id,
-                "email": user.emailId,
+                "emailId": user.emailId,
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "country": user.country,
                 "city": user.city,
                 "state": user.state,
-                "postalCode": user.postalCode,
+                "zipCode": user.zipCode,
                 "address": user.address,
                 "company": user.company,
                 "title": user.title,
-                "mobilePhone": user.mobilePhone
+                "mobileNumber": user.mobileNumber
             }
             this.allselectedUsers.push(object);
             console.log(this.allselectedUsers);
@@ -2754,23 +2754,23 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     var object = {
 
                         "id": self.pagedItems[i].id,
-                        "email": self.pagedItems[i].emailId,
+                        "emailId": self.pagedItems[i].emailId,
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                         "country": self.pagedItems[i].country,
                         "city": self.pagedItems[i].city,
                         "state": self.pagedItems[i].state,
-                        "postalCode": self.pagedItems[i].postalCode,
+                        "zipCode": self.pagedItems[i].zipCode,
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
-                        "mobilePhone": self.pagedItems[i].mobilePhone
+                        "mobileNumber": self.pagedItems[i].mobileNumber
                     }
                     console.log(object);
                     self.allselectedUsers.push(object);
                 }
             });
-            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'email');
+            this.allselectedUsers = this.removeDuplicates(this.allselectedUsers, 'emailId');
             this.selectedContactListIds = this.referenceService.removeDuplicates(this.selectedContactListIds);
         } else
         {
@@ -2992,11 +2992,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         socialPartner.country = response.contacts[i].country;
                         socialPartner.city = response.contacts[i].city;
                         socialPartner.state = response.contacts[i].state;
-                        socialPartner.postalCode = response.contacts[i].postalCode;
+                        socialPartner.zipCode = response.contacts[i].zipCode;
                         socialPartner.address = response.contacts[i].address;
                         socialPartner.company = response.contacts[i].company;
                         socialPartner.title = response.contacts[i].title;
-                        socialPartner.mobilePhone = response.contacts[i].mobilePhone;
+                        socialPartner.mobileNumber = response.contacts[i].mobileNumber;
 
                         this.socialPartnerUsers.push(socialPartner);
                     }
