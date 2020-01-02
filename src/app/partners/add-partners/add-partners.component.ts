@@ -2983,9 +2983,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     let socialPartner = new SocialContact();
                     let user = new User();
                     socialPartner.id = i;
-                    if (this.validateEmailAddress(response.contacts[i].email))
+                    if (this.validateEmailAddress(response.contacts[i].emailId))
                     {
-                        socialPartner.emailId = response.contacts[i].email;
+                        socialPartner.emailId = response.contacts[i].emailId;
                         socialPartner.firstName = response.contacts[i].firstName;
                         socialPartner.lastName = response.contacts[i].lastName;
 

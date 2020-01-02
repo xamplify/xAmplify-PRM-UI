@@ -3163,7 +3163,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 let socialContact = new SocialContact();
                 socialContact = response.contacts[i];                    
                 socialContact.id = i;
-                    if ( this.validateEmailAddress(response.contacts[i].email ) ) {
+                    if ( this.validateEmailAddress(response.contacts[i].emailId ) ) {
                         this.socialContactUsers.push( socialContact );
                     }
                     $( "button#sample_editable_1_new" ).prop( 'disabled', false );
