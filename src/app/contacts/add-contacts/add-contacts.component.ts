@@ -2973,6 +2973,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 "company": user.company,
                 "contactCompany": user.company,
                 "title": user.title,
+                "jobTitle": user.title,
                 "mobilePhone": user.mobilePhone,
                 "mobileNumber": user.mobilePhone
             }
@@ -3020,6 +3021,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         "company": self.pagedItems[i].company,
                         "contactCompany": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
+                        "jobTitle": self.pagedItems[i].title,
                         "mobilePhone": self.pagedItems[i].mobilePhone,
                         "mobileNumber": self.pagedItems[i].mobilePhone
                     }
