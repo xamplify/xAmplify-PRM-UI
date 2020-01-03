@@ -2968,8 +2968,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 "city": user.city,
                 "state": user.state,
                 "postalCode": user.postalCode,
+                "zipCode": user.postalCode,
                 "address": user.address,
                 "company": user.company,
+                "contactCompany": user.company,
                 "title": user.title,
                 "mobilePhone": user.mobilePhone,
                 "mobileNumber": user.mobilePhone
@@ -3013,8 +3015,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         "city": self.pagedItems[i].city,
                         "state": self.pagedItems[i].state,
                         "postalCode": self.pagedItems[i].postalCode,
+                        "zipCode": self.pagedItems[i].postalCode,
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
+                        "contactCompany": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
                         "mobilePhone": self.pagedItems[i].mobilePhone,
                         "mobileNumber": self.pagedItems[i].mobilePhone
@@ -3142,6 +3146,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     getHubSpotContacts(){
         this.hubSpotService.getHubSpotContacts().subscribe(data => {
             let response = data.data;
+            this.selectedAddContactsOption = 9
             this.frameHubSpotFilePreview(response);
         });
     }
@@ -3151,6 +3156,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         if(this.hubSpotSelectContactListOption !== undefined && this.hubSpotSelectContactListOption !== ''){
             this.hubSpotService.getHubSpotContactsListsById(this.hubSpotSelectContactListOption).subscribe(data =>{
                 let response = data.data;
+                this.selectedAddContactsOption = 9
                 this.frameHubSpotFilePreview(response);
             });
         }       

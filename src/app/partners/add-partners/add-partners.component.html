@@ -370,7 +370,7 @@ img:hover {
 									<th>EMAIL</th>
 									<th>FIRST NAME</th>
 									<th>LAST NAME</th>
-									<th *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"></th>
+									<th *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -395,7 +395,7 @@ img:hover {
 									<td>{{user.emailId}}</td>
 									<td>{{user.firstName}}</td>
 									<td>{{user.lastName}}</td>
-									<td *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9">
+									<td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9">
 														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails">More</span> <span *ngIf="user.isShowDetails">Less</span>
 															</button>

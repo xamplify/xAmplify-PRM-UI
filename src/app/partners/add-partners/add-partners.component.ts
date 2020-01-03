@@ -2703,8 +2703,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 "city": user.city,
                 "state": user.state,
                 "postalCode": user.postalCode,
+                "zipCode": user.postalCode,
                 "address": user.address,
                 "company": user.company,
+                "contactCompany": user.company,
                 "title": user.title,
                 "mobilePhone": user.mobilePhone,
                 "mobileNumber": user.mobilePhone
@@ -2762,8 +2764,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         "city": self.pagedItems[i].city,
                         "state": self.pagedItems[i].state,
                         "postalCode": self.pagedItems[i].postalCode,
+                        "zipCode": self.pagedItems[i].postalCode,
                         "address": self.pagedItems[i].address,
                         "company": self.pagedItems[i].company,
+                        "contactCompany": self.pagedItems[i].company,
                         "title": self.pagedItems[i].title,
                         "mobilePhone": self.pagedItems[i].mobilePhone,
                         "mobileNumber": self.pagedItems[i].mobilePhone
