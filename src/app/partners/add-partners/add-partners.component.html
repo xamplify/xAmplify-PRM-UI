@@ -412,6 +412,12 @@ img:hover {
 																	{{user.company}}
 																</td>
 															</tr>
+															<tr *ngIf="user?.title">
+																<td class='pt10 pb10 bold'>Job Title:</td>
+					 											<td class='pt10 pb10' style="padding-left: 20px;">
+																	{{user.title}}
+																</td>
+															</tr>
 															<tr>
 																<td class='pt10 pb10 bold'>Phone:</td>
 																<td class='pt10 pb10'>
