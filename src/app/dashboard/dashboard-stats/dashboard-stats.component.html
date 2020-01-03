@@ -14,7 +14,7 @@
 			</a>
     </div> -->
     <div
-      [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':
+      [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':
             (authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()  ||  authenticationService.isPartnerTeamMember|| authenticationService.isOnlyPartner() || authenticationService.isOrgAdmin()), 
             'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartnerTeamMember)}">
       <a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="goToManageCampaigns()">
@@ -33,7 +33,7 @@
     <!-- contactt tab for partner only -->
 
     <div *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember" 
-      [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember)}">
+      [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember)}">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null || dashboardReport.totalContacts == 0">
 				<div class="visual">
 					<i class="fa fa-users"></i>
@@ -48,7 +48,7 @@
 			</a>
     </div>
     <!-- contact tab ended -->
-    <div [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || 
+    <div [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || 
                      authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember ||  authenticationService.isOrgAdmin()), 
                       'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartnerTeamMember)}" >
 			<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToPartner()" >
@@ -77,7 +77,7 @@
 			</a>
     </div>
     <div *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" 
-    [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember || authenticationService.isOrgAdmin()), 
+    [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember || authenticationService.isOrgAdmin()), 
           'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isPartnerTeamMember || authenticationService.isOrgAdminPartner())}">
 			<a class="dashboard-stat dashboard-stat-lighter yellow-gold" (click)="goToManageVideos()">
 				<div class="visual">
@@ -99,7 +99,7 @@
         </span>
 			</a>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" 
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6" 
      *ngIf="(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()) && (!authenticationService.isPartnerTeamMember)">
       <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToVendor()" >
         <div class="visual">
@@ -120,7 +120,7 @@
     
     
 <!--     For Vendor and partner Team member vendors tile -->
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" 
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6" 
      *ngIf="authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.superiorRole == 'OrgAdmin & Partner'">
       <a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToVendor()" >
         <div class="visual">
@@ -142,8 +142,8 @@
     
 
     <div *ngIf="authenticationService.superiorRole != 'Vendor' && !authenticationService.isPartnerTeamMember && (authenticationService.loggedInUserRole=='Team Member'|| authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner() || authenticationService.isOrgAdmin())"
-     [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.superiorRole == 'OrgAdmin & Partner' || authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()), 
-     'col-lg-4 col-md-4 col-sm-6 col-xs-12': (this.authenticationService.loggedInUserRole=='Team Member')}">
+     [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isVendorPartner() || authenticationService.superiorRole == 'OrgAdmin & Partner' || authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()), 
+     'col-lg-4 col-md-4 col-sm-4 col-xs-6': (this.authenticationService.loggedInUserRole=='Team Member')}">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
@@ -158,7 +158,7 @@
 			</a>
     </div>
 
-    <div *ngIf="this.authenticationService.loggedInUserRole!='Team Member'" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':
+    <div *ngIf="this.authenticationService.loggedInUserRole!='Team Member'" [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':
       (authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner() || authenticationService.isOrgAdmin()), 
       'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}" >
 			<a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="goToSocialAccounts()">
@@ -175,7 +175,7 @@
 			</a>
 		</div>
     <div *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" 
-    [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isOrgAdmin() || authenticationService.superiorRole == 'OrgAdmin & Partner' || 
+    [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isOrgAdmin() || authenticationService.superiorRole == 'OrgAdmin & Partner' || 
     authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||
       authenticationService.isOnlyPartner()),
      'col-lg-4 col-md-4 col-sm-4 col-xs-6':authenticationService.superiorRole != 'Vendor' && !(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()),
@@ -194,7 +194,7 @@
 			</a>
     </div>
     <div *ngIf="!authenticationService.isOrgAdmin() && this.authenticationService.loggedInUserRole!='Team Member'" >
-    <div *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner()" [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
+    <div *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isVendorPartner() && !authenticationService.isOrgAdminPartner()" [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()), 'col-lg-4 col-md-4 col-sm-4 col-xs-6':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner())}">
 			<a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToManageContacts()" [class.disabled]="  !authenticationService.user.hasCompany ? true : null">
 				<div class="visual">
 					<i class="fa fa-users"></i>
@@ -219,10 +219,10 @@
     </div>
  </div>
  <div *ngIf="this.authenticationService.loggedInUserRole=='Team Member'"
-  [ngClass]="{'col-lg-3 col-md-3 col-sm-6 col-xs-12':(authenticationService.isVendorPartner() || authenticationService.superiorRole == 'OrgAdmin & Partner' ||
+  [ngClass]="{'col-lg-3 col-md-3 col-sm-4 col-xs-6':(authenticationService.isVendorPartner() || authenticationService.superiorRole == 'OrgAdmin & Partner' ||
    authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.isOrgAdminPartner() ||  authenticationService.isOnlyPartner() ||authenticationService.isPartnerTeamMember || authenticationService.isOrgAdmin()), 
   'col-lg-4 col-md-4 col-sm-4 col-xs-6':authenticationService.superiorRole != 'Vendor' && !(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner()),
-  'col-lg-6 col-md-6 col-sm-6 col-xs-6': authenticationService.superiorRole == 'Vendor'}">
+  'col-lg-6 col-md-6 col-sm-4 col-xs-6': authenticationService.superiorRole == 'Vendor'}">
   <a class="dashboard-stat dashboard-stat-lighter blue-sharp" (click)="goToSocialAccounts()">
     <div class="visual">
       <i class="fa fa-share"></i>
@@ -237,7 +237,7 @@
   </a>
 </div>
   <!-- working this -->
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" *ngIf="(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()) && !authenticationService.isPartnerTeamMember  && this.authenticationService.loggedInUserRole!='Team Member'">
+    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6" *ngIf="(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()) && !authenticationService.isPartnerTeamMember  && this.authenticationService.loggedInUserRole!='Team Member'">
         <a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="goTeamMembers()">
           <div class="visual">
               <i class="fa fa-users"></i>
