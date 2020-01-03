@@ -924,7 +924,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
         var mm = date.getMonth() + 1; //because January is 0!
         var yyyy = date.getFullYear();
 
-
+        returnDate += `${yyyy}-`;
         if (mm < 10) {
             returnDate += `0${mm}-`;
         } else {
@@ -936,7 +936,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
         } else {
             returnDate += `${dd}-`;
         }
-        returnDate += yyyy;
+
         return returnDate;
     }
     commentsection(property: DealDynamicProperties) {
