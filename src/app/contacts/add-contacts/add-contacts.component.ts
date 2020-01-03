@@ -3168,6 +3168,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } else {
             this.socialContactUsers = [];
             this.model.contactListName= this.hubSpotContactListName;
+            this.validateContactName( this.model.contactListName );
             for ( var i = 0; i < response.contacts.length; i++ ) {
                 this.xtremandLogger.log("HubSpot Contact :" + response.contacts[i].firstName );
                 let socialContact = new SocialContact();
