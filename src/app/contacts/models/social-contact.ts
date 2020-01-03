@@ -32,4 +32,5 @@ export class SocialContact{
     userId:number;
     type:string;
     externalListId:number;
+    isShowDetails = false;
 }

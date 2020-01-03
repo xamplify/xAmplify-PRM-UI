@@ -370,11 +370,12 @@ img:hover {
 									<th>EMAIL</th>
 									<th>FIRST NAME</th>
 									<th>LAST NAME</th>
+									<th *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr *ngFor="let user of pagedItems;let i = index"
-									class='row_{{i}}'>
+							<ng-container *ngFor="let user of pagedItems;let i = index">
+								<tr class='row_{{i}}'>
 									<td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9" align="center"><input type="checkbox"
 										[checked]="selectedContactListIds.indexOf(user.id)>-1"
 										class="chk"
@@ -394,7 +395,60 @@ img:hover {
 									<td>{{user.emailId}}</td>
 									<td>{{user.firstName}}</td>
 									<td>{{user.lastName}}</td>
+									<td *ngIf="selectedAddContactsOption == 8 || selectedAddContactsOption == 9">
+														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
+																<span *ngIf="!user.isShowDetails">More</span> <span *ngIf="user.isShowDetails">Less</span>
+															</button>
+														</td>
 								</tr>
+								<tr *ngIf="pagedItems" [ngClass]="{'hidden': !user.isShowDetails, 'show-more': user.isShowDetails}">
+												<td colspan="8">
+													<table cellpadding="5" cellspacing="0"
+														style="padding-left: 50px; margin-left: 55px;">
+														<tbody>
+														<tr *ngIf="user?.company">
+																<td class='pt10 pb10 bold'>Company:</td>
+					 											<td class='pt10 pb10' style="padding-left: 20px;">
+																	{{user.company}}
+																</td>
+															</tr>
+															<tr>
+																<td class='pt10 pb10 bold'>Phone:</td>
+																<td class='pt10 pb10'>
+																	<div *ngIf="user?.mobilePhone"
+																		[class.disabled]="true"
+																		style="pointer-events: none !important; cursor: auto;">
+																		<int-phone-prefix [(ngModel)]="user.mobilePhone"
+																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+																	</div>
+																</td>
+															</tr>
+															<tr>
+																<td class='pt10 pb10 bold'>Address: </td>
+																<td align="center" class="hidden-xs">
+																	<h5 *ngIf="user?.address" class='mb0'>{{user.address}}</h5>
+																	<h5 class='m0' *ngIf="user?.city">
+																		{{user.city}}<span
+																			*ngIf="user.city && user.state">,&nbsp;</span>{{user.state}}
+																	</h5>
+																	<h5 *ngIf="user?.postalCode || user?.country"
+																		class='mt0'>
+																		{{user.postalCode}}<span
+																			*ngIf="user?.postalCode && user.country">,&nbsp;</span>{{user.country}}
+																	</h5>
+																</td>
+															</tr>
+															<tr *ngIf="user?.website">
+																<td class='pt10 pb10 bold'>Website:</td>
+																<td class='pt10 pb10'>
+																	{{user.website}}
+																</td>
+															</tr>
+														</tbody>
+													</table>
+												</td>
+											</tr>
+											</ng-container>
 							</tbody>
 						</table>
 

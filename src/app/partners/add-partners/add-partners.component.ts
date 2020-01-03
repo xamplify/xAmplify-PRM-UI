@@ -1199,7 +1199,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     } else {
                         this.marketoImageBlur = true;
                     }
-                    if ( this.storeLogin.MARKETO == true ) {
+                    if ( this.storeLogin.HUBSPOT == true ) {
                         this.hubspotImageNormal = true;
                     } else {
                         this.hubspotImageBlur = true;
@@ -1947,7 +1947,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.saveSalesforceContacts();
                 } else
                     this.saveSalesforceContactSelectedUsers();
-            }
+            } 
             if ( this.selectedAddPartnerOption == 8 ) {
                 if ( this.allselectedUsers.length == 0 ) {
                     this.saveMarketoContacts();

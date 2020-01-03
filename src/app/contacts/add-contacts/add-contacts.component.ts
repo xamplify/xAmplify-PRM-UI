@@ -2356,7 +2356,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     } else {
                         this.marketoImageBlur = true;
                     }
-                    if ( this.storeLogin.MARKETO == true ) {
+                    if ( this.storeLogin.HUBSPOT == true ) {
                         this.hubspotImageNormal = true;
                     } else {
                         this.hubspotImageBlur = true;
@@ -3165,7 +3165,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             for ( var i = 0; i < response.contacts.length; i++ ) {
                 this.xtremandLogger.log("HubSpot Contact :" + response.contacts[i].firstName );
                 let socialContact = new SocialContact();
-                socialContact = response.contacts[i];                    
+                socialContact = response.contacts[i];
                 socialContact.id = i;
                     if ( this.validateEmailAddress(response.contacts[i].email ) ) {
                         this.socialContactUsers.push( socialContact );
@@ -3291,6 +3291,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
              });
         }
     }
-    
+   
     
 }
