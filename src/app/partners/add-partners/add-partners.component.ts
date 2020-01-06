@@ -693,6 +693,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 ( data: any ) => {
                     this.partners = data.listOfUsers;
                     this.totalRecords = data.totalRecords;
+                    this.setLegalBasisOptionString(this.partners);
                     this.isLoadingList = false;
                     this.referenceService.loading( this.httpRequestLoader, false );
                     pagination.totalRecords = this.totalRecords;
@@ -3120,6 +3121,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 }, function( dismiss: any ) {
                     console.log( 'you clicked on option' + dismiss );
                 });
+        }
+    }
+    
+    setLegalBasisOptionString(list:any){
+        if(this.gdprStatus){
+            let self = this;
+            $.each(list,function(index,contact){
+                if(self.legalBasisOptions.length>0){
+                    let filteredLegalBasisOptions = $.grep(self.legalBasisOptions, function(e){ return  contact.legalBasis.indexOf(e.id)>-1 });
+                    let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
+                    contact.legalBasisString = selectedLegalBasisOptionsArray;
+                }
+            });
         }
     }
     

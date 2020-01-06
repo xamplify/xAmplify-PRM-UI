@@ -821,6 +821,12 @@ img:hover {
 																	</div>
 																</td>
 															</tr>
+														<tr *ngIf="gdprStatus">
+														  <td class='pt10 pb10 bold'>Legal Basis :</td>
+															<td align="center" class="pt10 pb10">
+																	{{contact.legalBasisString}}
+															</td>
+												</tr>
 															<tr>
 																<td class='pt10 pb10 bold'>Address: </td>
 																<td align="center">
