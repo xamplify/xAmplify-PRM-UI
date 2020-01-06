@@ -2358,7 +2358,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     () => this.xtremandLogger.info('Finished getGdprSettings()')
                 );
         }
-        
+        this.loading = false;
     }
     
     getLegalBasisOptions(){
@@ -2378,7 +2378,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
             );
         }
-    
+       this.loading = false;
     }
     
     ngOnDestroy() {

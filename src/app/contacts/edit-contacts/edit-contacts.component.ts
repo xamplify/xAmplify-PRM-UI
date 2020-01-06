@@ -2018,6 +2018,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 data => {
                     this.contactsByType.selectedCategory = contactType;
                     this.contactsByType.contacts = data.listOfUsers;
+                    this.setLegalBasisOptionString(data.listOfUsers);
                     this.contactsByType.pagination.totalRecords = data.totalRecords;
                     this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
 
@@ -2455,7 +2456,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                 ( data: any ) => {
                     console.log( data.listOfUsers );
                     this.totalListUsers = data.listOfUsers;
-                  //  this.setLegalBasisOptionString(data.listOfUsers);
+                    //this.setLegalBasisOptionString(data.listOfUsers);
                 },
                 error => this.xtremandLogger.error( error ),
                 () => this.xtremandLogger.info( "MangeContactsComponent loadUsersOfContactList() finished" )
