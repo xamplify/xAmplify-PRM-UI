@@ -91,7 +91,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                         this.title = data.formName;
                     }
                     if(this.isTotalLeadsData){
-                        this.title = "Total Lead Details";
+                        this.title = "Total Leads";
                     }
                     if(this.isTotalAttendees){
                         this.title = "Total Attendees";

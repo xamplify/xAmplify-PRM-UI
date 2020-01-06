@@ -671,3 +671,6 @@ tr>td>h6 {
 .eight-tile-width{
 	width: 12.5% !important;
 }
+#float-right{
+	float: right;
+}

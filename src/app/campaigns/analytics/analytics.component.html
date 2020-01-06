@@ -622,7 +622,6 @@
 										<i class="fa fa-search" style="padding: 4px; color: black !important"></i>
 									</button>
 								</div>
-
 								<div [class.disabled]="campaignViewsPagination.pagedItems?.length == 0" class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
 										<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
 											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
@@ -643,6 +642,47 @@
 									</div>
 									<div *ngIf="campaignViewsPagination.pagedItems?.length != 0">
 										<div class="table-responsive set-overflow-none">
+											<div class="col-xs-4 p0" id="float-right">
+				                      			 <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+													<button class="portlet light color1-invert crcb"
+													 (click)="clearPartnerleadValues();partnerLeadsDetailPagination.pageIndex = 1;
+													 getPartnerEventLeadsDetails('YES', selectedLeadPartnerId)" [class.selectedBox]="partnerLeadDetailType === 'YES'"
+													  [disabled]="partnerLeadDetailType === 'YES' || !isPartnerEnabledAnalyticsAccess">
+												<div class="portlet-body text-center">
+													<i class="fa fa-check-circle fs30"></i>
+													<h1 class="fs14">
+														<b>{{campaignReport.partnersYesCount}}</b>
+														<span>Yes  ( {{campaignReport.additionalCount}} )</span>
+													</h1>
+			
+												</div>
+											</button>
+											</div>
+										<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+											<button class="portlet light color1-invert crcb" (click)="clearPartnerleadValues();partnerLeadsDetailPagination.pageIndex = 1;getPartnerEventLeadsDetails('NO', selectedLeadPartnerId)"  [class.selectedBox]="partnerLeadDetailType === 'NO'" [disabled]="partnerLeadDetailType === 'NO' || !isPartnerEnabledAnalyticsAccess">
+												<div class="portlet-body text-center">
+													<i class="fa fa-times-circle fs30"></i>
+													<h1 class="fs14">
+														<b>{{campaignReport.partnersNoCount}}</b>
+														<span>No</span>
+													</h1>
+			
+												</div>
+											</button>
+										</div>
+											<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+												<button class="portlet light color1-invert crcb" (click)="clearPartnerleadValues();partnerLeadsDetailPagination.pageIndex = 1;getPartnerEventLeadsDetails('MAYBE', selectedLeadPartnerId)"  [class.selectedBox]="partnerLeadDetailType === 'MAYBE'" [disabled]="partnerLeadDetailType === 'MAYBE' || !isPartnerEnabledAnalyticsAccess">
+													<div class="portlet-body text-center">
+														<i class="fa fa-question-circle fs30"></i>
+														<h1 class="fs14">
+															<b>{{campaignReport.partnersMayBeCount}}</b>
+															<span>Maybe</span>
+														</h1>
+				
+													</div>
+												</button>
+											</div>
+											</div>
 											<table class="table tgrid">
 												<thead>
 													<tr>
@@ -2190,7 +2230,7 @@
 									<div class="caption col-xs-8">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
 											<span style="color:#fff!important;"><i aria-hidden="true" class="fa fa-user-secret" 
-											style="font-size:20px!important" id="leads-info-font-size"></i>&nbsp;YOUR PARTNER LEAD DETAILS</span>
+											style="font-size:20px!important" id="leads-info-font-size"></i>&nbsp;YOUR PARTNER LEAD DETAILS  (Total Lead count # {{campaignReport.yesPartnerLeadCount}} ({{campaignReport.partnerLeadAdditionalCount}}))</span>
 										</span>
 									</div>
 
@@ -2225,44 +2265,7 @@
 								</div>
 								<!-- <hr> -->
 		<div class="col-xs-8"></div>
-	    <div class="col-xs-4 p0">
-	                       <div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="clearPartnerleadValues();partnerLeadsDetailPagination.pageIndex = 1;getPartnerEventLeadsDetails('YES', selectedLeadPartnerId)" [class.selectedBox]="partnerLeadDetailType === 'YES'" [disabled]="partnerLeadDetailType === 'YES' || !isPartnerEnabledAnalyticsAccess">
-									<div class="portlet-body text-center">
-										<i class="fa fa-envelope fs30"></i>
-										<h1 class="fs14">
-											<b>{{campaignReport.yesPartnerLeadCount}}</b>
-											<span>Yes  ( {{campaignReport.partnerLeadAdditionalCount}} )</span>
-										</h1>
-
-									</div>
-								</button>
-							</div>
-							<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="clearPartnerleadValues();partnerLeadsDetailPagination.pageIndex = 1;getPartnerEventLeadsDetails('NO', selectedLeadPartnerId)"  [class.selectedBox]="partnerLeadDetailType === 'NO'" [disabled]="partnerLeadDetailType === 'NO' || !isPartnerEnabledAnalyticsAccess">
-									<div class="portlet-body text-center">
-										<i class="fa fa-times-circle fs30"></i>
-										<h1 class="fs14">
-											<b>{{campaignReport.noPartnerLeadCount}}</b>
-											<span>No</span>
-										</h1>
-
-									</div>
-								</button>
-							</div>
-							<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
-								<button class="portlet light color1-invert crcb" (click)="clearPartnerleadValues();partnerLeadsDetailPagination.pageIndex = 1;getPartnerEventLeadsDetails('MAYBE', selectedLeadPartnerId)"  [class.selectedBox]="partnerLeadDetailType === 'MAYBE'" [disabled]="partnerLeadDetailType === 'MAYBE' || !isPartnerEnabledAnalyticsAccess">
-									<div class="portlet-body text-center">
-										<i class="fa fa-question-circle fs30"></i>
-										<h1 class="fs14">
-											<b>{{campaignReport.maybePartnerLeadCount}}</b>
-											<span>Maybe</span>
-										</h1>
-
-									</div>
-								</button>
-							</div>
-	</div>
+	    
 	</div>
 	
 	
