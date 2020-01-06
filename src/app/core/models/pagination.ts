@@ -43,7 +43,9 @@ export class Pagination {
 	formId = 0;
 	loader:HttpRequestLoader = new HttpRequestLoader();
 	publicEventLeads = false;
+	totalLeads = false;
 	addingMoreLists = false;
 	partnerId:number=0;
+	eventCampaign = false;
 	
 }

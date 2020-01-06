@@ -475,6 +475,13 @@ export class CampaignService {
             .catch(this.handleError);
     }
     
+    getEventTotalLeadsDetails(pagination: Pagination,campaignId: number,detailType: string) {
+        const url = this.URL + "campaign/"+ campaignId +"/total-leads-details?access_token=" + this.authenticationService.access_token + "&type="+ detailType;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     downloadLeadList( campaignId: number, leadType: any): Observable<Response> {
         this.logger.info( campaignId );
         return this.http.get( this.URL + "campaign/" + campaignId + "/download-leads-details?access_token=" + this.authenticationService.access_token + "&type=" + leadType)

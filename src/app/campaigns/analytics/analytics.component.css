@@ -371,15 +371,6 @@ tr>td>h6 {
   cursor: not-allowed;
   }
 
-
-
-
-
-
-
-
-
-
 .user-profile-image {
 	width: 48px;
 	height: auto;
@@ -675,4 +666,8 @@ tr>td>h6 {
 }
 .set-overflow-none{
 	overflow: hidden !important;
+}
+
+.eight-tile-width{
+	width: 12% !important;
 }

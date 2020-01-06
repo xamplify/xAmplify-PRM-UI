@@ -10,6 +10,9 @@
 							title="Close">
 							<i class="fa fa-times"></i>
 						</a> -->
+						<a *ngIf="isTotalLeadsData" href="{{authenticationService.REST_URL}}ectl/{{pagination.campaignId}}" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
+							<i class="fa fa-download"></i>
+						</a>
 						<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
 							<i class="fa fa-refresh margin"></i>
 						</a>

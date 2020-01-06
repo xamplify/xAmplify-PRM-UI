@@ -159,14 +159,17 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   isShowPartnerLeads = false;
   leadsDetailPagination: Pagination = new Pagination();
   partnerLeadsDetailPagination: Pagination = new Pagination();
+  totalLeadsDetailPagination: Pagination = new Pagination();
   leadsFormHeaders = [];
   leadsFormDetails = [];
   partnerLeadsFormHeaders = [];
   partnerLeadsFormDetails = [];
+  totalLeadsFormHeaders = [];
+  totalLeadsFormDetails = [];
   selectedLeadPartnerId: number;
   leadType: string;
   isLeadListDownloadProcessing = false;
-  
+  showTotalLeads = false;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -1048,6 +1051,8 @@ showTimeLineView(){
           }
         if(this.campaignType == 'EVENT'){
             this.exportingObject['isPublicEventLeads'] = true;
+            this.exportingObject['totalLeads'] = true;
+            this.exportingObject['eventCampaign'] = true;
             this.exportingObject['campaignAlias'] = this.campaignId;
             this.exportingObject['formAlias'] = this.campaign.formAlias;
             this.exportingObject['title'] = this.leadInfoTitle;
@@ -1092,6 +1097,8 @@ showTimeLineView(){
               this.campaignReport.totalEmailOpenCount = data.emailOpenedCount;
               this.campaignReport.totalAdditionalCount = data.additionalCount;
               this.campaignReport.totalInvitiesCount = data.totalInvities;
+              this.campaignReport.totalLeadsCount = data.totalLeadsCount;
+              this.campaignReport.totalAttendeesCount = data.totalAttendeesCount;
               this.getPartnersResponeCount(campaignId);
               this.loading = false;
             },
@@ -1350,20 +1357,25 @@ showTimeLineView(){
               () => { }
               )
           }else{
-              this.showRsvpDetails = true;
-              this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
-            .subscribe(
-            data => {
-              console.log(data);
-              this.loading = false;
-              this.referenceService.detailViewIsLoading = false;
-              this.rsvpDetailsList = data.data;
-              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-            },
-            error => this.xtremandLogger.error(error),
-            () => { }
-            )
+              if(responseType=== 'TOTAL_LEADS'){
+                  this.getEventTotalLeadsDetails();
+              }else{
+                  this.showRsvpDetails = true;
+                  this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
+                .subscribe(
+                data => {
+                  console.log(data);
+                  this.loading = false;
+                  this.referenceService.detailViewIsLoading = false;
+                  this.rsvpDetailsList = data.data;
+                  this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+                  this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+                },
+                error => this.xtremandLogger.error(error),
+                () => { }
+                )
+              }
+            
           }
           }catch(error){
             this.xtremandLogger.error('error'+error)
@@ -2275,14 +2287,25 @@ eventLeadsDetailsSetPage( event: any ) {
     this.getEventLeadsDetails(this.leadDetailType);
 }
 
+eventTotalLeadsDetailsSetPage( event: any ) {
+    this.totalLeadsDetailPagination.pageIndex = event.page;
+    this.getEventTotalLeadsDetails();
+}
+
 partnerEventLeadsDetailsSetPage( event: any ) {
     this.partnerLeadsDetailPagination.pageIndex = event.page;
     this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId);
 }
 
+
 partnerEventLeadsDetailsSetPageDropdown(event: Pagination){
     this.leadsDetailPagination = event;
     this.getEventLeadsDetails(this.partnerLeadDetailType);
+}
+
+eventTotalLeadsDetailsSetPageDropdown(event:Pagination){
+    this.totalLeadsDetailPagination = event;
+    this.getEventTotalLeadsDetails();
 }
 
 eventLeadsDetailsSetPageDropdown(event: Pagination){
@@ -2317,6 +2340,35 @@ getEventLeadsDetails(detailType: any){
          this.httpRequestLoader.isLoading = false;})
        }catch(error) { this.xtremandLogger.error('error'+error);}
 }
+
+getEventTotalLeadsDetails(){
+    this.showRsvpDetails = true;
+    this.showTotalLeads = true;
+    this.referenceService.detailViewIsLoading = false;
+   /* this.referenceService.startLoader(this.httpRequestLoader);
+    try{
+        this.campaignService.getEventTotalLeadsDetails(this.totalLeadsDetailPagination, this.campaignId,'YES')
+        .subscribe(
+          data => {
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.totalLeadsFormHeaders = data.headers;
+              this.totalLeadsFormDetails = data.data;
+              this.totalLeadsFormDetails.forEach((value)=>{ 
+                  value['expanded'] = false;
+                  if( value['RSVP Time UTC String']!=undefined){
+                      value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
+                  }
+                  
+              })
+              this.totalLeadsDetailPagination.totalRecords = data.totalRecords;
+              this.totalLeadsDetailPagination = this.pagerService.getPagedItems(this.totalLeadsDetailPagination, data.data);
+              this.referenceService.stopLoader(this.httpRequestLoader);
+         },
+         (error:any)=>{this.xtremandLogger.error('error'+error);
+         this.httpRequestLoader.isLoading = false;})
+       }catch(error) { this.xtremandLogger.error('error'+error);}*/
+ }
 
 
 getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){

@@ -36,6 +36,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     searchKey = "";
     campaignForms = false;
     routerLink = "/home/forms/manage";
+    isTotalLeadsData = false;
     @Input() importedObject:any;
     title:string = "";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
@@ -55,11 +56,13 @@ export class FormAnalyticsUtilComponent implements OnInit {
             this.partnerLandingPageAlias = this.importedObject['partnerLandingPageAlias'];
             this.formId = this.importedObject['formId'];
             this.partnerId = this.importedObject['partnerId'];
-            this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
             this.title = this.importedObject['title'];
             if(this.campaignAlias!=undefined){
                 this.pagination.campaignId = parseInt(this.campaignAlias);
                 this.pagination.partnerId = this.partnerId;
+                this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
+                this.pagination.eventCampaign = this.importedObject['eventCampaign'];
+                this.pagination.totalLeads = this.importedObject['totalLeads'];
             }else if(this.partnerLandingPageAlias!=undefined){
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.formId = this.formId;
@@ -77,11 +80,15 @@ export class FormAnalyticsUtilComponent implements OnInit {
         this.formService.getFormAnalytics( pagination, this.alias, false ).subscribe(
             ( response: any ) => {
                 const data = response.data;
+                this.isTotalLeadsData = data.isTotalLeadsData;
                 this.statusCode = response.statusCode;
                 if ( response.statusCode == 200 ) {
                     //this.formName = data.formName;
                     if(this.title==undefined){
                         this.title = data.formName;
+                    }
+                    if(this.isTotalLeadsData){
+                        this.title = "Total Lead Details ";
                     }
                     this.columns = data.columns;
                     this.selectedSortedOption = this.columns[0];
@@ -136,4 +143,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
         this.router.navigate( ['home/campaigns/' + parseInt( this.campaignAlias ) + '/details'] );
     }
 
+    
+    exportToCsv(){
+        this.referenceService.loading( this.httpRequestLoader, true );
+        alert(this.pagination.campaignId);
+    }
 }

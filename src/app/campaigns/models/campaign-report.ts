@@ -41,6 +41,8 @@ export class CampaignReport {
     totalEmailOpenCount: number = 0;
     totalAdditionalCount: number = 0;
     totalInvitiesCount: number = 0;
+    totalLeadsCount:number = 0;
+    totalAttendeesCount:number = 0;
 
     partnersYesCount: number = 0;
     partnersNoCount: number = 0;
