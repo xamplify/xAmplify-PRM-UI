@@ -330,7 +330,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding eight-tile-width">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails();searchKey=''" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_ATTENDEES');searchKey=''" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-user"></i>
 										<h1>
@@ -591,7 +591,7 @@
 							<div class="row" *ngIf="!campaignViews || totalCampaignViewsLoader">
 								<div class="porlet light" style="background: white;">
 									<div class="portlet-body clearfix">
-										<!-- <app-list-loader></app-list-loader> Srava-->
+										<app-list-loader></app-list-loader>
 									</div>
 								</div>
 							</div>

@@ -5,7 +5,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 export class Pagination {
     
 	pageIndex = 1;
-	maxResults = 12;
+	maxResults = 12;    
 	sortcolumn: string = null;
 	sortingOrder: string = null;
 	searchKey: string = null;
@@ -47,5 +47,6 @@ export class Pagination {
 	addingMoreLists = false;
 	partnerId:number=0;
 	eventCampaign = false;
+	totalAttendees = false;
 	
 }

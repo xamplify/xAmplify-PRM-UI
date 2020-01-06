@@ -37,6 +37,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     campaignForms = false;
     routerLink = "/home/forms/manage";
     isTotalLeadsData = false;
+    isTotalAttendees: boolean;
     @Input() importedObject:any;
     title:string = "";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
@@ -63,6 +64,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
                 this.pagination.eventCampaign = this.importedObject['eventCampaign'];
                 this.pagination.totalLeads = this.importedObject['totalLeads'];
+                this.pagination.totalAttendees = this.importedObject['totalAttendees'];
             }else if(this.partnerLandingPageAlias!=undefined){
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.formId = this.formId;
@@ -80,7 +82,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
         this.formService.getFormAnalytics( pagination, this.alias, false ).subscribe(
             ( response: any ) => {
                 const data = response.data;
-                this.isTotalLeadsData = data.isTotalLeadsData;
+                this.isTotalLeadsData = this.pagination.totalLeads;
+                this.isTotalAttendees = this.pagination.totalAttendees;
                 this.statusCode = response.statusCode;
                 if ( response.statusCode == 200 ) {
                     //this.formName = data.formName;
@@ -88,7 +91,10 @@ export class FormAnalyticsUtilComponent implements OnInit {
                         this.title = data.formName;
                     }
                     if(this.isTotalLeadsData){
-                        this.title = "Total Lead Details ";
+                        this.title = "Total Lead Details";
+                    }
+                    if(this.isTotalAttendees){
+                        this.title = "Total Attendees";
                     }
                     this.columns = data.columns;
                     this.selectedSortedOption = this.columns[0];
@@ -142,10 +148,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
     goToCampaignAnalytics() {
         this.router.navigate( ['home/campaigns/' + parseInt( this.campaignAlias ) + '/details'] );
     }
-
     
-    exportToCsv(){
-        this.referenceService.loading( this.httpRequestLoader, true );
-        alert(this.pagination.campaignId);
+    downloadCsv(){
+        window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
     }
+
 }

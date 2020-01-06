@@ -1050,12 +1050,13 @@ showTimeLineView(){
               this.getSmsSentFailureCount(this.campaignId);
           }
         if(this.campaignType == 'EVENT'){
-            this.exportingObject['isPublicEventLeads'] = true;
-            this.exportingObject['totalLeads'] = true;
             this.exportingObject['eventCampaign'] = true;
             this.exportingObject['campaignAlias'] = this.campaignId;
             this.exportingObject['formAlias'] = this.campaign.formAlias;
-            this.exportingObject['title'] = this.leadInfoTitle;
+            //this.exportingObject['title'] = this.leadInfoTitle;
+            this.exportingObject['isPublicEventLeads'] = true;
+            this.exportingObject['totalLeads'] = true;
+            this.exportingObject['totalAttendees'] = false;
         }
         this.loading = false;
       }
@@ -1358,8 +1359,13 @@ showTimeLineView(){
               )
           }else{
               if(responseType=== 'TOTAL_LEADS'){
+                  this.exportingObject['totalAttendees'] = false;
                   this.getEventTotalLeadsDetails();
-              }else{
+              }else if(responseType==='TOTAL_ATTENDEES'){
+                  this.getEventTotalLeadsDetails();
+                  this.exportingObject['totalAttendees'] = true;
+              }
+              else{
                   this.showRsvpDetails = true;
                   this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
                 .subscribe(
