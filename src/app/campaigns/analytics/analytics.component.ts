@@ -1310,6 +1310,11 @@ showTimeLineView(){
 
 
   getPartnerCampaingRsvpDetails(){
+     this.setReDistributionDetails();
+     this.getRsvpDetails("YES");
+  }
+  
+  setReDistributionDetails(){
       this.campaignReport.redistributionTotalYesCount = this.campaignReport.partnersYesCount;
       this.campaignReport.redistributionTotalMayBeCount = this.campaignReport.partnersMayBeCount;
       this.campaignReport.redistributionTotalNoCount = this.campaignReport.partnersNoCount;
@@ -1319,7 +1324,11 @@ showTimeLineView(){
       this.campaignReport.redistributionTotalAdditionalCount = this.campaignReport.additionalCount;
       this.isTimeLineView = true;
       this.rsvpDetailType = 'partnerRsvp';
-      this.getRsvpDetails("YES");
+  }
+  
+  goToPartnerRsvpDetails(type){
+      this.setReDistributionDetails();
+      this.getRsvpDetails(type);
   }
 
   getRsvpDetails(responseType: any){
