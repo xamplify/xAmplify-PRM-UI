@@ -36,10 +36,10 @@
 									<li class="filter" (click)="filterTemplates('NONE',false,0)"
 										[class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
 									<!-- <li class="filter" (click)="filterTemplates('BASIC',false,1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex"> Basic</li> -->
-									<li class="filter" (click)="filterTemplates('RICH',false,2)"
+									<li class="filter" (click)="filterTemplates('BASIC',false,2)"
 										[class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
 									<!-- <li class="filter" (click)="filterTemplates('BASIC',true,3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
-									<li class="filter" (click)="filterTemplates('RICH',true,4)"
+									<li class="filter" (click)="filterTemplates('BASIC',true,4)"
 										[class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
 									<li class="filter"
 										(click)="filterTemplates('UPLOADED',false,5)"
@@ -55,7 +55,7 @@
 										(click)="filterTemplates('VIDEO_CO_BRANDING',false,8)"
 										[class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video
                     Co-Branding</li>
-                    <li class="filter" (click)="filterTemplates('RICH',false,9)"
+                    <li class="filter" (click)="filterTemplates('EVENT',false,9)"
 										[class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign">Event</li>
 										<li class="filter"
 										(click)="filterTemplates('EVENT_CO_BRANDING',false,10)" *ngIf="refService.eventCampaignTabAccess || campaignAccess.eventCampaign"
