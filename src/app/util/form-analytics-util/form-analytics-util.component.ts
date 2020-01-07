@@ -151,7 +151,11 @@ export class FormAnalyticsUtilComponent implements OnInit {
     }
     
     downloadCsv(){
-        window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
+        if(this.pagination.totalPartnerLeads){
+            window.open(this.authenticationService.REST_URL+"pl/"+this.pagination.campaignId+"/"+false);
+        }else{
+            window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
+        }
     }
 
 }
