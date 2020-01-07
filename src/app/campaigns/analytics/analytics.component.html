@@ -683,6 +683,19 @@
 													</div>
 												</button>
 											</div>
+											<div [hidden]="mainLoader" class="col-xs-4 rsvp_tile_padding">
+												<button class="portlet light color1-invert crcb"  [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'" (click)="goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
+			 											[disabled]="campaignReport.totalPartnerLeadsCount < 1">													
+			 											<div class="portlet-body text-center">
+														<i class="fa fa-user-secret fs30"></i>
+														<h1 class="fs14">
+															<b>{{campaignReport.totalPartnerLeadsCount}}</b>
+															<span>Leads</span>
+														</h1>
+				
+													</div>
+												</button>
+											</div>
 											</div>
 											<table class="table tgrid">
 												<thead>
@@ -1174,10 +1187,25 @@
 						</div>
 					</button>
 				</div>
+				<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
+					<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'TOTAL_PARTNER_LEADS'" (click)="resetRsvpPagination();goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
+					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
+						<div class="portlet-body text-center">
+							<i class="fa fa-user-secret"></i>
+							<h1>
+								<b>{{campaignReport.totalPartnerLeadsCount}}</b>
+							</h1>
+							<h5>Total Leads</h5>
+						</div>
+					</button>
+				</div>
 			</div>
-
-
-
+			<ng-container *ngIf="rsvpResposeType==='TOTAL_PARTNER_LEADS'">
+				<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+					<app-form-analytics-util  [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="rsvpResposeType!='TOTAL_PARTNER_LEADS'">
 			<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
 				<h4 class="pull-left" *ngIf="rsvpResposeType === 'invities'">Invitees</h4>
 				<!-- <h4 class="pull-left" *ngIf="rsvpResposeType === 'email open'">People who <b class="highlet">OPENED YOUR EMAIL</b></h4> -->
@@ -1257,6 +1285,7 @@
 					 class="pg8" [type]="rsvpResposeType" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
 				</div>
 			</div>
+			</ng-container>
 		</div>
 	</div>
 </section>

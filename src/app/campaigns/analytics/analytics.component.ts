@@ -1057,6 +1057,7 @@ showTimeLineView(){
             this.exportingObject['isPublicEventLeads'] = true;
             this.exportingObject['totalLeads'] = true;
             this.exportingObject['totalAttendees'] = false;
+            this.exportingObject['totalPartnerLeads'] = false;
         }
         this.loading = false;
       }
@@ -1100,6 +1101,7 @@ showTimeLineView(){
               this.campaignReport.totalInvitiesCount = data.totalInvities;
               this.campaignReport.totalLeadsCount = data.totalLeadsCount;
               this.campaignReport.totalAttendeesCount = data.totalAttendeesCount;
+              this.campaignReport.totalPartnerLeadsCount = data.totalPartnerLeadsCount;
               this.getPartnersResponeCount(campaignId);
               this.loading = false;
             },
@@ -1352,7 +1354,7 @@ showTimeLineView(){
               error => this.xtremandLogger.error(error),
               () => { }
               )
-          }else if(this.rsvpDetailType === 'partnerRsvp'){
+          }else if(this.rsvpDetailType === 'partnerRsvp' && responseType!='TOTAL_PARTNER_LEADS'){
               this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, false, this.rsvpDetailAnalyticsPagination )
               .subscribe(
               data => {
@@ -1369,12 +1371,17 @@ showTimeLineView(){
           }else{
               if(responseType=== 'TOTAL_LEADS'){
                   this.exportingObject['totalAttendees'] = false;
+                  this.exportingObject['totalPartnerLeads'] = false;
                   this.getEventTotalLeadsDetails();
               }else if(responseType==='TOTAL_ATTENDEES'){
                   this.getEventTotalLeadsDetails();
                   this.exportingObject['totalAttendees'] = true;
-              }
-              else{
+                  this.exportingObject['totalPartnerLeads'] = false;
+              }else if(responseType==='TOTAL_PARTNER_LEADS'){
+                  this.exportingObject['totalPartnerLeads'] = true;
+                  this.exportingObject['totalAttendees'] = false;
+                  
+              }else{
                   this.showRsvpDetails = true;
                   this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
                 .subscribe(
@@ -2360,29 +2367,6 @@ getEventTotalLeadsDetails(){
     this.showRsvpDetails = true;
     this.showTotalLeads = true;
     this.referenceService.detailViewIsLoading = false;
-   /* this.referenceService.startLoader(this.httpRequestLoader);
-    try{
-        this.campaignService.getEventTotalLeadsDetails(this.totalLeadsDetailPagination, this.campaignId,'YES')
-        .subscribe(
-          data => {
-              this.loading = false;
-              this.referenceService.detailViewIsLoading = false;
-              this.totalLeadsFormHeaders = data.headers;
-              this.totalLeadsFormDetails = data.data;
-              this.totalLeadsFormDetails.forEach((value)=>{ 
-                  value['expanded'] = false;
-                  if( value['RSVP Time UTC String']!=undefined){
-                      value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
-                  }
-                  
-              })
-              this.totalLeadsDetailPagination.totalRecords = data.totalRecords;
-              this.totalLeadsDetailPagination = this.pagerService.getPagedItems(this.totalLeadsDetailPagination, data.data);
-              this.referenceService.stopLoader(this.httpRequestLoader);
-         },
-         (error:any)=>{this.xtremandLogger.error('error'+error);
-         this.httpRequestLoader.isLoading = false;})
-       }catch(error) { this.xtremandLogger.error('error'+error);}*/
  }
 
 

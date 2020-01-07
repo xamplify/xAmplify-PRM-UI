@@ -48,5 +48,6 @@ export class Pagination {
 	partnerId:number=0;
 	eventCampaign = false;
 	totalAttendees = false;
+	totalPartnerLeads = false;
 	
 }
