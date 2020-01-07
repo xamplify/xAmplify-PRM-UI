@@ -21,7 +21,7 @@ export class PartnerNotificationComponent implements OnInit {
   isEventCampaignSharedByVendor = false;
   modulesCount:number = 3;
   divClass = "col-xs-12 col-sm-4";
-  width = "33.33333333%";
+  width = "";
   customResponse:CustomResponse = new CustomResponse();
   constructor( public authenticationService: AuthenticationService,public referenceService:ReferenceService,
                private campaignService: CampaignService,
@@ -48,14 +48,14 @@ export class PartnerNotificationComponent implements OnInit {
                     this.isPageCampaignSharedByVendor = data.landingPageCampaign;
                     this.modulesCount = data.campaignTypesCount;
                     if(this.modulesCount==4){
-                        this.divClass = "col-xs-12 col-sm-3";
-                        this.width = "25%";
+                        this.divClass = "col-lg-3 col-md-3 col-sm-3 col-xs-6";
+                        //this.width = "25%";
                     }else if(this.modulesCount==5){
-                        this.divClass = "col-xs-2";
-                       this.width = "20%";
+                       this.divClass = "col-lg-2 col-md-2 col-sm-2 col-xs-6";
+                      // this.width = "20%";
                     }else if(this.modulesCount==6){
-                        this.divClass = "col-xs-2";
-                        this.width = "16.66666667%";
+                        this.divClass = "col-lg-2 col-md-2 col-sm-2 col-xs-6";
+                        //this.width = "16.66666667%";
                     }
                     this.referenceService.loading( this.httpRequestLoader, false );
                 },

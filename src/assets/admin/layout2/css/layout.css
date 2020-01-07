@@ -182,7 +182,7 @@ Page Header
   display: none;
   float: right;
   margin: 24px 14px 0 6px;
-  background-image: url(../img/sidebar-toggler-inverse.png);
+  background-image: url(../img/menu.png);
 }
 .page-header.navbar .page-actions {
   margin: 17px 0 15px 15px;
@@ -734,7 +734,7 @@ Page Header
     padding: 24px 6px 24px 6px;
   }
   .page-header.navbar .menu-toggler.responsive-toggler {
-    background-image: url(../img/sidebar-toggler.png);
+    background-image: url(../img/menu.png);
   }
   .page-header.navbar .search-form {
     margin-left: -12px;
@@ -1977,11 +1977,11 @@ Page content
   padding: 0px;
   background-color: #ffffff;
   margin-bottom: 20px;
-  -webkit-border-radius: 4px;
+ /* -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -o-border-radius: 4px; */
+  border-radius: 3px !important;
 }
 .page-bar:before, .page-bar:after {
   content: " ";
