@@ -43,7 +43,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   form:Form = new Form();
   selectedType: string;
   selectedUtmType: string;
-
+  hideForm = false;
   constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
   public authenticationService:AuthenticationService) { }
 
@@ -68,9 +68,6 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
         this.isDataLoaded = true;
         if(this.eventcampaign.formDTOs[0].formLabelDTOs){
            // this.form.formLabelDTOs = response.formValuesDTO.fields;
-            
-            
-            
             this.eventcampaign.formDTOs[0].formLabelDTOs.forEach((dto)=>{
                 if(dto.checkBoxChoices && dto.dropdownIds){
                  if(dto['checkBoxChoices']!==undefined && dto.checkBoxChoices.length>0 && dto.dropdownIds.length>0) {
@@ -225,7 +222,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   saveEventCampaignRsvp() {
-    
+    this.referenceService.goToTopImmediately();
     if(this.formPreviewComponent){
         this.form.formLabelDTOs = this.formPreviewComponent.form.formLabelDTOs;
         this.form.id = this.formPreviewComponent.form.id;
@@ -264,13 +261,14 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.campaignService.saveEventCampaignRsvp(this.campaignRsvp)
       .subscribe(
       response => {
+        this.referenceService.goToTop();
         this.totalGuests = 0;
         $('#myModal').modal('hide');
         this.campaignRsvp.message = '';
-        this.responseMessage = 'Thank you for the RSVP';
-        this.referenceService.goToTop();
-        this.getEventCampaign(this.alias);
-        this.rsvpSavingProcessing = false;
+        //this.responseMessage = 'Thank you for the RSVP';
+        this.hideForm = true;
+       // this.getEventCampaign(this.alias);
+       // this.rsvpSavingProcessing = false;
       },
       error => {
         console.log(error);

@@ -226,6 +226,9 @@ export class ReferenceService {
     goToTop() {
         $('html,body').animate({ scrollTop: 0 }, 'slow');
     }
+    goToTopImmediately() {
+        $('html,body').animate({ scrollTop: 0 }, 'fast');
+    }
     removeDuplicates(list: any) {
         let result = [];
         $.each(list, function (i, e) {

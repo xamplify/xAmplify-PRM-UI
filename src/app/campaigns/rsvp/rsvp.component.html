@@ -1,8 +1,12 @@
 <div class="expired-event-class" *ngIf="eventExpiredError">This
 	event has concluded.</div>
 <div class="expired-event-class" *ngIf="isCancelledEvent">{{errorLogMessage}}</div>
-<div class="container-fluid"
-	[hidden]="processor.isProcessing || eventExpiredError"
+<div class="form-submit-success" *ngIf="hideForm">
+<img src="assets/images/form-submit-success.png" id="custom-width">
+		<h1>Thank you!</h1>
+	<p>Your submission has been received.</p>
+</div>
+<div class="container-fluid" [hidden]="processor.isProcessing || eventExpiredError || hideForm"
 	style="margin-top: 2em">
 	<ngx-loading [show]="rsvpSavingProcessing"
 	[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
