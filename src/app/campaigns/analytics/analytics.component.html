@@ -40,7 +40,8 @@
 				{{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
 				<b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 		</ul>
-		<!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
+<!-- 		<button routerLink = "/home/campaigns/{{campaign.campaignId}}/checkin" *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign" class="btn btn-danger" id="check-in-css">Check In</button> 
+ -->		<!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 	</div>
 	<div class="portlet light clearfix" *ngIf="!isShowPartnerLeads">
 		<div class="portlet-body">

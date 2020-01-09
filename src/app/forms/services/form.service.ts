@@ -77,10 +77,14 @@ export class FormService {
 
     getFormAnalytics( pagination: Pagination,alias:string,campaignFormAnalytics:boolean): Observable<any> {
         let url = "";
-        if(alias.length>0){
-            url = this.URL + "analytics/"+alias;
+        if(alias!=undefined){
+            if(alias.length>0){
+                url = this.URL + "analytics/"+alias;
+            }else{
+                url = this.URL + "partner-landingPage/analytics";
+            }
         }else{
-            url = this.URL + "partner-landingPage/analytics";
+            url = this.URL + "checkIn/analytics";
         }
         return this.http.post(url+"?access_token=" + this.authenticationService.access_token, pagination )
             .map( this.extractData )

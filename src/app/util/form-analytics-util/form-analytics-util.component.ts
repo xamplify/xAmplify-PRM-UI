@@ -10,6 +10,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { SubmittedFormRow } from '../../forms/models/submitted-form-row';
 import { SubmittedFormData } from '../../forms/models/submitted-form-data';
 import { Router } from '@angular/router';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 
 declare var $: any, swal: any;
 
@@ -18,7 +19,7 @@ declare var $: any, swal: any;
     selector: 'app-form-analytics-util',
     templateUrl: './form-analytics-util.component.html',
     styleUrls: ['./form-analytics-util.component.css'],
-    providers: [Pagination, HttpRequestLoader,FormService]
+    providers: [Pagination, HttpRequestLoader,FormService,CallActionSwitch]
 } )
 export class FormAnalyticsUtilComponent implements OnInit {
     formId: any;
@@ -39,11 +40,13 @@ export class FormAnalyticsUtilComponent implements OnInit {
     isTotalLeadsData = false;
     isTotalAttendees: boolean;
     @Input() importedObject:any;
+    status = true;
     title:string = "";
+    isEventCheckIn = false;
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
-        public logger: XtremandLogger
+        public logger: XtremandLogger,public callActionSwitch: CallActionSwitch
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
@@ -66,6 +69,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.pagination.totalLeads = this.importedObject['totalLeads'];
                 this.pagination.totalAttendees = this.importedObject['totalAttendees'];
                 this.pagination.totalPartnerLeads = this.importedObject['totalPartnerLeads'];
+                this.pagination.checkInLeads = this.importedObject['checkInLeads'];
+                this.isEventCheckIn = this.pagination.checkInLeads;
             }else if(this.partnerLandingPageAlias!=undefined){
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.formId = this.formId;
@@ -94,7 +99,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                     if(this.isTotalLeadsData){
                         this.title = "Total Leads";
                     }
-                    if(this.isTotalAttendees){
+                    if(this.isTotalAttendees || this.pagination.checkInLeads){
                         this.title = "Total Attendees";
                     }
                     this.columns = data.columns;

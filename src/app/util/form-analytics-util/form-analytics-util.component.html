@@ -45,6 +45,7 @@
 									</ng-container>
 								</ng-container>
 								<th></th>
+								<th *ngIf="isEventCheckIn"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -59,6 +60,12 @@
 											<i class="fa"
 												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"></i>
 										</a>
+									</td>
+									<td *ngIf="isEventCheckIn">
+										<switch [status]="status" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+									(statusChange)="setCoBrandingLogo($event)">
+										</switch>
 									</td>
 								</tr>
 								<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">

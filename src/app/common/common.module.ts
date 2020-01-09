@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 
 import { DonutChartComponent } from './donut-chart/donut-chart.component';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -50,7 +51,7 @@ import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-ana
 
 
 @NgModule({
-    imports: [InternationalPhoneModule, CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule],
+    imports: [InternationalPhoneModule, CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule,BootstrapSwitchModule],
     declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,

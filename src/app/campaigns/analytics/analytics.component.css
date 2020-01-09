@@ -677,3 +677,8 @@ tr>td>h6 {
 .seven-tile-width{
 	width: 14.2% !important;
 }
+#check-in-css{
+	float: right;
+    margin-top: 4px;
+    margin-right: 4px
+}

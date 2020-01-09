@@ -33,6 +33,7 @@ import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-cam
 import { SharedRssModule } from "app/shared/shared-rss.module";
 import { AddMoreReceiversComponent } from './add-more-receivers/add-more-receivers.component';
 import { PublicEventEmailPopupComponent } from './public-event-email-popup/public-event-email-popup.component';
+import { EventCheckInComponent } from './event-check-in/event-check-in.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { PublicEventEmailPopupComponent } from './public-event-email-popup/publi
     ManageDealCommentsComponent,
     AddLeadsComponent,
     AddMoreReceiversComponent,
-    PublicEventEmailPopupComponent
+    PublicEventEmailPopupComponent,
+    EventCheckInComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
 ],
