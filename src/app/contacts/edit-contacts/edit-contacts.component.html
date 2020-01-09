@@ -901,7 +901,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
-														<th class="text-center hidden-xs" *ngIf="isPartner"></th>
+														<!-- <th class="text-center hidden-xs" *ngIf="isPartner"></th> -->
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
@@ -986,7 +986,7 @@
 																(click)="activateUnsubscribedUser(allcontacts.id)">
 																Subscribe
 															</button>
-                            <div class="actions-block" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+                            <div class="actions-block" style="float: none !important;" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
                             <a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
                               <i class="fa fa-envelope"></i>
                             </a>
