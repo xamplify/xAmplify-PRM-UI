@@ -43,4 +43,10 @@
 .margin{
 	line-height: 15px;
 }
+#custom-width{
+	width: 25px;
+}
+#center-align{
+	text-align: center;
+}
 

@@ -45,7 +45,9 @@
 									</ng-container>
 								</ng-container>
 								<th></th>
-								<th *ngIf="isEventCheckIn"></th>
+								<th *ngIf="isEventCheckIn" id="center-align">
+									<img src="assets/images/attendees.png" id="custom-width">
+								</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -62,9 +64,9 @@
 										</a>
 									</td>
 									<td *ngIf="isEventCheckIn">
-										<switch [status]="status" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+										<switch [status]="formDataRow.checkedInForEvent" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-									(statusChange)="setCoBrandingLogo($event)">
+									(statusChange)="checkIn($event,formDataRow.formSubmittedId)">
 										</switch>
 									</td>
 								</tr>

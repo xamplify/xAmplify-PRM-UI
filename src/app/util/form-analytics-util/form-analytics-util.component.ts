@@ -162,5 +162,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
             window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
         }
     }
+    checkIn(event:any,submittedId:number){
+        alert(event+"------------"+submittedId);
+    }
 
 }
