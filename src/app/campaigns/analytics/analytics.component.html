@@ -259,7 +259,7 @@
 							</div>
 
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails();searchKey=''" [disabled]="campaignReport.totalEmailOpenCount < 1 || !isDataShare ">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails();searchKey=''" [disabled]="campaignReport.totalEmailOpenCount < 1 || !isDataShare">
 									<div class="portlet-body text-center">
 										<i class="fa fa-envelope-open"></i>
 										<h1>
@@ -271,7 +271,7 @@
 								</button>
 							</div>
 							<div class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES');searchKey=''" [disabled]="campaignReport.totalYesCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES');searchKey=''" [disabled]="campaignReport.totalYesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-check-circle"></i>
 										<h1>
@@ -283,7 +283,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO');searchKey=''" [disabled]="campaignReport.totalNoCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO');searchKey=''" [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-times-circle"></i>
 										<h1>
@@ -295,7 +295,7 @@
 								</button>
 							</div>
 							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE');searchKey=''" [disabled]="campaignReport.totalMayBeCount < 1">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE');searchKey=''" [disabled]="campaignReport.totalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-question-circle"></i>
 										<h1>
@@ -319,7 +319,7 @@
 								</button>
 							</div>
 							<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_LEADS');searchKey=''" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_LEADS');searchKey=''" [disabled]="campaignReport.totalLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-user-secret"></i>
 										<h1>
@@ -331,7 +331,7 @@
 								</button>
 							</div>
 							<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
-								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_ATTENDEES');searchKey=''" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_ATTENDEES');searchKey=''" [disabled]="campaignReport.totalAttendeesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-user"></i>
 										<h1>
@@ -687,7 +687,7 @@
 											</div>
 											<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-3 rsvp_tile_padding">
 												<button class="portlet light color1-invert crcb"  [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'" (click)="goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
-			 											[disabled]="campaignReport.totalPartnerLeadsCount < 1">													
+			 											[disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">													
 			 											<div class="portlet-body text-center">
 														<i class="fa fa-user-secret fs30"></i>
 														<h1 class="fs14">

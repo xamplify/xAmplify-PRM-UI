@@ -55,7 +55,7 @@
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('YES')"
-			 [disabled]="campaignReport.totalYesCount < 1">
+			 [disabled]="campaignReport.totalYesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
 					<h1>
@@ -68,7 +68,7 @@
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NO')"
-			 [disabled]="campaignReport.totalNoCount < 1">
+			 [disabled]="campaignReport.totalNoCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
 					<h1>
@@ -81,7 +81,7 @@
 		</div>
 		<div class="col-xs-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('MAYBE')"
-			 [disabled]="campaignReport.totalMayBeCount < 1">
+			 [disabled]="campaignReport.totalMayBeCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
 					<h1>
