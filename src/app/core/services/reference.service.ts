@@ -21,7 +21,7 @@ import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { User } from '../../core/models/user';
 
-declare var $: any;
+declare var $,swal: any;
 
 @Injectable()
 export class ReferenceService {
@@ -1903,5 +1903,8 @@ export class ReferenceService {
     
     getCurrentRouteUrl(){
         return this.router.url;
+    }
+    showSweetAlert(message1:string,message2:string,type:string){
+        swal(message1,message2,type);
     }
 }

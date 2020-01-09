@@ -11,6 +11,8 @@ import { SubmittedFormRow } from '../../forms/models/submitted-form-row';
 import { SubmittedFormData } from '../../forms/models/submitted-form-data';
 import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import { Properties } from '../../common/models/properties';
+import { CustomResponse } from '../../common/models/custom-response';
 
 declare var $: any, swal: any;
 
@@ -19,7 +21,7 @@ declare var $: any, swal: any;
     selector: 'app-form-analytics-util',
     templateUrl: './form-analytics-util.component.html',
     styleUrls: ['./form-analytics-util.component.css'],
-    providers: [Pagination, HttpRequestLoader,FormService,CallActionSwitch]
+    providers: [Pagination, HttpRequestLoader,FormService,CallActionSwitch,Properties]
 } )
 export class FormAnalyticsUtilComponent implements OnInit {
     formId: any;
@@ -43,10 +45,11 @@ export class FormAnalyticsUtilComponent implements OnInit {
     status = true;
     title:string = "";
     isEventCheckIn = false;
+    customResponse: CustomResponse = new CustomResponse();
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
-        public logger: XtremandLogger,public callActionSwitch: CallActionSwitch
+        public logger: XtremandLogger,public callActionSwitch: CallActionSwitch,public properties:Properties
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
@@ -162,8 +165,19 @@ export class FormAnalyticsUtilComponent implements OnInit {
             window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
         }
     }
-    checkIn(event:any,submittedId:number){
-        alert(event+"------------"+submittedId);
+    checkIn(event:any,formDataRow:any){
+        let formSubmitId = formDataRow['formSubmittedId'];
+        formDataRow['checkedInForEvent'] = event;
+        this.referenceService.loading( this.httpRequestLoader, true );
+        this.formService.checkInAttendees( this.pagination.campaignId, formSubmitId, event ).subscribe(
+            ( response: any ) => {
+                const data = response.data;
+                this.statusCode = response.statusCode;
+                $( window ).scrollTop( 0 );
+                this.customResponse = new CustomResponse( 'SUCCESS', response.message, true );
+                this.referenceService.loading( this.httpRequestLoader, false );
+            },
+            ( error: any ) => { this.referenceService.showSweetAlert( this.properties.serverErrorMessage, "", "error" ); this.referenceService.loading( this.httpRequestLoader, false ); } );
     }
 
 }

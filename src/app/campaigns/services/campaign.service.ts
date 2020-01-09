@@ -786,4 +786,10 @@ export class CampaignService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    checkCampaignAccess(campaignId: number,userId:number) {
+        return this.http.get(this.URL + "campaign/checkAccess/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

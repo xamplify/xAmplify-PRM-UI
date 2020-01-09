@@ -36,6 +36,9 @@
 				</div>
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+					<div id="response-message">
+    					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+  					</div>
 					<table class="table tgrid">
 						<thead>
 							<tr>
@@ -66,7 +69,7 @@
 									<td *ngIf="isEventCheckIn">
 										<switch [status]="formDataRow.checkedInForEvent" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-									(statusChange)="checkIn($event,formDataRow.formSubmittedId)">
+									(statusChange)="checkIn($event,formDataRow)">
 										</switch>
 									</td>
 								</tr>

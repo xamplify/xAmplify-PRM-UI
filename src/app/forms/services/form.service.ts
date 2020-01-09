@@ -91,6 +91,12 @@ export class FormService {
             .catch( this.handleError );
     }
     
+    checkInAttendees( campaignId:number,formSubmitId:number,checkInStatus:boolean ) {
+        return this.http.get( this.authenticationService.REST_URL  + "campaign/check-in/"+campaignId+"/"+formSubmitId+"/"+checkInStatus+"?access_token=" + this.authenticationService.access_token,"" )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
 
     private extractData( res: Response ) {
         const body = res.json();

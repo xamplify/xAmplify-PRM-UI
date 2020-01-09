@@ -1,7 +1,6 @@
 .required {
 	color: red;
-	display:inline-flex !important; 
-	
+	display: inline-flex !important;
 }
 
 #responsive {
@@ -16,37 +15,48 @@
 	margin-left: 5px;
 }
 
-#th-width{
+#th-width {
 	width: 25%;
 }
-#expanded-table{
+
+#expanded-table {
 	background-color: #dddddd24;
 }
 
-#search-margin{
+#search-margin {
 	margin-right: 10px;
 }
 
-#icon-right{
-	position: relative;right: -11px;
+#icon-right {
+	position: relative;
+	right: -11px;
 }
 
-#search-text{
-	height:34px;
+#search-text {
+	height: 34px;
 }
-#child-table{
+
+#child-table {
 	background: #c1c1c11c
 }
-.fa.fa-refresh.margin{
+
+.fa.fa-refresh.margin {
 	line-height: 15px;
 }
-.margin{
+
+.margin {
 	line-height: 15px;
 }
-#custom-width{
+
+#custom-width {
 	width: 25px;
 }
-#center-align{
+
+#center-align {
 	text-align: center;
 }
 
+#response-message {
+	position: relative;
+	top: -10px
+}
