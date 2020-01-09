@@ -642,7 +642,7 @@
 									</div>
 									<div *ngIf="campaignViewsPagination.pagedItems?.length != 0">
 										<div class="table-responsive set-overflow-none">
-											<div class="col-xs-6 p0" id="float-right">
+											<div class="col-xs-6 p0" id="float-right" *ngIf="campaignType==='EVENT'">
 											<div class="col-xs-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"></div>
 				                      			 <div [hidden]="mainLoader" class="col-xs-3 rsvp_tile_padding">
 													<button class="portlet light color1-invert crcb"
