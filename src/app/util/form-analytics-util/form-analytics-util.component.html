@@ -10,7 +10,7 @@
 							title="Close">
 							<i class="fa fa-times"></i>
 						</a> -->
-						<a *ngIf="(isTotalLeadsData || isTotalAttendees) && pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
+						<a *ngIf="(isTotalLeadsData || isTotalAttendees) && pagination.totalRecords>0 && !pagination.checkInLeads" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
 							<i class="fa fa-download margin"></i>
 						</a>
 						<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">

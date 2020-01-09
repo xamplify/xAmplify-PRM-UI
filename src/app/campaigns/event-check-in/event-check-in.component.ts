@@ -37,6 +37,7 @@ export class EventCheckInComponent implements OnInit {
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.exportingObject['campaignAlias'] = this.campaignId;
         this.exportingObject['checkInLeads'] = true;
+        this.exportingObject['totalAttendees'] = true;
         this.checkAccess();
     }
     
