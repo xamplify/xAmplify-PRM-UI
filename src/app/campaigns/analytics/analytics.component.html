@@ -40,7 +40,8 @@
 				{{campaign.campaignName | slice: 0: 35}}<span *ngIf="campaign.campaignName?.length>35">...</span>
 				<b *ngIf="isNavigatedThroughAnalytics" style="color:#ed1d24">(Data Sharing Disabled)</b></li>
 		</ul>
-		<button routerLink = "/home/campaigns/{{campaign.campaignId}}/checkin" *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-danger" id="check-in-css">Check In</button> 
+		<button routerLink = "/home/campaigns/{{campaign.campaignId}}/checkin" *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" 
+		class="btn btn-primary" id="check-in-css"><b>Check In</b> <img src="assets/images/attendees.png" id="custom-width-button"></button> 
 		<!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
 	</div>
 	<div class="portlet light clearfix" *ngIf="!isShowPartnerLeads">
@@ -114,7 +115,7 @@
 						</a>
 					</div>
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-4': campaignType === 'EVENT', 'col-sm-6': campaignType === 'REGULAR','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-sm-4': campaignType === 'EVENT', 'col-sm-6': campaignType === 'REGULAR','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
 					 *ngIf="(campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
@@ -194,7 +195,7 @@
 					
 					
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-xs-4': campaignType === 'EVENT', 'col-sm-6': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-sm-4': campaignType === 'EVENT', 'col-sm-6': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
 								<i class="fa fa-users"></i>
@@ -245,7 +246,7 @@
 						</div> -->
 						<div class="col-xs-12 emails-info" id="campaignreportvendor" [hidden]="mainLoader">
 
-							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpInvitiesDetails();searchKey=''" [disabled]="campaignReport.totalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-envelope"></i>
@@ -258,7 +259,7 @@
 								</button>
 							</div>
 
-							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpEmailOpenDetails();searchKey=''" [disabled]="campaignReport.totalEmailOpenCount < 1 || !isDataShare">
 									<div class="portlet-body text-center">
 										<i class="fa fa-envelope-open"></i>
@@ -270,7 +271,7 @@
 									</div>
 								</button>
 							</div>
-							<div class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('YES');searchKey=''" [disabled]="campaignReport.totalYesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-check-circle"></i>
@@ -282,7 +283,7 @@
 									</div>
 								</button>
 							</div>
-							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO');searchKey=''" [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-times-circle"></i>
@@ -294,7 +295,7 @@
 									</div>
 								</button>
 							</div>
-							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE');searchKey=''" [disabled]="campaignReport.totalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-question-circle"></i>
@@ -306,7 +307,7 @@
 									</div>
 								</button>
 							</div>
-							<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NOTYET');searchKey=''" [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-exclamation-circle"></i>
@@ -318,7 +319,7 @@
 									</div>
 								</button>
 							</div>
-							<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_LEADS');searchKey=''" [disabled]="campaignReport.totalLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-user-secret"></i>
@@ -330,7 +331,7 @@
 									</div>
 								</button>
 							</div>
-							<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+							<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
 								<button class="portlet light color1-invert crcb" (click)="getRsvpDetails('TOTAL_ATTENDEES');searchKey=''" [disabled]="campaignReport.totalAttendeesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 									<div class="portlet-body text-center">
 										<i class="fa fa-user"></i>
@@ -598,7 +599,7 @@
 							</div>
 							<div class="portlet light" [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification">
 								<div class="portlet-title col-xs-12">
-									<div class="caption col-xs-8">
+									<div class="caption col-xs-8 col-sm-8">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
 											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 											<span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
@@ -609,7 +610,7 @@
 									</div>
 
 
-								<div class="col-xs-3" style="margin-top: -7px;padding-right: 0px;">
+								<div class="col-xs-8 col-sm-3" style="margin-top: -7px;padding-right: 0px;">
 									<input type="text" [(ngModel)]="searchKey"
 										[ngModelOptions]="{standalone: true}" class="form-control"
 										placeholder="Search"
@@ -643,9 +644,11 @@
 									</div>
 									<div *ngIf="campaignViewsPagination.pagedItems?.length != 0">
 										<div class="table-responsive set-overflow-none">
-											<div class="col-xs-6 p0" id="float-right" *ngIf="campaignType==='EVENT'">
-											<div class="col-xs-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"></div>
-				                      			 <div [hidden]="mainLoader" class="col-xs-3 rsvp_tile_padding">
+										<div class="row">
+										<div class="col-lg-6 p0"></div>
+											<div class="col-lg-6 p0" id="float-right" *ngIf="campaignType==='EVENT'">
+											<div class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"></div>
+				                      			 <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
 													<button class="portlet light color1-invert crcb"
 													 [class.selectedBox]="detailType === 'YES'" disabled="disabled"
 			 											>
@@ -659,7 +662,7 @@
 												</div>
 											</button>
 											</div>
-										<div [hidden]="mainLoader" class="col-xs-3 rsvp_tile_padding">
+										<div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
 											<button class="portlet light color1-invert crcb"  [class.selectedBox]="detailType === 'NO'" 
 			 											disabled="disabled">
 												<div class="portlet-body text-center">
@@ -672,7 +675,7 @@
 												</div>
 											</button>
 										</div>
-											<div [hidden]="mainLoader" class="col-xs-3 rsvp_tile_padding">
+											<div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
 												<button class="portlet light color1-invert crcb"  [class.selectedBox]="detailType === 'MAYBE'"
 			 											disabled="disabled">													
 			 											<div class="portlet-body text-center">
@@ -685,7 +688,7 @@
 													</div>
 												</button>
 											</div>
-											<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-3 rsvp_tile_padding">
+											<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
 												<button class="portlet light color1-invert crcb"  [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'" (click)="goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
 			 											[disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">													
 			 											<div class="portlet-body text-center">
@@ -697,6 +700,7 @@
 				
 													</div>
 												</button>
+											</div>
 											</div>
 											</div>
 											<table class="table tgrid">
@@ -906,7 +910,7 @@
 	<fieldset style = "color: #31bdf2; background: white;padding: 0px;" *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
 	<div class="col-xs-12 p0">
 	<div class="portlet-title col-xs-12" style="padding: 10px 0px 4px 0px; border-bottom: 1px solid #c5c5c5;    background-color: #3598dc;">
-									<div class="caption col-xs-8">
+									<div class="caption col-xs-12 col-sm-8">
 										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
 											<span style="color:#fff!important">
 											<i aria-hidden="true" class="fa fa-user-secret" style="font-size:20px!important" id="leads-info-font-size"></i>
@@ -922,7 +926,7 @@
 									</div>
 
 
-								<div class="col-xs-3" style="margin-top: -7px;padding-right: 0px;">
+								<div class="col-xs-8 col-sm-3" style="margin-top: 0px;padding-right: 0px;">
 									<input type="text" [(ngModel)]="leadsSearchKey"
 										[ngModelOptions]="{standalone: true}" class="form-control"
 										placeholder="Search"

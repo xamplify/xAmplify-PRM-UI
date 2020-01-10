@@ -24,6 +24,7 @@ declare var $: any, swal: any;
     providers: [Pagination, HttpRequestLoader,FormService,CallActionSwitch,Properties]
 } )
 export class FormAnalyticsUtilComponent implements OnInit {
+    copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     formId: any;
     partnerLandingPageAlias: any;
     loggedInUserId: number = 0;
@@ -46,6 +47,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     title:string = "";
     isEventCheckIn = false;
     customResponse: CustomResponse = new CustomResponse();
+    publicEventAlias = "";
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -74,6 +76,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.pagination.totalPartnerLeads = this.importedObject['totalPartnerLeads'];
                 this.pagination.checkInLeads = this.importedObject['checkInLeads'];
                 this.isEventCheckIn = this.pagination.checkInLeads;
+                this.publicEventAlias = this.importedObject['publicEventAlias'];
             }else if(this.partnerLandingPageAlias!=undefined){
                 this.pagination.landingPageAlias = this.partnerLandingPageAlias;
                 this.pagination.formId = this.formId;
@@ -180,6 +183,18 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.referenceService.loading( this.httpRequestLoader, false );
             },
             ( error: any ) => { this.referenceService.showSweetAlert( this.properties.serverErrorMessage, "", "error" ); this.referenceService.loading( this.httpRequestLoader, false ); } );
+    }
+    
+    openEventUrlModal(){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        $('#public-event-url-modal-check-in').modal('show');
+    }
+    copyUrl(inputElement){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
     }
 
 }
