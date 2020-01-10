@@ -691,3 +691,8 @@ tr>td>h6 {
 	width: 20px;
 	height: 17px;
 }
+#partner-analytics{
+	border: 1px solid #CCC;
+    padding: 10px !important;
+    margin: 10px!important;
+}

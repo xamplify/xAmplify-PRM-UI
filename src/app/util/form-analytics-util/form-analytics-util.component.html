@@ -12,8 +12,8 @@
 				         </div>
 				         <div class="col-xs-12 col-sm-6 col-md-6 text-right">
 				         <div class="inputs" align="right" style="padding-bottom:10px!important">
-						<a *ngIf="pagination.checkInLeads" (click)="openEventUrlModal()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Copy">
-							<i class="fa fa-copy"></i>
+						<a  (click)="openLinkInBrowser()" *ngIf="pagination.checkInLeads"  class="close-circle"  data-toggle="tooltip" data-placement="top" title="Open">
+							<i class="fa fa-link"></i>
 						</a>
 						<a *ngIf="(isTotalLeadsData || isTotalAttendees) && pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
 							<i class="fa fa-download margin"></i>
@@ -124,30 +124,6 @@
 				</strong>
 			</div>
 		</div>
-		
-		
-<!-- ----------------------Copy Link Modal------------------- -->
-  <div class="modal right " id="public-event-url-modal-check-in" data-backdrop="static">
-    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close-circle" data-dismiss="modal">
-            <i class="fa fa-times"></i>
-          </button>
-          <h4 class="modal-title text-center">DIRECT LINK FOR YOUR CAMPAIGN</h4>
-        </div>
-        <div class="modal-body">
-          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
-          </app-response-message>
-          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}rsvp/{{publicEventAlias}}?type=YES&utm_source=public" #publicEventCampaignUrlInput>
-        </div>
-        <div class="modal-footer">
-          <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)">Copy Link</a>
-          <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
 	<app-scroll-top></app-scroll-top>
 </div>

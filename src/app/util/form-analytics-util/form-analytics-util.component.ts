@@ -185,16 +185,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
             ( error: any ) => { this.referenceService.showSweetAlert( this.properties.serverErrorMessage, "", "error" ); this.referenceService.loading( this.httpRequestLoader, false ); } );
     }
     
-    openEventUrlModal(){
-        this.copiedLinkCustomResponse = new CustomResponse();
-        $('#public-event-url-modal-check-in').modal('show');
-    }
-    copyUrl(inputElement){
-        this.copiedLinkCustomResponse = new CustomResponse();
-        inputElement.select();
-        document.execCommand('copy');
-        inputElement.setSelectionRange(0, 0);
-        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+    openLinkInBrowser(){
+        window.open(this.authenticationService.APP_URL+"rsvp/"+this.publicEventAlias+"?type=YES&utm_source=public","_blank");
     }
 
 }

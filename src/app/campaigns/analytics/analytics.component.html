@@ -115,7 +115,7 @@
 						</a>
 					</div>
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-sm-4': campaignType === 'EVENT', 'col-sm-6': campaignType === 'REGULAR','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO' || campaignType === 'EVENT','col-sm-6': campaignType === 'REGULAR','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null }"
 					 *ngIf="(campaignType === 'VIDEO' || campaignType === 'REGULAR' || campaignType === 'EVENT') && campaign.selectedEmailTemplateId>0">
 						<a class="dashboard-stat dashboard-stat-lighter blue-soft" (click)="showEmailTemplatePreview(campaign.emailTemplate)" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
@@ -195,7 +195,7 @@
 					
 					
 
-					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO','col-sm-4': campaignType === 'EVENT', 'col-sm-6': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
+					<div class="pl10 pr10 col-xs-12" [ngClass]="{'col-sm-4': campaignType === 'VIDEO' || campaignType === 'EVENT', 'col-sm-6': (campaignType === 'REGULAR' || campaignType === 'LANDINGPAGE'), 'col-sm-12': campaignType === 'SOCIAL','forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}">
 						<a class="dashboard-stat dashboard-stat-lighter green-soft" (click)="showContactListModal()" [class.disabled]="!isPartnerEnabledAnalyticsAccess ?true:null">
 							<div class="visual">
 								<i class="fa fa-users"></i>
@@ -344,8 +344,9 @@
 								</button>
 							</div>
 						</div>
-
-						<div class="col-xs-12" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
+					</fieldset>
+					<div id="partner-analytics" *ngIf="campaignType === 'EVENT' && isChannelCampaign">
+						<div>
 							<div class="row" style="margin-left: -6px;">
 								<div class="table-responsive">
 									<ng-container>
@@ -397,8 +398,7 @@
 								</div>
 							</div>
 						</div>
-
-					</fieldset>
+						</div>
 				</section>
 
 
