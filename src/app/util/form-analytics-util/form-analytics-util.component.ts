@@ -161,6 +161,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
     downloadCsv(){
         if(this.pagination.totalPartnerLeads){
             window.open(this.authenticationService.REST_URL+"pl/"+this.pagination.campaignId+"/"+false);
+        }else if(this.pagination.checkInLeads){
+            window.open(this.authenticationService.REST_URL+"eccl/"+this.pagination.campaignId);
         }else{
             window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
         }
