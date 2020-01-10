@@ -810,17 +810,6 @@ img:hover {
                                 	<td class='pt10 pb10 bold'>Category:</td>
                                   <td >{{contact.category}}</td>
                               </tr>
-															<tr>
-																<td class='pt10 pb10 bold'>Phone:</td>
-																<td class='pt10 pb10'>
-																	<div *ngIf="contact.mobileNumber"
-																		[class.disabled]="true"
-																		style="pointer-events: none !important; cursor: auto;">
-																		<int-phone-prefix [(ngModel)]="contact.mobileNumber"
-																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																	</div>
-																</td>
-															</tr>
 														<tr *ngIf="gdprStatus">
 														  <td class='pt10 pb10 bold'>Legal Basis :</td>
 															<td align="center" class="pt10 pb10">
