@@ -193,6 +193,7 @@ h3 {
 
 .portlet.light {
 	box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.4);
+	border-radius: 3px !important;
 }
 
 p {
@@ -255,12 +256,14 @@ h1.bold {
 	background-color: #00a6e8;
 	color: #fff;
 	border: 1px solid #00a6e8;
+	border-radius: 3px !important;
 }
 
 .color1:hover, .color1-invert {
 	color: #00a6e8;
 	background-color: #fff;
 	border: 1px solid #00a6e8;
+	border-radius: 3px !important;
 }
 
 /*.color2, .color2-invert:hover {
@@ -346,7 +349,7 @@ tr>td>h6 {
 	-ms-transform: rotate(-15deg);	transform: rotate(-15deg); position: absolute; bottom: 12px; font-size: 78px !important;}
 .dashboard-stat{
 	 height:auto !important;
-	 border-radius: 0 !important;
+	 border-radius: 3px !important;
 	 margin-bottom: 9px !important;}
 .camp-details{float:left; padding: 10px;}
 .camp-desc, .camp-title, .camp-number{color:#FFF; font-size:12px;}
@@ -586,6 +589,18 @@ tr>td>h6 {
     bottom: 0;
     right: -5px;
 }
+
+@media only screen and (max-width:768px){
+	.dropdown-toggle{
+		margin-right: 0px!important;
+	}
+}
+
+@media only screen and (min-width:768px){
+	.dropdown-toggle{
+		margin-right: 21px!important;
+	}
+}
 @media only screen and (max-width:768px){ .modal-css { width: 100% !important;}}
 @media only screen and (min-width:768px){ .modal-css { width: 65% !important;}}
 .push {
@@ -662,7 +677,7 @@ tr>td>h6 {
 
 #table-header {
 	font-size: 12px;
-	font-weight: 500;
+	font-weight: 700;
 }
 .set-overflow-none{
 	overflow: hidden !important;
@@ -694,5 +709,15 @@ tr>td>h6 {
 #partner-analytics{
 	border: 1px solid #CCC;
     padding: 10px !important;
-    margin: 10px!important;
+	margin: 10px!important;
+	border-radius: 3px !important;
+}
+
+fieldset{
+	border-radius: 3px !important;
+}
+
+#campaignreportvendor{
+	padding-left:0px !important;
+	padding-right:0px !important;
 }

@@ -599,8 +599,8 @@
 							</div>
 							<div class="portlet light" [hidden]="mainLoader || hasClientError || !campaignViews || totalCampaignViewsLoader || !campaign.emailNotification">
 								<div class="portlet-title col-xs-12">
-									<div class="caption col-xs-8 col-sm-8">
-										<span class="caption-subject font-red-sunglo" style="font-size: 15px !important;">
+									<div class="caption col-xs-12 col-sm-7">
+										<span class="caption-subject font-red-sunglo" style="font-size: 13px !important;">
 											<span *ngIf="campaignType==='VIDEO'">TOTAL VIEWS FOR THIS CAMPAIGN</span>
 											<span *ngIf="campaignType==='SOCIAL'">TOTAL REDISTRIBUTED FOR THIS CAMPAIGN</span>
 											<span *ngIf="campaignType==='REGULAR'">TOTAL EMAIL OPENED FOR THIS CAMPAIGN</span>
@@ -610,7 +610,7 @@
 									</div>
 
 
-								<div class="col-xs-8 col-sm-3" style="margin-top: -7px;padding-right: 0px;">
+								<div class="col-xs-10 col-sm-4" style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
 									<input type="text" [(ngModel)]="searchKey"
 										[ngModelOptions]="{standalone: true}" class="form-control"
 										placeholder="Search"
@@ -625,7 +625,7 @@
 									</button>
 								</div>
 								<div [class.disabled]="campaignViewsPagination.pagedItems?.length == 0" class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
-										<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px;margin-right: 21px; float:right;">
+										<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin-top: 14px; float:right;">
 											<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 										</span>
 										<ul class="dropdown-menu pull-right">
@@ -703,10 +703,11 @@
 											</div>
 											</div>
 											</div>
+											<div class="table-responsive">
 											<table class="table tgrid">
 												<thead>
 													<tr>
-														<th id="table-header" style="width: 25%;">Name</th>
+														<th id="table-header" style="width: 25%;text-align:left">Name</th>
 														<th id="table-header">Campaign Name</th>
 														<!-- 	<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">Redistribution Time</th> -->
 														<th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">invites</th>
@@ -893,6 +894,7 @@
 													</ng-container>
 												</tbody>
 											</table>
+											</div>
 										</div>
 										<app-pagination class="pg8" [pagination]="campaignViewsPagination" [type]="'campaignViews'" (notifyParent)="setPage($event)"
 										 (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
@@ -1007,6 +1009,7 @@
 			<!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && leadsFormHeaders?.length != 0">
+					<div class="table-responsive">
 					<table class="table tgrid">
 						<thead>
 							<tr>
@@ -1056,6 +1059,7 @@
 							</ng-container>
 						</tbody>
 					</table>
+					</div>
 				</div>
 
 				<div *ngIf="leadsDetailPagination.pagedItems.length !== 0" class="pg8">
@@ -1126,7 +1130,7 @@
 			</div>
 			<div class="col-xs-12 emails-info" id='values' [hidden]="mainLoader">
 
-				<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}">
+				<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpInvitiesDetails()" [class.selectedBox]="rsvpResposeType === 'invities'"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
@@ -1140,7 +1144,7 @@
 					</button>
 				</div>
 
-				<div [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}">
+				<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()" [class.selectedBox]="rsvpResposeType === 'email open'"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="!isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
@@ -1153,7 +1157,7 @@
 						</div>
 					</button>
 				</div>
-				<div class="p-5x" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}">
+				<div class="p-5x" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'YES'" (click)="resetRsvpPagination();getRsvpDetails('YES')"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.redistributionTotalYesCount < 1 ||  !isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
@@ -1165,7 +1169,7 @@
 						</div>
 					</button>
 				</div>
-				<div class="p-5x" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding" [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}">
+				<div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'" (click)="resetRsvpPagination();getRsvpDetails('NO')"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
@@ -1177,7 +1181,7 @@
 						</div>
 					</button>
 				</div>
-				<div class="p-5x" [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
+				<div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'" (click)="resetRsvpPagination();getRsvpDetails('MAYBE')"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.redistributionTotalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
@@ -1189,7 +1193,7 @@
 						</div>
 					</button>
 				</div>
-				<div [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
+				<div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'" (click)="resetRsvpPagination();getRsvpDetails('NOTYET')"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
@@ -1201,7 +1205,7 @@
 						</div>
 					</button>
 				</div>
-				<div *ngIf="campaign.publicEventCampaign" [ngClass]="{'seven-tile-width': campaign.publicEventCampaign}" [hidden]="mainLoader" class="col-xs-2 rsvp_tile_padding">
+				<div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
 					<button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'TOTAL_PARTNER_LEADS'" (click)="resetRsvpPagination();goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
 					 [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}" [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
 						<div class="portlet-body text-center">
