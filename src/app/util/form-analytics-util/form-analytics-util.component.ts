@@ -188,5 +188,6 @@ export class FormAnalyticsUtilComponent implements OnInit {
     openLinkInBrowser(){
         window.open(this.authenticationService.APP_URL+"rsvp/"+this.publicEventAlias+"?type=YES&utm_source=public","_blank");
     }
+    
 
 }

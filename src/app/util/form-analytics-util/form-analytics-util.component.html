@@ -12,26 +12,29 @@
 				         </div>
 				         <div class="col-xs-12 col-sm-6 col-md-6 text-right">
 				         <div class="inputs" align="right" style="padding-bottom:10px!important">
-						<a  (click)="openLinkInBrowser()" *ngIf="pagination.checkInLeads"  class="close-circle"  data-toggle="tooltip" data-placement="top" title="Open">
-							<i class="fa fa-link"></i>
-						</a>
-						<a *ngIf="(isTotalLeadsData || isTotalAttendees) && pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
-							<i class="fa fa-download margin"></i>
-						</a>
-						<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-							<i class="fa fa-refresh margin"></i>
-						</a>
-						<div class="portlet-input input-inline input-small" id="search-margin">
-							<div class="input-icon right" id="icon-right">
-								<input type="text" id="search-text" class="form-control" [(ngModel)]="searchKey"
-									[ngModelOptions]="{standalone: true}" placeholder="search..."
-									(keypress)="eventHandler($event.keyCode)">
-								<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-									(click)="searchKey='';search()"></button>
-								<button type="submit" class="search-box-item-click" (click)="search()"><i
-										class="fa fa-search"></i></button>
-							</div>
-						</div>
+								<a  *ngIf="pagination.checkInLeads" (click)="goToCampaignAnalytics()" class="close-circle cross">
+								 	<span id="icon-properties" aria-hidden="true" class="glyphicon glyphicon-remove"></span>
+								 </a>
+								<a  (click)="openLinkInBrowser()" *ngIf="pagination.checkInLeads"  class="close-circle"  data-toggle="tooltip" data-placement="top" title="Open">
+									<i class="fa fa-link"></i>
+								</a>
+								<a *ngIf="(isTotalLeadsData || isTotalAttendees) && pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
+									<i class="fa fa-download margin"></i>
+								</a>
+								<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+									<i class="fa fa-refresh margin"></i>
+								</a>
+								<div class="portlet-input input-inline input-small" id="search-margin">
+									<div class="input-icon right" id="icon-right">
+										<input type="text" id="search-text" class="form-control" [(ngModel)]="searchKey"
+											[ngModelOptions]="{standalone: true}" placeholder="search..."
+											(keypress)="eventHandler($event.keyCode)">
+										<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+											(click)="searchKey='';search()"></button>
+										<button type="submit" class="search-box-item-click" (click)="search()"><i
+												class="fa fa-search"></i></button>
+									</div>
+								</div>
 					</div>
 				         </div>
 				     </div>
@@ -52,8 +55,8 @@
 										<th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
 									</ng-container>
 								</ng-container>
-								<th></th>
-								<th *ngIf="isEventCheckIn" id="center-align">
+								<th *ngIf="columns?.length>3"></th>
+								<th *ngIf="isEventCheckIn" id="th-width">
 									<img src="assets/images/attendees-black.png" id="custom-width">
 								</th>
 							</tr>
@@ -64,7 +67,7 @@
 									<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
 										<td *ngIf="columnIndex<=3">{{columnValue.value}}</td>
 									</ng-container>
-									<td>
+									<td *ngIf="columns?.length>3">
 										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
 											title="View More Columns" *ngIf="columns.length>4">
 											<i class="fa"
