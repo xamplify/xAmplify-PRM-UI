@@ -909,7 +909,7 @@
 			</ng-template>
 		</div>
 	</div>
-	<fieldset style = "color: #31bdf2; background: white;padding: 0px;" *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
+	<div style = "color: #31bdf2; background: white;padding: 0px;" *ngIf="campaign.publicEventCampaign && !isShowPartnerLeads">
 	<div class="col-xs-12 p0">
 	<div class="portlet-title col-xs-12" style="padding: 10px 0px 4px 0px; border-bottom: 1px solid #c5c5c5;    background-color: #3598dc;">
 									<div class="caption col-xs-12 col-sm-8">
@@ -1007,6 +1007,7 @@
 									<h4 class="m5">Please wait while we process your request.</h4>
 					  </div>
 			<!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
+			<div class="table-responsive">
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && leadsFormHeaders?.length != 0">
 					<div class="table-responsive">
@@ -1061,6 +1062,7 @@
 					</table>
 					</div>
 				</div>
+			</div>
 
 				<div *ngIf="leadsDetailPagination.pagedItems.length !== 0" class="pg8">
 					<app-pagination [pagination]="leadsDetailPagination" (notifyParent)="eventLeadsDetailsSetPage($event)"
@@ -1094,7 +1096,7 @@
 </div>		
 	
 	<!-- <app-form-analytics-util [importedObject]="exportingObject" *ngIf="exportingObject.formAlias?.length>0"></app-form-analytics-util> -->
-    </fieldset>
+</div>
 </div>
 
 <section *ngIf="campaignType === 'EVENT' && isChannelCampaign">
