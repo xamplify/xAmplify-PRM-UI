@@ -2339,6 +2339,7 @@
 			<!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
 				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && partnerLeadsFormHeaders?.length != 0">
+					<div class="table-responsive">
 					<table class="table tgrid">
 						<thead>
 							<tr>
@@ -2388,6 +2389,7 @@
 							</ng-container>
 						</tbody>
 					</table>
+					</div>
 				</div>
                  <!-- <div *ngIf="leadsDetailPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
 					<strong>No Data Found.</strong>
