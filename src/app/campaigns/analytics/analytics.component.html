@@ -928,7 +928,7 @@
 									</div>
 
 
-								<div class="col-xs-8 col-sm-3" style="margin-top: 0px;padding-right: 0px;">
+								<div class="col-xs-10 col-sm-3" style="margin-top: 0px;padding-right: 0px;">
 									<input type="text" [(ngModel)]="leadsSearchKey"
 										[ngModelOptions]="{standalone: true}" class="form-control"
 										placeholder="Search"
@@ -999,7 +999,7 @@
   <div class="row" id="responsive">
 	<div class="col-xs-12 p0">
 			<div class="portlet light">
-			<div *ngIf="!httpRequestLoader.isLoading && leadsFormHeaders?.length == 0" class="alert alert-info">
+			<div *ngIf="!httpRequestLoader.isLoading && leadsFormDetails?.length == 0" class="alert alert-info">
 										<strong>No Records Found.</strong>
 									</div>
 			 <div class="alert alert-info flex" *ngIf="isLeadListDownloadProcessing">
@@ -1009,7 +1009,7 @@
 			<!-- <h4 style="font-weight: 500;">Your lead <b style="color:black">{{leadDetailType}}</b> details</h4> -->
 			<div class="table-responsive">
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && leadsFormHeaders?.length != 0">
+				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading && leadsFormDetails?.length != 0">
 					<div class="table-responsive">
 					<table class="table tgrid">
 						<thead>
