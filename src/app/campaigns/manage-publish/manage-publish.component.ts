@@ -18,6 +18,7 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
+import { CampaignWorkFlowsModalPopupComponent} from '../campaign-work-flows-modal-popup/campaign-work-flows-modal-popup.component';
 
 declare var swal, $: any;
 
@@ -83,6 +84,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     publicEventAlias:string = "";
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
+    @ViewChild('campaignWorkflowsModalPopup') campaignWorkFlowsModalPopup:CampaignWorkFlowsModalPopupComponent;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
@@ -507,6 +509,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     	      () => this.logger.log('Finished')
     	      );
     	    }catch(error) {this.logger.error('error'+error); }
-    	  }
+          }
+          
+    /************Adding Workflows**************** */
+    addWorkFlows(campaign:Campaign){
+        this.campaignWorkFlowsModalPopup.showPopup(campaign);
+    }
 
 }

@@ -1,0 +1,27 @@
+<app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
+<ng-container>
+  <div class="col-xs-12">
+    <div>
+      <div class="row" id="row-margin">
+        <div class="col-xs-6">
+          <a *ngIf="urlLinks?.length==0" class="dashboard-stat website-auto-response blur">
+            <i class="fa fa-ban p0"></i>
+            No website links found
+          </a>
+          <a *ngIf="urlLinks?.length>0" class="dashboard-stat website-auto-response"
+             (click)="addClickRows()">
+            <i class="fa fa-plus-square p0" id="i-margin"></i>
+            {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+          </a>
+        </div>
+
+        <div class="col-xs-6">
+          <a class="dashboard-stat email-auto-response" (click)="addReplyRows()">
+            <i class="fa fa-plus-square p0" id="i-margin"></i>
+            {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,30 @@
+.portlet.light.dashboard-stat2.border-error {
+  border-color: red
+}
+
+.dashboard-stat {
+  padding: 9px 0;
+  height: auto;
+  text-align: center;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+.website-auto-response {
+  background-color: #f76c1a;
+
+}
+
+.email-auto-response {
+  background-color: #f4555c
+}
+
+#i-margin {
+  margin: 0 5px;
+}
+
+#row-margin {
+  margin-bottom: 5px;
+  margin-top: -9px;
+}

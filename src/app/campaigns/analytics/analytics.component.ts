@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
-import { ActivatedRoute,Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Campaign } from '../models/campaign';
 import { CampaignReport } from '../models/campaign-report';
@@ -24,25 +24,25 @@ import { Tweet } from '../../social/models/tweet';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { DealRegistrationService } from '../../deal-registration/services/deal-registration.service';
 import { EventCampaign } from '../models/event-campaign';
-import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { PreviewLandingPageComponent } from '../../landing-pages/preview-landing-page/preview-landing-page.component';
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
 
-declare var $, Highcharts,swal: any;
+declare var $, Highcharts, swal: any;
 
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.css', './timeline.css'],
-  providers: [Pagination,HttpRequestLoader,LandingPageService]
+  providers: [Pagination, HttpRequestLoader, LandingPageService]
 })
-export class AnalyticsComponent implements OnInit , OnDestroy{
- isDealRegistration:boolean=false;
- enableLeads = false;
+export class AnalyticsComponent implements OnInit, OnDestroy {
+  isDealRegistration: boolean = false;
+  enableLeads = false;
   createdBySelf = false;
-  dealButtonText: string="";
+  dealButtonText: string = "";
   dealId: any;
   eventCampaign: EventCampaign = new EventCampaign();
   isCancelledEvent: boolean = false;
@@ -76,14 +76,14 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   userWatchedReportPagination: Pagination = new Pagination();
   rsvpDetailAnalyticsPagination: Pagination = new Pagination();
   sentEmailOpenPagination: Pagination = new Pagination();
-  autoResponseAnalyticsPagination:Pagination = new Pagination();
+  autoResponseAnalyticsPagination: Pagination = new Pagination();
 
 
   socialCampaign: SocialCampaign = new SocialCampaign();
   redistributedAccounts = new Set<number>();
   redistributedAccountsBySelectedUserId: Array<SocialStatus> = [];
   campaignType: string;
-  campaignTypeString:string;
+  campaignTypeString: string;
   campaignId: number;
   maxViewsValue: number;
   barChartCliked = false;
@@ -100,18 +100,18 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   campaignTypeValue: string;
   isPartnerCampaign: string;
   renderMapData: any;
-  campaingContactLists:any;
-  campaingContactListValues:any;
-  contactListId:number;
-  paginationType:string;
+  campaingContactLists: any;
+  campaingContactListValues: any;
+  contactListId: number;
+  paginationType: string;
   videoFile: any;
   userWatchtotalRecords: number;
   isDataShare = false;
   isPartnerEnabledAnalyticsAccess = false;
   isNavigatedThroughAnalytics = false;
-  campaignRouter:any;
+  campaignRouter: any;
   loggedInUserId = 0;
-  loading =false;
+  loading = false;
   mainLoader = false;
   logListName = "";
   selectedRsvpPartnerId = 0;
@@ -122,8 +122,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   rsvpDetailType = '';
   isOpenNotificationModal = false;
   selectedEmailNotOpenUserId: any;
-  httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
-  autoResponeAnalyticsLoader:HttpRequestLoader = new HttpRequestLoader();
+  httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
+  autoResponeAnalyticsLoader: HttpRequestLoader = new HttpRequestLoader();
   hasClientError = false;
   contactListDeleteError = false;
   interactiveDataTimeLineViewEnable = false;
@@ -133,25 +133,25 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   actionType = '';
   colspanValue: number = 5;
   sortByDropDown = [
-                    { 'name': 'Sort By', 'value': '' },
-                    { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
-                    { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
-                    { 'name': 'Time(ASC)', 'value': 'time-ASC' },
-                    { 'name': 'Time(DESC)', 'value': 'time-DESC' }
-                ];
-  selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length-1];
+    { 'name': 'Sort By', 'value': '' },
+    { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
+    { 'name': 'Name(Z-A)', 'value': 'name-DESC' },
+    { 'name': 'Time(ASC)', 'value': 'time-ASC' },
+    { 'name': 'Time(DESC)', 'value': 'time-DESC' }
+  ];
+  selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length - 1];
   tweets: Array<Tweet> = new Array<Tweet>();
-  smsLogs:any;
+  smsLogs: any;
   smsService: boolean;
- isSmsServiceAnalytics = false;
- @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
- senderMergeTag:SenderMergeTag = new SenderMergeTag();
- leadData: any;
-  isDealPreview=false;
-  isDeal=false;
-  exportingObject:any={};
-  inputObject:any = {};
-  partnerLeadInfoRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+  isSmsServiceAnalytics = false;
+  @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+  senderMergeTag: SenderMergeTag = new SenderMergeTag();
+  leadData: any;
+  isDealPreview = false;
+  isDeal = false;
+  exportingObject: any = {};
+  inputObject: any = {};
+  partnerLeadInfoRequestLoader: HttpRequestLoader = new HttpRequestLoader();
   leadInfoTitle = "Leads Info";
   leadDetailType = 'YES';
   partnerLeadDetailType = 'YES'
@@ -173,8 +173,8 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
-    public xtremandLogger:XtremandLogger, private twitterService: TwitterService,private emailTemplateService:EmailTemplateService,private dealRegService:DealRegistrationService,public router:Router) {
-      try{
+    public xtremandLogger: XtremandLogger, private twitterService: TwitterService, private emailTemplateService: EmailTemplateService, private dealRegService: DealRegistrationService, public router: Router) {
+    try {
       this.campaignRouter = this.utilService.getRouterLocalStorage();
       this.isTimeLineView = false;
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -187,143 +187,143 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
           "userId": this.referenceService.topNavBarNotificationDetails.userId,
           "emailId": this.referenceService.topNavBarNotificationDetails.emailId
         }
-       this.isTimeLineView = false;
-       this.userTimeline(object);
+        this.isTimeLineView = false;
+        this.userTimeline(object);
       }
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
   showTimeline() {
     this.isTimeLineView = !this.isTimeLineView;
   }
 
   listCampaignViews(campaignId: number, pagination: Pagination) {
-    try{
-    this.loading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
+    try {
+      this.loading = true;
+      this.referenceService.loading(this.httpRequestLoader, true);
 
-    if(this.searchKey){
+      if (this.searchKey) {
         pagination.searchKey = this.searchKey;
         this.pagination.pageIndex = 1;
-    }else{
+      } else {
         pagination.searchKey = null;
-    }
-    if ( this.downloadTypeName != 'sentEmails' ) {
+      }
+      if (this.downloadTypeName != 'sentEmails') {
         this.downloadTypeName = 'campaignViews';
-    }else{
+      } else {
         this.downloadTypeName = 'sentEmails';
-    }
+      }
 
-  //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
-    if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess){
+      //if(!this.campaign.detailedAnalyticsShared && this.campaign.dataShare && !this.campaign.parentCampaignId){
+      if (this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess) {
         pagination.campaignId = campaignId;
         pagination.campaignType = this.campaignType;
 
-        this.campaignService.listCampaignInteractiveViews(pagination,this.isSmsServiceAnalytics)
-         .subscribe(data => {
-           this.listCampaignViewsDataInsert(data);
-         },
-         error => console.log(error),
-         () => console.log('listCampaignInteractiveViews(): called') )
-    } else{
-       this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign,this.isSmsServiceAnalytics)
-         .subscribe(data => {
-             console.log(data);
+        this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
+          .subscribe(data => {
+            this.listCampaignViewsDataInsert(data);
+          },
+            error => console.log(error),
+            () => console.log('listCampaignInteractiveViews(): called'))
+      } else {
+        this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
+          .subscribe(data => {
+            console.log(data);
             this.listCampaignViewsDataInsert(data.campaignviews);
-           },
-          error => console.log(error),
-          () => console.log('listCampaignViews(); called') )
-       }
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+          },
+            error => console.log(error),
+            () => console.log('listCampaignViews(); called'))
+      }
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
-  listCampaignViewsDataInsert(campaignviews: any){
-      this.campaignViews= campaignviews;
-      this.campaignViews.forEach((element, index) => {
-        if(element.latestView){ element.latestView = new Date(element.latestView); }
-      });
-      const views = [];
-      for (let i = 0; i < this.campaignViews.length; i++) {
-        views.push(this.campaignViews[i].viewsCount)
-      }
-      this.maxViewsValue = Math.max.apply(null, views);
-      if(this.paginationType === 'campaignViews') {
-        this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
-        this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
-      } else if(this.paginationType === 'sentEmailData'){
-        this.sentEmailOpenPagination.totalRecords = this.campaignReport.emailSentCount;
-        this.sentEmailOpenPagination = this.pagerService.getPagedItems(this.sentEmailOpenPagination, this.campaignViews);
-      }
-      this.loading = false;
-      this.totalCampaignViewsLoader = false;
-      this.referenceService.loading(this.httpRequestLoader, false);
+  listCampaignViewsDataInsert(campaignviews: any) {
+    this.campaignViews = campaignviews;
+    this.campaignViews.forEach((element, index) => {
+      if (element.latestView) { element.latestView = new Date(element.latestView); }
+    });
+    const views = [];
+    for (let i = 0; i < this.campaignViews.length; i++) {
+      views.push(this.campaignViews[i].viewsCount)
+    }
+    this.maxViewsValue = Math.max.apply(null, views);
+    if (this.paginationType === 'campaignViews') {
+      this.campaignViewsPagination.totalRecords = this.campaignReport.emailSentCount;
+      this.campaignViewsPagination = this.pagerService.getPagedItems(this.campaignViewsPagination, this.campaignViews);
+    } else if (this.paginationType === 'sentEmailData') {
+      this.sentEmailOpenPagination.totalRecords = this.campaignReport.emailSentCount;
+      this.sentEmailOpenPagination = this.pagerService.getPagedItems(this.sentEmailOpenPagination, this.campaignViews);
+    }
+    this.loading = false;
+    this.totalCampaignViewsLoader = false;
+    this.referenceService.loading(this.httpRequestLoader, false);
   }
 
   getCampaignViewsReportDurationWise(campaignId: number) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.campaignService.getCampaignViewsReportDurationWise(campaignId)
-      .subscribe(
-      data => {
-        this.campaignReport.thisMonthViewsCount = data.this_month_count;
-        this.campaignReport.lifetimeViewsCount = data.lifetime_count;
-        this.campaignReport.todayViewsCount = data.today_count;
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => console.log()
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+        .subscribe(
+          data => {
+            this.campaignReport.thisMonthViewsCount = data.this_month_count;
+            this.campaignReport.lifetimeViewsCount = data.lifetime_count;
+            this.campaignReport.todayViewsCount = data.today_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   getEmailSentCount(campaignId: number) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.campaignService.getEmailSentCount(campaignId)
-      .subscribe(
-      data => {
-        this.campaignReport.emailSentCount = data.emails_sent_count;
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => {
-        this.listCampaignViews(campaignId, this.campaignViewsPagination);
-      }
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+        .subscribe(
+          data => {
+            this.campaignReport.emailSentCount = data.emails_sent_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   getCountryWiseCampaignViews(campaignId: number) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.campaignService.getCountryWiseCampaignViews(campaignId)
-      .subscribe(
-      (result: any) => {
-        const countryData = result;
-        const data = [];
-        const self = this;
-        if ( countryData != null ) {
-            for ( const i of Object.keys( countryData ) ) {
+        .subscribe(
+          (result: any) => {
+            const countryData = result;
+            const data = [];
+            const self = this;
+            if (countryData != null) {
+              for (const i of Object.keys(countryData)) {
 
-                const arr = countryData[i][2]? [countryData[i][0].toLowerCase(), countryData[i][1] + countryData[i][2]]: [countryData[i][0].toLowerCase(), countryData[i][1]];
+                const arr = countryData[i][2] ? [countryData[i][0].toLowerCase(), countryData[i][1] + countryData[i][2]] : [countryData[i][0].toLowerCase(), countryData[i][1]];
 
-                data.push( arr );
-          }
-          this.renderMapData = data;
-        }
-        this.loading = false;
-        // this.renderMap(data);
-      },
-      error => console.log(error),
-      () => console.log());
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+                data.push(arr);
+              }
+              this.renderMapData = data;
+            }
+            this.loading = false;
+            // this.renderMap(data);
+          },
+          error => console.log(error),
+          () => console.log());
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
   clickWorldMapReports(event: any) {
     this.getCampaignUsersWatchedInfo(event);
   }
 
   campaignViewsCountBarchart(names, data) {
-  /*   Not calling for event campaign because views count is not coming.
-    if(this.campaignType != 'EVENT'){ */
+    /*   Not calling for event campaign because views count is not coming.
+      if(this.campaignType != 'EVENT'){ */
     this.loading = true;
     const nameValue = this.campaignType === 'VIDEO' ? 'Views' : 'Email Opened';
     const self = this;
@@ -390,179 +390,179 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
         data: data
       }]
     });
-    newChart.xAxis[0].labelGroup.element.childNodes.forEach(function(label)
-    {
+    newChart.xAxis[0].labelGroup.element.childNodes.forEach(function (label) {
       label.style.cursor = "pointer";
-      label.onclick = function(){
+      label.onclick = function () {
         console.log(label);
         const text = this.textContent;
-        for(let i=0; i< self.campaignBarViews.length; i++){
+        for (let i = 0; i < self.campaignBarViews.length; i++) {
           let email = text;
-          if(email.indexOf(self.campaignBarViews[i].emailId)){
+          if (email.indexOf(self.campaignBarViews[i].emailId)) {
             email = email.replace(self.campaignBarViews[i].firstName, '');
             email = email.replace(self.campaignBarViews[i].lastName, '');
             email = email.replace(/\s+/, "");
-            if(self.campaignBarViews[i].emailId === email){ self.userWatchedviewsInfo(email); break; }
+            if (self.campaignBarViews[i].emailId === email) { self.userWatchedviewsInfo(email); break; }
           }
         }
-       }
+      }
     });
     this.loading = false;
-  //  }
+    //  }
   }
 
   getCampaignUserViewsCountBarCharts(campaignId: number, pagination: Pagination) {
-    try{
-    this.loading = true;
-    this.paginationType = 'viewsBarChart';
-    pagination.maxResults = 8;
-    if ( this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess ) {
+    try {
+      this.loading = true;
+      this.paginationType = 'viewsBarChart';
+      pagination.maxResults = 8;
+      if (this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess) {
         pagination.campaignId = campaignId;
         pagination.campaignType = this.campaignType;
 
-        this.campaignService.listCampaignInteractiveViews( pagination,this.isSmsServiceAnalytics )
-            .subscribe( data => {
-                this.campaignBarViews = data;
-                this.campaignBarViewsDataInsert();
-            },
-            error => console.log( error ),
-            () => console.log( 'listCampaignInteractiveViews(): called' ) )
-    } else {
-        this.campaignService.listCampaignViews( campaignId, pagination, this.isChannelCampaign,this.isSmsServiceAnalytics )
-            .subscribe(
+        this.campaignService.listCampaignInteractiveViews(pagination, this.isSmsServiceAnalytics)
+          .subscribe(data => {
+            this.campaignBarViews = data;
+            this.campaignBarViewsDataInsert();
+          },
+            error => console.log(error),
+            () => console.log('listCampaignInteractiveViews(): called'))
+      } else {
+        this.campaignService.listCampaignViews(campaignId, pagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
+          .subscribe(
             data => {
-                console.log( data );
-                this.campaignBarViews = data.campaignviews;
-                this.campaignBarViewsDataInsert();
+              console.log(data);
+              this.campaignBarViews = data.campaignviews;
+              this.campaignBarViewsDataInsert();
             },
-            error => console.log( error ),
+            error => console.log(error),
             () => console.log()
-            )
-    }
-    }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
+          )
+      }
+    } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
   }
 
-  campaignBarViewsDataInsert(){
-      const names = [];
-      const views = [];
-      let isShowBarChart: boolean;
-      if( this.campaignType == 'EVENT' && this.isChannelCampaign ){
-          isShowBarChart = false;
-      }else {
-          isShowBarChart = true;
-      }
-      for ( let i = 0; i < this.campaignBarViews.length; i++ ) {
-          const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
-          const lastName = this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
-          names.push( "<b>" + firstName + " " + lastName + '</b><br/>' + this.campaignBarViews[i].emailId );
-          views.push( this.campaignBarViews[i].viewsCount )
-      }
-      this.maxViewsValue = Math.max.apply( null, views );
-      this.pagination.totalRecords = this.campaignReport.emailSentCount;
-      this.pagination = this.pagerService.getPagedItems( this.pagination, this.campaignBarViews );
-      console.log( this.pagination );
-      if( isShowBarChart ){
-       this.campaignViewsCountBarchart( names, views );
-      }
-      this.referenceService.goToTop();
-      this.loading = false;
+  campaignBarViewsDataInsert() {
+    const names = [];
+    const views = [];
+    let isShowBarChart: boolean;
+    if (this.campaignType == 'EVENT' && this.isChannelCampaign) {
+      isShowBarChart = false;
+    } else {
+      isShowBarChart = true;
+    }
+    for (let i = 0; i < this.campaignBarViews.length; i++) {
+      const firstName = this.campaignBarViews[i].firstName ? this.campaignBarViews[i].firstName : "";
+      const lastName = this.campaignBarViews[i].lastName ? this.campaignBarViews[i].lastName : "";
+      names.push("<b>" + firstName + " " + lastName + '</b><br/>' + this.campaignBarViews[i].emailId);
+      views.push(this.campaignBarViews[i].viewsCount)
+    }
+    this.maxViewsValue = Math.max.apply(null, views);
+    this.pagination.totalRecords = this.campaignReport.emailSentCount;
+    this.pagination = this.pagerService.getPagedItems(this.pagination, this.campaignBarViews);
+    console.log(this.pagination);
+    if (isShowBarChart) {
+      this.campaignViewsCountBarchart(names, views);
+    }
+    this.referenceService.goToTop();
+    this.loading = false;
   }
 
   getCampaignUsersWatchedInfo(countryCode) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'coutrywiseUsers';
       this.downloadTypeName = 'worldMap';
-    this.countryCode = countryCode.toUpperCase();
-    this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
-      .subscribe(
-      (data: any) => {
-        console.log(data);
-        this.worldMapUserData = data.data;
-        this.pagination.totalRecords = data.totalRecords;
-        this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
-        this.loading = false;
-        this.referenceService.loading(this.httpRequestLoader, false);
-        $('#worldMapModal').modal('show');
-      },
-      error => console.log(error),
-      () => console.log('finished')
-      );
-     }catch(error){ this.xtremandLogger.error('error'+error);}
+      this.countryCode = countryCode.toUpperCase();
+      this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.pagination)
+        .subscribe(
+          (data: any) => {
+            console.log(data);
+            this.worldMapUserData = data.data;
+            this.pagination.totalRecords = data.totalRecords;
+            this.pagination = this.pagerService.getPagedItems(this.pagination, data.data);
+            this.loading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+            $('#worldMapModal').modal('show');
+          },
+          error => console.log(error),
+          () => console.log('finished')
+        );
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
   getEmailLogCountByCampaign(campaignId: number) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.campaignService.getEmailLogCountByCampaign(campaignId)
-      .subscribe(
-      data => {
-        this.campaignReport.emailOpenCount = data["email_opened_count"];
-        this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => console.log()
-      )
-    }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
+        .subscribe(
+          data => {
+            this.campaignReport.emailOpenCount = data["email_opened_count"];
+            this.campaignReport.emailClickedCount = data["email_url_clicked_count"];
+            this.campaignReport.dataShareClickedUrlsCountForVendor = data['dataShareClickedUrlsCountForVendor'];
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
   }
 
   getCampaignWatchedUsersCount(campaignId: number) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.campaignService.getCampaignTotalViewsCount(campaignId)
-      .subscribe(
-      data => {
-        this.campaignReport.usersWatchCount = data.total_views_count;
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => console.log()
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+        .subscribe(
+          data => {
+            this.campaignReport.usersWatchCount = data.total_views_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   campaignWatchedUsersListCount(campaignId: number) {
-    try{
+    try {
       this.loading = true;
       this.campaignService.campaignWatchedUsersListCount(campaignId)
-      .subscribe(
-      data => {
-          this.userWatchtotalRecords = data;
-          this.loading = false;
-      },
-      error => console.log(error),
-      () => console.log()
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+        .subscribe(
+          data => {
+            this.userWatchtotalRecords = data;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   usersWatchList(campaignId: number, pagination: Pagination) {
-    try{
-    this.loading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
+    try {
+      this.loading = true;
+      this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'usersWatch';
-    this.downloadTypeName = 'usersWatchedList';
-    this.campaignService.usersWatchList(campaignId, pagination)
-      .subscribe(
-      data => {
-        this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
-        this.campaignReport.usersWatchList = data.data;
-        data.data.forEach((element, index) => {
-          element.startTime = new Date(element.startTimeUtcString);
-          element.endTime = new Date(element.endTimeUtcString);
-        });
-        $('#usersWatchListModal').modal();
-        this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
-        this.loading = false;
-        this.referenceService.loading(this.httpRequestLoader, false);
-      },
-      error => console.log(error),
-      () => console.log()
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+      this.downloadTypeName = 'usersWatchedList';
+      this.campaignService.usersWatchList(campaignId, pagination)
+        .subscribe(
+          data => {
+            this.usersWatchListPagination.totalRecords = this.campaignReport.usersWatchCount;
+            this.campaignReport.usersWatchList = data.data;
+            data.data.forEach((element, index) => {
+              element.startTime = new Date(element.startTimeUtcString);
+              element.endTime = new Date(element.endTimeUtcString);
+            });
+            $('#usersWatchListModal').modal();
+            this.usersWatchListPagination = this.pagerService.getPagedItems(this.usersWatchListPagination, this.campaignReport.usersWatchList);
+            this.loading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
-  sentEmailModal(){
+  sentEmailModal() {
     this.downloadTypeName = 'sentEmails';
     this.paginationType = 'sentEmailData';
     this.sentEmailOpenPagination = new Pagination();
@@ -570,313 +570,315 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     $('#emailSentListModal').modal();
   }
 
-  resetRsvpPagination(){
-      this.searchKey = '';
-      this.rsvpDetailAnalyticsPagination = new Pagination();
+  resetRsvpPagination() {
+    this.searchKey = '';
+    this.rsvpDetailAnalyticsPagination = new Pagination();
   }
 
   setPage(event: any) {
-    try{
-    this.paginationType = event.type;
-    if (event.type === 'campaignViews') {
+    try {
+      this.paginationType = event.type;
+      if (event.type === 'campaignViews') {
         this.campaignViewsPagination.pageIndex = event.page;
         this.totalCampaignViewsLoader = true;
         this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
-    } else if (event.type === 'sentEmailData') {
+      } else if (event.type === 'sentEmailData') {
         this.sentEmailOpenPagination.pageIndex = event.page;
         this.listCampaignViews(this.campaign.campaignId, this.sentEmailOpenPagination);
-    } else if (event.type === 'emailAction') {
+      } else if (event.type === 'emailAction') {
         this.emailActionListPagination.pageIndex = event.page;
         if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
-            this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+          this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
         }
-    } else if (event.type === 'usersWatch') {
+      } else if (event.type === 'usersWatch') {
         this.usersWatchListPagination.pageIndex = event.page;
         this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-    } else if (event.type === 'email open') {
+      } else if (event.type === 'email open') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
         this.getRsvpEmailOpenDetails();
-    }else if (event.type === 'email not open') {
+      } else if (event.type === 'email not open') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
         this.getRsvpEmailNotOpenDetails();
-    }else if (event.type === 'invities') {
+      } else if (event.type === 'invities') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
         this.getRsvpInvitiesDetails();
-    } else if (event.type === 'YES' || event.type === 'NO' || event.type === 'MAYBE' || event.type === 'NOTYET') {
+      } else if (event.type === 'YES' || event.type === 'NO' || event.type === 'MAYBE' || event.type === 'NOTYET') {
         this.rsvpDetailAnalyticsPagination.pageIndex = event.page;
         this.getRsvpDetails(this.rsvpResposeType);
-    } else if (event.type === 'contactListInfo') {
+      } else if (event.type === 'contactListInfo') {
         this.contactListInfoPagination.pageIndex = event.page;
         this.getListOfContacts(this.contactListId);
-    } else {
+      } else {
         this.pagination.pageIndex = event.page;
         this.callPaginationValues(event.type);
-    }
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+      }
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
 
-  paginationDropdown(event: Pagination){
-    try{
-    if (this.paginationType === 'campaignViews') {
-      this.campaignViewsPagination = event;
-      this.listCampaignViews(this.campaign.campaignId, event);
-    } else if (this.paginationType === 'sentEmailData') {
-      this.sentEmailOpenPagination = event;
-      this.listCampaignViews(this.campaign.campaignId, event);
-    } else if (this.paginationType === 'emailAction') {
-      this.emailActionListPagination = event;
-       if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
-        this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
-       }
-    } else if (this.paginationType === 'usersWatch') {
-      this.usersWatchListPagination = event;
-      this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
-    }else if (this.paginationType === 'email open') {
+  paginationDropdown(event: Pagination) {
+    try {
+      if (this.paginationType === 'campaignViews') {
+        this.campaignViewsPagination = event;
+        this.listCampaignViews(this.campaign.campaignId, event);
+      } else if (this.paginationType === 'sentEmailData') {
+        this.sentEmailOpenPagination = event;
+        this.listCampaignViews(this.campaign.campaignId, event);
+      } else if (this.paginationType === 'emailAction') {
+        this.emailActionListPagination = event;
+        if (this.campaignReport.emailActionType === 'open' || this.campaignReport.emailActionType === 'click') {
+          this.emailActionList(this.campaign.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+        }
+      } else if (this.paginationType === 'usersWatch') {
+        this.usersWatchListPagination = event;
+        this.usersWatchList(this.campaign.campaignId, this.usersWatchListPagination);
+      } else if (this.paginationType === 'email open') {
         this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpEmailOpenDetails();
-    }else if (this.paginationType === 'email not open') {
+      } else if (this.paginationType === 'email not open') {
         this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpEmailNotOpenDetails();
-    }else if (this.paginationType === 'invities') {
+      } else if (this.paginationType === 'invities') {
         this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpInvitiesDetails();
-    } else if (this.paginationType === 'YES' || this.paginationType === 'NO' || this.paginationType === 'MAYBE' || this.paginationType === 'NOTYET') {
+      } else if (this.paginationType === 'YES' || this.paginationType === 'NO' || this.paginationType === 'MAYBE' || this.paginationType === 'NOTYET') {
         this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpDetails(this.rsvpResposeType);
-    } else if (this.paginationType === 'rsvpDetailPagination') {
+      } else if (this.paginationType === 'rsvpDetailPagination') {
         this.rsvpDetailAnalyticsPagination = event;
         this.getRsvpDetails(this.rsvpResposeType);
-    } else {
+      } else {
         this.pagination = event;
         this.callPaginationValues(this.paginationType);
-    }
-    }catch(error){ this.xtremandLogger.error('error'+error);}
-   }
-  paginationContacts(pagination:Pagination){
+      }
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+  paginationContacts(pagination: Pagination) {
     this.contactListInfoPagination = pagination;
     this.getListOfContacts(this.contactListId);
   }
-  callPaginationValues(type:string){
+  callPaginationValues(type: string) {
     if (type === 'viewsBarChart') { this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination); }
     else if (type === 'donutCampaign') { this.campaignViewsDonut(this.donultModelpopupTitle); }
     else if (type === 'coutrywiseUsers') { this.getCampaignUsersWatchedInfo(this.countryCode); }
   }
   emailActionList(campaignId: number, actionType: string, pagination: Pagination) {
-      try{
+    try {
       this.loading = true;
       this.referenceService.loading(this.httpRequestLoader, true);
       this.paginationType = 'emailAction';
       this.downloadTypeName = 'emailAction';
       this.actionType = actionType;
       this.campaignService.emailActionList(campaignId, actionType, pagination)
-       .subscribe(data => {
-         data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
-        this.campaignReport.emailLogs = data;
-        this.campaignReport.emailActionType = actionType;
-        $('#emailActionListModal').modal();
-        if (actionType === 'open') {
-            if ( this.sortByDropDown.length === 5 ) {
-                this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
-                this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' });
+        .subscribe(data => {
+          data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+          this.campaignReport.emailLogs = data;
+          this.campaignReport.emailActionType = actionType;
+          $('#emailActionListModal').modal();
+          if (actionType === 'open') {
+            if (this.sortByDropDown.length === 5) {
+              this.sortByDropDown.push({ 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
+              this.sortByDropDown.push({ 'name': 'Subject(DESC)', 'value': 'subject-DESC' });
             }
-              this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
-        } else if (actionType === 'click') {
-            this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(ASC)"; });
-            this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(DESC)"; });
+            this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
+          } else if (actionType === 'click') {
+            this.sortByDropDown = this.sortByDropDown.filter(function (el) { return el.name != "Subject(ASC)"; });
+            this.sortByDropDown = this.sortByDropDown.filter(function (el) { return el.name != "Subject(DESC)"; });
             this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
-        }
-        this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
-        this.loading = false;
-        this.referenceService.loading(this.httpRequestLoader, false);
-      },
-      error => console.log(error),
-      () => console.log('emailActionList() completed')  )
-    }catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
+          }
+          this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
+          this.loading = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+        },
+          error => console.log(error),
+          () => console.log('emailActionList() completed'))
+    } catch (error) { this.xtremandLogger.error('Error in analytics page emails sent' + error); }
   }
 
-  listautoResponseAnalyticsByCampaignAndUser(campaignId: number, userId: number){
-    try{
+  listautoResponseAnalyticsByCampaignAndUser(campaignId: number, userId: number) {
+    try {
       this.loading = true;
-      let json = {"pageIndex":1,"maxResults":120, "userId":userId,"campaignId":campaignId};
+      let json = { "pageIndex": 1, "maxResults": 120, "userId": userId, "campaignId": campaignId };
       this.campaignService.listautoResponseAnalyticsByCampaignAndUser(json)
-       .subscribe( result => {
-         const response = result.data.data;
-        response.forEach((element, index) => {
-           element.time = new Date(element.sentTimeUtcString);
-           console.log(element);
-        });
-        this.emailLogs.push(...response);
-        this.loading =false;
+        .subscribe(result => {
+          const response = result.data.data;
+          response.forEach((element, index) => {
+            element.time = new Date(element.sentTimeUtcString);
+            console.log(element);
+          });
+          this.emailLogs.push(...response);
+          this.loading = false;
 
-       },
-      error => console.log(error),
-      () => {
-        this.emailLogs.sort((b, a) => new Date(b.time).getTime() - new Date(a.time).getTime());
-      } )
-    }catch(error) {this.xtremandLogger.error('Error in analytics page listautoResponseAnalyticsByCampaignAndUser'+error); }
+        },
+          error => console.log(error),
+          () => {
+            this.emailLogs.sort((b, a) => new Date(b.time).getTime() - new Date(a.time).getTime());
+          })
+    } catch (error) { this.xtremandLogger.error('Error in analytics page listautoResponseAnalyticsByCampaignAndUser' + error); }
   }
 
   listEmailLogsByCampaignAndUser(campaignId: number, userId: number) {
-    try{
+    try {
       this.loading = true;
       this.campaignService.listEmailLogsByCampaignAndUser(campaignId, userId)
-       .subscribe( data => {
-        data.forEach((element, index) => {
-         if(element.time) { element.time = new Date(element.utcTimeString); }});
-         this.emailLogs = data;
-        this.loading =false;
-        console.log(data);
-       },
-      error => console.log(error),
-      () => {
-        this.count();
-        this.listautoResponseAnalyticsByCampaignAndUser(campaignId, userId);
-      } )
-    }catch(error) {this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser'+error); }
+        .subscribe(data => {
+          data.forEach((element, index) => {
+            if (element.time) { element.time = new Date(element.utcTimeString); }
+          });
+          this.emailLogs = data;
+          this.loading = false;
+          console.log(data);
+        },
+          error => console.log(error),
+          () => {
+            this.count();
+            this.listautoResponseAnalyticsByCampaignAndUser(campaignId, userId);
+          })
+    } catch (error) { this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser' + error); }
   }
 
   count() {
-    try{
+    try {
       this.loading = true;
       if (this.emailLogs !== undefined) {
-      for (const i in this.emailLogs) {
-        if (this.emailLogs[i].actionId === 13) {
-          this.userCampaignReport.emailOpenCount += 1;
-        } else if (this.emailLogs[i].actionId === 14 || this.emailLogs[i].actionId === 15) {
-          this.userCampaignReport.emailClickedCount += 1;
+        for (const i in this.emailLogs) {
+          if (this.emailLogs[i].actionId === 13) {
+            this.userCampaignReport.emailOpenCount += 1;
+          } else if (this.emailLogs[i].actionId === 14 || this.emailLogs[i].actionId === 15) {
+            this.userCampaignReport.emailClickedCount += 1;
+          }
         }
       }
-    }
       this.loading = false;
-  } catch(error){this.xtremandLogger.error('Error in count'+error); }
+    } catch (error) { this.xtremandLogger.error('Error in count' + error); }
   }
 
   userTimeline(campaignViews: any) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
 
-    /*if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess && campaignViews.viewsCount === 0){
-        this.interactiveDataTimeLineViewEnable = true;
-    }else{
-        this.interactiveDataTimeLineViewEnable = false;
-    }*/
+      /*if(this.isDataShare && this.isNavigatedThroughAnalytics && !this.isPartnerEnabledAnalyticsAccess && campaignViews.viewsCount === 0){
+          this.interactiveDataTimeLineViewEnable = true;
+      }else{
+          this.interactiveDataTimeLineViewEnable = false;
+      }*/
 
-  /*     *ngIf="!interactiveDataTimeLineViewEnable"
-       code in 796 line need to add for not showing interactive data timeline view */
+      /*     *ngIf="!interactiveDataTimeLineViewEnable"
+           code in 796 line need to add for not showing interactive data timeline view */
 
 
-    if(this.campaignType != 'SMS'){
+      if (this.campaignType != 'SMS') {
         this.redistributedAccountsBySelectedUserId = [];
-         this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
-         if(this.smsService){
-            this.listSMSLogsByCampaignAndUserForSmsAnalylics(campaignViews.campaignId, campaignViews.userId);
-         }
-        }else{
-          this.listSMSLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
+        this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
+        if (this.smsService) {
+          this.listSMSLogsByCampaignAndUserForSmsAnalylics(campaignViews.campaignId, campaignViews.userId);
         }
+      } else {
+        this.listSMSLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
+      }
 
-    this.redistributedAccountsBySelectedUserId = [];
-     this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
-    this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
-    if(this.campaignType==='EVENT' && this.isChannelCampaign){
+      this.redistributedAccountsBySelectedUserId = [];
+      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
+      this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
+      if (this.campaignType === 'EVENT' && this.isChannelCampaign) {
         this.resetRsvpPagination();
         this.redistributionCampaignsDetails(campaignViews);
-    }
-    if(this.campaignType==='SOCIAL'){
-      this.socialCampaign.socialStatusList.forEach(
-        data => data.socialStatusList.forEach(data => {
-          if(data.userId === campaignViews.userId) { this.redistributedAccountsBySelectedUserId.push(data); }})
-      )
-    }
-    this.selectedRow = campaignViews;
-    this.isTimeLineView = !this.isTimeLineView;
-    this.userCampaignReport.totalUniqueWatchCount = campaignViews.viewsCount;
-    if (!this.barChartCliked) {
-      this.pagination.pageIndex = 1;
-      this.pagination.maxResults = 10;
-      if (this.campaignId === null) {
-        this.campaignId = this.route.snapshot.params['campaignId'];
       }
-      console.log('campaign id : ' + this.campaignId);
-      this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+      if (this.campaignType === 'SOCIAL') {
+        this.socialCampaign.socialStatusList.forEach(
+          data => data.socialStatusList.forEach(data => {
+            if (data.userId === campaignViews.userId) { this.redistributedAccountsBySelectedUserId.push(data); }
+          })
+        )
+      }
+      this.selectedRow = campaignViews;
+      this.isTimeLineView = !this.isTimeLineView;
+      this.userCampaignReport.totalUniqueWatchCount = campaignViews.viewsCount;
+      if (!this.barChartCliked) {
+        this.pagination.pageIndex = 1;
+        this.pagination.maxResults = 10;
+        if (this.campaignId === null) {
+          this.campaignId = this.route.snapshot.params['campaignId'];
+        }
+        console.log('campaign id : ' + this.campaignId);
+        this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
 
+        this.loading = false;
+      }
+      this.getDealState(campaignViews);
       this.loading = false;
-    }
-       this.getDealState(campaignViews);
-    this.loading = false;
-  }catch(error){ this.xtremandLogger.error(error);}
+    } catch (error) { this.xtremandLogger.error(error); }
   }
-   /****************Deal Registration***************************/
-  getDealState(campaignViews:any){
+  /****************Deal Registration***************************/
+  getDealState(campaignViews: any) {
     console.log(campaignViews)
-    if(campaignViews.userId!=null && campaignViews.campaignId!=null){
-      const obj = {"campaignId":campaignViews.campaignId};
-        this.campaignService.getCampaignById(obj).subscribe(data=>{
+    if (campaignViews.userId != null && campaignViews.campaignId != null) {
+      const obj = { "campaignId": campaignViews.campaignId };
+      this.campaignService.getCampaignById(obj).subscribe(data => {
 
-            if(data.nurtureCampaign){
-              this.campaignService.getCampaignById({"campaignId":data.parentCampaignId}).subscribe(parent_campaign=>{
-                console.log(parent_campaign)
-                this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response=>{
-                  this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-                      this.enableLeads = data.enableLeads;
-                      console.log(data)
-                  });
-              })
-              },error=>console.log(error))
-            }else{
-              if(this.authenticationService.loggedInUserRole != "Team Member"){
-                if(data.userId == this.authenticationService.getUserId()){
-                  this.createdBySelf = true;
-                  console.log( this.createdBySelf )
-                }
-              }else{
-                this.dealRegService.getSuperorId(this.authenticationService.getUserId()).subscribe(response=>{
-                  if(response.includes(data.userId)){
-                    this.createdBySelf = true;
-                    console.log( this.createdBySelf )
-                  }
-                })
-              }
-              this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response=>{
-                this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-                    this.enableLeads = data.enableLeads;
-                    console.log(data)
-                });
+        if (data.nurtureCampaign) {
+          this.campaignService.getCampaignById({ "campaignId": data.parentCampaignId }).subscribe(parent_campaign => {
+            console.log(parent_campaign)
+            this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response => {
+              this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+                this.enableLeads = data.enableLeads;
+                console.log(data)
+              });
             })
+          }, error => console.log(error))
+        } else {
+          if (this.authenticationService.loggedInUserRole != "Team Member") {
+            if (data.userId == this.authenticationService.getUserId()) {
+              this.createdBySelf = true;
+              console.log(this.createdBySelf)
             }
+          } else {
+            this.dealRegService.getSuperorId(this.authenticationService.getUserId()).subscribe(response => {
+              if (response.includes(data.userId)) {
+                this.createdBySelf = true;
+                console.log(this.createdBySelf)
+              }
+            })
+          }
+          this.referenceService.getCompanyIdByUserId(data.userId).subscribe(response => {
+            this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+              this.enableLeads = data.enableLeads;
+              console.log(data)
+            });
+          })
+        }
 
+      })
+    }
+
+    this.dealRegService.getDeal(campaignViews.campaignId, campaignViews.userId).subscribe(data => {
+      console.log(data)
+      this.dealId = data;
+      if (data == -1) {
+        this.dealButtonText = "Register Lead";
+        this.isDeal = false;
+      } else {
+
+        this.dealRegService.getDealById(data, campaignViews.userId).subscribe(response => {
+          console.log(response)
+          this.isDeal = response.data.deal;
+          if (response.data.deal) {
+            this.dealButtonText = "Preview Deal";
+          } else {
+            this.dealButtonText = "Update Lead"
+          }
+          this.leadData = response.data;
         })
       }
-
-      this.dealRegService.getDeal(campaignViews.campaignId,campaignViews.userId).subscribe(data=>{
-        console.log(data)
-        this.dealId = data;
-        if(data == -1){
-            this.dealButtonText = "Register Lead";
-            this.isDeal = false;
-        }else{
-
-            this.dealRegService.getDealById(data,campaignViews.userId).subscribe(response=>{
-              console.log(response)
-              this.isDeal = response.data.deal;
-              if(response.data.deal){
-                this.dealButtonText = "Preview Deal";
-              } else {
-                this.dealButtonText = "Update Lead"
-              }
-              this.leadData = response.data;
-            })
-        }
-       })
+    })
 
 
 
 
   }
 
-   showDealRegistrationForm(){
-    if(this.isDeal){
+  showDealRegistrationForm() {
+    if (this.isDeal) {
       this.isDealRegistration = false;
       this.isDealPreview = true;
     } else {
@@ -885,61 +887,62 @@ export class AnalyticsComponent implements OnInit , OnDestroy{
     }
 
     console.log(this.isTimeLineView && !this.isDealRegistration);
-}
-previeDeal(){
-  this.isDealPreview = true;
-}
+  }
+  previeDeal() {
+    this.isDealPreview = true;
+  }
 
-showTimeLineView(){
+  showTimeLineView() {
     this.isDealRegistration = false;
     this.isTimeLineView = true;
     this.isDealPreview = false;
     console.log(this.isDealRegistration);
 
     this.getDealState(this.selectedRow);
-}
+  }
 
- /****************END of Deal Registration***************************/
+  /****************END of Deal Registration***************************/
 
 
-  getTotalTimeSpentOfCampaigns(userId: number, campaignId:number) {
-    try{
+  getTotalTimeSpentOfCampaigns(userId: number, campaignId: number) {
+    try {
       this.loading = true;
       this.campaignService.getTotalTimeSpentofCamapaigns(userId, campaignId)
-      .subscribe(data => {
-        console.log(data);
-        this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
-        this.loading = false;
-      },
-      error => console.log(error),
-      () => { }
-      );
-    } catch (err) {  this.xtremandLogger.error(err); }
+        .subscribe(data => {
+          console.log(data);
+          this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
+          this.loading = false;
+        },
+          error => console.log(error),
+          () => { }
+        );
+    } catch (err) { this.xtremandLogger.error(err); }
   }
   userWatchedviewsInfo(emailId: string) {
     try {
 
-       /* if(this.userCampaignReport.totalUniqueWatchCount === 0){
-            this.interactiveDataTimeLineViewEnable = true;
-        }else{
-            this.interactiveDataTimeLineViewEnable = false;
-        }*/
+      /* if(this.userCampaignReport.totalUniqueWatchCount === 0){
+           this.interactiveDataTimeLineViewEnable = true;
+       }else{
+           this.interactiveDataTimeLineViewEnable = false;
+       }*/
 
-      if(emailId.includes('<br/>')){
-      emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
-      emailId = emailId.substring(5); }
+      if (emailId.includes('<br/>')) {
+        emailId = emailId.substring(emailId.indexOf('<br/>'), emailId.length);
+        emailId = emailId.substring(5);
+      }
       this.loading = true;
       if (emailId !== this.selectedRow.emailId) {
-      this.userCampaignReport.emailOpenCount = 0;
-      this.userCampaignReport.emailClickedCount = 0;
-      this.userCampaignReport.totalUniqueWatchCount = 0;
-      this.userCampaignReport.smsOpenCount = 0;
-      this.userCampaignReport.smsClickedCount = 0;
-      this.barChartCliked = true;
-      this.selectedRow = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
-      this.userTimeline(this.selectedRow);
-      this.isTimeLineView = true;
-    }
+        this.userCampaignReport.emailOpenCount = 0;
+        this.userCampaignReport.emailClickedCount = 0;
+        this.userCampaignReport.totalUniqueWatchCount = 0;
+        this.userCampaignReport.smsOpenCount = 0;
+        this.userCampaignReport.smsClickedCount = 0;
+        this.barChartCliked = true;
+        this.selectedRow = this.campaignBarViews.find(function (obj) { return obj.emailId === emailId; });
+        this.userTimeline(this.selectedRow);
+        this.isTimeLineView = true;
+      }
       this.loading = false;
     } catch (err) {
       this.xtremandLogger.error(err);
@@ -947,952 +950,952 @@ showTimeLineView(){
   }
 
   getEventCampaignById(campaignId: number) {
-      try{
-        this.campaignService.getEventCampaignById(campaignId)
+    try {
+      this.campaignService.getEventCampaignById(campaignId)
         .subscribe(data => {
           console.log(data);
           this.eventCampaign = data.data;
-           if(data.data.eventCancellation.cancelled){
-             this.isCancelledEvent = true;
-            }
-           if(this.eventCampaign.emailTemplateDTO){
-               this.campaign.emailTemplate = this.eventCampaign.emailTemplateDTO;
-               this.campaign.selectedEmailTemplateId = this.eventCampaign.emailTemplateDTO.id;
-             }
-       /****** For leads count info ******/
-         if(this.campaign.publicEventCampaign){
-             this.getLeadsCount();
-         }
+          if (data.data.eventCancellation.cancelled) {
+            this.isCancelledEvent = true;
+          }
+          if (this.eventCampaign.emailTemplateDTO) {
+            this.campaign.emailTemplate = this.eventCampaign.emailTemplateDTO;
+            this.campaign.selectedEmailTemplateId = this.eventCampaign.emailTemplateDTO.id;
+          }
+          /****** For leads count info ******/
+          if (this.campaign.publicEventCampaign) {
+            this.getLeadsCount();
+          }
         },
-        error => console.log(error),
-        () => { }
+          error => console.log(error),
+          () => { }
         );
-      } catch (err) {  this.xtremandLogger.error(err); }
-    }
+    } catch (err) { this.xtremandLogger.error(err); }
+  }
 
   getCampaignById(campaignId: number) {
-   try{
-    this.loading = true;
-    const obj = { 'campaignId': campaignId }
-    this.campaignService.getCampaignById(obj)
-      .subscribe(
-      data => {
-        this.campaign = data;
-        this.isChannelCampaign = data.channelCampaign;
-        if(this.campaign.nurtureCampaign && this.campaign.userId!=this.loggedInUserId && !this.authenticationService.isPartnerTeamMember &&!this.isOnlyPartner){
-            this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
-            this.isDataShare = this.campaign.dataShare;
-            this.isNavigatedThroughAnalytics = true;
-            if(data.campaignType === 'EVENT'){
+    try {
+      this.loading = true;
+      const obj = { 'campaignId': campaignId }
+      this.campaignService.getCampaignById(obj)
+        .subscribe(
+          data => {
+            this.campaign = data;
+            this.isChannelCampaign = data.channelCampaign;
+            if (this.campaign.nurtureCampaign && this.campaign.userId != this.loggedInUserId && !this.authenticationService.isPartnerTeamMember && !this.isOnlyPartner) {
+              this.isPartnerEnabledAnalyticsAccess = this.campaign.detailedAnalyticsShared;
+              this.isDataShare = this.campaign.dataShare;
+              this.isNavigatedThroughAnalytics = true;
+              if (data.campaignType === 'EVENT') {
                 this.colspanValue = 10;
-            }else{
+              } else {
                 this.colspanValue = 5;
+              }
+            } else {
+              this.isNavigatedThroughAnalytics = false;
+              this.isPartnerEnabledAnalyticsAccess = true;
+              this.isDataShare = true;
             }
-        }else{
-            this.isNavigatedThroughAnalytics = false;
-            this.isPartnerEnabledAnalyticsAccess = true;
-            this.isDataShare = true;
-        }
-        if(!this.campaign.campaignType.toLocaleString().includes('SMS')){
-            if(!this.isSmsServiceAnalytics)
+            if (!this.campaign.campaignType.toLocaleString().includes('SMS')) {
+              if (!this.isSmsServiceAnalytics)
                 this.getEmailLogCountByCampaign(this.campaignId);
-            else
+              else
                 this.getSmsLogCountByCampaign(this.campaignId);
 
-          }else{
-            this.getSmsLogCountByCampaign(this.campaignId);
-          }
-
-        this.campaingContactLists = data.userLists;
-        this.isPartnerCampaign = this.campaign.channelCampaign? '(PARTNER)' : '';
-        this.loading = false;
-      },
-      error => {
-        console.log(error);
-        error = error.json();
-        this.customResponse = new CustomResponse('ERROR', error.message, true);
-        this.loading = false;
-      },
-      () => {
-        if (this.customResponse.responseType !== 'ERROR') {
-          const campaignType = this.campaign.campaignType.toLocaleString();
-          if (campaignType.includes('VIDEO')) {
-            this.campaignType = 'VIDEO';
-            this.getCountryWiseCampaignViews(campaignId);
-            this.getCampaignViewsReportDurationWise(campaignId);
-            this.getCampaignWatchedUsersCount(campaignId);
-            this.campaignWatchedUsersListCount(campaignId);
-          } else if (campaignType.includes('SOCIAL')) {
-            this.campaignType = 'SOCIAL';
-            this.getSocialCampaignByCampaignId(campaignId);
-          } else if (campaignType.includes('EVENT')) {
-              this.campaignType = 'EVENT';
-              this.colspanValue = 10;
-              if(this.campaign.emailTemplate){
-                this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
-              }
-              this.getEventCampaignById(campaignId);
-              this.getEventCampaignByCampaignId(campaignId);
-            } else if (campaignType.includes('SMS')) {
-              this.campaignType = 'SMS';
-            }else if (campaignType.includes('LANDINGPAGE')) {
-                this.campaignType = 'LANDINGPAGE';
+            } else {
+              this.getSmsLogCountByCampaign(this.campaignId);
             }
-          else {
-            this.campaignType = 'REGULAR';
-          }
-        }
-        if(this.campaignType != 'SMS'){
-            this.getEmailSentCount(this.campaignId);
-          }else{
+
+            this.campaingContactLists = data.userLists;
+            this.isPartnerCampaign = this.campaign.channelCampaign ? '(PARTNER)' : '';
+            this.loading = false;
+          },
+          error => {
+            console.log(error);
+            error = error.json();
+            this.customResponse = new CustomResponse('ERROR', error.message, true);
+            this.loading = false;
+          },
+          () => {
+            if (this.customResponse.responseType !== 'ERROR') {
+              const campaignType = this.campaign.campaignType.toLocaleString();
+              if (campaignType.includes('VIDEO')) {
+                this.campaignType = 'VIDEO';
+                this.getCountryWiseCampaignViews(campaignId);
+                this.getCampaignViewsReportDurationWise(campaignId);
+                this.getCampaignWatchedUsersCount(campaignId);
+                this.campaignWatchedUsersListCount(campaignId);
+              } else if (campaignType.includes('SOCIAL')) {
+                this.campaignType = 'SOCIAL';
+                this.getSocialCampaignByCampaignId(campaignId);
+              } else if (campaignType.includes('EVENT')) {
+                this.campaignType = 'EVENT';
+                this.colspanValue = 10;
+                if (this.campaign.emailTemplate) {
+                  this.campaign.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+                }
+                this.getEventCampaignById(campaignId);
+                this.getEventCampaignByCampaignId(campaignId);
+              } else if (campaignType.includes('SMS')) {
+                this.campaignType = 'SMS';
+              } else if (campaignType.includes('LANDINGPAGE')) {
+                this.campaignType = 'LANDINGPAGE';
+              }
+              else {
+                this.campaignType = 'REGULAR';
+              }
+            }
+            if (this.campaignType != 'SMS') {
+              this.getEmailSentCount(this.campaignId);
+            } else {
               this.getSmsSentCount(this.campaignId);
               this.getSmsSentSuccessCount(this.campaignId);
               this.getSmsSentFailureCount(this.campaignId);
+            }
+            if (this.campaignType == 'EVENT') {
+              this.exportingObject['eventCampaign'] = true;
+              this.exportingObject['campaignAlias'] = this.campaignId;
+              this.exportingObject['formAlias'] = this.campaign.formAlias;
+              //this.exportingObject['title'] = this.leadInfoTitle;
+              this.exportingObject['isPublicEventLeads'] = true;
+              this.exportingObject['totalLeads'] = true;
+              this.exportingObject['totalAttendees'] = false;
+              this.exportingObject['totalPartnerLeads'] = false;
+            }
+            this.loading = false;
           }
-        if(this.campaignType == 'EVENT'){
-            this.exportingObject['eventCampaign'] = true;
-            this.exportingObject['campaignAlias'] = this.campaignId;
-            this.exportingObject['formAlias'] = this.campaign.formAlias;
-            //this.exportingObject['title'] = this.leadInfoTitle;
-            this.exportingObject['isPublicEventLeads'] = true;
-            this.exportingObject['totalLeads'] = true;
-            this.exportingObject['totalAttendees'] = false;
-            this.exportingObject['totalPartnerLeads'] = false;
-        }
-        this.loading = false;
-      }
-      )
-    } catch(error){this.hasClientError = true;this.xtremandLogger.error(error); }
+        )
+    } catch (error) { this.hasClientError = true; this.xtremandLogger.error(error); }
   }
 
   getSocialCampaignByCampaignId(campaignId: number) {
-    try{
-    this.loading = true;
+    try {
+      this.loading = true;
       this.socialService.getSocialCampaignByCampaignId(campaignId)
-      .subscribe(
-      data => {
-        this.socialCampaign = data;
-        this.loading = false;
-        this.socialCampaign.socialStatusList.forEach(data => {
-          data.socialStatusList.forEach( data => this.redistributedAccounts.add(data.userId))
-        })
-      },
-      error => this.xtremandLogger.error(error),
-      () => {}
-      )
-    }catch(error){
-      this.xtremandLogger.error('error'+error)
+        .subscribe(
+          data => {
+            this.socialCampaign = data;
+            this.loading = false;
+            this.socialCampaign.socialStatusList.forEach(data => {
+              data.socialStatusList.forEach(data => this.redistributedAccounts.add(data.userId))
+            })
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+        )
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
     }
   }
 
   getEventCampaignByCampaignId(campaignId: number) {
-      try{
-          this.loading = true;
-            this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, this.isChannelCampaign)
-            .subscribe(
-            data => {
-              console.log(data);
-              this.campaignReport.totalYesCount = data.YES;
-              this.campaignReport.totalMayBeCount = data.MAYBE;
-              this.campaignReport.totalNoCount = data.NO;
-              this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
-              this.campaignReport.totalEmailOpenCount = data.emailOpenedCount;
-              this.campaignReport.totalAdditionalCount = data.additionalCount;
-              this.campaignReport.totalInvitiesCount = data.totalInvities;
-              this.campaignReport.totalLeadsCount = data.totalLeadsCount;
-              this.campaignReport.totalAttendeesCount = data.totalAttendeesCount;
-              this.campaignReport.totalPartnerLeadsCount = data.totalPartnerLeadsCount;
-              this.getPartnersResponeCount(campaignId);
-              this.loading = false;
-            },
-            error => this.xtremandLogger.error(error),
-            () => { }
-            )
-          }catch(error){
-            this.xtremandLogger.error('error'+error)
-          }
-        }
+    try {
+      this.loading = true;
+      this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, this.isChannelCampaign)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.campaignReport.totalYesCount = data.YES;
+            this.campaignReport.totalMayBeCount = data.MAYBE;
+            this.campaignReport.totalNoCount = data.NO;
+            this.campaignReport.totalNotYetRespondedCount = data.notYetResponded;
+            this.campaignReport.totalEmailOpenCount = data.emailOpenedCount;
+            this.campaignReport.totalAdditionalCount = data.additionalCount;
+            this.campaignReport.totalInvitiesCount = data.totalInvities;
+            this.campaignReport.totalLeadsCount = data.totalLeadsCount;
+            this.campaignReport.totalAttendeesCount = data.totalAttendeesCount;
+            this.campaignReport.totalPartnerLeadsCount = data.totalPartnerLeadsCount;
+            this.getPartnersResponeCount(campaignId);
+            this.loading = false;
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+        )
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
+  }
 
   getPartnersResponeCount(campaignId: number) {
-      try{
-            this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, false)
-            .subscribe(
-            data => {
-              console.log(data);
-              this.campaignReport.partnersYesCount = data.YES;
-              this.campaignReport.partnersMayBeCount = data.MAYBE;
-              this.campaignReport.partnersNoCount = data.NO;
-              this.campaignReport.partnersTotalInvitiesCount = data.totalInvities;
-              this.campaignReport.partnersEmailOpenedCount = data.emailOpenedCount;
-              this.campaignReport.partnersNotYetRespondedCount = data.notYetResponded;
-              this.campaignReport.additionalCount = data.additionalCount;
-              this.loading = false;
-            },
-            error => this.xtremandLogger.error(error),
-            () => { }
-            )
-          }catch(error){
-            this.xtremandLogger.error('error'+error)
-          }
-        }
+    try {
+      this.campaignService.getEventCampaignDetailsByCampaignId(campaignId, false)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.campaignReport.partnersYesCount = data.YES;
+            this.campaignReport.partnersMayBeCount = data.MAYBE;
+            this.campaignReport.partnersNoCount = data.NO;
+            this.campaignReport.partnersTotalInvitiesCount = data.totalInvities;
+            this.campaignReport.partnersEmailOpenedCount = data.emailOpenedCount;
+            this.campaignReport.partnersNotYetRespondedCount = data.notYetResponded;
+            this.campaignReport.additionalCount = data.additionalCount;
+            this.loading = false;
+          },
+          error => this.xtremandLogger.error(error),
+          () => { }
+        )
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
+  }
 
 
 
-  getRsvpInvitiesDetails(){
-      try{
+  getRsvpInvitiesDetails() {
+    try {
       //this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       this.rsvpResposeType = "invities";
       this.paginationType = "invities";
       //this.rsvpDetailAnalyticsPagination = new Pagination();
-      if(this.rsvpDetailType === 'reDistribution'){
-          this.campaignService.getEventCampaignRedistributionInvitiesDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
+      if (this.rsvpDetailType === 'reDistribution') {
+        this.campaignService.getEventCampaignRedistributionInvitiesDetails(this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination)
           .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.listOfUsers;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { }
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.listOfUsers;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
           )
-      }else if(this.rsvpDetailType === 'partnerRsvp'){
-          this.campaignService.getEventCampaignPartnerInvitiesDetails( this.campaign.campaignId,this.rsvpDetailAnalyticsPagination )
+      } else if (this.rsvpDetailType === 'partnerRsvp') {
+        this.campaignService.getEventCampaignPartnerInvitiesDetails(this.campaign.campaignId, this.rsvpDetailAnalyticsPagination)
           .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.listOfUsers;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { }
-          )
-      }
-      else{
-          this.showRsvpDetails = true;
-          this.campaignService.getEventCampaignTotalInvitiesDetails( this.campaign.campaignId, this.rsvpDetailAnalyticsPagination )
-          .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.listOfUsers;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { }
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.listOfUsers;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
           )
       }
-      }catch(error){
-        this.xtremandLogger.error('error'+error)
-   }
+      else {
+        this.showRsvpDetails = true;
+        this.campaignService.getEventCampaignTotalInvitiesDetails(this.campaign.campaignId, this.rsvpDetailAnalyticsPagination)
+          .subscribe(
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.listOfUsers;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.listOfUsers);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+          )
+      }
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
   }
 
 
 
-  getRsvpEmailOpenDetails(){
-      try{
-     // this.loading = true;
+  getRsvpEmailOpenDetails() {
+    try {
+      // this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       //this.rsvpDetailAnalyticsPagination = new Pagination();
       this.rsvpResposeType = "email open";
       this.paginationType = "email open";
-     // this.emailOpenSelected = 'email open';
-      if(this.rsvpDetailType === 'reDistribution'){
-          this.campaignService.getEventCampaignRedistributionEmailOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
+      // this.emailOpenSelected = 'email open';
+      if (this.rsvpDetailType === 'reDistribution') {
+        this.campaignService.getEventCampaignRedistributionEmailOpenDetails(this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination)
           .subscribe(
-          data => {
-            console.log(data);
-            this.emailOpenDataStore(data);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { } );
-      }else if(this.rsvpDetailType === 'partnerRsvp'){
-          this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination )
-          .subscribe(
-           data => {
+            data => {
               console.log(data);
               this.emailOpenDataStore(data);
-           },
-          error => this.xtremandLogger.error(error),
-          () => { } );
-      }
-      else{
-          this.showRsvpDetails = true;
-          this.campaignService.getEventCampaignEmailOpenDetails( this.campaign.campaignId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
+            },
+            error => this.xtremandLogger.error(error),
+            () => { });
+      } else if (this.rsvpDetailType === 'partnerRsvp') {
+        this.campaignService.getEventCampaignEmailOpenDetails(this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination)
           .subscribe(
-          data => {
-            console.log(data);
-            this.emailOpenDataStore(data);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { } );
+            data => {
+              console.log(data);
+              this.emailOpenDataStore(data);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { });
       }
-      }catch(error){
-        this.xtremandLogger.error('error'+error)
-   }
+      else {
+        this.showRsvpDetails = true;
+        this.campaignService.getEventCampaignEmailOpenDetails(this.campaign.campaignId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
+          .subscribe(
+            data => {
+              console.log(data);
+              this.emailOpenDataStore(data);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { });
+      }
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
   }
 
-  emailOpenDataStore(data:any){
+  emailOpenDataStore(data: any) {
     this.loading = false;
-    data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
+    data.data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
     this.referenceService.detailViewIsLoading = false;
     this.rsvpDetailsList = data.data;
     this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
     this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
   }
 
-  getRsvpEmailNotOpenDetails(){
-      try{
+  getRsvpEmailNotOpenDetails() {
+    try {
       //this.loading = true;
       this.referenceService.detailViewIsLoading = true;
       this.downloadTypeName = 'rsvp';
       //this.rsvpDetailAnalyticsPagination = new Pagination();
       this.rsvpResposeType = "email not open";
       this.paginationType = "email not open";
-      if(this.rsvpDetailType === 'reDistribution'){
-          this.campaignService.getEventCampaignRedistributionEmailNotOpenDetails( this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination )
+      if (this.rsvpDetailType === 'reDistribution') {
+        this.campaignService.getEventCampaignRedistributionEmailNotOpenDetails(this.campaign.campaignId, this.campaignReport.selectedPartnerUserId, this.rsvpDetailAnalyticsPagination)
           .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.data;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { }
-          )
-      }else if(this.rsvpDetailType === 'partnerRsvp'){
-          this.campaignService.getEventCampaignEmailNotOpenDetails( this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination )
-          .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.data;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { }
-          )
-      }
-      else{
-          this.showRsvpDetails = true;
-          this.campaignService.getEventCampaignEmailNotOpenDetails( this.campaign.campaignId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
-          .subscribe(
-          data => {
-            console.log(data);
-            this.loading = false;
-            this.referenceService.detailViewIsLoading = false;
-            this.rsvpDetailsList = data.data;
-            this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-            this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-          },
-          error => this.xtremandLogger.error(error),
-          () => { }
-          )
-      }
-      }catch(error){
-        this.xtremandLogger.error('error'+error)
-   }
-  }
-
-
-
-  getPartnerCampaingRsvpDetails(){
-     this.setReDistributionDetails();
-     this.getRsvpDetails("YES");
-  }
-  
-  setReDistributionDetails(){
-      this.campaignReport.redistributionTotalYesCount = this.campaignReport.partnersYesCount;
-      this.campaignReport.redistributionTotalMayBeCount = this.campaignReport.partnersMayBeCount;
-      this.campaignReport.redistributionTotalNoCount = this.campaignReport.partnersNoCount;
-      this.campaignReport.redistributionTotalNotYetRespondedCount = this.campaignReport.partnersNotYetRespondedCount;
-      this.campaignReport.redistributionTotalEmailOpenCount = this.campaignReport.partnersEmailOpenedCount;
-      this.campaignReport.redistributionTotalInvitiesCount = this.campaignReport.partnersTotalInvitiesCount;
-      this.campaignReport.redistributionTotalAdditionalCount = this.campaignReport.additionalCount;
-      this.isTimeLineView = true;
-      this.rsvpDetailType = 'partnerRsvp';
-  }
-  
-  goToPartnerRsvpDetails(type){
-      this.setReDistributionDetails();
-      this.getRsvpDetails(type);
-  }
-
-  getRsvpDetails(responseType: any){
-      try{
-          //this.loading = true;
-          this.referenceService.detailViewIsLoading = true;
-          this.downloadTypeName = 'rsvp';
-          this.paginationType = responseType;
-          this.rsvpResposeType = responseType;
-          if(this.rsvpDetailType === 'reDistribution'){
-              this.campaignService.getRedistributionEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.selectedRsvpPartnerId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
-              .subscribe(
-              data => {
-                console.log(data);
-                this.loading = false;
-                this.referenceService.detailViewIsLoading = false;
-                this.rsvpDetailsList = data.data;
-                this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-                this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-              },
-              error => this.xtremandLogger.error(error),
-              () => { }
-              )
-          }else if(this.rsvpDetailType === 'partnerRsvp' && responseType!='TOTAL_PARTNER_LEADS'){
-              this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, false, this.rsvpDetailAnalyticsPagination )
-              .subscribe(
-              data => {
-                console.log(data);
-                this.loading = false;
-                this.referenceService.detailViewIsLoading = false;
-                this.rsvpDetailsList = data.data;
-                this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-                this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-              },
-              error => this.xtremandLogger.error(error),
-              () => { }
-              )
-          }else{
-              if(responseType=== 'TOTAL_LEADS'){
-                  this.exportingObject['totalAttendees'] = false;
-                  this.exportingObject['totalPartnerLeads'] = false;
-                  this.getEventTotalLeadsDetails();
-              }else if(responseType==='TOTAL_ATTENDEES'){
-                  this.getEventTotalLeadsDetails();
-                  this.exportingObject['totalAttendees'] = true;
-                  this.exportingObject['totalPartnerLeads'] = false;
-              }else if(responseType==='TOTAL_PARTNER_LEADS'){
-                  this.exportingObject['totalPartnerLeads'] = true;
-                  this.exportingObject['totalAttendees'] = false;
-                  
-              }else{
-                  this.showRsvpDetails = true;
-                  this.campaignService.getEventCampaignDetailAnalytics( this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination )
-                .subscribe(
-                data => {
-                  console.log(data);
-                  this.loading = false;
-                  this.referenceService.detailViewIsLoading = false;
-                  this.rsvpDetailsList = data.data;
-                  this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
-                  this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
-                },
-                error => this.xtremandLogger.error(error),
-                () => { }
-                )
-              }
-            
-          }
-          }catch(error){
-            this.xtremandLogger.error('error'+error)
-          }
-  }
-
-  redistributionCampaignsDetails(campaignViews:any){
-      try{
-          this.loading = true;
-          this.selectedRsvpPartnerId = campaignViews.userId;
-
-          if(!campaignViews.firstName){
-              campaignViews.firstName = "";
-          }
-
-          if(!campaignViews.lastName){
-              campaignViews.lastName = "";
-          }
-
-          this.campaignReport.selectedPartnerFirstName = campaignViews.firstName + " " + campaignViews.lastName;
-          //this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
-          this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
-          this.campaignReport.selectedPartnerUserId = campaignViews.userId;
-
-
-         // this.downloadTypeName = 'rsvp';
-            this.campaignService.getRestributionEventCampaignAnalytics( this.campaign.campaignId, campaignViews.userId )
-            .subscribe(
             data => {
               console.log(data);
-              this.campaignReport.redistributionTotalYesCount = data.YES;
-              this.campaignReport.redistributionTotalMayBeCount = data.MAYBE;
-              this.campaignReport.redistributionTotalNoCount = data.NO;
-              this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
-              this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
-              this.campaignReport.redistributionTotalInvitiesCount = campaignViews.rsvpMap.totalInvities;
-              this.campaignReport.redistributionTotalAdditionalCount = data.additionalCount;
-              this.rsvpDetailType = 'reDistribution';
-              this.getRsvpDetails('YES');
               this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.data;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
             },
             error => this.xtremandLogger.error(error),
-            () => {this.loading = false; }
+            () => { }
+          )
+      } else if (this.rsvpDetailType === 'partnerRsvp') {
+        this.campaignService.getEventCampaignEmailNotOpenDetails(this.campaign.campaignId, false, this.rsvpDetailAnalyticsPagination)
+          .subscribe(
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.data;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+          )
+      }
+      else {
+        this.showRsvpDetails = true;
+        this.campaignService.getEventCampaignEmailNotOpenDetails(this.campaign.campaignId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
+          .subscribe(
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.data;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+          )
+      }
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
+  }
+
+
+
+  getPartnerCampaingRsvpDetails() {
+    this.setReDistributionDetails();
+    this.getRsvpDetails("YES");
+  }
+
+  setReDistributionDetails() {
+    this.campaignReport.redistributionTotalYesCount = this.campaignReport.partnersYesCount;
+    this.campaignReport.redistributionTotalMayBeCount = this.campaignReport.partnersMayBeCount;
+    this.campaignReport.redistributionTotalNoCount = this.campaignReport.partnersNoCount;
+    this.campaignReport.redistributionTotalNotYetRespondedCount = this.campaignReport.partnersNotYetRespondedCount;
+    this.campaignReport.redistributionTotalEmailOpenCount = this.campaignReport.partnersEmailOpenedCount;
+    this.campaignReport.redistributionTotalInvitiesCount = this.campaignReport.partnersTotalInvitiesCount;
+    this.campaignReport.redistributionTotalAdditionalCount = this.campaignReport.additionalCount;
+    this.isTimeLineView = true;
+    this.rsvpDetailType = 'partnerRsvp';
+  }
+
+  goToPartnerRsvpDetails(type) {
+    this.setReDistributionDetails();
+    this.getRsvpDetails(type);
+  }
+
+  getRsvpDetails(responseType: any) {
+    try {
+      //this.loading = true;
+      this.referenceService.detailViewIsLoading = true;
+      this.downloadTypeName = 'rsvp';
+      this.paginationType = responseType;
+      this.rsvpResposeType = responseType;
+      if (this.rsvpDetailType === 'reDistribution') {
+        this.campaignService.getRedistributionEventCampaignDetailAnalytics(this.campaign.campaignId, responseType, this.selectedRsvpPartnerId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
+          .subscribe(
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.data;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+          )
+      } else if (this.rsvpDetailType === 'partnerRsvp' && responseType != 'TOTAL_PARTNER_LEADS') {
+        this.campaignService.getEventCampaignDetailAnalytics(this.campaign.campaignId, responseType, false, this.rsvpDetailAnalyticsPagination)
+          .subscribe(
+            data => {
+              console.log(data);
+              this.loading = false;
+              this.referenceService.detailViewIsLoading = false;
+              this.rsvpDetailsList = data.data;
+              this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+              this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+            },
+            error => this.xtremandLogger.error(error),
+            () => { }
+          )
+      } else {
+        if (responseType === 'TOTAL_LEADS') {
+          this.exportingObject['totalAttendees'] = false;
+          this.exportingObject['totalPartnerLeads'] = false;
+          this.getEventTotalLeadsDetails();
+        } else if (responseType === 'TOTAL_ATTENDEES') {
+          this.getEventTotalLeadsDetails();
+          this.exportingObject['totalAttendees'] = true;
+          this.exportingObject['totalPartnerLeads'] = false;
+        } else if (responseType === 'TOTAL_PARTNER_LEADS') {
+          this.exportingObject['totalPartnerLeads'] = true;
+          this.exportingObject['totalAttendees'] = false;
+
+        } else {
+          this.showRsvpDetails = true;
+          this.campaignService.getEventCampaignDetailAnalytics(this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
+            .subscribe(
+              data => {
+                console.log(data);
+                this.loading = false;
+                this.referenceService.detailViewIsLoading = false;
+                this.rsvpDetailsList = data.data;
+                this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+                this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+              },
+              error => this.xtremandLogger.error(error),
+              () => { }
             )
-          }catch(error){
-            this.xtremandLogger.error('error'+error)
-          }
+        }
+
+      }
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
+  }
+
+  redistributionCampaignsDetails(campaignViews: any) {
+    try {
+      this.loading = true;
+      this.selectedRsvpPartnerId = campaignViews.userId;
+
+      if (!campaignViews.firstName) {
+        campaignViews.firstName = "";
+      }
+
+      if (!campaignViews.lastName) {
+        campaignViews.lastName = "";
+      }
+
+      this.campaignReport.selectedPartnerFirstName = campaignViews.firstName + " " + campaignViews.lastName;
+      //this.campaignReport.selectedPartnerLastName = campaignViews.lastName;
+      this.campaignReport.selectedPartnerEmailId = campaignViews.emailId;
+      this.campaignReport.selectedPartnerUserId = campaignViews.userId;
+
+
+      // this.downloadTypeName = 'rsvp';
+      this.campaignService.getRestributionEventCampaignAnalytics(this.campaign.campaignId, campaignViews.userId)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.campaignReport.redistributionTotalYesCount = data.YES;
+            this.campaignReport.redistributionTotalMayBeCount = data.MAYBE;
+            this.campaignReport.redistributionTotalNoCount = data.NO;
+            this.campaignReport.redistributionTotalNotYetRespondedCount = data.notYetResponded;
+            this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
+            this.campaignReport.redistributionTotalInvitiesCount = campaignViews.rsvpMap.totalInvities;
+            this.campaignReport.redistributionTotalAdditionalCount = data.additionalCount;
+            this.rsvpDetailType = 'reDistribution';
+            this.getRsvpDetails('YES');
+            this.loading = false;
+          },
+          error => this.xtremandLogger.error(error),
+          () => { this.loading = false; }
+        )
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
+    }
   }
 
 
   resetTopNavBarValue() {
-    try{
-    this.referenceService.isFromTopNavBar = false;
-    this.isTimeLineView = !this.isTimeLineView;
-    this.emailLogs = [];
-    this.totalEmailLogs = [];
-    this.userCampaignReport.emailOpenCount = 0;
-    this.userCampaignReport.emailClickedCount = 0;
-    this.userCampaignReport.totalUniqueWatchCount = 0;
-    this.clearPaginationValues();
-    }catch(error){
-      this.xtremandLogger.error('error'+error)
+    try {
+      this.referenceService.isFromTopNavBar = false;
+      this.isTimeLineView = !this.isTimeLineView;
+      this.emailLogs = [];
+      this.totalEmailLogs = [];
+      this.userCampaignReport.emailOpenCount = 0;
+      this.userCampaignReport.emailClickedCount = 0;
+      this.userCampaignReport.totalUniqueWatchCount = 0;
+      this.clearPaginationValues();
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
     }
   }
 
   clearPaginationValues() {
-    try{
-    this.searchKey = null;
-    this.pagination.searchKey = null;
-    this.pagination.pageIndex = 1;
-    this.pagination = new Pagination();
-    this.barChartCliked = false;
-    this.donultModelpopupTitle = '';
-    this.emailLogPagination = new Pagination();
-    this.emailActionListPagination = new Pagination();
-    this.usersWatchListPagination = new Pagination();
-    this.emailLogPagination.maxResults = 12;
-    this.campaignViewsPagination.maxResults = 12;
-    this.campaignViewsPagination.pageIndex = 1;
-    this.emailActionListPagination.pageIndex = 1;
-    this.emailActionListPagination.maxResults = 12;
-    this.contactListInfoPagination = new Pagination();
-    this.contactListInfoPagination.pageIndex = 1;
-    this.contactListInfoPagination.maxResults = 12;
-    this.downloadTypeName = this.paginationType = 'campaignViews';
-    }catch(error){
-      this.xtremandLogger.error('error'+error)
+    try {
+      this.searchKey = null;
+      this.pagination.searchKey = null;
+      this.pagination.pageIndex = 1;
+      this.pagination = new Pagination();
+      this.barChartCliked = false;
+      this.donultModelpopupTitle = '';
+      this.emailLogPagination = new Pagination();
+      this.emailActionListPagination = new Pagination();
+      this.usersWatchListPagination = new Pagination();
+      this.emailLogPagination.maxResults = 12;
+      this.campaignViewsPagination.maxResults = 12;
+      this.campaignViewsPagination.pageIndex = 1;
+      this.emailActionListPagination.pageIndex = 1;
+      this.emailActionListPagination.maxResults = 12;
+      this.contactListInfoPagination = new Pagination();
+      this.contactListInfoPagination.pageIndex = 1;
+      this.contactListInfoPagination.maxResults = 12;
+      this.downloadTypeName = this.paginationType = 'campaignViews';
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
     }
   }
 
   campaignViewsDonut(timePeriod: string) {
-    try{
-    this.loading = true;
-    this.referenceService.loading(this.httpRequestLoader, true);
-    this.paginationType = 'donutCampaign';
-    this.downloadTypeName = 'donut';
-    this.donultModelpopupTitle = timePeriod;
-    this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.pagination).
-      subscribe(
-      (data: any) => {
-        console.log(data);
-        data.forEach((element, index) => { element.time = new Date(element.time);});
-        this.donutCampaignViews = data;
-        if (timePeriod === 'today') {
-          this.pagination.totalRecords = this.campaignReport.todayViewsCount;
-        } else if (timePeriod === 'current-month') {
-          this.pagination.totalRecords = this.campaignReport.thisMonthViewsCount;
-        }
-        else {
-          this.pagination.totalRecords = this.campaignReport.lifetimeViewsCount;
-        }
-        this.pagination = this.pagerService.getPagedItems(this.pagination, this.donutCampaignViews);
-        this.loading = false;
-        this.referenceService.loading(this.httpRequestLoader, false);
-        $('#donutModelPopup').modal('show');
-      },
-      error => console.log(error),
-      () => { });
-    } catch(error){
-        this.xtremandLogger.error('error'+error)
+    try {
+      this.loading = true;
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.paginationType = 'donutCampaign';
+      this.downloadTypeName = 'donut';
+      this.donultModelpopupTitle = timePeriod;
+      this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.pagination).
+        subscribe(
+          (data: any) => {
+            console.log(data);
+            data.forEach((element, index) => { element.time = new Date(element.time); });
+            this.donutCampaignViews = data;
+            if (timePeriod === 'today') {
+              this.pagination.totalRecords = this.campaignReport.todayViewsCount;
+            } else if (timePeriod === 'current-month') {
+              this.pagination.totalRecords = this.campaignReport.thisMonthViewsCount;
+            }
+            else {
+              this.pagination.totalRecords = this.campaignReport.lifetimeViewsCount;
+            }
+            this.pagination = this.pagerService.getPagedItems(this.pagination, this.donutCampaignViews);
+            this.loading = false;
+            this.referenceService.loading(this.httpRequestLoader, false);
+            $('#donutModelPopup').modal('show');
+          },
+          error => console.log(error),
+          () => { });
+    } catch (error) {
+      this.xtremandLogger.error('error' + error)
     }
   }
 
   totalCampaignViewsDonut(timePeriod: string, totalRecords: number) {
-    try{
-    this.emailLogPagination.maxResults = totalRecords;
-    this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.emailLogPagination).
-      subscribe(
-      (data: any) => {
-        this.totalListOfemailLog = data;
-        this.downloadEmailLogs();
-      },
-      error => this.xtremandLogger.error(error),
-      () => {this.xtremandLogger.log('total campaigns views donut method finished'); });
-    } catch(error){ this.xtremandLogger.error('error'+error);}
+    try {
+      this.emailLogPagination.maxResults = totalRecords;
+      this.campaignService.donutCampaignInnerViews(this.campaignId, timePeriod, this.emailLogPagination).
+        subscribe(
+          (data: any) => {
+            this.totalListOfemailLog = data;
+            this.downloadEmailLogs();
+          },
+          error => this.xtremandLogger.error(error),
+          () => { this.xtremandLogger.log('total campaigns views donut method finished'); });
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   emailActionTotalList(campaignId: number, actionType: string, totalRecords: number) {
-    try{
-     this.emailLogPagination.maxResults = totalRecords;
-    this.campaignService.emailActionList(campaignId, actionType, this.emailLogPagination)
-      .subscribe(
-      data => {
-        this.campaignReport.totalEmailActionList = data;
-        this.downloadEmailLogs();
-      },
-      error => console.log(error),
-      () => console.log()
-      )
-    } catch(error){ this.xtremandLogger.error('error'+error);}
+    try {
+      this.emailLogPagination.maxResults = totalRecords;
+      this.campaignService.emailActionList(campaignId, actionType, this.emailLogPagination)
+        .subscribe(
+          data => {
+            this.campaignReport.totalEmailActionList = data;
+            this.downloadEmailLogs();
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   usersWatchTotalList(campaignId: number, totalRecords: number) {
-    try{
-     this.userWatchedReportPagination.maxResults = totalRecords;
-     this.campaignService.usersWatchList(campaignId, this.userWatchedReportPagination)
-      .subscribe(
-      data => {
-        this.campaignReport.totalWatchedList = data.data;
-        this.downloadEmailLogs();
-      },
-      error => this.xtremandLogger.error(error),
-      () => this.xtremandLogger.log('usersWatchTotalList method finished')
-      )
-    }catch(error){ this.xtremandLogger.error('error'+error);}
+    try {
+      this.userWatchedReportPagination.maxResults = totalRecords;
+      this.campaignService.usersWatchList(campaignId, this.userWatchedReportPagination)
+        .subscribe(
+          data => {
+            this.campaignReport.totalWatchedList = data.data;
+            this.downloadEmailLogs();
+          },
+          error => this.xtremandLogger.error(error),
+          () => this.xtremandLogger.log('usersWatchTotalList method finished')
+        )
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   listTotalCampaignViews(campaignId: number) {
-    try{
+    try {
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
-      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination,  this.isChannelCampaign,this.isSmsServiceAnalytics)
-      .subscribe(
-      data => {
-        this.campaignTotalViewsData = data.campaignviews;
-        this.downloadEmailLogs();
-      },
-      error => console.log(error),
-      () => console.log()
-      );
-    }catch(error){this.xtremandLogger.error('error'+error); }
+      this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
+        .subscribe(
+          data => {
+            this.campaignTotalViewsData = data.campaignviews;
+            this.downloadEmailLogs();
+          },
+          error => console.log(error),
+          () => console.log()
+        );
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
   getCampaignUsersWatchedTotalInfo(countryCode, totalRecord: number) {
-    try{
-    this.campaignsWorldMapPagination.maxResults = totalRecord;
-    this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
-      .subscribe(
-      (data: any) => {
-        console.log(data);
-        this.worldMapUserTotalData = data.data;
-        this.downloadEmailLogs();
-      },
-      error => this.xtremandLogger.error('error'+error),
-      () => console.log('finished')
-      );
-    }catch(error){this.xtremandLogger.error('error'+error); }
+    try {
+      this.campaignsWorldMapPagination.maxResults = totalRecord;
+      this.campaignService.getCampaignUsersWatchedInfo(this.campaignId, this.countryCode, this.campaignsWorldMapPagination)
+        .subscribe(
+          (data: any) => {
+            console.log(data);
+            this.worldMapUserTotalData = data.data;
+            this.downloadEmailLogs();
+          },
+          error => this.xtremandLogger.error('error' + error),
+          () => console.log('finished')
+        );
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
-  downloadFunctionality(){
-      this.isLoadingDownloadList = true;
-      if (this.downloadTypeName === 'donut') {
-         this.totalCampaignViewsDonut(this.donultModelpopupTitle,this.pagination.totalRecords);
-      } else if (this.downloadTypeName === 'emailAction') {
-         this.emailActionTotalList(this.campaignId, this.actionType, this.emailActionListPagination.totalRecords);
-      }else if (this.downloadTypeName === 'usersWatchedList') {
-         this.usersWatchTotalList(this.campaignId, this.usersWatchListPagination.totalRecords);
-      }else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
-          this.listTotalCampaignViews(this.campaignId);
-      }else if (this.downloadTypeName === 'worldMap') {
-          this.getCampaignUsersWatchedTotalInfo(this.countryCode, this.pagination.totalRecords);
-      }else if(this.downloadTypeName === 'rsvp'){
-          this.downloadEmailLogs();
-      }
+  downloadFunctionality() {
+    this.isLoadingDownloadList = true;
+    if (this.downloadTypeName === 'donut') {
+      this.totalCampaignViewsDonut(this.donultModelpopupTitle, this.pagination.totalRecords);
+    } else if (this.downloadTypeName === 'emailAction') {
+      this.emailActionTotalList(this.campaignId, this.actionType, this.emailActionListPagination.totalRecords);
+    } else if (this.downloadTypeName === 'usersWatchedList') {
+      this.usersWatchTotalList(this.campaignId, this.usersWatchListPagination.totalRecords);
+    } else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
+      this.listTotalCampaignViews(this.campaignId);
+    } else if (this.downloadTypeName === 'worldMap') {
+      this.getCampaignUsersWatchedTotalInfo(this.countryCode, this.pagination.totalRecords);
+    } else if (this.downloadTypeName === 'rsvp') {
+      this.downloadEmailLogs();
+    }
   }
 
   downloadEmailLogs() {
-    try{
-    this.loading = true;
-    if (this.downloadTypeName === 'donut') {
-     /* this.logListName = 'Campaign_Views_Logs.csv';*/
+    try {
+      this.loading = true;
+      if (this.downloadTypeName === 'donut') {
+        /* this.logListName = 'Campaign_Views_Logs.csv';*/
         this.logListName = this.donultModelpopupTitle + '_Views_Logs.csv';
-      this.downloadCsvList = this.totalListOfemailLog;
-    } else if (this.downloadTypeName === 'emailAction') {
+        this.downloadCsvList = this.totalListOfemailLog;
+      } else if (this.downloadTypeName === 'emailAction') {
         this.logListName = 'Email_Action_Logs.csv';
-      this.downloadCsvList = this.campaignReport.totalEmailActionList;
-    } else if (this.downloadTypeName === 'usersWatchedList') {
+        this.downloadCsvList = this.campaignReport.totalEmailActionList;
+      } else if (this.downloadTypeName === 'usersWatchedList') {
         this.logListName = 'Users_watched_Logs.csv';
-      this.downloadCsvList = this.campaignReport.totalWatchedList;
-    } else if (this.downloadTypeName === 'campaignViews') {
+        this.downloadCsvList = this.campaignReport.totalWatchedList;
+      } else if (this.downloadTypeName === 'campaignViews') {
         this.logListName = 'Campaign_report_logs.csv';
-      this.downloadCsvList = this.campaignTotalViewsData;
-    }else if (this.downloadTypeName === 'sentEmails') {
+        this.downloadCsvList = this.campaignTotalViewsData;
+      } else if (this.downloadTypeName === 'sentEmails') {
         this.logListName = 'Sent_Emails_logs.csv';
         this.downloadCsvList = this.campaignTotalViewsData;
       } else if (this.downloadTypeName === 'worldMap') {
         this.logListName = 'World_Map_logs.csv';
-      this.downloadCsvList = this.worldMapUserTotalData;
-    } else if(this.downloadTypeName === 'rsvp'){
-        if(this.rsvpResposeType === 'email open'){
-            this.logListName = 'People who opened email log.csv';
-        }else{
-        this.logListName = this.rsvpResposeType +' RSVPs.csv';
-        if(this.rsvpResposeType === "NOTYET"){
+        this.downloadCsvList = this.worldMapUserTotalData;
+      } else if (this.downloadTypeName === 'rsvp') {
+        if (this.rsvpResposeType === 'email open') {
+          this.logListName = 'People who opened email log.csv';
+        } else {
+          this.logListName = this.rsvpResposeType + ' RSVPs.csv';
+          if (this.rsvpResposeType === "NOTYET") {
             this.logListName = 'Have Not RSVPed Yet log.csv';
-        }
+          }
         }
         this.downloadCsvList = this.rsvpDetailsList;
-    }
+      }
 
 
-    this.downloadDataList.length = 0;
-    for (let i = 0; i < this.downloadCsvList.length; i++) {
-      let date = new Date(this.downloadCsvList[i].time);
-      let startTime = new Date(this.downloadCsvList[i].startTime);
-      let endTime = new Date(this.downloadCsvList[i].endTime);
-      let sentTime = new Date(this.campaign.launchTime);
-      let latestView;
-      if(this.downloadCsvList[i].latestView){
+      this.downloadDataList.length = 0;
+      for (let i = 0; i < this.downloadCsvList.length; i++) {
+        let date = new Date(this.downloadCsvList[i].time);
+        let startTime = new Date(this.downloadCsvList[i].startTime);
+        let endTime = new Date(this.downloadCsvList[i].endTime);
+        let sentTime = new Date(this.campaign.launchTime);
+        let latestView;
+        if (this.downloadCsvList[i].latestView) {
           latestView = new Date(this.downloadCsvList[i].latestView);
-      }else{
+        } else {
           latestView = null;
-      }
+        }
 
-      let responseTime = new Date(this.downloadCsvList[i].responseTime);
+        let responseTime = new Date(this.downloadCsvList[i].responseTime);
 
-      var object = {
-        "First Name": this.downloadCsvList[i].firstName,
-        "Last Name": this.downloadCsvList[i].lastName,
-        "Email Id": this.downloadCsvList[i].emailId,
-        "Company Name": this.downloadCsvList[i].companyName,
-      }
+        var object = {
+          "First Name": this.downloadCsvList[i].firstName,
+          "Last Name": this.downloadCsvList[i].lastName,
+          "Email Id": this.downloadCsvList[i].emailId,
+          "Company Name": this.downloadCsvList[i].companyName,
+        }
 
-      if (this.downloadTypeName === 'donut') {
-        object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-        let hours = this.referenceService.formatAMPM(date);
-        object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-        object["Views"] = this.downloadCsvList[i].viewsCount;
-        object["Platform"] = this.downloadCsvList[i].os;
-        var text = this.downloadCsvList[i].location;
-        var res = text.split(",", 3);
-        object["City"] = res[0];
-        object["State"] = res[1];
-        object["Country"] = res[2];
+        if (this.downloadTypeName === 'donut') {
+          object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+          let hours = this.referenceService.formatAMPM(date);
+          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+          object["Views"] = this.downloadCsvList[i].viewsCount;
+          object["Platform"] = this.downloadCsvList[i].os;
+          var text = this.downloadCsvList[i].location;
+          var res = text.split(",", 3);
+          object["City"] = res[0];
+          object["State"] = res[1];
+          object["Country"] = res[2];
 
-      }
+        }
 
-      if (this.downloadTypeName === 'campaignViews') {
-        object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-        if(this.campaignType === 'EVENT'){
-            if(this.isChannelCampaign){
-            object["Invites"] = this.downloadCsvList[i].rsvpMap.totalInvities;
-            object["Opened"] = this.downloadCsvList[i].rsvpMap.emailOpenedCount;
-            object["Yes"] = this.downloadCsvList[i].rsvpMap.YES;
-            object["No"] = this.downloadCsvList[i].rsvpMap.NO;
-            object["Maybe"] = this.downloadCsvList[i].rsvpMap.MAYBE;
-            object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
-            object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
-            }else{
-                object["Response Type"] = this.downloadCsvList[i].rsvpMap.responseType;
-                object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
+        if (this.downloadTypeName === 'campaignViews') {
+          object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+          if (this.campaignType === 'EVENT') {
+            if (this.isChannelCampaign) {
+              object["Invites"] = this.downloadCsvList[i].rsvpMap.totalInvities;
+              object["Opened"] = this.downloadCsvList[i].rsvpMap.emailOpenedCount;
+              object["Yes"] = this.downloadCsvList[i].rsvpMap.YES;
+              object["No"] = this.downloadCsvList[i].rsvpMap.NO;
+              object["Maybe"] = this.downloadCsvList[i].rsvpMap.MAYBE;
+              object["Not Yet"] = this.downloadCsvList[i].rsvpMap.notYetResponded;
+              object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
+            } else {
+              object["Response Type"] = this.downloadCsvList[i].rsvpMap.responseType;
+              object["Total Guests"] = this.downloadCsvList[i].rsvpMap.additionalCount;
             }
-        }else if(this.campaignType === 'SOCIAL'){
+          } else if (this.campaignType === 'SOCIAL') {
 
-            if(latestView != null){
-                let lastviewHours = this.referenceService.formatAMPM(latestView);
-                object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
-            }else{
-                object["Latest View"] = ' ';
+            if (latestView != null) {
+              let lastviewHours = this.referenceService.formatAMPM(latestView);
+              object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+            } else {
+              object["Latest View"] = ' ';
             }
 
             object["Redistributed Count"] = this.downloadCsvList[i].viewsCount;
-        } else{
-         let hours = this.referenceService.formatAMPM(sentTime);
-        object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+          } else {
+            let hours = this.referenceService.formatAMPM(sentTime);
+            object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
 
-        if(latestView != null){
-            let lastviewHours = this.referenceService.formatAMPM(latestView);
-            object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
-        }else{
-            object["Latest View"] = ' ';
+            if (latestView != null) {
+              let lastviewHours = this.referenceService.formatAMPM(latestView);
+              object["Latest View"] = latestView.toDateString().split(' ').slice(1).join(' ') + ' ' + lastviewHours;
+            } else {
+              object["Latest View"] = ' ';
+            }
+
+            object["Total Views"] = this.downloadCsvList[i].viewsCount;
+          }
         }
 
-        object["Total Views"] = this.downloadCsvList[i].viewsCount;
-        }
-        }
-
-      if (this.downloadTypeName === 'sentEmails') {
+        if (this.downloadTypeName === 'sentEmails') {
           object["Campaign Name"] = this.downloadCsvList[i].campaignName;
           let hours = this.referenceService.formatAMPM(sentTime);
           object["Sent Time"] = sentTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-      }
+        }
 
-      if (this.downloadTypeName === 'usersWatchedList') {
-        let srtHours = this.referenceService.formatAMPM(startTime);
-        object["START DURATION"] = startTime.toDateString().split(' ').slice(1).join(' ') + ' ' + srtHours;
-        let endHours = this.referenceService.formatAMPM(endTime);
-        object["STOP DURATION"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
-        /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
-        object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
-        object["CITY"] = this.downloadCsvList[i].city;
-        object["STATE"] = this.downloadCsvList[i].state;
-        object["COUNTRY"] = this.downloadCsvList[i].country;
-      }
+        if (this.downloadTypeName === 'usersWatchedList') {
+          let srtHours = this.referenceService.formatAMPM(startTime);
+          object["START DURATION"] = startTime.toDateString().split(' ').slice(1).join(' ') + ' ' + srtHours;
+          let endHours = this.referenceService.formatAMPM(endTime);
+          object["STOP DURATION"] = endTime.toDateString().split(' ').slice(1).join(' ') + ' ' + endHours;
+          /*object["IP ADDRESS"] = this.downloadCsvList[i].ipAddress;*/
+          object["PLATFORM"] = this.downloadCsvList[i].os[0].toUpperCase() + this.downloadCsvList[i].os.substr(1).toLowerCase();
+          object["CITY"] = this.downloadCsvList[i].city;
+          object["STATE"] = this.downloadCsvList[i].state;
+          object["COUNTRY"] = this.downloadCsvList[i].country;
+        }
 
-      if ( this.downloadTypeName === 'emailAction' ) {
-          if ( this.campaignReport.emailActionType === 'click' ) {
-              if ( this.downloadCsvList[i].url ) {
-                  object["Most Recent Url"] = this.downloadCsvList[i].url;
-              } else {
-                  object["Most Recent Url"] = "Clicked on the video thumbnail";
-              }
+        if (this.downloadTypeName === 'emailAction') {
+          if (this.campaignReport.emailActionType === 'click') {
+            if (this.downloadCsvList[i].url) {
+              object["Most Recent Url"] = this.downloadCsvList[i].url;
+            } else {
+              object["Most Recent Url"] = "Clicked on the video thumbnail";
+            }
           } else {
-              object["Email subject"] = this.downloadCsvList[i].subject;
+            object["Email subject"] = this.downloadCsvList[i].subject;
           }
           let hours = this.referenceService.formatAMPM(date);
           object["Latest Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-      }
+        }
 
-      if (this.downloadTypeName === 'worldMap') {
-        let hours = this.referenceService.formatAMPM(date);
-        object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-        object["Device"] = this.downloadCsvList[i].deviceType;
+        if (this.downloadTypeName === 'worldMap') {
+          let hours = this.referenceService.formatAMPM(date);
+          object["Date and Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+          object["Device"] = this.downloadCsvList[i].deviceType;
 
-        var text = this.downloadCsvList[i].location;
-        var res = text.split(",", 3);
-        object["City"] = res[0];
-        object["State"] = res[1];
-        object["Country"] = res[2];
-      }
+          var text = this.downloadCsvList[i].location;
+          var res = text.split(",", 3);
+          object["City"] = res[0];
+          object["State"] = res[1];
+          object["Country"] = res[2];
+        }
 
-      if (this.downloadTypeName === 'rsvp') {
-          if(this.rsvpResposeType === 'email open'){
-              object["Campaign Name"] = this.downloadCsvList[i].campaignName;
-              object["Subject"] = this.downloadCsvList[i].subject;
-              let hours = this.referenceService.formatAMPM(date);
-              object["Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
-          }else{
-              if ( this.paginationType != 'invities' && this.paginationType != 'NOTYET' && this.paginationType != 'email not open' ) {
-                  object["Message"] = this.downloadCsvList[i].message;
-                  let hours = this.referenceService.formatAMPM( responseTime );
-                  object["Most recent"] = responseTime.toDateString().split( ' ' ).slice( 1 ).join( ' ' ) + ' ' + hours;
-                  if ( this.paginationType === 'YES' ){
-                      object["Guests"] = this.downloadCsvList[i].additionalCount;
-                  }
+        if (this.downloadTypeName === 'rsvp') {
+          if (this.rsvpResposeType === 'email open') {
+            object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+            object["Subject"] = this.downloadCsvList[i].subject;
+            let hours = this.referenceService.formatAMPM(date);
+            object["Time"] = date.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+          } else {
+            if (this.paginationType != 'invities' && this.paginationType != 'NOTYET' && this.paginationType != 'email not open') {
+              object["Message"] = this.downloadCsvList[i].message;
+              let hours = this.referenceService.formatAMPM(responseTime);
+              object["Most recent"] = responseTime.toDateString().split(' ').slice(1).join(' ') + ' ' + hours;
+              if (this.paginationType === 'YES') {
+                object["Guests"] = this.downloadCsvList[i].additionalCount;
               }
+            }
           }
-         }
+        }
 
-      this.downloadDataList.push(object);
-    }
+        this.downloadDataList.push(object);
+      }
 
-    this.referenceService.isDownloadCsvFile = true;
-    this.loading = false;
-    this.isLoadingDownloadList = false;
-    }catch(error){this.xtremandLogger.error('error'+error); }
+      this.referenceService.isDownloadCsvFile = true;
+      this.loading = false;
+      this.isLoadingDownloadList = false;
+    } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
-  showEmailTemplatePreview( emailTemplate: any ) {
-      try {
-          this.ngxloading = true;
-          var tempalteObject;
-          var campaign: any;
-          if(this.campaignType === "EVENT"){
-              tempalteObject = this.eventCampaign.emailTemplateDTO;
-              campaign = this.eventCampaign;
-          }else{
-              tempalteObject = emailTemplate;
-              campaign = this.campaign;
+  showEmailTemplatePreview(emailTemplate: any) {
+    try {
+      this.ngxloading = true;
+      var tempalteObject;
+      var campaign: any;
+      if (this.campaignType === "EVENT") {
+        tempalteObject = this.eventCampaign.emailTemplateDTO;
+        campaign = this.eventCampaign;
+      } else {
+        tempalteObject = emailTemplate;
+        campaign = this.campaign;
+      }
+
+      let userId = 0;
+      if (this.campaign.nurtureCampaign) {
+        userId = this.campaign.parentCampaignUserId;
+      } else {
+        userId = this.campaign.userId;
+      }
+      this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
+        (data: any) => {
+          let body = tempalteObject.body;
+          let self = this;
+          /* $.each( data, function( index, value ) {
+               body = body.replace( value, self.authenticationService.MEDIA_URL + campaign.companyLogo );
+           } );
+           body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );*/
+          if (this.campaign.nurtureCampaign) {
+            body = body.replace(this.senderMergeTag.aboutUsGlobal, this.campaign.myMergeTagsInfo.aboutUs);
+            $.each(data, function (index, value) {
+              body = body.replace(value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo);
+            });
+            body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo);
+          } else {
+            $.each(data, function (index, value) {
+              body = body.replace(value, self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+            });
+            body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
           }
 
-          let userId = 0;
-          if(this.campaign.nurtureCampaign){
-              userId = this.campaign.parentCampaignUserId;
-          }else{
-              userId = this.campaign.userId;
+
+          /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+               body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+           }*/
+          if (!this.campaign.channelCampaign && !this.campaign.nurtureCampaign) {
+            body = body.replace(this.senderMergeTag.aboutUsGlobal, "");
           }
-          this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
-              ( data: any ) => {
-                  let body = tempalteObject.body;
-                  let self = this;
-                 /* $.each( data, function( index, value ) {
-                      body = body.replace( value, self.authenticationService.MEDIA_URL + campaign.companyLogo );
-                  } );
-                  body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + campaign.companyLogo );*/
-                  if(this.campaign.nurtureCampaign){
-                      body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
-                      $.each( data, function( index, value ) {
-                          body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
-                      } );
-                      body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
-                  }else{
-                      $.each(data,function(index,value){
-                          body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
-                      });
-                      body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
-                  }
+          tempalteObject.body = body;
+          this.referenceService.previewEmailTemplate(tempalteObject, campaign);
+          this.ngxloading = false;
+        },
+        error => { this.xtremandLogger.error("error in getAllCompanyProfileImages(" + userId + ")", error); },
+        () => this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
+    } catch (error) { this.xtremandLogger.error(error); }
+  }
 
+  previewVideo(videoFile: any) {
+    try {
+      this.loading = true;
+      setTimeout(() => { this.loading = false; this.videoFile = videoFile; }, 600);
+    } catch (error) { this.xtremandLogger.error(error); }
+  }
 
-                 /* if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
-                      body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
-                  }*/
-                  if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
-                      body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
-                  }
-                  tempalteObject.body = body;
-                  this.referenceService.previewEmailTemplate( tempalteObject, campaign);
-                  this.ngxloading = false;
-              },
-              error => { this.xtremandLogger.error( "error in getAllCompanyProfileImages(" + userId+ ")", error ); },
-              () => this.xtremandLogger.info( "Finished getAllCompanyProfileImages()" ) );
-      } catch ( error ) { this.xtremandLogger.error( error ); }
+  closeModal(event: any) {
+    console.log('closed modal' + event);
+    this.videoFile = undefined;
+  }
+  showContactListModal() {
+    if (this.campaingContactLists) {
+      this.loading = true;
+      this.getListOfContacts(this.campaingContactLists[0].id);
+    } else {
+      this.contactListDeleteError = true;
     }
-
-    previewVideo(videoFile: any){
-      try{
-        this.loading = true;
-        setTimeout(()=>{ this.loading = false; this.videoFile = videoFile; },600);
-       }catch(error){ this.xtremandLogger.error(error);}
-    }
-
-    closeModal(event: any){
-      console.log('closed modal'+event);
-      this.videoFile = undefined;
-    }
-    showContactListModal(){
-        if ( this.campaingContactLists) {
-            this.loading = true;
-            this.getListOfContacts( this.campaingContactLists[0].id );
-        }else{
-            this.contactListDeleteError = true;
-        }
-    }
-    getListOfContacts(id:number){
-        try{
-         this.contactListId = id;
-         this.campaignService.loadUsersOfContactList(id,this.campaignId, this.contactListInfoPagination).subscribe(
-           data => {
-            this.campaingContactListValues = data.listOfUsers;
-            this.loading = false;
-            this.contactListInfoPagination.totalRecords = data.totalRecords;
-            this.contactListInfoPagination = this.pagerService.getPagedItems(this.contactListInfoPagination, this.campaingContactListValues);
-            $("#show_contact-list-info").modal('show');
-          },
-          (error:any)=>{this.xtremandLogger.error('error'+error); })
-        }catch(error) { this.xtremandLogger.error('error'+error);}
-     }
-  getSortedResult(campaignId: number,event:any){
-    this.emailActionListPagination = this.utilService.sortOptionValues(event,this.emailActionListPagination);
+  }
+  getListOfContacts(id: number) {
+    try {
+      this.contactListId = id;
+      this.campaignService.loadUsersOfContactList(id, this.campaignId, this.contactListInfoPagination).subscribe(
+        data => {
+          this.campaingContactListValues = data.listOfUsers;
+          this.loading = false;
+          this.contactListInfoPagination.totalRecords = data.totalRecords;
+          this.contactListInfoPagination = this.pagerService.getPagedItems(this.contactListInfoPagination, this.campaingContactListValues);
+          $("#show_contact-list-info").modal('show');
+        },
+        (error: any) => { this.xtremandLogger.error('error' + error); })
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+  getSortedResult(campaignId: number, event: any) {
+    this.emailActionListPagination = this.utilService.sortOptionValues(event, this.emailActionListPagination);
     this.emailActionList(campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
   }
 
   listEmailLogsByCampaignIdUserIdActionType(emailLog: EmailLog, actionType: string) {
     this.campaignReport.emailLogs.forEach((element) => {
-      if(element.userId !== emailLog.userId) {
-          element.isExpand = false;
+      if (element.userId !== emailLog.userId) {
+        element.isExpand = false;
       }
     });
     emailLog.isExpand = !emailLog.isExpand;
@@ -1901,12 +1904,12 @@ showTimeLineView(){
         this.loading = true;
         this.campaignService.listEmailLogsByCampaignIdUserIdActionType(emailLog.campaignId, emailLog.userId, actionType)
           .subscribe(
-          data => {
-            emailLog.emailLogHistory = data;
-            this.loading = false;
-          },
-          error => console.log(error),
-          () => { }
+            data => {
+              emailLog.emailLogHistory = data;
+              this.loading = false;
+            },
+            error => console.log(error),
+            () => { }
           )
       } catch (error) {
         this.xtremandLogger.error('Error in listEmailLogsByCampaignIdUserIdActionType: ' + error);
@@ -1915,81 +1918,83 @@ showTimeLineView(){
   }
 
 
-  sendEmailNotOpenReminder(details: any){
-      this.isOpenNotificationModal = true;
-      this.selectedEmailNotOpenUserId = details.userId;
+  sendEmailNotOpenReminder(details: any) {
+    this.isOpenNotificationModal = true;
+    this.selectedEmailNotOpenUserId = details.userId;
+  }
+
+  emailNotOpenReminderDate(event: any) {
+    this.isOpenNotificationModal = false;
+    if (event === "Success") {
+      this.customResponse = new CustomResponse('SUCCESS', "Reminder has been sent successfully", true);
+    }
+  }
+
+  eventHandler(keyCode: any) {
+    if (keyCode === 13) {
+      this.search();
+    }
+  }
+
+  search() {
+
+    if (this.paginationType == 'campaignViews' || this.paginationType == 'sentEmailData') {
+      this.campaignViewsPagination.searchKey = this.searchKey;
+      this.campaignViewsPagination.pageIndex = 1;
+      this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
+    } else if (this.paginationType == 'coutrywiseUsers') {
+      this.pagination.searchKey = this.searchKey;
+      this.pagination.pageIndex = 1;
+      this.getCampaignUsersWatchedInfo(this.countryCode);
+    } else if (this.paginationType == 'emailAction') {
+      this.emailActionListPagination.searchKey = this.searchKey;
+      this.emailActionListPagination.pageIndex = 1;
+      this.emailActionList(this.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
+    } else if (this.paginationType == 'usersWatch') {
+      this.pagination.searchKey = this.searchKey;
+      this.pagination.pageIndex = 1;
+      this.usersWatchList(this.campaignId, this.pagination);
+    } else if (this.paginationType == 'donutCampaign') {
+      this.pagination.searchKey = this.searchKey;
+      this.pagination.pageIndex = 1;
+      this.campaignViewsDonut(this.donultModelpopupTitle);
+    } else if (this.paginationType == 'invities') {
+      this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+      this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+      this.getRsvpInvitiesDetails();
+    } else if (this.paginationType == 'email open') {
+      this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+      this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+      this.getRsvpEmailOpenDetails();
+    } else if (this.paginationType === 'YES' || this.paginationType === 'NO' || this.paginationType === 'MAYBE' || this.paginationType === 'NOTYET') {
+      this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+      this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+      this.getRsvpDetails(this.rsvpResposeType);
+    } else if (this.paginationType === 'email not open') {
+      this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
+      this.rsvpDetailAnalyticsPagination.pageIndex = 1;
+      this.getRsvpEmailNotOpenDetails();
     }
 
-    emailNotOpenReminderDate(event: any){
-        this.isOpenNotificationModal = false;
-        if(event ===  "Success"){
-            this.customResponse = new CustomResponse('SUCCESS',"Reminder has been sent successfully", true);
-           }
-    }
+  }
 
-    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { 
-        this.search();
-    } }
-
-    search() {
-
-        if(this.paginationType == 'campaignViews' || this.paginationType == 'sentEmailData'){
-            this.campaignViewsPagination.searchKey = this.searchKey;
-            this.campaignViewsPagination.pageIndex = 1;
-            this.listCampaignViews(this.campaignId, this.campaignViewsPagination);
-        }else if(this.paginationType == 'coutrywiseUsers'){
-            this.pagination.searchKey = this.searchKey;
-            this.pagination.pageIndex = 1;
-            this.getCampaignUsersWatchedInfo(this.countryCode);
-        }else if(this.paginationType == 'emailAction'){
-            this.emailActionListPagination.searchKey = this.searchKey;
-            this.emailActionListPagination.pageIndex = 1;
-            this.emailActionList(this.campaignId, this.campaignReport.emailActionType, this.emailActionListPagination);
-        }else if(this.paginationType == 'usersWatch'){
-            this.pagination.searchKey = this.searchKey;
-            this.pagination.pageIndex = 1;
-            this.usersWatchList(this.campaignId, this.pagination);
-        }else if(this.paginationType == 'donutCampaign'){
-            this.pagination.searchKey = this.searchKey;
-            this.pagination.pageIndex = 1;
-            this.campaignViewsDonut(this.donultModelpopupTitle);
-        }else if(this.paginationType == 'invities'){
-            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
-            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
-            this.getRsvpInvitiesDetails();
-        }else if(this.paginationType == 'email open'){
-            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
-            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
-            this.getRsvpEmailOpenDetails();
-        }else if(this.paginationType === 'YES' || this.paginationType === 'NO' || this.paginationType === 'MAYBE' || this.paginationType === 'NOTYET'){
-            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
-            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
-            this.getRsvpDetails(this.rsvpResposeType);
-        }else if(this.paginationType === 'email not open'){
-            this.rsvpDetailAnalyticsPagination.searchKey = this.searchKey;
-            this.rsvpDetailAnalyticsPagination.pageIndex = 1;
-            this.getRsvpEmailNotOpenDetails();
-        } 
-
-    }
-    
 
   ngOnInit() {
-    try{
-    this.mainLoader = true;
-    this.downloadTypeName = this.paginationType = 'campaignViews';
-    this.emailActionListPagination.pageIndex = 1;
-    this.campaignId = this.route.snapshot.params['campaignId'];
-    this.getCampaignById(this.campaignId);
-    this.getEmailLogCountByCampaign(this.campaignId);
-    this.pagination.pageIndex = 1;
-    if (this.isTimeLineView === true) {
-      this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-    }
-    setTimeout(() => { this.mainLoader = false;}, 3000);
-  }catch(error) {this.hasClientError = true;this.mainLoader = false; this.xtremandLogger.error('error'+error); }
+    try {
+      this.mainLoader = true;
+      this.downloadTypeName = this.paginationType = 'campaignViews';
+      this.emailActionListPagination.pageIndex = 1;
+      this.campaignId = this.route.snapshot.params['campaignId'];
+      this.getCampaignById(this.campaignId);
+      this.getEmailLogCountByCampaign(this.campaignId);
+      this.pagination.pageIndex = 1;
+      if (this.isTimeLineView === true) {
+        this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
+      }
+      setTimeout(() => { this.mainLoader = false; }, 3000);
+    } catch (error) { this.hasClientError = true; this.mainLoader = false; this.xtremandLogger.error('error' + error); }
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.paginationType = '';
     this.contactListDeleteError = false;
     $('#worldMapModal').modal('hide');
@@ -2001,522 +2006,537 @@ showTimeLineView(){
     $('#donutModelPopup').modal('hide');
   }
 
-  showLandingPagePreview(campaign:Campaign){
-      if(campaign.nurtureCampaign){
-          campaign.landingPage.showPartnerCompanyLogo = true;
-          if(campaign.userId==this.loggedInUserId){
-              campaign.landingPage.partnerId = this.loggedInUserId;
-          }else{
-              campaign.landingPage.partnerId = campaign.userId;
-          }
-      }else{
-          if(campaign.enableCoBrandingLogo){
-              campaign.landingPage.showYourPartnersLogo = true;
-          }else{
-              campaign.landingPage.showYourPartnersLogo = false;
-          }
+  showLandingPagePreview(campaign: Campaign) {
+    if (campaign.nurtureCampaign) {
+      campaign.landingPage.showPartnerCompanyLogo = true;
+      if (campaign.userId == this.loggedInUserId) {
+        campaign.landingPage.partnerId = this.loggedInUserId;
+      } else {
+        campaign.landingPage.partnerId = campaign.userId;
       }
-      this.previewLandingPageComponent.showPreview(campaign.landingPage);
-  }
-    goToCampaignLandingPageAnalytics(campaignId:number){
-        this.router.navigate(['home/pages/'+campaignId+'/campaign/analytics']);
+    } else {
+      if (campaign.enableCoBrandingLogo) {
+        campaign.landingPage.showYourPartnersLogo = true;
+      } else {
+        campaign.landingPage.showYourPartnersLogo = false;
+      }
     }
+    this.previewLandingPageComponent.showPreview(campaign.landingPage);
+  }
+  goToCampaignLandingPageAnalytics(campaignId: number) {
+    this.router.navigate(['home/pages/' + campaignId + '/campaign/analytics']);
+  }
 
-  showAutoResponseAnalytics(campaign:any,selectedIndex:number){
-      this.autoResponseAnalyticsPagination = new Pagination();
-      $.each(this.campaignViews,function(index,row){
-          if(selectedIndex!=index){
-              row.expanded = false;
-          }
-      });
-      campaign.expanded = !campaign.expanded;
-      if(campaign.expanded){
-          this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination, campaign);
+  showAutoResponseAnalytics(campaign: any, selectedIndex: number) {
+    this.autoResponseAnalyticsPagination = new Pagination();
+    $.each(this.campaignViews, function (index, row) {
+      if (selectedIndex != index) {
+        row.expanded = false;
       }
+    });
+    campaign.expanded = !campaign.expanded;
+    if (campaign.expanded) {
+      this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination, campaign);
+    }
   }
 
 
-  listAutoResponseAnalytics(pagination:Pagination,campaign:any){
-      this.referenceService.loading(this.autoResponeAnalyticsLoader, true);
-      this.autoResponseAnalyticsPagination.campaignId = campaign.campaignId;
-      this.autoResponseAnalyticsPagination.userId = campaign.userId;
-      this.campaignService.listAutoResponseAnalytics(pagination)
+  listAutoResponseAnalytics(pagination: Pagination, campaign: any) {
+    this.referenceService.loading(this.autoResponeAnalyticsLoader, true);
+    this.autoResponseAnalyticsPagination.campaignId = campaign.campaignId;
+    this.autoResponseAnalyticsPagination.userId = campaign.userId;
+    this.campaignService.listAutoResponseAnalytics(pagination)
       .subscribe(
-          response => {
-              let data = response.data;
-              pagination.totalRecords = data.totalRecords;
-              let analyticsList = data.data;
-              $.each(analyticsList,function(index,autoResponse){
-                  autoResponse.displayTime = new Date(autoResponse.sentTimeUtcString);
-                  if(autoResponse.openedTimeUtcString!="-"){
-                      autoResponse.openedTime = new Date(autoResponse.openedTimeUtcString);
-                  }
-             });
-              pagination = this.pagerService.getPagedItems(pagination,analyticsList);
-              this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
-          },
-          error => {
-              swal("Oops! Something went wrong", "Please try after sometime", "error");
-              this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
-          },
-          () => this.xtremandLogger.info("Finished showAutoResponseAnalytics()")
+        response => {
+          let data = response.data;
+          pagination.totalRecords = data.totalRecords;
+          let analyticsList = data.data;
+          $.each(analyticsList, function (index, autoResponse) {
+            autoResponse.displayTime = new Date(autoResponse.sentTimeUtcString);
+            if (autoResponse.openedTimeUtcString != "-") {
+              autoResponse.openedTime = new Date(autoResponse.openedTimeUtcString);
+            }
+          });
+          pagination = this.pagerService.getPagedItems(pagination, analyticsList);
+          this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
+        },
+        error => {
+          swal("Oops! Something went wrong", "Please try after sometime", "error");
+          this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
+        },
+        () => this.xtremandLogger.info("Finished showAutoResponseAnalytics()")
       );
   }
 
-  setAutoResponsesPage( event: any,campaign:any ) {
-      this.autoResponseAnalyticsPagination.pageIndex = event.page;
-      this.listAutoResponseAnalytics( this.autoResponseAnalyticsPagination,campaign );
-      }
+  setAutoResponsesPage(event: any, campaign: any) {
+    this.autoResponseAnalyticsPagination.pageIndex = event.page;
+    this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination, campaign);
+  }
 
   getSmsSentCount(campaignId: number) {
-      try{
+    try {
       this.loading = true;
-        this.campaignService.getSmsSentCount(campaignId)
+      this.campaignService.getSmsSentCount(campaignId)
         .subscribe(
-        data => {
-          this.campaignReport.smsSentCount = data.sms_sent_count;
-          this.loading = false;
-        },
-        error => console.log(error),
-        () => {
-          this.listCampaignViews(campaignId, this.campaignViewsPagination);
-        }
+          data => {
+            this.campaignReport.smsSentCount = data.sms_sent_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
         )
-      }catch(error){ this.xtremandLogger.error('error'+error);}
-    }
-    getSmsSentSuccessCount(campaignId: number) {
-      try{
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+  getSmsSentSuccessCount(campaignId: number) {
+    try {
       this.loading = true;
-        this.campaignService.getSmsSentSuccessCount(campaignId)
+      this.campaignService.getSmsSentSuccessCount(campaignId)
         .subscribe(
-        data => {
-          this.campaignReport.smsSentSuccessCount = data.sms_sent__success_count;
-          this.loading = false;
-        },
-        error => console.log(error),
-        () => {
-          this.listCampaignViews(campaignId, this.campaignViewsPagination);
-        }
+          data => {
+            this.campaignReport.smsSentSuccessCount = data.sms_sent__success_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
         )
-      }catch(error){ this.xtremandLogger.error('error'+error);}
-    }
-    getSmsSentFailureCount(campaignId: number) {
-      try{
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+  getSmsSentFailureCount(campaignId: number) {
+    try {
       this.loading = true;
-        this.campaignService.getSmsSentFailureCount(campaignId)
+      this.campaignService.getSmsSentFailureCount(campaignId)
         .subscribe(
-        data => {
-          console.log(data)
-          this.campaignReport.smsSentFailureCount = data.sms_sent_failure_count;
-          this.loading = false;
-        },
-        error => console.log(error),
-        () => {
-          this.listCampaignViews(campaignId, this.campaignViewsPagination);
-        }
+          data => {
+            console.log(data)
+            this.campaignReport.smsSentFailureCount = data.sms_sent_failure_count;
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => {
+            this.listCampaignViews(campaignId, this.campaignViewsPagination);
+          }
         )
-      }catch(error){ this.xtremandLogger.error('error'+error);}
-    }
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
 
   getSmsLogCountByCampaign(campaignId: number) {
-  try{
-  this.loading = true;
-    this.campaignService.getSmsLogCountByCampaign(campaignId)
-    .subscribe(
-    data => {
-      console.log(data);
-      this.campaignReport.smsOpenCount = data["sms_opened_count"];
-      this.campaignReport.smsClickedCount = data["sms_url_clicked_count"];
-      this.loading = false;
-    },
-    error => console.log(error),
-    () => console.log()
-    )
-  }catch(error){ this.hasClientError = true;this.xtremandLogger.error('error'+error);}
-}
-
-
-smslActionList(campaignId: number, actionType: string, pagination: Pagination) {
-  try{
-  this.loading = true;
-  this.referenceService.loading(this.httpRequestLoader, true);
-  this.paginationType = 'emailAction';
-  this.campaignService.smsActionList(campaignId, actionType, pagination)
-   .subscribe(data => {
-     data.forEach((element, index) => { element.time = new Date(element.utcTimeString);});
-    this.campaignReport.emailLogs = data;
-    this.campaignReport.emailActionType = actionType;
-    $('#emailActionListModal').modal();
-    if (actionType === 'open') {
-        if ( this.sortByDropDown.length === 5 ) {
-            this.sortByDropDown.push( { 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
-            this.sortByDropDown.push( { 'name': 'Subject(DESC)', 'value': 'subject-DESC' });
-        }
-          this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
-    } else if (actionType === 'click') {
-        this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(ASC)"; });
-        this.sortByDropDown = this.sortByDropDown.filter(function(el) { return el.name != "Subject(DESC)"; });
-        this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
-    }
-    this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
-    this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
-    this.loading = false;
-    this.referenceService.loading(this.httpRequestLoader, false);
-  },
-  error => console.log(error),
-  () => console.log('emailActionList() completed')  )
-}catch(error) {this.xtremandLogger.error('Error in analytics page emails sent'+error); }
-}
-
-countSmsLogs() {
-  try{
-    this.loading = true;
-    if (this.smsLogs !== undefined) {
-      console.log(this.smsLogs)
-    for (const i in this.smsLogs) {
-      if (this.smsLogs[i].actionId === 13) {
-        this.userCampaignReport.smsOpenCount += 1;
-      } else if (this.smsLogs[i].actionId === 14 || this.smsLogs[i].actionId === 15) {
-        this.userCampaignReport.smsClickedCount += 1;
-      }
-    }
+    try {
+      this.loading = true;
+      this.campaignService.getSmsLogCountByCampaign(campaignId)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.campaignReport.smsOpenCount = data["sms_opened_count"];
+            this.campaignReport.smsClickedCount = data["sms_url_clicked_count"];
+            this.loading = false;
+          },
+          error => console.log(error),
+          () => console.log()
+        )
+    } catch (error) { this.hasClientError = true; this.xtremandLogger.error('error' + error); }
   }
-    this.loading = false;
-} catch(error){this.xtremandLogger.error('Error in count'+error); }
-}
 
- listSMSLogsByCampaignAndUser(campaignId: any, userId: any)
-{
-  try{
-    this.loading = true;
-    this.campaignService.listSMSLogsByCampaignAndUser(campaignId, userId)
-     .subscribe( data => {
-      data.forEach((element, index) => {
-       if(element.time) { element.time = new Date(element.utcTimeString); }});
-       if(this.campaignType == "SMS")
+
+  smslActionList(campaignId: number, actionType: string, pagination: Pagination) {
+    try {
+      this.loading = true;
+      this.referenceService.loading(this.httpRequestLoader, true);
+      this.paginationType = 'emailAction';
+      this.campaignService.smsActionList(campaignId, actionType, pagination)
+        .subscribe(data => {
+          data.forEach((element, index) => { element.time = new Date(element.utcTimeString); });
+          this.campaignReport.emailLogs = data;
+          this.campaignReport.emailActionType = actionType;
+          $('#emailActionListModal').modal();
+          if (actionType === 'open') {
+            if (this.sortByDropDown.length === 5) {
+              this.sortByDropDown.push({ 'name': 'Subject(ASC)', 'value': 'subject-ASC' });
+              this.sortByDropDown.push({ 'name': 'Subject(DESC)', 'value': 'subject-DESC' });
+            }
+            this.emailActionListPagination.totalRecords = this.campaignReport.emailOpenCount;
+          } else if (actionType === 'click') {
+            this.sortByDropDown = this.sortByDropDown.filter(function (el) { return el.name != "Subject(ASC)"; });
+            this.sortByDropDown = this.sortByDropDown.filter(function (el) { return el.name != "Subject(DESC)"; });
+            this.emailActionListPagination.totalRecords = this.campaignReport.emailClickedCount;
+          }
+          this.emailActionListPagination = this.pagerService.getPagedItems(this.emailActionListPagination, this.campaignReport.emailLogs);
+          this.emailActionTotalList(campaignId, actionType, this.emailActionListPagination.totalRecords);
+          this.loading = false;
+          this.referenceService.loading(this.httpRequestLoader, false);
+        },
+          error => console.log(error),
+          () => console.log('emailActionList() completed'))
+    } catch (error) { this.xtremandLogger.error('Error in analytics page emails sent' + error); }
+  }
+
+  countSmsLogs() {
+    try {
+      this.loading = true;
+      if (this.smsLogs !== undefined) {
+        console.log(this.smsLogs)
+        for (const i in this.smsLogs) {
+          if (this.smsLogs[i].actionId === 13) {
+            this.userCampaignReport.smsOpenCount += 1;
+          } else if (this.smsLogs[i].actionId === 14 || this.smsLogs[i].actionId === 15) {
+            this.userCampaignReport.smsClickedCount += 1;
+          }
+        }
+      }
+      this.loading = false;
+    } catch (error) { this.xtremandLogger.error('Error in count' + error); }
+  }
+
+  listSMSLogsByCampaignAndUser(campaignId: any, userId: any) {
+    try {
+      this.loading = true;
+      this.campaignService.listSMSLogsByCampaignAndUser(campaignId, userId)
+        .subscribe(data => {
+          data.forEach((element, index) => {
+            if (element.time) { element.time = new Date(element.utcTimeString); }
+          });
+          if (this.campaignType == "SMS")
             this.emailLogs = data;
-        else
+          else
             this.smsLogs = data;
-      this.loading =false;
-      console.log(data);
-     },
-    error => console.log(error),
-    () => { this.count(); } )
-  }catch(error) {this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser'+error); }
-}
+          this.loading = false;
+          console.log(data);
+        },
+          error => console.log(error),
+          () => { this.count(); })
+    } catch (error) { this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser' + error); }
+  }
 
-listSMSLogsByCampaignAndUserForSmsAnalylics(campaignId: any, userId: any)
-{
-  try{
-    this.loading = true;
-    this.campaignService.listSMSLogsByCampaignAndUser(campaignId, userId)
-     .subscribe( data => {
-      data.forEach((element, index) => {
-       if(element.time) { element.time = new Date(element.utcTimeString); }});
-            this.smsLogs = data;
-      this.loading =false;
-      console.log(data);
-     },
-    error => console.log(error),
-    () => { this.countSmsLogs(); } )
-  }catch(error) {this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser'+error); }
-}
-toggleSmsAnalyticsView(event:string){
-  if(event === 'EMAIL')
-    this.isSmsServiceAnalytics = false;
-  else
-    this.isSmsServiceAnalytics = true;
+  listSMSLogsByCampaignAndUserForSmsAnalylics(campaignId: any, userId: any) {
+    try {
+      this.loading = true;
+      this.campaignService.listSMSLogsByCampaignAndUser(campaignId, userId)
+        .subscribe(data => {
+          data.forEach((element, index) => {
+            if (element.time) { element.time = new Date(element.utcTimeString); }
+          });
+          this.smsLogs = data;
+          this.loading = false;
+          console.log(data);
+        },
+          error => console.log(error),
+          () => { this.countSmsLogs(); })
+    } catch (error) { this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser' + error); }
+  }
+  toggleSmsAnalyticsView(event: string) {
+    if (event === 'EMAIL')
+      this.isSmsServiceAnalytics = false;
+    else
+      this.isSmsServiceAnalytics = true;
 
     this.pagination.pageIndex = 1;
 
     this.getCampaignUserViewsCountBarCharts(this.campaignId, this.pagination);
-}
+  }
 
-/**************Parnter Public Event Campaign Lead Info**************/
-viewPartnerLeads(item:any){
+  /**************Parnter Public Event Campaign Lead Info**************/
+  viewPartnerLeads(item: any) {
     this.inputObject = {};
     this.referenceService.startLoader(this.partnerLeadInfoRequestLoader);
-   /* let htmlContent = "#partner-lead-info-content";
-    $(htmlContent).empty();
-    $('.modal .modal-body').css('overflow-y', 'auto');
-    $("#partner-leads-info-modal").modal('show');
-    $('.modal .modal-body').css('max-height', $(window).height() * 0.75);*/
+    /* let htmlContent = "#partner-lead-info-content";
+     $(htmlContent).empty();
+     $('.modal .modal-body').css('overflow-y', 'auto');
+     $("#partner-leads-info-modal").modal('show');
+     $('.modal .modal-body').css('max-height', $(window).height() * 0.75);*/
     this.isShowPartnerLeads = true;
     let campaignId = item.campaignId;
     let partnerId = item.userId;
     this.campaignService.getRedistributedCampaignIds(partnerId, campaignId).subscribe(
-            (response: any) => {
-                this.partnerLeadResponeStatus = response.statusCode;
-                if (response.statusCode == 200) {
-                    let redistributedCampaignIds = response.data;
-                    this.inputObject['formAlias'] = this.campaign.formAlias;
-                    this.inputObject['isPublicEventLeads'] = true;
-                    this.inputObject['campaignAlias'] = redistributedCampaignIds[0];
-                    this.inputObject['title'] = this.leadInfoTitle;
-                }
-                this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
-            },
-            (error: any) => {
-                swal("Please Contact Admin!", "Unable to load data", "error"); 
-                this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
-                this.xtremandLogger.log(error);
-                $("#partner-leads-info-modal").modal('hide');
-            });
-     
-}
+      (response: any) => {
+        this.partnerLeadResponeStatus = response.statusCode;
+        if (response.statusCode == 200) {
+          let redistributedCampaignIds = response.data;
+          this.inputObject['formAlias'] = this.campaign.formAlias;
+          this.inputObject['isPublicEventLeads'] = true;
+          this.inputObject['campaignAlias'] = redistributedCampaignIds[0];
+          this.inputObject['title'] = this.leadInfoTitle;
+        }
+        this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
+      },
+      (error: any) => {
+        swal("Please Contact Admin!", "Unable to load data", "error");
+        this.referenceService.stopLoader(this.partnerLeadInfoRequestLoader);
+        this.xtremandLogger.log(error);
+        $("#partner-leads-info-modal").modal('hide');
+      });
 
-getLeadsCount(){
-    try{
+  }
+
+  getLeadsCount() {
+    try {
       this.httpRequestLoader.isLoading = true;
       this.campaignService.getLeadsCount(this.campaignId)
-     .subscribe(
-       data => {
-           console.log(data);
-           this.campaignReport.yesLeadCount = data.YES;
-           this.campaignReport.noLeadCount = data.NO;
-           this.campaignReport.maybeLeadCount = data.MAYBE;
-           this.campaignReport.leadAdditionalCount = data.additionalCount;
-           this.getEventLeadsDetails('YES');
-      },
-      (error:any)=>{this.xtremandLogger.error('error'+error);
-      this.httpRequestLoader.isLoading = false;})
-    }catch(error) { this.xtremandLogger.error('error'+error);}
- }
+        .subscribe(
+          data => {
+            console.log(data);
+            this.campaignReport.yesLeadCount = data.YES;
+            this.campaignReport.noLeadCount = data.NO;
+            this.campaignReport.maybeLeadCount = data.MAYBE;
+            this.campaignReport.leadAdditionalCount = data.additionalCount;
+            this.getEventLeadsDetails('YES');
+          },
+          (error: any) => {
+            this.xtremandLogger.error('error' + error);
+            this.httpRequestLoader.isLoading = false;
+          })
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
 
-getPartnerLeadsCount(selectedLeadPartnerId: number){
+  getPartnerLeadsCount(selectedLeadPartnerId: number) {
     this.isShowPartnerLeads = true;
     this.httpRequestLoader.isLoading = true;
     this.referenceService.goToTop();
     this.selectedLeadPartnerId = selectedLeadPartnerId;
-    try{
-     this.campaignService.getPartnerLeadsCount(this.campaignId, selectedLeadPartnerId)
-     .subscribe(
-       data => {
-           console.log(data);
-           this.campaignReport.yesPartnerLeadCount = data.YES;
-           this.campaignReport.noPartnerLeadCount = data.NO;
-           this.campaignReport.maybePartnerLeadCount = data.MAYBE;
-           this.campaignReport.partnerLeadAdditionalCount = data.additionalCount;
-           this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId);
-      },
-      (error:any)=>{this.xtremandLogger.error('error'+error);
-      this.httpRequestLoader.isLoading = false;})
-    }catch(error) { this.xtremandLogger.error('error'+error);}
- }
-
-eventLeadsDetailsSetPage( event: any ) {
-    this.leadsDetailPagination.pageIndex = event.page;
-    this.getEventLeadsDetails(this.leadDetailType);
-}
-
-eventTotalLeadsDetailsSetPage( event: any ) {
-    this.totalLeadsDetailPagination.pageIndex = event.page;
-    this.getEventTotalLeadsDetails();
-}
-
-partnerEventLeadsDetailsSetPage( event: any ) {
-    this.partnerLeadsDetailPagination.pageIndex = event.page;
-    this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId);
-}
-
-
-partnerEventLeadsDetailsSetPageDropdown(event: Pagination){
-    this.leadsDetailPagination = event;
-    this.getEventLeadsDetails(this.partnerLeadDetailType);
-}
-
-eventTotalLeadsDetailsSetPageDropdown(event:Pagination){
-    this.totalLeadsDetailPagination = event;
-    this.getEventTotalLeadsDetails();
-}
-
-eventLeadsDetailsSetPageDropdown(event: Pagination){
-    this.leadsDetailPagination = event;
-    this.getEventLeadsDetails(this.leadDetailType);
-}
-
-
-getEventLeadsDetails(detailType: any){
-   this.leadDetailType = detailType;
-   this.leadType = 'eventLeads';
-   this.httpRequestLoader.isLoading = true;
-    try{
-        this.campaignService.getEventLeadsDetails(this.leadsDetailPagination, this.campaignId, this.leadDetailType)
+    try {
+      this.campaignService.getPartnerLeadsCount(this.campaignId, selectedLeadPartnerId)
         .subscribe(
           data => {
-              console.log(data);
-              this.leadsFormHeaders = data.headers;
-              this.leadsFormDetails = data.data;
-              this.leadsFormDetails.forEach((value)=>{ 
-                  value['expanded'] = false;
-                  if( value['RSVP Time UTC String']!=undefined){
-                      value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
-                  }
-                  
-              })
-              this.leadsDetailPagination.totalRecords = data.totalRecords;
-              this.leadsDetailPagination = this.pagerService.getPagedItems(this.leadsDetailPagination, data.data);
-              this.httpRequestLoader.isLoading = false;
-         },
-         (error:any)=>{this.xtremandLogger.error('error'+error);
-         this.httpRequestLoader.isLoading = false;})
-       }catch(error) { this.xtremandLogger.error('error'+error);}
-}
+            console.log(data);
+            this.campaignReport.yesPartnerLeadCount = data.YES;
+            this.campaignReport.noPartnerLeadCount = data.NO;
+            this.campaignReport.maybePartnerLeadCount = data.MAYBE;
+            this.campaignReport.partnerLeadAdditionalCount = data.additionalCount;
+            this.getPartnerEventLeadsDetails('YES', this.selectedLeadPartnerId);
+          },
+          (error: any) => {
+            this.xtremandLogger.error('error' + error);
+            this.httpRequestLoader.isLoading = false;
+          })
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
 
-getEventTotalLeadsDetails(){
+  eventLeadsDetailsSetPage(event: any) {
+    this.leadsDetailPagination.pageIndex = event.page;
+    this.getEventLeadsDetails(this.leadDetailType);
+  }
+
+  eventTotalLeadsDetailsSetPage(event: any) {
+    this.totalLeadsDetailPagination.pageIndex = event.page;
+    this.getEventTotalLeadsDetails();
+  }
+
+  partnerEventLeadsDetailsSetPage(event: any) {
+    this.partnerLeadsDetailPagination.pageIndex = event.page;
+    this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId);
+  }
+
+
+  partnerEventLeadsDetailsSetPageDropdown(event: Pagination) {
+    this.leadsDetailPagination = event;
+    this.getEventLeadsDetails(this.partnerLeadDetailType);
+  }
+
+  eventTotalLeadsDetailsSetPageDropdown(event: Pagination) {
+    this.totalLeadsDetailPagination = event;
+    this.getEventTotalLeadsDetails();
+  }
+
+  eventLeadsDetailsSetPageDropdown(event: Pagination) {
+    this.leadsDetailPagination = event;
+    this.getEventLeadsDetails(this.leadDetailType);
+  }
+
+
+  getEventLeadsDetails(detailType: any) {
+    this.leadDetailType = detailType;
+    this.leadType = 'eventLeads';
+    this.httpRequestLoader.isLoading = true;
+    try {
+      this.campaignService.getEventLeadsDetails(this.leadsDetailPagination, this.campaignId, this.leadDetailType)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.leadsFormHeaders = data.headers;
+            this.leadsFormDetails = data.data;
+            this.leadsFormDetails.forEach((value) => {
+              value['expanded'] = false;
+              if (value['RSVP Time UTC String'] != undefined) {
+                value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
+              }
+
+            })
+            this.leadsDetailPagination.totalRecords = data.totalRecords;
+            this.leadsDetailPagination = this.pagerService.getPagedItems(this.leadsDetailPagination, data.data);
+            this.httpRequestLoader.isLoading = false;
+          },
+          (error: any) => {
+            this.xtremandLogger.error('error' + error);
+            this.httpRequestLoader.isLoading = false;
+          })
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
+
+  getEventTotalLeadsDetails() {
     this.showRsvpDetails = true;
     this.showTotalLeads = true;
     this.referenceService.detailViewIsLoading = false;
- }
+  }
 
 
-getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number){
+  getPartnerEventLeadsDetails(detailType: any, selectedLeadPartnerId: number) {
     this.leadType = 'partnerLeads';
     this.partnerLeadDetailType = detailType;
     this.httpRequestLoader.isLoading = true;
-     try{
-         this.campaignService.getPartnerEventLeadsDetails(this.partnerLeadsDetailPagination, this.campaignId, selectedLeadPartnerId, this.partnerLeadDetailType)
-         .subscribe(
-           data => {
-               console.log(data);
-               this.partnerLeadsFormHeaders = data.headers;
-               this.partnerLeadsFormDetails = data.data;
-               this.partnerLeadsFormDetails.forEach((value)=>{ 
-                   value['expanded'] = false;
-                   if( value['RSVP Time UTC String']!=undefined){
-                       value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
-                   }
-                   
-               })
-               this.partnerLeadsDetailPagination.totalRecords = data.totalRecords;
-               this.partnerLeadsDetailPagination = this.pagerService.getPagedItems(this.partnerLeadsDetailPagination, data.data);
-               this.httpRequestLoader.isLoading = false;
+    try {
+      this.campaignService.getPartnerEventLeadsDetails(this.partnerLeadsDetailPagination, this.campaignId, selectedLeadPartnerId, this.partnerLeadDetailType)
+        .subscribe(
+          data => {
+            console.log(data);
+            this.partnerLeadsFormHeaders = data.headers;
+            this.partnerLeadsFormDetails = data.data;
+            this.partnerLeadsFormDetails.forEach((value) => {
+              value['expanded'] = false;
+              if (value['RSVP Time UTC String'] != undefined) {
+                value['RSVP Time UTC String'] = new Date(value['RSVP Time UTC String']);
+              }
+
+            })
+            this.partnerLeadsDetailPagination.totalRecords = data.totalRecords;
+            this.partnerLeadsDetailPagination = this.pagerService.getPagedItems(this.partnerLeadsDetailPagination, data.data);
+            this.httpRequestLoader.isLoading = false;
           },
-          (error:any)=>{this.xtremandLogger.error('error'+error);
-          this.httpRequestLoader.isLoading = false;})
-        }catch(error) { this.xtremandLogger.error('error'+error);}
- }
+          (error: any) => {
+            this.xtremandLogger.error('error' + error);
+            this.httpRequestLoader.isLoading = false;
+          })
+    } catch (error) { this.xtremandLogger.error('error' + error); }
+  }
 
-leadEventHandler( keyCode: any ) { if ( keyCode === 13 ) { 
-    this.leadDetailsSearch();
-} }
+  leadEventHandler(keyCode: any) {
+    if (keyCode === 13) {
+      this.leadDetailsSearch();
+    }
+  }
 
-leadDetailsSearch(){
-    if(this.leadType == 'eventLeads'){
-        this.leadsDetailPagination.searchKey = this.leadsSearchKey;
-        this.leadsDetailPagination.pageIndex = 1;
-        this.getEventLeadsDetails(this.leadDetailType); 
-     }else{
-         this.partnerLeadsDetailPagination.searchKey = this.leadsSearchKey;
-         this.partnerLeadsDetailPagination.pageIndex = 1;
-         this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId); 
-     }
- }
+  leadDetailsSearch() {
+    if (this.leadType == 'eventLeads') {
+      this.leadsDetailPagination.searchKey = this.leadsSearchKey;
+      this.leadsDetailPagination.pageIndex = 1;
+      this.getEventLeadsDetails(this.leadDetailType);
+    } else {
+      this.partnerLeadsDetailPagination.searchKey = this.leadsSearchKey;
+      this.partnerLeadsDetailPagination.pageIndex = 1;
+      this.getPartnerEventLeadsDetails(this.partnerLeadDetailType, this.selectedLeadPartnerId);
+    }
+  }
 
-expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
-    
-    if( this.leadType = 'eventLeads'){
-    
-    $.each( this.leadsFormDetails, function( index, row ) {
-        if ( selectedIndex != index ) {
-            row.expanded = false;
-            $( '#form-data-row-' + index ).css( "background-color", "#fff" );
+  expandColumns(selectedFormDataRow: any, selectedIndex: number) {
+
+    if (this.leadType = 'eventLeads') {
+
+      $.each(this.leadsFormDetails, function (index, row) {
+        if (selectedIndex != index) {
+          row.expanded = false;
+          $('#form-data-row-' + index).css("background-color", "#fff");
         }
-    } );
-    
-    }else{
-        $.each( this.partnerLeadsFormDetails, function( index, row ) {
-            if ( selectedIndex != index ) {
-                row.expanded = false;
-                $( '#form-data-row-' + index ).css( "background-color", "#fff" );
-            }
-        } );
+      });
+
+    } else {
+      $.each(this.partnerLeadsFormDetails, function (index, row) {
+        if (selectedIndex != index) {
+          row.expanded = false;
+          $('#form-data-row-' + index).css("background-color", "#fff");
+        }
+      });
     }
-    
-    
+
+
     selectedFormDataRow.expanded = !selectedFormDataRow.expanded;
-    if ( selectedFormDataRow.expanded ) {
-        $( '#form-data-row-' + selectedIndex ).css( "background-color", "#d3d3d357" );
+    if (selectedFormDataRow.expanded) {
+      $('#form-data-row-' + selectedIndex).css("background-color", "#d3d3d357");
     } else {
-        $( '#form-data-row-' + selectedIndex ).css( "background-color", "#fff" );
+      $('#form-data-row-' + selectedIndex).css("background-color", "#fff");
     }
 
-}
+  }
 
-downloadLeadList() {
+  downloadLeadList() {
     try {
-        this.isLeadListDownloadProcessing = true;
-        this.campaignService.downloadLeadList( this.campaignId, this.leadDetailType)
-            .subscribe(
-            data => this.downloadFile( data, this.leadDetailType, 'lead' ),
-            ( error: any ) => {
-                this.xtremandLogger.error( error );
-                this.xtremandLogger.errorPage( error );
-                this.isLeadListDownloadProcessing = false;
-            },
-            () => this.xtremandLogger.info( "download completed" )
-            );
-    } catch ( error ) {
-        this.xtremandLogger.error( error, "ManageContactsComponent", "downloadList()" );
-        this.isLeadListDownloadProcessing = false;
+      this.isLeadListDownloadProcessing = true;
+      this.campaignService.downloadLeadList(this.campaignId, this.leadDetailType)
+        .subscribe(
+          data => this.downloadFile(data, this.leadDetailType, 'lead'),
+          (error: any) => {
+            this.xtremandLogger.error(error);
+            this.xtremandLogger.errorPage(error);
+            this.isLeadListDownloadProcessing = false;
+          },
+          () => this.xtremandLogger.info("download completed")
+        );
+    } catch (error) {
+      this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+      this.isLeadListDownloadProcessing = false;
     }
-}
+  }
 
-downloadPartnerLeadList() {
+  downloadPartnerLeadList() {
     try {
-        this.isLeadListDownloadProcessing = true;
-        this.campaignService.downloadPartnerLeadList( this.campaignId, this.selectedLeadPartnerId, this.partnerLeadDetailType)
-            .subscribe(
-            data => {
-               this.downloadFile( data, this.partnerLeadDetailType, 'partner_lead' );
-               },
-            ( error: any ) => {
-                this.xtremandLogger.error( error );
-                this.xtremandLogger.errorPage( error );
-                this.isLeadListDownloadProcessing = false;
-            },
-            () => this.xtremandLogger.info( "download completed" )
-            );
-    } catch ( error ) {
-        this.xtremandLogger.error( error, "AnalyticsComponent", "downloadLeadList()" );
-        this.isLeadListDownloadProcessing = false;
+      this.isLeadListDownloadProcessing = true;
+      this.campaignService.downloadPartnerLeadList(this.campaignId, this.selectedLeadPartnerId, this.partnerLeadDetailType)
+        .subscribe(
+          data => {
+            this.downloadFile(data, this.partnerLeadDetailType, 'partner_lead');
+          },
+          (error: any) => {
+            this.xtremandLogger.error(error);
+            this.xtremandLogger.errorPage(error);
+            this.isLeadListDownloadProcessing = false;
+          },
+          () => this.xtremandLogger.info("download completed")
+        );
+    } catch (error) {
+      this.xtremandLogger.error(error, "AnalyticsComponent", "downloadLeadList()");
+      this.isLeadListDownloadProcessing = false;
     }
-}
+  }
 
-downloadFile( data: any, selectedleadType: any, name: any) {
+  downloadFile(data: any, selectedleadType: any, name: any) {
     let parsedResponse = data.text();
-    let blob = new Blob( [parsedResponse], { type: 'text/csv' });
-    let url = window.URL.createObjectURL( blob );
+    let blob = new Blob([parsedResponse], { type: 'text/csv' });
+    let url = window.URL.createObjectURL(blob);
 
-    if ( navigator.msSaveOrOpenBlob ) {
-        navigator.msSaveBlob( blob, 'UserList.csv' );
+    if (navigator.msSaveOrOpenBlob) {
+      navigator.msSaveBlob(blob, 'UserList.csv');
     } else {
-        let a = document.createElement( 'a' );
-        a.href = url;
-        a.download = selectedleadType + "_" + name + ' List.csv';
-        document.body.appendChild( a );
-        a.click();
-        document.body.removeChild( a );
+      let a = document.createElement('a');
+      a.href = url;
+      a.download = selectedleadType + "_" + name + ' List.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
-    window.URL.revokeObjectURL( url );
+    window.URL.revokeObjectURL(url);
     this.isLeadListDownloadProcessing = false;
-}
+  }
 
-clearLeadValues(){
+  clearLeadValues() {
     this.leadsFormHeaders = [];
     this.leadsFormDetails = [];
-}
+  }
 
-clearPartnerleadValues(){
+  clearPartnerleadValues() {
     this.partnerLeadsFormHeaders = [];
     this.partnerLeadsFormDetails = [];
-}
+  }
 
-closePartnerLeadPage(){
-    this.isShowPartnerLeads = false; 
-    this.leadType = 'eventLeads'; 
-    this.leadsSearchKey='';
+  closePartnerLeadPage() {
+    this.isShowPartnerLeads = false;
+    this.leadType = 'eventLeads';
+    this.leadsSearchKey = '';
     this.clearPartnerleadValues();
-}
+  }
+
+  /************Data Share Clicked Url Analtyics For Vendor(Sravan)*****************/
+  showClickedUrlsForVendor(){
+    alert("Clikced me");
+  }
 
 }

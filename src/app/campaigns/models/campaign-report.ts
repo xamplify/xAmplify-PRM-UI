@@ -13,6 +13,7 @@ export class CampaignReport {
     emailSentCount: number = 0;
     usersWatchCount: number = 0;
     totalUniqueWatchCount: number = 0;
+    dataShareClickedUrlsCountForVendor:number = 0;
     
      smsOpenCount: number = 0;
     smsClickedCount: number = 0;

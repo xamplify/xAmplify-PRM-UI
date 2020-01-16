@@ -34,6 +34,8 @@ import { SharedRssModule } from "app/shared/shared-rss.module";
 import { AddMoreReceiversComponent } from './add-more-receivers/add-more-receivers.component';
 import { PublicEventEmailPopupComponent } from './public-event-email-popup/public-event-email-popup.component';
 import { EventCheckInComponent } from './event-check-in/event-check-in.component';
+import { CampaignWorkFlowsModalPopupComponent } from './campaign-work-flows-modal-popup/campaign-work-flows-modal-popup.component';
+import { CampaignWorkFlowsUtilComponent } from './campaign-work-flows-util/campaign-work-flows-util.component';
 
 
 @NgModule({
@@ -68,7 +70,9 @@ import { EventCheckInComponent } from './event-check-in/event-check-in.component
     AddLeadsComponent,
     AddMoreReceiversComponent,
     PublicEventEmailPopupComponent,
-    EventCheckInComponent
+    EventCheckInComponent,
+    CampaignWorkFlowsModalPopupComponent,
+    CampaignWorkFlowsUtilComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
 ],
