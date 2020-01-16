@@ -36,6 +36,7 @@ import { PublicEventEmailPopupComponent } from './public-event-email-popup/publi
 import { EventCheckInComponent } from './event-check-in/event-check-in.component';
 import { CampaignWorkFlowsModalPopupComponent } from './campaign-work-flows-modal-popup/campaign-work-flows-modal-popup.component';
 import { CampaignWorkFlowsUtilComponent } from './campaign-work-flows-util/campaign-work-flows-util.component';
+import { ClickedUrlsVendorAnalyticsComponent } from './clicked-urls-vendor-analytics/clicked-urls-vendor-analytics.component';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { CampaignWorkFlowsUtilComponent } from './campaign-work-flows-util/campa
     PublicEventEmailPopupComponent,
     EventCheckInComponent,
     CampaignWorkFlowsModalPopupComponent,
-    CampaignWorkFlowsUtilComponent
+    CampaignWorkFlowsUtilComponent,
+    ClickedUrlsVendorAnalyticsComponent
   ],
   exports: [DealRegistrationComponent,BubbleChartComponent,HeatMapComponent,ManageDealCommentsComponent,AddLeadsComponent
 ],

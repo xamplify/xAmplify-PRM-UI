@@ -1907,4 +1907,14 @@ export class ReferenceService {
     showSweetAlert(message1:string,message2:string,type:string){
         swal(message1,message2,type);
     }
+    
+    showModalPopup(modalId){
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#"+modalId).modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    }
+
+    closeModalPopup(modalId){
+        $("#" + modalId).modal('hide');
+    }
 }

@@ -28,7 +28,7 @@ import { PreviewLandingPageComponent } from '../../landing-pages/preview-landing
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
-
+import { ClickedUrlsVendorAnalyticsComponent} from '../clicked-urls-vendor-analytics/clicked-urls-vendor-analytics.component';
 
 declare var $, Highcharts, swal: any;
 
@@ -145,6 +145,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   smsService: boolean;
   isSmsServiceAnalytics = false;
   @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+  @ViewChild('clickedUrlsVendorAnalyticsComponent') clickedUrlsVendorAnalyticsComponent:ClickedUrlsVendorAnalyticsComponent;
   senderMergeTag: SenderMergeTag = new SenderMergeTag();
   leadData: any;
   isDealPreview = false;
@@ -2536,7 +2537,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   /************Data Share Clicked Url Analtyics For Vendor(Sravan)*****************/
   showClickedUrlsForVendor(){
-    alert("Clikced me");
+    this.clickedUrlsVendorAnalyticsComponent.showPopup(this.campaignId);
   }
 
 }
