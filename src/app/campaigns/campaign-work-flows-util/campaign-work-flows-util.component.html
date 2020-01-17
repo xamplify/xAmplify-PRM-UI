@@ -1,5 +1,5 @@
 <app-modal-popup-loader *ngIf="loader.isLoading"></app-modal-popup-loader>
-<ng-container>
+<ng-container *ngIf="!loader.isLoading">
   <div class="col-xs-12">
     <div>
       <div class="row" id="row-margin">

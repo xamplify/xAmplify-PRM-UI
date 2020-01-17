@@ -254,7 +254,7 @@
                                     Copy Campaign
                                   </a>
                                   <!---Add Workflows List View-->
-                                  <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)  && campaign.campaignType.indexOf('EVENT') > -1"
+                                  <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                     data-rel="fancybox-button" (click)="addWorkFlows(campaign)"
                                     title="Add Workflows">
                                     <i class="fa fa-reply-all" style="width: 30px;"></i>
@@ -565,7 +565,7 @@
                             title="Copy Public Event Url">
                             <i class="fa fa-files-o"></i>
                           </a>
-                          <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)  && campaign.campaignType.indexOf('EVENT') > -1 "
+                          <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                             data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
                             <i class="fa fa-reply-all"></i>
                           </a>

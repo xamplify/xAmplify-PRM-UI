@@ -27,6 +27,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   urls: Array<Url> = new Array<Url>();
   allItems = [];
   campaign:Campaign;
+  dataError = false;
   constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService) {
   }
 
@@ -63,6 +64,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
     this.replies.push(this.reply);
     this.allItems.push(id);
+    console.log(this.allItems);
    // this.loadEmailTemplatesForWorkFlows(this.reply);
   }
 
