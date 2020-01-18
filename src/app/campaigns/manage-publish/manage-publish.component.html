@@ -254,12 +254,12 @@
                                     Copy Campaign
                                   </a>
                                   <!---Add Workflows List View-->
-                                  <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
+                                  <!-- <a *ngIf="(hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                                     data-rel="fancybox-button" (click)="addWorkFlows(campaign)"
                                     title="Add Workflows">
                                     <i class="fa fa-reply-all" style="width: 30px;"></i>
                                     Add Workflows
-                                  </a>
+                                  </a> -->
                                   <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign"
                                     data-rel="fancybox-button" (click)="openEventUrlModal(campaign)"
                                     title="Copy Public Event Url">
@@ -565,10 +565,10 @@
                             title="Copy Public Event Url">
                             <i class="fa fa-files-o"></i>
                           </a>
-                          <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
+                          <!-- <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor)"
                             data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
                             <i class="fa fa-reply-all"></i>
-                          </a>
+                          </a> -->
                           <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)"
                             data-rel="fancybox-button" (click)="inviteMore(campaign)" title="Invite More">
                             <i class="fa fa-users"></i>
