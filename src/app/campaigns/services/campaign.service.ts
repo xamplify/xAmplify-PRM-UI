@@ -799,6 +799,12 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listCampaignWorkflowsOptions() {
+        return this.http.get(this.URL + "campaign/listCampaignWorkflowOptions?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     listClickedUrlAnalyticsForVendor(pagination:Pagination) {
         return this.http.post(this.URL + "campaign/listClickedUrlAnalyticsForVendor?access_token=" + this.authenticationService.access_token,pagination)
             .map(this.extractData)

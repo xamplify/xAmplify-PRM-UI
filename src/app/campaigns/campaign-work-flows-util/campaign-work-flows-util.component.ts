@@ -25,9 +25,12 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   url: Url = new Url();
   replies: Array<Reply> = new Array<Reply>();
   urls: Array<Url> = new Array<Url>();
+  workflowOptions = [];
   allItems = [];
-  campaign:Campaign;
+  campaign:Campaign = new Campaign();
   dataError = false;
+  workflowsMap: Map<string, any[]> = new Map<string, any[]>();
+
   constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService) {
   }
 
@@ -38,19 +41,43 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
 
   showContent(campaign: Campaign) {
     this.campaign = campaign;
+    console.log(this.campaign);
     this.referenceService.loading(this.loader, true);
-    this.campaignService.listCampaignEmailTemplateUrls(campaign.campaignId)
+    this.listWebsiteUrlsByCampaignId(campaign.campaignId);
+    this.listWorkflowsOptions();
+  }
+
+  listWebsiteUrlsByCampaignId(campaignId:number){
+    this.campaignService.listCampaignEmailTemplateUrls(campaignId)
       .subscribe(
         data => {
           this.urlLinks = data;
-          this.referenceService.loading(this.loader, false);
-          console.log(this.urlLinks);
         },
         error => {
-          this.logger.errorPage(error);
+          this.urlLinks = [];
+          this.logger.error(error);
         }
       );
+  }
 
+  listWorkflowsOptions(){
+    this.campaignService.listCampaignWorkflowsOptions()
+      .subscribe(
+        data => {
+          this.workflowsMap = data.map;
+          console.log(this.workflowsMap);
+          this.referenceService.loading(this.loader, false);
+        },
+        error => {
+          this.logger.error(error);
+          this.referenceService.loading(this.loader, false);
+        }
+      );
+  }
+
+  isEven(n) {
+    if (n % 2 === 0) { return true; }
+    return false;
   }
 
   /*********Add Reply********** */
