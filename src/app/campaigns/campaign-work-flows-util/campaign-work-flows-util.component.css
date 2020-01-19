@@ -17,7 +17,7 @@
 }
 
 .email-auto-response {
-  background-color: #f4555c
+  background-color: #f4555c;
 }
 
 #i-margin {
@@ -82,6 +82,14 @@
   height: 66px;
 }
 
+.blur {
+  -webkit-filter: blur(1px);
+  -moz-filter: blur(1px);
+  -o-filter: blur(1px);
+  -ms-filter: blur(1px);
+  filter: blur(1px);
+  cursor: default;
+}
 .custom-change-css {
   border-radius: 0;
   width: 102%;
@@ -138,4 +146,9 @@
 
 .colorRed {
   background: #5bb1d4;
+}
+#bottom-right{
+  margin-right: 15px;
+  float: right;
+  margin-top: 10px;
 }

@@ -30,7 +30,6 @@ export class CampaignWorkFlowsModalPopupComponent implements OnInit {
   showPopup(campaign: Campaign) {
     this.campaignName = campaign.campaignName;
     $('#' + this.modalPopupId).modal('show');
-    this.campaignWorkflowsUtilComponent.showContent(campaign);
   }
 
 }

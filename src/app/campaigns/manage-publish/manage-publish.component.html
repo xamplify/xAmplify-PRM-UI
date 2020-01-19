@@ -22,6 +22,7 @@
   <div style="position: relative; top:-10px;">
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   </div>
+  <ng-container *ngIf="!addWorkflows">
   <div class="row">
     <div class="col-md-12">
       <div class="tabbable tabbable-custom tabbable-noborder">
@@ -652,12 +653,16 @@
           </div>
         </div>
         <!-- End Of tab Content -->
-
       </div>
     </div>
   </div>
-  <!-- <div *ngIf="totalRecords <= 0"  class="alert alert-info"><strong>No Campaigns Found</strong></div> -->
+  </ng-container>
+  <ng-container *ngIf="addWorkflows">
+  	<app-campaign-work-flows-util [campaignOutPut]="selectedCampaign"></app-campaign-work-flows-util>
+  </ng-container>
+  
   <app-scroll-top></app-scroll-top>
+  
 </div>
 
 <!-- Save As Modal -->
@@ -889,4 +894,3 @@
 <!-- -----------------Sending Public Event Email Pop Up------->
 <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup>
 <!-----------------Adding New Workflows Popup-->
-<app-campaign-work-flows-modal-popup #campaignWorkflowsModalPopup></app-campaign-work-flows-modal-popup>

@@ -1826,6 +1826,14 @@ export class ReferenceService {
          });
         return arr;
     }
+
+    spliceArray(arr: any, id: string) {
+        arr = $.grep(arr, function (data: any, index: number) {
+            return data.divId !== id
+        });
+        return arr;
+    }
+    
   getHomeCompanyIdByUserId(uRl){
         const url = this.authenticationService.REST_URL + uRl;
         return this.http.get( url,'' )
