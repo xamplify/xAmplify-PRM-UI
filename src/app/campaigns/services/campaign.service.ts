@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Campaign } from '../models/campaign';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 declare var swal, $, Promise: any;
 @Injectable()
 export class CampaignService {
@@ -807,6 +808,12 @@ export class CampaignService {
 
     listClickedUrlAnalyticsForVendor(pagination:Pagination) {
         return this.http.post(this.URL + "campaign/listClickedUrlAnalyticsForVendor?access_token=" + this.authenticationService.access_token,pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    saveWorkflows(campaignWorkflowPostDto: CampaignWorkflowPostDto) {
+        return this.http.post(this.URL + "campaign/addWorkflows?access_token=" + this.authenticationService.access_token, campaignWorkflowPostDto)
             .map(this.extractData)
             .catch(this.handleError);
     }

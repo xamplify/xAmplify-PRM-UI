@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 import { Campaign } from '../models/campaign';
 import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from '../../core/services/authentication.service';
@@ -10,6 +11,7 @@ import { Properties } from '../../common/models/properties';
 import { CampaignService } from '../services/campaign.service';
 import { Reply } from '../models/campaign-reply';
 import { Url } from '../models/campaign-url';
+import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 declare var $: any;
 @Component({
   selector: 'app-campaign-work-flows-util',
@@ -28,13 +30,17 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   workflowOptions = [];
   allItems = [];
   campaign: Campaign = new Campaign();
+  campaignWorkflowsPostDto: CampaignWorkflowPostDto = new CampaignWorkflowPostDto();
   dataError = false;
   workflowsMap: Map<string, any[]> = new Map<string, any[]>();
   @Input() campaignOutPut: Campaign;
+  workFlowAddedNotificationMessage: string = "Workflow(s) added successfully";
+  @Output() messageEvent = new EventEmitter<string>();
   hasError = false;
-  constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService) {
+  customResponse: CustomResponse = new CustomResponse();
+  constructor(public referenceService: ReferenceService, public utilService: UtilService, public authenticationService: AuthenticationService, public properties: Properties, private logger: XtremandLogger, private campaignService: CampaignService, private router: Router) {
   }
-
+  
 
   ngOnInit() {
     this.campaign = this.campaignOutPut;
@@ -75,7 +81,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       );
   }
 
-  isEven(n) {
+  isEven(n:number) {
     if (n % 2 === 0) { return true; }
     return false;
   }
@@ -91,19 +97,18 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
     this.reply.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
     this.replies.push(this.reply);
     this.allItems.push(id);
-    console.log(this.allItems);
     // this.loadEmailTemplatesForWorkFlows(this.reply);
   }
 
   remove(divId: string, type: string) {
-    if (type == "replies") {
+    if (type === "replies") {
       this.replies = this.referenceService.spliceArray(this.replies, divId);
     } else {
       this.urls = this.referenceService.spliceArray(this.urls, divId);
     }
     $('#' + divId).remove();
     let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-    if (errorLength == 0) {
+    if (errorLength === 0) {
       this.hasError = false;
     }
   }
@@ -118,28 +123,20 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
       this.removeStyleAttrByDivId('reply-message-' + reply.divId);
       $('#' + reply.divId).addClass('portlet light dashboard-stat2');
       this.validateReplySubject(reply);
-      if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !== 18) {
+      if (reply.actionId !== 16 && reply.actionId !== 17 && reply.actionId !==25 && reply.actionId !==26 && reply.actionId !==27 && reply.actionId !==28 ) {
         this.validateReplyInDays(reply);
         this.validateEmailTemplateForAddReply(reply);
       } else {
         this.validateEmailTemplateForAddReply(reply);
       }
-      var errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
+      let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
      
     }
   }
 
-
-
-
-
   validateReplyInDays(reply: Reply) {
-    if (reply.actionId !== 22 && reply.actionId !== 23 && reply.replyInDays == null) {
+    if (reply.replyInDays == null || reply.replyInDays === 0){
       this.addReplyDaysErrorDiv(reply);
-    } else if (reply.actionId == 22 || reply.actionId == 23) {
-      if (reply.replyInDays == null || reply.replyInDays == 0) {
-        this.addReplyDaysErrorDiv(reply);
-      }
     }
   }
 
@@ -150,7 +147,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
 
 
   validateReplySubject(reply: Reply) {
-    if (reply.subject == null || reply.subject == undefined || $.trim(reply.subject).length == 0) {
+    if (reply.subject == null || reply.subject === undefined || $.trim(reply.subject).length === 0) {
       this.addReplyDivError(reply.divId);
       console.log("Added Reply Subject Eror");
       $('#reply-subject-' + reply.divId).css('color', 'red');
@@ -158,7 +155,7 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   }
 
   validateEmailTemplateForAddReply(reply: Reply) {
-    if (reply.defaultTemplate && reply.selectedEmailTemplateId == 0) {
+    if (reply.defaultTemplate && reply.selectedEmailTemplateId === 0) {
       $('#' + reply.divId).addClass('portlet light dashboard-stat2 border-error');
       $('#email-template-' + reply.divId).css('color', 'red');
     } else if (!reply.defaultTemplate && (reply.body == null || reply.body == undefined || $.trim(reply.body).length == 0)) {
@@ -175,18 +172,48 @@ export class CampaignWorkFlowsUtilComponent implements OnInit {
   }
 
 
+  /**************Add website visit workflows****** */
+  addClickRows(){
+    
+  }
+
 
   saveWorkflows() {
+    this.customResponse = new CustomResponse();
     this.referenceService.goToTop();
     this.getRepliesData();
     let errorLength = $('div.portlet.light.dashboard-stat2.border-error').length;
-    if(errorLength==0){
+    if(errorLength===0){
       this.hasError = false;
       console.log(this.replies);
+      this.addAllWorkflows();
     }else{
       this.hasError = true;
     }
 
   }
 
+  addAllWorkflows() {
+    this.referenceService.loading(this.loader, true);
+    this.campaignWorkflowsPostDto.campaignId = this.campaign.campaignId;
+    this.campaignWorkflowsPostDto.campaignReplies = this.replies;
+    this.campaignService.saveWorkflows(this.campaignWorkflowsPostDto)
+      .subscribe(
+        data => {
+          this.messageEvent.emit(this.workFlowAddedNotificationMessage);
+        },
+        error => {
+          this.referenceService.loading(this.loader, false);
+          this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
+          this.logger.error(error);
+        }
+      );
+  }
+
+  goToManageCampaigns(){
+    this.messageEvent.emit("");
+  }
+
 }
+
+

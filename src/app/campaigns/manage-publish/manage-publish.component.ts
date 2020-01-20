@@ -102,8 +102,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign launched successfully";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-        }
-        else if (this.refService.campaignSuccessMessage == "UPDATE") {
+        } else if (this.refService.campaignSuccessMessage == "UPDATE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign updated successfully";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
@@ -112,8 +111,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-
     }
+
+
+    receiveNotificationFromWorkflows(event:string) {
+        if(event.length>0){
+            this.customResponse = new CustomResponse('SUCCESS',event, true);
+        }
+        this.addWorkflows = false;
+    }
+
     showMessageOnTop() {
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
@@ -512,6 +519,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           
     /************Adding Workflows**************** */
     addWorkFlows(campaign:Campaign){
+        this.customResponse = new CustomResponse();
         this.addWorkflows = true;
         this.selectedCampaign = campaign;
         

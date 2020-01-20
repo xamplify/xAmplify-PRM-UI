@@ -658,7 +658,9 @@
   </div>
   </ng-container>
   <ng-container *ngIf="addWorkflows">
-  	<app-campaign-work-flows-util [campaignOutPut]="selectedCampaign"></app-campaign-work-flows-util>
+  	<app-campaign-work-flows-util [campaignOutPut]="selectedCampaign"
+  	  (messageEvent)="receiveNotificationFromWorkflows($event)">
+  	</app-campaign-work-flows-util>
   </ng-container>
   
   <app-scroll-top></app-scroll-top>
