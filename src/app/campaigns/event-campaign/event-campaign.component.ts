@@ -514,7 +514,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
      else { this.setStartTimeErrorMessage(false, ''); }
 
      if(this.reDistributeEvent){
-         if(this.eventCampaign.isEventStarted){
+         if(this.eventCampaign.eventStarted){
           this.eventError.eventExpiredError = true;
          }
      }
@@ -1248,6 +1248,11 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.referenceService.campaignSuccessMessage = launchOption;
           if(this.isEventUpdate){ this.referenceService.campaignSuccessMessage="UPDATE"; }
         } else {
+          
+        	if (response.statusCode === 1999) {
+        		this.customResponse = new CustomResponse( 'ERROR', response.message, true );
+        	}
+        	
           this.loader = false;
           this.referenceService.stopLoader(this.httpRequestLoader);
           if (response.statusCode === 2016) {

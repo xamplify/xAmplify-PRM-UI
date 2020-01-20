@@ -66,7 +66,7 @@ export class EventCampaign {
     pushToCRM = [];
     
     emailIds = [];
-    isEventStarted = false;
+    eventStarted = false;
 
 
     constructor() {
