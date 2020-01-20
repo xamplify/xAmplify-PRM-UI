@@ -90,6 +90,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
+                console.log(data.landingPages);
                 this.referenceService.loading( this.httpRequestLoader, false );
             
             },

@@ -95,7 +95,7 @@ data-backdrop="static">
                       <div class="item__select-box-wrapper">
                         <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
                         <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
-                          target="_BLANK"> <img class="thumb ng-scope" style="width:98px !important" src="assets/images/bee-template/rich-co-branding-news-letter.png">
+                          target="_BLANK"> <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.emailTemplate.subject}}">
                           </a>
                         </span>
                       </div>
@@ -311,7 +311,7 @@ data-backdrop="static">
                                       <div class="col-xs-12 p0">
                                             <div class="col-xs-8 p0">
                                               <img (click)="getEmailTemplatePreview(reply.emailTemplate)"  title="preview" data-toggle="tooltip" data-placement="top"
-                                              class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="assets/images/bee-template/rich-co-branding-news-letter.png">
+                                              class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{reply.emailTemplate.subject}}">
                                               <div class="col-xs-4">
                                                   <span class="item__name"
                                                     [title]="reply.emailTemplate.name" data-toggle="tooltip" data-placement="top"><b>{{reply.emailTemplate.name |slice:0:35}}</b><b *ngIf="reply.emailTemplate?.name?.length>35">...</b>
@@ -389,7 +389,7 @@ data-backdrop="static">
                                       <div class="col-xs-12 p0">
                                           <div class="col-xs-8 p0">
                                             <img (click)="getEmailTemplatePreview(url.emailTemplate)" title="preview" data-toggle="tooltip" data-placement="top"
-                                            class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="assets/images/bee-template/rich-co-branding-news-letter.png">
+                                            class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{url.emailTemplate.subject}}">
                                             <div class="col-xs-4">
                                                 <span class="item__name"
                                                 [title]="url.emailTemplate.name" data-toggle="tooltip" data-placement="top"><b>{{url.emailTemplate.name |slice:0:35}}</b><b *ngIf="url.emailTemplate?.name?.length>35">...</b>
