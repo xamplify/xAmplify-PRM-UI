@@ -234,27 +234,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.referenceService.stopLoader(this.httpRequestLoader);
         this.getCampaignReplies(this.campaign);
         this.getCampaignUrls(this.campaign);
-        const roles = this.authenticationService.getRoles();
-        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-        let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
-        if(isOrgAdmin){
-            this.channelCampaignFieldName = "To Recipient";
-        }else{
-            this.channelCampaignFieldName = "To Partner";
-        }
-        if(isOrgAdmin){
-            if(this.campaign.channelCampaign){
-                this.contactType = "partner list(s)";
-                this.showContactType = false;
-            }else{
-                this.contactType = " partner / recepient list(s)";
-                this.showContactType = true;
-            }
-
-        }else if(isVendor|| this.authenticationService.isAddedByVendor){
-            this.contactType = "partner list(s)";
-            this.showContactType = false;
-        }
+        this.showSelectedListType();
     }
 
     setEventCampaignData(result:EventCampaign){
@@ -316,27 +296,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.referenceService.stopLoader(this.httpRequestLoader);
       this.getCampaignReplies(this.campaign);
       this.getCampaignUrls(this.campaign);
-      const roles = this.authenticationService.getRoles();
-      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
-      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
-      if(isOrgAdmin){
-          this.channelCampaignFieldName = "To Recipient";
-      }else{
-          this.channelCampaignFieldName = "To Partner";
-      }
-      if(isOrgAdmin){
-          if(this.campaign.channelCampaign){
-              this.contactType = "partner(s)";
-              this.showContactType = false;
-          }else{
-              this.contactType = " partner(s) / recepient(s) ";
-              this.showContactType = true;
-          }
-
-      }else if(isVendor|| this.authenticationService.isAddedByVendor){
-          this.contactType = "partner(s)";
-          this.showContactType = false;
-      }
+      this.showSelectedListType();
     }
     onChangeCountryCampaignEventTime(countryId){ this.timezonesCampaignEventTime = this.referenceService.getTimeZonesByCountryId(countryId); }
     openSaveAsModal(campaign: any) {
@@ -1220,4 +1180,33 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
       this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
+  
+  showSelectedListType(){
+      const roles = this.authenticationService.getRoles();
+      let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+      let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
+      if(isOrgAdmin){
+          this.channelCampaignFieldName = "To Recipient";
+      }else{
+          this.channelCampaignFieldName = "To Partner";
+      }
+      if(isOrgAdmin){
+          if(this.campaign.channelCampaign){
+              this.contactType = "partner list(s)";
+              this.showContactType = false;
+          }else{
+              if(this.campaign.nurtureCampaign){
+                  this.contactType = " contact list(s)";
+              }else{
+                  this.contactType = " partner / recepient list(s)";
+              }
+              this.showContactType = true;
+          }
+
+      }else if(isVendor|| this.authenticationService.isAddedByVendor){
+          this.contactType = "partner list(s)";
+          this.showContactType = false;
+      }
+  }
+  
 }

@@ -136,6 +136,15 @@ export class AddMoreReceiversComponent implements OnInit {
               }
               contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
               this.referenceService.loading(this.contactListLoader, false);
+              var contactIds = this.contactsPagination.pagedItems.map(function (a) { return a.id; });
+              var items = $.grep(this.selectedContactListIds, function (element) {
+                  return $.inArray(element, contactIds) !== -1;
+              });
+              if (items.length == contactIds.length) {
+                  this.isHeaderCheckBoxChecked = true;
+              } else {
+                  this.isHeaderCheckBoxChecked = false;
+              }
           },
           (error: any) => {
               this.referenceService.loading(this.contactListLoader, false);
@@ -192,21 +201,18 @@ export class AddMoreReceiversComponent implements OnInit {
                   //Removing Highlighted Row
                   $('#'+contactId).prop( "checked", false );
                   $('#campaignContactListTable_'+contactId).removeClass('contact-list-selected');
-                  console.log("Revmoing"+contactId);
                   this.selectedContactListIds.splice($.inArray(contactId,this.selectedContactListIds),1);
                   this.userListDTOObj= this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
                 }else{
                 //Highlighting Row
                 $('#'+contactId).prop( "checked", true );
                 $('#campaignContactListTable_'+contactId).addClass('contact-list-selected');
-                console.log("Adding"+contactId);
                 this.selectedContactListIds.push(contactId);
                 this.userListDTOObj.push(contactList);
             }
               this.userListDTOObj= this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
               this.contactsUtility();
               event.stopPropagation();
-              console.log(this.selectedContactListIds);
           }else{
               this.emptyContactsMessage = "Contacts are in progress";
           }
@@ -231,7 +237,6 @@ export class AddMoreReceiversComponent implements OnInit {
 
   checkAll(ev:any){
       if(ev.target.checked){
-          console.log("checked");
           $('[name="campaignContact[]"]').prop('checked', true);
           this.isContactList = true;
           let self = this;
@@ -295,9 +300,7 @@ export class AddMoreReceiversComponent implements OnInit {
         this.listName = ListName;
         this.contactService.loadUsersOfContactList( id,this.contactsUsersPagination).subscribe(
                 (data:any) => {
-                    console.log(data);
                     this.contactListItems = data.listOfUsers;
-                    console.log(this.contactListItems);
                     pagination.totalRecords = data.totalRecords;
                     this.contactsUsersPagination = this.pagerService.getPagedItems(pagination, this.contactListItems);
                     var html = "";
@@ -352,7 +355,6 @@ export class AddMoreReceiversComponent implements OnInit {
           this.campaign.userListIds = this.selectedContactListIds;
           this.campaign.userId = this.authenticationService.getUserId();
           this.campaign.scheduleCampaign ='SAVE';
-          console.log(this.campaign);
           this.campaignService.sendEventToContactList(this.campaign).subscribe(
                   (response: any) => {
                       this.sendingRequest = false;
