@@ -779,7 +779,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       }
 
       this.redistributedAccountsBySelectedUserId = [];
-      this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
+      //this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
       this.getTotalTimeSpentOfCampaigns(campaignViews.userId, campaignViews.campaignId);
       if (this.campaignType === 'EVENT' && this.isChannelCampaign) {
         this.resetRsvpPagination();
@@ -2207,7 +2207,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           console.log(data);
         },
           error => console.log(error),
-          () => { this.count(); })
+          () => {
+          })
     } catch (error) { this.xtremandLogger.error('Error in analytics page listEmailLogsByCampaignAndUser' + error); }
   }
 
