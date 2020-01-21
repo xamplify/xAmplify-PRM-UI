@@ -118,8 +118,10 @@
 							<tbody>
 								<tr
 									*ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
-									<td class="hidden-xs" style="width: 10%;"><img
+									<td class="hidden-xs" style="width: 10%;"><img *ngIf="emailTemplate.subject"
 										src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+										<img *ngIf="!emailTemplate.subject"
+										src="assets/images/bee-template/rich-simple.jpg">
 									</td>
 									<td>
 										<h4 class="ellipsis mt5 mb5 f-w-600"
@@ -213,7 +215,8 @@
                         </span>
                        <!--  new template image size style
                         style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" -->
-							<img style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+							<img *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="{{emailTemplate.name}}">
+							<img *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
 							<h4 class="ellipsis mt5 mb5 f-w-600"
 								title="{{emailTemplate.name}}">
 								{{emailTemplate.name | slice:0:25}} <span
