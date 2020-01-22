@@ -166,7 +166,7 @@
                         style="position: relative;top: 0px;background-color: #d9534f;">Private</span>
                       <h5 class="view-banner"
                         *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1"
-                        style="background-color: #d9534f;">Cancelled</h5>
+                        style="background-color: red;">Cancelled</h5>
                       <h5 class="view-banner"
                         *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')"
                         style="background-color: #f76c1a !important">Draft</h5>
