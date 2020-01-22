@@ -46,7 +46,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
         this.loggedInUserId = this.authenticationService.getUserId();
-        if(this.emailTemplateService.emailTemplate==undefined){
+        if(this.emailTemplateService.emailTemplate == undefined){
             this.router.navigate(["/home/emailtemplates/manage"]);
         }
        this.listAvailableNames();
@@ -153,6 +153,14 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.emailTemplate.user = new User();
             this.emailTemplate.user.userId = this.loggedInUserId;
             if(this.emailTemplateService.emailTemplate.source.toString()=="MARKETO"){
+                if(!this.showDropDown){
+                 
+                 this.emailTemplate.regularTemplate = this.emailTemplateService.emailTemplate.regularTemplate;
+                 this.emailTemplate.regularCoBrandingTemplate = this.coBrandingLogo;
+                 this.emailTemplate.videoTemplate = this.emailTemplateService.emailTemplate.videoTemplate;
+                 this.emailTemplate.videoCoBrandingTemplate = this.coBrandingLogo;
+                }
+                this.emailTemplate.subject= this.emailTemplateService.emailTemplate.subject;
                 this.updateMarketoTemplate(isOnDestroy);
             }else{
                 this.updateCustomTemplate(isOnDestroy);
