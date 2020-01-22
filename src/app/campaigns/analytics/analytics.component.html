@@ -539,7 +539,7 @@
             </div>
             <div class="p-5x" [hidden]="mainLoader || hasClientError"
               [ngClass]="{'col-xs-4': campaignType !== 'VIDEO', 'col-xs-6 col-sm-3': campaignType === 'VIDEO','forbidden' :!isDataShare ?true:null}">
-              <button class="portlet light color1-invert crcb"
+              <button class="portlet light color1-invert crcb"  [ngClass]="{'forbidden' :!isDataShare ?true:null}"
                 (click)="emailActionList(campaign.campaignId, 'open', emailActionListPagination)"
                 [disabled]="campaignReport.emailOpenCount < 1">
                 <div class="portlet-body text-center">
