@@ -707,7 +707,7 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
         this.paginationType = 'userInteraction';
         this.homeComponent.getVideoDefaultSettings();
         this.campaignInteractionPagination.maxResults = 10;
-        this.partnerUserInteractionReports();
+        //this.partnerUserInteractionReports();
        /* this.getActivePartnerReports();*/
         this.goToReDistributedPartnersDiv()
         this.pagination.maxResults = 12;

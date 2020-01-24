@@ -1197,7 +1197,18 @@
                       <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                         <ng-container *ngFor="let columnValue of leadsFormHeaders;let columnIndex = index">
 
-                          <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td>
+                          <!-- <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td> -->
+                          <td *ngIf="columnIndex<=3">
+                            <ng-container *ngIf="columnValue=='RSVP Time'">
+                                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                                      [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
+                                    <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
+                                  </ng-container>
+                                  <ng-container *ngIf="columnValue!='RSVP Time'">
+                                    {{formDataRow[columnValue]}}
+                                  </ng-container>
+                                 </td>
+                          
                         </ng-container>
                         <td>
                           <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
@@ -2645,7 +2656,17 @@
                         <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                           <ng-container *ngFor="let columnValue of partnerLeadsFormHeaders;let columnIndex = index">
 
-                            <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td>
+                            <!-- <td *ngIf="columnIndex<=3">{{formDataRow[columnValue]}}</td> -->
+                            <td *ngIf="columnIndex<=3">
+                            <ng-container *ngIf="columnValue=='RSVP Time'">
+                                    <app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="false"
+                                      [dateAndTime]="formDataRow[columnValue]"> </app-timestamp>
+                                    <span *ngIf="referenceService.isSafariBrowser()">{{formDataRow[columnValue]}}</span>
+                                  </ng-container>
+                                  <ng-container *ngIf="columnValue!='RSVP Time'">
+                                    {{formDataRow[columnValue]}}
+                                  </ng-container>
+                                 </td>
                           </ng-container>
                           <td>
                             <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
