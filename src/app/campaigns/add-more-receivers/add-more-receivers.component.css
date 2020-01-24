@@ -64,3 +64,10 @@
 .event-error{
 	color: red;
 }
+.valid-email{
+	color: #51ab35;
+}
+
+.invalid-email{
+	color: red;
+}

@@ -322,11 +322,16 @@ export class AddMoreReceiversComponent implements OnInit {
                        if(lastName==null || lastName=="null"){
                            lastName = "";
                        }
-                        html+= '<tr>'+
-                                    '<td>'+value.emailId+'</td>'+
-                                    '<td>'+firstName+'</td>'+
-                                    '<td>'+lastName+'</td>'+
-                                '</tr>';
+                        html+= '<tr>';
+                        if(value.validEmail){
+                            html+= '<td style="color:#51ab35" title="This is a valid email address">'+value.emailId+'</td>';
+                        }else{
+                            html+= '<td style="color:red;" title="This is an invalid email address">'+value.emailId+'</td>';
+                        }
+                        
+                        html+='<td>'+firstName+'</td>'+
+                                    '<td>'+lastName+'</td>'
+                                    '</tr>';
                     });
                      html+='</tbody>';
                      html+='</table>';
