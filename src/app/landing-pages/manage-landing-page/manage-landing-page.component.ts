@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import {PreviewLandingPageComponent} from '../preview-landing-page/preview-landing-page.component';
+
 declare var swal:any, $: any;
 @Component({
   selector: 'app-manage-landing-page',
@@ -38,12 +39,13 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isPartnerLandingPage = false;
     landingPageAliasUrl:string = "";
     selectedLandingPageTypeIndex = 0;
+    iframeEmbedUrl: string="";
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor( public referenceService: ReferenceService,
             public httpRequestLoader: HttpRequestLoader, public pagerService:
                 PagerService, public authenticationService: AuthenticationService,
             public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-            public actionsDescription: ActionsDescription,public sortOption:SortOption,private utilService:UtilService,private route: ActivatedRoute) {
+      public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if ( this.referenceService.isCreated ) {
@@ -53,9 +55,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.message = "Page updated successfully";
             this.showMessageOnTop( this.message );
         }
-        
+
     }
-    
+
     ngOnInit() {
         if(this.router.url.includes('home/pages/partner')){
             this.isPartnerLandingPage = true;
@@ -65,17 +67,17 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.isPartnerLandingPage = false;
         }
         this.listLandingPages(this.pagination);
-        
+
     }
-    
+
     showAllLandingPages(type:string,index:number){
         this.selectedLandingPageTypeIndex = index;
         this.pagination.filterKey = type;
         this.listLandingPages(this.pagination);
     }
-    
-    
-    
+
+
+
     listLandingPages( pagination: Pagination ) {
         this.referenceService.loading( this.httpRequestLoader, true );
         this.landingPageService.list( pagination,this.isPartnerLandingPage ).subscribe(
@@ -92,11 +94,11 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 }
                 console.log(data.landingPages);
                 this.referenceService.loading( this.httpRequestLoader, false );
-            
+
             },
             ( error: any ) => { this.logger.errorPage( error ); } );
     }
-    
+
 
     /********************Pagaination&Search Code*****************/
 
@@ -111,7 +113,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     searchLandingPages() {
         this.getAllFilteredResults( this.pagination );
     }
-    
+
     paginationDropdown(items:any){
         this.sortOption.itemsSize = items;
         this.getAllFilteredResults(this.pagination);
@@ -135,21 +137,20 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         $( window ).scrollTop( 0 );
         this.customResponse = new CustomResponse( 'SUCCESS', message, true );
     }
-    
+
     /***********Preview Email Template*********************/
     showPreview( landingPage: LandingPage ) {
         if(this.isPartnerLandingPage){
             landingPage.showPartnerCompanyLogo = true;
             landingPage.partnerId = this.loggedInUserId;
             landingPage.partnerLandingPage = true;
-            landingPage.alias = landingPage.alias;
         }else{
             landingPage.showYourPartnersLogo = true;
         }
         this.previewLandingPageComponent.showPreview(landingPage);
       }
-    
-    
+
+
     /***********Delete**************/
     confirmDelete(landingPage:LandingPage){
         try {
@@ -173,13 +174,13 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.referenceService.showServerError(this.httpRequestLoader);
         }
     }
-    
+
 
     editLandingPage(id:number){
         this.landingPageService.id = id;
         this.router.navigate(["/home/pages/add"]);
       }
-    
+
     deleteById(landingPage:LandingPage){
         this.referenceService.loading(this.httpRequestLoader, true);
         this.referenceService.goToTop();
@@ -209,16 +210,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             }
         );
     }
-    /*********Copy The Link */
-    copyInputMessage(inputElement){
-        this.copiedLinkCustomResponse = new CustomResponse();
-        inputElement.select();
-        document.execCommand('copy');
-        inputElement.setSelectionRange(0, 0);
-        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
-      }
 
-    showLandingPageLink(landingPage:LandingPage){
+/*****Show Landing Page Embed Link/Preview Page */
+  showPageLinkPopup(landingPage:LandingPage){
           this.landingPage = landingPage;
           this.copiedLinkCustomResponse = new CustomResponse();
           if(this.isPartnerLandingPage){
@@ -226,8 +220,25 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
           }else{
               this.landingPageAliasUrl = this.authenticationService.APP_URL+"l/"+this.landingPage.alias;
           }
-          $('#landing-page-url-modal').modal('show');
+        this.iframeEmbedUrl = '<iframe src="' + this.landingPageAliasUrl + '"></iframe>';
+       $('#landing-page-url-modal').modal('show');
       }
+
+  /*********Copy The Link/Iframe Link */
+  copyInputMessage(inputElement:any,type:string) {
+    this.referenceService.goToTop();
+    this.copiedLinkCustomResponse = new CustomResponse();
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+    let message = type+' Copied to clipboard successfully.';
+    if(type==="Page Link"){
+      $("#copy-link").select();
+    }else{
+      $("#text-area").select();
+    }
+    this.copiedLinkCustomResponse = new CustomResponse('SUCCESS',message, true);
+  }
 
     goToFormAnalytics(id:number){
         this.router.navigate(['/home/forms/lf/'+id]);
@@ -242,8 +253,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/pages/partner/'+alias+'/analytics']);
     }
 
-    
-    
+
     ngOnDestroy() {
         this.referenceService.isCreated = false;
         this.referenceService.isUpdated = false;

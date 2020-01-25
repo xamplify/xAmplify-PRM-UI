@@ -457,3 +457,10 @@ hr {
 .fa{
 	font-size: 12px !important;
 }
+#text-area{
+  font-size: 16px;
+}
+
+#right{
+  float: right;
+}
