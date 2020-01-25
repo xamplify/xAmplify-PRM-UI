@@ -186,14 +186,14 @@
           <button type="button" class="close-circle" data-dismiss="modal">
             <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <h4 class="modal-title text-center">COPY LINK</h4>
+          <h4 class="modal-title text-center">COPY LINK / EMBED LINK</h4>
         </div>
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
           </app-response-message>
           <br>
           <div class="form-group">
-            <label class="control-label">Copy Page Link</label>
+            <label class="control-label">Copy Link</label>
             <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="landingPageAliasUrl"
               #userinput>
             <br>
@@ -201,7 +201,7 @@
             <br>
           </div>
           <div class="form-group">
-            <label class="control-label">Copy Embed Page Link</label>
+            <label class="control-label">Copy Embed Link</label>
             <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
             <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed Link')">Copy Embed
               Link</a>
