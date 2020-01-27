@@ -397,13 +397,6 @@ td h6 {
 }
 
 /* Naresh changes */
-"
-src /app/landing-pages/manage-landing-page/manage-landing-page.component.html
-	 " .bar a {
-	width: 25px !important;
-	height: 25px !important;
-	padding: 2px !important;
-}
 
 .bar a i {
 	font-size: 12px !important;
@@ -444,7 +437,7 @@ hr {
 	/* padding: 2px !important;
 	margin: 4px 3px !important; */
 	padding: 2px 0px 0px 0px !important;
-    margin: 4px 2px 0px 0px !important;
+  margin: 4px 2px 0px 0px !important;
 }
 
 
