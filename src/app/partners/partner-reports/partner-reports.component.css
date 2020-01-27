@@ -97,6 +97,7 @@ cursor: default;
 	height: 50px;
 	cursor: default;
 	border-color: #00a6e8;
+	border-radius: 3px !important;
 }
 .sky-blue{
 	color:#00a6e8
@@ -126,4 +127,12 @@ cursor: default;
     border: solid 1px #008fd5;
     border-radius: 3px;
 }
+
+@media ( min-width : 768px) {
+	.col-sm-5ths {
+		width: 20% !important;
+		float: left !important;
+	}
+}
+
 
