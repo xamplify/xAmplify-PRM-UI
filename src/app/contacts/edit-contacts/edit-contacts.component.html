@@ -56,7 +56,7 @@
 							<div class="clearfix"></div>
 
 							<div class="row mt5 mb5">
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 										(click)="backToEditContacts()">
 										<div class="visual">
@@ -74,7 +74,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 										(click)="showingContactDetails('active')"
 										[disabled]="contactsByType.activeContactsCount == 0">
@@ -93,7 +93,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 										(click)="showingContactDetails('non-active')"
 										[disabled]="contactsByType.inactiveContactsCount == 0">
@@ -112,7 +112,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
 										(click)="showingContactDetails('invalid')"
 										[disabled]="contactsByType.invalidContactsCount == 0">
@@ -131,7 +131,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
@@ -211,7 +211,7 @@
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
+											<div class="col-xs-12 col-md-6 col-sm-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -245,26 +245,29 @@
                         </div>
                         </ng-container>
 											</div>
-							 	<div class="col-sm-12 col-md-6 p0 pull-right" style="margin-top: 10px;">
+								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
+									<div class="col-xs-2 col-md-2 col-sm-2">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
-									style="float: left; cursor: pointer; margin-left: 120px;"
+									style="float: right; cursor: pointer;"
 									data-toggle="modal" data-target="#filterModal">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 								</div>
 								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
-									style="float: left; cursor: pointer; margin-left: 110px;">
+									style="float: right; cursor: pointer;">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Remove a filter"
 										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
 										class="fa fa-times" aria-hidden="true"
 										style="color: red; margin-left: -8px;"></i>
 								</div>
+								</div>
+								<div class="col-xs-10 col-md-10 col-sm-10 p0">
 								<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8" >
 									<div class="inputs" align="right" style="float: right">
 
-										<div class="inputs" align="right" style="float: right">
+										<div class="inputs" align="right" style="float: right;display: inline-flex;">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
@@ -287,6 +290,7 @@
 											</div>
 										</div>
 									</div>
+								</div>
 								</div>
 								</div>
 
@@ -600,7 +604,7 @@
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
-														<th class="text-center hidden-xs" *ngIf="isPartner"></th>
+														<th class="text-center" *ngIf="isPartner"></th>
 														<!-- <th class='text-center'>MORE</th> -->
 														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
@@ -832,8 +836,9 @@
 							<div class="portlet-body">
 
 									<div class="page-bar" *ngIf="!showEditContactData">
+									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									<div class="btn-group pull-right">
-
+									<div class="col-xs-2 col-md-2 col-sm-2">
 									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; padding-right: 20px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -849,8 +854,9 @@
 										class="fa fa-times" aria-hidden="true"
 										style="color: red; margin-left: -8px;"></i>
 								</div>
-
-										<div class="inputs" align="right" style="float: right">
+							</div>
+							<div class="col-xs-10 col-md-10 col-sm-10 p0">
+										<div class="inputs" align="right" style="float: right; display: inline-flex;">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
@@ -873,6 +879,8 @@
 												</div>
 											</div>
 										</div>
+										</div>
+									</div>
 									</div>
 								</div>
 

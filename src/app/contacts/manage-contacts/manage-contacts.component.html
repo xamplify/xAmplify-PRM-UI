@@ -38,7 +38,7 @@
 			<!-- BEGIN PAGE CONTENT-->
 			<div>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-xs-12 col-md-12 col-sm-12">
 						<div [ngClass]="{'tabbable tabbable-custom tabbable-noborder': showListOfContactList}">
 
 							<div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
@@ -53,7 +53,7 @@
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 									<div class="row mt5 mb5">
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('all')"
 												[disabled]="contactsByType.allContactsCount == 0">
@@ -76,7 +76,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('active')"
 												[disabled]="contactsByType.activeContactsCount == 0">
@@ -100,7 +100,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('non-active')"
 												[disabled]="contactsByType.inactiveContactsCount == 0">
@@ -123,7 +123,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('invalid')"
 												[disabled]="contactsByType.invalidContactsCount == 0">
@@ -148,7 +148,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
@@ -178,7 +178,7 @@
 												{{checkingContactTypeName}} Lists</li>
 
 										</ul>
-
+									<div class="col-xs-12 col-sm-12 col-lg-12 p0">
 										<div class="btn-group pull-right">
 											<ng-container class='m10'> <span
 												class="btn btn-xs hidden-xs" data-toggle="tooltip"
@@ -192,7 +192,7 @@
 												style="background-color: #e2e2e2"><i
 												class="fa fa-th-large p10" aria-hidden="true"></i></span> </ng-container>
 											<div class="inputs sort-class" align="right"
-												style="float: right">
+												style="float: right; display: flex;">
 												<div
 													[ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
 													<select class="form-control" [(ngModel)]="sortOption"
@@ -223,6 +223,7 @@
 													</div>
 												</div>
 											</div>
+										</div>
 										</div>
 
 									</div>
@@ -526,7 +527,7 @@
 			<span [innerHTML]="response.responseMessage"></span>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12">
 				<div class="tabbable tabbable-custom tabbable-noborder">
 
 					<div class="tab-content" style="min-height: 570px;">
@@ -534,7 +535,7 @@
 						<div class="page-bar" style="margin-bottom: 6px">
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
-									<div class="inputs" align="right" style="float: right">
+									<div class="inputs" align="right" style="float: right;display: flex;">
 										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; margin-right: 10px"
 											data-toggle="modal" data-target="#filterModal">
