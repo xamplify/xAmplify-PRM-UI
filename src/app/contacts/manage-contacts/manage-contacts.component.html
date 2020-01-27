@@ -943,10 +943,27 @@
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="campaignName">Name</label> <input class="form-control"
-						type="text" id="campaignName" [(ngModel)]="saveAsListName">
+						type="text" id="campaignName" [(ngModel)]="saveAsListName" placeholder="Name">
 					<span style="color: red">{{saveAsError}}</span>
 				</div>
-			</div>
+			
+
+			 
+         <!-- ------------Legal Basis------------ -->
+        <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts'">
+        <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
+	    <div id="multiselect-sample" class="control-section">
+	    <div class="col-lg-14">
+	        <div class="control-styles">
+	        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
+	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+	        </div>
+	    </div>
+	    </div>
+	</div>
+	</div>
+
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"

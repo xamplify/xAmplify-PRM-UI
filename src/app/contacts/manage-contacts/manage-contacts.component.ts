@@ -16,6 +16,9 @@ import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
+import { UserService } from '../../core/services/user.service';
 
 declare var Metronic, $, Layout, Demo, Portfolio, swal: any;
 
@@ -169,7 +172,19 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     saveAsError:any;
     saveAsTypeList = 'manage-contacts';
 
-    constructor( public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
+    gdprStatus = true;
+    legalBasisOptions :Array<LegalBasisOption>;
+    parentInput:any;
+    companyId: number = 0;
+    gdprSetting: GdprSetting = new GdprSetting();
+    termsAndConditionStatus = true;
+    public fields: any;
+
+    public placeHolder: string = 'Select Legal Basis Options';
+    isValidLegalOptions = true;
+    selectedLegalBasisOptions = [];
+
+    constructor( public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
         public actionsDescription: ActionsDescription) {
 
@@ -233,6 +248,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
 
         this.hasAllAccess = this.referenceService.hasAllAccess();
         this.loggedInUserId = this.authenticationService.getUserId();
+        
+        this.parentInput = {};
+        const currentUser = localStorage.getItem( 'currentUser' );
+        let campaginAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
+        if(campaginAccessDto!=undefined){
+            this.companyId = campaginAccessDto.companyId;
+        }
 
     }
 
@@ -854,7 +876,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
-    saveSelectedUsers( listName: string ) {
+    saveSelectedUsers( listName: string, selectedLegalBasisOptions: any ) {
         try {
             this.resetResponse();
             var selectedUserIds = new Array();
@@ -864,6 +886,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactListObject.isPartnerUserList = this.isPartner;
             if ( listName != "" ) {
                 if ( this.selectedContactListIds.length != 0 ) {
+                    $.each(this.allselectedUsers,function(index,value:User){
+                        value.legalBasis = selectedLegalBasisOptions;
+                    });
                     this.contactService.saveContactList( this.allselectedUsers, listName, this.isPartner )
                         .subscribe(
                         data => {
@@ -1069,10 +1094,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                 data => {
                     this.contactsByType.selectedCategory = contactType;
                     this.contactsByType.contacts = data.listOfUsers;
+                    //this.setLegalBasisOptionString(this.contactsByType.contacts);
                     this.contactsByType.pagination.totalRecords = data.totalRecords;
                     this.contactsByType.pagination = this.pagerService.getPagedItems( this.contactsByType.pagination, this.contactsByType.contacts );
                     this.listAllContactsByType( contactType, this.contactsByType.pagination.totalRecords );
-
                     if ( this.contactsByType.selectedCategory == 'invalid' || this.contactsByType.selectedCategory == 'all' ) {
                         this.userListIds = data.listOfUsers;
                     }
@@ -1440,23 +1465,35 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
+    validateLegalBasisOptions(){
+      if(this.gdprStatus && this.selectedLegalBasisOptions.length==0 && this.saveAsTypeList === 'manage-all-contacts'){
+          this.isValidLegalOptions = false;
+      }else{
+          this.isValidLegalOptions = true;
+      }
+    }
+
     saveAsInputChecking(){
       try{
        const name = this.saveAsListName;
        const self = this;
+       this.isValidLegalOptions = true;
        const inputName = name.toLowerCase().replace( /\s/g, '' );
           if ( $.inArray( inputName, self.names ) > -1 ) {
               this.saveAsError = 'This list name is already taken.';
           } else {
               if ( name !== "" && name.length < 250 ) {
                 this.saveAsError = '';
+                this.validateLegalBasisOptions();
                 if(this.saveAsTypeList ==='manage-contacts') {
                   this.saveExistingContactList(this.saveAsContactListId, this.saveAsListName);
                   this.cleareDefaultConditions();
                 }
                 else if(this.saveAsTypeList === 'manage-all-contacts') {
-                  this.saveSelectedUsers( name );
-                  this.cleareDefaultConditions();
+                  if(this.isValidLegalOptions){
+                    this.saveSelectedUsers( name, this.selectedLegalBasisOptions );
+                    this.cleareDefaultConditions();
+                  }
                 }
               }
                 else if(name == ""){  this.saveAsError = 'List Name is Required.';  }
@@ -1613,6 +1650,62 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.error( error, "addPartnerComponent", "default PartnerList" );
         }
     }
+    
+    checkTermsAndConditionStatus(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.userService.getGdprSettingByCompanyId(this.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            this.gdprStatus = this.gdprSetting.gdprStatus;
+                            this.termsAndConditionStatus = this.gdprSetting.termsAndConditionStatus;
+                        } 
+                        this.parentInput['termsAndConditionStatus'] = this.termsAndConditionStatus;
+                        this.parentInput['gdprStatus'] = this.gdprStatus;
+                    },
+                    (error: any) => {
+                        this.loading = false;
+                    },
+                    () => this.xtremandLogger.info('Finished getGdprSettings()')
+                );
+        }
+        
+    }
+    
+    getLegalBasisOptions(){
+        if (this.companyId>0){
+            this.loading = true;
+            this.fields = { text: 'name', value: 'id' };
+            this.referenceService.getLegalBasisOptions(this.companyId)
+            .subscribe(
+                data => {
+                    this.legalBasisOptions = data.data;
+                    this.parentInput['legalBasisOptions'] = this.legalBasisOptions;
+                    this.loading = false;
+                },
+                (error: any) => {
+                   this.loading = false;
+                },
+                () => this.xtremandLogger.info('Finished getLegalBasisOptions()')
+            );
+        }
+        this.loading = false;
+    }
+    
+    setLegalBasisOptionString(list:any){
+        if(this.gdprStatus){
+            let self = this;
+            $.each(list,function(index,contact){
+                if(self.legalBasisOptions.length>0){
+                    let filteredLegalBasisOptions = $.grep(self.legalBasisOptions, function(e){ return  contact.legalBasis.indexOf(e.id)>-1 });
+                    let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) {return a.name;});
+                    contact.legalBasisString = selectedLegalBasisOptionsArray;
+                }
+            });
+        }
+    }
 
 
     ngAfterViewInit() {
@@ -1631,6 +1724,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactsCount();
             this.loadContactListsNames();
             
+            /********Check Gdpr Settings******************/
+            this.checkTermsAndConditionStatus();
+            this.getLegalBasisOptions();
             
         }
         catch ( error ) {
