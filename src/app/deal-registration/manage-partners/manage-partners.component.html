@@ -1,10 +1,10 @@
-<div class="col-xs-12 p5" *ngIf="partnerList">
+<div class="col-xs-12 p5" *ngIf="partnerList" style="padding-right: 0px;!important">
   <div class="portlet light">
     <div class="portlet-title">
       <div class="caption">
         <span class="caption-subject font-red-sunglo uppercase">Partners</span>
       </div>
-      <div class="inputs" align="right" style="float: right">
+      <div class="inputs" align="right" style="float: right; display: flex;">
         <div style="float: left;">
           <select class="form-control" [(ngModel)]="sortOption.leadPartnerSortOption" (ngModelChange)="sortPartners($event)" style="position: relative;right: -3px;"
           *ngIf="isCampaignByLeads">
@@ -30,6 +30,7 @@
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
     <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError ">
+      <div class="table-responsive">
       <table class="table tgrid">
         <thead>
           <tr>
@@ -58,6 +59,7 @@
           </ng-container>
         </tbody>
       </table>
+      </div>
       <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
         <div *ngIf="pagination.pagedItems.length !== 0" style="padding: 0 13px;">
           <app-pagination [pagination]="pagination" [type]="'deal-partners'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
