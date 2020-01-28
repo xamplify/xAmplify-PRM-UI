@@ -40,6 +40,7 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
     id = 0;
     defaultLandingPage = false;
     loadLandingPage= false;
+    coBraningImage = "co-branding.png";
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     constructor(private landingPageService:LandingPageService,private router:Router, private logger:XtremandLogger,
             private authenticationService:AuthenticationService,public referenceService:ReferenceService,private location:Location,
@@ -95,6 +96,13 @@ export class AddLandingPageComponent implements OnInit,OnDestroy {
                             var save = function( jsonContent: string, htmlContent: string ) {
                                 self.landingPage.htmlBody = htmlContent;
                                 self.landingPage.jsonBody = jsonContent;
+                                if (self.landingPage.coBranded){
+                                    if (jsonContent.indexOf(self.coBraningImage)<0) {
+                                        swal("", "Whoops! We’re unable to save this page because you deleted the co-branding logo. You’ll need to select a new page and start over.", "error" );
+                                        return false;
+                                    }
+                                }
+                                
                                 if ( !defaultLandingPage ) {
                                     self.name = landingPageName;
                                     var dropDown = '<div class="form-group">';
