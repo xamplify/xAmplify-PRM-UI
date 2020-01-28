@@ -302,7 +302,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             data => {
                 this.refService.loading(this.httpRequestLoader, false);
                 this.isCampaignDeleted = true;
-                const deleteMessage = campaignName + ' Campaign deleted successfully';
+                const deleteMessage = campaignName + ' deleted successfully';
                 this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
                 this.pagination.pagedItems.splice(position, 1);
                 this.pagination.pageIndex = 1;
