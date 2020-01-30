@@ -43,7 +43,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     partnerLandingPageAlias = "";
     partnerId = 0;
     statusCode = 200;
-    hasAllAccess = false;
+    deleteAndEditAccess = false;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
     constructor( public referenceService: ReferenceService,
@@ -60,7 +60,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.message = "Form updated successfully";
             this.showMessageOnTop( this.message );
         }
-        this.hasAllAccess = this.referenceService.hasAllAccess();
+        this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
     }
 
     ngOnInit() {
@@ -283,5 +283,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     ngAfterViewInit() {
     }
     
+  
 
 }

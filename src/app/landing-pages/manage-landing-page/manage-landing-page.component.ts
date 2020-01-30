@@ -40,7 +40,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     landingPageAliasUrl:string = "";
     selectedLandingPageTypeIndex = 0;
     iframeEmbedUrl: string="";
-    hasAllAccess = false;
+    deleteAndEditAccess = false;
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor( public referenceService: ReferenceService,
             public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -56,7 +56,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.message = "Page updated successfully";
             this.showMessageOnTop( this.message );
         }
-        this.hasAllAccess = this.referenceService.hasAllAccess();
+        this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
     }
 
     ngOnInit() {

@@ -108,7 +108,7 @@
                     </td>
                     <td id="actions-row">
                       <div class="actions-block override-actions">
-                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (hasAllAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
+                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                           <i class="fa fa-pencil-square-o"></i>
                         </a>
                         <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
@@ -132,7 +132,7 @@
                            <span class="badge" id="notification">{{form.count}}</span>
                         </a>
                        </ng-container>
-                       <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (hasAllAccess || loggedInUserId==form.userId)" id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
+                       <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
                           title="Delete">
                           <i class="fa fa-trash-o"></i>
                         </a>
@@ -173,7 +173,7 @@
                  	<span>Form</span>
             	</div>
               <div class="bar">
-                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (hasAllAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
+                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="edit(form.id)">
                   <i class="fa fa-pencil-square-o"></i>
                 </a>
                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)"> 
@@ -197,7 +197,7 @@
                 </a>
                  <span class="badge" id="notification-list">{{form.count}}</span>
                 </ng-container>
-                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (hasAllAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
+                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
                   <i class="fa fa-trash-o"></i>
                 </a>
               </div>

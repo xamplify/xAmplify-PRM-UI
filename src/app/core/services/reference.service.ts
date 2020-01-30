@@ -1925,4 +1925,9 @@ export class ReferenceService {
     closeModalPopup(modalId){
         $("#" + modalId).modal('hide');
     }
+    
+    deleteAndEditAccess(){
+        return this.hasAllAccess() || this.authenticationService.isVendor() || this.authenticationService.isVendorPartner();
+    }
+    
 }

@@ -93,7 +93,7 @@
              <h1 style="color: #76c9ff;text-align: left">Content</h1>
              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
              <div style="text-align: left">
-               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload Content</button>
+               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content/upload']" >Upload Content</button>
                <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content/videos']">View Content</button>
                <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')">Tell me how</button>
              </div>
