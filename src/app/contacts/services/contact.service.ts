@@ -179,7 +179,7 @@ export class ContactService {
             headers: headers
         };
         //var url = this.contactsUrl + "save-userlist?" + 'userId='+ this.authenticationService.getUserId() + "&access_token=" + this.authenticationService.access_token + "&userListName="+ contactListName + "&isPartnerUserList="+isPartner ;
-        var url = this.contactsUrl + "save-userlist/"+this.authenticationService.getUserId()+"/"+contactListName +"?access_token=" + this.authenticationService.access_token + "&isPartnerUserList="+isPartner ;
+        var url = this.contactsUrl + "save-userlist/"+this.authenticationService.getUserId()+"/"+encodeURIComponent(contactListName) +"?access_token=" + this.authenticationService.access_token + "&isPartnerUserList="+isPartner ;
         this.logger.info( users );
         return this._http.post( url, options, requestoptions )
             .map( this.extractData )
