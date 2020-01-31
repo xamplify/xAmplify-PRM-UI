@@ -640,11 +640,11 @@
                         </span>
                       </div>
                       <div class="ribbon" [class.active]="!campaign.launched && campaign.launchedOn?.length==0">
-                        <span *ngIf="campaign.launched">Launched</span>
+                        <span *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">Launched</span>
                         <div class="cancel-ribbon"
                           *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
-                          <span *ngIf="!campaign.vendorCampaignDeleted">Cancelled</span>
-                        <span *ngIf="campaign.vendorCampaignDeleted">Deleted</span>
+                          <ng-container *ngIf="!campaign.vendorCampaignDeleted">Cancelled</ng-container>
+                          <ng-container *ngIf="campaign.vendorCampaignDeleted">Deleted</ng-container>
                         </div>
                         <ng-container
                           *ngIf="!campaign.launched && campaign.scheduleType!=='SCHEDULE' && campaign.scheduleType!=='SAVE' && campaign.scheduleType!=='NOW'">
@@ -713,7 +713,7 @@
                           </a>
 
                         </ng-container>
-                        <span *ngIf="!campaign.showCancelButton && !campaign.vendorCampaignDeleted">
+                        <span *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
                           <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top"
                             title="Preview">
                             <i class="fa fa-eye mr5"></i>
