@@ -127,10 +127,19 @@
 	                     	</a>
                         </ng-container>
                        <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
+                       <!-------------Disable onclick if count==0   ----->
+                       <ng-container *ngIf="form.count==0">
+                       	 <a class="cursor">
+                          	<i class="fa fa-line-chart"></i>
+                           <span class="badge" id="notification">{{form.count}}</span>
+                        </a>
+                       </ng-container>
+                       <ng-container *ngIf="form.count>0">
                        	 <a  data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip"  data-placement="top" title="Form Analytics">
                           	<i class="fa fa-line-chart"></i>
                            <span class="badge" id="notification">{{form.count}}</span>
                         </a>
+                       </ng-container>
                        </ng-container>
                        <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" id="template-delete" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top"
                           title="Delete">
@@ -192,10 +201,18 @@
                   </a>
                 </ng-container>
                  <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
-                	 <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
-                  <i class="fa fa-line-chart"></i>
-                </a>
-                 <span class="badge" id="notification-list">{{form.count}}</span>
+                 <ng-container *ngIf="form.count==0">
+                 	 <a class="cursor">
+                  		<i class="fa fa-line-chart"></i>
+               		 </a>
+               		 <span class="badge" id="notification-list">{{form.count}}</span>
+                 </ng-container>
+                 <ng-container *ngIf="form.count>0">
+                 	 <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
+                  		<i class="fa fa-line-chart"></i>
+               		 </a>
+               		 <span class="badge" id="notification-list">{{form.count}}</span>
+                 </ng-container>
                 </ng-container>
                  <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
                   <i class="fa fa-trash-o"></i>
