@@ -135,8 +135,9 @@
 		</ng-container>
 	</div>
 <ng-container *ngIf="detailType!='TOTAL_LEADS' && detailType!='TOTAL_ATTENDEES' && detailType!='TOTAL_PARTNER_LEADS'">
-    <div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
-                <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
+		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+			<div class="col-xs-12 col-sm-7 col-lg-7">
+        <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MAYBE</h4>
@@ -148,22 +149,25 @@
 								</ul>
 				<!-- <a (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</a><span> <a (click)="analyticsComponent.getRsvpEmailNotOpenDetails()">Not yet opened details</a></span> -->
 				</div>
-				<div class="pull-right col-xs-6">
-				<div class='col-xs-10'>
+			</div>
+			<div class="pull-right col-xs-12 col-sm-5 col-lg-5">
+				<div class='col-xs-10 col-sm-10 col-lg-10'>
 			        <input type="text"  [(ngModel)]="analyticsComponent.searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="analyticsComponent.eventHandler($event.keyCode)">
 			        <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey='';analyticsComponent.search()">
 					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>
-   				 </div>
-				<div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="margin: 23px 28px 0px 0px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin: -15px;padding-right: 10px;float:right;">
+						</div>
+				<div class="col-xs-2 col-sm-2 col-lg-2">
+				<div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="cursor:pointer; color: #7d8c98;margin-top: 8px;">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;float:right;display:flex;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-					<ul class="dropdown-menu pull-right" style="right: 0px!important;">
+					<ul class="dropdown-menu pull-right" style="right: 5px!important;">
 						<li><a id="delete_button" (click)="analyticsComponent.downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
+				</div>
 				</div>
 				</div>
     </div>
@@ -180,6 +184,7 @@
 						  No results found.
 						</div>
 				 	<ng-container *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems?.length !== 0">
+						 <div class="table-responsive">
 						<table class="table tgrid">
 							<thead>
 								<tr>
@@ -219,6 +224,7 @@
 								</tr>
 							</tbody>
 						</table>
+						</div>
 						</ng-container>
 						<app-pagination *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
 						 [type]="detailType" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>

@@ -347,9 +347,9 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-5 " *ngIf="isPushToCrm">
+                                                <div class="col-sm-5 " *ngIf="isPushToCrm" style="display: table-caption;">
                                                     <div class="row ">
-                                                        <div div class="col-md-4" *ngIf="enableLeads">
+                                                        <div div class="col-md-6" *ngIf="enableLeads">
                                                             <div class="  cenetered-block1">
                                                                 <div class="">
                                                                     <!-- <div>
@@ -366,7 +366,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div div class="col-md-4" *ngIf="enableLeads">
+                                                        <div div class="col-md-6" *ngIf="enableLeads">
                                                             <div class="cenetered-block1">
                                                                 <div class="">
                                                                     <!-- <div>
@@ -385,7 +385,7 @@
 
 
                                                         </div>
-                                                        <div class="col-md-4" style="display:none">
+                                                        <div class="col-md-6" style="display:none">
                                                             <div class=" cenetered-block1">
                                                                 <div class="">
                                                                     <!-- <div class="">
@@ -576,6 +576,7 @@
 
 										<div id="my-videos" class="tabcontent" [style.display]="myVideosStyle">
 											<div id="videos_table_new_wrapper" class="dataTables_wrapper form-inline no-footer">
+											 <div class="table-responsive">
 												<table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid"
 												 id="videoTable">
 													<thead style="background-color: #B7B7B7;">
@@ -584,7 +585,7 @@
 															<!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending"></th> -->
 															<th style="text-align: center;width: 24%;" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
 																<span class="filter_column filter_select">
-																	<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)" style="width:67%">
+																	<select class="select_filter form-control" data-live-search="true" (change)="filterCategoryVideos($event)">
 																		<option value="" class="search_init">Category</option>
 																		<option *ngFor="let category of categories" class="colorSelect" value="{{category.id}}" [selected]="category.id==videosPagination.videoCategoryId">{{category.name}}</option>
 																	</select>
@@ -674,7 +675,8 @@
 															</ng-container>
 														</ng-container>
 													</tbody>
-                        </table>
+												</table>
+												</div>
                         <div style="text-align:left;" [hidden]="isvideoThere && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
                         <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading || campaignVideo.httpRequestLoader.isServerError" [pagination]="videosPagination" [type]="'videos'"
                         (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadCampaignVideos($event)"></app-pagination>
@@ -688,6 +690,7 @@
 													<div class="portlet-input input-inline input-large">
 													</div>
 												</div>
+												<div class="table-responsive">
 												<table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid"
 												 id="videoTable" style="margin-top:-18px;">
 													<thead style="background-color: #B7B7B7;">
@@ -696,7 +699,7 @@
 															<!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th> -->
 															<th style="width:24%;" class="text-center" *ngIf="!campaign.createdFromVideos">
 																<span class="filter_column filter_select">
-																	<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)" style="width:67%">
+																	<select class="select_filter form-control" data-live-search="true" (change)="filterPartnerCategoryVideos($event)">
 																		<option value="" class="search_init">Category</option>
 																		<option *ngFor="let category of partnerCategories" class="colorSelect" value="{{category.id}}" [selected]="category.id==channelVideosPagination.videoCategoryId">{{category.name}}</option>
 																	</select>
@@ -795,6 +798,7 @@
 														</ng-container>
 													</tbody>
 												</table>
+											</div>
 												<div style="text-align:left;" [hidden]="isPartnerVideoExists && campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError && campaign.createdFromVideos">
                           <app-pagination [hidden]="campaignVideo.httpRequestLoader.isLoading && campaignVideo.httpRequestLoader.isServerError" [pagination]="channelVideosPagination" [type]="'partner-videos'"
                           (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPartnerVideos($event)"></app-pagination>
@@ -832,7 +836,7 @@
                         </div>
 											</div>
 										</div>
-										<div class="row-fluid">
+										<div class="col-xs-12 col-sm-12 col-lg-12 row-fluid p0">
 											<table class="table table-filter" *ngIf="contactsPagination.totalRecords==0">
 												<tr>
 													<td colspan="5">
@@ -844,6 +848,7 @@
 													</td>
 												</tr>
 											</table>
+											<div class="table-responsive">
 											<table class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info"
 											 *ngIf="contactsPagination.totalRecords > 0">
 												<thead>
@@ -896,6 +901,7 @@
 													</tr>
 												</tbody>
 											</table>
+										</div>
 											<div style="text-align:left" *ngIf="contactsPagination.totalRecords > 0 && !campaignContact.httpRequestLoader.isLoading && !campaignContact.httpRequestLoader.isServerError">
                         <app-pagination  [pagination]="contactsPagination" [type]="'contacts'"
                         (notifyParent)="setPagePagination($event)" [isDropdown]="true"></app-pagination>
@@ -1335,6 +1341,7 @@
         </div>
 				<div [attr.class]="lauchTabPreivewDivClass">
 					<div class="portlet light border-0">
+						<div class="table-responsive">
 						<table width="100%">
 							<tr>
 								<td width="25%">
@@ -1366,9 +1373,11 @@
 								</td>
 							</tr>
 						</table>
+					</div>
 
 					</div>
 					<div class="portlet light border-0" id="email-template-preview-div">
+						<div class="table-responsive">
 						<table width="100%">
 							<tr>
 								<td width="25%">
@@ -1407,6 +1416,7 @@
 								</td>
 							</tr>
 						</table>
+						</div>
 					</div>
 				</div>
 			</div>

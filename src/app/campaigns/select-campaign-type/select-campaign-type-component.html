@@ -11,7 +11,7 @@
     }
     
     .pricing-head>h4 {
-        background-color: #ffffff!important;
+        background-color: #ffffff;
     }
     
     .image-text {
@@ -58,6 +58,7 @@
         transition: all 0.3s ease-in-out;
         /*make the smooth transition in 0.3s*/
         color: #eeaaee;
+        border-radius: 3px;
     }
     
     .box-wrapper:hover .box-content {
@@ -69,6 +70,16 @@
         position: relative;
         margin-bottom: 15px;
         border: 1px solid #008fd5!important;
+    }
+    .camp-card{
+        height: 242px;
+        border-radius: 3px;
+    }
+    .camp-card-bg{
+        background-color: #f2f4f9!important;
+        border-bottom: solid 1px #71bade !important;
+        height: 195px;
+        border-radius: 3px !important;
     }
     /*     
     .box_industries {
@@ -106,7 +117,7 @@
     <div class="row">
         <div class="col-md-12">
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
-            <div class="portlet light">
+            <div class="portlet light" style="padding-left: 30px !important;padding-right: 30px !important;">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-cogs"></i>Create a campaign <small style="font-size: 12px">Which type of campaign would you like to create?</small>
@@ -116,11 +127,11 @@
                 <div class="portlet-body">
                     <div class="row clearfix">
                         <!-- Pricing -->
-                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.videoCampaign" style="padding-left: 35px;border-radius: 3px;">
-                            <div class="pricing hover-effect  pointer" (click)="createVideoCampaign()" style="height:242px">
+                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.videoCampaign">
+                            <div class="pricing hover-effect  pointer camp-card" (click)="createVideoCampaign()">
                                 <div class="pricing-head ">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
+                                    <h4 class="camp-card-bg">
                                         <img alt="Video e-mail Campaign" class="pricing-head-img img-responsive	" style="padding-top: 19px;" src="assets/images/video-email.png"></h4>
 
                                 </div>
@@ -142,11 +153,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.emailCampaign" style="border-radius: 3px;">
-                            <div class="pricing hover-effect pointer" (click)="createRegularCampaign()" style="height:242px">
+                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.emailCampaign">
+                            <div class="pricing hover-effect pointer camp-card" (click)="createRegularCampaign()">
                                 <div class="pricing-head">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
+                                    <h4 class="camp-card-bg">
                                         <img alt="Regular E-mail Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/regular-email.png"></h4>
 
                                 </div>
@@ -167,11 +178,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.socialCampaign" style="padding-right: 35px;border-radius: 3px;">
-                            <div class="pricing hover-effect pointer" (click)="socialMediaCampaign()" style="height:242px">
-                                <div class="pricing-head" style="border-left: 1px solid #008fd5!important;">
+                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.socialCampaign">
+                            <div class="pricing hover-effect pointer camp-card" (click)="socialMediaCampaign()">
+                                <div class="pricing-head">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
+                                    <h4 class="camp-card-bg">
                                         <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/social-campaign.png"></h4>
 
                                 </div>
@@ -196,11 +207,11 @@
                                 </div>
                             </div> 
                         </div>
-                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.eventCampaign" style=" border-radius: 3px;   padding-left: 35px;">
-                            <div class="pricing hover-effect pointer" (click)="createEventCampaign()" style="height:242px">
+                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.eventCampaign">
+                            <div class="pricing hover-effect pointer camp-card" (click)="createEventCampaign()">
                                 <div class="pricing-head">
 
-                                    <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
+                                    <h4 class="camp-card-bg">
                                         <img alt="Social Campaign" class="pricing-head-img img-responsive" style="padding-top: 19px;" src="assets/images/event-campaign.png"></h4>
 
                                 </div>
@@ -228,8 +239,8 @@
                         </div>
                         
                         
-                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.landingPageCampaign" style=" border-radius: 3px;">
-                            <div class="pricing hover-effect pointer" (click)="createLandingPageCampaign()" style="height:242px">
+                        <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.landingPageCampaign">
+                            <div class="pricing hover-effect pointer camp-card" (click)="createLandingPageCampaign()">
                                 <div class="pricing-head">
 
                                     <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">

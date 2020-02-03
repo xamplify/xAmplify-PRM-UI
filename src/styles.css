@@ -267,7 +267,7 @@ nav a.active {
 .pointer{ cursor: pointer;}
 .default { cursor: default;}
 .portlet.light, .dashboard-stat2 {
-	border: 1px solid #CCC;
+	border: 1px solid #e0e0e0;
 	padding: 10px !important;
 }
 
@@ -354,7 +354,7 @@ tr.highlight {
 
 .tgrid>thead {
 	color: #8c9dad;
-	background-color: #e9eef2;
+	background-color: #f1f3fa;
 	font-size: 12px;
 	text-transform: uppercase;
 }
@@ -381,7 +381,7 @@ tr.highlight {
 	{
 	padding: 10px !important;
 	vertical-align: middle !important;
-	color: #919191;
+	color: #555555;
 }
 
 .tgrid>tbody>tr:hover1 {
@@ -643,13 +643,15 @@ legend {
 @media only screen and (max-width:600px) {
   .grid-box {
     background: #f1f1f1;
-    height: 258px !important;
+    height: auto !important;
     width: 100%;
     margin: 10px 0;
     text-align: center;
-    position: relative;
-    padding: 1em 0;
-    box-shadow: 1px 1px 1px 1px #adadad;
+		position: relative;
+		border: 1px solid #e0e0e0;
+		border-radius: 5px;
+    /* padding: 1em 0;
+    box-shadow: 1px 1px 1px 1px #adadad; */
   }
 }
 
@@ -665,7 +667,7 @@ legend {
     box-shadow: 1px 1px 1px 1px #adadad; */
     padding-bottom: 1em;
     border-radius: 5px;
-    border: 1px solid #eaeaea;
+    border: 1px solid #e0e0e0;
   }
 }
 
@@ -837,7 +839,7 @@ b, strong {
   top: 1px;
   right: 1px;
   position: absolute;
-  background: #dbe4db !important;
+  background: #f1f3fa !important;
   width: 39px !important;
 }
 .search-box-item-clear{
@@ -934,4 +936,15 @@ b, strong {
   -ms-filter: 'alpha(opacity=0)';
   direction: ltr;
   cursor: pointer;
+}
+.form-control {
+	border-radius: 3px !important;
+}
+
+.l-g-view{
+	background-color:#f1f3fa;
+	border-radius: 3px !important;
+	border: 1px solid #e0e0e0 !important;
+	padding: 0 !important;
+	height: 34px;
 }
