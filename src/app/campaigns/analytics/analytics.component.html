@@ -1760,9 +1760,19 @@
   <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-        <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        <h4 class="modal-title col-xs-6" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
-        <div class='col-xs-4'>
+       <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+         <div class="col-xs-11 col-sm-10 col-lg-10 visible-xs p0">
+          <h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
+         </div>
+        <div class="col-xs-1 col-sm-2 col-lg-2 pull-right p0">
+          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        </div>
+      </div>
+      <div class='col-xs-12 col-sm-12 col-lg-12' style="padding: 10px 0px 0px 0px;">
+        <div class="col-xs-6 col-sm-8 col-lg-8 p0 hidden-xs">
+          <h4 class="modal-title" id="usersWatchListModalLabel">Recipients who have watched the campaign</h4>
+         </div>
+        <div class='col-xs-10 col-sm-3 col-lg-3'>
           <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
             placeholder="Search " (keypress)="eventHandler($event.keyCode)">
           <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -1771,17 +1781,20 @@
           <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
               style="color:black !important"></i></button>
         </div>
+        <div class='col-xs-2 col-sm-1 col-lg-1 p0'>
         <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
           <span class="dropdown-toggle" data-toggle="dropdown"
             style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
             <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
               style="font-size:14px; float:right"></i>
           </span>
-          <ul class="dropdown-menu pull-right">
+          <ul class="dropdown-menu pull-right" style="right: 15px!important;">
             <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
           </ul>
         </div>
+        </div>
       </div>
+    </div>
       <div class="modal-body">
         <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
           <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
@@ -1860,15 +1873,31 @@
   <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-        <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        <h4 class="modal-title col-xs-4" id="emailActionListModalLabel"
+        <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+        <div class="col-xs-10 col-sm-10 col-lg-10 p0 visible-xs">
+        <h4 class="modal-title" id="emailActionListModalLabel"
           *ngIf="campaignReport.emailActionType === 'open'">Emails opened
           by recipients</h4>
-        <h4 class="modal-title col-xs-4" id="emailActionListModalLabel"
+        <h4 class="modal-title" id="emailActionListModalLabel"
           *ngIf="campaignReport.emailActionType === 'click'">Recipients
           who clicked a URL</h4>
-
-        <div class='col-xs-4'>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+         <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        </div>
+        </div>
+      <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
+        <div class="col-xs-4 col-sm-4 col-lg-4 hidden-xs">
+          <!-- <div class="col-xs-10 col-sm-10 col-lg-10"> -->
+        <h4 class="modal-title" id="emailActionListModalLabel"
+          *ngIf="campaignReport.emailActionType === 'open'">Emails opened
+          by recipients</h4>
+        <h4 class="modal-title" id="emailActionListModalLabel"
+          *ngIf="campaignReport.emailActionType === 'click'">Recipients
+          who clicked a URL</h4>
+        <!-- </div> -->
+        </div>
+        <div class='col-xs-4 col-sm-4 col-lg-4' style="padding: 0px 15px 0px 0px;">
           <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
             placeholder="Search " (keypress)="eventHandler($event.keyCode)">
           <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -1877,21 +1906,26 @@
           <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"
               style="color:black !important"></i></button>
         </div>
-        <div class="btn-group pull-right" style="margin-top: 23px; cursor:pointer; color: #7d8c98">
-          <div class="sort-dropdown">
+        <div class="col-xs-5 col-sm-2 col-lg-2 p0">
+        <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
+          <div class="">
             <select class="form-control" [(ngModel)]="selectedSortedOption"
               (ngModelChange)="getSortedResult(campaign.campaignId,$event)">
               <option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
             </select>
           </div>
+          </div>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-lg-2">
           <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
+            style="box-shadow:none;margin-top: 8px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
             <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
               style="font-size:14px; float:right"></i>
           </span>
           <ul class="dropdown-menu pull-right">
             <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
           </ul>
+        </div>
         </div>
       </div>
       <div class="modal-body">
@@ -1918,6 +1952,8 @@
                     <th style="width:33%" *ngIf="campaignReport.emailActionType === 'open'">Email Subject</th>
                     <th style="width:33%" *ngIf="campaignReport.emailActionType === 'click'">Most Recent URL</th>
                     <th style="width:27%;">Latest Time</th>
+                    <th></th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -1940,29 +1976,25 @@
                       </td>
                       <td>
                         <span>
-                          <h6>
+                          <h6 style="text-align: center;">
                             <!-- {{item.time | date: 'short'}} -->
-                            <app-timestamp [dateAndTime]="item.time" style="right: -69px;position: relative;">
+                            <app-timestamp [dateAndTime]="item.time">
                             </app-timestamp>
-                            <span data-toggle="tooltip" data-placement="left" title="View History"
-                              style="text-align: center;position: relative; top: -17px;" class="actions-block"
+                            
+                          </h6>
+                        </span>
+
+                      </td>
+                      <td>
+                      <span data-toggle="tooltip" data-placement="left" title="View History"
+                              style="text-align: center;position: relative;" class="actions-block"
                               *ngIf="item.emailActionCount > 1">
                               <a
                                 (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
                                 <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
                               </a>
                             </span>
-                          </h6>
-                        </span>
-
-                      </td>
-                      <!-- <td>
-                      <div class="actions-block" *ngIf="item.emailActionCount > 1">
-                        <a title="View History" (click)="listEmailLogsByCampaignIdUserIdActionType(item, campaignReport.emailActionType)">
-                          <i class="fa" [ngClass]="{'fa-plus': !item.isExpand, 'fa-minus': item.isExpand}"></i>
-                        </a>
-                      </div>
-                    </td> -->
+                    </td>
                     </tr>
                     <tr [ngClass]="{'hidden': !item.isExpand}">
                       <td colspan="4">
@@ -2078,19 +2110,17 @@
     <div class="modal-content">
       <div class="modal-header col-xs-12">
         <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-10 col-sm-10  col-lg-10 p0">
+        <div class="col-xs-10 col-sm-10  col-lg-10 p0 visible-xs">
          <h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
         </div>
          <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
           <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
         </div>
         </div>
-        <!-- </div> -->
-      </div>
-      <div class="modal-body">
-
-      <div class="col-xs-12 col-sm-12 col-lg-12 p0">
-        <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs"></div>
+      <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
+        <div class="col-xs-6 col-sm-6 col-lg-6 hidden-xs">
+          <h4 class="modal-title" id="emailSentListModalLabel">Sent Email Details</h4>
+        </div>
         <div class='col-xs-10 col-sm-5 col-lg-5'>
           <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
             placeholder="Search " (keypress)="eventHandler($event.keyCode)">
@@ -2101,7 +2131,7 @@
               style="color:black !important"></i></button>
         </div>
         <div class="col-xs-2 col-sm-1 col-lg-1 p0">
-        <div class="btn-group" style="cursor:pointer; color: #7d8c98">
+         <div class="btn-group" style="cursor:pointer; color: #7d8c98">
           <span class="dropdown-toggle" data-toggle="dropdown"
             style="box-shadow:none; position: absolute; display: inline-flex;">
             <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
@@ -2113,6 +2143,8 @@
         </div>
         </div>
         </div>
+      </div>
+      <div class="modal-body">
 
         <div class="alert alert-info flex" *ngIf="isLoadingDownloadList">
           <div class="loader" style="margin-right: 10px; width: 25px; height: 25px;"></div>
@@ -2173,14 +2205,28 @@
   <div class="modal-dialog modal-lg modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-        <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
-        <h4 class="modal-title col-xs-6" style="text-align: left">
-          <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
-          <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
-          <span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
-          Views</h4>
+        <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+        <div class="col-xs-10 col-sm-10 col-lg-10 p0 visible-xs">
+          <h4 class="modal-title" style="text-align: left">
+           <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
+           <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
+           <span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
+            Views</h4>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-lg-2 pull-right p0">
+         <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        </div>
+       </div>
 
-        <div class='col-xs-4'>
+       <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px;">
+         <div class="col-xs-10 col-sm-8 col-lg-8 p0 hidden-xs">
+          <h4 class="modal-title" style="text-align: left">
+           <span *ngIf="donultModelpopupTitle ==='current-month'">This Month's</span>
+           <span *ngIf="donultModelpopupTitle ==='life-time'">Lifetime</span>
+           <span *ngIf="donultModelpopupTitle !=='life-time' && donultModelpopupTitle !=='current-month'">Today's</span>
+            Views</h4>
+        </div>
+        <div class='col-xs-8 col-sm-3 col-lg-3'>
           <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
             placeholder="Search " (keypress)="eventHandler($event.keyCode)">
           <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -2190,15 +2236,18 @@
               style="color:black !important"></i></button>
         </div>
 
+        <div class="col-xs-2 col-sm-1 col-lg-1 p0">
         <div class="btn-group pull-right" style="margin-top: 20px; cursor:pointer; color: #7d8c98">
           <span class="dropdown-toggle" data-toggle="dropdown"
             style="box-shadow:none;margin-top: -15px;padding-right: 10px;margin-right: 21px; float:right;display: inline-flex;">
             <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
               style="font-size:14px; float:right"></i>
           </span>
-          <ul class="dropdown-menu pull-right">
+          <ul class="dropdown-menu pull-right" style="right: 15px !important">
             <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
           </ul>
+         </div>
+         </div>
         </div>
 
       </div>
@@ -2268,10 +2317,19 @@
   <div class="modal-dialog modal-css" role="document" style="right:0">
     <div class="modal-content">
       <div class="modal-header col-xs-12">
-
-        <h4 class="m0 col-xs-6" style="text-align: center ">People Who Have Watched Your Video</h4>
-
-        <div class='col-xs-4'>
+      <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+        <div class="col-xs-11 col-sm-2 col-lg-2 p0 visible-xs">
+         <h4 class="m0">People Who Have Watched Your Video</h4>
+        </div>
+        <div class="col-xs-1 col-sm-2 col-lg-2 p0 pull-right">
+          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        </div>
+      </div>
+       <div class="col-xs-12 col-sm-12 col-lg-12" style="padding: 10px 0px 0px 0px">
+        <div class="col-xs-6 col-sm-8 col-lg-8 p0 hidden-xs">
+         <h4>People Who Have Watched Your Video</h4>
+        </div>
+        <div class='col-xs-8 col-sm-3 col-lg-3'>
           <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
             placeholder="Search " (keypress)="eventHandler($event.keyCode)">
           <button class="clear-search" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -2281,19 +2339,18 @@
               style="color:black !important"></i></button>
         </div>
 
-
-        <div class="btn-group col-xs-1" style="cursor:pointer; color: #7d8c98">
+      <div class="col-xs-2 col-sm-1 col-lg-1 p0">
+        <div class="btn-group" style="cursor:pointer; color: #7d8c98">
           <span class="dropdown-toggle" data-toggle="dropdown"
-            style="box-shadow:none; position: absolute; margin-top: 8px;display: inline-flex;">
+            style="box-shadow:none; position: absolute;display: inline-flex;">
             <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
               style="font-size:14px;"></i>
           </span>
-          <ul class="dropdown-menu pull-right" style="margin-top:30px">
+          <ul class="dropdown-menu pull-right" style="margin-top:30px; right: -38px;">
             <li><a id="delete_button" (click)="downloadFunctionality()"> Export To Excel </a></li>
           </ul>
         </div>
-        <div class="col-xs-1">
-          <a class="close-circle" data-dismiss="modal" (click)="clearPaginationValues()"><i class="fa fa-times"></i></a>
+        </div>
         </div>
 
       </div>
