@@ -26,3 +26,8 @@
 .danger{
 	color:red;
 }
+
+.img-cloud{
+	width: 100% !important;
+	height: auto !important;
+}

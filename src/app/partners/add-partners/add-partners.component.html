@@ -81,7 +81,7 @@ img:hover {
 										</button>
                   </div>
                   <ng-container  *ngIf="!referenceService.isMobileScreenSize()">
-									<div class="col-xs-12 col-sm-4 col-md-4">
+									<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
 										<button class="btn-success btn-block" id="copyFromClipBoard"
 											(click)="copyFromClipboard()"
 											[disabled]="selectedAddPartnerOption != 5">
@@ -89,8 +89,8 @@ img:hover {
 											<span>Copy list from clipboard</span>
 										</button>
 									</div>
-									<div class="col-xs-12 col-sm-4 col-md-4">
-										<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px"
+									<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
+										<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px; !important"
 											[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
 											<i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
 											<span style="display:block; font-size:12px; text-align:center">Upload a	CSV</span>
@@ -116,12 +116,12 @@ img:hover {
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-									<div class="portlet light cloud-services pb0">
+									<div class="portlet light cloud-services" style="padding-bottom: 30px !important;">
 									<div class="portlet-title">Import Partners from the cloud:</div>
 									<div class="portlet-body">
 									<div class="row">
-
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
+ 
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
 									<a *ngIf="sfImageNormal" id="salesforceContact_buttonNormal" style="background-color: white" (click)="salesforceContacts()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 7 ">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :sfImageBlur==true}"
@@ -137,19 +137,19 @@ img:hover {
 										onmouseover="this.src='assets/images/crm/connecting.png';"
 										onmouseout="this.src='assets/images/crm/sf.png';">
 									</a>
-									<div id="salesforceGear" style="position: relative"	id="salesforceGear" *ngIf="sfImageNormal">
+									<div id="salesforceGear" style="position: absolute"	id="salesforceGear" *ngIf="sfImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Salesforce')">
                     <i id="SgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 										</a>
 									</div>
-									<div style="position: relative" *ngIf="!sfImageNormal">
+								<!-- 	<div style="position: relative" *ngIf="!sfImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="salesforceContacts()">
                     <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
-									</div>
-									<div style="padding-bottom: 22px;"></div>
+									</div> -->
+									<!-- <div style="padding-bottom: 22px;"></div> -->
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
 									<a *ngIf="googleImageBlur" id="googleContact_button"	style="background-color: white" (click)="googleContacts()"
 						      	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 3 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :googleImageBlur==true}"
@@ -165,19 +165,19 @@ img:hover {
 										title="Click here to access partners from your Google account"
 										height="86" width="90">
 									</a>
-									<div id="GoogleGear" style="position: relative"	*ngIf="googleImageNormal">
+									<div id="GoogleGear" style="position: absolute"	*ngIf="googleImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality"
                     (click)="settingSocialNetworkOpenModal('Google')">
                     <i id="GgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true" ></i>
 										</a>
 									</div>
-									<div style="position: relative" *ngIf="!googleImageNormal">
+									<!-- <div style="position: relative" *ngIf="!googleImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="googleContacts()">
                      <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
-									</div>
+									</div> -->
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
 									<a *ngIf="zohoImageBlur" id="zohoContact_button" style="background-color: white" (click)="checkingZohoContactsAuthentication()"
 						     	[class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
 										<img	[ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}"
@@ -193,18 +193,18 @@ img:hover {
 										title="Click here to access partners from your Zoho account"
 										height="86" width="90">
 									</a>
-									<div id="zohoGear" style="position: relative" *ngIf="zohoImageNormal">
+									<div id="zohoGear" style="position: absolute" *ngIf="zohoImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Zoho')">
                     <i id="ZgearIcon" class="fa fa-cog cloud-css cloud-items" aria-hidden="true"></i>
 										</a>
 									</div>
-									<div style="position: relative" *ngIf="!zohoImageNormal">
+									<!-- <div style="position: relative" *ngIf="!zohoImageNormal">
 										<a [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" (click)="checkingZohoContactsAuthentication()">
                     <i class="fa fa-plug cloud-css cloud-items gray-color" aria-hidden="true"></i>
 										</a>
-									</div>
+									</div> -->
 								</div>
-								<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
+								<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
 										<a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()"
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
@@ -215,22 +215,22 @@ img:hover {
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png"
 											 class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
-											 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
+											 height="86" width="90">
 										</a>
 										<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
 											<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
 												<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 											</a>
 										</div> -->
-										<div style="position: relative" *ngIf="!marketoImageNormal">
+										<!-- <div style="position: relative" *ngIf="!marketoImageNormal">
 											<a [class.disabled]="selectedAddContactsOption != 6" (click)="checkingMarketoContactsAuthentication()">
 												<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
 											</a>
-										</div>
+										</div> -->
 									</div>
 
 									<!-- Hubspot -->
-									<div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 mr8">
+									<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
 										<a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()"
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
@@ -241,18 +241,18 @@ img:hover {
 										 [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
 											<img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png"
 											 class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
-											 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
+											 height="86" width="90">
 										</a>
 										<!-- <div id="marketoGear" style="position: relative" *ngIf="marketoImageNormal">
 											<a [class.disabled]="selectedAddContactsOption != 8 || disableOtherFuctionality" (click)="settingSocialNetworkOpenModal('Marketo')">
 												<i id="ZgearIcon" class="fa fa-cog cloud-items cloud-css" aria-hidden="true"></i>
 											</a>
 										</div> -->
-										<div style="position: relative" *ngIf="!hubspotImageNormal">
+										<!-- <div style="position: relative" *ngIf="!hubspotImageNormal">
 											<a [class.disabled]="selectedAddPartnerOption != 9" (click)="checkingHubSpotContactsAuthentication()">
 												<i class="fa fa-plug cloud-items gray-color cloud-css" aria-hidden="true"></i>
 											</a>
-										</div>
+										</div> -->
 									</div>
 
 
@@ -358,7 +358,7 @@ img:hover {
 						</div>
 					</div>
 					<div class="portlet-body">
-
+          <div class="table-responsive">
 						<table class="table table-striped table-hover table-bordered"
 							id="google-contacts-table">
 							<thead>
@@ -457,6 +457,7 @@ img:hover {
 											</ng-container>
 							</tbody>
 						</table>
+						</div>
 
 						<ul *ngIf="pager.pages && pager.pages.length" class="pagination">
 							<li [ngClass]="{disabled:pager.currentPage === 1}"><a
@@ -474,7 +475,7 @@ img:hover {
 							</li>
 						</ul>
 
-						<div style="float: right; font-size: 15px;">
+						<div class="p-drop-down" style="width:max-content">
 							<select class="form-control" style="cursor: pointer"
 								[(ngModel)]="pageNumber" [ngModelOptions]="{standalone: true}"
 								(ngModelChange)="selectedPageNumber($event.value)">
