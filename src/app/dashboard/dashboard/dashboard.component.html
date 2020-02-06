@@ -491,8 +491,8 @@
         </div>
       </div>
     </div>
-    <ng-container *ngIf="authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) ||
-    			authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+    <ng-container *ngIf="(authenticationService.module.hasSocialStatusRole || (authenticationService.module.isOrgAdmin) ||
+    			authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()) && referenceService.socialCampaign">
       <div class="clearfix" *ngIf="socialConnections?.length > 0">
         <div class="portlet light shadow">
           <div class="portlet-title">

@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit {
         this.referenceService.videoCampaign = data.video;
         this.referenceService.emailCampaign = data.regular;
         this.referenceService.socialCampaign = data.social;
-        this.referenceService.eventCampaign = data.event
+        this.referenceService.eventCampaign = data.event;
       });
     }
   
