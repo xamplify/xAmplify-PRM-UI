@@ -23,7 +23,7 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
-import { IntroComponent } from './authentication/intro/intro.component';
+// import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
@@ -36,6 +36,7 @@ import { RequestDemoComponent } from './authentication/request-demo/request-demo
 import { AccessAccountComponent } from './authentication/access-account/access-account.component';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
+import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -101,6 +102,7 @@ export const routes: Routes = [
     { path: 'requestdemo', component: RequestDemoComponent },
     { path: 'axAa/:alias', component: AccessAccountComponent },
     { path: 'download/:type', component: DownloadTemplateComponent },
+    {path: 'samlsecurity/:alias', component:SamlsecurityauthComponent},
     { path: '**', component: PageNotFoundComponent },
 ];
 
