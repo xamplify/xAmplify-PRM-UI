@@ -19,7 +19,8 @@ export class UserService {
     loggedInUserData: User;
 
     URL = this.authenticationService.REST_URL;
-    GDPR_SETTING_URL = this.authenticationService.REST_URL+"gdpr/setting/"
+    GDPR_SETTING_URL = this.authenticationService.REST_URL+"gdpr/setting/";
+    CATEGORIES_URL = this.URL+'category/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
 
@@ -272,6 +273,46 @@ export class UserService {
             .map(this.extractData)
             .catch(this.handleServerError);
     }
+
+    getCategories(pagination:Pagination) {
+        return this.http.post(this.CATEGORIES_URL + "listAll?access_token=" + this.authenticationService.access_token,pagination)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    saveOrUpdateCategory(category:any){
+        let url = this.CATEGORIES_URL + "save";
+        if(category.id>0){
+           url = this.CATEGORIES_URL + "update";
+        }
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token,category)
+        .map(this.extractData)
+        .catch(this.handleServerError);
+    }
+
+    listExistingCategoryNames(companyId:number){
+        return this.http.get( this.CATEGORIES_URL+"listAllCategoryNames/"+ companyId + "?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    getCategoryById(id:number) {
+        return this.http.get(this.CATEGORIES_URL + "getById/"+id+"?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    deleteCategory(category:any){
+        let url =  this.CATEGORIES_URL+"deleteById/"+category.id;
+        if(category.isMoveAndDelete){
+            url =  this.CATEGORIES_URL+"moveAndDeleteCategory/"+category.id+"/"+category.idToMoveItems;
+        }
+        return this.http.get(url+"?access_token=" + this.authenticationService.access_token,"")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    
 
     private handleServerError(error: any) {
         return Observable.throw(error);

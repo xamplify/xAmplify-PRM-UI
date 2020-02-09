@@ -1915,6 +1915,10 @@ export class ReferenceService {
     showSweetAlert(message1:string,message2:string,type:string){
         swal(message1,message2,type);
     }
+
+    showSweetAlertErrorMessage(errorMessage:string){
+        swal(errorMessage,"","error");
+    }
     
     showModalPopup(modalId){
         $('.modal .modal-body').css('overflow-y', 'auto');

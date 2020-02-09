@@ -25,9 +25,14 @@ import { DealType } from '../../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 import { DashboardService } from '../../dashboard.service';
 import { HubSpotService } from 'app/core/services/hubspot.service';
-import {GdprSetting} from '../../models/gdpr-setting';
+import { GdprSetting } from '../../models/gdpr-setting';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { Category } from '../../models/category';
+import { Pagination } from 'app/core/models/pagination';
+import { SortOption } from '../../../core/models/sort-option';
+import { PagerService } from '../../../core/services/pager.service';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -36,7 +41,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames,HttpRequestLoader],
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -112,15 +117,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     activeTabName: string = "";
     sfRibbonText: string;
     sfRedirectURL: string;
-/*****************GDPR************************** */
-gdprSetting:GdprSetting = new GdprSetting();
-gdprSettingLoaded = false;
+    /*****************GDPR************************** */
+    gdprSetting: GdprSetting = new GdprSetting();
+    gdprSettingLoaded = false;
+    category: Category = new Category();
+    categoryPagination: Pagination = new Pagination();
+    categorySortOption: SortOption = new SortOption();
+    isAddCategory = false;
+    categoryModalTitle = "Add a New Category";
+    formErrorClass = "form-group form-error";
+    defaultFormClass = "form-group";
+    categoryNameErrorMessage = "";
+    requiredMessage = "Required";
+    duplicateLabelMessage = "Already exists";
+    addCategoryLoader: HttpRequestLoader = new HttpRequestLoader();
+    categoryResponse: CustomResponse = new CustomResponse();
+    existingCategoryNames: string[] = [];
+    existingCategoryName: any;
+    categoyButtonSubmitText = "Save";
+    categoryNames:string[] = [];
+    isDeleteCategory: any;
+    selectedCategoryIdForTransferItems = 0;
+    exisitingCategories = new Array<Category>();
 
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
-         private hubSpotService: HubSpotService,public httpRequestLoader: HttpRequestLoader,private integrationService:IntegrationService) {
+        private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
+            PagerService) {
         //   this.customConstructorCall();
     }
     cropperSettings() {
@@ -274,10 +299,10 @@ gdprSettingLoaded = false;
 
     ngOnInit() {
         try {
-            if(this.referenceService.integrationCallBackStatus == true){
-              this.activeTabName = 'integrations';
-            }else{
-              this.activeTabName = 'personalInfo';
+            if (this.referenceService.integrationCallBackStatus == true) {
+                this.activeTabName = 'integrations';
+            } else {
+                this.activeTabName = 'personalInfo';
             }
             this.customConstructorCall();
             console.log(this.authenticationService.user);
@@ -432,8 +457,8 @@ gdprSettingLoaded = false;
             'newPassword': [null, [Validators.required, Validators.minLength(6), Validators.pattern(passwordRegex)]],
             'confirmNewPassword': [null, [Validators.required]],
         }, {
-                validator: matchingPasswords('newPassword', 'confirmNewPassword')
-            }
+            validator: matchingPasswords('newPassword', 'confirmNewPassword')
+        }
 
         );
 
@@ -994,7 +1019,7 @@ gdprSettingLoaded = false;
         this.userService.listForm(this.loggedInUserId).subscribe(result => {
 
             console.log(result)
-            if (result.length > 0 ) {
+            if (result.length > 0) {
                 this.form = result[0];
                 this.questions = result;
                 let index = 1;
@@ -1004,9 +1029,9 @@ gdprSettingLoaded = false;
                 });
                 this.submitButtonText = "Update Questions";
 
-            } else{
-              this.questions = [];
-              this.submitButtonText = "Save Questions";
+            } else {
+                this.questions = [];
+                this.submitButtonText = "Save Questions";
             }
 
             this.submitBUttonStateChange();
@@ -1051,40 +1076,40 @@ gdprSettingLoaded = false;
         this.submitBUttonStateChange();
 
     }
-    showAlert(i, question){
-      if(question.id ){
-          this.deleteQuestion(i,question);
+    showAlert(i, question) {
+        if (question.id) {
+            this.deleteQuestion(i, question);
 
-      }else{
-          this.remove(i, question.id);
-      }
+        } else {
+            this.remove(i, question.id);
+        }
     }
-    deleteQuestion(i, question){
-      try {
-        this.logger.info( "Question in sweetAlert() " + question.id );
-        let self = this;
-        swal( {
-            title: 'Are you sure?',
-            text: "You won't be able to undo this action!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#54a7e9',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Yes, delete it!'
+    deleteQuestion(i, question) {
+        try {
+            this.logger.info("Question in sweetAlert() " + question.id);
+            let self = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
 
-        }).then( function( myData: any ) {
-            console.log( "deleteQuestion showAlert then()" + question );
-            self.userService.deleteQuestion(question).subscribe(result => {
-              console.log(result)
-              self.remove(i, question.id);
-              self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-          },error=> console.log(error))
-        }, function( dismiss: any ) {
-            console.log( 'you clicked on option' );
-        });
-    } catch ( error ) {
-      console.log( error );
-    }
+            }).then(function (myData: any) {
+                console.log("deleteQuestion showAlert then()" + question);
+                self.userService.deleteQuestion(question).subscribe(result => {
+                    console.log(result)
+                    self.remove(i, question.id);
+                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                }, error => console.log(error))
+            }, function (dismiss: any) {
+                console.log('you clicked on option');
+            });
+        } catch (error) {
+            console.log(error);
+        }
 
     }
     validateQuestion(question: DealQuestions) {
@@ -1108,58 +1133,58 @@ gdprSettingLoaded = false;
         this.submitBUttonStateChange();
     }
     submitBUttonStateChange() {
-            let countForm = 0;
-            this.questions.forEach(question => {
+        let countForm = 0;
+        this.questions.forEach(question => {
 
-                if (question.error)
-                    countForm++;
-            })
-            if (countForm > 0 || this.questions.length == 0)
-                this.formSubmiteState = false;
-            else
-                this.formSubmiteState = true;
+            if (question.error)
+                countForm++;
+        })
+        if (countForm > 0 || this.questions.length == 0)
+            this.formSubmiteState = false;
+        else
+            this.formSubmiteState = true;
 
     }
     saveForm() {
         this.ngxloading = true;
         let self = this;
-        let data=[]
-         this.questions.forEach(question => {
-          const q= new DealQuestions();
-          console.log(self.authenticationService.getUserId())
-           q.question = question.question;
-          if (question.id ){
-            let obj = {
-              id : question.id,
-              question : question.question,
-              updatedBy : self.authenticationService.getUserId()
+        let data = []
+        this.questions.forEach(question => {
+            const q = new DealQuestions();
+            console.log(self.authenticationService.getUserId())
+            q.question = question.question;
+            if (question.id) {
+                let obj = {
+                    id: question.id,
+                    question: question.question,
+                    updatedBy: self.authenticationService.getUserId()
+                }
+                data.push(obj);
+
+            } else {
+                let obj = {
+                    question: question.question,
+                    createdBy: self.authenticationService.getUserId()
+                }
+                data.push(obj);
             }
-            data.push(obj);
 
-          }else{
-            let obj = {
-              question : question.question,
-              createdBy : self.authenticationService.getUserId()
-            }
-            data.push(obj);
-          }
+        })
 
-      })
+        this.userService.saveForm(this.authenticationService.getUserId(), data).subscribe(result => {
 
-      this.userService.saveForm(this.authenticationService.getUserId(),data).subscribe(result => {
+            this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+            this.initializeForm();
+            // this.userService.listForm(this.loggedInUserId).subscribe(form => {
+            //     this.dealForms = form;
+            //     this.initializeForm();
 
-          this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-          this.initializeForm();
-          // this.userService.listForm(this.loggedInUserId).subscribe(form => {
-          //     this.dealForms = form;
-          //     this.initializeForm();
-
-          //     this.ngxloading = false;
-          // })
-      }, (error: any) => {
-        console.log(error);
-        this.ngxloading = false;
-    }, () => { this.ngxloading = false;});
+            //     this.ngxloading = false;
+            // })
+        }, (error: any) => {
+            console.log(error);
+            this.ngxloading = false;
+        }, () => { this.ngxloading = false; });
 
     }
 
@@ -1181,41 +1206,41 @@ gdprSettingLoaded = false;
         this.dealTypeButtonStateChange();
     }
 
-    deleteDealType(i, dealType){
-      try {
-        this.logger.info( "Deal Type in sweetAlert() " + dealType.id );
-        let self = this;
-        swal( {
-            title: 'Are you sure?',
-            text: "You won't be able to undo this action!",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#54a7e9',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Yes, delete it!'
+    deleteDealType(i, dealType) {
+        try {
+            this.logger.info("Deal Type in sweetAlert() " + dealType.id);
+            let self = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
 
-        }).then( function( myData: any ) {
-            console.log( "dealType showAlert then()" + dealType );
-            self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-              console.log(result)
-              self.removeDealType(i, dealType.id);
-              self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-          }, (error) => {
-            self.ngxloading = false;
+            }).then(function (myData: any) {
+                console.log("dealType showAlert then()" + dealType);
+                self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
+                    console.log(result)
+                    self.removeDealType(i, dealType.id);
+                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                }, (error) => {
+                    self.ngxloading = false;
 
-        }, () => {
-            self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
+                }, () => {
+                    self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
 
-                self.dealtypes = dealTypes.data;
+                        self.dealtypes = dealTypes.data;
 
+                    });
+                })
+            }, function (dismiss: any) {
+                console.log('you clicked on option');
             });
-        })
-        }, function( dismiss: any ) {
-            console.log( 'you clicked on option' );
-        });
-    } catch ( error ) {
-      console.log( error );
-    }
+        } catch (error) {
+            console.log(error);
+        }
     }
     removeDealType(i, id) {
 
@@ -1260,44 +1285,44 @@ gdprSettingLoaded = false;
 
     }
     saveDealTypes() {
-      if(this.dealtypes.length > 0){
-        this.ngxloading = true;
-        let dtArr = []
-        this.dealtypes.forEach(dealtype => {
-            if (dealtype.id ){
-               let obj = {
-                    "id": dealtype.id,
-                    "dealType": dealtype.dealType,
-                    "updatedBy": this.authenticationService.getUserId()
-                  }
-                  dtArr.push(obj);
-            }else{
-                let obj = {
-                    "id": dealtype.id,
-                    "dealType": dealtype.dealType,
-                    "createdBy": this.authenticationService.getUserId()
-                  }
-                  dtArr.push(obj);
-            }
-        })
-        console.log(dtArr)
+        if (this.dealtypes.length > 0) {
+            this.ngxloading = true;
+            let dtArr = []
+            this.dealtypes.forEach(dealtype => {
+                if (dealtype.id) {
+                    let obj = {
+                        "id": dealtype.id,
+                        "dealType": dealtype.dealType,
+                        "updatedBy": this.authenticationService.getUserId()
+                    }
+                    dtArr.push(obj);
+                } else {
+                    let obj = {
+                        "id": dealtype.id,
+                        "dealType": dealtype.dealType,
+                        "createdBy": this.authenticationService.getUserId()
+                    }
+                    dtArr.push(obj);
+                }
+            })
+            console.log(dtArr)
 
-        this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
-            this.ngxloading = false;
-            this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+            this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 
-        }, (error) => {
-            this.ngxloading = false;
-            this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
+            }, (error) => {
+                this.ngxloading = false;
+                this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
 
-        }, () => {
-            this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
+            }, () => {
+                this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
 
-                this.dealtypes = dealTypes.data;
+                    this.dealtypes = dealTypes.data;
 
-            });
-        })
-      }
+                });
+            })
+        }
 
     }
 
@@ -1331,7 +1356,7 @@ gdprSettingLoaded = false;
             this.logger.error(error, "Error in HubSpot checkIntegrations()");
         }, () => this.logger.log("HubSpot Configuration Checking done"));
 
-        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
+        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                 this.sfRibbonText = "configured";
@@ -1342,7 +1367,7 @@ gdprSettingLoaded = false;
             if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
                 this.sfRedirectURL = response.data.redirectUrl;
             }
-        },error =>{
+        }, error => {
             this.sfRibbonText = "configure";
             this.logger.error(error, "Error in checkIntegrations()");
         }, () => this.logger.log("Integration Configuration Checking done"));
@@ -1356,11 +1381,14 @@ gdprSettingLoaded = false;
             this.integrationTabIndex = 0;
     }
 
-    activateTab(activeTabName:any){
-      this.activeTabName = activeTabName;
-      if(this.activeTabName=="gdpr"){
-         this.getGdprSettings();
-      }
+    activateTab(activeTabName: any) {
+        this.activeTabName = activeTabName;
+        if (this.activeTabName == "gdpr") {
+            this.getGdprSettings();
+        } else if (this.activeTabName == "categories") {
+            this.categoryPagination = new Pagination();
+            this.listCategories(this.categoryPagination);
+        }
     }
 
     ngOnDestroy() {
@@ -1383,41 +1411,41 @@ gdprSettingLoaded = false;
     }
 
     /*********************GDPR Setting********************** */
-    setGdpr(event:any){
+    setGdpr(event: any) {
         this.gdprSetting.gdprStatus = event;
         this.gdprSetting.unsubscribeStatus = event;
         this.gdprSetting.formStatus = event;
         this.gdprSetting.termsAndConditionStatus = event;
         this.gdprSetting.deleteContactStatus = event;
         this.gdprSetting.eventStatus = event;
-        if(!event){
+        if (!event) {
             this.gdprSetting.allowMarketingEmails = event;
         }
     }
 
-    setAllGdprStatus(){
+    setAllGdprStatus() {
         if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
-            && !this.gdprSetting.deleteContactStatus && !this.gdprSetting.eventStatus){
-                this.gdprSetting.gdprStatus = false;
-                this.gdprSetting.allowMarketingEmails = false;
-            }else{
+            && !this.gdprSetting.deleteContactStatus && !this.gdprSetting.eventStatus) {
+            this.gdprSetting.gdprStatus = false;
+            this.gdprSetting.allowMarketingEmails = false;
+        } else {
             this.gdprSetting.gdprStatus = true;
-            }
         }
+    }
 
 
 
-    getGdprSettings(){
+    getGdprSettings() {
         this.gdprSetting = new GdprSetting();
-        if(this.referenceService.companyId>0){
+        if (this.referenceService.companyId > 0) {
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
                 .subscribe(
                     response => {
-                        if(response.statusCode==200){
+                        if (response.statusCode == 200) {
                             this.gdprSetting = response.data;
                             this.gdprSetting.isExists = true;
-                        }else{
+                        } else {
                             this.gdprSetting.isExists = false;
                         }
                         this.referenceService.stopLoader(this.httpRequestLoader);
@@ -1427,42 +1455,42 @@ gdprSettingLoaded = false;
                     },
                     () => this.logger.info('Finished getGdprSettings()')
                 );
-        }else{
+        } else {
             this.customResponse = new CustomResponse('ERROR', 'Unable to get GDPR Settings.', true);
             this.referenceService.stopLoader(this.httpRequestLoader);
         }
 
     }
 
-    saveGdprSetting(){
+    saveGdprSetting() {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.gdprSetting.companyId = this.referenceService.companyId;
         this.gdprSetting.createdUserId = this.loggedInUserId;
         this.userService.saveGdprSetting(this.gdprSetting)
-        .subscribe(
-            data => {
-                this.gdprSetting.isExists = true;
-                this.customResponse = new CustomResponse('SUCCESS',data.message,true);
-                this.referenceService.stopLoader(this.httpRequestLoader);
-            },
-            (error: any)  => {
-                let status = error.status;
-                if(status==409){
-                    const body = error['_body'];
-                    const response = JSON.parse(body);
-                    this.customResponse = new CustomResponse('ERROR', response.message, true);
+            .subscribe(
+                data => {
+                    this.gdprSetting.isExists = true;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
                     this.referenceService.stopLoader(this.httpRequestLoader);
-                }else{
-                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                }
-            },
-            () => this.logger.info('Finished saveGdprSetting()')
-        );
+                },
+                (error: any) => {
+                    let status = error.status;
+                    if (status == 409) {
+                        const body = error['_body'];
+                        const response = JSON.parse(body);
+                        this.customResponse = new CustomResponse('ERROR', response.message, true);
+                        this.referenceService.stopLoader(this.httpRequestLoader);
+                    } else {
+                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                    }
+                },
+                () => this.logger.info('Finished saveGdprSetting()')
+            );
         this.referenceService.goToTop();
     }
 
 
-    updateGdprSetting(){
+    updateGdprSetting() {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.gdprSetting.updatedUserId = this.loggedInUserId;
         this.userService.updateGdprSetting(this.gdprSetting)
@@ -1481,5 +1509,269 @@ gdprSettingLoaded = false;
 
 
     }
+    /***************Categories*************** */
+    listCategories(pagination: Pagination) {
+        this.category = new Category();
+        if (this.referenceService.companyId > 0) {
+            pagination.companyId = this.referenceService.companyId;
+            this.referenceService.startLoader(this.httpRequestLoader);
+            this.userService.getCategories(pagination)
+                .subscribe(
+                    response => {
+                        const data = response.data;
+                        pagination.totalRecords = data.totalRecords;
+                        this.categorySortOption.totalRecords = data.totalRecords;
+                        $.each(data.categories, function (_index: number, category: any) {
+                            category.displayTime = new Date(category.createdTimeInString);
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.categories);
+                        this.referenceService.stopLoader(this.httpRequestLoader);
+                    },
+                    (error: any) => {
+                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                    },
+                    () => this.logger.info('Finished listCategories()')
+                );
+        } else {
+            this.customResponse = new CustomResponse('ERROR', 'Unable to get Categories.', true);
+            this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+    }
+
+    /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy(text: any) {
+        this.categorySortOption.formsSortOption = text;
+        this.getAllFilteredResults(this.categoryPagination);
+    }
+
+
+    /*************************Search********************** */
+    searchCategories() {
+        this.getAllFilteredResults(this.categoryPagination);
+    }
+
+    paginationDropdown(items: any) {
+        this.categorySortOption.itemsSize = items;
+        this.getAllFilteredResults(this.categoryPagination);
+    }
+
+    /************Page************** */
+    setPage(event: any) {
+        this.categoryResponse = new CustomResponse();
+        this.customResponse = new CustomResponse();
+        this.categoryPagination.pageIndex = event.page;
+        this.listCategories(this.categoryPagination);
+    }
+
+    getAllFilteredResults(pagination: Pagination) {
+        this.categoryResponse = new CustomResponse();
+        this.customResponse = new CustomResponse();
+        this.categoryPagination.pageIndex = 1;
+        this.categoryPagination.searchKey = this.categorySortOption.searchKey;
+        this.categoryPagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, this.categoryPagination);
+        this.listCategories(this.categoryPagination);
+    }
+    eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
+    /********************Add*****************/
+
+    addCategory() {
+        this.isAddCategory = true;
+        this.category = new Category();
+        this.categoyButtonSubmitText = "Save";
+        this.listExistingCategoryNames();
+    }
+    closeCategoryModal() {
+        $('#addCategoryModalPopup').modal('hide');
+        this.referenceService.stopLoader(this.addCategoryLoader);
+        this.category = new Category();
+        this.removeCategoryNameErrorClass();
+        this.categoryResponse = new CustomResponse();
+        this.isAddCategory = false;
+    }
+
+    validateCategoryNames(name: string) {
+        if ($.trim(name).length > 0) {
+            if (this.existingCategoryNames.indexOf($.trim(name).toLowerCase()) > -1 && $.trim(name).toLowerCase() != this.existingCategoryName) {
+                this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
+            } else {
+                this.removeCategoryNameErrorClass();
+            }
+        } else {
+            this.addCategoryNameErrorMessage(this.requiredMessage);
+        }
+    }
+
+    addCategoryNameErrorMessage(errorMessage: string) {
+        this.category.isValid = false;
+        $('#categoryNameDiv').addClass(this.formErrorClass);
+        this.categoryNameErrorMessage = errorMessage;
+    }
+
+    removeCategoryNameErrorClass() {
+        $('#categoryNameDiv').removeClass(this.formErrorClass);
+        $('#categoryNameDiv').addClass(this.defaultFormClass);
+        this.category.isValid = true;
+        this.categoryResponse = new CustomResponse();
+        this.categoryNameErrorMessage = "";
+
+    }
+
+    sumbitOnEnter(event: any) {
+        if (event.keyCode == 13 && this.category.isValid) {
+            this.saveOrUpdateCategory();
+        }
+    }
+
+
+    listExistingCategoryNames() {
+        this.userService.listExistingCategoryNames(this.referenceService.companyId)
+            .subscribe(
+                data => {
+                     this.existingCategoryNames = data.data.map((a: { name: any; }) => a.name);
+                    if (this.isAddCategory) {
+                        $('#addCategoryModalPopup').modal('show');
+                        this.category.isValid = false;
+                    }else if(this.isDeleteCategory){
+                        this.exisitingCategories = data.data.filter((item: { id: number; }) => item.id!== this.category.id);;
+                        $('#deleteCategoryModalPopup').modal('show');
+                    }
+                },
+                error => {
+                    this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                },
+                () => {
+                    this.logger.info("Finished listExistingCategoryNames()");
+                }
+            );
+    }
+
+
+    saveOrUpdateCategory() {
+        this.referenceService.startLoader(this.addCategoryLoader);
+        if (this.isAddCategory) {
+            this.category.companyId = this.referenceService.companyId;
+        }
+        this.category.createdUserId = this.loggedInUserId;
+        this.userService.saveOrUpdateCategory(this.category)
+            .subscribe(
+                (result: any) => {
+                    this.closeCategoryModal();
+                    this.referenceService.stopLoader(this.addCategoryLoader);
+                    this.categoryResponse = new CustomResponse('SUCCESS', result.message, true);
+                    this.categoryPagination = new Pagination();
+                    this.listCategories(this.categoryPagination);
+                },
+                (error: string) => {
+                    this.referenceService.stopLoader(this.addCategoryLoader);
+                    let statusCode = JSON.parse(error['status']);
+                    if (statusCode == 409) {
+                        this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
+                    } else {
+                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                    }
+                });
+
+    }
+
+
+    getCategoryById(id: number) {
+        this.isAddCategory = false;
+        this.categoyButtonSubmitText = "Update";
+        $('#addCategoryModalPopup').modal('show');
+        this.referenceService.startLoader(this.addCategoryLoader);
+        this.categoryModalTitle = 'Edit Category Details';
+        this.listExistingCategoryNames();
+        this.userService.getCategoryById(id)
+            .subscribe(
+                (result: any) => {
+                    if (result.statusCode == 200) {
+                        this.category = result.data;
+                        this.existingCategoryName = $.trim(this.category.name.toLowerCase());
+                        this.category.isValid = true;
+                    } else {
+                        $('#addCategoryModalPopup').modal('hide');
+                        this.referenceService.showSweetAlertErrorMessage(result.message);
+                    }
+                    this.referenceService.stopLoader(this.addCategoryLoader);
+                },
+                (error: string) => {
+                    $('#addCategoryModalPopup').modal('hide');
+                    this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                });
+    }
+
+
+    /***********Delete**************/
+    confirmDeleteCategory(category: Category) {
+        if (category.count > 0) {
+            this.isDeleteCategory = true;
+            this.category = category;
+            this.listExistingCategoryNames();
+        } else {
+            try {
+                let self = this;
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to undo this action!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    swalConfirmButtonColor: '#54a7e9',
+                    swalCancelButtonColor: '#999',
+                    confirmButtonText: 'Yes, delete it!'
+
+                }).then(function () {
+                    self.deleteById(category);
+                }, function (dismiss: any) {
+                    console.log('you clicked on option' + dismiss);
+                });
+            } catch (error) {
+                this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+                this.referenceService.showServerError(this.httpRequestLoader);
+            }
+        }
+
+    }
+
+    closeDeleteCategoryModal(){
+        $('#deleteCategoryModalPopup').modal('hide');
+        this.isDeleteCategory = false;
+        this.category = new Category();
+        this.selectedCategoryIdForTransferItems=0;
+    }
+    deleteCategoryWithoutTransferring(){
+        this.deleteById(this.category);
+    }
+
+    moveAndDeleteCategory(){
+        $('#deleteCategoryModalPopup').modal('hide');
+        this.category.isMoveAndDelete = true;
+        this.category.idToMoveItems = this.selectedCategoryIdForTransferItems;
+        this.deleteById(this.category);
+    }
+    deleteById(category: Category) {
+        this.categoryResponse = new CustomResponse();
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.goToTop();
+        this.userService.deleteCategory(category)
+            .subscribe(
+                (response: any) => {
+                    if (response.statusCode == 200) {
+                        this.closeDeleteCategoryModal();
+                        let message = category.name + " Deleted Successfully";
+                        this.categoryResponse = new CustomResponse('SUCCESS', message, true);
+                        this.categoryPagination.pageIndex = 1;
+                        this.listCategories(this.categoryPagination);
+                    }
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                    this.categoryResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                }
+            );
+    }
+
+
 
 }

@@ -221,7 +221,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
           }else{
               this.landingPageAliasUrl = this.authenticationService.APP_URL+"l/"+this.landingPage.alias;
           }
-        this.iframeEmbedUrl = '<iframe src="' + this.landingPageAliasUrl + '"></iframe>';
+        this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.landingPageAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';
+
        $('#landing-page-url-modal').modal('show');
       }
 

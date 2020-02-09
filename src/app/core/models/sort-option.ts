@@ -138,7 +138,16 @@ export class SortOption {
                                      { 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
                                      ];
 
-
+   categorySortDropDownOptions = [
+                                      { 'name': 'Name (A-Z)', 'value': 'name-ASC' },
+                                      { 'name': 'Name (Z-A)', 'value': 'name-DESC' },
+                                      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+                                      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+                                      { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
+                                      { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' },
+                                      { 'name': 'Count (ASC)', 'value': 'count-ASC' },
+                                      { 'name': 'Count (DESC)', 'value': 'count-DESC' }
+                                  ];
 
 
     numberOfItemsPerPage = [
@@ -158,6 +167,7 @@ export class SortOption {
     public formsSortOption: any = this.manageFormsSortOptions[3];
     public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];
     public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];
+    public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[5];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

@@ -50,5 +50,7 @@ export class Pagination {
 	totalAttendees = false;
 	totalPartnerLeads = false;
 	checkInLeads = false;
+	userListId:number = 0;
+	partnerOrContactEmailId = "";
 	
 }

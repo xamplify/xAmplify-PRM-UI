@@ -135,7 +135,6 @@ export class AddMoreReceiversComponent implements OnInit {
                   }
               }
               contactsPagination = this.pagerService.getPagedItems(contactsPagination, this.campaignContactLists);
-              this.referenceService.loading(this.contactListLoader, false);
               var contactIds = this.contactsPagination.pagedItems.map(function (a) { return a.id; });
               var items = $.grep(this.selectedContactListIds, function (element) {
                   return $.inArray(element, contactIds) !== -1;
@@ -145,6 +144,7 @@ export class AddMoreReceiversComponent implements OnInit {
               } else {
                   this.isHeaderCheckBoxChecked = false;
               }
+			this.referenceService.loading(this.contactListLoader, false);
           },
           (error: any) => {
               this.referenceService.loading(this.contactListLoader, false);

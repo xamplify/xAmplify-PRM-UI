@@ -9,7 +9,6 @@ import {DefaultFormChoice} from '../models/default-form-choice';
 import {FormOption} from '../models/form-option';
 import {Form} from '../models/form';
 import {FormType} from '../models/form-type.enum';
-import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';

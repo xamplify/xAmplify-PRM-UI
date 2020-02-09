@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { User } from '../../core/models/user';
 import { EditUser } from '../../contacts/models/edit-user';
 import { CustomResponse } from '../../common/models/custom-response';
@@ -26,6 +26,7 @@ import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
+import {SendCampaignsComponent} from '../../common/send-campaigns/send-campaigns.component';
 declare var $, Papa, swal, Swal: any;
 
 @Component( {
@@ -70,6 +71,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     selectedAddPartnerOption: number = 5;
     fileTypeError: boolean;
     pager: any = {};
+    
     pagedItems: any[];
     public getGoogleConatacts: any;
     public socialPartners: SocialContact;
@@ -113,7 +115,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isSaveAsList = false;
     isDuplicateEmailId = false;
     isCheckTC = true;
-
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -181,6 +182,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     public placeHolder: string = 'Select Legal Basis Options';
     isValidLegalOptions = true;
     filePreview = false;
+    @ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
+
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -3135,6 +3138,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 }
             });
         }
+    }
+
+    /************Add Campaigns Pop up****************************** */
+    addCampaigns(emailId:string,partnerId:number){
+        this.sendCampaignComponent.openPopUp(this.partnerListId,emailId,partnerId,"Partner");
     }
     
 }

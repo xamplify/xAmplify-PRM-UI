@@ -48,6 +48,7 @@ import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
 import { FlatpickrComponent } from './flatpickr/flatpickr.component';
 import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-analytics/save-geo-location-analytics.component';
+import { SendCampaignsComponent } from './send-campaigns/send-campaigns.component';
 
 
 @NgModule({
@@ -59,7 +60,7 @@ import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-ana
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
         TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
         PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
-        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent],
+        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent, SendCampaignsComponent],
 
 
     exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
@@ -68,7 +69,7 @@ import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-ana
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
 
         ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent]
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent,SendCampaignsComponent]
 
 })
 export class CommonComponentModule { }

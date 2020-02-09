@@ -97,7 +97,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         this.formService.list( pagination ).subscribe(
             ( response: any ) => {
                 const data = response.data;
-                console.log(data);
                 this.statusCode = response.statusCode;
                 if(this.statusCode==200){
                     pagination.totalRecords = data.totalRecords;
