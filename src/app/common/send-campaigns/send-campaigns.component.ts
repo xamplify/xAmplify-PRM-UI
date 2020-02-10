@@ -34,7 +34,7 @@ export class SendCampaignsComponent implements OnInit {
   sendSuccess = false;
   responseMessage = "";
   responseImage = "";
-  responseClass = "success";
+  responseClass = "event-success";
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
     public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -246,7 +246,7 @@ export class SendCampaignsComponent implements OnInit {
       .subscribe(
         data => {
           this.sendSuccess = true;
-          this.responseMessage = "Campaign Shared Successfully";
+          this.responseMessage = "Campaign(s) Shared Successfully";
           this.ngxLoading = false;
           this.resetFields();
         },

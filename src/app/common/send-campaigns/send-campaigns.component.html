@@ -9,8 +9,8 @@
             </div>
             <div class="modal-body">
                 <div class="thank-you-pop" *ngIf="sendSuccess">
-                    <i class="fa fa-check" aria-hidden="true" style="font-size: 30px;"></i>
-                    <h4 [attr.class]="responseClass">{{responseMessage}}</h4>
+                    <i class="fa fa-check" id="font-size" aria-hidden="true"></i>
+                    <h4 class="event-success">{{responseMessage}}</h4>
                 </div>
                 <ng-container *ngIf="!sendSuccess">
                     <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
