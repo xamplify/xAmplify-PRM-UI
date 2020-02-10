@@ -130,12 +130,13 @@ export class SendCampaignsComponent implements OnInit {
     this.pagination.pageIndex = event.page;
     this.listCampaigns(this.pagination);
   }
+  
 
   getAllFilteredResults(pagination: Pagination) {
     this.customResponse = new CustomResponse();
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
-    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedCategoryDropDownOption, this.pagination);
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.selectedShareCampaignDropDownOption, this.pagination);
     this.listCampaigns(this.pagination);
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCampaigns(); } }

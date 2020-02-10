@@ -149,6 +149,15 @@ export class SortOption {
                                       { 'name': 'Count (DESC)', 'value': 'count-DESC' }
                                   ];
 
+      shareCampaignSortDropDownOptions = [
+        { 'name': 'Campaign Name (A-Z)', 'value': 'name-ASC' },
+        { 'name': 'Campaign Name  (Z-A)', 'value': 'name-DESC' },
+        { 'name': 'Type (ASC)', 'value': 'type-ASC' },
+        { 'name': 'Type (DESC)', 'value': 'type-DESC' },
+        { 'name': 'Launched On (ASC)', 'value': 'launchedOn-ASC' },
+        { 'name': 'Launched On (DESC)', 'value': 'launchedOn-DESC' }
+    ];
+
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
@@ -168,6 +177,7 @@ export class SortOption {
     public partnerLandingPageSortOption:any = this.partnerLandingPageSortOptions[3];
     public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[5];
+    public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[5];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

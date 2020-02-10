@@ -22,10 +22,10 @@
                                     <div class="page-toolbar">
                                         <div class="btn-group pull-right">
                                             <div class="inputs float-right" style="display: inline-flex;">
-                                                <div id="left">
-                                                    <select class="form-control" [(ngModel)]="sortOption.selectedCategoryDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                                <div>
+                                                    <select class="form-control" [(ngModel)]="sortOption.selectedShareCampaignDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                     <option
-                                                        *ngFor="let option of sortOption.categorySortDropDownOptions"
+                                                        *ngFor="let option of sortOption.shareCampaignSortDropDownOptions"
                                                         [ngValue]="option">
                                                         {{option.name}}</option>
                                                 </select>
@@ -86,7 +86,7 @@
                             </table>
                         </div>
                         <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)" [hidden]="httpRequestLoader.isLoading">
+                            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)">
                             </app-pagination>
                         </div>
                         <!-- End of 24 -->
