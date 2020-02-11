@@ -85,16 +85,17 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-                            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)">
-                            </app-pagination>
-                        </div>
+
                         <!-- End of 24 -->
                         <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
                             <strong>No Campaigns Found.</strong>
                         </div>
                     </ng-container>
                 </ng-container>
+                <div *ngIf="pagination.pagedItems.length !== 0" class="pg8" [hidden]="httpRequestLoader.isLoading">
+                    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaigns($event)">
+                    </app-pagination>
+                </div>
             </div>
             <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer" *ngIf="!httpRequestLoader.isLoading">

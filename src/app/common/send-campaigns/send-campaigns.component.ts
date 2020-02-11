@@ -109,7 +109,7 @@ export class SendCampaignsComponent implements OnInit {
 
   /*************************Sort********************** */
   sortBy(text: any) {
-    this.sortOption.formsSortOption = text;
+    this.sortOption.selectedShareCampaignDropDownOption = text;
     this.getAllFilteredResults(this.pagination);
   }
 
@@ -120,7 +120,6 @@ export class SendCampaignsComponent implements OnInit {
   }
 
   paginationDropdown(items: any) {
-    this.sortOption.itemsSize = items;
     this.getAllFilteredResults(this.pagination);
   }
 

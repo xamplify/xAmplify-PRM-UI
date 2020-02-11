@@ -134,7 +134,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if(this.pagination.teamMemberAnalytics){
             this.pagination.teamMemberId = this.teamMemberId;
         }
-        alert(this.loggedInUserId);
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
