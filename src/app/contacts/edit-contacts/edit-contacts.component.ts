@@ -181,6 +181,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		{ 'name': 'country', 'value': 'Country' },
 		{ 'name': 'city', 'value': 'City' },
 		{ 'name': 'mobileNumber', 'value': 'Mobile Number' },
+		{ 'name': 'state', 'value': 'State' },
 		/* { 'name': 'notes', 'value': 'Notes' },*/
 	];
 	filterOption = this.filterOptions[0];

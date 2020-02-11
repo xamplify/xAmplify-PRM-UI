@@ -151,6 +151,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         { 'name': 'Country', 'value': 'country' },
         { 'name': 'City', 'value': 'city' },
         { 'name': 'Mobile Number', 'value': 'mobile Number' },
+        { 'name': 'state', 'value': 'State' },
        /* { 'name': 'Notes', 'value': 'notes' },*/
     ];
     filterOption = this.filterOptions[0];
