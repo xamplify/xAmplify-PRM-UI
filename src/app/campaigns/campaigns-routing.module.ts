@@ -24,6 +24,7 @@ export const campaignRoutes: Routes = [
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },
   { path: "manage", component: ManagePublishComponent },
+  { path: "manage/:teamMemberId", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
   { path: ":campaignId/checkin", component: EventCheckInComponent },
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },

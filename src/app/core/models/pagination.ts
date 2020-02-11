@@ -52,5 +52,6 @@ export class Pagination {
 	checkInLeads = false;
 	userListId:number = 0;
 	partnerOrContactEmailId = "";
-	
+	teamMemberAnalytics = false;
+	teamMemberId:number = 0;
 }

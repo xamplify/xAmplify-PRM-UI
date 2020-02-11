@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
@@ -84,9 +84,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
     addWorkflows = false;
     selectedCampaign:any;
+    teamMemberId: number;
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
-        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
+        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
         this.itemsSize = this.numberOfItemsPerPage[0];
@@ -130,6 +131,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     listCampaign(pagination: Pagination) {
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
+        if(this.pagination.teamMemberAnalytics){
+            this.pagination.teamMemberId = this.teamMemberId;
+        }
+        alert(this.loggedInUserId);
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -216,6 +221,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         try {
+			this.teamMemberId = this.route.snapshot.params['teamMemberId'];
+			if(this.teamMemberId!=undefined){
+                this.pagination.teamMemberAnalytics = true;
+            }else{
+                this.pagination.teamMemberAnalytics = false;
+            }
             this.refService.manageRouter = true;
             if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
             else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
