@@ -18,6 +18,7 @@ import { VendorReportsComponent } from "./vendor-reports/vendor-reports.componen
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
 import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-callback/social-contacts-callback.component";
+import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -40,7 +41,8 @@ const routes: Routes = [
   { path: 'admin-report',component:AdminReportComponent},
   { path: 'vendor-request',component:VendorRequestReportComponent},
   { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
-  { path: 'isalesforce-callback',component:SocialContactsCallbackComponent}
+  { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
+  {path:'sso-samlsecurity',component:SamlsecurityComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -206,6 +206,9 @@
 							<li id="lockscreen"><a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i
 									class="icon-lock"></i> Lock Screen
 							</a></li>
+							<li><a *ngIf= "authenticationService.isVendor() || authenticationService.isPartner() || authenticationService.isOrgAdmin()" [routerLink]="['/home/dashboard/sso-samlsecurity']"> <i
+								class="fa fa-cog"></i> Saml Settings
+							</a></li>
 							<li class="divider"></li>
 							<li id="logoutButton" (click)="logout()"><a > <i class="icon-key"></i>
 									Log Out

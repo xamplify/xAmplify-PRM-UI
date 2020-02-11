@@ -35,9 +35,10 @@ import { VendorRequestReportComponent } from './vendor-request-report/vendor-req
 import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import { DemoRequestComponent } from './demo-request/demo-request.component';
 import { DynamicEmailContentComponent } from './dynamic-email-content/dynamic-email-content.component';
-
+import { FormWizardModule } from 'angular2-wizard';
+import { SamlsecurityComponent } from './samlsecurity/samlsecurity.component';
 @NgModule({
-    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
+    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule,FormWizardModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 
@@ -45,7 +46,8 @@ import { DynamicEmailContentComponent } from './dynamic-email-content/dynamic-em
         MarketoAuthenticationComponent,
         VendorRequestReportComponent,
         DemoRequestComponent,
-        DynamicEmailContentComponent
+        DynamicEmailContentComponent,
+        SamlsecurityComponent
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]
