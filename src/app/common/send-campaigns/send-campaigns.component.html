@@ -9,8 +9,16 @@
             </div>
             <div class="modal-body">
                 <div class="thank-you-pop" *ngIf="sendSuccess">
-                    <i class="fa fa-check" id="font-size" aria-hidden="true"></i>
-                    <h4 class="event-success">{{responseMessage}}</h4>
+                    <ng-container *ngIf="statusCode==200">
+                        <i class="fa fa-check" id="font-size-success" aria-hidden="true"></i>
+                        <h4 class="event-success">{{responseMessage}}</h4>
+                    </ng-container>
+                    <ng-container *ngIf="statusCode!=200">
+                        <i class="fa fa-times-circle" id="font-size-error" aria-hidden="true"></i>
+                        <h4 class="event-error">{{responseMessage}}</h4>
+                    </ng-container>
+
+
                 </div>
                 <ng-container *ngIf="!sendSuccess">
                     <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">

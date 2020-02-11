@@ -113,7 +113,12 @@
     color: red;
 }
 
-#font-size {
+#font-size-success {
     font-size: 30px;
     color: green;
+}
+
+#font-size-error {
+    font-size: 30px;
+    color: red;
 }
