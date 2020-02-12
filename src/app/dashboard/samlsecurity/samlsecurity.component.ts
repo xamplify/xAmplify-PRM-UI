@@ -2,19 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { SamlSecurityService } from './samlsecurity.service';
 import { SamlSecurity } from '../models/samlsecurity';
+import { Properties } from 'app/common/models/properties';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 @Component({
   selector: 'app-samlsecurity',
   templateUrl: './samlsecurity.component.html',
   styleUrls: ['./samlsecurity.component.css'],
-  providers: [SamlSecurityService]
+  providers: [SamlSecurityService, Properties]
 })
 export class SamlsecurityComponent implements OnInit {
   emailId: string;
   tabName: string;
   samlSecurityObj: SamlSecurity;
-  
-  constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService) { }
+  customResponse: CustomResponse = new CustomResponse();
+
+  constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService, public properties: Properties) { }
 
   ngOnInit() {
     this.tabName = "tab1";
@@ -37,7 +40,7 @@ export class SamlsecurityComponent implements OnInit {
         this.samlSecurityService.saveSamlSecurity(samlObj).subscribe(response => {
           this.samlSecurityObj = response;
         });
-      }else if((this.samlSecurityObj.id) && (this.samlSecurityObj.acsURL === undefined || this.samlSecurityObj.acsURL === null)){
+      } else if ((this.samlSecurityObj.id) && (this.samlSecurityObj.acsURL === undefined || this.samlSecurityObj.acsURL === null)) {
         this.samlSecurityObj.acsURL = this.authenticationService.REST_URL + "saml/sso/" + this.samlSecurityObj.id;
       }
     } else if (this.tabName === "tab3") {
@@ -48,6 +51,9 @@ export class SamlsecurityComponent implements OnInit {
   onChange(event: any) {
     this.samlSecurityService.uploadMetadataFile(event, this.samlSecurityObj.id).subscribe(response => {
       this.samlSecurityObj = response;
+      this.customResponse = new CustomResponse('SUCCESS', this.properties.UPLOAD_METADATA_TEXT2, true);
+    }, error => {
+      this.customResponse = new CustomResponse('ERROR', "Error in uploading file", true);
     });
   }
 
