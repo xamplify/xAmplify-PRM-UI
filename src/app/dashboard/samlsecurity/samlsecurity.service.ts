@@ -30,7 +30,7 @@ export class SamlSecurityService {
         return this.http.get(url).map(this.extractData).catch(this.handleError);
     }
 
-    uploadMetadataFile(event: any, sId: any):Observable<any> {
+    uploadMetadataFile(event: any, sId: any):Observable<SamlSecurity> {
         let fileList: FileList = event.target.files;
         if (fileList.length > 0) {
             let file: File = fileList[0];
@@ -42,8 +42,8 @@ export class SamlSecurityService {
             let options = new RequestOptions({ headers: headers });
             const url = this.authenticationService.REST_URL + "saml/update?access_token=" + this.authenticationService.access_token;
             return this.http.post(url, formData, options)
-                .map(res => "File uploaded succesfully")
-                .catch(error => Observable.throw(error));                
+                .map(this.extractData)
+                .catch(this.handleError);                
         }
     }
 

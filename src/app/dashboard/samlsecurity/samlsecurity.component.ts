@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { SamlSecurityService } from './samlsecurity.service';
 import { SamlSecurity } from '../models/samlsecurity';
@@ -13,16 +13,12 @@ export class SamlsecurityComponent implements OnInit {
   emailId: string;
   tabName: string;
   samlSecurityObj: SamlSecurity;
-  enableTab3: boolean;
-  @ViewChild('txtConfigFile') txtConfigFile: ElementRef;
-
+  
   constructor(private authenticationService: AuthenticationService, private samlSecurityService: SamlSecurityService) { }
 
   ngOnInit() {
     this.tabName = "tab1";
     this.emailId = this.authenticationService.user.emailId;
-    this.enableTab3 = false;
-    //this.samlSecurityObj = new SamlSecurity();
     this.samlSecurityService.getSamlDetailsByUserName(this.emailId).subscribe(result => {
       this.samlSecurityObj = result;
     });
@@ -33,7 +29,7 @@ export class SamlsecurityComponent implements OnInit {
     if (this.tabName === "tab1") {
       console.log("tab1")
     } else if (this.tabName === "tab2") {
-      if (this.samlSecurityObj.acsURL == undefined || this.samlSecurityObj.acsURL == '') {
+      if (this.samlSecurityObj.id === undefined || this.samlSecurityObj.id === null) {
         let samlObj = {
           emailId: this.emailId,
           companyId: this.authenticationService.user.campaignAccessDto.companyId
@@ -41,6 +37,8 @@ export class SamlsecurityComponent implements OnInit {
         this.samlSecurityService.saveSamlSecurity(samlObj).subscribe(response => {
           this.samlSecurityObj = response;
         });
+      }else if((this.samlSecurityObj.id) && (this.samlSecurityObj.acsURL === undefined || this.samlSecurityObj.acsURL === null)){
+        this.samlSecurityObj.acsURL = this.authenticationService.REST_URL + "saml/sso/" + this.samlSecurityObj.id;
       }
     } else if (this.tabName === "tab3") {
 
@@ -49,7 +47,7 @@ export class SamlsecurityComponent implements OnInit {
 
   onChange(event: any) {
     this.samlSecurityService.uploadMetadataFile(event, this.samlSecurityObj.id).subscribe(response => {
-      this.samlSecurityObj.statusMessage = response;
+      this.samlSecurityObj = response;
     });
   }
 
