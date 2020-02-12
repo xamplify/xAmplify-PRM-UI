@@ -129,6 +129,7 @@ export class FormAnalyticsUtilComponent implements OnInit {
     eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
 
     refreshList() {
+        this.pagination.searchKey = "";
         this.listSubmittedData( this.pagination );
     }
     /************Page************** */
