@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild,Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -28,6 +28,7 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { ConsoleLoggerService } from 'app/error-pages/services/console-logger.service';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -170,8 +171,12 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     allUsersCount: number;
     
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    start: any;
+    pressed: boolean;
+    startX: any;
+    startWidth: any;
 
-    constructor(private router: Router,
+    constructor(public renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
@@ -1329,5 +1334,33 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   setLinkOpened(event){
       this.campaign.linkOpened = event;
   }
+
+  
+
+
+  private onMouseDown(event){
+
+    this.start = event.target;
+    this.pressed = true;
+    this.startX = event.x;
+    this.startWidth = $(this.start).parent().width();
+    this.initResizableColumns();
+  }
+
+  private initResizableColumns() {
+    this.renderer.listenGlobal('body', 'mousemove', (event) => {
+       if(this.pressed) {
+          let width = this.startWidth + (event.x - this.startX);
+          $(this.start).parent().css({'min-width': width, 'max-   width': width});
+          let index = $(this.start).parent().index() + 1;
+          $('#redistibute-campaign-contact-list-table tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
+       }
+    });
+    this.renderer.listenGlobal('body', 'mouseup', (event) => {
+    if(this.pressed) {
+        this.pressed = false;
+    }
+  });
+}
 
 }

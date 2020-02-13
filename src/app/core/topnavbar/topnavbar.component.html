@@ -69,7 +69,7 @@
 					*ngIf="(refService.hasAllAccess()
 										|| authenticationService.module.hasSocialStatusRole
 										|| authenticationService.module.isOrgAdmin
-										|| authenticationService.module.isVendor) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign">
+										|| authenticationService.module.isVendor) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign && !authenticationService.isPartnerTeamMember">
 						<!-- *ngIf="refService.hasCompany" -->
 						<button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs">Update Status</span>
