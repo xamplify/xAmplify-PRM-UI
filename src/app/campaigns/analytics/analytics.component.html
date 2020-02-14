@@ -826,7 +826,9 @@
                           <thead>
                             <tr>
                               <th id="table-header" style="width: 25%;text-align:left">Name</th>
-                              <th id="table-header">Campaign Name</th>
+                              <th id="table-header" *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR'">Campaign Name</th>
+                              <th id="table-header" *ngIf="campaignType === 'VIDEO' || campaignType === 'REGULAR'">URLs Clicked Count</th>
+                              <th id="table-header" *ngIf="campaignType === 'VIDEO'">Time Spent</th>
                               <!-- 	<th style="font-size: 12px;font-weight: 500;" *ngIf="campaignType==='EVENT'">Redistribution Time</th> -->
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">invites</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Email opened
@@ -867,12 +869,20 @@
                                   <app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
                                   <!-- here emailId coming as userMail -->
                                 </td>
-                                <td class="td-chart">
+                                <td class="td-chart" *ngIf="campaignType != 'VIDEO' && campaignType != 'REGULAR'">
                                   <h6 title="{{campaign.campaignName}}">{{item.campaignName | slice: 0: 35}}
                                     <span *ngIf="campaign.campaignName?.length>35">...</span>
                                   </h6>
                                   <h4 *ngIf="item.campaignName==null">-</h4>
                                 </td>
+
+                                <td class="text-center" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
+                                  {{item.urlsClickedCount}}</td>
+
+                                  <td class="text-center" *ngIf="campaignType==='VIDEO'">
+                                    {{item.timeSpent}}</td>
+
+
                                 <!-- 	<td class="text-center" *ngIf="campaignType==='EVENT'">20 August</td> -->
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
                                   {{item.rsvpMap.totalInvities}}</td>

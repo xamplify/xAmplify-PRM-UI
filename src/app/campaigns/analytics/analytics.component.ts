@@ -131,7 +131,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   isOnlyPartner = false;
   isLoadingDownloadList = false;
   actionType = '';
-  colspanValue: number = 5;
+  colspanValue: number = 6;
 
   sortcolumn: string = null;
   sortingOrder: string = null;
@@ -1009,7 +1009,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
               if (data.campaignType === 'EVENT') {
                 this.colspanValue = 10;
               } else {
-                this.colspanValue = 5;
+                this.colspanValue = 6;
               }
             } else {
               this.isNavigatedThroughAnalytics = false;
