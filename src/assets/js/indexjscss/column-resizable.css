@@ -1,0 +1,34 @@
+thead tr th {
+	position: relative;
+}
+
+span.ui-column-resizer {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	width: 24px;
+	height: 100%;
+	padding: 0;
+	cursor: e-resize;
+	border: 1px solid transparent;
+}
+
+.moreipsis {
+	position: relative;
+}
+
+.moreipsis:before {
+	content: '&nbsp;';
+	visibility: hidden;
+}
+
+.moreipsis span {
+	position: absolute;
+	left: 0;
+	right: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

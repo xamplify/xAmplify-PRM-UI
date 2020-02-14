@@ -286,19 +286,16 @@
                                                                 </td>
                                                             </tr>
                                                         </table>
-                                                        <table id="redistibute-campaign-contact-list-table" class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactListPagination.totalRecords > 0">
+                                                        <table  class="table table-bordered no-more-tables dataTable no-footer" id="user_list_tb" role="grid" aria-describedby="user_list_tb_info" *ngIf="contactListPagination.totalRecords > 0">
                                                             <thead>
                                                                 <tr>
                                                                     <td align="center">
                                                                         <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}" />
                                                                     </td>
-
                                                                     <th class="text-center">
-                                                                        <span class="ui-column-resizer" (mousedown)="onMouseDown($event)">
-                                                                    </span>
-                                                                        <span class="gridHeader">List Name</span>
+                                                                   		<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb')"> </span>
+																			<span class="gridHeader">List Name</span>
                                                                     </th>
-
                                                                     <th class="text-center"> Date Uploaded </th>
                                                                     <th class="text-center"> Preview </th>
                                                                 </tr>
