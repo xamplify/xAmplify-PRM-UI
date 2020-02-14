@@ -1228,8 +1228,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           }
       }
 
-
-      contactSearchInputKey(event:any) {if(event.key ==13){this.searchContactList();}}
+ contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
