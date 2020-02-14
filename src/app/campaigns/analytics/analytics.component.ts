@@ -1594,6 +1594,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   listTotalCampaignViews(campaignId: number) {
     try {
+    if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO'){
+    	this.campaignTotalViewsPagination.campaignType = this.campaignType;
+    }
       this.campaignTotalViewsPagination.maxResults = this.campaignReport.emailSentCount;
       this.campaignService.listCampaignViews(campaignId, this.campaignTotalViewsPagination, this.isChannelCampaign, this.isSmsServiceAnalytics)
         .subscribe(
@@ -1713,6 +1716,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         if (this.downloadTypeName === 'campaignViews') {
           object["Campaign Name"] = this.downloadCsvList[i].campaignName;
+          if (this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO' ) {
+        	  object["URLs Clicked Count"] = this.downloadCsvList[i].urlsClickedCount;
+          }
+          if (this.campaignType === 'VIDEO') {
+              object["Email Opened Count"] = this.downloadCsvList[i].emailOpenedCount;
+          }
           if (this.campaignType === 'EVENT') {
             if (this.isChannelCampaign) {
               object["Invites"] = this.downloadCsvList[i].rsvpMap.totalInvities;
