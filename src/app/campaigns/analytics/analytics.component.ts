@@ -131,7 +131,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   isOnlyPartner = false;
   isLoadingDownloadList = false;
   actionType = '';
-  colspanValue: number = 6;
+  colspanValue: number = 7;
 
   sortcolumn: string = null;
   sortingOrder: string = null;
