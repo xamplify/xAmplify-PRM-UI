@@ -715,7 +715,19 @@
                   </div>
 
 
-                  <div class="col-xs-10 col-sm-4" style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
+
+                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;">
+                    <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
+                      <div class="">
+                        <select class="form-control" [(ngModel)]="selectedCampaignSortedOption"
+                        (ngModelChange)="campaignViewSortBy($event)">
+                          <option *ngFor="let sortOption of campaignViewsSortByDropDown" [ngValue]="sortOption">{{sortOption.name}}</option>
+                        </select>
+                      </div>
+                      </div>
+                    </div>
+
+                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                       class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                     <button class="search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -1209,7 +1221,7 @@
                                     {{formDataRow[columnValue]}}
                                   </ng-container>
                                  </td>
-                          
+
                         </ng-container>
                         <td>
                           <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
@@ -1980,7 +1992,7 @@
                             <!-- {{item.time | date: 'short'}} -->
                             <app-timestamp [dateAndTime]="item.time">
                             </app-timestamp>
-                            
+
                           </h6>
                         </span>
 

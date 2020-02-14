@@ -132,6 +132,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   isLoadingDownloadList = false;
   actionType = '';
   colspanValue: number = 5;
+
+  sortcolumn: string = null;
+  sortingOrder: string = null;
+
   sortByDropDown = [
     { 'name': 'Sort By', 'value': '' },
     { 'name': 'Name(A-Z)', 'value': 'name-ASC' },
@@ -140,6 +144,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     { 'name': 'Time(DESC)', 'value': 'time-DESC' }
   ];
   selectedSortedOption: any = this.sortByDropDown[this.sortByDropDown.length - 1];
+  campaignViewsSortByDropDown = [
+    { 'name': 'Sort By', 'value': '' },
+    { 'name': 'URL Clicked Count (ASC)', 'value': 'urls_clicked_count-ASC' },
+    { 'name': 'URL Clicked Count (DESC)', 'value': 'urls_clicked_count-DESC' },
+    { 'name': 'Email Opened Count(ASC)', 'value': 'email_opened_count-ASC' },
+    { 'name': 'Email Opened Count (DESC)', 'value': 'email_opened_count-DESC' }
+  ];
+  selectedCampaignSortedOption: any = this.campaignViewsSortByDropDown[0];
+
   tweets: Array<Tweet> = new Array<Tweet>();
   smsLogs: any;
   smsService: boolean;
@@ -200,6 +213,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   listCampaignViews(campaignId: number, pagination: Pagination) {
     try {
       this.loading = true;
+
+     if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO'){
+        pagination.campaignType = this.campaignType;
+     }
+
+
       this.referenceService.loading(this.httpRequestLoader, true);
 
       if (this.searchKey) {
@@ -1005,6 +1024,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
             } else {
               this.getSmsLogCountByCampaign(this.campaignId);
+            }
+            if (data.campaignType === 'VIDEO') {
+              this.campaignViewsSortByDropDown.push( { 'name': 'Views Count (ASC)', 'value': 'views_count-ASC'});
+              this.campaignViewsSortByDropDown.push( { 'name': 'Views Count (DESC)', 'value': 'views_count-DESC'});
             }
 
             this.campaingContactLists = data.userLists;
@@ -1935,6 +1958,25 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     if (keyCode === 13) {
       this.search();
     }
+  }
+
+  campaignViewSortBy(event: any){
+    this.selectedCampaignSortedOption = event;
+    const sortedValue = this.selectedCampaignSortedOption.value;
+    if ( sortedValue !== '' ) {
+        const options: string[] = sortedValue.split( '-' );
+        this.sortcolumn = options[0];
+        this.sortingOrder = options[1];
+    } else {
+        this.sortcolumn = null;
+        this.sortingOrder = null;
+    }
+
+        this.campaignViewsPagination.pageIndex = 1;
+        this.campaignViewsPagination.sortcolumn = this.sortcolumn;
+        this.campaignViewsPagination.sortingOrder = this.sortingOrder;
+        this.listCampaignViews(this.campaign.campaignId, this.campaignViewsPagination);
+
   }
 
   search() {
