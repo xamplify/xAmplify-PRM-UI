@@ -62,13 +62,14 @@ import { CommonComponentModule } from 'app/common/common.module';
 import { HubSpotService } from './core/services/hubspot.service';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { IntegrationService } from './core/services/integration.service';
+import { ColumnResizableUtilComponent } from './util/column-resizable-util/column-resizable-util.component';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
                ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
-        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent
+        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, ColumnResizableUtilComponent
 
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,

@@ -19,10 +19,12 @@ export class PartnerNotificationComponent implements OnInit {
   hasRedistributeAccess:boolean;
   isPageCampaignSharedByVendor=false;
   isEventCampaignSharedByVendor = false;
+  isSocialCampaignSharedByVendor =false;
   modulesCount:number = 3;
   divClass = "col-xs-12 col-sm-4";
   width = "";
   customResponse:CustomResponse = new CustomResponse();
+    
   constructor( public authenticationService: AuthenticationService,public referenceService:ReferenceService,
                private campaignService: CampaignService,
                private xtremandLogger: XtremandLogger, public router: Router,public httpRequestLoader: HttpRequestLoader) { }
@@ -44,8 +46,10 @@ export class PartnerNotificationComponent implements OnInit {
             .subscribe(
                 data => {
                     this.referenceService.eventCampaignTabAccess = data.event;
+                    this.referenceService.socialCampaignTabAccess = data.social;
                     this.isEventCampaignSharedByVendor = data.event;
                     this.isPageCampaignSharedByVendor = data.landingPageCampaign;
+                    this.isSocialCampaignSharedByVendor = data.social;
                     this.modulesCount = data.campaignTypesCount;
                     if(this.modulesCount==4){
                         this.divClass = "col-lg-3 col-md-3 col-sm-3 col-xs-6";
