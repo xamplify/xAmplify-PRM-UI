@@ -925,7 +925,8 @@
                                     <div class="progress-bar progress-bar-success"
                                       [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar"
                                       [style.width.%]="(item.viewsCount/maxViewsValue)*100">
-                                      <span>{{item.viewsCount}}</span>
+                                      <span ngIf="campaignType !== 'REGULAR'">{{item.viewsCount}}</span>
+                                      <span ngIf="campaignType === 'REGULAR'">{{item.emailOpenedCount}}</span>
                                     </div>
                                   </div>
                                   <ng-container *ngIf="campaignType == 'SOCIAL'">
