@@ -982,7 +982,10 @@ a.disabled {
                       <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked"
                       (change)="checkAllForPartners($event)" id="checkAllExistingContacts" />
                      </td>
-									  	<th class="custom-center" style="width:18%">List Name</th>
+						<th class="custom-center" style="width:18%"> 
+							<span class="ui-column-resizer" (mousedown)="referenceService.onMouseDown($event,'contact-list-table',1)"> </span>
+                            <span class="gridHeader">List Name</span>
+                        </th>
                           <th style="text-align: center;" *ngIf="showContactType">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
@@ -994,9 +997,9 @@ a.disabled {
                           <td class='text-center m0'>
                             <input value="{{contactList.id}}" name="campaignContact[]"  [attr.disabled]="isPreviewEvent? '' : null" type='checkbox' id='{{contactList.id}}' [checked]="parternUserListIds.indexOf(contactList.id)>-1" (click)="$event.stopPropagation();partnerHighlightRow(contactList)" (input)="resetTabClass()">
                           </td>
-                          <td style="text-align:left">
+                          <td style="text-align:left" class="moreipsis">
                             <h5 class='m0 f-w-600 table-color' title="{{contactList.name}}">
-                              <span>{{contactList.name | slice:0:50}}<span *ngIf="contactList.name?.length>50">...</span></span>
+                              <span>{{contactList.name}}</span>
                             </h5>
                           </td>
                           <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container

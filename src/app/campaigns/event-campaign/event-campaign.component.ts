@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, AfterViewChecked, ChangeDetectorRef  } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit, AfterViewChecked, ChangeDetectorRef,Renderer  } from '@angular/core';
 import { Router, ActivatedRoute} from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
 import { ContactService } from '../.././contacts/services/contact.service';
@@ -208,7 +208,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     public hubSpotService: HubSpotService,
     private router: Router, public activatedRoute:ActivatedRoute,
     public properties: Properties, public eventError:EventError, public countryNames: CountryNames,
-    public formService: FormService, private changeDetectorRef: ChangeDetectorRef) {
+    public formService: FormService, private changeDetectorRef: ChangeDetectorRef,private render:Renderer) {
+	this.referenceService.renderer = this.render;
     this.countries = this.referenceService.getCountries();
     this.eventCampaign.campaignLocation.country = ( this.countryNames.countries[0] );
     //this.listEmailTemplates();
