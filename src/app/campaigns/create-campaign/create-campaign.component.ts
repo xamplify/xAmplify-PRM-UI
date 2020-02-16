@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy,ViewChild} from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild,Renderer} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators} from '@angular/forms';
 import { Pagination } from '../../core/models/pagination';
@@ -272,9 +272,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 public campaignService:CampaignService,private contactService:ContactService,
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
-                private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService
+                private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
+				private render:Renderer
             ){
-
+				this.refService.renderer = this.render;
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
                         console.log(data)
