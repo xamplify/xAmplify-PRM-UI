@@ -1947,20 +1947,22 @@ export class ReferenceService {
 	}
 
 
-	public onMouseDown(event: any, tableId: string) {
+	public onMouseDown(event: any, tableId: string,columnPosition:number) {
 		this.start = event.target;
 		this.pressed = true;
 		this.startX = event.x;
 		this.startWidth = $(this.start).parent().width();
-		this.initResizableColumns(tableId);
+		this.initResizableColumns(tableId,columnPosition);
 	}
 
-	public initResizableColumns(tableId: string) {
+	public initResizableColumns(tableId: string,columnPosition:number) {
 		this.renderer.listenGlobal('body', 'mousemove', (event: any) => {
 			if (this.pressed) {
 				let width = this.startWidth + (event.x - this.startX);
 				$(this.start).parent().css({ 'min-width': width, 'max-   width': width });
-				let index = $(this.start).parent().index()+1;
+				let index = $(this.start).parent().index()+columnPosition;
+				console.log(tableId);
+				console.log(index);
 				$('#' + tableId + ' tr td:nth-child(' + index + ')').css({ 'min-width': width, 'max-width': width });
 			}
 		});

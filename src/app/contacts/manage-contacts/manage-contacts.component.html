@@ -246,13 +246,17 @@
 								<section [hidden]="!isListView"
 									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
 									<div class="table-responsive" style="margin-top: 7px">
-										<table class='table tgrid'>
+										<table class='table tgrid' id="partner_contact_list">
 											<thead>
 												<tr>
-													<th class="hidden-xs" colspan="2" style="width: 50%">List
-														Name</th>
+													<th class="hidden-xs" colspan="2" style="width: 50%">
+														<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
+														<span class="gridHeader">List Name</span>
+													</th>
 													<th class="visible-xs" colspan="1" style="width: 50%">List
 														Info</th>
+														
+														
 													<th class="hidden-xs">Created On</th>
 													<th class="text-center hidden-xs">Total
 														{{checkingContactTypeName}}s</th>
@@ -285,11 +289,10 @@
 														
 													</td>
 													<td>
-														
-														<h4 class="ellipsis" title="{{contactList.name}}">
-															{{contactList.name | slice:0:50}} <span
-																*ngIf="contactList.name?.length>50">...</span>
+														<h4 class="moreipsis"  title="{{contactList.name}}">
+															 <span> {{contactList.name}}</span>
 														</h4>
+														
 														<h5 class='m0 ellipsis' title="{{contactList.uploadedBy}}">
 															By <span class='f-w-400'>{{contactList.uploadedBy
 																| slice:0:50}} <span

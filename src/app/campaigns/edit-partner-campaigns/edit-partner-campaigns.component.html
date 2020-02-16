@@ -293,8 +293,8 @@
                                                                         <input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)" id="checkAllExistingContacts" [ngModelOptions]="{standalone: true}" />
                                                                     </td>
                                                                     <th class="text-center">
-                                                                   		<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb')"> </span>
-																			<span class="gridHeader">List Name</span>
+                                                                   		<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
+																		<span class="gridHeader">List Name</span>
                                                                     </th>
                                                                     <th class="text-center"> Date Uploaded </th>
                                                                     <th class="text-center"> Preview </th>

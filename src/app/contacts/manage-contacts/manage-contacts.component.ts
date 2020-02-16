@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit,Renderer } from '@angular/core';
 import { ContactService } from '../services/contact.service';
 import { ContactList } from '../models/contact-list';
 import { Criteria } from '../models/criteria';
@@ -187,8 +187,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
 
     constructor( public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
-        public actionsDescription: ActionsDescription) {
-
+        public actionsDescription: ActionsDescription,private render:Renderer) {
+	this.referenceService.renderer = render;
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
