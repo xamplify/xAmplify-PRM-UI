@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy, EventEmitter, Output, Input,ViewChild} from '@angular/core';
+import { Component, OnInit,OnDestroy, EventEmitter, Output, Input,ViewChild,Renderer} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { EmailTemplate } from '../../email-template/models/email-template';
@@ -156,7 +156,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             private emailTemplateService: EmailTemplateService,
             public callActionSwitch: CallActionSwitch,
             public properties:Properties,public socialService:SocialService,
-            private xtremandLogger: XtremandLogger) {
+            private xtremandLogger: XtremandLogger,private renderer: Renderer) {
+            this.referenceService.renderer = this.renderer;
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
             this.contactListPagination.filterKey = 'isPartnerUserList';

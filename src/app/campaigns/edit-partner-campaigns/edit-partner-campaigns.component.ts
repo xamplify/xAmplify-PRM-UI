@@ -176,7 +176,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     startX: any;
     startWidth: any;
 
-    constructor(public renderer: Renderer,private router: Router,
+    constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
@@ -186,8 +186,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
             public properties:Properties,
-            private xtremandLogger: XtremandLogger,private render:Renderer) {
-			this.referenceService.renderer = render;
+            private xtremandLogger: XtremandLogger) {
+			this.referenceService.renderer = this.renderer;
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
             this.contactListPagination.filterKey = 'isPartnerUserList';

@@ -15,6 +15,10 @@ span.ui-column-resizer {
     border: 1px solid transparent;
 }
 
+.gray {
+    background: lightgrey;
+}
+
 .moreipsis {
     position: relative;
 }
@@ -31,4 +35,8 @@ span.ui-column-resizer {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+#border-bottom-padding {
+    border-bottom: 0px;
 }

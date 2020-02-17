@@ -184,42 +184,47 @@
                         <legend>Selected {{contactType}}:</legend>
                         <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
                         <p *ngIf="contactListPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
-                        <table class="table" [hidden]="contactListPagination.pagedItems.length==0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">List Name</th>
-                                    <th scope="col" class="text-center">Uploaded Date</th>
-                                    <th scope="col" class="text-center">Preview</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <ng-container *ngFor="let userList of contactListPagination.pagedItems; let i = index">
+                        <div class="table-responsive">
+                            <table class="table" [hidden]="contactListPagination.pagedItems.length==0" id="campaign-preview-contact-list">
+                                <thead>
                                     <tr>
-                                        <td title="{{userList.name}}"><b>{{userList.name | slice:0:40}}
-                    <span *ngIf="userList.name?.length>40">..</span>
-                    </b></td>
-                                        <td class="text-center">
-                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="userList.createdDate"> </app-timestamp>
-                                        </td>
-                                        <td class="text-center">
-                                            <a *ngIf="!authenticationService.isOnlyPartner()" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,userList.name)">
-                                                <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
-                                            </a>
-                                            <ng-container *ngIf="authenticationService.isOnlyPartner();">
-                                                <a *ngIf="!campaign.launchedByVendor;else other_content" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,userList.name)">
+                                        <th scope="col">
+                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'campaign-preview-contact-list',1)"> </span>
+                                            <span class="gridHeader">List Name</span>
+                                        </th>
+                                        <th scope="col" class="text-center">Uploaded Date</th>
+                                        <th scope="col" class="text-center">Preview</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let userList of contactListPagination.pagedItems; let i = index">
+                                        <tr>
+                                            <td class="moreipsis" title="{{userList.name}}">
+                                                <b><span>{{userList.name}}</span> </b>
+                                            </td>
+                                            <td class="text-center">
+                                                <app-timestamp [isOnlyDate]="true" [dateAndTime]="userList.createdDate"> </app-timestamp>
+                                            </td>
+                                            <td class="text-center">
+                                                <a *ngIf="!authenticationService.isOnlyPartner()" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,userList.name)">
                                                     <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                                 </a>
-                                                <ng-template #other_content>
-                                                    <a>
-                                                        <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;opacity:0.7" title="" data-original-title="Preview"></i>
+                                                <ng-container *ngIf="authenticationService.isOnlyPartner();">
+                                                    <a *ngIf="!campaign.launchedByVendor;else other_content" (click)="$event.stopPropagation();loadUsers(contactListPagination.pagedItems[i].id,contactsUsersPagination,userList.name)">
+                                                        <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;" title="" data-original-title="Preview"></i>
                                                     </a>
-                                                </ng-template>
-                                            </ng-container>
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                            </tbody>
-                        </table>
+                                                    <ng-template #other_content>
+                                                        <a>
+                                                            <i class="fa fa-eye" style="color: #008fd5;padding-top: 3px; font-size: 20px;opacity:0.7" title="" data-original-title="Preview"></i>
+                                                        </a>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
                         <div *ngIf="contactListPagination.totalRecords > 12" style="background:white">
                             <div *ngIf="contactListPagination.pagedItems.length !== 0">
                                 <app-pagination class="pg8" [pagination]="contactListPagination" [type]="'contactslists'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>

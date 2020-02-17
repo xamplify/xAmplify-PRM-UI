@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Renderer } from '@angular/core';
 import { Campaign } from '../models/campaign';
 import { CampaignService } from '../services/campaign.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
@@ -62,7 +62,9 @@ export class AddMoreReceiversComponent implements OnInit {
     previewContactListId : number;
     campaign:Campaign = new Campaign();
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
-          public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties) { }
+          public pagination: Pagination, private pagerService: PagerService,public authenticationService: AuthenticationService,public referenceService:ReferenceService,private contactService:ContactService,public properties:Properties,private renderer:Renderer) {
+              this.referenceService.renderer = this.renderer;
+           }
 
   ngOnInit() {
   }
