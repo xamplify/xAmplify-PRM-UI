@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild,Renderer } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -145,7 +145,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
         private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-            PagerService) {
+            PagerService,private renderer:Renderer) {
+                this.referenceService.renderer = this.renderer;
         //   this.customConstructorCall();
     }
     cropperSettings() {
@@ -1676,30 +1677,34 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
 
-    getCategoryById(id: number) {
-        this.isAddCategory = false;
-        this.categoyButtonSubmitText = "Update";
-        $('#addCategoryModalPopup').modal('show');
-        this.referenceService.startLoader(this.addCategoryLoader);
-        this.categoryModalTitle = 'Edit Category Details';
-        this.listExistingCategoryNames();
-        this.userService.getCategoryById(id)
-            .subscribe(
-                (result: any) => {
-                    if (result.statusCode == 200) {
-                        this.category = result.data;
-                        this.existingCategoryName = $.trim(this.category.name.toLowerCase());
-                        this.category.isValid = true;
-                    } else {
+    getCategoryById(category:Category) {
+        if(!category.defaultCategory){
+            let id = category.id;
+            this.isAddCategory = false;
+            this.categoyButtonSubmitText = "Update";
+            $('#addCategoryModalPopup').modal('show');
+            this.referenceService.startLoader(this.addCategoryLoader);
+            this.categoryModalTitle = 'Edit Category Details';
+            this.listExistingCategoryNames();
+            this.userService.getCategoryById(id)
+                .subscribe(
+                    (result: any) => {
+                        if (result.statusCode == 200) {
+                            this.category = result.data;
+                            this.existingCategoryName = $.trim(this.category.name.toLowerCase());
+                            this.category.isValid = true;
+                        } else {
+                            $('#addCategoryModalPopup').modal('hide');
+                            this.referenceService.showSweetAlertErrorMessage(result.message);
+                        }
+                        this.referenceService.stopLoader(this.addCategoryLoader);
+                    },
+                    (error: string) => {
                         $('#addCategoryModalPopup').modal('hide');
-                        this.referenceService.showSweetAlertErrorMessage(result.message);
-                    }
-                    this.referenceService.stopLoader(this.addCategoryLoader);
-                },
-                (error: string) => {
-                    $('#addCategoryModalPopup').modal('hide');
-                    this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-                });
+                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                    });
+        }
+        
     }
 
 

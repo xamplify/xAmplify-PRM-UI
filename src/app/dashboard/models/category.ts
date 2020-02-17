@@ -8,4 +8,5 @@ export class Category {
     count:number;
     idToMoveItems:number;
     isMoveAndDelete = false;
+    defaultCategory = false;
 }

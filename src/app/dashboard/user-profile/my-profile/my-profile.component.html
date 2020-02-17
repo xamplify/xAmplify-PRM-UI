@@ -280,7 +280,7 @@
                                             <div class="form-group">
                                                 <label class="control-label">Last Name</label>
                                                 <!-- <span class="star"> *</span> -->
-                                                <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName">
+                                                <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
                                                 <div *ngIf="formErrors.lastName" class="alert alert-danger">
                                                     {{ formErrors.lastName }}</div>
                                             </div>
@@ -770,10 +770,13 @@
                                         <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
                                         <ng-container *ngIf="!httpRequestLoader.isLoading">
                                             <div class="table-responsive">
-                                                <table class='table tgrid table-hover table-sm' *ngIf="categoryPagination.pagedItems?.length>0">
+                                                <table class='table tgrid table-hover table-sm' id="category-list" *ngIf="categoryPagination.pagedItems?.length>0">
                                                     <thead>
                                                         <tr>
-                                                            <th class="text-center" colspan="2" style="width: 35%" id="border-bottom">Category</th>
+                                                            <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
+                                                                <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'category-list',2)"> </span>
+                                                                <span class="gridHeader">Category</span>
+                                                            </th>
                                                             <th class="text-center" id="border-bottom">Created On</th>
                                                             <th class="text-center" id="border-bottom">Items Count</th>
                                                             <th class="text-center float-right" id="border-bottom">Actions</th>
@@ -781,18 +784,15 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr *ngFor="let category of categoryPagination.pagedItems ;let i =index" id="CategoryList_{{category.id}}">
-                                                            <td>
+                                                            <td class="custom-icon-width">
                                                                 <i class="{{category.icon}}" aria-hidden="true" id="fa-custom-width"></i>
                                                             </td>
                                                             <td>
-                                                                <h4 class="ellipsis mt5 mb5 f-w-600" title="{{category.name}}">
-                                                                    {{category.name | slice:0:25}} <span *ngIf="category.name?.length>25">...</span>
+                                                                <h4 class="moreipsis" title="{{category.name}}">
+                                                                    <span>{{category.name}}</span>
                                                                 </h4>
-                                                                <h6 style="display: table">
-                                                                    Created By <b>{{category.createdBy}}</b>
-                                                                </h6>
-                                                                <h6>
-                                                                    From <b>{{category.companyName}}</b>
+                                                                <h6 class="moreipsis">
+                                                                    <span> Created By <b>{{category.createdBy}}</b></span>
                                                                 </h6>
                                                             </td>
                                                             <td class="text-center">
@@ -805,12 +805,25 @@
                                                             </td>
                                                             <td>
                                                                 <div class="actions-block override-actions">
-                                                                    <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getCategoryById(category.id)">
-                                                                        <i class="fa fa-pencil-square-o"></i>
-                                                                    </a>
-                                                                    <a id="template-delete" (click)="confirmDeleteCategory(category)" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                                        <i class="fa fa-trash-o"></i>
-                                                                    </a>
+                                                                    <ng-container *ngIf="category.defaultCategory">
+                                                                        <a data-placement="top" class="disabled-event" title="Default Category Can't Be Edited">
+                                                                            <i class="fa fa-pencil-square-o disabled-event"></i>
+                                                                        </a>
+                                                                        <a id="template-delete" class="disabled-event" data-placement="top" title="Default Category Can't Be Deleted">
+                                                                            <i class="fa fa-trash-o disabled-event"></i>
+                                                                        </a>
+                                                                    </ng-container>
+
+                                                                    <ng-container *ngIf="!category.defaultCategory">
+                                                                        <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getCategoryById(category)">
+                                                                            <i class="fa fa-pencil-square-o"></i>
+                                                                        </a>
+                                                                        <a id="template-delete" (click)="confirmDeleteCategory(category)" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                                            <i class="fa fa-trash-o"></i>
+                                                                        </a>
+                                                                    </ng-container>
+
+
                                                                 </div>
                                                             </td>
                                                         </tr>

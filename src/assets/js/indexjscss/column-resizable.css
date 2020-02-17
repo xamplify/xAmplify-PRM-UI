@@ -40,3 +40,11 @@ span.ui-column-resizer {
 #border-bottom-padding {
     border-bottom: 0px;
 }
+
+.disabled-event {
+    cursor: not-allowed;
+}
+
+.custom-icon-width {
+    width: 10%;
+}
