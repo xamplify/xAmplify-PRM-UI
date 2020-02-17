@@ -939,89 +939,97 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
 
     getEmailTemplatePreview(campaign: Campaign) {
         let emailTemplate = campaign.emailTemplate;
-        this.ngxloading = true;
-        let userId = 0;
-        if(this.campaign.nurtureCampaign){
-            userId = this.campaign.parentCampaignUserId;
-        }else{
-            if(this.previewCampaignType ==='EVENT'){
-                userId =  this.campaign.userDTO.id;
-            }else{
-                userId =  this.campaign.userId;
-            }
-        }
-        if(userId!=undefined){
-            this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
-                    ( data: any ) => {
-                        let body = emailTemplate.body;
-                        let self  =this;
-                        if(this.campaign.nurtureCampaign){
-                            body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
-                            $.each( data, function( index, value ) {
-                                body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
-                            } );
-                            body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
-                        }else{
-                            $.each(data,function(index,value){
-                                body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
-                            });
-                            body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
-                        }
-                        /*if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
-                            body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
-                        }*/
-                        if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
-                            body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
-                        }
-                        let emailTemplateName = emailTemplate.name;
-                        if (emailTemplateName.length > 50) {
-                            emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-                        }
-                        $("#email-template-content").empty();
-                        $("#email-template-title").empty();
-                        $("#email-template-title").append(emailTemplateName);
-                        $('#email-template-title').prop('title', emailTemplate.name);
-                        let gifPath = "";
-                        if(this.campaignType.includes('VIDEO')){
-                            gifPath = this.campaign.campaignVideoFile.gifImagePath;
-                        }
-                        
-                        if(this.campaignType.includes('EVENT')){
-                            this.referenceService.campaignType = "EVENT";
-                            this.referenceService.eventCampaignId = this.campaign.userDTO.id;
-                        }
-                        
-                        let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
-                        $("#email-template-content").append(updatedBody);
-                        $('.modal .modal-body').css('overflow-y', 'auto');
-                        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-                        $("#email_template_preivew").modal('show');
-                        this.ngxloading = false;
-                    },
-                    error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+userId+")", error); },
-                    () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
-        }else{
-            let body = emailTemplate.body;
-            let emailTemplateName = emailTemplate.name;
-            if (emailTemplateName.length > 50) {
-                emailTemplateName = emailTemplateName.substring(0, 50) + "...";
-            }
-            $("#email-template-content").empty();
-            $("#email-template-title").empty();
-            $("#email-template-title").append(emailTemplateName);
-            $('#email-template-title').prop('title', emailTemplate.name);
-            let gifPath = "";
-            if(this.campaignType.includes('VIDEO')){
-                gifPath = this.campaign.campaignVideoFile.gifImagePath;
-            }
-            let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
-            $("#email-template-content").append(updatedBody);
-            $('.modal .modal-body').css('overflow-y', 'auto');
-            $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
-            $("#email_template_preivew").modal('show');
-            this.ngxloading = false;
-        }
+       this.showEmailTemplate(campaign,emailTemplate);
+      
     }
+
+    showEmailTemplate(campaign:Campaign,emailTemplate:EmailTemplate){
+      this.ngxloading = true;
+      let userId = 0;
+      if(this.campaign.nurtureCampaign){
+          userId = this.campaign.parentCampaignUserId;
+      }else{
+          if(this.previewCampaignType ==='EVENT'){
+              userId =  this.campaign.userDTO.id;
+          }else{
+              userId =  this.campaign.userId;
+          }
+      }
+      if(userId!=undefined){
+          this.emailTemplateService.getAllCompanyProfileImages(userId).subscribe(
+                  ( data: any ) => {
+                      let body = emailTemplate.body;
+                      let self  =this;
+                      if(this.campaign.nurtureCampaign){
+                          body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
+                          $.each( data, function( index, value ) {
+                              body = body.replace( value, self.authenticationService.MEDIA_URL + self.campaign.companyLogo );
+                          } );
+                          body = body.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.campaign.companyLogo );
+                      }else{
+                          $.each(data,function(index,value){
+                              body = body.replace(value,self.authenticationService.MEDIA_URL + self.referenceService.companyProfileImage);
+                          });
+                          body = body.replace("https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage);
+                      }
+                      /*if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                          body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                      }*/
+                      if(!this.campaign.channelCampaign && !this.campaign.nurtureCampaign){
+                          body = body.replace(this.senderMergeTag.aboutUsGlobal,"");
+                      }
+                      let emailTemplateName = emailTemplate.name;
+                      if (emailTemplateName.length > 50) {
+                          emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+                      }
+                      $("#email-template-content").empty();
+                      $("#email-template-title").empty();
+                      $("#email-template-title").append(emailTemplateName);
+                      $('#email-template-title').prop('title', emailTemplate.name);
+                      let gifPath = "";
+                      if(this.campaignType.includes('VIDEO')){
+                          gifPath = this.campaign.campaignVideoFile.gifImagePath;
+                      }
+                      
+                      if(this.campaignType.includes('EVENT')){
+                          this.referenceService.campaignType = "EVENT";
+                          this.referenceService.eventCampaignId = this.campaign.userDTO.id;
+                      }
+                      
+                      let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
+                      $("#email-template-content").append(updatedBody);
+                      $('.modal .modal-body').css('overflow-y', 'auto');
+                      $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+                      $("#email_template_preivew").modal('show');
+                      this.ngxloading = false;
+                  },
+                  error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+userId+")", error); },
+                  () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()"));
+      }else{
+          let body = emailTemplate.body;
+          let emailTemplateName = emailTemplate.name;
+          if (emailTemplateName.length > 50) {
+              emailTemplateName = emailTemplateName.substring(0, 50) + "...";
+          }
+          $("#email-template-content").empty();
+          $("#email-template-title").empty();
+          $("#email-template-title").append(emailTemplateName);
+          $('#email-template-title').prop('title', emailTemplate.name);
+          let gifPath = "";
+          if(this.campaignType.includes('VIDEO')){
+              gifPath = this.campaign.campaignVideoFile.gifImagePath;
+          }
+          let updatedBody = this.referenceService.showEmailTemplatePreview(this.campaign, this.campaignType, gifPath, body);
+          $("#email-template-content").append(updatedBody);
+          $('.modal .modal-body').css('overflow-y', 'auto');
+          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+          $("#email_template_preivew").modal('show');
+          this.ngxloading = false;
+      }
+    }
+
+    
+
     ngOnDestroy(){
       $('#usersModal').modal('hide');
       $("#email_template_preivew").modal('hide');
