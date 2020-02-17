@@ -716,7 +716,7 @@
 
 
 
-                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;">
+                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-left:0px;" *ngIf="campaignType==='VIDEO' || campaignType==='REGULAR'">
                     <div class="btn-group pull-right" style="cursor:pointer; color: #7d8c98">
                       <div class="">
                         <select class="form-control" [(ngModel)]="selectedCampaignSortedOption"
@@ -727,7 +727,8 @@
                       </div>
                     </div>
 
-                  <div class="col-xs-5 col-sm-2" style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
+                  <div class="col-xs-5" [ngClass]="{'col-sm-4': campaignType !== 'VIDEO' && campaignType !== 'REGULAR', 'col-sm-2': campaignType === 'VIDEO' || campaignType === 'REGULAR' }" 
+                  style="margin-top: -7px;padding-right: 0px;padding-left:0px;">
                     <input type="text" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}"
                       class="form-control" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
                     <button class="search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()">
@@ -921,14 +922,15 @@
                                   </h6>
                                 </td>
                                 <td class="text-center" *ngIf="campaignType==='VIDEO'">
-                                      {{item.emailOpenedCount}}</td>
+                                      {{item.viewsCount}}</td>
                                 
                                 <td class="td-chart" *ngIf="campaignType!=='EVENT'">
                                   <div class="progress" *ngIf="campaignType !== 'SOCIAL'">
                                     <div class="progress-bar progress-bar-success"
                                       [ngClass]="{'special-progress-bar' : item.viewsCount === 0 }" role="progressbar"
                                       [style.width.%]="(item.viewsCount/maxViewsValue)*100">
-                                      <span *ngIf="campaignType !== 'REGULAR'">{{item.viewsCount}}</span>
+                                      <span *ngIf="campaignType !== 'REGULAR' && campaignType !== 'VIDEO'">{{item.viewsCount}}</span>
+                                       <span *ngIf="campaignType === 'VIDEO'">{{item.emailOpenedCount}}</span>
                                       <span *ngIf="campaignType === 'REGULAR'">{{item.emailOpenedCount}}</span>
                                     </div>
                                   </div>
