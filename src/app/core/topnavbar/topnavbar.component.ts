@@ -262,7 +262,11 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       this.loading = true;
       this.isError = false;
       this.refService.onAddingEmailIds(this.emailIds);
-      this.vendoorInvitation.emailIds = this.emailIds;
+		let self = this;
+	$.each(this.emailIds,function(_index:number,value:any){
+		let emailId = value.value;
+		self.vendoorInvitation.emailIds.push(emailId);
+	});
      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
         .subscribe(
