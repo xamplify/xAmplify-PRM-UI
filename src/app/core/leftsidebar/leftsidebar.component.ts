@@ -8,6 +8,7 @@ import { DashboardService } from '../../dashboard/dashboard.service';
 import { Pagination } from '../models/pagination';
 import { UserService } from '../services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import {UtilService} from '../../core/services/util.service';
 declare var window: any;
 
 @Component( {
@@ -33,9 +34,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     formAccess = false;
     forms: any;
     landingPages:any;
+    isLoggedInAsTeamMember = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger ) {
-        console.log( authService.getUserId() );
+        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService ) {
+        this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
         this.updateLeftSideBar( location );
     }
 

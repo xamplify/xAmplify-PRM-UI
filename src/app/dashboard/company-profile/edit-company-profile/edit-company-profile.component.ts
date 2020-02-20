@@ -466,7 +466,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
                             let module = self.authenticationService.module;
-                            
                             self.router.navigate(["/home/dashboard/welcome"]);
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();
@@ -485,42 +484,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
                             self.homeComponent.getTeamMembersDetails();
-                            
-                            
-                       /*     if (self.isOnlyPartner) {
-                                self.router.navigate(["/home/dashboard"]);
-                            } else {
-                                if (self.isVendorRole) {
-                                    module.isVendor = true;
-                                } else {
-                                    module.isOrgAdmin = true;
-                                    module.isContact = true;
-                                    module.isPartner = true;
-                                    module.isEmailTemplate = true;
-                                    module.isCampaign = true;
-                                    module.isStats = true;
-                                    module.hasVideoRole = true;
-                                    module.hasSocialStatusRole = true;
-                                }
-
-                                self.router.navigate(["/home/dashboard/welcome"]);
-                                self.processor.set(self.processor);
-                                self.saveVideoBrandLog();
-                                const currentUser = localStorage.getItem('currentUser');
-                                const userToken = {
-                                    'userName': JSON.parse(currentUser)['userName'],
-                                    'userId': JSON.parse(currentUser)['userId'],
-                                    'accessToken': JSON.parse(currentUser)['accessToken'],
-                                    'refreshToken': JSON.parse(currentUser)['refreshToken'],
-                                    'expiresIn': JSON.parse(currentUser)['expiresIn'],
-                                    'hasCompany': self.authenticationService.user.hasCompany,
-                                    'roles': JSON.parse(currentUser)['roles']
-                                };
-                                localStorage.setItem('currentUser', JSON.stringify(userToken));
-                                self.homeComponent.getVideoDefaultSettings();
-                                self.homeComponent.getTeamMembersDetails();
-                            }*/
-
                         }, 3000);
                     },
                     error => { this.ngxloading = false;

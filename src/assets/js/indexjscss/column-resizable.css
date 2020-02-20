@@ -48,3 +48,7 @@ span.ui-column-resizer {
 .custom-icon-width {
     width: 10%;
 }
+
+#right {
+    float: right;
+}

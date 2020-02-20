@@ -14,8 +14,8 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from "app/core/services/user.service";
-
-declare var $: any;
+import { UtilService } from '../../core/services/util.service';
+declare var $, swal: any;
 
 @Component({
 	selector: 'app-table-editable',
@@ -69,13 +69,27 @@ export class AddTeamMembersComponent implements OnInit {
 	contactAccess: boolean = false;
 	isOnlyPartner: boolean = false;
 	ngxLoading: boolean;
+	isLoggedInAsTeamMember = false;
+	hasAccessToUpdate = false;
+	isOrgAdmin: boolean;
 	/**********Constructor**********/
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
-		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router) {
+		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router, public utilService: UtilService) {
 		this.team = new TeamMember();
 		this.userId = this.authenticationService.getUserId();
 		this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+		this.isOrgAdmin = this.authenticationService.isOrgAdmin();
+		if(this.isLoggedInAsTeamMember){
+			if(this.isOrgAdmin|| this.authenticationService.isVendorPartner() || this.authenticationService.isVendor()){
+				this.hasAccessToUpdate = true;
+			}else{
+				this.hasAccessToUpdate = false;
+			}
+		}else{
+			this.hasAccessToUpdate = true;
+		}
 	}
 
 	downloadEmptyCsv() {
@@ -473,7 +487,7 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 
 	spliceArray(arr: any, emailId: string) {
-		arr = $.grep(arr, function(data, index) {
+		arr = $.grep(arr, function (data, index) {
 			return data.emailId != emailId
 		});
 		return arr;
@@ -620,7 +634,7 @@ export class AddTeamMembersComponent implements OnInit {
 				}
 			}
 			let self = this;
-			reader.onerror = function() {
+			reader.onerror = function () {
 				self.showErrorMessageDiv('Unable to read the file');
 				self.isUploadCsv = false;
 				self.isAddTeamMember = false;
@@ -657,7 +671,7 @@ export class AddTeamMembersComponent implements OnInit {
 		this.validateCsvData();
 		if (this.csvErrors.length > 0) {
 			$("#csv-error-div").show();
-			setTimeout(function() { $("#csv-error-div").hide(500); }, 7000);
+			setTimeout(function () { $("#csv-error-div").hide(500); }, 7000);
 			this.fileReset();
 			this.isUploadCsv = false;
 			this.isAddTeamMember = false;
@@ -676,7 +690,7 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 
 	validateCsvData() {
-		let names = this.csvRecords.map(function(a) { return a[0].split(',')[0] });
+		let names = this.csvRecords.map(function (a) { return a[0].split(',')[0] });
 		let duplicateEmailIds = this.referenceService.returnDuplicates(names);
 		this.teamMembers = [];
 		if (duplicateEmailIds.length == 0) {
@@ -801,10 +815,10 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 
 	getEnabledOrgAdminsCount() {
-		let enabledOrgAdmin = this.teamMembersList.map(function(a) { return a.orgAdmin; });
+		let enabledOrgAdmin = this.teamMembersList.map(function (a) { return a.orgAdmin; });
 		this.logger.log(this.teamMembersList);
 		var counts = {};
-		$.each(enabledOrgAdmin, function(key, value) {
+		$.each(enabledOrgAdmin, function (key, value) {
 			if (!counts.hasOwnProperty(value)) {
 				counts[value] = 1;
 			} else {
@@ -855,7 +869,7 @@ export class AddTeamMembersComponent implements OnInit {
 
 	setDropDownData(data: any) {
 		let self = this;
-		$.each(data, function(index, value) {
+		$.each(data, function (index, value) {
 			let emailId = data[index].emailId;
 			let id = data[index].id;
 			let obj = { 'id': id, 'emailId': emailId };
@@ -863,8 +877,51 @@ export class AddTeamMembersComponent implements OnInit {
 		});
 	}
 
-	goToCampaignAnalytics(teamMemberId:number) {
+	goToCampaignAnalytics(teamMemberId: number) {
 		this.loading = true;
 		this.router.navigate(['/home/campaigns/manage/' + teamMemberId])
+	}
+
+	loginAs(teamMember: TeamMember) {
+		this.loginAsTeamMember(teamMember.emailId,false);
+
+	}
+
+	loginAsTeamMember(emailId:string,isLoggedInAsAdmin:boolean) {
+		this.loading = true;
+		this.authenticationService.getUserByUserName(emailId)
+			.subscribe(
+				response => {
+					if(isLoggedInAsAdmin){
+						localStorage.removeItem('adminId');
+						localStorage.removeItem('adminEmailId');
+						this.isLoggedInAsTeamMember = false;
+					}else{
+						let adminId = JSON.parse(localStorage.getItem('adminId'));
+						if (adminId == null) {
+							localStorage.adminId = JSON.stringify(this.userId);
+							localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
+						}
+					}
+					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+					let self = this;
+					setTimeout(function () {
+						self.router.navigate(['home/dashboard/'])
+						.then(() => {
+							window.location.reload();
+						})
+					}, 500);
+				},
+				(error: any) => {
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+				},
+				() => this.logger.info('Finished getRolesByTeamMemberId()')
+			);
+	}
+
+	logoutAsTeamMember(){
+		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+		this.loginAsTeamMember(adminEmailId,true);
 	}
 }

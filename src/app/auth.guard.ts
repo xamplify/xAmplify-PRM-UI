@@ -3,6 +3,7 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanAc
 import { AuthenticationService } from './core/services/authentication.service';
 import { Roles } from './core/models/roles';
 import { ReferenceService } from './core/services/reference.service';
+import {UtilService} from './core/services/util.service';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
     roles: Roles = new Roles();
@@ -19,7 +20,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     opportunityBaseUrl = 'deals';
     formBaseUrl = 'forms';
     landingPagesUrl = 'pages';
-    constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService ) {  }
+    constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
         return this.checkLogin( url );
@@ -47,7 +48,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             else if(!this.authenticationService.user.hasCompany) {
               if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
                 return true;
-              } else { this.goToAccessDenied();  }
+              } else { this.goToAccessDenied(url);  }
             }else if(url.includes("/home/design/add")){
                 return true;
             }
@@ -58,7 +59,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                     if(this.authenticationService.user.hasCompany){
                         return true;
                     }else{
-                        this.goToAccessDenied();
+                        this.goToAccessDenied(url);
                     }
                 }else{
                     return true;
@@ -205,7 +206,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 console.log(campaignAccessDto);
                 console.log("hasFormAcess:-"+hasFormAccess);
                 console.log("hasRole:-"+hasFormAccess);
-                return this.goToAccessDenied();
+                return this.goToAccessDenied(url);
             }
         }
         else if(urlType==this.landingPagesUrl){
@@ -223,11 +224,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
                 return true;
             }else{
-                console.log(campaignAccessDto);
-                console.log("hasLandingPageAccess:-"+hasLandingPageAccess);
-                console.log("hasRole:-"+hasRole);
-                console.log("hasPartnerLandingPageAccess:-"+hasPartnerLandingPageAccess);
-                return this.goToAccessDenied();
+                return this.goToAccessDenied(url);
             }
         
         }
@@ -240,13 +237,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         else{
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1 || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
-
-            // if(url.search('/twitter') || url.search('/rss'))
-            //     return true;
+            
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{
-                return this.goToAccessDenied();
+                return this.goToAccessDenied(url);
             }
         }
       }catch(error){console.log('error'+error); }
@@ -258,7 +253,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 && url.indexOf("/"+this.contactBaseUrl+"/")< 0){
             return true;
         }else{
-            return this.goToAccessDenied();
+            return this.goToAccessDenied(url);
         }
       }catch(error){ console.log('error'+error);}
     }
@@ -270,13 +265,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                       || url.includes('/home/partners/manage')))){
                 return true;
       }else{
-                return this.goToAccessDenied();
+                return this.goToAccessDenied(url);
       }
     }catch(error){ console.log('error'+error);}
     }
 
-    goToAccessDenied():boolean{
-        this.router.navigate( ['/access-denied'] );
-        return false;
+    goToAccessDenied(url):boolean{
+        if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember())){
+            this.router.navigate( ['/access-denied'] );
+            return false;
+        }else{
+            return true;
+        }
     }
  }

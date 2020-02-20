@@ -55,8 +55,6 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if(userName!=undefined){
-       // this.connectToWebSocket();
-        
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
             this.refService.topNavbarUserService = true;
             this.utilService.topnavBareLoading = true;

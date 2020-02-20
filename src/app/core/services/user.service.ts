@@ -179,6 +179,12 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    getTeamMemberRoles(userId:number){
+        return this.http.get( this.URL+ "admin/getTeamMemberRoles/" + userId + "?access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
     getHomeRoles(uRl){
         const url = this.URL + uRl;
         return this.http.get( url,'' )
