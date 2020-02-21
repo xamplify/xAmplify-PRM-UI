@@ -170,10 +170,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.closeNotifyParent = new EventEmitter<any>();
         } 
      getCampaignById() {
-      // if(this.previewCampaignType === 'EVENT'){ this.campaign = new EventCampaign();}
-      // else { this.campaign = new Campaign(); }
-        const obj = { 'campaignId': this.previewCampaignId } // , this.previewCampaignType
-        this.campaignService.getPreviewCampaignById( obj, this.previewCampaignType)
+        const obj = { 'campaignId': this.previewCampaignId };
+        if(this.previewCampaignId>0){
+          this.campaignService.getPreviewCampaignById( obj, this.previewCampaignType)
           .subscribe(
             data => {
                 if(this.previewCampaignType === 'EVENT') { this.setEventCampaignData(data.data); }
@@ -204,6 +203,10 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
             this.referenceService.loadingPreview = false;
             $('#myModal').modal('show');
           });
+        }else{
+            this.referenceService.showSweetAlertErrorMessage("Something went wrong.Please try after sometime");
+        }
+        
     }
     setCampaignData(result){
         this.campaign = result;
