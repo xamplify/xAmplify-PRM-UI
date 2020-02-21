@@ -277,13 +277,17 @@
                                 <ng-container *ngFor="let teamMember of teamMembersList;let i=index">
                                     <tr id="list-team-member-{{i}}" [class.disabled]="authenticationService.isSuperAdmin()">
                                         <td>
-                                            <button *ngIf="teamMember.status.toLocaleString()=='APPORVE'" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
-                                                <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
-                                            </button>
+                                            <ng-container *ngIf="loginAsTeamMemberAccess">
+                                                <button *ngIf="teamMember.status.toLocaleString()=='APPORVE'" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
+                                                    <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
+                                                </button>
 
-                                            <button *ngIf="teamMember.status.toLocaleString()!='APPORVE'" class="btn btn-default btn-xs fif inactive" title="Can't login for inactive team member">
-                                                <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
-                                            </button>
+                                                <button *ngIf="teamMember.status.toLocaleString()!='APPORVE'" class="btn btn-default btn-xs fif inactive" title="Can't login for inactive team member">
+                                                    <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
+                                                </button>
+
+                                            </ng-container>
+
                                             <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
                                             </app-user-info>
                                         </td>

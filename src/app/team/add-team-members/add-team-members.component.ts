@@ -74,6 +74,7 @@ export class AddTeamMembersComponent implements OnInit {
 	isOrgAdmin: boolean;
 	deletePopupLoader = false;
 	addModalPopUpLoader = false;
+	loginAsTeamMemberAccess: false;
 	/**********Constructor**********/
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -162,6 +163,7 @@ export class AddTeamMembersComponent implements OnInit {
 					data => {
 						this.teamMembersList = data.teamMembers;
 						this.secondOrgAdminId = data.secondOrgAdminId;
+						this.loginAsTeamMemberAccess = data.loginAsTeamMemberAccess;
 						pagination.totalRecords = data.totalRecords;
 						pagination = this.pagerService.getPagedItems(pagination, this.teamMembersList);
 						this.referenceService.loading(this.httpRequestLoader, false);
