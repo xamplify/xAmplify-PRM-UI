@@ -53,7 +53,6 @@ export class PublicEventEmailPopupComponent implements OnInit {
             ( response: any ) => {
                 if ( response.statusCode == 200 ) {
                     this.processing = false;
-                    let emailContent = response.data;
                     $( '#email-template-content').append( response.data );
                 } else {
                     this.sent = true;
@@ -64,7 +63,7 @@ export class PublicEventEmailPopupComponent implements OnInit {
 
             },
             ( error: any ) => {
-                this.logger.error( "Error in showPopup(" + campaign.campaignId + ")" );
+                this.logger.error( "Error in showPopup(" + campaign.campaignId + ")",error);
                 this.processing = false;
                 this.customResponse = new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true );
             } );

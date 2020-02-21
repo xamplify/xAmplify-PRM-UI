@@ -64,7 +64,7 @@ export class AddTeamMembersComponent implements OnInit {
 	config2: any = { 'placeholder': 'type here', 'sourceField': ['emailId'] };
 	teamMemberIdToDelete: number = 0;
 	selectedTeamMemberEmailId: string = "";
-	allEmailIds: any;
+	allEmailIds:string[] = [];
 	selectedId: number = 0;
 	contactAccess: boolean = false;
 	isOnlyPartner: boolean = false;
@@ -72,6 +72,8 @@ export class AddTeamMembersComponent implements OnInit {
 	isLoggedInAsTeamMember = false;
 	hasAccessToUpdate = false;
 	isOrgAdmin: boolean;
+	deletePopupLoader = false;
+	addModalPopUpLoader = false;
 	/**********Constructor**********/
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -109,10 +111,7 @@ export class AddTeamMembersComponent implements OnInit {
 		try {
 			this.logger.debug("Add Team Component ngOnInit() Loaded");
 			this.listTeamMembers(this.pagination);
-			this.listEmailIds();
-			this.listAllOrgAdminsEmailIds();
-			this.listAllPartnerEmailIds();
-			this.listDropDown();
+			this.listAllEmailIds();
 			this.hasContactAccess();
 		}
 		catch (error) {
@@ -161,7 +160,6 @@ export class AddTeamMembersComponent implements OnInit {
 			this.teamMemberService.list(pagination, this.userId)
 				.subscribe(
 					data => {
-						this.logger.log(data);
 						this.teamMembersList = data.teamMembers;
 						this.secondOrgAdminId = data.secondOrgAdminId;
 						pagination.totalRecords = data.totalRecords;
@@ -254,8 +252,6 @@ export class AddTeamMembersComponent implements OnInit {
 							this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
 							this.pagination.pageIndex = 1;
 							this.listTeamMembers(this.pagination);
-							this.listEmailIds();
-							this.listAllOrgAdminsEmailIds();
 							this.clearRows();
 							this.listDropDown();
 						} else {
@@ -264,7 +260,13 @@ export class AddTeamMembersComponent implements OnInit {
 
 					},
 					error => {
-						this.logger.errorPage(error);
+					this.referenceService.stopLoader(this.httpRequestLoader);
+					let statusCode = JSON.parse(error['status']);
+                    if (statusCode == 409) {
+                        this.customResponse = new CustomResponse('ERROR', "Team Member already exists", true);
+                    } else {
+                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                    }
 					},
 					() => this.logger.log(" Completed save()")
 				);
@@ -316,8 +318,6 @@ export class AddTeamMembersComponent implements OnInit {
 	showErrorMessageDiv(message: string) {
 		this.errorMessage = message;
 		this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
-		// $( "#empty-roles-div" ).show(600);
-		// setTimeout( function() { $( "#empty-roles-div" ).slideUp( 500 ); }, 7000 );
 	}
 
 	hideErrorMessageDiv() {
@@ -325,81 +325,43 @@ export class AddTeamMembersComponent implements OnInit {
 		this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
 	}
 	/*********************Delete*********************/
-	/* delete(teamMember:TeamMember){
-		 this.deleteText = "This will remove team member.";
-		 this.sweetAlertWarning(teamMember);
-	 }*/
+
 
 	deleteAll() {
 		this.deleteText = "This will remove all team members.";
 		let teamMember = new TeamMember();
 		teamMember.teamMemberId = 0;
-		//  this.showPopup(teamMember);
 	}
 
-
-	hidePopup() {
-		this.selectedItem = "";
-		this.inputChanged = "";
-		$('input').val('');
-		$('#delete-team-member-modal').hide();
-	}
-	delete() {
-		$('#delete-team-member-modal').hide();
-		// this.loading = true;
-		let teamMember: TeamMember = new TeamMember();
-		teamMember.teamMemberId = this.teamMemberIdToDelete;
-		teamMember.orgAdminId = this.selectedId;
-		/*  teamMember.orgAdminId = this.selectedItem.id;
-		  teamMember.emailId = this.selectedItem.emailId;*/
-		this.logger.log(teamMember);
-		this.teamMemberService.delete(teamMember)
-			.subscribe(
-				data => {
-					this.referenceService.goToTop();
-					if (teamMember.teamMemberId == 0) {
-						this.successMessage = "All Team Members deleted successfully.";
-						this.pagination.pageIndex = 0;
-					} else {
-						this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
-						this.pagination.pageIndex = this.pagination.pageIndex - 1;
-					}
-					this.teamMemberIdToDelete = 0;
-					this.selectedTeamMemberEmailId = "";
-					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
-					this.listTeamMembers(this.pagination);
-					this.listEmailIds();
-					this.listAllOrgAdminsEmailIds();
-					this.listAllPartnerEmailIds();
-					this.clearRows();
-
-				},
-				error => { this.logger.errorPage(error) },
-				() => this.logger.log("Team member deleted successfully.")
-			);
-	}
-
-	showPopup(teamMember: TeamMember) {
-		this.selectedId = 0;
-		$('#delete-team-member-modal').show();
-		this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
-		this.teamMemberIdToDelete = teamMember.teamMemberId;
-		this.selectedTeamMemberEmailId = teamMember.emailId;
-	}
 
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
 		this.listTeamMembers(this.pagination);
 	}
 
+	
+
+	addTeamMember() {
+		try {
+			this.teamMemberUi.emptyTable = false;
+			this.teamMembers.push(this.team);
+			this.team = new TeamMember();
+			this.teamMemberUi.validEmailId = false;
+			this.emaillIdDivClass = this.defaultClass;
+			this.teamMemberUi.isValidForm = false;
+			this.closePopup();
+		} catch (error) {
+			this.showUIError(error);
+		}
+
+	}
+
 
 	validateEmailId(emailId: string) {
-		console.log(emailId);
 		try {
 			if ($.trim(emailId).length > 0) {
 				this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
 				if (!this.teamMemberUi.validEmailId) {
-					console.log("372");
 					this.showErrorMessage("Please enter a valid email address");
                     /*if(isTabChangeEvent){
                       this.showErrorMessage("Please enter a valid email address");
@@ -408,14 +370,13 @@ export class AddTeamMembersComponent implements OnInit {
                     }*/
 				} else {
 					/**********Method To Check Whether Org Admin Or Not***********/
-					if (this.orgAdminEmailIds.indexOf(emailId.toLowerCase()) > -1 || this.partnerEmailIds.indexOf(emailId.toLowerCase()) > -1 || this.existingEmailIds.indexOf(emailId.toLowerCase()) > -1) {
+					if (this.allEmailIds.indexOf(emailId.toLowerCase()) > -1) {
 						this.showErrorMessage("This email address is already registered with xAmplify and cannot be added as a team member at this time.");
 					} else {
 						this.hideErrorMessage();
 					}
 				}
 			} else {
-				console.log("i am in else");
 				this.teamMemberUi.errorMessage = '';
 				$(".col-md-12 span").text('');
 				this.removeErrorClass();
@@ -453,21 +414,6 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 	removeErrorClass() {
 		return this.emaillIdDivClass = this.successClass;
-	}
-
-	addTeamMember() {
-		try {
-			this.teamMemberUi.emptyTable = false;
-			this.teamMembers.push(this.team);
-			this.team = new TeamMember();
-			this.teamMemberUi.validEmailId = false;
-			this.emaillIdDivClass = this.defaultClass;
-			this.teamMemberUi.isValidForm = false;
-			this.closePopup();
-		} catch (error) {
-			this.showUIError(error);
-		}
-
 	}
 
 	deleteRow(index: number, emailId: string) {
@@ -671,7 +617,7 @@ export class AddTeamMembersComponent implements OnInit {
 		this.validateCsvData();
 		if (this.csvErrors.length > 0) {
 			$("#csv-error-div").show();
-			setTimeout(function () { $("#csv-error-div").hide(500); }, 7000);
+			//setTimeout(function () { $("#csv-error-div").hide(500); }, 7000);
 			this.fileReset();
 			this.isUploadCsv = false;
 			this.isAddTeamMember = false;
@@ -704,7 +650,7 @@ export class AddTeamMembersComponent implements OnInit {
 					this.csvErrors.push(emailId + " is invalid email address.");
 				} else {
 					/**********Method To Check Whether Org Admin Or Not***********/
-					if (this.orgAdminEmailIds.indexOf(emailId.toLowerCase()) > -1 || this.partnerEmailIds.indexOf(emailId.toLowerCase()) > -1 || this.existingEmailIds.indexOf(emailId.toLowerCase()) > -1) {
+					if (this.allEmailIds.indexOf(emailId.toLowerCase()) > -1) {
 						this.csvErrors.push(emailId + " is already registered with xAmplify and cannot be added as a team member at this time.");
 					}
 				}
@@ -763,18 +709,30 @@ export class AddTeamMembersComponent implements OnInit {
 						teamMember.partners = this.setDefaultValue(row[7]);
 					}
 				}
-
-
-
 			}
 			this.teamMembers.push(teamMember);
 		}
 	}
 
 	showAddTeamMember() {
-		// this.isAddTeamMember = true;
 		$("#csv-error-div").hide();
-		$('#addTeamMember').show();
+		$('#addTeamMember').modal('show');
+		
+	}
+
+	listAllEmailIds(){
+		this.referenceService.loading(this.httpRequestLoader, true);
+		this.teamMemberService.getAllEmailIds()
+		.subscribe(
+			data => {
+					this.allEmailIds = data;
+			},
+			error => {
+				this.allEmailIds = [];
+				this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
+			},
+			() => this.logger.log("showAddTeamMember() done")
+		);
 	}
 	clearForm() {
 		this.emaillIdDivClass = this.defaultClass;
@@ -786,7 +744,7 @@ export class AddTeamMembersComponent implements OnInit {
 		this.closePopup();
 	}
 	closePopup() {
-		$('#addTeamMember').hide();
+		$('#addTeamMember').modal('hide');
 		$('#add-team-member-form')[0].reset();
 	}
 	changeOrgAdminStatus(event: any, index: number, team: TeamMember) {
@@ -869,6 +827,7 @@ export class AddTeamMembersComponent implements OnInit {
 
 	setDropDownData(data: any) {
 		let self = this;
+		self.items2 = [];
 		$.each(data, function (index, value) {
 			let emailId = data[index].emailId;
 			let id = data[index].id;
@@ -923,5 +882,65 @@ export class AddTeamMembersComponent implements OnInit {
 	logoutAsTeamMember(){
 		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
 		this.loginAsTeamMember(adminEmailId,true);
+	}
+
+
+
+	showPopup(teamMember: TeamMember){
+		this.selectedId = 0;
+		this.deletePopupLoader = true;
+		$('#delete-team-member-popup').modal( 'show' );
+		this.teamMemberService.listEmailIdsForTransferData(this.userId,this.isOnlyPartner)
+		.subscribe(
+			data => {
+				this.setDropDownData(data);
+				this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
+				this.teamMemberIdToDelete = teamMember.teamMemberId;
+				this.selectedTeamMemberEmailId = teamMember.emailId;
+				this.deletePopupLoader = false;
+			},
+			error => {
+				$('#delete-team-member-popup').modal( 'hide' );
+				this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
+
+			},
+			() => this.logger.log("listAllOrgAdminsAndSupervisors() done")
+		);
+
+	}
+
+	hidePopup() {
+		this.selectedItem = "";
+		this.inputChanged = "";
+		$('input').val('');
+		$('#delete-team-member-popup').hide();
+	}
+	delete() {
+		this.deletePopupLoader = true;
+		let teamMember: TeamMember = new TeamMember();
+		teamMember.teamMemberId = this.teamMemberIdToDelete;
+		teamMember.orgAdminId = this.selectedId;
+		this.teamMemberService.delete(teamMember)
+			.subscribe(
+				data => {
+					this.deletePopupLoader = false;
+					$('#delete-team-member-popup').modal('hide');
+					this.referenceService.goToTop();
+					if (teamMember.teamMemberId == 0) {
+						this.successMessage = "All Team Members deleted successfully.";
+						this.pagination.pageIndex = 0;
+					} else {
+						this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
+						this.pagination.pageIndex = this.pagination.pageIndex - 1;
+					}
+					this.teamMemberIdToDelete = 0;
+					this.selectedTeamMemberEmailId = "";
+					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+					this.listTeamMembers(this.pagination);
+					this.clearRows();
+				},
+				error => { this.logger.errorPage(error) },
+				() => this.logger.log("Team member deleted successfully.")
+			);
 	}
 }
