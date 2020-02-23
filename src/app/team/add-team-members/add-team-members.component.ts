@@ -915,7 +915,7 @@ export class AddTeamMembersComponent implements OnInit {
 		this.selectedItem = "";
 		this.inputChanged = "";
 		$('input').val('');
-		$('#delete-team-member-popup').hide();
+		$('#delete-team-member-popup').modal('hide');
 	}
 	delete() {
 		this.deletePopupLoader = true;

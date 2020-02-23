@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,Renderer } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { SocialService } from '../../social/services/social.service';
@@ -71,7 +71,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
-        public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
+        public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService,public renderer:Renderer) {
+        this.referenceService.renderer = this.renderer;
         let superiorId = parseInt(localStorage.getItem('superiorId'));
         if(isNaN(superiorId)){
             this.superiorId = this.authenticationService.getUserId();
