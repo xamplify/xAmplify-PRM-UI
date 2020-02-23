@@ -369,3 +369,6 @@ td h5 {
     position: relative;
     display: inline-block;
 }
+.campaign-font{
+	font-size: 14px;
+}
