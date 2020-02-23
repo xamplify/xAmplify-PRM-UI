@@ -15,6 +15,7 @@ export class ActionsDescription {
     partner_edit = 'Edit partner';
     partner_delete = 'Delete partner';
     partner_reSendMail = 'Resend registration email';
+    send_campaigns = 'Share Campaigns';
 
     /* FOR VIDEOS*/
     video_edit = 'Edit video';
@@ -46,5 +47,8 @@ export class ActionsDescription {
     /***Content Management****/
     delete_item = 'Delete';
     preview_item = 'Preview';
+
+
+
     
 }

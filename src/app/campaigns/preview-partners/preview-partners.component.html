@@ -30,7 +30,7 @@
 					<div class="portlet-input input-inline input-small" style="margin-right: 10px;">
 						<div class="input-icon right" style="position: relative;right: -11px;">
 							<input type="text"  style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="searchOnKeyPress($event.keyCode)">
-					            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
+					            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';search();"></button>
 					            <button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search"></i></button>
 	               		</div>
 					</div>
@@ -38,7 +38,7 @@
               </div>
                <app-list-loader  *ngIf="campaignPartnerLoader.isLoading"></app-list-loader>
                <app-response-message [customResponse]="partnerActionResponse" *ngIf="partnerActionResponse.isVisible"></app-response-message>
-              <div class="portlet-body"  *ngIf="!campaignPartnerLoader.isLoading">
+              <div class="portlet-body"  *ngIf="!campaignPartnerLoader.isLoading && sortOption.totalRecords > 0 ">
                <table class="table tgrid" id="campaign-partner-table">
 							<thead>
 								<tr>
@@ -73,6 +73,9 @@
 								<option *ngFor="let itemPerPage of sortOption.numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
 							</select>
 						</div>
+					</div>
+					<div *ngIf="sortOption.totalRecords == 0 && !campaignPartnerLoader.isLoading && !campaignPartnerLoader.isServerError" class="alert alert-info">
+						 <strong>No Data Found.</strong>
 					</div>
             </div>
           </div>

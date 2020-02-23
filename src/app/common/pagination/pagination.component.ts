@@ -35,7 +35,6 @@ export class PaginationComponent implements OnInit {
     this.notifyParentDropDown.emit(this.pagination);
   }
   ngOnInit() {
-    console.log(this.type);
   }
 
 }

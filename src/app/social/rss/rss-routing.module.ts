@@ -13,8 +13,7 @@ const routes: Routes = [
     { path: 'discover', component: DiscoverComponent },
     { path: 'collections/:alias', component: CollectionComponent },
     { path: 'sources/:alias', component: SourceComponent },
-    { path: 'search/category/:value', component: SearchComponent },
-    { path: 'search/source/:value', component: SearchComponent },
+    { path: 'search', component: SearchComponent }
 ];
 
 @NgModule({

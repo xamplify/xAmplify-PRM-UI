@@ -4901,6 +4901,7 @@ Portlets
 .portlet.light {
   padding: 5px 5px 10px 10px;
   background-color: #fff;
+  border-radius: 3px !important;
 }
 .portlet.light.bordered {
   border: 1px solid #e1e1e1 !important;
@@ -5097,7 +5098,7 @@ Dashboard Stats
   -moz-border-radius: 0;
   -ms-border-radius: 0;
   -o-border-radius: 0;
-  border-radius: 0;
+  border-radius: 3px !important;
 }
 .dashboard-stat:before, .dashboard-stat:after {
   content: " ";

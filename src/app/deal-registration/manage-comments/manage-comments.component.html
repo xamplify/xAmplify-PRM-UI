@@ -331,13 +331,13 @@
             display: none;
         }
     }
-    
+
 .frame {
     height: 100px;      /* equals max image height */
     line-height: 100px;
     width: 100%;
-  
-    
+
+
     text-align: center; margin: 1em 0;
 }
 
@@ -348,22 +348,22 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 0px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: green; 
+  background: green;
   border-radius: opx;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: green; 
+  background: green;
 }
 
-  
+
 </style>
 
 
@@ -431,7 +431,7 @@
                                 </div>
 
 
-                            </div> 
+                            </div>
                         </div>
 
                     </div>
@@ -489,7 +489,8 @@
 
                     <div>
                         <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
-                        <button type="submit" (click)="postComment(comment)" style="margin-bottom: 10px;">Submit</button>
+                        <button  (click)="postComment(comment)" style="margin-bottom: 10px;" class="btn btn-primary"
+                        [disabled]="!comment.comment " [style.pointer-events]="comment.comment ? 'auto' : 'none' ">Submit</button>
                     </div>
 
 

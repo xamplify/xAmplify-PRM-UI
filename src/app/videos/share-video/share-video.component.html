@@ -26,27 +26,28 @@
     <img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
   </div>
 
-    <div *ngIf="errorMessage">
-    <h3 class="content-meesage">{{errorMessage}}</h3>
-    </div>
+  <div *ngIf="errorMessage">
+  <h3 class="content-meesage">{{errorMessage}}</h3>
+  </div>
 
 </div>
 <div [hidden]='!embedVideoFile' class="clearfix" [ngClass]="{'padding-videos': shareUrl.includes('share')}">
 	<div class="portlet-body clearfix">
 		<div style="padding:0" [ngClass]="{'col-md-12': shareUrl.includes('embed'), 'center-div': shareUrl.includes('share')}">
 			<div>
-				<div id="overLayImage"></div>
-				<div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
-					<a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
-						<img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive imageClass" >
-					</a>
-				</div>
-				<div id="newPlayerVideo"></div>
+				<div id="newPlayerVideo" style="position: relative">
+          <div id="overLayImage"></div>
+          <div id="overlay-logo"  class="video-js"  [ngClass]="{'logoCss':!fullScreenMode , 'logoFullscreen' :fullScreenMode}" >
+            <a [href]="logoLink"  target="_blank" [class.disabled]="logoLink===null">
+              <img *ngIf="logoImageUrlPath"  [src]="authenticationService.MEDIA_URL + logoImageUrlPath" class="img-responsive imageClass" >
+            </a>
+          </div>
+        </div>
 			</div>
 			<div id="overLayDialog"></div>
 			<div id="overlay-modal" class="video-js is360video" style="padding:5em;" [ngClass]="{'embed-overlay':shareUrl.includes('embed'), 'share-overlay': shareUrl.includes('share')}">
 				<form #f="ngForm" novalidate>
-					<div class="col-md-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
+					<div class="col-xs-12 overlay-main" [ngClass]="{'bottomCss':fullScreenMode === true}">
 					<div class="alert alert-danger alert-dismissible" *ngIf="isCallToActionError">
  					 <a href="#" class="close" data-dismiss="alert" aria-label="close" (click)="isCallToActionError = false" >&times;</a>
   						{{callToActionErrorMessage}}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 
 import { DonutChartComponent } from './donut-chart/donut-chart.component';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -31,19 +32,45 @@ import { VideoPlayComponent } from './video-play/video-play.component';
 import { ImageCropperComponent } from './image-cropper/component/image-cropper.component';
 import { EmailSpamCheckComponent } from '../email-template/email-spam-check/email-spam-check.component';
 import { AutoResponseLoaderComponent } from './loader/auto-response-loader/auto-response-loader.component';
+import { PreviewPopupComponent } from '../forms/preview-popup/preview-popup.component';
+import { PreviewLandingPageComponent } from '../landing-pages/preview-landing-page/preview-landing-page.component';
+
+import {FormPreviewComponent} from '../forms/preview/form-preview.component';
+
+import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-loader.component';
+import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
+import { ModalPopupLoaderComponent } from './loader/modal-popup-loader/modal-popup-loader.component';
+import { FormAnalyticsUtilComponent } from '../util/form-analytics-util/form-analytics-util.component';
+import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
+import { CheckBoxModule, ButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { PublicPageResponseComponent } from './public-page-response/public-page-response.component';
+import { MergeTagsComponent } from '../util/merge-tags/merge-tags.component';
+import { FlatpickrComponent } from './flatpickr/flatpickr.component';
+import { InternationalPhoneModule } from 'ng4-intl-phone';
+import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-analytics/save-geo-location-analytics.component';
+import { SendCampaignsComponent } from './send-campaigns/send-campaigns.component';
+
+
 
 @NgModule({
-    imports: [CommonModule, FormsModule, LoadingModule],
+    imports: [InternationalPhoneModule, CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule,BootstrapSwitchModule],
     declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
-        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent],
-    exports: [DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
+        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
+        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent, SendCampaignsComponent],
+
+
+    exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent]
+
+        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent,SendCampaignsComponent]
+
 })
 export class CommonComponentModule { }

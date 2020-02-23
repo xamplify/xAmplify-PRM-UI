@@ -1,7 +1,7 @@
 
 export enum DealStatusEnum{
-    
-   "APPROVED","OPENED","HOLD","REJECTED","CLOSED"
-    
-     
+
+   "APPROVED","OPENED","HOLD","REJECTED"
+
+
 }

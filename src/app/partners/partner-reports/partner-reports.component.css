@@ -97,6 +97,7 @@ cursor: default;
 	height: 50px;
 	cursor: default;
 	border-color: #00a6e8;
+	border-radius: 3px !important;
 }
 .sky-blue{
 	color:#00a6e8
@@ -113,3 +114,25 @@ cursor: default;
 .greay{
   background-color: #8a8282c4;
 }
+#notification{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
+}
+
+.imageClass{
+	background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 3px;
+}
+
+@media ( min-width : 768px) {
+	.col-sm-5ths {
+		width: 20% !important;
+		float: left !important;
+	}
+}
+
+

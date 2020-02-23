@@ -8,6 +8,8 @@ import { ReferenceService } from './reference.service';
 import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
+import {RequestDemo} from '../../authentication/request-demo/request-demo';
+import {GdprSetting} from '../../dashboard/models/gdpr-setting';
 
 @Injectable()
 export class UserService {
@@ -17,6 +19,8 @@ export class UserService {
     loggedInUserData: User;
 
     URL = this.authenticationService.REST_URL;
+    GDPR_SETTING_URL = this.authenticationService.REST_URL+"gdpr/setting/";
+    CATEGORIES_URL = this.URL+'category/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
 
@@ -175,13 +179,26 @@ export class UserService {
         .map( this.extractData )
         .catch( this.handleError );
     }
+    getTeamMemberRoles(userId:number){
+        return this.http.get( this.URL+ "admin/getTeamMemberRoles/" + userId + "?access_token=" + this.authenticationService.access_token )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
     getHomeRoles(uRl){
         const url = this.URL + uRl;
         return this.http.get( url,'' )
         .map( this.extractData )
         .catch( this.handleError );
     }
-    
+
+    getEventAccessTab(uRl){
+        const url = this.URL + uRl;
+        return this.http.get( url,'' )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
     loadVendorDetails(uRl, pagination: Pagination) {
         const url = this.authenticationService.REST_URL + uRl;
         return this.http.post(url, pagination)
@@ -200,18 +217,29 @@ export class UserService {
       .map( this.extractData )
       .catch( this.handleError );
     }
-    saveForm(userId:number,form:DealForms){
+
+    getUserByAlias(alias:string){
+        return this.http.get( this.URL+'getUserByAlias/'+alias)
+        .map( this.extractData )
+        .catch( this.handleError );
+      }
+    saveForm(userId:number,form:any){
         return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
         .map( this.extractData )
         .catch( this.handleError );
     }
-    updateForm(userId:number,form:DealForms){
+    updateForm(userId:number,form:any){
         return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/update?access_token=" + this.authenticationService.access_token ,form)
         .map( this.extractData )
         .catch( this.handleError );
     }
     listForm(userId:number){
         return this.http.get( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/list?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+    deleteQuestion(question:any){
+        return this.http.post( this.authenticationService.REST_URL+"users/question/remove?access_token=" + this.authenticationService.access_token,question)
         .map( this.extractData )
         .catch( this.handleError );
     }
@@ -223,6 +251,82 @@ export class UserService {
       return this.httpClient.post(url,formData)
       .catch(this.handleError);
     }
+    saveDemoRequest(requestDemo:RequestDemo){
+        return this.http.post( this.URL+"save/requestDemo",requestDemo)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    accessAccount( data: any ) {
+        return this.http.post( this.URL + "accessAccount/updatePassword", data)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    saveGdprSetting(gdprSetting:GdprSetting){
+        return this.http.post(this.GDPR_SETTING_URL+"save?access_token="+this.authenticationService.access_token,gdprSetting)
+        .map(this.extractData)
+        .catch(this.handleServerError);
+       }
+    updateGdprSetting(gdprSetting: GdprSetting) {
+        return this.http.post(this.GDPR_SETTING_URL + "update?access_token=" + this.authenticationService.access_token, gdprSetting)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    getGdprSettingByCompanyId(companyId:number) {
+        return this.http.get(this.GDPR_SETTING_URL + "getByCompanyId/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    getCategories(pagination:Pagination) {
+        return this.http.post(this.CATEGORIES_URL + "listAll?access_token=" + this.authenticationService.access_token,pagination)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    saveOrUpdateCategory(category:any){
+        let url = this.CATEGORIES_URL + "save";
+        if(category.id>0){
+           url = this.CATEGORIES_URL + "update";
+        }
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token,category)
+        .map(this.extractData)
+        .catch(this.handleServerError);
+    }
+
+    listExistingCategoryNames(companyId:number){
+        return this.http.get( this.CATEGORIES_URL+"listAllCategoryNames/"+ companyId + "?access_token=" + this.authenticationService.access_token)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    getCategoryById(id:number) {
+        return this.http.get(this.CATEGORIES_URL + "getById/"+id+"?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    deleteCategory(category:any){
+        let url =  this.CATEGORIES_URL+"deleteById/"+category.id;
+        if(category.isMoveAndDelete){
+            url =  this.CATEGORIES_URL+"moveAndDeleteCategory/"+category.id+"/"+category.idToMoveItems;
+        }
+        return this.http.get(url+"?access_token=" + this.authenticationService.access_token,"")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    
+
+    private handleServerError(error: any) {
+        return Observable.throw(error);
+    }
+
+
+
+
     private extractData( res: Response ) {
         const body = res.json();
         // return body || {};

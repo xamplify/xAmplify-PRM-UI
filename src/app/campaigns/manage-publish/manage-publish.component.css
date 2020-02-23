@@ -222,6 +222,7 @@ img.inactive {
     height: 50px;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
+    border: 1px solid #ccc;
 }
 td h5 {
     margin: 5px 0;
@@ -323,6 +324,48 @@ td h5 {
   border-bottom: 3px solid transparent;
   border-top: 3px solid red !important;
 }
+
+#notification{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
+}
+#notification-list{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 36px;
+    margin-left: -23px;
+    margin-top: -2px;
+}
 .bottomTableCss {
   margin-bottom: 300px !important;
+
+}
+
+.imageClass{
+	background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 3px;
+}
+.btn-xs{
+    padding: 0px 4px !important;
+}
+
+.mobile-circled-number {
+    border: 1px solid #888888;
+    color: #888888;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px !important;
+    vertical-align: middle;
+    margin-right: 8px;
+    margin-left: 5px;
+    text-decoration: none;
+    font-size: 13px !important;
+    position: relative;
+    display: inline-block;
 }

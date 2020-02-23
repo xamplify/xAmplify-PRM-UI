@@ -227,7 +227,7 @@
 							</div>
 						</ng-template>
 						<ng-template #socialProfile>
-							<div class="profile-image-box" data-toggle="tooltip" data-placement="top"
+							<div *ngIf = "socialStatus.socialStatusProvider" class="profile-image-box" data-toggle="tooltip" data-placement="top"
 								[attr.title]="socialStatus.socialStatusProvider.socialConnection.profileName ? socialStatus.socialStatusProvider.socialConnection.profileName :
 									socialStatus.socialStatusProvider.socialConnection.firstName">
 								<img class="profile-image" src="{{socialStatus.socialStatusProvider.socialConnection.profileImage}}" onError="this.src='assets/images/social/avatar.png';">
@@ -237,7 +237,7 @@
 					</div>
 					<div class="update-status-content col-xs-10 col-sm-11">
 						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-							[(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
+						 (keyup)="onKeyPress($event)" [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
 						<h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 
 						<section class="" [hidden]="isSocialCampaign && alias">
@@ -252,9 +252,11 @@
 
 						<section *ngIf="socialStatus.validLink" class="row">
 							<div class="col-sm-2"><img src="{{socialStatus.ogImage}}" width="100%"></div>
-							<div class="col-sm-10"><a>{{socialStatus.statusMessage}}</a>
+							<div class="col-sm-10"><a title="{{socialStatus.statusMessage}}" href="{{socialStatus.statusMessage}}" target="_blank">{{socialStatus.statusMessage | slice:0:160}}
+									<span *ngIf="socialStatus.statusMessage?.length>160">..</span>
+							</a>
 							<h6 contenteditable="true"><b>{{socialStatus.ogTitle}}</b></h6>
-							<p contenteditable="true">{{socialStatus.ogDescription}}</p>
+							<p contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</p>
 							</div>
 						</section>
 						<section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
@@ -265,9 +267,9 @@
 							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-video-camera"></i>
 							</span>
-							<span class="rss hidden" title="RSS Feeds" (click)="openRssModal()"  data-toggle="tooltip" data-placement="top">
+							<!-- <span class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
 								<i class="fa fa-rss-square"></i>
-							</span>
+							</span> -->
 						</section>
 					</div>
 					<div class="clearfix"></div>
@@ -424,7 +426,7 @@
 
 					<div class="row">
 						<div class="col-sm-8 col-xs-12">
-							<h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists</h6>
+							<h6 class="caption-subject font-red-sunglo uppercase bold mt10 mb10 ml0">Recipient Lists <span *ngIf="alias">(optional)</span></h6>
 						</div>
 						<div class="col-sm-4 col-xs-12">
 							<div style="position: relative; padding-bottom: 5px;">
@@ -655,16 +657,16 @@
   <div class="modal-dialog" role="document" style="width: 100% !important;">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close-circle" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
         <h4 class="modal-title" id="rssModalLabel">RSS Feeds</h4>
       </div>
-		<div class="modal-body">
-			<!--<app-rss></app-rss>-->
+		<div class="modal-body" style="background: #f1f3fa">
+			<app-feed-update (selectedFeed)='addToPost($event)' (navigateUrl)='navigateRssHome($event)'></app-feed-update>
 		</div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

@@ -114,8 +114,6 @@
 				"./assets/admin/pages/scripts/form-validation.js",
 				"./assets/global/plugins/bootstrap-markdown/lib/markdown.js",
 				"./assets/global/plugins/bootstrap-markdown/js/bootstrap-markdown.js",
-				"./assets/global/plugins/jquery-validation/js/additional-methods.min.js",
-				"./assets/global/plugins/jquery-validation/js/jquery.validate.min.js",
 				"./assets/global/plugins/typeahead/typeahead.bundle.min.js",
 				"./assets/global/plugins/typeahead/handlebars.min.js",
 				"./assets/global/plugins/bootstrap-touchspin/bootstrap.touchspin.js",

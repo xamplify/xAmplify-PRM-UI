@@ -29,7 +29,8 @@
 				class="capitalize">Undeliverable {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
-
+<ngx-loading [show]="loading"
+							[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div id="manageContacts" >
 		<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 		<div *ngIf="showAll">
@@ -37,7 +38,7 @@
 			<!-- BEGIN PAGE CONTENT-->
 			<div>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-xs-12 col-md-12 col-sm-12">
 						<div [ngClass]="{'tabbable tabbable-custom tabbable-noborder': showListOfContactList}">
 
 							<div class="tab-content" [ngStyle]="{'min-height':showListOfContactList? '570px': ''}">
@@ -52,7 +53,7 @@
 									<!-- END DASHBOARD STATS -->
 									<div class="clearfix"></div>
 									<div class="row mt5 mb5">
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('all')"
 												[disabled]="contactsByType.allContactsCount == 0">
@@ -75,7 +76,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('active')"
 												[disabled]="contactsByType.activeContactsCount == 0">
@@ -99,7 +100,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('non-active')"
 												[disabled]="contactsByType.inactiveContactsCount == 0">
@@ -122,7 +123,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('invalid')"
 												[disabled]="contactsByType.invalidContactsCount == 0">
@@ -147,7 +148,7 @@
 												</span>
 											</button>
 										</div>
-										<div class="col-sm-5ths margin-top-10">
+										<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths margin-top-10">
 											<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
 												(click)="contactsByType.pagination.pageIndex = 1;listContactsByType('unsubscribe')"
 												[disabled]="contactsByType.unsubscribedContactsCount == 0">
@@ -177,21 +178,21 @@
 												{{checkingContactTypeName}} Lists</li>
 
 										</ul>
-
+									<div class="col-xs-12 col-sm-6 col-lg-6 p0 pull-right">
 										<div class="btn-group pull-right">
 											<ng-container class='m10'> <span
-												class="btn btn-xs hidden-xs" data-toggle="tooltip"
+												class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
 												data-placement="bottom" title="List View"
 												[class.disabled]="isListView" (click)="isListView = true"
-												style="background-color: #e2e2e2"><i
+												><i
 												class="fa fa-th-list p10" aria-hidden="true"></i></span> <span
-												class="btn btn-xs hidden-xs" data-toggle="tooltip"
+												class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip"
 												data-placement="bottom" title="Grid View"
 												[class.disabled]="!isListView" (click)="isListView = false"
-												style="background-color: #e2e2e2"><i
+												><i
 												class="fa fa-th-large p10" aria-hidden="true"></i></span> </ng-container>
 											<div class="inputs sort-class" align="right"
-												style="float: right">
+												style="float: right; display: flex;">
 												<div
 													[ngClass]="{'search-css': !referenceService.isMobileScreenSize(), 'mobile-css':referenceService.isMobileScreenSize() }">
 													<select class="form-control" [(ngModel)]="sortOption"
@@ -214,7 +215,7 @@
 
 														<button
 															class="glyphicon glyphicon-remove search-box-item-clear"
-															*ngIf="searchKey" (click)="searchKey=''"></button>
+															*ngIf="searchKey" (click)="searchKey='';search('contactList')"></button>
 														<button type="submit" class="search-box-item-click"
 															(click)="search('contactList')">
 															<i class="fa fa-search"></i>
@@ -222,6 +223,7 @@
 													</div>
 												</div>
 											</div>
+										</div>
 										</div>
 
 									</div>
@@ -244,13 +246,17 @@
 								<section [hidden]="!isListView"
 									*ngIf="pagination.pagedItems?.length != 0 && !httpRequestLoader.isLoading">
 									<div class="table-responsive" style="margin-top: 7px">
-										<table class='table tgrid'>
+										<table class='table tgrid' id="partner_contact_list">
 											<thead>
 												<tr>
-													<th class="hidden-xs" colspan="2" style="width: 50%">List
-														Name</th>
+													<th class="hidden-xs" colspan="2" style="width: 50%">
+														<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
+														<span class="gridHeader">List Name</span>
+													</th>
 													<th class="visible-xs" colspan="1" style="width: 50%">List
 														Info</th>
+														
+														
 													<th class="hidden-xs">Created On</th>
 													<th class="text-center hidden-xs">Total
 														{{checkingContactTypeName}}s</th>
@@ -272,6 +278,9 @@
 														*ngIf="contactList.socialNetwork=='MANUAL'"
 														src="{{normalImage}}" alt="manual" style="height: 70px;">
 														<img
+														*ngIf="contactList.socialNetwork=='HUBSPOT'"
+														src="{{hubspotImage}}" alt="manual" style="height: 70px;">
+														<img
 														*ngIf="contactList.socialNetwork=='MARKETO'"
 														src="{{marketoImage}}" alt="manual" style="height: 70px;">
 														<img *ngIf="!contactList.emailValidationInd"
@@ -280,11 +289,10 @@
 														
 													</td>
 													<td>
-														
-														<h4 class="ellipsis" title="{{contactList.name}}">
-															{{contactList.name | slice:0:50}} <span
-																*ngIf="contactList.name?.length>50">...</span>
+														<h4 class="moreipsis"  title="{{contactList.name}}">
+															 <span> {{contactList.name}}</span>
 														</h4>
+														
 														<h5 class='m0 ellipsis' title="{{contactList.uploadedBy}}">
 															By <span class='f-w-400'>{{contactList.uploadedBy
 																| slice:0:50}} <span
@@ -384,6 +392,9 @@
 												src="{{googleImage}}"> <img class="imageClassCss"
 												*ngIf="contactList.socialNetwork=='SALESFORCE'"
 												src="{{salesforceImage}}">
+												<img class="imageClassCss"
+												*ngIf="contactList.socialNetwork=='HUBSPOT'"
+												src="{{hubspotImage}}">
 												<img class="imageClassCss" *ngIf="contactList.socialNetwork=='MARKETO'"
 														src="{{marketoImage}}" alt="manual" style="height: 60px;">
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
@@ -519,7 +530,7 @@
 			<span [innerHTML]="response.responseMessage"></span>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12">
 				<div class="tabbable tabbable-custom tabbable-noborder">
 
 					<div class="tab-content" style="min-height: 570px;">
@@ -527,7 +538,7 @@
 						<div class="page-bar" style="margin-bottom: 6px">
 							<div class="page-toolbar">
 								<div class="btn-group pull-right">
-									<div class="inputs" align="right" style="float: right">
+									<div class="inputs" align="right" style="float: right;display: flex;">
 										<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 											style="float: left; cursor: pointer; margin-right: 10px"
 											data-toggle="modal" data-target="#filterModal">
@@ -542,7 +553,7 @@
 												data-placement="left" title="Remove a filter"
 												style="color: red; font-size: 30px; margin-top: 10px;"></i>
 											<i class="fa fa-times" aria-hidden="true"
-												style="color: red; margin-left: -12px;"></i>
+												style="color: red; margin-left: -8px;"></i>
 										</div>
 										<div
 											[ngClass]="{'mobileSorting':referenceService.isMobileScreenSize(), 'sortingContacts':!referenceService.isMobileScreenSize()}">
@@ -566,7 +577,7 @@
 
 												<button
 													class="glyphicon glyphicon-remove search-box-item-clear"
-													*ngIf="searchKey" (click)="searchKey=''"></button>
+													*ngIf="searchKey" (click)="searchKey='';search('contacts')"></button>
 												<button type="submit" class="search-box-item-click"
 													(click)="search('contacts')">
 													<i class="fa fa-search"></i>
@@ -623,6 +634,9 @@
 												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
 													id="delete_button" (click)="invalidContactsShowAlert()">
 														Delete </a></li>
+												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+													id="validate_email_button" (click)="validateUndeliverableContacts()">
+													Mark as valid email(s) </a></li>
 												<li><a id="delete_button"
 													(click)="downloadContactTypeList()"> Export To Excel </a></li>
 											</ul>
@@ -655,10 +669,11 @@
 														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
 														<th *ngIf="isPartner" class="hidden-xs">TYPE</th>
 														<th *ngIf="isPartner" class="hidden-xs">CATEGORY</th>
-														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner"></th>
+														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs">Reason</th>
 														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
@@ -709,15 +724,15 @@
 														<td *ngIf="isPartner" class="hidden-xs" title="{{contact.category}}">{{contact.category | slice:0:14}}
 														<span *ngIf="contact.category?.length>14">..</span>
 														</td>
-														<td class="hidden-xs" *ngIf="!isPartner">
+														<!-- <td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true"
 																style="pointer-events: none !important; cursor: auto;">
 																<int-phone-prefix [(ngModel)]="contact.mobileNumber"
 																	[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-															</div> <!-- <h5>
+															</div> <h5>
                                 <span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-                              </h5> -->
-														</td>
+                              </h5>
+														</td> -->
 														<td class="text-center hidden-xs" *ngIf="!isPartner">{{contact.jobTitle}}</td>
 													<!-- 	<td class="text-center hidden-xs">
 															<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">
@@ -741,6 +756,7 @@
 																	*ngIf="contact?.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
 															</h5>
 														</td>
+														<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{contact.unsubscribedReason}}</td>
 														<td  align="center" *ngIf="isPartner">
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
@@ -785,7 +801,7 @@
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
-															<tr>
+															<!-- <tr>
 																<td class='pt10 pb10 bold'>Phone:</td>
 																<td class='pt10 pb10'>
 																	<div *ngIf="contact.mobileNumber"
@@ -795,7 +811,7 @@
 																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
 																	</div>
 																</td>
-															</tr>
+															</tr> -->
 															<tr>
 																<td class='pt10 pb10 bold'>Address: </td>
 																<td align="center" class="hidden-xs">
@@ -931,10 +947,27 @@
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="campaignName">Name</label> <input class="form-control"
-						type="text" id="campaignName" [(ngModel)]="saveAsListName">
+						type="text" id="campaignName" [(ngModel)]="saveAsListName" placeholder="Name">
 					<span style="color: red">{{saveAsError}}</span>
 				</div>
-			</div>
+			
+
+			 
+         <!-- ------------Legal Basis------------ -->
+        <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts'">
+        <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
+	    <div id="multiselect-sample" class="control-section">
+	    <div class="col-lg-14">
+	        <div class="control-styles">
+	        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
+	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+	        </div>
+	    </div>
+	    </div>
+	</div>
+	</div>
+
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"

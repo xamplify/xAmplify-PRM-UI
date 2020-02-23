@@ -36,6 +36,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     roles: Array<Role>;
     constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties) {
+        /*if(this.router.url=="/logout"){
+            this.authenticationService.logout();
+        }*/
         if (this.referenceService.userProviderMessage !== "") {
             this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
         }
@@ -82,9 +85,9 @@ export class LoginComponent implements OnInit, OnDestroy {
                       if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
                           this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       } else if (response.error_description === "User is disabled") {
-                        this.resendActiveMail = true;
-                        this.customResponse =  new CustomResponse();
-                     //   this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR);
+                        //this.resendActiveMail = true;
+                       // this.customResponse =  new CustomResponse();
+                       this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
                       }else if(response.error_description === this.properties.OTHER_EMAIL_ISSUE){
                         this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
                       }else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS){

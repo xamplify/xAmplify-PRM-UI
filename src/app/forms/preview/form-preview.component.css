@@ -1,0 +1,69 @@
+#signupbox{
+    margin-top: 25px;
+    margin-left: 18%;
+}
+.required {
+	color: red;
+	margin: 1px;
+	font-size: 20px;
+}
+.required-text{
+	color: red;
+	margin: 1px;
+	font-size: 14px;
+	text-shadow: 2px 2px 5px #000000;
+}
+
+@media screen and (min-width:601px){
+ .mobile-camp{  margin: -169px auto 21px; background: #f1f1f1;  padding: 180px; }
+}
+@media screen and (max-width:600px){
+  .mobile-camp{   }
+}
+#form-preivew-base-div{
+	background: #f1f1f1; 
+}
+#bottom-right {
+	float: right;
+}
+.control-label {
+    margin-top: 1px;
+    color: #fff!important;
+}
+#header-center{
+	text-align: center;
+}
+
+#check-mark{
+	font-size: 25px;
+    color: green;
+    margin-right: 10px;
+}
+.alert {padding: 20px; margin: 20px;}
+
+    body {
+        overflow: hidden;
+         background: #f1f1f1  !important; 
+    }
+#line-height{
+	line-height: 15px;
+}  
+.panel .panel-body {
+    font-size: 13px;
+    color: #fff!important;
+}
+.panel {
+	background-color: rgba(0, 0, 0, 0.2) !important;
+}
+.panel-info {
+    border-color: #ffffff !important;
+}
+.panel-info > .panel-heading {
+    color: #fff!important;
+    background-color: transparent!important;
+    border-color: #bce8f1;
+}
+.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+}

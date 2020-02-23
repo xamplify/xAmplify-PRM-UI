@@ -9,6 +9,7 @@
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
 	<div>
+	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<form class="register" [formGroup]="signUpForm" >
       <h3 *ngIf="vendorSignup" class="text-white" style=" margin-bottom: 1.5em">Vendor Sign Up</h3>
       <h3 *ngIf="!vendorSignup" class="text-white" style=" margin-bottom: 1.5em">Sign Up</h3>

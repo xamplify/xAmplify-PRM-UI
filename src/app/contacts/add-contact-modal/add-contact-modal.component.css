@@ -38,3 +38,9 @@ display: block;
 .danger{ color:red !important;}
 .star { color:red !important; margin-right: -25px;}
 .size-font { font-weight: 600;}
+#multiselect-sample{
+	margin-left:74px;
+}
+#custom-width{
+	width:84.333333%
+}

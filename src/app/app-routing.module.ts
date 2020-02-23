@@ -23,9 +23,20 @@ import { SignupComponent } from './authentication/signup/signup.component';
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from './authentication/verify-email/verify-email.component';
 import { CompanyPageComponent } from './dashboard/company-profile/company-page/company-page.component';
-import { IntroComponent } from './authentication/intro/intro.component';
+// import { IntroComponent } from './authentication/intro/intro.component';
 import { TermsConditonComponent } from 'app/authentication/terms-conditon/terms-conditon.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
+import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
+import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
+import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
+import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
+import {FormPreviewComponent} from './forms/preview/form-preview.component';
+import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
+import { RequestDemoComponent } from './authentication/request-demo/request-demo.component';
+import { AccessAccountComponent } from './authentication/access-account/access-account.component';
+import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
+import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -52,6 +63,9 @@ export const routes: Routes = [
             { path: 'upgrade', loadChildren: 'app/upgrade/upgrade.module#UpgradeModule' },
             { path: 'team', loadChildren: 'app/team/team-member.module#TeamMemberModule' },
             { path: 'deals', loadChildren: 'app/deal-registration/deal-registration.module#DealRegistrationModule' },
+            { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
+            { path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
+            { path: 'design', loadChildren: 'app/design/design.module#DesignModule',  data: { preload: true } },
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
@@ -72,6 +86,23 @@ export const routes: Routes = [
     { path: 'su', component: ServiceUnavailableComponent },
     { path: 'access-denied', component: AccessDeniedComponent },
     { path: 'rsvp/:alias', component: RsvpComponent },
+    { path: 'rsvp-response', component: PublicPageResponseComponent },
+    { path: 'smsShowCampaign/:alias', component: LogRegularCampaignComponentSMS },
+    { path: 'smsCampaignVideo/:alias', component: CampaignSMSVideoComponent },
+    { path: 'showEventCampaignSMS/:alias', component: LogEventCampaignComponentSMS },
+    { path: 'logs/:alias', component: LogSMSClickComponent },
+    {path: 'f/:alias', component:FormPreviewComponent},
+    {path: 'l/:alias/:seoName', component:ShowLandingPageComponent},
+    {path: 'pl/:alias/:seoName', component:ShowLandingPageComponent},
+    {path: 'l/:alias', component:ShowLandingPageComponent},
+    {path: 'pl/:alias', component:ShowLandingPageComponent},
+    {path: 'showCampaignLandingPage/:alias', component:ShowLandingPageComponent},
+    {path: 'scp/:alias', component:ShowLandingPageComponent},
+    {path: 'clpl/:alias', component:ShowLandingPageComponent},
+    { path: 'requestdemo', component: RequestDemoComponent },
+    { path: 'axAa/:alias', component: AccessAccountComponent },
+    { path: 'download/:type', component: DownloadTemplateComponent },
+    {path: 'samlsecurity/:alias', component:SamlsecurityauthComponent},
     { path: '**', component: PageNotFoundComponent },
 ];
 

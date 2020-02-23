@@ -24,7 +24,6 @@ declare var swal, $: any;
 export class PreviewPartnersComponent implements OnInit {
 
     loggedInUserId: number = 0;
-    customResponse: CustomResponse = new CustomResponse();
     partnerActionResponse: CustomResponse = new CustomResponse();
     partnersPagination: Pagination = new Pagination();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -37,6 +36,7 @@ export class PreviewPartnersComponent implements OnInit {
 
 
     listPartners(pagination: Pagination ) {
+        this.partnerActionResponse = new CustomResponse();
         this.refService.loading( this.campaignPartnerLoader, true );
         this.campaignService.listCampaignPartners( pagination, this.campaignId)
             .subscribe(
@@ -54,26 +54,23 @@ export class PreviewPartnersComponent implements OnInit {
     }
 
     confirmDeletePartnerById( partner: any, position: number ) {
-        if(this.sortOption.totalRecords>1){
-            let self = this;
-            swal( {
-                title: 'Are you sure?',
-                text: "This will remove the partner(s) from your list and cannot be undone.",
-                type: 'warning',
-                showCancelButton: true,
-                swalConfirmButtonColor: '#54a7e9',
-                swalCancelButtonColor: '#999',
-                confirmButtonText: 'Yes, delete it!'
 
-            }).then( function() {
-                self.deletePartner( partner, position );
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
-            });
-        }else{
-            this.partnerActionResponse = new CustomResponse( 'ERROR', "Atleast one partner should be active", true );
-        }
+        let self = this;
+        swal( {
+            title: 'Are you sure?',
+            text: "This will remove the partner(s) from your list and cannot be undone.",
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, delete it!'
 
+        }).then( function() {
+            self.deletePartner( partner, position );
+        }, function( dismiss: any ) {
+           
+        });
+    
 
     }
 

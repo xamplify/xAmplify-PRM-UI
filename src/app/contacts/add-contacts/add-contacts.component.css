@@ -1,4 +1,4 @@
-.add-options button{min-height:85px}
+.add-options button{min-height:85px; border-radius: 3px;}
 .add-options .portlet-title {min-height: 0; padding: 5px 0 10px; margin-bottom:0px; font-size:15px}
 .add-options i{display:block; font-size:24px; margin:0 auto 10px}
 .add-options span{display:block; font-size:12px; text-align:center}
@@ -24,7 +24,7 @@
   .cloud-items{ position: relative; font-size: 19px; top: -82px !important; left: 93px; }
 }
 .cloud-items{
-  position: relative; font-size: 19px; top: -81px;left: 78px;
+  position: relative; font-size: 19px; top: -81px;left: 71px;
 }
 .gray-color{position: relative; color: grey;}
 
@@ -33,4 +33,16 @@
 	font-size: 15px;
     color: #565555;
     padding-left: 13px;
+}
+@media only screen and (min-width: 768px) {
+
+ .p-drop-down{
+   float: right; 
+   font-size: 15px;
+ }
+  
+}
+
+.mr8{
+	margin-right: 20px !important;
 }

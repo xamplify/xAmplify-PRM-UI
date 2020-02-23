@@ -86,9 +86,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     isProgressBar = false;
     failedtoUpload = false;
     customResponse: CustomResponse = new CustomResponse();
+    recordCustomResponse: CustomResponse = new CustomResponse();
     loggedInUserId:any;
     contentProcessing:boolean;
     cloudContentArr = new Array<CloudContent>();
+    videoRecordTimeLess = false;
     videoExtentions =  ['video/m4v', 'video/avi', 'video/mpg', 'video/mp4', 'video/flv', 'video/mov', 'video/wmv', 'video/divx', 'video/f4v', 'video/mpeg', 'video/vob', 'video/xvid', 'video/x-matroska'];
 
     constructor(public router: Router, public xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService,
@@ -326,6 +328,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.processing = true;
     }
     uploadRecordedVideo() {
+     if(this.player.record().getDuration() < 10) {
+       this.videoRecordTimeLess = true;
+       this.recordCustomResponse = new CustomResponse( 'ERROR', 'Record Video length must be greater than 10 seconds', true );
+      } else {
+       this.videoRecordTimeLess = false;
       try{
         this.RecordSave = true;
         this.saveVideo = false;
@@ -357,6 +364,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.xtremandLogger.errorPage(error);
              } );
        }catch(error) { this.xtremandLogger.error('Error in upload video, uploadRecordedVideo method'+error);}
+       }
     }
     removeRecordVideo() {
        try{
@@ -958,7 +966,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     linkType: 'direct',
                     multiselect: true,
                     extensions: ['.csv','.jpg', '.cvs', '.gif','.html','.pdf','.png','.ppt','.pptx' ,'.txt' ,'.xls', '.xlsx', '.zip', '.xml', '.sdf', '.key', '.tar','.sdf', '.key','.xlr', '.pct', '.indd', '.ai', '.eps', '.ps', '.svg', '.app', '.apk', '.b', '.exe', '.bat', '.jar', '.7z','.kmz','.rpm','.zipx', '.hqx','.apk','.dat', '.sitx','.url','.webp', '.gz','.kml','.pps',
-                    '.tff', '.deb', '.dxf','.rar','.gpx'],
+                    '.tff', '.deb', '.dxf','.rar','.gpx','.log'],
                 };
                 Dropbox.choose(options);
             }

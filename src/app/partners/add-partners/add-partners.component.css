@@ -17,3 +17,17 @@
 .white-space-transform{
 	   white-space: nowrap;
 }
+.mr8{
+	margin-right: 20px !important;
+}
+#customWidth{
+	width: 53%;
+}
+.danger{
+	color:red;
+}
+
+.img-cloud{
+	width: 100% !important;
+	height: auto !important;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
@@ -11,16 +11,23 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { environment } from 'environments/environment';
+import { Pagination } from '../../core/models/pagination';
+import { PagerService } from '../../core/services/pager.service';
+import {FormService} from '../../forms/services/form.service';
+import { SortOption } from '../../core/models/sort-option';
+import { CustomResponse } from '../../common/models/custom-response';
+import { UtilService } from '../../core/services/util.service';
 declare var BeePlugin,swal,$:any;
 
 @Component({
   selector: 'app-create-template',
   templateUrl: './create-template.component.html',
   styleUrls: ['./create-template.component.css'],
-  providers :[EmailTemplate,HttpRequestLoader]
+  providers :[EmailTemplate,HttpRequestLoader,FormService,Pagination,SortOption]
 })
 export class CreateTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
+    formsLoader:HttpRequestLoader = new HttpRequestLoader();
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     loggedInUserId = 0;
     companyProfileImages:string[]=[];
@@ -36,6 +43,10 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     loadTemplate = false;
     isAdd:boolean;
     isMinTimeOver:boolean = false;
+    pagination:Pagination = new Pagination();
+    formsError:boolean = false;
+    customResponse: CustomResponse = new CustomResponse();
+
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
     console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);
@@ -93,6 +104,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         var save = function( jsonContent: string, htmlContent: string ) {
             self.emailTemplate = new EmailTemplate();
             self.emailTemplate.body = htmlContent;
+            console.log(self.emailTemplate.body);
             self.emailTemplate.jsonBody = jsonContent;
             if ( emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.videoGif ) < 0 ) {
@@ -100,22 +112,26 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     return false;
                 }
             }
-            if ( emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate ) {
+            if ( emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.coBraningImage ) < 0 ) {
-                    swal( "", "Whoops! We’re unable to save this template because you deleted the co-branding logo. You’ll need to select a new email template and start over.", "error" );
+                    swal("", "Whoops! We’re unable to save this template because you deleted the co-branding logo. You’ll need to select a new email template and start over.", "error" );
                     return false;
                 }
             }
+            
+            /************ Below code for event campaign merge tags required condition auther: Naresh **************/
+            
+            /*********** For now commenting the merge tags required code ***********/
 
-            if ( emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
+       /*  if ( emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.eventTitle ) < 0 ) {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_title}} merge tag.", "error" );
                     return false;
                 }
-                /* if(jsonContent.indexOf(self.eventDescription)< 0){
+                 if(jsonContent.indexOf(self.eventDescription)< 0){
                            swal("","Whoops! We’re unable to save this template because you deleted the {{event_description}} merge tag.","error");
                            return false;
-                      }*/
+                      }
                 if ( jsonContent.indexOf( self.eventStartTime ) < 0 ) {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_start_time}} merge tag.", "error" );
                     return false;
@@ -129,7 +145,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     swal( "", "Whoops! We’re unable to save this template because you deleted the {{address}} merge tag.", "error" );
                     return false;
                 }
-            }
+            }*/
 
             if ( !isDefaultTemplate ) {
                 var buttons = $( '<div>' )
@@ -214,10 +230,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
         mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
         mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
-
-        if ( mergeTags.length === 5 && ( this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) ) {
+        mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
+        /*if(this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate || this.emailTemplateService.emailTemplate.regularCoBrandingTemplate
+            ||this.emailTemplateService.emailTemplate.videoCoBrandingTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate){
+            mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
+        }*/
+        if (this.emailTemplateService.emailTemplate.beeEventTemplate || this.emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
             mergeTags.push( { name: 'Event Title', value: '{{event_title}}' } );
-            mergeTags.push( { name: 'Event Strat Time', value: '{{event_start_time}}' } );
+            mergeTags.push( { name: 'Event Start Time', value: '{{event_start_time}}' } );
             mergeTags.push( { name: 'Event End Time', value: '{{event_end_time}}' } );
             /* mergeTags.push( { name: 'Event Description', value: '{{event_description}}' });*/
             mergeTags.push( { name: 'Address', value: '{{address}}' } );

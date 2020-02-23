@@ -12,9 +12,9 @@ import { Module } from '../models/module';
 import { UserToken } from '../models/user-token';
 import { UtilService } from '../services/util.service';
 import { environment } from '../../../environments/environment';
+declare var swal,require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
-declare var swal,require: any;
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 
 @Injectable()
@@ -49,20 +49,27 @@ export class AuthenticationService {
     enableLeads = false;
     isCompanyPartner = false;
     isShowContact = false;
-    
+
+    isShowForms = false;
+
     clientId: any;
     clientSecret: any;
     imagesHost: any;
     superiorId:number =0 ;
-    
+    formAlias: any;
+    isFromRsvpPage = false;
+    formValues = [];
+    isPartnerRsvp = false;
+    logedInCustomerCompanyNeme: string;
+
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;
         this.APP_URL = this.envService.CLIENT_URL;
         this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
-        
+
         this.MEDIA_URL = this.SERVER_URL + 'vod/';
         this.SHARE_URL = this.SERVER_URL + 'embed/';
-        
+
         this.clientId = this.envService.clientId;
         this.clientSecret = this.envService.clientSecret;
         this.imagesHost = this.envService.imagesHost;
@@ -103,7 +110,9 @@ export class AuthenticationService {
                         'refreshToken': this.map.refresh_token,
                         'expiresIn': this.map.expires_in,
                         'hasCompany': res.json().hasCompany,
-                        'roles': res.json().roles
+                        'roles': res.json().roles,
+                        'campaignAccessDto':res.json().campaignAccessDto,
+                        'logedInCustomerCompanyNeme':res.json().companyName
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
@@ -111,6 +120,7 @@ export class AuthenticationService {
                     this.expires_in = this.map.expires_in;
                     this.user = res.json();
                     this.userProfile = res.json();
+                    this.logedInCustomerCompanyNeme =res.json().companyName;
                 }));
     }
     getUserByUserName(userName: string) {
@@ -124,7 +134,7 @@ export class AuthenticationService {
             .catch((error: any) => { return error; });
     }
 
- 
+
     getUserId(): number {
         try{
         let userId;
@@ -169,7 +179,7 @@ export class AuthenticationService {
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole)>-1;
         const isPartner =  roleNames.indexOf(this.roleName.companyPartnerRole)>-1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole)>-1;
-       /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 && 
+       /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
         (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if(roleNames.length===1){   return "User";
         } else {
@@ -206,14 +216,14 @@ export class AuthenticationService {
             }else{
                 return false;
             }
-        
+
       }catch(error){
         this.xtremandLogger.log('error'+error);
       }
     */
       return this.loggedInUserRole=="Partner" && this.isPartnerTeamMember==false;
     }
-    
+
     isOnlyUser(){
         try{
           const roleNames = this.getRoles();
@@ -325,7 +335,7 @@ export class AuthenticationService {
          }
        } catch(error){  this.xtremandLogger.log('error'+error);}
      }
-    
+
     hasAllAccess() {
         try{
         const roles = this.getRoles();
@@ -338,7 +348,7 @@ export class AuthenticationService {
        }
        }catch(error){console.log('error'+error);}
      }
-    
+
     logout(): void {
         this.xtremandLogger.log('Logout');
         // clear token remove user from local storage to log user out
@@ -347,6 +357,7 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
         localStorage.removeItem("campaignRouter");
         localStorage.removeItem("superiorId");
+        localStorage.removeItem("logedInCustomerCompanyNeme");
         localStorage.clear();
         this.utilService.topnavBareLoading = false;
         this.isCompanyAdded = false;
@@ -363,7 +374,14 @@ export class AuthenticationService {
         module.isCompanyPartner = false;
         module.hasSocialStatusRole = false;
         module.isVendor = false;
+
+        module.hasFormAccess = false;
+        module.hasLandingPageAccess = false;
+        module.hasPartnerLandingPageAccess = false;
+        module.hasLandingPageCampaignAccess = false;
+
         module.isAddingPartnersAccess = false;
+
         this.isAddedByVendor = false;
         this.isPartnerTeamMember = false;
         this.loggedInUserRole = "";
@@ -398,15 +416,37 @@ export class AuthenticationService {
         return userId;
     }
 
-   
-    
+    getModulesByUserId(){
+        let userId = this.getUserId();
+        console.log(userId);
+        return this.http.get(this.REST_URL + 'module/getAvailableModules/'+userId+'?access_token=' + this.access_token)
+        .map(this.extractData)
+        .catch(this.handleError);
+        }
+
+
     connect() {
-        let url = this.REST_URL + "socket";
-        let socket = new SockJs( url );
+        let url = this.REST_URL + "socket";//`http://release.xamp.io/websocket-backend-example/socket`
+        let socket = new SockJs(url);
         let stompClient = Stomp.over( socket );
         return stompClient;
     }
-    
+     getSMSServiceModule(userId: number) {
+        return this.http.get(this.REST_URL + 'admin/getSMSServiceModule/' + userId + '?access_token=' + this.access_token)
+            .map((res: Response) => { return res.json(); })
+            .catch((error: any) => { return error; });
+    }
+    getSamlSecurityAlias(alias){
+      return this.http.get(this.REST_URL + 'saml/sso/getUserName/'+alias)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+    }
+    getSamlsecurityAccessToken(userEmail: any) {
+      return this.http.get(this.REST_URL + 'saml/sso/at?userName='+userEmail)
+          .map((res: Response) => { return res.json(); })
+          .catch((error: any) => { return error; });
+    }
+
     extractData( res: Response ) {
         let body = res.json();
         console.log( body );
@@ -415,5 +455,5 @@ export class AuthenticationService {
 
     handleError( error: any ) {
         return Observable.throw( error );
-    } 
+    }
 }

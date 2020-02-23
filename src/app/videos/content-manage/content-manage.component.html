@@ -29,8 +29,8 @@
 											<button type="button" class="btn btn-danger" style="float:left"	*ngIf="selectedFileIds?.length>1" (click)="delete()">Delete</button>
 										</div>
 										<div class='col-xs-0 col-sm-3 col-md-3'	style="z-index: 99;">
-                      <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                      <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                      <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                      <span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                     </div>
                     <div class="col-sm-3 col-md-3 col-xs-12 p0">
                     <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -111,7 +111,6 @@
                    </div>
 									</div>
 								</section>
-
 								<!-- -List View -->
 								<section [hidden]="isListView">
 									<ul class="content__list"
@@ -174,7 +173,8 @@
                       </div>
 									</div>
                 </section>
-                <section>
+              </div>
+              <section>
                 <ul *ngIf="pager.pages && pager.pages.length"  class="pagination">
                 <li [ngClass]="{disabled:pager.currentPage === 1}"><a  (click)="setPage(1)">First</a></li>
                 <li [ngClass]="{disabled:pager.currentPage === 1}"><a (click)="setPage(pager.currentPage - 1)">Previous</a></li>
@@ -189,12 +189,11 @@
               </ul>
               <select class="form-control" style="cursor: pointer; float: right;width:6%;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
                   <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-                  <option *ngIf="paginatedList.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
-                  <option *ngIf="paginatedList.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
-                  <option *ngIf="paginatedList.length>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
+                  <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>
+                  <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[2]"> {{numberPerPage[2].name}}</option>
+                  <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[3]"> {{numberPerPage[3].name}}</option>
                 </select>
                 </section>
-							</div>
 						</div>
 					</div>
 				</div>

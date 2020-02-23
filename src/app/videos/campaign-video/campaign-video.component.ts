@@ -206,16 +206,24 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             checkVideoTag = 'default';
                             document.getElementById('para').innerHTML = this.templatehtml;
                         }
-                        else if (updatedBody.includes('src="https://xamp.io/vod/images/xtremand-video.gif"')) {
+                        else if (updatedBody.includes('src="https://xamp.io/vod/images/xtremand-video.gif"') || updatedBody.includes('src="https://release.xamp.io/vod/images/xtremand-video.gif"')) {
                             this.templateName = 'beeTemplate';
                             updatedBody = this.replaceUpdateBody(updatedBody);
                             updatedBody = updatedBody.replace('<a href="https://dummyurl.com"', 'javascript:void(0)');
+                            
+                            
+                            updatedBody = updatedBody.replace('src="https://release.xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
+                                    '<div id="overlay-logo-bee" style="position: absolute;z-index: 9;"><a href='+this.logoLink+' target="_blank" >'+
+                                    '<img id="image" style="position:absolute;top:10px;float: right;left: 440px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            
+                            
                             updatedBody = updatedBody.replace('src="https://xamp.io/vod/images/xtremand-video.gif"', '></a><div id="newPlayerVideo">'+
                             '<div id="overlay-logo-bee" style="position: absolute;z-index: 9;"><a href='+this.logoLink+' target="_blank" >'+
-                            '<img id="image" style="position:absolute;top:10px;float: right;left: 413px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
+                            '<img id="image" style="position:absolute;top:10px;float: right;left: 440px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank" tabindex="-1">', '');
+                            updatedBody = updatedBody.replace('javascript:void(0) target="_blank" style="outline:none" tabindex="-1">', '');
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             checkVideoTag = 'beeTemplate';
@@ -230,6 +238,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                             '<img id="image" style="position:relative;top:10px;float: right;right: 10px;width:63px;z-index:9" src='+this.authenticationService.MEDIA_URL + this.logoImageUrlPath+'></a></div></div> <a ');
                             updatedBody = updatedBody.replace("Image", '');
                             updatedBody = updatedBody.replace('javascript:void(0) target="_blank">', '');
+                            updatedBody = updatedBody.replace('javascript:void(0) target="_blank" style="outline:none" tabindex="-1">', '');
                             this.templatehtml = updatedBody;
                             console.log(this.templatehtml);
                             checkVideoTag = 'beeTemplate';
@@ -371,7 +380,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         $('.h-video').remove();
         this.videoUtilService.player360VideoJsFiles();
         this.videoUtilService.video360withm3u8();
-        const str = '<video id=videoId poster=' + this.posterImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" controls ></video>';
+        const str = '<video id=videoId poster=' + this.posterImagePath + ' class="video-js vjs-default-skin" crossorigin="anonymous" autoplay controls ></video>';
         $('#newPlayerVideo').append(str);
         this.videoUrl = this.campaignVideoFile.videoPath;
         this.videoUrl = this.videoUrl.substring(0, this.videoUrl.lastIndexOf('.'));
@@ -385,7 +394,7 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
         const selfPanorama = this;
         const player = videojs('videoId', {
              "controls": true,
-           //  "autoplay": false,
+             "autoplay": true,
              "preload": "auto",
              "customControlsOnMobile": true,
              "nativeControlsForTouch": true
@@ -450,7 +459,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                     selfPanorama.videoFileService.pauseAction = false;
                     selfPanorama.xtremandLog.startDuration = 0;
                     selfPanorama.xtremandLog.stopDuration = 0;
+                    player.play();
                     this.play();
+
                     $('.video-js .vjs-control-bar .vjs-VR-control').css('cssText', 'color:' + selfPanorama.campaignVideoFile.playerColor + '!important');
                 });
                 player.on('play', function () {

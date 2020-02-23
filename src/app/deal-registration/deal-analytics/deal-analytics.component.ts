@@ -148,24 +148,24 @@ export class DealAnalyticsComponent implements OnInit
   {
     try
     {
-     
+
       this.loggedInUserId = this.authenticationService.getUserId();
       this.campaign = new Campaign();
 
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
- 
+
   ngOnInit()
   {
-   
+
 
     const object = {
       "campaignId": this.selectedcampaign.campaignId,
       "userId": this.lead.id,
       "emailId": this.lead.emailId
     }
-   
-   
+
+
 
     this.mainLoader = true;
     this.dealRegService.getDealById(this.dealId,this.loggedInUserId).subscribe(deal =>
@@ -173,8 +173,8 @@ export class DealAnalyticsComponent implements OnInit
       this.deal = deal.data;
       this.campaignId = this.deal.campaignId;
       const obj = { 'campaignId': this.deal.campaignId };
-     
-     
+
+
       this.campaignService.getCampaignById(obj).subscribe(campaign =>
       {
         this.campaign = campaign;
@@ -184,14 +184,14 @@ export class DealAnalyticsComponent implements OnInit
         this.userTimeline(object);
         this.dealRegService.getDealCreatedBy(this.deal.createdBy).subscribe(user =>
           {
-    
+
             this.user = user;
-          
-              this.listEmailLogsByCampaignAndUser(this.campaign.campaignId,this.lead.id ); 
-              
+
+              this.listEmailLogsByCampaignAndUser(this.campaign.campaignId,this.lead.id );
+
           })
       })
-      
+
       this.dealRegService.getDealCreatedBy(this.deal.leadId).subscribe(lead =>
       {
         console.log(lead)
@@ -212,7 +212,7 @@ export class DealAnalyticsComponent implements OnInit
 
   }
 
-  
+
   getCampaignViewsReportDurationWise(campaignId: number)
   {
     try
@@ -243,14 +243,14 @@ export class DealAnalyticsComponent implements OnInit
         .subscribe(
           data =>
           {
-          
+
             this.campaignReport.emailSentCount = data.emails_sent_count;
             this.loading = false;
           },
           error => console.log(error),
           () =>
           {
-            
+
           }
         )
     } catch (error) { this.xtremandLogger.error('error' + error); }
@@ -284,7 +284,7 @@ export class DealAnalyticsComponent implements OnInit
           () => console.log());
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
-  
+
 
 
   getEmailLogCountByCampaign(campaignId: number)
@@ -292,12 +292,12 @@ export class DealAnalyticsComponent implements OnInit
     try
     {
       this.loading = true;
-     
+
       this.dealRegService.getEmailLogCountByCampaignAndUser(campaignId,this.lead.id)
         .subscribe(
           data =>
           {
-           
+
             this.campaignReport.emailOpenCount = data["email_opened_count"];
             this.campaignReport.emailClickedCount = data["email_clicked_count"];
             this.loading = false;
@@ -381,7 +381,7 @@ export class DealAnalyticsComponent implements OnInit
         .subscribe(
           data =>
           {
-           
+
             this.campaignReport.emailLogs = data;
             this.campaignReport.emailActionType = actionType;
             $('#emailActionListModal').modal();
@@ -460,7 +460,7 @@ export class DealAnalyticsComponent implements OnInit
            }
         });
 
-       
+
       }
       this.loading = false;
     } catch (error) { this.xtremandLogger.error('Error in count' + error); }
@@ -475,7 +475,7 @@ export class DealAnalyticsComponent implements OnInit
       this.redistributedAccountsBySelectedUserId = [];
       this.listEmailLogsByCampaignAndUser(campaignViews.campaignId, campaignViews.userId);
       let campaignId ;
-     
+
       this.getTotalTimeSpentOfCampaigns(this.lead.id, this.campaign.campaignId);
       if (this.campaignType === 'EVENT' && this.isChannelCampaign)
       {
@@ -493,9 +493,9 @@ export class DealAnalyticsComponent implements OnInit
           )
         )
       }
-      
+
       this.userCampaignReport.totalUniqueWatchCount = campaignViews.viewsCount;
-      
+
     } catch (error) { this.xtremandLogger.error(error); }
   }
 
@@ -504,13 +504,24 @@ export class DealAnalyticsComponent implements OnInit
   {
     if (campaignViews.userId != null && campaignViews.campaignId != null)
     {
+
       this.dealRegService.getDeal(campaignViews.campaignId, campaignViews.userId).subscribe(data =>
       {
         this.dealId = data;
-        if (data == -1)
+        if (data == -1){
           this.dealButtonText = "Register Lead"
-        else
-          this.dealButtonText = "Update Lead"
+        }else{
+          this.dealRegService.getDealById(data,campaignViews.userId).subscribe(response=>{
+
+            if(response.data.deal){
+              this.dealButtonText = "Preview Deal";
+            } else {
+              this.dealButtonText = "Update Lead"
+            }
+
+          })
+        }
+
       })
     }
   }
@@ -522,12 +533,12 @@ export class DealAnalyticsComponent implements OnInit
     {
       console.log(userId + "====."+ campaignId)
       this.loading = true;
-      
+
 
       this.campaignService.getTotalTimeSpentofCamapaigns(userId, campaignId)
         .subscribe(data =>
         {
-       
+
           this.totalTimeSpent = data;   // data is coming as empty object ,, need to handle it
           this.loading = false;
         },
@@ -592,7 +603,7 @@ export class DealAnalyticsComponent implements OnInit
               this.isDataShare = true;
             }
             this.campaingContactLists = data.userLists;
-          
+
             this.isPartnerCampaign = this.campaign.channelCampaign ? '(PARTNER)' : '';
             this.loading = false;
           },
@@ -671,7 +682,7 @@ export class DealAnalyticsComponent implements OnInit
         .subscribe(
           data =>
           {
-          
+
             this.campaignReport.totalYesCount = data.YES;
             this.campaignReport.totalMayBeCount = data.MAYBE;
             this.campaignReport.totalNoCount = data.NO;
@@ -699,7 +710,7 @@ export class DealAnalyticsComponent implements OnInit
         .subscribe(
           data =>
           {
-            
+
             this.campaignReport.partnersYesCount = data.YES;
             this.campaignReport.partnersMayBeCount = data.MAYBE;
             this.campaignReport.partnersNoCount = data.NO;
@@ -748,7 +759,7 @@ export class DealAnalyticsComponent implements OnInit
         .subscribe(
           data =>
           {
-           
+
             this.campaignReport.redistributionTotalYesCount = data.YES;
             this.campaignReport.redistributionTotalMayBeCount = data.MAYBE;
             this.campaignReport.redistributionTotalNoCount = data.NO;
@@ -757,7 +768,7 @@ export class DealAnalyticsComponent implements OnInit
             this.campaignReport.redistributionTotalInvitiesCount = campaignViews.rsvpMap.totalInvities;
             this.campaignReport.redistributionTotalAdditionalCount = data.additionalCount;
             this.rsvpDetailType = 'reDistribution';
-           
+
             this.loading = false;
           },
           error => this.xtremandLogger.error(error),
@@ -769,7 +780,7 @@ export class DealAnalyticsComponent implements OnInit
     }
   }
 
-  
+
 
   emailActionTotalList(campaignId: number, actionType: string, totalRecords: number)
   {
@@ -812,16 +823,16 @@ export class DealAnalyticsComponent implements OnInit
     } catch (error) { this.xtremandLogger.error('error' + error); }
   }
 
-  
-  
+
+
 
   closeModal(event: any)
   {
-   
+
     this.videoFile = undefined;
   }
-  
- 
+
+
   getSortedResult(campaignId: number, event: any)
   {
     this.emailActionListPagination = this.utilService.sortOptionValues(event, this.emailActionListPagination);
@@ -863,8 +874,8 @@ export class DealAnalyticsComponent implements OnInit
 
   ngOnDestroy()
   {
-   
-   
+
+
   }
 
   showDealRegistrationForm()
@@ -877,7 +888,7 @@ export class DealAnalyticsComponent implements OnInit
   {
     this.isDealRegistration = false;
     this.isTimeLineView = true;
-   
+
   }
 
   resetTopNavBarValue(isDealAnalytics)

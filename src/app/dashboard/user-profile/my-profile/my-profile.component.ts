@@ -1,6 +1,6 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
-import { FormGroup,FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild,Renderer } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { matchingPasswords, noWhiteSpaceValidator } from '../../../form-validator';
 import { UserService } from '../../../core/services/user.service';
@@ -24,6 +24,15 @@ import { DealForms } from '../../../deal-registration/models/deal-forms';
 import { DealType } from '../../../deal-registration/models/deal-type';
 import { DealRegistrationService } from '../../../deal-registration/services/deal-registration.service';
 import { DashboardService } from '../../dashboard.service';
+import { HubSpotService } from 'app/core/services/hubspot.service';
+import { GdprSetting } from '../../models/gdpr-setting';
+import { HttpRequestLoader } from '../../../core/models/http-request-loader';
+import { IntegrationService } from 'app/core/services/integration.service';
+import { Category } from '../../models/category';
+import { Pagination } from 'app/core/models/pagination';
+import { SortOption } from '../../../core/models/sort-option';
+import { PagerService } from '../../../core/services/pager.service';
+
 declare var swal, $, videojs: any;
 
 @Component({
@@ -32,7 +41,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames],
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -76,93 +85,125 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     hasClientErrors = false;
 
-    dealForms:DealForms[] = [];
+    dealForms: DealForms[] = [];
     form = new DealForms();
-    questions:DealQuestions[] =[];
-    question:DealQuestions;
-    dealtype:DealType;
-    dealtypes:DealType[] = [];
+    questions: DealQuestions[] = [];
+    question: DealQuestions;
+    dealtype: DealType;
+    dealtypes: DealType[] = [];
     formSubmiteState = true;
     dealSubmiteState = true;
     submitButtonText = "Save Form";
     dealButtonText = "Save Deals";
-    validateForm:boolean;
-    selectedForm:DealForms;
-    defaultQuestions:string[] = ["Campaign Name","Company","First Name","Last Name","Title ","Email ","Phone Number","Deal Type","Website","Lead Address",
-        "Lead City","Lead State/Province","Lead Postal Code","Lead Country","Opportunity Amount","Estimated Close date"];
-    isListFormSection:boolean;
+    validateForm: boolean;
+    selectedForm: DealForms;
+    defaultQuestions: string[] = ["Campaign Name", "Company", "First Name", "Last Name", "Title ", "Email ", "Phone Number", "Deal Type", "Website", "Lead Address",
+        "Lead City", "Lead State/Province", "Lead Postal Code", "Lead Country", "Opportunity Amount", "Estimated Close date"];
+    isListFormSection: boolean;
     customResponseForm: CustomResponse = new CustomResponse();
 
 
     circleCropperSettings: CropperSettings;
-    circleData:any;
+    circleData: any;
     cropRounded = false;
     loadingcrop = false;
     errorUploadCropper = false;
     integrationTabIndex = 0;
-    @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
+    @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
     integrateRibbonText: string;
+
+    hubSpotRibbonText: string;
+    hubSpotRedirectURL: string;
+    activeTabName: string = "";
+    sfRibbonText: string;
+    sfRedirectURL: string;
+    /*****************GDPR************************** */
+    gdprSetting: GdprSetting = new GdprSetting();
+    gdprSettingLoaded = false;
+    category: Category = new Category();
+    categoryPagination: Pagination = new Pagination();
+    categorySortOption: SortOption = new SortOption();
+    isAddCategory = false;
+    categoryModalTitle = "Add a New Category";
+    formErrorClass = "form-group form-error";
+    defaultFormClass = "form-group";
+    categoryNameErrorMessage = "";
+    requiredMessage = "Required";
+    duplicateLabelMessage = "Already exists";
+    addCategoryLoader: HttpRequestLoader = new HttpRequestLoader();
+    categoryResponse: CustomResponse = new CustomResponse();
+    existingCategoryNames: string[] = [];
+    existingCategoryName: any;
+    categoyButtonSubmitText = "Save";
+    categoryNames:string[] = [];
+    isDeleteCategory: any;
+    selectedCategoryIdForTransferItems = 0;
+    exisitingCategories = new Array<Category>();
+
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
-        public regularExpressions: RegularExpressions,public route:ActivatedRoute, public utilService:UtilService,public dealRegSevice:DealRegistrationService,private dashBoardServiece:DashboardService) {
-     //   this.customConstructorCall();
+        public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
+        private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
+            PagerService,private renderer:Renderer) {
+                this.referenceService.renderer = this.renderer;
+        //   this.customConstructorCall();
     }
     cropperSettings() {
-        this.circleCropperSettings = this.utilService.cropSettings( this.circleCropperSettings,200,156,200,true);
+        this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
         this.circleCropperSettings.noFileInput = true;
         this.circleData = {};
     }
     isEmpty(obj) {
         return Object.keys(obj).length === 0;
     }
-    closeModal(){
-      this.cropRounded = !this.cropRounded;
-      this.circleData = {};
+    closeModal() {
+        this.cropRounded = !this.cropRounded;
+        this.circleData = {};
     }
-    fileChangeEvent(){ this.cropRounded = false; $('#cropProfileImage').modal('show'); }
-    uploadProfileImage(){
-      this.loadingcrop = true;
-      let fileObj:any;
-      fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
-      fileObj = this.utilService.blobToFile(fileObj);
-      console.log(fileObj);
-      this.fileUploadCode(fileObj);
+    fileChangeEvent() { this.cropRounded = false; $('#cropProfileImage').modal('show'); }
+    uploadProfileImage() {
+        this.loadingcrop = true;
+        let fileObj: any;
+        fileObj = this.utilService.convertBase64ToFileObject(this.circleData.image);
+        fileObj = this.utilService.blobToFile(fileObj);
+        console.log(fileObj);
+        this.fileUploadCode(fileObj);
     }
-    fileUploadCode(fileObj:File){
-      this.userService.saveUserProfileLogo(fileObj).subscribe(
-        (response: any) => {
-          const imageFilePath = response;
-          this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
-          this.profileUploadSuccess = true;
-          this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
-          this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
-          this.loadingcrop = false;
-          this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED,true);
-          $('#cropProfileImage').modal('hide');
-          this.closeModal();
-        },
-        (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true); },
-        ()=>{ this.loadingcrop = false;  $('#cropProfileImage').modal('hide');});
+    fileUploadCode(fileObj: File) {
+        this.userService.saveUserProfileLogo(fileObj).subscribe(
+            (response: any) => {
+                const imageFilePath = response;
+                this.userProfileImage = this.parentModel.profilePicutrePath = imageFilePath['message'];
+                this.profileUploadSuccess = true;
+                this.referenceService.topNavBarUserDetails.profilePicutrePath = imageFilePath['message'];
+                this.authenticationService.userProfile.profileImagePath = imageFilePath['message'];
+                this.loadingcrop = false;
+                this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_PIC_UPDATED, true);
+                $('#cropProfileImage').modal('hide');
+                this.closeModal();
+            },
+            (error) => { console.log(error); $('#cropProfileImage').modal('hide'); this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true); },
+            () => { this.loadingcrop = false; $('#cropProfileImage').modal('hide'); });
     }
-    fileChangeListener($event,cropperComp: ImageCropperComponent) {
-      this.cropper = cropperComp;
-      const image:any = new Image();
-      const file:File = $event.target.files[0];
-      const isSupportfile: any = file.type;
-      if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-        this.errorUploadCropper = false;
-        const myReader:FileReader = new FileReader();
-        const that = this;
-        myReader.onloadend = function (loadEvent:any) {
-            image.src = loadEvent.target.result;
-            that.cropper.setImage(image);
-        };
-        myReader.readAsDataURL(file);
-       } else {  this.errorUploadCropper = true;}
-      }
+    fileChangeListener($event, cropperComp: ImageCropperComponent) {
+        this.cropper = cropperComp;
+        const image: any = new Image();
+        const file: File = $event.target.files[0];
+        const isSupportfile: any = file.type;
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+            this.errorUploadCropper = false;
+            const myReader: FileReader = new FileReader();
+            const that = this;
+            myReader.onloadend = function (loadEvent: any) {
+                image.src = loadEvent.target.result;
+                that.cropper.setImage(image);
+            };
+            myReader.readAsDataURL(file);
+        } else { this.errorUploadCropper = true; }
+    }
     videojsCall() {
-        this.customResponse =  new CustomResponse();
+        this.customResponse = new CustomResponse();
         if (!this.videoJSplayer && !this.isOnlyPartnerRole) {
             const self = this;
             const overrideNativeValue = this.referenceService.getBrowserInfoForNativeSet();
@@ -205,20 +246,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             this.defaultVideoSettings();
             this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-            if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers();}
-            setTimeout( ()=> {this.videoJSplayer.play(); this.videoJSplayer.pause();}, 1);
+            if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
+            setTimeout(() => { this.videoJSplayer.play(); this.videoJSplayer.pause(); }, 1);
         } else {
             this.logger.log('you already initialized the videojs');
         }
     }
-    imageUpload(event){ $('#'+event).click();}
-    clearCustomResponse(){ this.customResponse = new CustomResponse(); }
-    errorHandler(event:any){ event.target.src = 'assets/images/icon-user-default.png';}
-    customConstructorCall(){
-      if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) {this.router.navigateByUrl(this.referenceService.homeRouter);}
-          try{
-            if ( this.authenticationService.isSuperAdmin() ) { this.userData = this.authenticationService.venorMyProfileReport;
-            } else { this.userData = this.authenticationService.userProfile;
+    imageUpload(event) { $('#' + event).click(); }
+    clearCustomResponse() { this.customResponse = new CustomResponse(); }
+    errorHandler(event: any) { event.target.src = 'assets/images/icon-user-default.png'; }
+    customConstructorCall() {
+        if (this.isEmpty(this.authenticationService.userProfile.roles) || !this.authenticationService.userProfile.profileImagePath) { this.router.navigateByUrl(this.referenceService.homeRouter); }
+        try {
+            if (this.authenticationService.isSuperAdmin()) {
+                this.userData = this.authenticationService.venorMyProfileReport;
+            } else {
+                this.userData = this.authenticationService.userProfile;
             }
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.getUserByUserName(this.currentUser.userName);
@@ -231,8 +274,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loggedInUserId = this.authenticationService.getUserId();
             this.hasAllAccess = this.referenceService.hasAllAccess();
             this.hasVideoRole = this.authenticationService.hasVideoRole();
-            if(this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()){
-              this.hasVideoRole = false;
+            if (this.authenticationService.isOrgAdminPartner() || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor() || this.authenticationService.isOrgAdmin()) {
+                this.hasVideoRole = false;
             }
             this.hasCompany = this.authenticationService.user.hasCompany;
             this.callActionSwitch.size = 'normal';
@@ -249,7 +292,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             this.initializeForm();
             this.checkIntegrations();
-        }catch(error){
+        } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "constructor()", error);
         }
@@ -257,20 +300,26 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         try {
+            if (this.referenceService.integrationCallBackStatus == true) {
+                this.activeTabName = 'integrations';
+            } else {
+                this.activeTabName = 'personalInfo';
+            }
             this.customConstructorCall();
             console.log(this.authenticationService.user);
             this.geoLocation();
             this.videoUtilService.normalVideoJsFiles();
             // const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             // this.getUserByUserName(currentUser.userName);
-            if(!this.referenceService.isMobileScreenSize()){
-              this.isGridView(this.authenticationService.getUserId()); }
+            if (!this.referenceService.isMobileScreenSize()) {
+                this.isGridView(this.authenticationService.getUserId());
+            }
             else { this.referenceService.isGridView = true; }
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
             this.authenticationService.isOnlyPartner();
-            if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length>1 && this.hasCompany)) {
+            if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
                 if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
                     this.getVideoDefaultSettings();
@@ -293,36 +342,36 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit() {
-        try{
+        try {
             if (this.currentUser.roles.length > 1 && this.authenticationService.hasCompany() && !this.authenticationService.isOnlyPartner()) {
                 this.defaultVideoSettings();
-               if(this.referenceService.defaultPlayerSettings !== undefined){
-                if (this.referenceService.defaultPlayerSettings.transparency === null) {
-                   this.referenceService.defaultPlayerSettings.transparency = 100;
-                   this.referenceService.defaultPlayerSettings.controllerColor = '#456';
-                   this.referenceService.defaultPlayerSettings.playerColor = '#879';
-               }
-               this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
-               if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
-               }
-              }
-        }catch(error){
+                if (this.referenceService.defaultPlayerSettings !== undefined) {
+                    if (this.referenceService.defaultPlayerSettings.transparency === null) {
+                        this.referenceService.defaultPlayerSettings.transparency = 100;
+                        this.referenceService.defaultPlayerSettings.controllerColor = '#456';
+                        this.referenceService.defaultPlayerSettings.playerColor = '#879';
+                    }
+                    this.defaulttransperancyControllBar(this.referenceService.defaultPlayerSettings.transparency);
+                    if (!this.referenceService.defaultPlayerSettings.enableVideoController) { this.defaultVideoControllers(); }
+                }
+            }
+        } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngAfterViewInit()", error);
         }
     }
-   getUserByUserName( userName: string ) {
-      try{
-         this.authenticationService.getUserByUserName( userName )
-            .subscribe(
-            data => {
-              this.userData = data;
-              this.authenticationService.userProfile = data;
-            },
-            error => {console.log( error ); this.router.navigate(['/su'])},
-            () => { }
-            );
-        }catch(error){ console.log('error'+error); }
+    getUserByUserName(userName: string) {
+        try {
+            this.authenticationService.getUserByUserName(userName)
+                .subscribe(
+                    data => {
+                        this.userData = data;
+                        this.authenticationService.userProfile = data;
+                    },
+                    error => { console.log(error); this.router.navigate(['/su']) },
+                    () => { }
+                );
+        } catch (error) { console.log('error' + error); }
     }
     updatePassword() {
         this.ngxloading = true;
@@ -333,7 +382,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'userId': this.loggedInUserId
         }
         if (this.updatePasswordForm.value.oldPassword === this.updatePasswordForm.value.newPassword) {
-           this.customResponse = new CustomResponse('ERROR','Your new password cannot be the same as your current password',true);
+            this.customResponse = new CustomResponse('ERROR', 'Your new password cannot be the same as your current password', true);
             this.ngxloading = false;
         } else {
             this.userService.updatePassword(userPassword)
@@ -355,7 +404,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                 }
                             } else if (response.message == "Password Updated Successfully") {
                                 this.ngxloading = false;
-                                this.customResponse = new CustomResponse('SUCCESS',this.properties.PASSWORD_UPDATED,true);
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PASSWORD_UPDATED, true);
                                 this.userData.hasPassword = true;
                                 this.updatePasswordForm.reset();
                             } else {
@@ -409,8 +458,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'newPassword': [null, [Validators.required, Validators.minLength(6), Validators.pattern(passwordRegex)]],
             'confirmNewPassword': [null, [Validators.required]],
         }, {
-                validator: matchingPasswords('newPassword', 'confirmNewPassword')
-            }
+            validator: matchingPasswords('newPassword', 'confirmNewPassword')
+        }
 
         );
 
@@ -483,7 +532,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'mobileNumber': {
             'required': 'Mobile Number required.',
             'minlength': '',
-           /* 'maxlength': 'Mobile should be 10 digit.',*/
+            /* 'maxlength': 'Mobile should be 10 digit.',*/
             'pattern': 'Mobile Numbe should be 10 digits and only contain numbers.'
 
         },
@@ -505,7 +554,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'required': 'About required.',
             'whitespace': 'Invalid Data',
             'minlength': 'description be at least 3 characters long.',
-            'maxlength': 'description cannot be more than 50 characters long.'
+            'maxlength': 'description cannot be more than 250 characters long.'
         },
         'websiteUrl': {
             'required': 'WebsiteUrl required.',
@@ -514,22 +563,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     /*******************Update User Profile*************************************/
-    geoLocation(){
-        try{
-        this.videoFileService.getJSONLocation()
-        .subscribe(
-        (data: any) => {
-            if ( this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined ) {
-                for ( let i = 0; i < this.countryNames.countriesMobileCodes.length; i++ ) {
-                    if ( data.countryCode == this.countryNames.countriesMobileCodes[i].code ) {
-                        this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
-                        break;
-                    }
-                }
-            }
-        } )
-        } catch ( error ) {
-            console.error( error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation" );
+    geoLocation() {
+        try {
+            this.videoFileService.getJSONLocation()
+                .subscribe(
+                    (data: any) => {
+                        if (this.userData.mobileNumber == "" || this.userData.mobileNumber == undefined) {
+                            for (let i = 0; i < this.countryNames.countriesMobileCodes.length; i++) {
+                                if (data.countryCode == this.countryNames.countriesMobileCodes[i].code) {
+                                    this.userData.mobileNumber = this.countryNames.countriesMobileCodes[i].dial_code;
+                                    break;
+                                }
+                            }
+                        }
+                    })
+        } catch (error) {
+            console.error(error, "addcontactOneAttimeModalComponent()", "gettingGeoLocation");
         }
     }
 
@@ -543,11 +592,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'lastName': [this.userData.lastName],
             // 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-           // 'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+            // 'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
             'mobileNumber': [this.userData.mobileNumber],
             'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
-            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
+            'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
             'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
         });
 
@@ -587,8 +636,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.referenceService.goToTop();
         this.ngxloading = true;
 
-        if ( this.userData.mobileNumber ) {
-            if ( this.userData.mobileNumber.length > 6 ) {
+        if (this.userData.mobileNumber) {
+            if (this.userData.mobileNumber.length > 6) {
                 this.updateUserProfileForm.value.mobileNumber = this.userData.mobileNumber;
             } else {
                 this.updateUserProfileForm.value.mobileNumber = ""
@@ -602,7 +651,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         const response = data;
                         const message = response.message;
                         if (message === "User Updated") {
-                            this.customResponse =  new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED,true);
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PROFILE_UPDATED, true);
                             this.userData = this.updateUserProfileForm.value;
                             this.userData.displayName = this.updateUserProfileForm.value.firstName;
                             this.userData.emailId = this.authenticationService.user.emailId;
@@ -663,8 +712,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.valueRange = response.transparency;
                 this.tempControllerColor = response.controllerColor;
                 this.tempPlayerColor = response.playerColor;
-                if(!response.controllerColor && !response.playerColor && !response.transparency) {
-                  this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
+                if (!response.controllerColor && !response.playerColor && !response.transparency) {
+                    this.compControllerColor = '#cccccc'; this.valueRange = 100; this.tempControllerColor = '#cccccc'; this.tempPlayerColor = '#ffffff';
                 }
                 this.logoImageUrlPath = response.brandingLogoUri = response.companyProfile.companyLogoPath;
                 this.logoLink = response.brandingLogoDescUri = response.companyProfile.website;
@@ -673,7 +722,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.videoUtilService.videoTempDefaultSettings = response;
                 }
             },
-            (error:any)=>{ console.log('error'+error); }
+            (error: any) => { console.log('error' + error); }
         );
     }
     enableVideoController(event: any) {
@@ -691,15 +740,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             $('.video-js .vjs-control-bar').hide();
         } else { $('.video-js .vjs-control-bar').show(); }
     }
-    changeControllerColor(event: any, enableVideoController:boolean) {
-         try{
-          this.defaultVideoPlayer.controllerColor = event;
-          this.compControllerColor = event;
-          if(enableVideoController){
-            const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
-            $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-           }
-          } catch(error){ console.log(error); }
+    changeControllerColor(event: any, enableVideoController: boolean) {
+        try {
+            this.defaultVideoPlayer.controllerColor = event;
+            this.compControllerColor = event;
+            if (enableVideoController) {
+                const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+            }
+        } catch (error) { console.log(error); }
     }
     changePlayerColor(event: any) {
         this.defaultVideoPlayer.playerColor = event;
@@ -752,28 +801,28 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } else { $('.video-js .vjs-fullscreen-control').show(); }
     }
     defaultVideoSettings() {
-      if(this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined){
-      console.log('default settings called');
-      console.log(this.referenceService.defaultPlayerSettings);
-      console.log(this.referenceService.defaultPlayerSettings.playerColor);
+        if (this.referenceService.defaultPlayerSettings !== null && this.referenceService.defaultPlayerSettings !== undefined) {
+            console.log('default settings called');
+            console.log(this.referenceService.defaultPlayerSettings);
+            console.log(this.referenceService.defaultPlayerSettings.playerColor);
 
-        if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
-            this.referenceService.defaultPlayerSettings.playerColor = '#454';
-            this.referenceService.defaultPlayerSettings.controllerColor = '#234';
-            this.referenceService.defaultPlayerSettings.transparency = 100;
+            if (this.referenceService.defaultPlayerSettings.playerColor === undefined || this.referenceService.defaultPlayerSettings.playerColor === null) {
+                this.referenceService.defaultPlayerSettings.playerColor = '#454';
+                this.referenceService.defaultPlayerSettings.controllerColor = '#234';
+                this.referenceService.defaultPlayerSettings.transparency = 100;
+            }
+            $('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
+            $('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+            $('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
+            if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
+                const event = '#fbfbfb';
+                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
+            } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
+            if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
+                $('.video-js .vjs-fullscreen-control').hide();
+            } else { $('.video-js .vjs-fullscreen-control').show(); }
+
         }
-        $('.video-js').css('color', this.referenceService.defaultPlayerSettings.playerColor);
-        $('.video-js .vjs-play-progress').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
-        $('.video-js .vjs-volume-level').css('background-color', this.referenceService.defaultPlayerSettings.playerColor);
-        if (this.referenceService.defaultPlayerSettings.controllerColor === '#fff') {
-            const event = '#fbfbfb';
-            $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + event + '!important');
-        } else { $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + this.referenceService.defaultPlayerSettings.controllerColor + '!important'); }
-        if (this.referenceService.defaultPlayerSettings.allowFullscreen === false) {
-            $('.video-js .vjs-fullscreen-control').hide();
-        } else { $('.video-js .vjs-fullscreen-control').show(); }
-
-      }
     }
     UpdatePlayerSettingsValues() {
         this.ngxloading = true;
@@ -781,12 +830,13 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultVideoPlayer.playerColor = this.compPlayerColor;
         this.defaultVideoPlayer.controllerColor = this.compControllerColor;
         this.defaultVideoPlayer.transparency = this.valueRange;
-         this.userService.updatePlayerSettings(this.defaultVideoPlayer)
+        this.userService.updatePlayerSettings(this.defaultVideoPlayer)
             .subscribe((result: any) => {
                 this.ngxloading = false;
                 this.customResponse = new CustomResponse('SUCCESS', this.properties.DEFAULT_PLAYER_SETTINGS, true);
-               if(!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); } },
-                (error:any) => { console.error('error in update player setting api'); }
+                if (!this.authenticationService.isOnlyPartner()) { this.getVideoDefaultSettings(); }
+            },
+                (error: any) => { console.error('error in update player setting api'); }
             );
     }
     resetForm() {
@@ -850,7 +900,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.isGridView(userId)
             .subscribe(
                 data => {
-                    this.callActionSwitch.isGridView = data; },
+                    this.callActionSwitch.isGridView = data;
+                },
                 error => console.log(error),
                 () => { }
             );
@@ -869,7 +920,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.ngxloading = false;
                     console.log(error);
                     this.customResponse = new CustomResponse('ERROR', this.properties.PROCESS_REQUEST_ERROR, true);
-            },
+                },
                 () => { }
             );
     }
@@ -890,7 +941,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     confirmButtonText: 'Yes',
                     showLoaderOnConfirm: true,
                     allowOutsideClick: false,
-                    cancelButtonText : 'No'
+                    cancelButtonText: 'No'
                     /*     preConfirm: () => {
                              if(self.orgAdminCount>1){
                                  $('a').addClass('disabled');
@@ -914,8 +965,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                         swal.close();
 
                     }
-                }, function(dismiss:any) {
-                    console.log('you clicked on option'+dismiss);
+                }, function (dismiss: any) {
+                    console.log('you clicked on option' + dismiss);
                 });
 
             }
@@ -964,39 +1015,42 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Forms section
 
-    initializeForm(){
+    initializeForm() {
+
         this.userService.listForm(this.loggedInUserId).subscribe(result => {
-            this.dealForms = result;  
-            console.log(this.dealForms)
-            if(result[0]){
-                this.form =   result[0]; 
-                this.questions = this.form.campaignDealQuestionDTOs;
-                let index =1;
-                this.questions = this.questions.map(q=>{
+
+            console.log(result)
+            if (result.length > 0) {
+                this.form = result[0];
+                this.questions = result;
+                let index = 1;
+                this.questions = this.questions.map(q => {
                     q.divId = 'question-' + index++;
                     return q;
                 });
-                this.submitButtonText = "Update Form";
-               
-            }else
-                this.submitButtonText = "Save Form";
+                this.submitButtonText = "Update Questions";
+
+            } else {
+                this.questions = [];
+                this.submitButtonText = "Save Questions";
+            }
+
             this.submitBUttonStateChange();
         })
         this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
-                
-            this.dealtypes = dealTypes.data;  
-            
+
+            this.dealtypes = dealTypes.data;
+
         });
     }
 
-    addQuestion()
-    {
+    addQuestion() {
         this.question = new DealQuestions();
         var length;
-        if(this.questions != null && this.questions!= undefined)
+        if (this.questions != null && this.questions != undefined)
             length = this.questions.length;
         else
-             length = 0;
+            length = 0;
         length = length + 1;
         var id = 'question-' + length;
         this.question.divId = id;
@@ -1008,124 +1062,141 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     }
-    remove(i, id)
-    {
+    remove(i, id) {
         if (id)
             console.log(id)
-            console.log(i)
+        console.log(i)
         var index = 1;
 
         this.questions = this.questions.filter(question => question.divId !== 'question-' + i)
-            .map(question =>
-            {
+            .map(question => {
                 question.divId = 'question-' + index++;
                 return question;
             });
-            console.log(this.questions);
-            this.submitBUttonStateChange();
+        console.log(this.questions);
+        this.submitBUttonStateChange();
 
     }
-    validateQuestion(question:DealQuestions){
+    showAlert(i, question) {
+        if (question.id) {
+            this.deleteQuestion(i, question);
+
+        } else {
+            this.remove(i, question.id);
+        }
+    }
+    deleteQuestion(i, question) {
+        try {
+            this.logger.info("Question in sweetAlert() " + question.id);
+            let self = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then(function (myData: any) {
+                console.log("deleteQuestion showAlert then()" + question);
+                self.userService.deleteQuestion(question).subscribe(result => {
+                    console.log(result)
+                    self.remove(i, question.id);
+                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                }, error => console.log(error))
+            }, function (dismiss: any) {
+                console.log('you clicked on option');
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+    validateQuestion(question: DealQuestions) {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
-        if (question.question.length > 0)
-        {
+        if (question.question.length > 0) {
             question.class = successClass;
             question.error = false;
-        } else
-        {
-             question.class = errorClass;
+        } else {
+            question.class = errorClass;
             question.error = true;
         }
         this.submitBUttonStateChange();
     }
-    validateDealForm(form:DealForms){
-        if (form.name.length > 0)
-        {
+    validateDealForm(form: DealForms) {
+        if (form.name.length > 0) {
             this.validateForm = true;
-        } else
-        {
+        } else {
             this.validateForm = false;
         }
         this.submitBUttonStateChange();
     }
-    submitBUttonStateChange(){
+    submitBUttonStateChange() {
         let countForm = 0;
-        if(this.form.name!=null && this.form.name!=undefined && this.form.name.length>0){
-        this.questions.forEach(question =>
-                {
+        this.questions.forEach(question => {
 
-                    if (question.error)
-                        countForm++;
-                })
-                if (countForm > 0)
-                    this.formSubmiteState = false;
-                else
-                    this.formSubmiteState = true;
-        }else{
+            if (question.error)
+                countForm++;
+        })
+        if (countForm > 0 || this.questions.length == 0)
             this.formSubmiteState = false;
-        }
+        else
+            this.formSubmiteState = true;
+
     }
-    saveForm(){
+    saveForm() {
         this.ngxloading = true;
+        let self = this;
+        let data = []
+        this.questions.forEach(question => {
+            const q = new DealQuestions();
+            console.log(self.authenticationService.getUserId())
+            q.question = question.question;
+            if (question.id) {
+                let obj = {
+                    id: question.id,
+                    question: question.question,
+                    updatedBy: self.authenticationService.getUserId()
+                }
+                data.push(obj);
 
-        if(this.form.id == null){
-            this.form.createdBy = this.loggedInUserId;
-            this.questions.forEach(question =>{
-                question.createdBy == this.loggedInUserId;
-            })
-            this.form.campaignDealQuestionDTOs = this.questions;
-            this.userService.saveForm(this.loggedInUserId,this.form).subscribe(result => {
+            } else {
+                let obj = {
+                    question: question.question,
+                    createdBy: self.authenticationService.getUserId()
+                }
+                data.push(obj);
+            }
 
-                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
-                this.userService.listForm(this.loggedInUserId).subscribe(form => {
-                    this.dealForms = form;
-                    if(form[0]){
-                        this.form =   form[0];
-                        this.questions = this.form.campaignDealQuestionDTOs;
-                        this.submitButtonText = "Update Form";
-                        this.ngxloading = false;
-                    }else
-                        this.submitButtonText = "Save Form";
-                        this.ngxloading = false;
-                })
-            })
-        }else{
-            this.form.updatedBy = this.loggedInUserId;
-            this.questions.forEach(question =>{
-                if(question.id != null || question.id != undefined)
-                    question.createdBy == this.loggedInUserId;
-                else
-                    question.updatedBy == this.loggedInUserId;
-            })
-            this.form.campaignDealQuestionDTOs = this.questions;
-            this.userService.updateForm(this.loggedInUserId,this.form).subscribe(result => {
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+        })
 
-            },(error) =>{
-                this.ngxloading = false;
-                this.customResponseForm = new CustomResponse('ERROR', "The questions are already associate with deals", true);
-                this.userService.listForm(this.loggedInUserId).subscribe(form => {
-                    this.dealForms = form;
-                    if(form[0]){
-                        this.form =   form[0];
-                        this.questions = this.form.campaignDealQuestionDTOs;
-                    }
-                });
-            })
-        }
+        this.userService.saveForm(this.authenticationService.getUserId(), data).subscribe(result => {
+
+            this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+            this.initializeForm();
+            // this.userService.listForm(this.loggedInUserId).subscribe(form => {
+            //     this.dealForms = form;
+            //     this.initializeForm();
+
+            //     this.ngxloading = false;
+            // })
+        }, (error: any) => {
+            console.log(error);
+            this.ngxloading = false;
+        }, () => { this.ngxloading = false; });
+
     }
 
     //Deal types
-    addDealtype()
-    {
+    addDealtype() {
         this.dealtype = new DealType();
         var length;
-        if(this.dealtypes != null && this.dealtypes!= undefined)
+        if (this.dealtypes != null && this.dealtypes != undefined)
             length = this.dealtypes.length;
         else
-             length = 0;
+            length = 0;
         length = length + 1;
         var id = 'dealType-' + length;
         this.dealtype.divId = id;
@@ -1134,116 +1205,578 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.dealtypes.push(this.dealtype);
         this.dealTypeButtonStateChange();
-
-
-
     }
-    removeDealType(i, id)
-    {
+
+    deleteDealType(i, dealType) {
+        try {
+            this.logger.info("Deal Type in sweetAlert() " + dealType.id);
+            let self = this;
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to undo this action!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#54a7e9',
+                cancelButtonColor: '#999',
+                confirmButtonText: 'Yes, delete it!'
+
+            }).then(function (myData: any) {
+                console.log("dealType showAlert then()" + dealType);
+                self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
+                    console.log(result)
+                    self.removeDealType(i, dealType.id);
+                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                }, (error) => {
+                    self.ngxloading = false;
+
+                }, () => {
+                    self.dealRegSevice.listDealTypes(self.loggedInUserId).subscribe(dealTypes => {
+
+                        self.dealtypes = dealTypes.data;
+
+                    });
+                })
+            }, function (dismiss: any) {
+                console.log('you clicked on option');
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    removeDealType(i, id) {
+
         if (id)
             console.log(id)
-            console.log(i)
+        console.log(i)
         var index = 1;
 
         this.dealtypes = this.dealtypes.filter(dealtype => dealtype.divId !== 'dealtype-' + i)
-            .map(dealtype =>
-            {
+            .map(dealtype => {
                 dealtype.divId = 'dealtype-' + index++;
                 return dealtype;
             });
-            console.log(this.dealtypes);
-            this.dealTypeButtonStateChange();
+        console.log(this.dealtypes);
+        this.dealTypeButtonStateChange();
 
     }
-    validateDealType(dealType:DealType){
+    validateDealType(dealType: DealType) {
         var errorClass = "form-group has-error has-feedback";
         var successClass = "form-group has-success has-feedback";
-        if (dealType.dealType.length > 0)
-        {
+        if (dealType.dealType.length > 0) {
             dealType.class = successClass;
             dealType.error = false;
-        } else
-        {
+        } else {
             dealType.class = errorClass;
             dealType.error = true;
         }
         this.dealTypeButtonStateChange();
     }
 
-    dealTypeButtonStateChange(){
+    dealTypeButtonStateChange() {
         let countForm = 0;
-        this.dealtypes.forEach(dealType =>
-                {
+        this.dealtypes.forEach(dealType => {
 
-                    if (dealType.error)
-                        countForm++;
-                })
-                if (countForm > 0)
-                    this.dealSubmiteState = false;
-                else
-                    this.dealSubmiteState = true;
+            if (dealType.error)
+                countForm++;
+        })
+        if (countForm > 0 || this.dealtypes.length == 0)
+            this.dealSubmiteState = false;
+        else
+            this.dealSubmiteState = true;
 
     }
-    saveDealTypes(){
-        this.ngxloading = true;
-
-
-
-            this.dealtypes.forEach(dealtype =>{
-                if(dealtype.id != null && dealtype.id != undefined)
-                    dealtype.updatedBy == this.loggedInUserId;
-                else
-                    dealtype.createdBy == this.loggedInUserId;
+    saveDealTypes() {
+        if (this.dealtypes.length > 0) {
+            this.ngxloading = true;
+            let dtArr = []
+            this.dealtypes.forEach(dealtype => {
+                if (dealtype.id) {
+                    let obj = {
+                        "id": dealtype.id,
+                        "dealType": dealtype.dealType,
+                        "updatedBy": this.authenticationService.getUserId()
+                    }
+                    dtArr.push(obj);
+                } else {
+                    let obj = {
+                        "id": dealtype.id,
+                        "dealType": dealtype.dealType,
+                        "createdBy": this.authenticationService.getUserId()
+                    }
+                    dtArr.push(obj);
+                }
             })
+            console.log(dtArr)
 
-            this.dealRegSevice.saveDealTypes(this.dealtypes,this.loggedInUserId).subscribe(result => {
+            this.dealRegSevice.saveDealTypes(dtArr, this.authenticationService.getUserId()).subscribe(result => {
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
 
-            },(error) =>{
+            }, (error) => {
                 this.ngxloading = false;
                 this.customResponseForm = new CustomResponse('ERROR', "The dealtypes are already associate with deals", true);
 
-            },()=>{
+            }, () => {
                 this.dealRegSevice.listDealTypes(this.loggedInUserId).subscribe(dealTypes => {
 
                     this.dealtypes = dealTypes.data;
 
                 });
             })
+        }
 
     }
 
 
-    checkIntegrations(): any
-    {
+    checkIntegrations(): any {
         this.dashBoardServiece.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response => {
-            if (response.statusCode == 8000)
-            {
+            if (response.statusCode == 8000) {
                 this.integrateRibbonText = "configured";
             }
-            else
-            {
+            else {
                 this.integrateRibbonText = "configure";
 
             }
-        }, error =>
-            {
-                this.integrateRibbonText = "configure";
-            })
+        }, error => {
+            this.integrateRibbonText = "configure";
+        })
+
+        this.hubSpotService.configHubSpot().subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.hubSpotRibbonText = "configured";
+            }
+            else {
+                this.hubSpotRibbonText = "configure";
+            }
+            if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                this.hubSpotRedirectURL = response.data.redirectUrl;
+            }
+        }, (error: any) => {
+            this.hubSpotRibbonText = "configure";
+            this.logger.error(error, "Error in HubSpot checkIntegrations()");
+        }, () => this.logger.log("HubSpot Configuration Checking done"));
+
+        this.integrationService.checkConfigurationByType("isalesforce").subscribe(data => {
+            let response = data;
+            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                this.sfRibbonText = "configured";
+            }
+            else {
+                this.sfRibbonText = "configure";
+            }
+            if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                this.sfRedirectURL = response.data.redirectUrl;
+            }
+        }, error => {
+            this.sfRibbonText = "configure";
+            this.logger.error(error, "Error in checkIntegrations()");
+        }, () => this.logger.log("Integration Configuration Checking done"));
     }
-    configmarketo(){
+
+    configmarketo() {
         this.integrationTabIndex = 1;
     }
-      closeMarketoForm(event:any){
-       if(event === "0")
+    closeMarketoForm(event: any) {
+        if (event === "0")
             this.integrationTabIndex = 0;
-    }		    
+    }
+
+    activateTab(activeTabName: any) {
+        this.activeTabName = activeTabName;
+        if (this.activeTabName == "gdpr") {
+            this.getGdprSettings();
+        } else if (this.activeTabName == "categories") {
+            this.categoryPagination = new Pagination();
+            this.listCategories(this.categoryPagination);
+        }
+    }
 
     ngOnDestroy() {
-        if (this.isPlayed === true) {  this.videoJSplayer.dispose(); }
+        if (this.isPlayed === true) { this.videoJSplayer.dispose(); }
         $('.profile-video').remove();
         $('.h-video').remove();
         this.referenceService.defaulgVideoMethodCalled = false;
     }
+
+    configHubSpot() {
+        if (this.hubSpotRedirectURL !== undefined && this.hubSpotRedirectURL !== '') {
+            window.location.href = this.hubSpotRedirectURL;
+        }
+    }
+
+    configSalesforce() {
+        if (this.sfRedirectURL !== undefined && this.sfRedirectURL !== '') {
+            window.location.href = this.sfRedirectURL;
+        }
+    }
+
+    /*********************GDPR Setting********************** */
+    setGdpr(event: any) {
+        this.gdprSetting.gdprStatus = event;
+        this.gdprSetting.unsubscribeStatus = event;
+        this.gdprSetting.formStatus = event;
+        this.gdprSetting.termsAndConditionStatus = event;
+        this.gdprSetting.deleteContactStatus = event;
+        this.gdprSetting.eventStatus = event;
+        if (!event) {
+            this.gdprSetting.allowMarketingEmails = event;
+        }
+    }
+
+    setAllGdprStatus() {
+        if (!this.gdprSetting.unsubscribeStatus && !this.gdprSetting.formStatus && !this.gdprSetting.termsAndConditionStatus
+            && !this.gdprSetting.deleteContactStatus && !this.gdprSetting.eventStatus) {
+            this.gdprSetting.gdprStatus = false;
+            this.gdprSetting.allowMarketingEmails = false;
+        } else {
+            this.gdprSetting.gdprStatus = true;
+        }
+    }
+
+
+
+    getGdprSettings() {
+        this.gdprSetting = new GdprSetting();
+        if (this.referenceService.companyId > 0) {
+            this.referenceService.startLoader(this.httpRequestLoader);
+            this.userService.getGdprSettingByCompanyId(this.referenceService.companyId)
+                .subscribe(
+                    response => {
+                        if (response.statusCode == 200) {
+                            this.gdprSetting = response.data;
+                            this.gdprSetting.isExists = true;
+                        } else {
+                            this.gdprSetting.isExists = false;
+                        }
+                        this.referenceService.stopLoader(this.httpRequestLoader);
+                    },
+                    (error: any) => {
+                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                    },
+                    () => this.logger.info('Finished getGdprSettings()')
+                );
+        } else {
+            this.customResponse = new CustomResponse('ERROR', 'Unable to get GDPR Settings.', true);
+            this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+
+    }
+
+    saveGdprSetting() {
+        this.referenceService.startLoader(this.httpRequestLoader);
+        this.gdprSetting.companyId = this.referenceService.companyId;
+        this.gdprSetting.createdUserId = this.loggedInUserId;
+        this.userService.saveGdprSetting(this.gdprSetting)
+            .subscribe(
+                data => {
+                    this.gdprSetting.isExists = true;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    let status = error.status;
+                    if (status == 409) {
+                        const body = error['_body'];
+                        const response = JSON.parse(body);
+                        this.customResponse = new CustomResponse('ERROR', response.message, true);
+                        this.referenceService.stopLoader(this.httpRequestLoader);
+                    } else {
+                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                    }
+                },
+                () => this.logger.info('Finished saveGdprSetting()')
+            );
+        this.referenceService.goToTop();
+    }
+
+
+    updateGdprSetting() {
+        this.referenceService.startLoader(this.httpRequestLoader);
+        this.gdprSetting.updatedUserId = this.loggedInUserId;
+        this.userService.updateGdprSetting(this.gdprSetting)
+            .subscribe(
+                data => {
+                    this.gdprSetting.isExists = true;
+                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                },
+                () => this.logger.info('Finished updateGdprSetting()')
+            );
+        this.referenceService.goToTop();
+
+
+    }
+    /***************Categories*************** */
+    listCategories(pagination: Pagination) {
+        this.category = new Category();
+        if (this.referenceService.companyId > 0) {
+            pagination.companyId = this.referenceService.companyId;
+            this.referenceService.startLoader(this.httpRequestLoader);
+            this.userService.getCategories(pagination)
+                .subscribe(
+                    response => {
+                        const data = response.data;
+                        pagination.totalRecords = data.totalRecords;
+                        this.categorySortOption.totalRecords = data.totalRecords;
+                        $.each(data.categories, function (_index: number, category: any) {
+                            category.displayTime = new Date(category.createdTimeInString);
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.categories);
+                        this.referenceService.stopLoader(this.httpRequestLoader);
+                    },
+                    (error: any) => {
+                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                    },
+                    () => this.logger.info('Finished listCategories()')
+                );
+        } else {
+            this.customResponse = new CustomResponse('ERROR', 'Unable to get Categories.', true);
+            this.referenceService.stopLoader(this.httpRequestLoader);
+        }
+    }
+
+    /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy(text: any) {
+        this.categorySortOption.formsSortOption = text;
+        this.getAllFilteredResults(this.categoryPagination);
+    }
+
+
+    /*************************Search********************** */
+    searchCategories() {
+        this.getAllFilteredResults(this.categoryPagination);
+    }
+
+    paginationDropdown(items: any) {
+        this.categorySortOption.itemsSize = items;
+        this.getAllFilteredResults(this.categoryPagination);
+    }
+
+    /************Page************** */
+    setPage(event: any) {
+        this.categoryResponse = new CustomResponse();
+        this.customResponse = new CustomResponse();
+        this.categoryPagination.pageIndex = event.page;
+        this.listCategories(this.categoryPagination);
+    }
+
+    getAllFilteredResults(pagination: Pagination) {
+        this.categoryResponse = new CustomResponse();
+        this.customResponse = new CustomResponse();
+        this.categoryPagination.pageIndex = 1;
+        this.categoryPagination.searchKey = this.categorySortOption.searchKey;
+        this.categoryPagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, this.categoryPagination);
+        this.listCategories(this.categoryPagination);
+    }
+    eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
+    /********************Add*****************/
+
+    addCategory() {
+        this.isAddCategory = true;
+        this.category = new Category();
+        this.categoyButtonSubmitText = "Save";
+        this.listExistingCategoryNames();
+    }
+    closeCategoryModal() {
+        $('#addCategoryModalPopup').modal('hide');
+        this.referenceService.stopLoader(this.addCategoryLoader);
+        this.category = new Category();
+        this.removeCategoryNameErrorClass();
+        this.categoryResponse = new CustomResponse();
+        this.isAddCategory = false;
+    }
+
+    validateCategoryNames(name: string) {
+        if ($.trim(name).length > 0) {
+            if (this.existingCategoryNames.indexOf($.trim(name).toLowerCase()) > -1 && $.trim(name).toLowerCase() != this.existingCategoryName) {
+                this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
+            } else {
+                this.removeCategoryNameErrorClass();
+            }
+        } else {
+            this.addCategoryNameErrorMessage(this.requiredMessage);
+        }
+    }
+
+    addCategoryNameErrorMessage(errorMessage: string) {
+        this.category.isValid = false;
+        $('#categoryNameDiv').addClass(this.formErrorClass);
+        this.categoryNameErrorMessage = errorMessage;
+    }
+
+    removeCategoryNameErrorClass() {
+        $('#categoryNameDiv').removeClass(this.formErrorClass);
+        $('#categoryNameDiv').addClass(this.defaultFormClass);
+        this.category.isValid = true;
+        this.categoryResponse = new CustomResponse();
+        this.categoryNameErrorMessage = "";
+
+    }
+
+    sumbitOnEnter(event: any) {
+        if (event.keyCode == 13 && this.category.isValid) {
+            this.saveOrUpdateCategory();
+        }
+    }
+
+
+    listExistingCategoryNames() {
+        this.userService.listExistingCategoryNames(this.referenceService.companyId)
+            .subscribe(
+                data => {
+                     this.existingCategoryNames = data.data.map((a: { name: any; }) => a.name);
+                    if (this.isAddCategory) {
+                        $('#addCategoryModalPopup').modal('show');
+                        this.category.isValid = false;
+                    }else if(this.isDeleteCategory){
+                        this.exisitingCategories = data.data.filter((item: { id: number; }) => item.id!== this.category.id);;
+                        $('#deleteCategoryModalPopup').modal('show');
+                    }
+                },
+                error => {
+                    this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                },
+                () => {
+                    this.logger.info("Finished listExistingCategoryNames()");
+                }
+            );
+    }
+
+
+    saveOrUpdateCategory() {
+        this.referenceService.startLoader(this.addCategoryLoader);
+        if (this.isAddCategory) {
+            this.category.companyId = this.referenceService.companyId;
+        }
+        this.category.createdUserId = this.loggedInUserId;
+        this.userService.saveOrUpdateCategory(this.category)
+            .subscribe(
+                (result: any) => {
+                    this.closeCategoryModal();
+                    this.referenceService.stopLoader(this.addCategoryLoader);
+                    this.categoryResponse = new CustomResponse('SUCCESS', result.message, true);
+                    this.categoryPagination = new Pagination();
+                    this.listCategories(this.categoryPagination);
+                },
+                (error: string) => {
+                    this.referenceService.stopLoader(this.addCategoryLoader);
+                    let statusCode = JSON.parse(error['status']);
+                    if (statusCode == 409) {
+                        this.addCategoryNameErrorMessage(this.duplicateLabelMessage);
+                    } else {
+                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                    }
+                });
+
+    }
+
+
+    getCategoryById(category:Category) {
+        if(!category.defaultCategory){
+            let id = category.id;
+            this.isAddCategory = false;
+            this.categoyButtonSubmitText = "Update";
+            $('#addCategoryModalPopup').modal('show');
+            this.referenceService.startLoader(this.addCategoryLoader);
+            this.categoryModalTitle = 'Edit Category Details';
+            this.listExistingCategoryNames();
+            this.userService.getCategoryById(id)
+                .subscribe(
+                    (result: any) => {
+                        if (result.statusCode == 200) {
+                            this.category = result.data;
+                            this.existingCategoryName = $.trim(this.category.name.toLowerCase());
+                            this.category.isValid = true;
+                        } else {
+                            $('#addCategoryModalPopup').modal('hide');
+                            this.referenceService.showSweetAlertErrorMessage(result.message);
+                        }
+                        this.referenceService.stopLoader(this.addCategoryLoader);
+                    },
+                    (error: string) => {
+                        $('#addCategoryModalPopup').modal('hide');
+                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+                    });
+        }
+        
+    }
+
+
+    /***********Delete**************/
+    confirmDeleteCategory(category: Category) {
+        if (category.count > 0) {
+            this.isDeleteCategory = true;
+            this.category = category;
+            this.listExistingCategoryNames();
+        } else {
+            try {
+                let self = this;
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to undo this action!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    swalConfirmButtonColor: '#54a7e9',
+                    swalCancelButtonColor: '#999',
+                    confirmButtonText: 'Yes, delete it!'
+
+                }).then(function () {
+                    self.deleteById(category);
+                }, function (dismiss: any) {
+                    console.log('you clicked on option' + dismiss);
+                });
+            } catch (error) {
+                this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+                this.referenceService.showServerError(this.httpRequestLoader);
+            }
+        }
+
+    }
+
+    closeDeleteCategoryModal(){
+        $('#deleteCategoryModalPopup').modal('hide');
+        this.isDeleteCategory = false;
+        this.category = new Category();
+        this.selectedCategoryIdForTransferItems=0;
+    }
+    deleteCategoryWithoutTransferring(){
+        this.deleteById(this.category);
+    }
+
+    moveAndDeleteCategory(){
+        $('#deleteCategoryModalPopup').modal('hide');
+        this.category.isMoveAndDelete = true;
+        this.category.idToMoveItems = this.selectedCategoryIdForTransferItems;
+        this.deleteById(this.category);
+    }
+    deleteById(category: Category) {
+        this.categoryResponse = new CustomResponse();
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.referenceService.goToTop();
+        this.userService.deleteCategory(category)
+            .subscribe(
+                (response: any) => {
+                    if (response.statusCode == 200) {
+                        this.closeDeleteCategoryModal();
+                        let message = category.name + " Deleted Successfully";
+                        this.categoryResponse = new CustomResponse('SUCCESS', message, true);
+                        this.categoryPagination.pageIndex = 1;
+                        this.listCategories(this.categoryPagination);
+                    }
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                    this.categoryResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                }
+            );
+    }
+
+
+
 }

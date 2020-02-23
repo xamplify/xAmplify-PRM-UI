@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,Renderer } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { SocialService } from '../../social/services/social.service';
@@ -12,13 +12,19 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { UtilService } from 'app/core/services/util.service';
+
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
+
 declare var $,swal: any;
 
 @Component({
     selector: 'app-partner-campaigns',
     templateUrl: './partner-campaigns.component.html',
     styleUrls: ['./partner-campaigns.component.css'],
-    providers: [Pagination, HttpRequestLoader]
+    providers: [Pagination, HttpRequestLoader,LandingPageService]
 })
 export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
@@ -29,6 +35,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     searchKey = "";
     campaignSuccessMessage = "";
     superiorId = 0;
+    loggedInUserId = 0;
     campaignName:string;
     sortByDropDown = [
         { 'name': 'Sort By', 'value': 'createdTime-DESC' },
@@ -55,16 +62,24 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     campaignType:string;
     role = '';
     customResponse: CustomResponse = new CustomResponse();
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
+    loadingEmailTemplate: boolean =false;
+
+
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
         public referenceService: ReferenceService, private socialService: SocialService,
-        private authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService) {
+        public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService,public renderer:Renderer) {
+        this.referenceService.renderer = this.renderer;
         let superiorId = parseInt(localStorage.getItem('superiorId'));
         if(isNaN(superiorId)){
             this.superiorId = this.authenticationService.getUserId();
         }else{
             this.superiorId = superiorId;
         }
+        this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.manageRouter = false;
         const currentUrl = this.router.url;
         if ( currentUrl.includes( 'campaigns/vendor' ) ) {
@@ -87,7 +102,10 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.campaignType = "SOCIAL";
         }else if(this.campaignType=="event"){
           pagination.campaignType = "EVENT";
-        }else{
+        }else if(this.campaignType=="page" || this.campaignType=="landingPage"){
+            pagination.campaignType = "LANDINGPAGE";
+        }
+        else{
             pagination.campaignType = "NONE";
         }
         if ( this.role == "Vendor" ) {
@@ -167,39 +185,72 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
         }
     }
-    ngOnDestroy() {
-
-    }
+   
     filterCampaigns(type: string) {
         if ( this.role == "Vendor" ) {
             this.router.navigate( ['/home/campaigns/vendor/' + type] );
         } else {
+            if(type=="landingPage"){
+                type = "page";
+            }
             this.router.navigate( ['/home/campaigns/partner/' + type] );
         }
     }
 
     showCampaignPreview(campaign:any){
-        if(campaign.campaignType === 'EVENT') {
-       //   this.router.navigate(['/home/campaigns/event-preview/'+campaign.campaignId]);
-          this.getEventCampaignId(campaign.campaignId);
-        } else {
-        //  this.router.navigate(['/home/campaigns/preview/'+campaign.campaignId]);
-           this.getCampaignById(campaign.campaignId);
-        }
+        this.loadingEmailTemplate = true;
+        this.campaignName = campaign.campaignName;
+        let htmlContent = "#email-template-content";
+        $(htmlContent).empty();
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#email_template_preivew").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.campaignService.getPartnerTemplatePreview(campaign.campaignId, this.authenticationService.getUserId()).subscribe(
+            (response: any) => {
+                if (response.statusCode == 200) {
+                    let emailTemplateBody = response.data;
+                    $(htmlContent).append(emailTemplateBody);
+                    this.loadingEmailTemplate = false;
+                } else {
+                    swal("Please Contact Admin!", "No Template Found", "error");
+                    $("#email_template_preivew").modal('hide');
+                }
+            },
+            (error: any) => {
+                swal("Please Contact Admin!", "Unable to load  template", "error"); 
+                this.loadingEmailTemplate = false;
+                this.xtremandLogger.log(error);
+                $("#email_template_preivew").modal('hide');
+            });
     }
     getCampaignById(campaignId) {
-        this.ngxloading = true;
+        //this.ngxloading = true;
         var obj = { 'campaignId': campaignId }
         this.campaignService.getCampaignById( obj )
           .subscribe(
               data => {
-                const emailTemplate = data.emailTemplate;
-                this.campaignName = data.campaignName;
-                if(emailTemplate!=undefined){
-                    this.previewEmailTemplate(emailTemplate, data);
+         if(data.campaignTypeInString=='LANDINGPAGE'){
+             console.log(data);
+                    let landingPage = data.landingPage;
+                    if(landingPage!=undefined){
+                        landingPage.showPartnerCompanyLogo = true;
+                        landingPage.partnerId = this.authenticationService.getUserId();
+                        this.previewLandingPageComponent.showPreview(landingPage);
+                    }else{
+                        swal("Page Not Found","","error");
+                        this.ngxloading = false;
+                    }
+                    
                 }else{
-                    swal("EmailTemplate Not Found","","error");
-                    this.ngxloading = false;
+                    const emailTemplate = data.emailTemplate;
+                    this.campaignName = data.campaignName;
+                    if(emailTemplate!=undefined){
+                        this.previewEmailTemplate(emailTemplate, data);
+                    }else{
+                        swal("EmailTemplate Not Found","","error");
+                        this.ngxloading = false;
+                    }
+
                 }
               },
               error => { this.xtremandLogger.errorPage( error ) },
@@ -222,6 +273,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                           response => {
                               if(response.statusCode==200){
                                   body = this.referenceService.replaceMyMergeTags(response.data, body);
+                                  body = body.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
                                   this.setUpdatedBody(body,emailTemplate,campaign);
                               }
                           },
@@ -233,8 +285,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                  }else{
                      this.setUpdatedBody(body,emailTemplate,campaign);
                  }
-              
-             
               },
               error => { this.ngxloading = false;this.xtremandLogger.error("error in getAllCompanyProfileImages("+campaign.userId+")", error); },
               () =>  this.xtremandLogger.info("Finished getAllCompanyProfileImages()")
@@ -251,7 +301,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     getEventCampaignId(campaignid){
       this.campaignService.getEventCampaignById(campaignid).subscribe(
         (result)=>{
-          console.log(result.data.emailTemplateDTO.body)
           result.data.emailTemplateDTO.body = result.data.emailTemplateDTO.body.replace( "https://aravindu.com/vod/images/us_location.png", " " );
           this.campaignName = result.data.campaign;
           
@@ -261,18 +310,32 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
           let userProfile = this.authenticationService.userProfile;
           let partnerLogo = userProfile.companyLogo;
           let partnerCompanyUrl = userProfile.websiteUrl;
-          
           if(result.data.nurtureCampaign || userProfile.id!=result.data.id){
               result.data.emailTemplateDTO.body = this.referenceService.replacePartnerLogo(result.data.emailTemplateDTO.body,partnerLogo,partnerCompanyUrl,result.data);
           }
-          
-          
-          $("#email-template-content").append(result.data.emailTemplateDTO.body);
-          $('.modal .modal-body').css('overflow-y', 'auto');
-          $("#email_template_preivew").modal('show');
-          $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+          let body = result.data.emailTemplateDTO.body;
+          let data = {};
+          data['emailId'] = this.authenticationService.userProfile.emailId;
+          this.referenceService.getMyMergeTagsInfoByEmailId(data).subscribe(
+                  response => {
+                      if(response.statusCode==200){
+                          body = body.replace(this.senderMergeTag.aboutUsGlobal,response.data.aboutUs);
+                          this.showPreviewBody(body);
+                      }
+                  },
+                  error => {
+                      this.xtremandLogger.error(error);
+                      this.showPreviewBody(body);
+                  }
+              );
          });
       }
+    showPreviewBody(body:string){
+        $("#email-template-content").append(body);
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#email_template_preivew").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    }
 
     navigateSocialCampaign(campaign:any) {
         this.socialService.getSocialCampaignByCampaignId( campaign.campaignId )
@@ -290,6 +353,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         } else if(campaign.campaignType.indexOf('EVENT') > -1) {
           this.campaignService.reDistributeEvent = true;
           this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+          /* if(campaign.redistributedCount != 0 && !campaign.eventStarted && campaign.showCancelButton){
+              this.inviteMore(campaign);
+          }else{
+            this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
+          } */
         }
         else {
         const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
@@ -306,5 +374,15 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
 
     }
-
+    
+    inviteMore(campaign:Campaign){
+        this.adddMoreReceiversComponent.eventRedistributionMessage = "This Campaign already redistributed would you like to add more contacts?";
+        this.adddMoreReceiversComponent.showPopup(campaign);
+    }
+    
+    ngOnDestroy() {
+        this.adddMoreReceiversComponent.eventRedistributionMessage = ""
+    }
+    
+    
 }

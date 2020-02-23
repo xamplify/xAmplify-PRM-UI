@@ -18,6 +18,8 @@ export class SocialService {
   URL = this.authenticationService.REST_URL;
   public REST_URL: string;
   public socialConnections: SocialConnection[];
+  selectedFeed: any;
+
   constructor(private http: Http, private router: Router,
     private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
     this.socialConnections = new Array<SocialConnection>();
@@ -248,5 +250,11 @@ export class SocialService {
         return this.http.get(this.URL + `rss/user/${userId}/favourites?access_token=${this.authenticationService.access_token}`)
         .map(this.extractData)
         .catch(this.handleError);
+    }
+
+    getOgMetaTags(requestBody: any){
+      return this.http.post(this.URL + `rss/ogtags?access_token=${this.authenticationService.access_token}`, requestBody)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 }

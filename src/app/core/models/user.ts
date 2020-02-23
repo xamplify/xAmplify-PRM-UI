@@ -1,4 +1,6 @@
 import { Role } from './role';
+import { CampaignAccess } from '../../campaigns/models/campaign-access';
+
 export class User {
     username: string;
     password: string;
@@ -40,4 +42,7 @@ export class User {
     region: string = "";
     partnerType: string = "";
     category: string = "";
+    campaignAccessDto:CampaignAccess = new CampaignAccess();
+    legalBasis = [];
+    legalBasisString = [];
 }

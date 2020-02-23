@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { DashboardReport } from '../../core/models/dashboard-report';
 import { DashboardService } from '../dashboard.service';
 import { Pagination } from '../../core/models/pagination';
@@ -10,6 +10,8 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Router } from '@angular/router';
 import { Roles } from '../../core/models/roles';
+import { CampaignAccess } from '../../campaigns/models/campaign-access';
+import { DynamicEmailContentComponent } from '../dynamic-email-content/dynamic-email-content.component';
 
 declare var swal,$:any;
 
@@ -17,7 +19,7 @@ declare var swal,$:any;
   selector: 'app-admin-report',
   templateUrl: './admin-report.component.html',
   styleUrls: ['./admin-report.component.css'],
-  providers: [Pagination, HttpRequestLoader, Properties]
+  providers: [Pagination, HttpRequestLoader, Properties,CampaignAccess]
 })
 
 export class AdminReportComponent implements OnInit {
@@ -34,6 +36,7 @@ export class AdminReportComponent implements OnInit {
     isListLoading = false;
     public searchKey: string;
     customResponse: CustomResponse = new CustomResponse();
+    copiedLinkCustomResponse:CustomResponse = new CustomResponse();
     roles: Roles = new Roles();
     
     sortcolumn: string = null;
@@ -50,8 +53,11 @@ export class AdminReportComponent implements OnInit {
                ];
     public sortOption: any = this.sortOptions[0];
     top10RecentUsers: any[];
-    
-    
+    updateFormLoading = false;
+    updateFormCustomResponse: CustomResponse = new CustomResponse();
+    campaignAccess = new CampaignAccess();
+    userAlias:string = "";
+    @ViewChild('dynamicEmailContentComponent') dynamicEmailContentComponent: DynamicEmailContentComponent;
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
 
@@ -226,6 +232,53 @@ public authenticationService: AuthenticationService, public router:Router) {
       this.listTop10RecentUsers();
   }
   
+  
+  activateOrDeactivate(report:any){
+      console.log(report);
+      let userStatus = report.userStatus;
+      let text = "";
+      let title = "";
+      if(userStatus=="UNAPPROVED" || userStatus=="SUSPEND" || userStatus=="DECLINE" || userStatus=="BLOCK"){
+          title = 'Are you sure to activate this account?';
+          text  = "This account status is "+userStatus;
+      }else if(userStatus=="APPROVED"){
+          title = 'Are you sure to de-activate this account?';
+          text  = "This account status is "+userStatus;
+      }
+      let self = this;
+      swal( {
+          title: title,
+          text: text,
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#54a7e9',
+          cancelButtonColor: '#999',
+          confirmButtonText: 'Yes, Change it!',
+          allowOutsideClick: false
+      } ).then( function() {
+          self.loading = true;
+          self.activateOrDeactiveStatus(report);
+      }, function( dismiss: any ) {
+          console.log( 'you clicked on option' + dismiss );
+      } );
+      
+  }
+  
+  activateOrDeactiveStatus(report:any){
+      this.dashboardService.activateOrDeactiveStatus(report)
+      .subscribe(
+      ( data: any ) => {
+          this.loading = false;
+          this.search();
+          swal("Status Changed Successfully", "", "success");
+      },
+      error => {this.loading = false;console.error( error )},
+      () => {
+         
+          }
+      )
+  }
+  
   changeStatus(report:any){
       try {
           console.log( report );
@@ -281,6 +334,7 @@ public authenticationService: AuthenticationService, public router:Router) {
       try {
           this.loading = true;
           this.customResponse = new CustomResponse();
+          this.updateFormCustomResponse  =new CustomResponse();
           this.dashboardService.getAccess(report.companyId)
               .subscribe(
               ( data: any ) => {
@@ -304,5 +358,40 @@ public authenticationService: AuthenticationService, public router:Router) {
   
   }
   
+  updateAccess(){
+      this.updateFormLoading = true;
+      this.dashboardService.changeAccess(this.campaignAccess)
+      .subscribe(
+      ( data: any ) => {
+          this.updateFormLoading=false;
+          this.updateFormCustomResponse = new CustomResponse('SUCCESS',data.message,true );
+      },
+      error => {
+          this.updateFormLoading=false;
+          this.updateFormCustomResponse = new CustomResponse('ERROR','Something went wrong.',true );
+      },
+      () => console.info( "updateAccess() finished" )
+      )
+  }
+  
+  sendWelcomeEmail(response:any){
+      this.dynamicEmailContentComponent.openModal(response.alias,response.emailId);
+  }
+  
+  openLinkInPopup(alias:string){
+      this.copiedLinkCustomResponse = new CustomResponse();
+      this.userAlias = alias;
+      $('#user-alias-modal').modal('show');
+  }
+  
+  /*********Copy The Link */
+  copyAliasUrl(inputElement){
+      this.copiedLinkCustomResponse = new CustomResponse();
+      inputElement.select();
+      document.execCommand('copy');
+      inputElement.setSelectionRange(0, 0);
+      this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+
+    }
   
 }

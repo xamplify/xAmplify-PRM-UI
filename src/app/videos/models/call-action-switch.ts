@@ -1,6 +1,8 @@
 export class CallActionSwitch {
     onTextValue = 'ON';
     offTextValue = 'OFF';
+    yesTextValue = 'YES';
+    noTextValue = 'NO';
     onColorBswitch = 'success';
     offColorBswitch = 'warning';
     size = 'small';
@@ -14,6 +16,7 @@ export class CallActionSwitch {
     onYellowColorSwitch = 'yellow';
     onDefaultColorSwitch = 'default';
     offDefaultColor = 'gray';
+    offPrivateColor = 'red';
     onTextValueView = 'GRID';
     offTextValueView = 'LIST';
     isGridView = true;

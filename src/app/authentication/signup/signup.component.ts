@@ -113,11 +113,15 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
             .subscribe(
                 data => {
                     this.loading = false;
+                    console.log(data);
                     if (data !== undefined) {
-                        if (data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')) {
+                        //data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')
+                        if (data.statusCode==200) {
                             this.loading = false;
                             this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
                             this.router.navigate(['/login']);
+                        }else{
+                           this.customResponse = new CustomResponse('ERROR',"Sign up is restricted.Please contact admin.",true);
                         }
                     } else {
                         this.loading = false;
@@ -224,6 +228,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
   }
     ngOnInit() {
       try{
+         this.customResponse = new CustomResponse();
         this.mainLoader = true;
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);

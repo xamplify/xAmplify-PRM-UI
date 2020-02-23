@@ -13,6 +13,7 @@
     </ul>
   </div>
   <div>
+  <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
 	  <section *ngIf="!detailsTielsView">
       <div class="col-sm-6 col-xs-12">
         <div class="portlet light">
@@ -35,7 +36,8 @@
                       <td>
                         <app-user-info [userInfo]="data" [isCompanyInfo]="true"></app-user-info>
                       </td>
-                      <td>{{data.dateReg | date:'mediumDate'}} {{data.dateReg | date:'shortTime'}}</td>
+                      <td *ngIf="data.dateReg=='null'">-</td>
+                      <td *ngIf="data.dateReg!='null'">{{data.dateReg | date:'mediumDate'}} {{data.dateReg | date:'shortTime'}}</td>
 					  <td align="center">
                         <a data-toggle="tooltip" data-placement="top" title="Company profile details" (click)="getVendorCompanyProfile(data)"><i class="fa fa-building-o" style="font-size: 20px;"></i></a>
                         <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(data)"><i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
@@ -153,9 +155,19 @@
 
                         <a data-toggle="tooltip" data-placement="top" title="My profile details" (click)="getVendorMyProfile(report)"> 
 								<i class="fa fa fa-user-o" style="font-size: 20px;margin-left:5px"></i></a>
+								
+						<a data-toggle="tooltip" data-placement="top" title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
+								<i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px"></i></a>
+								
+						<a data-toggle="tooltip" data-placement="top" title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report.alias)"> 
+							<i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px"></i></a>
 
-                        <a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
+
+ 						 <a data-toggle="tooltip" data-placement="top" title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
 								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a>
+
+                       <!--  <a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
+								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a> -->
 
                         <!-- <a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
 								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a> -->
@@ -224,4 +236,92 @@
     </section>
   </div>
   <app-scroll-top></app-scroll-top>
+  
+  
+   <section>
+  <!-- ---Access Modal Pop Up -->
+  <div class="modal right " id="access-modal" data-backdrop="static">
+			<div class="modal-dialog modal-lg" style="width: 75%;right:0">
+				<div class="modal-content">
+ 			   <ngx-loading [show]="updateFormLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+					<div class="modal-header">
+						<button type="button" class="close-circle" data-dismiss="modal">
+							<i class="fa fa-times"></i>
+						</button>
+						<h4 class="modal-title text-center" id="email-template-title">Available Modules</h4>
+					</div>
+					<div class="modal-body">
+						<app-response-message [customResponse]="updateFormCustomResponse" *ngIf="updateFormCustomResponse.isVisible"></app-response-message>
+						<div class="portlet-body clearfix">
+						<div class="table-responsive" style="overflow-x:inherit">
+							<table class="table table-striped  table-hover" style="width:100%">
+							  <tr>
+							    <th>Email Campaign</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.emailCampaign"></td>
+							  </tr>
+							  <tr>
+							    <th>Video Campaign</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.videoCampaign"></td>
+							  </tr>
+							  <tr>
+							    <th>Social Campaign</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.socialCampaign"></td>
+							  </tr>
+							  <tr>
+							    <th>Event Campaign</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"></td>
+							  </tr>
+							  <tr>
+							    <th>Leads</th>
+							    <td><input type="checkbox" [(ngModel)]="campaignAccess.leads"></td>
+							  </tr>
+							  <tr>
+							    <th>Form Builder</th>
+							   <td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder"></td>
+							  </tr>
+							   <tr>
+							    <th>Page</th>
+							   	<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage"></td>
+							  </tr>
+							  <tr>
+							    <th>Page Campaign</th>
+							   	<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"></td>
+							  </tr>
+							</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" (click)="updateAccess()" class="btn btn-info">Update</button>
+						<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+					</div>
+				</div>
+			</div>
+		</div>
+  </section>
 </div>
+<app-dynamic-email-content #dynamicEmailContentComponent></app-dynamic-email-content>
+
+  <!-- ----------------------Copy Link Modal------------------- -->
+  <div class="modal right " id="user-alias-modal" data-backdrop="static">
+    <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+          </button>
+          <h4 class="modal-title text-center">ACCOUNT LINK OF USER</h4>
+        </div>
+        <div class="modal-body">
+          <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
+          </app-response-message>
+          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}axAa/{{userAlias}}" #userAliasId>
+        </div>
+        <div class="modal-footer">
+          <!-- <a class="btn btn-info" href="{{authenticationService.APP_URL}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
+          <a class="btn btn-primary" (click)="copyAliasUrl(userAliasId)">Copy Link</a>
+          <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+        </div>
+      </div>
+    </div>
+  </div>

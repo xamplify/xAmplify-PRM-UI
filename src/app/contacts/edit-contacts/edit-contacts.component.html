@@ -56,7 +56,7 @@
 							<div class="clearfix"></div>
 
 							<div class="row mt5 mb5">
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat blue" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'all'"
 										(click)="backToEditContacts()">
 										<div class="visual">
@@ -74,7 +74,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat green" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'active'"
 										(click)="showingContactDetails('active')"
 										[disabled]="contactsByType.activeContactsCount == 0">
@@ -93,7 +93,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat purple" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'non-active'"
 										(click)="showingContactDetails('non-active')"
 										[disabled]="contactsByType.inactiveContactsCount == 0">
@@ -112,7 +112,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat yellow-gold" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'invalid'"
 										(click)="showingContactDetails('invalid')"
 										[disabled]="contactsByType.invalidContactsCount == 0">
@@ -131,7 +131,7 @@
 												</span>
 									</button>
 								</div>
-								<div class="col-sm-5ths">
+								<div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
 									<button class="btn-block dashboard-stat red" [class.grey]="contactsByType.selectedCategory && contactsByType.selectedCategory != 'unsubscribe'"
 										(click)="showingContactDetails('unsubscribe')"
 										[disabled]="contactsByType.unsubscribedContactsCount == 0">
@@ -195,24 +195,23 @@
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
+															<li><a id="download_empy_csv"
+																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8">Download CSV Template</a></li>
 															<li><a id="delete_button"
 																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
 																(click)="showAlert(selectedContactListId)"> Delete</a></li>
 														</ul>
 													</div>
 													</div>
-
-													<a class="pull-right" style="padding-right: 16px;" (click)="downloadEmptyCsv()">
-				<button type="button" class="btn btn-default" download [ngStyle]="{'width':refService.isMobileScreenSize()? '100%': 'unset'}">
-         Download CSV Template
-          <i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
-				</button>
-			</a>
+										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0"
+															(click)="saveAs()" style="margin-right: 5px; background-color: white; color: #777070">
+															Save As<!-- <i class="fa fa-save"></i> -->
+														</button>
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-sm-12 col-md-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
+											<div class="col-xs-12 col-md-6 col-sm-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -246,26 +245,29 @@
                         </div>
                         </ng-container>
 											</div>
-							 	<div class="col-sm-12 col-md-6 p0 pull-right" style="margin-top: 10px;">
+								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
+									<div class="col-xs-2 col-md-2 col-sm-2">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
-									style="float: left; cursor: pointer; margin-left: 50px;"
+									style="float: right; cursor: pointer;"
 									data-toggle="modal" data-target="#filterModal">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Apply a filter"
 										style="color: #0095da; font-size: 30px; margin-top: 10px;"></i>
 								</div>
 								<div *ngIf="isSegmentation" (click)="removeSegmentation()"
-									style="float: left; cursor: pointer; margin-left: 50px;">
+									style="float: right; cursor: pointer;">
 									<i class="fa fa-filter" aria-hidden="true" data-toggle="tooltip"
 												data-placement="left" title="Remove a filter"
 										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
 										class="fa fa-times" aria-hidden="true"
-										style="color: red; margin-left: -12px;"></i>
+										style="color: red; margin-left: -8px;"></i>
 								</div>
+								</div>
+								<div class="col-xs-10 col-md-10 col-sm-10 p0">
 								<div class="btn-group pull-right" *ngIf="showEditContactData && selectedAddContactsOption === 8" >
 									<div class="inputs" align="right" style="float: right">
 
-										<div class="inputs" align="right" style="float: right">
+										<div class="inputs" align="right" style="float: right;display: inline-flex;">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
@@ -281,13 +283,14 @@
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
 														class="form-control" placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
-												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+												<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search('contactList')"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contactList')"><i class="fa fa-search"></i></button>
 
 												</div>
 											</div>
 										</div>
 									</div>
+								</div>
 								</div>
 								</div>
 
@@ -358,6 +361,22 @@
 											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
 											email pattern Contacts found.. !!!</strong>
 									</div>
+										<!-- ---Legal Basis Options -->
+											<div *ngIf="(isValidClipBoardData&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="col-sm-6 form-group" id="customWidth">
+												<div class="form-group">
+												<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options <span class="danger">*</span></label>
+												  <div id="multiselect-sample" class="control-section">
+												    <div class="col-lg-8 content-wrapper">
+												        <div class="control-styles">
+												        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+												        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
+												        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+												        </div>
+												    </div>
+												    </div>
+											</div>
+											</div>
+									
 									<div class="row" *ngIf="clickBoard">
 										<div class="col-sm-12" style="padding-left:0px">
 											<h3 class="col-xs-12">Copy from text -- paste below</h3>
@@ -581,11 +600,12 @@
 														<th *ngIf="isPartner">REGION</th>
 														<th *ngIf="isPartner">TYPE</th>
 														<th *ngIf="isPartner">CATEGORY</th>
-														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
-															<!-- <th class='text-center'>MORE</th> -->
+														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
+														<th class="text-center" *ngIf="isPartner"></th>
+														<!-- <th class='text-center'>MORE</th> -->
 														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
 														</tr>
 													</thead>
@@ -601,15 +621,15 @@
 															<td>
 															<app-user-info  [userInfo]="newContact"> </app-user-info>
 															</td>
-															<td class="hidden-xs">
+															<!-- <td class="hidden-xs">
 															<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                               <int-phone-prefix [(ngModel)]="newContact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
                               </div>
-																<!-- <h5>
+																<h5>
 																	<span *ngIf="newContact?.mobileNumber; else NA"
 																		class="textWhite">{{newContact.mobileNumber}}</span>
-																</h5> -->
-															</td>
+																</h5>
+															</td> -->
 															<td class="hidden-xs">
 																<h5 class='mb0 textWhite ellipsis' title="{{newContact.jobTitle}}">{{newContact.jobTitle | slice:0:25}}
 																<span *ngIf="newContact.jobTitle?.length>25">...</span>
@@ -682,21 +702,21 @@
 															<td *ngIf="!isPartner">
 															<app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
-															<td class="hidden-xs" *ngIf="!isPartner">
+														<!-- 	<td class="hidden-xs" *ngIf="!isPartner">
 															<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
-																<!-- <h5>
+																<h5>
 																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-																</h5> -->
-															</td>
+																</h5>
+															</td> -->
 															<td class="hidden-xs" *ngIf="!isPartner">
 																<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 																<span *ngIf="contact.jobTitle?.length>25">...</span>
 																</h5>
 																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
-															<td align="center" class="hidden-xs" *ngIf="!isPartner">
+															<td align="center" class="hidden-xs">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address | slice:0:30}}
 																<span *ngIf="contact.address?.length>30">..</span>
 																</h5>
@@ -714,7 +734,7 @@
 																		*ngIf="contact.isShowDetails">Less</span>
 																</button>
 															</td> -->
-															<td align="center" *ngIf="isPartner">
+															<td align="center" *ngIf="gdprStatus">
 															<button  id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
@@ -732,40 +752,22 @@
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
 																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
-															</div>
+ 																<a *ngIf="checkingContactTypeName=='Partner'" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.send_campaigns}}" (click)="addCampaigns(contact.emailId,contact.id)">
+                                                                <i class="fa fa-bullhorn"></i></a>
+                                                            </div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
 														</tr>
 														<tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-												<td colspan="8">
+												<td colspan="8" *ngIf="gdprStatus">
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr>
-																<td class='pt10 pb10 bold'>Phone:</td>
-																<td class='pt10 pb10'>
-																	<div *ngIf="contact.mobileNumber"
-																		[class.disabled]="true"
-																		style="pointer-events: none !important; cursor: auto;">
-																		<int-phone-prefix [(ngModel)]="contact.mobileNumber"
-																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																	</div>
-																</td>
-															</tr>
-															<tr>
-																<td class='pt10 pb10 bold'>Address: </td>
-																<td align="center" class="hidden-xs">
-																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
-																	<h5 class='m0'>
-																		{{contact.city}}<span
-																			*ngIf="contact.city && contact.state">,&nbsp;</span>{{contact.state}}
-																	</h5>
-																	<h5 *ngIf="contact?.zipCode || contact.country"
-																		class='mt0'>
-																		{{contact.zipCode}}<span
-																			*ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}
-																	</h5>
+																<td class='pt10 pb10 bold'>Legal Basis : </td>
+																&nbsp;<td align="center" class="pt10 pb10">
+																	{{contact.legalBasisString}}
 																</td>
 															</tr>
 														</tbody>
@@ -818,14 +820,17 @@
 								</div>
 								<div class="btn-group pull-right"
 									style="margin-top: 4px; color: #000000;"
-									*ngIf="contactsByType.selectedCategory == 'invalid' && hasAllAccess || ( hasContactRole && loggedInUserId == uploadedUserId )">
+									*ngIf="contactsByType.selectedCategory == 'invalid'">
 									<span class="dropdown-toggle" data-toggle="dropdown" style="color: #FFF; box-shadow:none; margin-top: 8px; float:right;">
 										<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 									</span>
 									<ul class="dropdown-menu pull-right">
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
 											(click)="invalidContactsShowAlert()"> Delete </a></li>
-										<li><a id="delete_button"
+										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
+													id="validate_email_button" (click)="validateUndeliverableContacts()">
+													Mark as valid email(s) </a></li>
+										<li><a id="export_button"
 										(click) = "downloadContactTypeList()"> Export To Excel </a></li>
 									</ul>
 								</div>
@@ -833,8 +838,9 @@
 							<div class="portlet-body">
 
 									<div class="page-bar" *ngIf="!showEditContactData">
+									<div class="col-xs-12 col-md-12 col-sm-12 p0">
 									<div class="btn-group pull-right">
-
+									<div class="col-xs-2 col-md-2 col-sm-2">
 									<div *ngIf="!isSegmentation" (click)="modelForSeg()"
 									style="float: left; cursor: pointer; padding-right: 20px;"
 									data-toggle="modal" data-target="#filterModal">
@@ -848,10 +854,11 @@
 												data-placement="left" title="Remove a filter"
 										style="color: red; font-size: 30px; margin-top: 10px;"></i> <i
 										class="fa fa-times" aria-hidden="true"
-										style="color: red; margin-left: -12px;"></i>
+										style="color: red; margin-left: -8px;"></i>
 								</div>
-
-										<div class="inputs" align="right" style="float: right">
+							</div>
+							<div class="col-xs-10 col-md-10 col-sm-10 p0">
+										<div class="inputs" align="right" style="float: right; display: inline-flex;">
 											<div style="float: left; margin-right: 10px;">
 												<select class="form-control" [(ngModel)]="sortOption"
 													(ngModelChange)="sortByOption($event)">
@@ -869,11 +876,13 @@
 														[(ngModel)]="searchKey"
 														[ngModelOptions]="{standalone: true}"
 														class="form-control" placeholder="Search for a {{checkingContactTypeName}}" (keypress)="eventHandler($event.keyCode)">
-														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey=''"></button>
+														<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search('contacts')"></button>
 														<button type="submit" class="search-box-item-click" (click)="search('contacts')"><i class="fa fa-search"></i></button>
 												</div>
 											</div>
 										</div>
+										</div>
+									</div>
 									</div>
 								</div>
 
@@ -898,12 +907,15 @@
 														<th *ngIf="isPartner">REGION</th>
 														<th *ngIf="isPartner">TYPE</th>
 														<th *ngIf="isPartner">CATEGORY</th>
-														<th class="hidden-xs" *ngIf="!isPartner">Phone</th>
+													<!-- 	<th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center hidden-xs"  *ngIf="isPartner"></th>
+														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
+														<!-- <th class="text-center hidden-xs" *ngIf="isPartner"></th> -->
+														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
+												<th *ngIf="!isPartner"></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -940,21 +952,21 @@
 														<td *ngIf="isPartner" title="allcontacts.category">{{allcontacts.category | slice:0:14}}
 														<span *ngIf="allcontacts.category?.length>14">..</span>
 														</td>
-												<td class="hidden-xs" *ngIf="!isPartner">
+												<!-- <td class="hidden-xs" *ngIf="!isPartner">
 												<div *ngIf="allcontacts.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 													<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
 													</div>
-													<!-- <h5>
+													<h5>
 														<span *ngIf="allcontacts?.mobileNumber; else NA">{{allcontacts.mobileNumber}}</span>
-													</h5> -->
-												</td>
+													</h5>
+												</td> -->
 												<td class="hidden-xs" *ngIf="!isPartner">
 													<h5 class='mb0 ellipsis' title="{{allcontacts.jobTitle}}" >{{allcontacts.jobTitle | slice:0:25}}
 													<span *ngIf="allcontacts.jobTitle?.length>25">...</span>
 													</h5>
 													<!-- <h6 class='mt0' *ngIf="!isPartner">{{allcontacts.contactCompany}}</h6> -->
 												</td>
-												<td class="hidden-xs" *ngIf="!isPartner">
+												<td class="hidden-xs center" *ngIf="!isPartner">
 													<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address  | slice:0:30}}
 													<span *ngIf="allcontacts.address?.length>30">..</span>
 													</h5>
@@ -966,8 +978,9 @@
 													<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
 														class='mt0'>{{allcontacts.zipCode}}<span *ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}</h5>
 												</td>
-												<td align="center" *ngIf="isPartner">
-                           <button id='more_less_button_{{i}}'
+												<td *ngIf="contactsByType.selectedCategory == 'unsubscribe'">{{allcontacts.unsubscribedReason}}</td>
+												<td align="center">
+                           							<button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
 																<span *ngIf="!allcontacts.isShowDetails">More</span> <span
 																	*ngIf="allcontacts.isShowDetails">Less</span>
@@ -983,7 +996,7 @@
 																(click)="activateUnsubscribedUser(allcontacts.id)">
 																Subscribe
 															</button>
-                            <div class="actions-block" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
+                            <div class="actions-block" style="float: none !important;" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
                             <a *ngIf="!allcontacts.signedUp" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.partner_reSendMail}}" (click)="sendMail(allcontacts.id)">
                               <i class="fa fa-envelope"></i>
                             </a>
@@ -1005,29 +1018,9 @@
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr>
-																<td class='pt10 pb10 bold'>Phone:</td>
-																<td class='pt10 pb10'>
-																	<div *ngIf="allcontacts.mobileNumber"
-																		[class.disabled]="true"
-																		style="pointer-events: none !important; cursor: auto;">
-																		<int-phone-prefix [(ngModel)]="allcontacts.mobileNumber"
-																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																	</div>
-																</td>
-															</tr>
-															<tr>
-																<td class='pt10 pb10 bold'>Address: </td>
-																<td align="center" class="hidden-xs">
-																	<h5 *ngIf="allcontacts?.address" class='mb0'>{{allcontacts.address}}</h5>
-																	<h5 class='m0'>
-																		{{allcontacts.city}}<span
-																			*ngIf="allcontacts.city && allcontacts.state">,&nbsp;</span>{{allcontacts.state}}
-																	</h5>
-																	<h5 *ngIf="allcontacts?.zipCode || allcontacts.country"
-																		class='mt0'>
-																		{{allcontacts.zipCode}}<span
-																			*ngIf="allcontacts.zipCode && allcontacts.country">,&nbsp;</span>{{allcontacts.country}}
-																	</h5>
+																<td class='pt10 pb10 bold'>Legal Basis : </td>
+																&nbsp;<td align="center" class="pt10 pb10">
+																	{{allcontacts.legalBasisString}}
 																</td>
 															</tr>
 														</tbody>
@@ -1055,11 +1048,11 @@
 
 
 <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
-	<app-add-contact-modal [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
-	<app-add-contact-modal [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
 
 <app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>
@@ -1137,10 +1130,49 @@
 	</div>
 </div>
 
-<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<!-- T&C Modal -->
+<div class="modal fade" id="tcModal" tabindex="-1" data-backdrop="static" data-keyboard="false"
+	role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-copy" role="document">
+		<div class="modal-content" style="top: 100px;">
+			<div class="modal-header">
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you sure?</h4>
+			</div>
+			<div class="modal-body">
+			<div>
+				<h4 class="modal-title f-w-600">You are agreeing to xAmplify's Terms and Conditions.</h4>
+			</div>
+			
+			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
+			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  <br>
+			</div>
+			
+			<div class="form-group" style="margin-top: 15px;" *ngIf="!isPartner">
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
+				By adding a contact you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  <br>
+			</div>
+			
+			
+			<div *ngIf="!isCheckTC" style="color:red">You must agree T&C</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()">Decline</button>
+				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
+					(click)="saveContactsWithPermission()">Accept</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"
 [users]="newUserDetails" [contactListId]="contactListId" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
 </div>
+<app-send-campaigns #sendCampaignComponent></app-send-campaigns>
 <!-- END PAGE CONTENT -->

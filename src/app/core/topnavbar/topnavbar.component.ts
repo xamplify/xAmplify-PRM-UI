@@ -136,25 +136,20 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     var EMAIL_REGEXP = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$/i;
     return (text && EMAIL_REGEXP.test(text));
   }
+  public notifications = 0;
+  
   connectToWebSocket(){
-      let error_callback = function(error) {
-          // display the error's message header:
-          alert(error.headers.message);
-        };
+      
+   // Open connection with server socket
       let stompClient = this.authenticationService.connect();
-      let headers = {
-              login: 'mahisravan07@gmail.com',
-              passcode: 'Sravan@07',
-              // additional header
-              'client-id': 'my-trusted-client'
-            };
-
-      stompClient.connect(headers, error_callback);
-   /*   stompClient.connect(headers, frame => {
+      stompClient.connect({}, frame => {
+          console.log("********************************************WebSocket*********************")
+          // Subscribe to notification topic
           stompClient.subscribe('/topic/notification', notifications => {
-          });
-
-      });*/
+              // Update notifications attribute with the recent messsage sent from the server
+              this.notifications = JSON.parse(notifications.body).count;
+          })
+      });
   }
 
   getUnreadNotificationsCount() {
@@ -264,8 +259,12 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   sendRequestForVendorEmail(){
       this.loading = true;
       this.isError = false;
-      this.onAddingEmailId();
-      this.vendoorInvitation.emailIds = this.emailIds;
+      this.refService.onAddingEmailIds(this.emailIds);
+		let self = this;
+	$.each(this.emailIds,function(_index:number,value:any){
+		let emailId = value.value;
+		self.vendoorInvitation.emailIds.push(emailId);
+	});
      if(this.vendoorInvitation.message.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.subject.replace( /\s\s+/g, '' ).replace(/\s+$/,"").replace(/\s+/g," ") && this.vendoorInvitation.emailIds.length != 0 ){
       this.dashboardService.sendVendorInvitation(this.authenticationService.getUserId(), this.vendoorInvitation)
         .subscribe(
@@ -306,27 +305,5 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       this.emailIds = [];
       this.isValidationMessage = false;
   }
-  public onAddingEmailId() {
-      console.log( this.emailIds );
-      const emailIds = this.emailIds;
-      let newEmailIds = [];
-      for ( let i = 0; i < emailIds.length; i++ ) {
-          const tag = emailIds[i];
-          if ( tag['value'] !== undefined ) {
-              newEmailIds[i] = tag['value'];
-          }
-          // else {
-          //     newEmailIds[i] = tag;
-          // }
-      }
-      this.emailIds = newEmailIds;
-      console.log( this.emailIds );
-      const otherEmailIds = newEmailIds.map( v => v.toLowerCase() );
-      var uniqueEmailids = [];
-      $.each( otherEmailIds, function( i, el ) {
-          if ( $.inArray( el, uniqueEmailids ) === -1 ) uniqueEmailids.push( el );
-      });
-      if ( uniqueEmailids.length < this.emailIds.length ) { this.emailIds.pop(); }
-    }
-
+  
 }

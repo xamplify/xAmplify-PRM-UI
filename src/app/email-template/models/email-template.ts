@@ -1,5 +1,6 @@
 import { User } from '../../core/models/user';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
+import { EmailTemplateSource } from '../../email-template/models/email-template-source';
 export class EmailTemplate {
 	id: number;
 	name: string;
@@ -31,4 +32,8 @@ export class EmailTemplate {
 	marketoEmailTemplate: { marketo_id: number; };
 	isSelectedMarketoTemplate = false;
 	spamScore: string;
+	isSelectedHubSpotTemplate = false;
+	hubSpotTemplate = false;
+	hubSpotEmailTemplate: { hubspot_id: number; };
+	source:EmailTemplateSource;
 }

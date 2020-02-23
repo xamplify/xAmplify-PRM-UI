@@ -67,5 +67,16 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 	   white-space: nowrap;
 }
 
-
+#customWidth{
+	width: 53%;
+}
+.danger{
+	color:red;
+}
+@media ( min-width : 768px) {
+	.col-sm-5ths {
+		width: 20% !important;
+		float: left !important;
+	}
+}
 

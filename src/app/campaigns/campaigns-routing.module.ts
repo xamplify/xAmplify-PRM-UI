@@ -13,6 +13,8 @@ import { EventCampaignComponent } from './event-campaign/event-campaign.componen
 import { ReDistributedComponent } from './analytics/re-distributed/re-distributed.component';
 import { PreviewPartnersComponent } from './preview-partners/preview-partners.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
+import { EventCheckInComponent } from './event-check-in/event-check-in.component';
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
@@ -22,7 +24,9 @@ export const campaignRoutes: Routes = [
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },
   { path: "manage", component: ManagePublishComponent },
+  { path: "manage/:teamMemberId", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
+  { path: ":campaignId/checkin", component: EventCheckInComponent },
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
   { path: "partner/:type", component: PartnerCampaignsComponent },
@@ -36,7 +40,8 @@ export const campaignRoutes: Routes = [
   { path: "re-distribute-event/:id", component: EventCampaignComponent },
   { path: "re-distribute-manage/:id", component: EventCampaignComponent },
   { path: ":campaignId/remove-access", component: PreviewPartnersComponent },
-  { path: "calendar", component: CalendarComponent }
+  { path: "calendar", component: CalendarComponent },
+  { path: "sms", component: CreateSmsCampaignComponent }
 ];
 
 @NgModule({

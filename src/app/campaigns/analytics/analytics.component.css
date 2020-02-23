@@ -193,6 +193,7 @@ h3 {
 
 .portlet.light {
 	box-shadow: 0px 0px 0 rgba(0, 0, 0, 0.4);
+	border-radius: 3px !important;
 }
 
 p {
@@ -255,12 +256,14 @@ h1.bold {
 	background-color: #00a6e8;
 	color: #fff;
 	border: 1px solid #00a6e8;
+	border-radius: 3px !important;
 }
 
 .color1:hover, .color1-invert {
 	color: #00a6e8;
 	background-color: #fff;
 	border: 1px solid #00a6e8;
+	border-radius: 3px !important;
 }
 
 /*.color2, .color2-invert:hover {
@@ -346,7 +349,7 @@ tr>td>h6 {
 	-ms-transform: rotate(-15deg);	transform: rotate(-15deg); position: absolute; bottom: 12px; font-size: 78px !important;}
 .dashboard-stat{
 	 height:auto !important;
-	 border-radius: 0 !important;
+	 border-radius: 3px !important;
 	 margin-bottom: 9px !important;}
 .camp-details{float:left; padding: 10px;}
 .camp-desc, .camp-title, .camp-number{color:#FFF; font-size:12px;}
@@ -371,20 +374,11 @@ tr>td>h6 {
   cursor: not-allowed;
   }
 
-
-
-
-
-
-
-
-
-
 .user-profile-image {
 	width: 48px;
 	height: auto;
 	float: left;
-	margin: 0 20px 0 -20px;
+	margin: 0 10px 0 -10px;
 }
 .timeline {
     list-style: none;
@@ -567,7 +561,7 @@ tr>td>h6 {
  }
  
  .rsvp_tile_padding{
- padding: 2px 2px 0px 4px;
+ padding: 2px 2px 5px 4px;
  }
  
  .highlet{
@@ -594,6 +588,18 @@ tr>td>h6 {
 	position: absolute;
     bottom: 0;
     right: -5px;
+}
+
+@media only screen and (max-width:768px){
+	.dropdown-toggle{
+		margin-right: 0px!important;
+	}
+}
+
+@media only screen and (min-width:768px){
+	.dropdown-toggle{
+		margin-right: 21px!important;
+	}
 }
 @media only screen and (max-width:768px){ .modal-css { width: 100% !important;}}
 @media only screen and (min-width:768px){ .modal-css { width: 65% !important;}}
@@ -634,4 +640,84 @@ tr>td>h6 {
 }
 #autoresponse-tr{
 	background-color: #d3d3d317
+}
+#landing-page-icons{
+	margin-top: 10px;
+	width:125px;
+}
+#notification{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 25px;
+    margin-left: -25px;
+    margin-top: -5px;
+}
+#notification-list{
+	background-color: #ed1c24;
+    color: white;
+    margin-bottom: 36px;
+    margin-left: -23px;
+    margin-top: -2px;
+}
+#leads-info-font-size{
+	font-size: 25px;
+}
+.fs14{
+	font-size:14px !important;
+}
+.fs30{
+	font-size: 30px !important;
+}
+
+
+.pull-right>.dropdown-menu {
+    right: 38px!important;
+    left: auto;
+}
+
+#table-header {
+	font-size: 12px;
+	font-weight: 700;
+}
+.set-overflow-none{
+	overflow: hidden !important;
+}
+
+/*
+.col-lg-2{
+	width: 12.5% !important;
+}
+.col-xs-2{
+	width: 50% !important;
+}
+*/
+#float-right{
+	float: right;
+}
+.seven-tile-width{
+	width: 14.2% !important;
+}
+#check-in-css{
+	float: right;
+    margin-top: 4px;
+    margin-right: 4px;
+}
+#custom-width-button{
+	width: 20px;
+	height: 17px;
+}
+#partner-analytics{
+	border: 1px solid #CCC;
+    padding: 10px !important;
+	margin: 10px!important;
+	border-radius: 3px !important;
+}
+
+fieldset{
+	border-radius: 3px !important;
+}
+
+#campaignreportvendor{
+	padding-left:0px !important;
+	padding-right:0px !important;
 }

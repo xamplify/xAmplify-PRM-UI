@@ -24,7 +24,7 @@
       <div>
         <div>
           <div class="row">
-            <div class="col-sm-5ths">
+            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths">
               <a class="dashboard-stat dashboard-stat-lighter purple-soft" [class.greay]="2!=selectedTabIndex" (click)="goToReDistributedPartnersDiv()">
                 <div class="visual">
                   <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
@@ -41,7 +41,7 @@
                 </span>
               </a>
             </div>
-            <div class="col-sm-5ths" >
+            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" >
               <a class="dashboard-stat dashboard-stat-lighter green-soft" [class.greay]="3!=selectedTabIndex" (click)="goToThroughPartnersDiv()">
                 <div class="visual">
                   <!-- <i class="glyphicon glyphicon-bullhorn"></i> -->
@@ -50,14 +50,14 @@
                 </div>
                 <div class="details">
                   <div class="number">{{throughPartnerCampaignsCount}}</div>
-                  <div class="desc">Through Partner Campaigns</div>
+                  <div class="desc" style="font-size:13px">Through Partner Campaigns</div>
                 </div>
                 <span id="permhref" class="morePadding">
                   <a class="more" (click)="goToThroughPartnersDiv()"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
                 </span>
               </a>
             </div>
-            <div class="col-sm-5ths" (click)="goToActivePartnersDiv()" >
+            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToActivePartnersDiv()" >
               <a class="dashboard-stat dashboard-stat-lighter yellow-gold" [class.greay]="0!=selectedTabIndex">
                 <div class="visual">
                   <!-- <i class="fa fa-handshake-o"></i> -->
@@ -73,7 +73,7 @@
                 </span>
               </a>
             </div>
-            <div class="col-sm-5ths" (click)="goToInActivePartnersDiv()">
+            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToInActivePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter blue-soft" [class.greay]="1!=selectedTabIndex">
                 <div class="visual">
                   <!-- <i class="fa fa-handshake-o"></i> -->
@@ -90,7 +90,7 @@
               </a>
             </div>
             
-            <div class="col-sm-5ths" (click)="goToApprovePartnersDiv()">
+            <div class="col-xs-6 col-sm-2 col-lg-2 col-sm-5ths" (click)="goToApprovePartnersDiv()">
               <a class="dashboard-stat dashboard-stat-lighter red-soft" [class.greay]="5!=selectedTabIndex">
                 <div class="visual">
                   <!-- <i class="fa fa-handshake-o"></i> -->
@@ -192,14 +192,14 @@
   <!-- --------------------Inactive Partners Count-------- -->
   <div id="inactive-partners-div" style="display: none;">
     <div class="row">
-      <div class="col-xs-12 p5">
+      <div class="col-xs-12 col-sm-12 col-lg-12 p5">
         <div class="portlet light">
           <div class="portlet-title">
             <div class="caption">
               <span class="caption-subject font-red-sunglo uppercase">Inactive partners</span>
             </div>
             <div class="inputs" align="right" style="float: right">
-              <div class="portlet-input input-inline input-medium">
+              <div class="portlet-input input-inline">
                 <div class="input-icon right" style="position: relative; margin: -12px 0 0 0;">
                   <input type="text" style="height: 34px;" class="form-control" [(ngModel)]="inActivePartnersSearchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search for a Partner" (keypress)="inActivePartnersSearch($event.keyCode)">
@@ -268,6 +268,7 @@
           <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
           <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
           <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+            <div class="table-responsive">
             <table class="table tgrid" *ngIf="approvePartnersPagination.pagedItems.length != 0">
               <thead>
                 <th class="center-aligned">partners</th>
@@ -284,9 +285,9 @@
                   </td>
                   <td style="text-align: center;">
                   <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'" style="width:42%; text-transform: capitalize"  type="button" data-toggle="dropdown">{{item.invitationStatus}}
+                    <button class="btn btn-default dropdown-toggle" [disabled]="item.invitationStatus === 'approved'" style="text-transform: capitalize"  type="button" data-toggle="dropdown">{{item.invitationStatus}}
     				<span class="caret"></span></button>
-    				<ul class="dropdown-menu" style="min-width: 43%;left: 68px;"*ngIf="item.invitationStatus != 'approved'" >
+    				<ul class="dropdown-menu" style="left: 68px;"*ngIf="item.invitationStatus != 'approved'" >
       					<li *ngIf="item.invitationStatus != 'approved'"><a (click)="requestText='Approve';approveAndDeclineRequest(item.partnerId, item.firstName)">Approve</a></li>
      					 <li *ngIf="item.invitationStatus != 'declined'"><a (click)="requestText='Decline';approveAndDeclineRequest(item.partnerId, item.firstName)">Decline</a></li>
     				</ul>
@@ -299,6 +300,7 @@
                 </tr>
               </tbody>
             </table>
+            </div>
           </div>
           <app-pagination class="pg8" [pagination]="approvePartnersPagination" [type]="'userInteraction'" (notifyParentDropDown)="approvePartnerDropDownList($event)"
             (notifyParent)="setApprovePartnesPage($event)"></app-pagination>
@@ -313,30 +315,39 @@
 
       <div class="col-xs-12 p5">
         <div class="portlet light">
-          <div class="portlet-title">
+          <div class="portlet-title" style="font-size: 16px; padding-bottom: 8px;">
+            <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
             <div class="caption">
               <span class="caption-subject font-red-sunglo uppercase">Redistributed Campaigns</span>
             </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-lg-6 col-sm-6 p0">
             <div class="inputs" align="right" style="float: right">
+              <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6">
               <div style="float: left;">
                 <select class="form-control" [(ngModel)]="sortOption.defaultSortOption" (ngModelChange)="getSortedResultForPartnerCampaigns($event,'partner-campaign-details')"
                   style="position: relative;right: -3px;">
                   <option *ngFor="let option of sortOption.partnerCampaignDetailsSortDropDown" [ngValue]="option">{{option.name}}</option>
                 </select>
               </div>
-              <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
+            </div>
+            <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6 p0">
+              <div class="portlet-input input-inline" style="margin-right: 10px; width:170px">
                 <div class="input-icon right" style="position: relative;right: -11px;">
                   <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
-                    placeholder="Search for a Campaign" (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'partner-campaign-details')">
+                    placeholder="Search" (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'partner-campaign-details')">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
                   <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('partner-campaign-details')"><i
                       class="fa fa-search"></i></button>
                 </div>
               </div>
+              </div>
+            </div>
             </div>
           </div>
           <app-list-loader *ngIf="campaignUserInteractionHttpRequestLoader.isLoading"></app-list-loader>
           <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!campaignUserInteractionHttpRequestLoader.isLoading">
+           <div class="table-responsive">
             <table class="table tgrid">
               <thead>
                 <tr>
@@ -363,7 +374,7 @@
                         &nbsp;{{item.lastName | slice:0:15}}
                         <span *ngIf="item.lastName?.length>15">...</span>
                       </h5>
-                      <h6 class='m0' style="font-weight: 400;">
+                      <h6 class='m0' style="font-weight: 400; display: table;">
                         <span title="">{{item.emailId | slice:0:38}}</span>
                         <span *ngIf="item.emailId?.length>38">...</span>
                       </h6>
@@ -481,13 +492,25 @@
                         </div>
 		                   	</td>
                             <td class="text-center">
-                              <a data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                              <a *ngIf="!redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
                                 data-placement="top" title="Campaign Based Reports" class='circled-number'>
                                 <i class="fa fa-line-chart"></i>
                               </a>
+                              <a *ngIf="redistributedCampaign.dataShare" data-rel="fancybox-button" (click)="referenseService.goToCampaignAnalytics(redistributedCampaign)" data-toggle="tooltip"
+                                data-placement="top" title="Campaign Based Reports" class='circled-number' style="margin-left: -47px;">
+                                <i class="fa fa-line-chart"></i>
+                              </a>
+                              <ng-container *ngIf="redistributedCampaign.formsCount>0">
+                              	 <a data-rel="fancybox-button" routerLink="/home/forms/cf/{{redistributedCampaign.campaignId}}" data-toggle="tooltip" 
+                                data-placement="top" title="Form Analytics" class='circled-number'>
+                                <i class="fa fa-wpforms"></i>
+                             	 </a>
+                               <span class="badge" id="notification">{{redistributedCampaign.formsCount}}</span>
+                              </ng-container>
                               <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled" *ngIf="!redistributedCampaign.dataShare">
                                 <img src="../assets/images/disabled-icon.png">
                               </a>
+                              
                             </td>
                           </tr>
                         </tbody>
@@ -497,6 +520,7 @@
                 </ng-container>
               </tbody>
             </table>
+           </div>
             <div *ngIf="sortOption.totalRecords==0" class="alert alert-info">
               <strong>No campaigns found</strong>
             </div>
@@ -525,22 +549,24 @@
         <div class="tabbable tabbable-custom tabbable-noborder" id="header">
           <div class="tab-content">
             <div class="page-bar m10">
-              <ul class="mix-filter col-xs-12 col-md-5 p0 m0">
+              <ul class="mix-filter col-xs-12 col-md-5 p0 m0" style="display: inline-flex;">
                 <!-- <li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li> -->
                 <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
                 <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == sortOption.selectedCampaignTypeIndex">Email</li>
                 <li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex">Video</li>
                 <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == sortOption.selectedCampaignTypeIndex">Social</li>
                 <li class="filter" *ngIf="referenseService.eventCampaign || referenseService.eventCampaignTabAccess" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
+             	<li class="filter" (click)="filterCampaigns('LANDINGPAGE',5)" [class.campaign-type-selected]="5 == sortOption.selectedCampaignTypeIndex" *ngIf="landingPage">Page</li>
                 <li class="filter" style="display: none;">Own Template</li>
+
               </ul>
-              <div class="page-toolbar col-xs-6 col-sm-12 col-md-7">
+              <div class="page-toolbar col-xs-12 col-sm-12 col-md-7">
                 <div class="btn-group pull-right">
                   <ng-container class='m10 hidden-xs'>
-                    <span class="btn btn-xs hidden-xs" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true" style="background-color:#e2e2e2"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                     <span class="btn btn-xs hidden-xs"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false" style="background-color:#e2e2e2"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+                     <span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
                   </ng-container>
-                  <div class="inputs" align="right" style="float: right">
+                  <div class="inputs" align="right" style="float: right;display: inline-flex;">
                     <div style="float: left;">
                       <select class="form-control" [(ngModel)]="sortOption.selectedSortedOption" (ngModelChange)="getSortedResultForPartnerCampaigns($event,'through-partner')"
                         style="position: relative;right: -3px;">
@@ -577,24 +603,29 @@
                   <tbody>
                     <tr *ngFor='let campaign of throughPartnerCampaignPagination.pagedItems; let i=index'>
                       <td style="width: 10%;" class="hidden-xs">
-                        <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && campaign.launched " src="assets/images/video-email.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
-                          alt="{{campaign.campaignType}} Campaign">
-
-                        <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
-                          alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('VIDEO') > -1 && !campaign.launched " src="assets/images/video-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
-                        <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && campaign.launched" src="assets/images/regular-email.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('REGULAR') > -1 && !campaign.launched" src="assets/images/regular-email.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
-                        <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;"
                           alt="{{campaign.campaignType}} Campaign">
-                        <img *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('SOCIAL') > -1 && !campaign.launched" src="assets/images/social-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                          alt="{{campaign.campaignType}} Campaign">
+
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;"
+                          alt="{{campaign.campaignType}} Campaign">
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('EVENT') > -1 && !campaign.launched" src="assets/images/event-campaign.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
+                          alt="{{campaign.campaignType}} Campaign">
+                          
+                          <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && campaign.launched" src="assets/images/landing-page.png" style="height: 50px;"
+                          alt="{{campaign.campaignType}} Campaign">
+                        <img class="imageClass" *ngIf="campaign.campaignType.indexOf('LANDINGPAGE') > -1 && !campaign.launched" src="assets/images/landing-page.png" style="height: 50px;-webkit-filter: grayscale(100%);filter: grayscale(100%);"
                           alt="{{campaign.campaignType}} Campaign">
 
                       </td>

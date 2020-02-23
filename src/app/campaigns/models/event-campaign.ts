@@ -6,6 +6,9 @@ import { Reply } from './campaign-reply';
 import { User } from '../../core/models/user';
 import { ContactList } from '../../contacts/models/contact-list';
 import { UserListIds } from '../../contacts/models/user-listIds';
+import { SocialStatus } from '../../social/models/social-status';
+import { Form } from 'app/forms/models/form';
+
 
 export class EventCampaign {
     id: number;
@@ -16,6 +19,8 @@ export class EventCampaign {
     updateMessage = "";
     channelCampaign: boolean = false;
     emailOpened: boolean = true;
+    emailNotification: boolean = true;
+    linkOpened = true;
     socialSharingIcons: boolean = true;
     fromName: string;
     email: string = "";
@@ -27,12 +32,14 @@ export class EventCampaign {
     campaignLocation: Location = new Location();
     country: string;
     countryId:number = 0;
-    publicEventCampaign: boolean = true;
+    publicEventCampaign: boolean = false;
     toPartner: boolean = true;
     inviteOthers: boolean = true;
     rsvpReceived: boolean = true;
     onlineMeeting: boolean = true;
     enableCoBrandingLogo = false;
+    
+    eventUrl: string = '';
     
     dataShare = false;
     detailedAnalyticsShared = false;
@@ -51,7 +58,16 @@ export class EventCampaign {
 
     hostedBy: string = "";
     nurtureCampaign: boolean = false;
+
     pushToMarketo = false;
+    socialStatusList: Array<SocialStatus> = [];
+    forms: Array<Form> = [];
+   
+    pushToCRM = [];
+    
+    emailIds = [];
+    eventStarted = false;
+
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());

@@ -5,7 +5,7 @@
   </style>
   <ng-container *ngIf="pagination.pagedItems.length !== 0">
   <div *ngIf="(pagination.pager.pages && pagination.pager.pages.length) && !isDropdown" style="float: right;font-size: 15px;">
-  	<select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+  	<select class="form-control margin-top" style="cursor: pointer" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
       <!-- <ng-container *ngFor="let pageNo of numberPerPage" > -->
       <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
       <option *ngIf="pagination.totalRecords>12" [ngValue]="numberPerPage[1]"> {{numberPerPage[1].name}}</option>

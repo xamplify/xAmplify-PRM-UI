@@ -12,7 +12,8 @@ const routes: Routes = [
     { path: 'manage', component: ManagePartnersComponent },
     { path: 'google-callback', component: SocialContactsCallbackComponent },
     { path: 'salesforce-callback', component: SocialContactsCallbackComponent },
-    { path: 'analytics', component: PartnerReportsComponent }
+    { path: 'analytics', component: PartnerReportsComponent },
+    { path: 'hubspot-callback',component:SocialContactsCallbackComponent}
 ];
 
 @NgModule({

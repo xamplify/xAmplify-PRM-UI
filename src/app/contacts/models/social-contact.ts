@@ -25,6 +25,12 @@ export class SocialContact{
     postalCode: number;
     address: string;
     company: string;
+    mobileNumber: string;
     mobilePhone: string;
     title:string;
+    website:string;
+    userId:number;
+    type:string;
+    externalListId:number;
+    isShowDetails = false;
 }

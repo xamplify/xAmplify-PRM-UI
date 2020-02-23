@@ -14,6 +14,7 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
+import { EmailTemplateSource } from '../models/email-template-source';
 
 declare var $, swal: any;
 
@@ -193,15 +194,16 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             .subscribe(
             ( data: EmailTemplate ) => {
                 this.emailTemplateService.emailTemplate = data;
-                if(!data.marketoTemplate){
+                //this.router.navigate( ["/home/emailtemplates/update"] );
+                if(data.source.toString() === "MARKETO" || data.source.toString() === "HUBSPOT"){
+                    this.router.navigate( ["/home/emailtemplates/update"] );
+                }else{
                     if ( data.regularTemplate || data.videoTemplate ) {
                         this.router.navigate( ["/home/emailtemplates/update"] );
                     } else {
                         this.emailTemplateService.isNewTemplate = false;
                         this.router.navigate( ["/home/emailtemplates/create"] );
                     }
-                }else {
-                    this.router.navigate( ["/home/emailtemplates/marketo/update"] );
                 }
 
             },
@@ -354,9 +356,26 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         swal.close();
 
     }
+    
+    getTemplateById(emailTemplate:EmailTemplate){
+    	this.emailTemplateService.getById( emailTemplate.id )
+        .subscribe(
+        ( data: any ) => {
+            console.log( data );
+            emailTemplate.body = data.body;
+            this.showPreview(emailTemplate);
+        },
+        error => console.error( error ),
+        () => {
+            console.log( 'loadContacts() finished' );
+        }
+        );
+    }
+    
     showPreview(emailTemplate:EmailTemplate){
         this.ngxloading = true;
-        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId).subscribe(
+        this.emailTemplateService.getAllCompanyProfileImages(this.loggedInUserId)
+        .subscribe(
                 ( data: any ) => {
                     let body = emailTemplate.body;
                     let self  =this;

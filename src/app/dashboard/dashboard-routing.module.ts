@@ -17,6 +17,8 @@ import { NotificationsComponent } from "../core/notifications/notifications.comp
 import { VendorReportsComponent } from "./vendor-reports/vendor-reports.component";
 import { AdminReportComponent } from './admin-report/admin-report.component';
 import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
+import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-callback/social-contacts-callback.component";
+import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
 
 const routes: Routes = [
   { path: "", component: DashboardComponent },
@@ -31,11 +33,16 @@ const routes: Routes = [
   { path: "shared", component: SharedComponent },
   { path: "add-company-profile", component: EditCompanyProfileComponent },
   { path: "edit-company-profile", component: EditCompanyProfileComponent },
+  { path: "admin-company-profile/:alias", component: EditCompanyProfileComponent },
+  { path: "admin-company-profile", component: EditCompanyProfileComponent },
   { path: "reports", component: ReportsComponent },
   { path: "notifications", component: NotificationsComponent },
   { path: 'vendors',component:VendorReportsComponent},
   { path: 'admin-report',component:AdminReportComponent},
-  { path: 'vendor-request',component:VendorRequestReportComponent}
+  { path: 'vendor-request',component:VendorRequestReportComponent},
+  { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
+  { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
+  {path:'sso-samlsecurity',component:SamlsecurityComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

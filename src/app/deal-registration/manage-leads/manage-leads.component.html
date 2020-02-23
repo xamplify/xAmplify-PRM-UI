@@ -4,16 +4,20 @@
         <!-- <div class="caption col-md-12" *ngIf="pageText.length >0" >
             <span class="caption-subject font-red-sunglo uppercase">{{pageText}}</span>
         </div> -->
-      <div class="caption" style="padding-bottom: 0px!important;margin-top: 15px">
+    <div class="col-xs-12 col-sm-12 col-lg-12 p0">
+       <div class="col-xs-12 col-sm-6 col-lg-6 p0">
+      <div class="caption" style="font-size:15px; padding-bottom: 0px!important;margin-top: 15px">
         <span class="caption-subject font-red-sunglo uppercase">{{pageHeader}}</span>
       </div>
-      <div class="inputs" align="right" style="float: right;margin-bottom: 10px">
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-6 p0">
+      <div class="inputs" align="right" style="display: inline-flex;float: right;margin-bottom: 10px">
         <div style="float: left;">
           <select class="form-control" [(ngModel)]="sortOption.leadsSortOption" (ngModelChange)="sortLeads($event)" style="position: relative;right: -3px;">
             <option *ngFor="let option of sortOption.leadsSortDropDown" [ngValue]="option">{{option.name}}</option>
           </select>
         </div>
-        <div class="portlet-input input-inline input-medium" style="margin-right: 10px;">
+        <div class="portlet-input input-inline" style="margin-right: 10px;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
               placeholder="Search " (keypress)="searchLeadsKeyPress($event.keyCode)">
@@ -24,6 +28,8 @@
           </div>
         </div>
       </div>
+      </div>
+      </div>
     </div>
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 
@@ -32,6 +38,7 @@
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
     <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError ">
+      <div class="table-responsive">
       <table class="table tgrid">
         <thead>
           <tr>
@@ -148,7 +155,12 @@
           </ng-container>
         </tbody>
       </table>
-     
+      </div>
+      <ng-container>
+        <div  *ngIf="pagination.pagedItems.length == 0" class="alert alert-info">
+          <strong>No campaigns found</strong>
+        </div>
+      </ng-container>
       <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">
         <div *ngIf="pagination.pagedItems.length !== 0" style="padding: 0 13px;">
           <app-pagination [pagination]="pagination" [type]="'deal-leads'" [isDropdown]="true" (notifyParent)="navigatePages($event)"
@@ -166,7 +178,7 @@
                 <app-manage-comments [lead]="commentForLead"  (isCommentSection)="addCommentModalClose($event)"></app-manage-comments>
   </div>
 <!-- <div *ngIf="isDealAnalytics">
-  <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics> 
+  <app-deal-analytics [dealId]="selectedDealId"></app-deal-analytics>
 
 </div> -->
 

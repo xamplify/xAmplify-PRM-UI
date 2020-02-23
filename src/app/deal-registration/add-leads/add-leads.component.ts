@@ -34,7 +34,7 @@ export class AddLeadsComponent implements OnInit
     @Input() lead: any;
     @Input() dealId: any;
     @Input() parent: any;
-    
+
     dealRegistration: DealRegistration;
     isServerError: boolean = false;
     leadData: any;
@@ -93,36 +93,13 @@ export class AddLeadsComponent implements OnInit
     leadUser: User;
     formId: number;
 
-
-
-    // isMarketoLead=false;
-    // showMarketoForm: boolean;
-    // clientId: string;
-    // secretId: string;
-    // marketoInstance: string;
-    // clientIdClass: string;
-    // secretIdClass: string;
-    // marketoInstanceClass: string;
-    // loading: boolean;
-    // templateError: boolean;
-    // clentIdError: boolean;
-    // secretIdError: boolean;
-    // marketoInstanceError: boolean;
-    // isModelFormValid: boolean;
-    // templateSuccessMsg: any;
-    // pushToMarketo = false;
-
-
-;
-
-
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
         , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames,public callActionSwitch: CallActionSwitch
-        ,private emailTemplateService:EmailTemplateService 
+        ,private emailTemplateService:EmailTemplateService
     )
     {
         this.dealRegistration = new DealRegistration();
-      
+
 
     }
 
@@ -131,9 +108,20 @@ export class AddLeadsComponent implements OnInit
 
         flatpickr('.flatpickr', {
             enableTime: false,
-            dateFormat: 'm/d/Y',
+            dateFormat: 'Y-m-d',
             minDate: new Date()
         });
+        $(".flagInput").click(function(){
+          let count = 0
+            $(".flagInput .dropdown-content").each(function() {
+                count++;
+            });
+            if(count != 0){
+              $("int-phone-prefix input").prop({disabled: true});
+            }else{
+              $("int-phone-prefix input").prop({disabled: false});
+            }
+        })
 
 
         this.loggenInUserId = this.authenticationService.user.id;
@@ -218,14 +206,7 @@ export class AddLeadsComponent implements OnInit
         //     this.dealRegistration.pushToMarketo = data.pushToMarketo;
         // else
         //     this.dealRegistration.pushToMarketo =false;
-        let date:any;
-        if(data.estimatedClosedDate != null)
-            date = this.getFormatedDate(new Date(data.estimatedClosedDate));
-        else
-            date = this.getFormatedDate(new Date());
-        this.dealRegistration.estimatedCloseDate = date
 
-        this.dealRegistration.properties = data.properties;
 
         let countryIndex = this.countryNames.countries.indexOf(data.leadCountry);
         if (countryIndex > -1)
@@ -241,42 +222,7 @@ export class AddLeadsComponent implements OnInit
 
 
     }
-    mapAnswers(answers: DealAnswer[])
-    {
-        this.formId = answers[0].formId;
-        this.dealRegistrationService.getFormById(this.campaign.userId, this.formId).subscribe(form =>
-        {
-            this.form = form;
-            this.properties.forEach(property =>
-            {
-                this.validateQuestion(property);
-                this.validateComment(property);
-            })
-            answers.forEach(answer =>
-            {
-                this.form.campaignDealQuestionDTOs.forEach(q =>
-                {
-                    if (q.id == answer.questionId)
-                    {
-                        q.answer = answer.answer;
-                        q.answerId = answer.id;
-                        if (q.answer.length > 0)
-                        {
-                            q.class = this.successClass;
-                            q.error = false;
-                        } else
-                        {
-                            q.class = this.errorClass;
-                            q.error = true;
-                        }
-                    }
-                })
-            })
 
-
-        })
-
-    }
     setDefaultLeadData(data: any)
     {
         this.dealRegistration.firstName = data.firstName;
@@ -290,27 +236,7 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.leadCity = data.city;
         this.dealRegistration.email = this.lead.emailId;
         //this.dealRegistration.pushToMarketo = false;
-        var date = new Date();
-        this.dealRegistration.estimatedCloseDate =this.getFormatedDate(date);
-        let countryIndex = this.countryNames.countries.indexOf(data.country);
-        if (countryIndex > -1)
-        {
-            this.dealRegistration.leadCountry = this.countryNames.countries[countryIndex];
-        } else
-        {
-            this.dealRegistration.leadCountry = this.countryNames.countries[0];
-        }
-        if (this.form != undefined)
-        {
-            this.form.campaignDealQuestionDTOs.forEach(q =>
-            {
-                if (q.answer == null || q.answer.length == 0)
-                {
-                    q.error = true;
-                    q.class = this.errorClass;
-                }
-            });
-        }
+
         this.setFieldErrorStates()
 
     }
@@ -347,58 +273,16 @@ export class AddLeadsComponent implements OnInit
             this.companyError = false
         else
             this.companyError = true;
-        if (this.dealRegistration.estimatedCloseDate != null && this.dealRegistration.estimatedCloseDate.length > 0)
-            this.estimatedCloseDateError = false
-        else
-            this.estimatedCloseDateError = true;
-        if (this.dealRegistration.dealType != null && this.dealRegistration.dealType.length > 0)
-            this.dealTypeError = false
-        else
-            this.dealTypeError = true;
+
         this.validateWebSite(0);
         //this.validatePhone(0);
-        this.properties.forEach(property =>
-        {
-            this.validateQuestion(property);
-            this.validateComment(property);
-        })
+
 
         this.submitButtonStatus();
 
     }
 
-    addProperties()
-    {
-        this.property = new DealDynamicProperties();
-        let length = this.properties.length;
-        length = length + 1;
-        var id = 'property-' + length;
-        this.property.divId = id;
-        this.property.isSaved = false;
 
-
-
-        this.properties.push(this.property);
-
-        this.submitButtonStatus()
-
-    }
-    remove(i, id)
-    {
-        if (id)
-            console.log(id)
-        var index = 1;
-
-        this.properties = this.properties.filter(property => property.divId !== 'property-' + i)
-            .map(property =>
-            {
-                property.divId = 'property-' + index++;
-                return property;
-            });
-        this.submitButtonStatus()
-
-
-    }
 
     save()
     {
@@ -407,7 +291,8 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.campaignId = this.lead.campaignId;
         this.dealRegistration.createdBy = this.authenticationService.getUserId();
         this.dealRegistration.leadId = this.lead.userId;
-        this.dealRegistration.estimatedClosedDateString = this.dealRegistration.estimatedCloseDate;
+        if(this.dealRegistration.leadCountry == "Select Country")
+        this.dealRegistration.leadCountry = "";
         var obj = [];
         let answers: DealAnswer[] = [];
 
@@ -415,10 +300,8 @@ export class AddLeadsComponent implements OnInit
         this.dealRegistration.answers = answers;
         this.dealRegistration.properties = obj;
          console.log(this.dealRegistration);
-        // if(!this.dealRegistration.pushToMarketo)
-        //       this.dealRegistration.pushToMarketo = this.pushToMarketo;
-        //       console.log( this.dealRegistration)
-       
+
+
         if (this.dealRegistration.id != null)
         {
             this.dealRegistrationService.updateLead(this.dealRegistration).subscribe(data =>
@@ -466,30 +349,6 @@ export class AddLeadsComponent implements OnInit
 
         }
     }
-
-    validateQuestion(property: DealDynamicProperties)
-    {
-
-        if (property.key.length > 0)
-            property.validationStausKey = this.successClass;
-        else
-            property.validationStausKey = this.errorClass;
-
-        this.submitButtonStatus()
-    }
-
-    validateComment(property: DealDynamicProperties)
-    {
-
-        if (property.value.length > 0)
-            property.validationStausValue = this.successClass;
-        else
-            property.validationStausValue = this.errorClass;
-        this.submitButtonStatus()
-
-
-    }
-
 
     validateField(fieldId: any, isFormElement: boolean)
     {
@@ -581,32 +440,8 @@ export class AddLeadsComponent implements OnInit
                     this.countryError = true;
                 }
 
-            } if (fieldId == "opportunityAmount")
-            {
-                if (fieldValue.length > 0 && parseFloat(fieldValue))
-                {
-                    this.opportunityAmount = successClass;
-                    this.opportunityAmountError = false;
-                } else
-                {
-                    this.opportunityAmount = errorClass;
-                    this.opportunityAmountError = true;
-                }
-
             }
-            if (fieldId == "estimatedCloseDate")
-            {
-                if (fieldValue.length > 0)
-                {
-                    this.estimatedCloseDate = successClass;
-                    this.estimatedCloseDateError = false;
-                } else
-                {
-                    this.estimatedCloseDate = errorClass;
-                    this.estimatedCloseDateError = true;
-                }
 
-            }
             if (fieldId == "company")
             {
                 if (fieldValue.length > 0)
@@ -646,36 +481,11 @@ export class AddLeadsComponent implements OnInit
                 }
 
             }
-            if (fieldId == "title")
-            {
-                if (fieldValue.length > 0)
-                {
-                    this.title = successClass;
-                    this.titleError = false;
-                } else
-                {
-                    this.title = errorClass;
-                    this.titleError = true;
-                }
 
-            }
 
             if (fieldId == "phone")
             {
                 this.validatePhone(1);
-            }
-            if (fieldId == "dealType")
-            {
-                if (fieldValue.length > 0)
-                {
-                    this.dealType = successClass;
-                    this.dealTypeError = false;
-                } else
-                {
-                    this.dealType = errorClass;
-                    this.dealTypeError = true;
-                }
-
             }
 
         }
@@ -760,7 +570,7 @@ export class AddLeadsComponent implements OnInit
             if (!this.URL_PATTERN.test(this.dealRegistration.website))
             {
                 this.addWebSiteError(x);
-                this.websiteErrorMessage = "Please enter a valid company’s URL.";
+                this.websiteErrorMessage = "Please enter a valid company�s URL.";
             } else
             {
                 this.removeWebSiteError();
@@ -769,11 +579,11 @@ export class AddLeadsComponent implements OnInit
         {
             this.websiteError = true;
             if (x != 0)
-                this.websiteErrorMessage = 'Please add your company’s URL.';
+                this.websiteErrorMessage = 'Please add your company�s URL.';
         }
     }
 
-   
+
     validateForm(form: any)
     {
         console.log(form);
@@ -791,26 +601,26 @@ export class AddLeadsComponent implements OnInit
         var returnDate = "";
 
         var dd = date.getDate();
-        var mm = date.getMonth() + 1; //because January is 0! 
+        var mm = date.getMonth() + 1; //because January is 0!
         var yyyy = date.getFullYear();
 
-
+        returnDate += `${yyyy}-`;
         if (mm < 10)
         {
-            returnDate += `0${mm}/`;
+            returnDate += `0${mm}-`;
         } else
         {
-            returnDate += `${mm}/`;
+            returnDate += `${mm}-`;
         }
         //Interpolation date
         if (dd < 10)
         {
-            returnDate += `0${dd}/`;
+            returnDate += `0${dd}`;
         } else
         {
-            returnDate += `${dd}/`;
+            returnDate += `${dd}`;
         }
-        returnDate += yyyy;
+
         return returnDate;
     }
     commentsection(property: DealDynamicProperties)
@@ -818,175 +628,6 @@ export class AddLeadsComponent implements OnInit
         property.isCommentSection = !property.isCommentSection;
     }
 
-
-//     pushMarketo(event:any){
-//         console.log(event);
-//         this.pushToMarketo = !this.pushToMarketo;
-//          if(!event){
-//             this.checkMarketoCredentials();
-//          }
-//     }
-   
-       
-//   clearValues()
-//   {
-//       this.clientId = '';
-//       this.secretId = '';
-//       this.marketoInstance = '';
-//       this.clientIdClass = "form-group";
-//       this.secretIdClass = "form-group";
-//       this.marketoInstanceClass = "form-group";
-
-//   }
-//   checkMarketoCredentials()
-//   {
-//       this.loading = true;
-//       this.emailTemplateService.checkMarketoCredentials(this.authenticationService.getUserId()).subscribe(response =>
-//       {
-//           if (response.statusCode == 8000)
-//           {
-//             console.log(this.pushToMarketo);
-          
-//               this.showMarketoForm = false;
-//             //   if(!this.dealRegistration.pushToMarketo)
-//             //   this.dealRegistration.pushToMarketo = this.pushToMarketo;
-//               //this.getMarketoEmailTemplates();
-//               this.templateError = false;
-//               this.loading = false;
-//           }
-//           else
-//           {
-//               this.pushToMarketo = !this.pushToMarketo;
-//               this.dealRegistration.pushToMarketo = false;
-//               $("#templateRetrieve").modal('show');
-//               $("#closeButton").show();
-//               this.templateError = false;
-//               this.loading = false;
-
-//           }
-//       }, error =>
-//           {
-//               this.pushToMarketo = !this.pushToMarketo;
-//               this.templateError = error;
-//               $("#templateRetrieve").modal('show');
-//               $("#closeButton").show();
-//               this.loading = false;
-//           })
-//   }
-
-  
-//   submitMarketoCredentials()
-//   {
-//       this.loading = true;
-//       const obj = {
-//           userId: this.authenticationService.getUserId(),
-//           instanceUrl: this.marketoInstance,
-//           clientId: this.clientId,
-//           clientSecret: this.secretId
-//       }
-
-//       this.emailTemplateService.saveMarketoCredentials(obj).subscribe(response =>
-//       {
-//           if (response.statusCode == 8003)
-//           {
-//             $("#closeButton").hide();
-//               this.showMarketoForm = false;
-              
-//               this.templateError = false;
-//               this.templateSuccessMsg = response.message;
-//               this.loading = false;
-//               this.pushToMarketo = true;
-//               setTimeout(function(){ $("#templateRetrieve").modal('hide')},3000);
-//           } else
-//           {
-//               this.pushToMarketo = false;
-//               $("#templateRetrieve").modal('show');
-//               $("#closeButton").show();
-//               this.templateError = response.message;
-//               this.templateSuccessMsg = false;
-//               this.loading = false;
-//           }
-//       }, error => {this.templateError = error;
-//             this.pushToMarketo = false;
-//             $("#closeButton").show();
-//         }
-//       )
-
-//   }
-//   getTemplatesFromMarketo()
-//   {
-//       this.clearValues();
-
-//       this.checkMarketoCredentials();
-
-
-
-//   }
-  
- 
-//   validateModelForm(fieldId: any)
-//   {
-//       var errorClass = "form-group has-error has-feedback";
-//       var successClass = "form-group has-success has-feedback";
-
-//       if (fieldId == 'email')
-//       {
-//           if (this.clientId.length > 0)
-//           {
-//               this.clientIdClass = successClass;
-//               this.clentIdError = false;
-//           } else
-//           {
-//               this.clientIdClass = errorClass;
-//               this.clentIdError = true;
-//           }
-//       } else if (fieldId == 'pwd')
-//       {
-//           if (this.secretId.length > 0)
-//           {
-//               this.secretIdClass = successClass;
-//               this.secretIdError = false;
-//           } else
-//           {
-//               this.secretIdClass = errorClass;
-//               this.secretIdError = true;
-//           }
-//       } else if (fieldId == 'instance')
-//       {
-//           if (this.marketoInstance.length > 0)
-//           {
-//               this.marketoInstanceClass = successClass;
-//               this.marketoInstanceError = false;
-//           } else
-//           {
-//               this.marketoInstanceClass = errorClass;
-//               this.marketoInstanceError = false;
-//           }
-//       }
-//       this.toggleSubmitButtonState();
-//   }
-
- 
-//   saveMarketoTemplatesButtonState()
-//   {
-
-
-//   }
-
- 
-//   toggleSubmitButtonState()
-//   {
-//       if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
-//           this.isModelFormValid = true;
-//       else
-//           this.isModelFormValid = false;
-
-//   }
-//   closeModal()
-//   {
-//     this.pushToMarketo = false;
-//       $("#templateRetrieve").modal('hide');
-//   }
 
 
 }

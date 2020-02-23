@@ -14,7 +14,8 @@
 					 data-dismiss="modal" aria-hidden="true" (click)="closeRecordPopup()"><i class="fa fa-times"></i></button>
 					<h4 class="modal-title" id="myModalLabel"><strong>Record Video from WebCam</strong></h4>
 				</div>
-				<div class="modal-body" style="padding: 0px 10px 0px 10px;">
+        <div class="modal-body" style="padding: 0px 10px 0px 10px;">
+          <app-response-message [customResponse]="recordCustomResponse" *ngIf="recordCustomResponse.isVisible"></app-response-message>
 					<form>
 						<div class="input-group" style="width: 100%;">
 							<div>

@@ -5,9 +5,13 @@
     letter-spacing: -0.64px;
     line-height: 20px;
 }
+
+.rss-title:hover{
+    color: #488fd6 !important;
+}
+
 .rss-summary {
     color: rgb(158, 158, 158);
-    cursor: pointer;
     font-size: 13px;
     height: 54px;
     line-height: 18px;
@@ -19,15 +23,27 @@
     text-rendering: optimizelegibility;
     word-break: break-word;
 }
+
 .rss-visual {
-  height: 100px;
-  width: 130px;
-  float: left;
-  background-size: cover;
-  border-radius: 5px;
-  margin-right: 20px;
-  background-color: #f1f1f1;
+    height: 65px;
+    width: 130px;
+    float: left;
+    background-size: cover;
+    border-radius: 5px;
+    margin-right: 20px;
+    background-color: #f1f1f1;
 }
+
 .rss-entry {
-  margin: 20px 0;
+    margin: 10px 0px !important;
 }
+
+.page-bar {
+    border-radius: 5px !important;
+}
+.portlet.light {
+    border-radius: 5px !important;
+}
+.rss-summary > img { display: none;}
+
+.alignment { margin-left: 30px;}

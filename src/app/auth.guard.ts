@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild } from '@angular/router';
 import { AuthenticationService } from './core/services/authentication.service';
 import { Roles } from './core/models/roles';
-
+import { ReferenceService } from './core/services/reference.service';
+import {UtilService} from './core/services/util.service';
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild {
     roles: Roles = new Roles();
@@ -17,8 +18,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     upgradeBaseUrl = 'upgrade';
     teamBaseUrl = 'team';
     opportunityBaseUrl = 'deals';
-
-    constructor( private authenticationService: AuthenticationService, private router: Router ) {  }
+    formBaseUrl = 'forms';
+    landingPagesUrl = 'pages';
+    constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
         return this.checkLogin( url );
@@ -38,21 +40,26 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.authenticationService.user.emailId = userName;
             this.authenticationService.user.roles =  JSON.parse( currentUser )['roles'];
             this.authenticationService.user.hasCompany =  JSON.parse( currentUser )['hasCompany'];
+            this.authenticationService.user.campaignAccessDto = JSON.parse( currentUser )['campaignAccessDto'];
             this.getUserByUserName(userName);
-            if(url.includes('home/error')){ this.router.navigateByUrl('/home/dashboard') }
+            if(url.includes('home/error')){ 
+                this.router.navigateByUrl('/home/dashboard') 
+              }
             else if(!this.authenticationService.user.hasCompany) {
-              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile") ){
+              if(url.includes("/home/dashboard") || url.includes("/home/dashboard/default") || url.includes("/home/dashboard/myprofile")){
                 return true;
-              } else { this.goToAccessDenied();  }
+              } else { this.goToAccessDenied(url);  }
+            }else if(url.includes("/home/design/add")){
+                return true;
             }
-            else if(url.indexOf("/dashboard")< 0){
+            else if(url.indexOf("/dashboard")< 0 ){
                return this.secureUrlByRole(url);
             }else{
                 if(url.indexOf("/myprofile")>-1){
                     if(this.authenticationService.user.hasCompany){
                         return true;
                     }else{
-                        this.goToAccessDenied();
+                        this.goToAccessDenied(url);
                     }
                 }else{
                     return true;
@@ -119,7 +126,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         if(url.indexOf(this.opportunityBaseUrl)>-1){
           return this.authorizeUrl(roles, url, this.opportunityBaseUrl);
-      }
+        }
+        if(url.indexOf(this.formBaseUrl)>-1){
+            return this.authorizeUrl(roles, url, this.formBaseUrl);
+         }
+        if(url.indexOf(this.landingPagesUrl)>-1){
+            return this.authorizeUrl(roles, url, this.landingPagesUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -158,7 +171,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         }
         if(urlType===this.opportunityBaseUrl){
           role = this.roles.opportunityRole;
-      }
+        }
+        if(urlType===this.formBaseUrl){
+            role = this.roles.formRole;
+         }
+        if ( urlType === this.landingPagesUrl ) {
+            role = this.roles.landingPageRole;
+        }
         if(url.indexOf("partners")>-1 || url.indexOf("upgrade")>-1 ){
             url = url+"/";
         }
@@ -172,6 +191,43 @@ export class AuthGuard implements CanActivate, CanActivateChild {
             this.router.navigate( ['/home/dashboard/admin-report'] );
             return true;
         }
+        if(urlType==this.formBaseUrl){
+            let hasFormAccess = false;
+            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            if(campaignAccessDto!=undefined){
+                hasFormAccess = campaignAccessDto.formBuilder;
+            }
+            let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.formRole)>-1; 
+            let hasPartnerFormAccess = isPartner && (url.indexOf("/partner/")>-1);
+            if((hasFormAccess && hasRole) ||(isPartner && (url.indexOf("/cf/")>-1|| url.indexOf("/analytics")>-1)) || hasPartnerFormAccess){
+                return true;
+            }else{
+                console.log(campaignAccessDto);
+                console.log("hasFormAcess:-"+hasFormAccess);
+                console.log("hasRole:-"+hasFormAccess);
+                return this.goToAccessDenied(url);
+            }
+        }
+        else if(urlType==this.landingPagesUrl){
+            let hasLandingPageAccess = false;
+            let partnerLandingPageAccess = false;
+            let campaignAccessDto = this.authenticationService.user.campaignAccessDto;
+            if(campaignAccessDto!=undefined){
+                hasLandingPageAccess = campaignAccessDto.landingPage;
+                partnerLandingPageAccess = campaignAccessDto.partnerLandingPage;
+                
+            }
+            let hasRole = roles.indexOf(this.roles.orgAdminRole)>-1  || roles.indexOf(this.roles.vendorRole)>-1
+                            || roles.indexOf(this.roles.allRole)>-1 || roles.indexOf(this.roles.landingPageRole)>-1;  
+            let hasPartnerLandingPageAccess = isPartner && (url.indexOf("/partner")>-1);
+            if((hasLandingPageAccess && hasRole) || hasPartnerLandingPageAccess || partnerLandingPageAccess){
+                return true;
+            }else{
+                return this.goToAccessDenied(url);
+            }
+        
+        }
         else if(isVendor && !isPartner){
             return this.checkVendorAccessUrls(url, urlType);
         }
@@ -181,13 +237,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         else{
             const hasRole = (roles.indexOf(this.roles.orgAdminRole)>-1 || roles.indexOf(this.roles.companyPartnerRole)>-1
                     || roles.indexOf(this.roles.allRole)>-1  || roles.indexOf(role)>-1);
-
-            // if(url.search('/twitter') || url.search('/rss'))
-            //     return true;
+            
             if(url.indexOf("/"+urlType+"/")>-1 && this.authenticationService.user.hasCompany&&hasRole){
                 return true;
             }else{
-                return this.goToAccessDenied();
+                return this.goToAccessDenied(url);
             }
         }
       }catch(error){console.log('error'+error); }
@@ -199,7 +253,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 && url.indexOf("/"+this.contactBaseUrl+"/")< 0){
             return true;
         }else{
-            return this.goToAccessDenied();
+            return this.goToAccessDenied(url);
         }
       }catch(error){ console.log('error'+error);}
     }
@@ -211,13 +265,17 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                       || url.includes('/home/partners/manage')))){
                 return true;
       }else{
-                return this.goToAccessDenied();
+                return this.goToAccessDenied(url);
       }
     }catch(error){ console.log('error'+error);}
     }
 
-    goToAccessDenied():boolean{
-        this.router.navigate( ['/access-denied'] );
-        return false;
+    goToAccessDenied(url):boolean{
+        if(!(url.includes('/home/team/add-team') && this.utilService.isLoggedAsTeamMember())){
+            this.router.navigate( ['/access-denied'] );
+            return false;
+        }else{
+            return true;
+        }
     }
  }

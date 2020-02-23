@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,ViewChild,Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -24,6 +24,11 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
+import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
+import { LandingPage } from '../../landing-pages/models/landing-page';
+import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import { SenderMergeTag } from '../../core/models/sender-merge-tag';
+import { ConsoleLoggerService } from 'app/error-pages/services/console-logger.service';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -32,12 +37,13 @@ var moment = require('moment-timezone');
   selector: 'app-edit-partner-campaigns',
   templateUrl: './edit-partner-campaigns.component.html',
   styleUrls: ['./edit-partner-campaigns.component.css','../../../assets/css/content.css'],
-  providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties]
+  providers:[CallActionSwitch,HttpRequestLoader,Pagination,Properties,LandingPageService]
 })
 export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     ngxloading: boolean;
-
+    senderMergeTag:SenderMergeTag = new SenderMergeTag();
     selectedEmailTemplateId = 0;
+    selectedLandingPageId = 0;
     campaign: Campaign;
     emailTemplate: EmailTemplate;
     userLists: any;
@@ -103,7 +109,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'required': 'please select the launch time'
         },
         'contactListId': {
-            'pattern': 'please select atleast one contact list'
+            'pattern': 'please select at least one contact list'
         },
         'countryId': {
             'required': 'Country is required.',
@@ -161,8 +167,16 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     isOnlyPartner = false;
     isOrgAdminAndPartner =false;
     isVendorAndPartner = false;
+    validUsersCount: number;
+    allUsersCount: number;
+    
+    @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    start: any;
+    pressed: boolean;
+    startX: any;
+    startWidth: any;
 
-    constructor(private router: Router,
+    constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
             private contactService: ContactService,
@@ -173,6 +187,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             private formBuilder: FormBuilder,
             public properties:Properties,
             private xtremandLogger: XtremandLogger) {
+			this.referenceService.renderer = this.renderer;
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
             this.contactListPagination.filterKey = 'isPartnerUserList';
@@ -219,8 +234,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.getCampaignUrls(this.campaign);
 
         this.loadContactList(this.contactListPagination);
-        this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
-        this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+        
         if(this.campaign.nurtureCampaign){
             this.selectedUserlistIds = this.campaign.userListIds;
         }
@@ -229,6 +243,15 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             this.campaignType=="VIDEO";
         }else if(this.campaignType.includes('REGULAR')){
             this.campaignType=="REGULAR";
+        }else if(this.campaignType.includes('LANDINGPAGE')){
+            this.campaignType=="LANDINGPAGE";
+        }
+        
+        if(this.campaignType!="LANDINGPAGE"){
+            this.getAnchorLinksFromEmailTemplate(this.campaign.emailTemplate.body);
+            this.selectedEmailTemplateId = this.campaign.emailTemplate.id;
+        }else{
+            this.selectedLandingPageId = this.campaign.landingPage.id;
         }
 
         if(this.campaign.campaignScheduleType=="SCHEDULE" && this.campaign.userId==this.loggedInUserId){
@@ -504,6 +527,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                                 response => {
                                     if(response.statusCode==200){
                                         this.campaign.myMergeTagsInfo = response.data;
+                                        body = body.replace(this.senderMergeTag.aboutUsGlobal,this.campaign.myMergeTagsInfo.aboutUs);
                                         this.setMergeTagsInfo(body);
                                     }
                                 },
@@ -593,6 +617,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'videoPlayed': this.campaign.videoPlayed,
             'replyVideo': true,
             'channelCampaign': false,
+            'linkOpened':this.campaign.linkOpened,
+            'emailNotification':true,
             'enableCoBrandingLogo': this.campaign.enableCoBrandingLogo,
             'socialSharingIcons': true,
             'userId': this.authenticationService.getUserId(),
@@ -615,7 +641,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'nurtureCampaign':true,
             'dataShare':this.campaign.dataShare,
             'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared,
-            'parentCampaignId':this.campaign.parentCampaignId
+            'parentCampaignId':this.campaign.parentCampaignId,
+            'landingPageId':this.selectedLandingPageId
         };
         return data;
     }
@@ -623,7 +650,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
 
 
     getRepliesData(){
-        for(var i=0;i<this.replies.length;i++){
+        for(var i=0;i< this.replies.length;i++){
             let reply = this.replies[i];
             $('#'+reply.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('reply-days-'+reply.divId);
@@ -702,7 +729,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     }
 
     getOnClickData(){
-        for(var i=0;i<this.urls.length;i++){
+        for(var i=0;i< this.urls.length;i++){
             let url = this.urls[i];
             $('#'+url.divId).removeClass('portlet light dashboard-stat2 border-error');
             this.removeStyleAttrByDivId('click-days-'+url.divId);
@@ -817,6 +844,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             $('#' + contactListId).parent().closest('tr').removeClass('highlight');
         }
         this.contactsUtility();
+        this.getValidUsersCount();
         event.stopPropagation();
     }
 
@@ -1019,6 +1047,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             contactsPagination.editCampaign = false;
         }
+        console.log(contactsPagination);
         this.contactService.loadContactLists(contactsPagination)
             .subscribe(
             (data: any) => {
@@ -1078,6 +1107,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
                   this.selectedUserlistIds.push(contactId);
               }
                 this.contactsUtility();
+                this.getValidUsersCount();
                 event.stopPropagation();
             }else{
                 this.emptyContactsMessage = "Contacts are in progress";
@@ -1198,8 +1228,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           }
       }
 
-
-      contactSearchInputKey(event:any) {if(event.key ==13){this.searchContactList();}}
+ contactSearchInputKey( keyCode: any ) { if ( keyCode === 13 ) { this.searchContactList(); } }
   ngOnInit() {
       flatpickr( '.flatpickr',{
           enableTime: true,
@@ -1273,8 +1302,38 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           this.referenceService.goToTop();
       }
   return false;
-
+  }
+  previewCampaignLandingPage(campaign:Campaign){
+      campaign.landingPage.showPartnerCompanyLogo = true;
+      campaign.landingPage.partnerId = this.loggedInUserId;
+      this.previewLandingPageComponent.showPreview(campaign.landingPage);
   }
 
+  getValidUsersCount() {
+      try {
+         if(this.selectedUserlistIds.length > 0){
+          this.contactService.getValidUsersCount( this.selectedUserlistIds )
+              .subscribe(
+              data => {
+                  data = data;
+                  this.validUsersCount = data['validContactsCount'];
+                  this.allUsersCount = data['allContactsCount'];
+                  console.log( "valid contacts Data:" + data['validContactsCount'] );
+              },
+              ( error: any ) => {
+                  console.log( error );
+              },
+              () => console.info( "MangeContactsComponent ValidateInvalidContacts() finished" )
+              )
+         }
+      } catch ( error ) {
+          console.error( error, "ManageContactsComponent", "removingInvalidUsers()" );
+      }
+  }
+  
+  setLinkOpened(event){
+      this.campaign.linkOpened = event;
+  }
 
+  
 }

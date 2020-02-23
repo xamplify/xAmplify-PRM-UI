@@ -198,6 +198,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         }
     }
     checkingCallToActionValues() {
+        
+        if(this.callAction.email_id){
+            this.callAction.email_id = this.callAction.email_id.trim();
+        }
+        
         if (this.callAction.isFistNameChecked === true && this.videoUtilService.validateEmail(this.callAction.email_id)
             && this.callAction.firstName && this.callAction.lastName) {
             this.callAction.isOverlay = false;
@@ -269,6 +274,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                 }
             });
         });
+        let self = this;
         player360.videoJSplayer.panorama({
             autoMobileOrientation: true,
             clickAndDrag: true,
@@ -288,9 +294,12 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
                         $('#videoId').append($('#overlay-modal').show());
                         player360.videoJSplayer.pause();
                     } else if (isValid !== 'StartOftheVideo') {
-                        $('#overlay-modal').hide();
                         player360.videoJSplayer.play();
-                    } else { $('#overlay-modal').hide(); }
+                        $('#overlay-modal').hide();
+                    } else {
+                       player360.videoJSplayer.play();
+                       $('#overlay-modal').hide();
+                      }
                     $('#skipOverlay').click(function () {
                         isCallActionthere = false;
                         $('#overlay-modal').hide();
@@ -880,6 +889,15 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         this.videoLogAction(this.xtremandLog);
         // event.returnValue = "Are you sure?";
     }
+
+    onResize(event) {
+      const innerWidth = event.target.innerWidth;
+      console.log(innerWidth);
+      if (innerWidth >= 767) {
+        alert('hieght 767');
+        
+      }
+   }
     ngOnDestroy() {
         // this.setConfirmUnload(false);
         this.xtremandLogger.info('Deinit - Destroyed Share-Video Component');

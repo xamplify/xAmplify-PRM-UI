@@ -1,4 +1,5 @@
 <section>
+ <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <app-event-send-reminder *ngIf="isOpenNotificationModal" (notifyParent)="emailNotOpenReminderDate($event)" [selectedEventCampaignId]="campaign.campaignId" [selectedUserId]="selectedEmailNotOpenUserId"> </app-event-send-reminder>
 <div id="timeline-view" class="page-content">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -11,7 +12,7 @@
     <div class="col-xs-12 caption-subject font-red-sunglo">
 		<h4 class="pull-left">Your Campaign Response</h4>
 		</div>
-		<div class="col-xs-12 col-sm-4 p-5x">
+	<!-- 	<div class="col-xs-12 col-sm-4 p-5x">
 		<div class="p-5x">
 			<div class="portlet light">
 				<div class="portlet-body clearfix">
@@ -24,9 +25,9 @@
 				</div>
 			</div>
 		</div>
-	</div>
-		<div class="col-xs-12 col-sm-8 p-5x emails-info">
-		<div class="col-xs-2 rsvp_tile_padding">
+	</div> -->
+		<div class="col-xs-12  emails-info">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'invities'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpInvitiesDetails()"
 			 [disabled]="campaignReport.totalInvities < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -39,7 +40,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-2 rsvp_tile_padding">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'email open'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpEmailOpenDetails()"
 			 >
 				<div class="portlet-body text-center">
@@ -52,9 +53,9 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-2 rsvp_tile_padding">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('YES')"
-			 [disabled]="campaignReport.totalYesCount < 1">
+			 [disabled]="campaignReport.totalYesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-check-circle"></i>
 					<h1>
@@ -65,9 +66,9 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-2 rsvp_tile_padding">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NO')"
-			 [disabled]="campaignReport.totalNoCount < 1">
+			 [disabled]="campaignReport.totalNoCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-times-circle"></i>
 					<h1>
@@ -78,9 +79,9 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-2 rsvp_tile_padding">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('MAYBE')"
-			 [disabled]="campaignReport.totalMayBeCount < 1">
+			 [disabled]="campaignReport.totalMayBeCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
 						<i class="fa fa-question-circle"></i>
 					<h1>
@@ -91,7 +92,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-2 rsvp_tile_padding">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NOTYET'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NOTYET')"
 			 [disabled]="campaignReport.totalNotYetRespondedCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -104,11 +105,39 @@
 				</div>
 			</button>
 		</div>
+		<ng-container *ngIf="campaign.publicEventCampaign">
+		<div  class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_LEADS'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('TOTAL_LEADS')"
+			 [disabled]="campaignReport.totalLeadsCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+					<i class="fa fa-user-secret"></i>
+					<h1>
+						<b>{{campaignReport.totalLeadsCount}}</b>
+						<span>Leads</span>
+					</h1>
+
+				</div>
+			</button>
+		</div>
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'TOTAL_ATTENDEES'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('TOTAL_ATTENDEES')"
+			 [disabled]="campaignReport.totalAttendeesCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
+				<div class="portlet-body text-center">
+					<i class="fa fa-user"></i>
+					<h1>
+						<b>{{campaignReport.totalAttendeesCount}}</b>
+						<span>Total</span>
+					</h1>
+
+				</div>
+			</button>
+		</div>
+		</ng-container>
 	</div>
-
-
-    <div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
-                <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
+<ng-container *ngIf="detailType!='TOTAL_LEADS' && detailType!='TOTAL_ATTENDEES' && detailType!='TOTAL_PARTNER_LEADS'">
+		<div class="col-xs-12" style="padding: 10px 0px 5px 16px;">
+			<div class="col-xs-12 col-sm-7 col-lg-7">
+        <h4 class="pull-left" *ngIf="detailType === 'invities'">Total invitees</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'YES'">People who have responded YES</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'NO'">People who have responded NO</h4>
 				<h4 class="pull-left" *ngIf="detailType === 'MAYBE'">People who have responded MAYBE</h4>
@@ -120,27 +149,28 @@
 								</ul>
 				<!-- <a (click)="analyticsComponent.getRsvpEmailOpenDetails()">People who have opened your email</a><span> <a (click)="analyticsComponent.getRsvpEmailNotOpenDetails()">Not yet opened details</a></span> -->
 				</div>
-				<div class="pull-right col-xs-4">
-				<div class='col-xs-10'>
+			</div>
+			<div class="pull-right col-xs-12 col-sm-5 col-lg-5">
+				<div class='col-xs-10 col-sm-10 col-lg-10'>
 			        <input type="text"  [(ngModel)]="analyticsComponent.searchKey"  [ngModelOptions]="{standalone: true}"
 			        class="form-control" placeholder="Search " (keypress)="analyticsComponent.eventHandler($event.keyCode)">
-			        <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey=''">
+			        <button class="clear-search" *ngIf="analyticsComponent.searchKey" (click)="analyticsComponent.searchKey='';analyticsComponent.search()">
 					  <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
 					</button>
 			        <button type="submit" class="search-box-item-click" (click)="analyticsComponent.search()"><i class="fa fa-search" style="color:black !important"></i></button>
-   				 </div>
-				<div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="margin: 23px 28px 0px 0px; cursor:pointer; color: #7d8c98">
-					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;margin: -15px;padding-right: 10px;float:right;">
+						</div>
+				<div class="col-xs-2 col-sm-2 col-lg-2">
+				<div class="btn-group pull-right" [class.disabled]="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0" style="cursor:pointer; color: #7d8c98;margin-top: 8px;">
+					<span class="dropdown-toggle" data-toggle="dropdown" style="box-shadow:none;float:right;display:flex;">
 					<i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down" style="font-size:14px; float:right"></i>
 				</span>
-					<ul class="dropdown-menu pull-right">
+					<ul class="dropdown-menu pull-right" style="right: 5px!important;">
 						<li><a id="delete_button" (click)="analyticsComponent.downloadFunctionality()"> Export To Excel </a></li>
 					</ul>
 				</div>
 				</div>
+				</div>
     </div>
-    <ngx-loading [show]="referenceService.detailViewIsLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
     <div class="col-xs-12">
     <div class="alert alert-info flex" *ngIf="analyticsComponent.isLoadingDownloadList">
 			  <div class="loader"
@@ -148,12 +178,13 @@
 					<h4 class="m5">Please wait while we process your request.</h4>
 			</div>
 					<div class="table-responsive">
-					<!--  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader> -->
+<!-- 					 <app-list-loader *ngIf="analyticsComponent.httpRequestLoader.isLoading"></app-list-loader> -->
 					<div class="alert alert-info alert-dismissible" *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length == 0">
 						  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 						  No results found.
 						</div>
 				 	<ng-container *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems?.length !== 0">
+						 <div class="table-responsive">
 						<table class="table tgrid">
 							<thead>
 								<tr>
@@ -193,13 +224,26 @@
 								</tr>
 							</tbody>
 						</table>
+						</div>
 						</ng-container>
 						<app-pagination *ngIf="analyticsComponent.rsvpDetailAnalyticsPagination.pagedItems.length !== 0" [pagination]="analyticsComponent.rsvpDetailAnalyticsPagination"
 						 [type]="detailType" (notifyParent)="analyticsComponent.setPage($event)" (notifyParentDropDown)="analyticsComponent.paginationDropdown($event)"></app-pagination>
 
 					</div>
 				</div>
+		</ng-container>
+		<ng-container *ngIf="detailType=='TOTAL_LEADS'">
+		  <div class="col-xs-12">
+			  	<app-form-analytics-util  [importedObject]="analyticsComponent.exportingObject" *ngIf="analyticsComponent.exportingObject.formAlias?.length>0"></app-form-analytics-util>
+		</div>	
+		</ng-container>	
+		<ng-container *ngIf="detailType=='TOTAL_ATTENDEES'">
+		  <div class="col-xs-12">
+			  	<app-form-analytics-util  [importedObject]="analyticsComponent.exportingObject" *ngIf="analyticsComponent.exportingObject.formAlias?.length>0"></app-form-analytics-util>
+		</div>	
+		</ng-container>		
 	</div>
 </div>
+<app-scroll-top></app-scroll-top>
 </section>
 

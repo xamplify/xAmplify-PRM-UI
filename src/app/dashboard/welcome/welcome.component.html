@@ -27,7 +27,7 @@
    </div>
    <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
      <div class="col-xs-12 col-sm-6">
-       <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">{{properties.APP_WELCOME_MESSAGE}}</h4>
+       <h4 style="margin: 0.3em 0;color: #00a6e8;font-weight: 400;">Welcome {{logedInCustomerCompanyName}}</h4>
      </div>
      <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage">
        <div style="display: flex;float: right;">
@@ -93,7 +93,7 @@
              <h1 style="color: #76c9ff;text-align: left">Content</h1>
              <p style="position: relative;left: -19px;">{{welcome_text.videos}}</p>
              <div style="text-align: left">
-               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/videos']" >Upload Content</button>
+               <button *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdminPartner()|| authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content/upload']" >Upload Content</button>
                <button *ngIf="authenticationService.isOnlyPartner() || !authenticationService.module.isVideo" class="btn btn-xs color1" [routerLink]="['/home/content/videos']">View Content</button>
                <button type="button" class="btn btn-xs color1-invert" data-toggle="modal" (click)="showHowToVideo(uploadVideoUrl,'Videos')">Tell me how</button>
              </div>

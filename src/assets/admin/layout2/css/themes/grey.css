@@ -14,7 +14,7 @@ Page Header
   /* Header seaech box */
 }
 .page-header.navbar .page-logo {
-  background: #ffffff;
+  /* background: #ffffff; */
 }
 .page-header.navbar .page-top {
   box-shadow: 0px 1px 10px 0px rgba(50, 50, 50, 0.2);
@@ -402,13 +402,13 @@ Page Footer
     background-color: #f6f7fa;
   }
   .page-header.navbar .page-top {
-    box-shadow: none;
+   /* box-shadow: none;*/
   }
 }
 @media (max-width: 767px) {
   /* 767px */
   .page-header.navbar {
-    background: #14B9D6;
+    background: #ffffff;
     /* Top menu */
   }
   .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {

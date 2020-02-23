@@ -1,9 +1,9 @@
 .alert-dismissible .close{top: 0 !important;right: 0px !important;}
 .alert-success,.alert-danger,.alert-warning{color:#fff;border-radius:0}
-.alert-success{background-color:#77bf81}
-.alert-danger{background-color:#ec6262}
-.alert-danger1{background-color:#ec6262;color:white}
-.alert-warning{background-color:#f1d43b}
+.alert-success{background-color:#77bf81;border-radius: 3px !important;}
+.alert-danger{background-color:#ec6262;border-radius: 3px !important;}
+.alert-danger1{background-color:#ec6262;color:white;border-radius: 3px !important;}
+.alert-warning{background-color:#f1d43b;border-radius: 3px !important;}
 .alert{padding:10px}
 .alert-success,.alert-danger,.alert-warning>h5{font-size:14px}
 .text{padding-top: 12px;}

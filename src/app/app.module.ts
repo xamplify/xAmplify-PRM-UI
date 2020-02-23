@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,13 +8,12 @@ import { CommonModule } from '@angular/common';
 
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 import { Ng2DeviceDetectorModule } from 'ng2-device-detector';
-
+import { LoadingModule } from 'ngx-loading';
 import { CoreModule } from './core/core.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorPagesModule } from './error-pages/error-pages.module';
-
 import { AppComponent } from './app.component';
 import { SocialLoginComponent } from './social/common/social-login/social-login.component';
 import { SocialCallbackComponent } from './social/common/social-callback/social-callback.component';
@@ -51,15 +50,30 @@ import { LogUnsubscribeComponent } from './campaigns/log-unsubscribe/log-unsubsc
 import { LogRegularCampaignComponent } from './campaigns/log-regular-campaign/log-regular-campaign.component';
 import { RsvpComponent } from './campaigns/rsvp/rsvp.component';
 import { EnvServiceProvider } from './env.service.provider';
+import { LogRegularCampaignComponentSMS } from './campaigns/log-regular-campaign-sms/log-regular-campaign-sms.component';
+import { CampaignSMSVideoComponent } from './videos/campaign-sms-video/campaign-sms-video.component';
+import { LogEventCampaignComponentSMS } from './campaigns/log-event-campaign-sms/log-event-campaign-sms.component';
+import { LogSMSClickComponent } from './campaigns/log-sms-click/log-sms-click.component';
+//import {FormPreviewComponent} from './forms/preview/form-preview.component';
+import { ShowLandingPageComponent } from './landing-pages/show-landing-page/show-landing-page.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+import { CommonComponentModule } from 'app/common/common.module';
+import { HubSpotService } from './core/services/hubspot.service';
+import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
+import { IntegrationService } from './core/services/integration.service';
 
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
-        CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-    ],
+                   CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
+               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
+        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent
+
+               ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule],
     providers: [{
         provide: Http,
         useFactory: httpService,
@@ -67,7 +81,7 @@ import { EnvServiceProvider } from './env.service.provider';
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService],
     bootstrap: [AppComponent]
 
 })

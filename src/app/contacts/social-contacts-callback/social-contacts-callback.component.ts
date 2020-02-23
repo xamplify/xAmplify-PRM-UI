@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ContactService } from '../services/contact.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { HubSpotService } from 'app/core/services/hubspot.service';
+import { IntegrationService } from 'app/core/services/integration.service';
 
 @Component( {
     selector: 'app-social-contacts-callback',
@@ -15,7 +17,7 @@ export class SocialContactsCallbackComponent implements OnInit {
     public isPartner: boolean;
     callbackName: string;
 
-    constructor( public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger ) {
+    constructor( private route: ActivatedRoute, public referenceService: ReferenceService, private router: Router, private contactService: ContactService, public xtremandLogger: XtremandLogger,private hubSpotService:HubSpotService ,private integrationService:IntegrationService) {
         let currentUrl = this.router.url;
         if ( currentUrl.includes( 'home/contacts' ) ) {
             this.isPartner = false;
@@ -39,9 +41,9 @@ export class SocialContactsCallbackComponent implements OnInit {
         }
     }
 
-    socialContactsCallback() {
+    socialContactsCallback(queryParam: any) {
         try {
-            this.contactService.socialContactsCallback()
+            this.contactService.socialContactsCallback(queryParam)
                 .subscribe(
                 result => {
                     localStorage.removeItem( "userAlias" );
@@ -51,7 +53,7 @@ export class SocialContactsCallbackComponent implements OnInit {
                     if ( this.callbackName == 'google' ) {
                         this.contactService.socialProviderName = 'google';
                     } else if ( this.callbackName == 'salesforce' ) {
-                        this.contactService.socialProviderName = 'salesforce';
+                        this.contactService.socialProviderName = 'salesforce';                        
                     }
 
                     if ( this.isPartner == true ) {
@@ -69,11 +71,72 @@ export class SocialContactsCallbackComponent implements OnInit {
             this.xtremandLogger.error( error, "SocialCallbackcomponent()", "socialCallback" );
         }
     }
+    hubSpotCallback(code:string) {
+        try {
+            this.hubSpotService.hubSpotCallback(code)
+                .subscribe(
+                    result => {
+                        this.referenceService.integrationCallBackStatus = true;
+                        this.xtremandLogger.info("Hubspot Callback :: " + result);
+                        localStorage.removeItem("userAlias");
+                        localStorage.removeItem("isPartner");
+                        this.router.navigate(['/home/dashboard/myprofile'])
+                    },
+                    error => {
+                        localStorage.removeItem("userAlias");
+                        this.xtremandLogger.info(error)
+                    },
+                    () => this.xtremandLogger.info('login() Complete'));
+        } catch (error) {
+            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "hubSpotCallback()");
+        }
+    }
+    
+    integrationCallback(code:string,type:string) {
+        try {
+            this.integrationService.handleCallbackByType(code,type)
+                .subscribe(
+                    result => {
+                        this.referenceService.integrationCallBackStatus = true;
+                        this.xtremandLogger.info("Integration Callback :: " + result);
+                        localStorage.removeItem("userAlias");
+                        localStorage.removeItem("isPartner");
+                        this.router.navigate(['/home/dashboard/myprofile']);
+                        if(type === "isalesforce"){
+                            this.contactService.getSfFormFields().subscribe(result =>{
+                                console.log(result);
+                            })
+                        }
+                    },
+                    error => {
+                        localStorage.removeItem("userAlias");
+                        this.xtremandLogger.info(error)
+                    });
+        } catch (error) {
+            this.xtremandLogger.error(error, "SocialCallbackcomponent()", "integrationCallback()");
+        }
+    }
 
     ngOnInit() {
         this.contactService.socialProviderName = '';
-        try {
-            this.socialContactsCallback();
+        try {           
+        let queryParam: string = "";
+        let code:string;
+        this.route.queryParams.subscribe(
+            ( param: any ) => {
+                code = param['code'];
+                let denied = param['denied'];
+                queryParam = "?code=" + code;
+            });            
+            this.xtremandLogger.info("Router URL :: " + this.router.url);
+            if (this.router.url.includes("hubspot-callback")) {
+               // this.hubSpotCallback(code);
+               this.integrationCallback(code,"hubspot");
+            } else if(this.router.url.includes("isalesforce-callback")){
+                this.integrationCallback(code,"isalesforce");
+            }else {
+                this.socialContactsCallback(queryParam);
+            }
         }
         catch ( err ) {
             this.xtremandLogger.error( err );

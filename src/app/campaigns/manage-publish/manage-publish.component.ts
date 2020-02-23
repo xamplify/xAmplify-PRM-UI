@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,Renderer } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from '../services/campaign.service';
 import { ReferenceService } from '../../core/services/reference.service';
 import { Campaign } from '../models/campaign';
@@ -15,7 +15,9 @@ import { EventCampaign } from '../models/event-campaign';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from '../models/campaign-access';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
-
+import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
+import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
+import { UserService } from '../../core/services/user.service';
 declare var swal, $: any;
 
 @Component({
@@ -76,9 +78,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     cancelEventButton = false;
     isloading: boolean;
     previewCampaign: any;
-    constructor(public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
+    copiedLinkCustomResponse: CustomResponse = new CustomResponse();
+    publicEventAlias:string = "";
+    @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
+    @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
+    addWorkflows = false;
+    selectedCampaign:any;
+    teamMemberId: number;
+    constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
-        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService) {
+        public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
+        this.refService.renderer = this.renderer;    
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
         this.itemsSize = this.numberOfItemsPerPage[0];
@@ -94,8 +104,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign launched successfully";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-        }
-        else if (this.refService.campaignSuccessMessage == "UPDATE") {
+        } else if (this.refService.campaignSuccessMessage == "UPDATE") {
             this.showMessageOnTop();
             this.campaignSuccessMessage = "Campaign updated successfully";
             this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
@@ -104,8 +113,16 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-
     }
+
+
+    receiveNotificationFromWorkflows(event:string) {
+        if(event.length>0){
+            this.customResponse = new CustomResponse('SUCCESS',event, true);
+        }
+        this.addWorkflows = false;
+    }
+
     showMessageOnTop() {
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
@@ -115,6 +132,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     listCampaign(pagination: Pagination) {
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
+        if(this.pagination.teamMemberAnalytics){
+            this.pagination.teamMemberId = this.teamMemberId;
+        }
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
@@ -175,7 +195,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.refService.getOrgCampaignTypes(this.refService.companyId).subscribe(
             data => {
                 console.log(data);
-                this.setCampaignAccessValues(data.video, data.regular, data.social, data.event);
+                this.setCampaignAccessValues(data.video, data.regular, data.social, data.event,data.landingPageCampaign,data.partnerLandingPage);
             });
     }
     getCompanyIdByUserId() {
@@ -191,16 +211,24 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             );
         } catch (error) { console.log(error); }
     }
-    setCampaignAccessValues(video: any, regular: any, social: any, event: any) {
+    setCampaignAccessValues(video: any, regular: any, social: any, event: any,landingPageCampaign:boolean,partnerLandingPage:boolean) {
         this.campaignAccess.videoCampaign = video;
         this.campaignAccess.emailCampaign = regular;
         this.campaignAccess.socialCampaign = social;
         this.campaignAccess.eventCampaign = event;
+        this.campaignAccess.landingPageCampaign = landingPageCampaign;
+        this.campaignAccess.partnerLandingPage  = partnerLandingPage;
     }
     ngOnInit() {
         try {
+			this.teamMemberId = this.route.snapshot.params['teamMemberId'];
+			if(this.teamMemberId!=undefined){
+                this.pagination.teamMemberAnalytics = true;
+            }else{
+                this.pagination.teamMemberAnalytics = false;
+            }
             this.refService.manageRouter = true;
-            if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true) }
+            if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
             else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
             this.isListView = !this.refService.isGridView;
             this.pagination.maxResults = 12;
@@ -285,11 +313,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             data => {
                 this.refService.loading(this.httpRequestLoader, false);
                 this.isCampaignDeleted = true;
-                const deleteMessage = campaignName + ' Campaign deleted successfully';
+                const deleteMessage = campaignName + ' deleted successfully';
                 this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
                 this.pagination.pagedItems.splice(position, 1);
                 this.pagination.pageIndex = 1;
                 this.listCampaign(this.pagination);
+                this.listNotifications();
             },
             error => { this.logger.errorPage(error) },
             () => console.log("Campaign Deleted Successfully")
@@ -330,13 +359,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         return campaignData;
     }
     saveAsCampaign() {
+        $('#saveAsModal').modal('hide');
+        this.refService.loading(this.httpRequestLoader, true);
         const campaignData = this.setCampaignData();
         this.campaignService.saveAsCampaign(campaignData)
             .subscribe(data => {
-                console.log(data);
+                this.refService.loading(this.httpRequestLoader, false);
                 this.campaignSuccessMessage = "Campaign copied successfully";
                 $('#lanchSuccess').show(600);
-                $('#saveAsModal').modal('hide');
                 this.showMessageOnTop();
                 this.listCampaign(this.pagination);
                 console.log("saveAsCampaign Successfully");
@@ -447,6 +477,63 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if (event === 'something went wrong') {
             this.customResponse = new CustomResponse('ERROR', 'something went wrong, please try again', true);
         }
+    }
+    
+    goToFormAnalytics(id:number){
+        this.router.navigate(['/home/forms/cf/'+id]);
+    }
+    
+    openEventUrlModal(campaign:Campaign){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        this.publicEventAlias = campaign.publicEventAlias;
+        $('#public-event-url-modal').modal('show');
+    }
+    copyUrl(inputElement){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
+    }
+    inviteMore(campaign:Campaign){
+        this.adddMoreReceiversComponent.showPopup(campaign);
+    }
+    sendEventEmail(campaign:Campaign){
+        this.publicEventEmailPopupComponent.showPopup(campaign);
+    }
+    
+    listNotifications() {
+        try{
+          this.userService.listNotifications(this.authenticationService.getUserId())
+              .subscribe(
+              data => {
+                  console.log("list Notifications in manage publish page "+data);
+                  this.getUnreadNotificationsCount();
+              },
+              error => console.log(error),
+              () => console.log('Finished')
+              );
+          }catch(error) {console.error('error'+error); }
+      }
+    getUnreadNotificationsCount() {
+    	   try{
+    	    this.userService.getUnreadNotificationsCount(this.authenticationService.getUserId())
+    	      .subscribe(
+    	      data => {
+    	        this.userService.unreadNotificationsCount = data;
+    	      },
+    	      error => this.logger.log(error),
+    	      () => this.logger.log('Finished')
+    	      );
+    	    }catch(error) {this.logger.error('error'+error); }
+          }
+          
+    /************Adding Workflows**************** */
+    addWorkFlows(campaign:Campaign){
+        this.customResponse = new CustomResponse();
+        this.addWorkflows = true;
+        this.selectedCampaign = campaign;
+        
     }
 
 }

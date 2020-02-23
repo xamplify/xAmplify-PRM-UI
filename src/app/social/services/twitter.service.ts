@@ -166,12 +166,6 @@ export class TwitterService {
             .catch(this.handleError);
     }
 
-    initializeNotification(socialConnection: SocialConnection, userId:number) {
-        return this.http.get(this.URL + 'initialize-notification?access_token=' + this.authService.access_token+ this.appendQueryParameters(socialConnection)+'&userId='+userId)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
-
     listNotifications(userId:number) {
         return this.http.get(this.authService.REST_URL + 'notifications/'+userId+'?access_token=' + this.authService.access_token)
             .map(this.extractData)

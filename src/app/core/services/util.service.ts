@@ -126,4 +126,26 @@ export class UtilService {
       cropperSetting.noFileInput = true;
       return cropperSetting;
     }
+
+    setUserInfoIntoLocalStorage(userName:string,data:any){
+        const currentUser = localStorage.getItem( 'currentUser' );
+        const userToken = {
+                'userName': userName,
+                'userId': data.id,
+                'accessToken': JSON.parse( currentUser )['accessToken'],
+                'refreshToken': JSON.parse( currentUser )['refreshToken'],
+                'expiresIn':  JSON.parse( currentUser )['expiresIn'],
+                'hasCompany': data.hasCompany,
+                'roles': data.roles,
+                'campaignAccessDto':data.campaignAccessDto,
+                'logedInCustomerCompanyNeme':data.companyName
+            };
+            localStorage.setItem('currentUser', JSON.stringify(userToken));
+    }
+
+    isLoggedAsTeamMember(){
+        let adminId = JSON.parse(localStorage.getItem('adminId'));
+        return adminId!=null;
+    }
+    
 }

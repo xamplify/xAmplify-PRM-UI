@@ -17,6 +17,13 @@ export class LogUnsubscribeComponent implements OnInit {
   public userAlias: string;
   public companyId: number;
   public message: string;
+  companyName: any;
+  isUnsubscribed: boolean;
+  userId: any;
+  reason = '';
+  isOtherReason = false;
+  isShowSuccessMessage = false;
+  characterleft = 250;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,6 +43,10 @@ export class LogUnsubscribeComponent implements OnInit {
           var resp = JSON.parse(body);
           this.message = resp.message;
           console.log(resp);
+          this.isUnsubscribed = resp.isUnsubscribed;
+          this.companyName = resp.companyName;
+          this.userId = resp.userId;
+          
         },
         (error: any) => {
           this.processor.remove(this.processor);
@@ -43,6 +54,48 @@ export class LogUnsubscribeComponent implements OnInit {
         }
       );
   }
+  setOtherOption(){
+      this.isOtherReason = false;
+  }
+  
+  unSubscribeUser(){
+      
+    if(this.isUnsubscribed){
+      var object = {
+             "userId": this.userId,
+             "companyId": this.companyId,
+             "companyName":this.companyName,
+             "reason":this.reason,
+             "type":"reSubscribed"
+     }
+    }else{
+        var object = {
+                "userId": this.userId,
+                "companyId": this.companyId,
+                "companyName":this.companyName,
+                "reason":this.reason,
+                "type":"unsubscribed"
+        }
+    }
+      
+      this.logService.unSubscribeUser(object)
+      .subscribe(
+        (result: any) => {
+          console.log(result);
+          var body = result["_body"];
+          var resp = JSON.parse(body);
+          this.message = resp.message;
+          this.isShowSuccessMessage = true
+        },
+        (error: any) => {
+        console.log(error);
+        }
+      );
+  }
+  
+  characterSize(){
+      this.characterleft = 250 - this.reason.length;
+    }
 
   ngOnInit() {
     this.processor.set(this.processor);

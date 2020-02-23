@@ -281,10 +281,10 @@ export class DealRegistrationService
             .catch(this.handleError);
     }
 
-    /**    
-     * 
+    /**
+     *
      *  Manage Comments
-     * 
+     *
      * */
 
     getComments(dealId: number)
@@ -337,7 +337,7 @@ export class DealRegistrationService
     {
         var url = this.URL + "/comment-stats/save?access_token=" + this.authenticationService.access_token;
 
-        return this.http.post(url, data) 
+        return this.http.post(url, data)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -376,6 +376,13 @@ export class DealRegistrationService
             .map(this.extractData)
             .catch(this.handleError);
     }
+    deleteDealType(dealType: DealType)
+    {
+        var url = this.URL + "deal-type/delete/?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, dealType)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
     listDealTypes(userId:number)
     {
         var url = this.URL + "deal-type/list/"+userId+"?access_token=" + this.authenticationService.access_token;
@@ -384,6 +391,14 @@ export class DealRegistrationService
             .catch(this.handleError);
     }
 
+    isSfEnabledForParentCampaign(dealId:number): Observable<boolean>
+    {
+        var url = this.URL + "validate-sf-enabled/"+dealId+"?access_token=" + this.authenticationService.access_token;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     private extractData(res: Response)
     {
         let body = res.json();

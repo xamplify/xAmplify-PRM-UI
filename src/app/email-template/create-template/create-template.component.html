@@ -11,8 +11,8 @@
                         <a [routerLink]="refService.homeRouter">Home</a>
                         <i class="fa fa-angle-right"></i>
                      </li>
-                     <li *ngIf="emailTemplateService.isNewTemplate"><a [routerLink]="['../../emailtemplates/select']">Select Templates</a>
-                        <i class="fa fa-angle-right"></i>
+                     <li *ngIf="emailTemplateService.isNewTemplate">
+                     	<a [routerLink]="['../../emailtemplates/select']">Select Templates</a><i class="fa fa-angle-right"></i>
                      </li>
                      <li *ngIf="!emailTemplateService.isNewTemplate"><a [routerLink]="['../../emailtemplates/manage']">Manage Templates</a>
                       <i class="fa fa-angle-right"></i>
@@ -22,6 +22,11 @@
                           <ng-template #Other>Update</ng-template> Template</a>
                      </li>
                   </ul>
+                  <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>
+                  <!--   <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate"></app-preview-popup> -->
+                  <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your email templates">
+                  	<i class="fa fa-plus-circle"></i>
+				  </button> -->
                   <div id="bee-plugin-container"></div>
                </div>
             </div>
@@ -30,3 +35,5 @@
    </ng-container>
    <app-scroll-top></app-scroll-top>
 </div>
+
+

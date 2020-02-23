@@ -22,3 +22,10 @@ background: #5bb1d4;
 #question-icons{
 	margin-top: 5px;
 }
+.disable-element{
+  pointer-events: none!important;
+  opacity: 0.5;
+}
+/deep/.phone-input input{
+  height: 38px!important;
+}

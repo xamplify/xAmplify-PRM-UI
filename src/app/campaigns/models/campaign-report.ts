@@ -13,6 +13,13 @@ export class CampaignReport {
     emailSentCount: number = 0;
     usersWatchCount: number = 0;
     totalUniqueWatchCount: number = 0;
+    dataShareClickedUrlsCountForVendor:number = 0;
+    
+     smsOpenCount: number = 0;
+    smsClickedCount: number = 0;
+    smsSentCount:number =0;
+    smsSentSuccessCount = 0;
+    smsSentFailureCount = 0;
 
     lifetimeViewsCount: number = 0;
     thisMonthViewsCount: number = 0;
@@ -35,6 +42,8 @@ export class CampaignReport {
     totalEmailOpenCount: number = 0;
     totalAdditionalCount: number = 0;
     totalInvitiesCount: number = 0;
+    totalLeadsCount:number = 0;
+    totalAttendeesCount:number = 0;
 
     partnersYesCount: number = 0;
     partnersNoCount: number = 0;
@@ -56,5 +65,17 @@ export class CampaignReport {
     selectedPartnerLastName: string;
     selectedPartnerEmailId: string;
     selectedPartnerUserId: any;
+    
+    yesLeadCount: number = 0;
+    noLeadCount: number = 0;
+    maybeLeadCount: number = 0;
+    
+    leadAdditionalCount: number = 0;
+    partnerLeadAdditionalCount: number = 0;
+    
+    yesPartnerLeadCount: number = 0;
+    noPartnerLeadCount: number = 0;
+    maybePartnerLeadCount: number = 0;
+    totalPartnerLeadsCount:number = 0;
 
 }

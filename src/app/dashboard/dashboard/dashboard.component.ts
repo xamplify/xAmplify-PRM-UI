@@ -81,6 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     isOnlyPartner:boolean;
     loading = false;
     logListName = "";
+    logedInCustomerCompanyName: string;
     totalOpenListPagination: Pagination = new Pagination();
     totalClickedPagination: Pagination = new Pagination();
     totalWatchedPagination: Pagination = new Pagination();
@@ -923,7 +924,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             }
 
             if (this.paginationType == 'countryWiseUsers') {
-                object["Device"] = this.dashboardReport.downloadEmailLogList[i].os;
+                object["Device"] = this.dashboardReport.downloadEmailLogList[i].deviceType;
 
             }
 
@@ -1053,6 +1054,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
     }
     ngOnInit() {
+        const currentUser = localStorage.getItem( 'currentUser' );
+        this.logedInCustomerCompanyName = JSON.parse( currentUser )['logedInCustomerCompanyNeme'];
         this.pagination.maxResults = 12;
         try {
             this.loggedInUserId = this.authenticationService.getUserId();

@@ -10,6 +10,7 @@ import { Roles } from '../../core/models/roles';
 import { Pagination } from '../../core/models/pagination';
 import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
 import { TeamMember } from "app/team/models/team-member";
+import { Title }     from '@angular/platform-browser';
 
 
 declare var $: any;
@@ -27,6 +28,7 @@ export class HomeComponent implements OnInit {
   userId: any;
   token: any;
   constructor(
+    private titleService: Title,
     public referenceService: ReferenceService,
     public userService: UserService,
     public dealsService:DealRegistrationService,
@@ -118,9 +120,24 @@ export class HomeComponent implements OnInit {
         this.referenceService.videoCampaign = data.video;
         this.referenceService.emailCampaign = data.regular;
         this.referenceService.socialCampaign = data.social;
-        this.referenceService.eventCampaign = data.event
+        this.referenceService.eventCampaign = data.event;
       });
     }
+  
+  getPartnerCampaignsNotifications(){
+    if(!this.referenceService.eventCampaignTabAccess){
+      const url = "partner/access/" + this.userId + "?access_token=" + this.token;
+      this.userService.getEventAccessTab(url)
+          .subscribe(
+              data => {
+                  console.log(data);
+                  this.referenceService.eventCampaignTabAccess = data.event;
+              },
+              error => { },
+              () => this.xtremandLogger.info('Finished home component CampaignNotification()')
+          );
+     }
+  }
   
   getTeamMembersDetails(){
       const url = "admin/getRolesByUserId/" + this.userId + "?access_token=" + this.token;
@@ -241,10 +258,17 @@ export class HomeComponent implements OnInit {
          
       }
   }
- 
+  public setTitle( newTitle: string) {
+      this.titleService.setTitle( newTitle );
+    } 
   
   ngOnInit() {
       try {
+          if(this.currentUser['logedInCustomerCompanyNeme'] != undefined){
+            this.setTitle(this.currentUser['logedInCustomerCompanyNeme']);
+          }else{
+              this.setTitle('xAmplify'); 
+          }
           this.userId = this.currentUser['userId'];
           this.token = this.currentUser['accessToken'];
           const roleNames = this.currentUser['roles'];
@@ -255,7 +279,7 @@ export class HomeComponent implements OnInit {
             this.getVideoDefaultSettings();
             this.referenceService.defaulgVideoMethodCalled = true;
             this.getTeamMembersDetails();
-
+            this.getPartnerCampaignsNotifications();
           }
        } catch (error) {
          this.xtremandLogger.error("error" + error);
