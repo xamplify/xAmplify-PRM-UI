@@ -54,8 +54,8 @@
                                         <div style="float: right">
                                             <ng-container class='m10'>
                                                 <span class="btn btn-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View"><i
-                                                        class="fa fa-calendar p10"
-                                                        [routerLink]="['/home/campaigns/calendar']"></i></span>
+                                                        class="fa fa-calendar p10" (click)="goToCalendarView()"
+                                                        ></i></span>
                                                 <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i
                                                         class="fa fa-th-list p10" aria-hidden="true"></i></span>
                                                 <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i
