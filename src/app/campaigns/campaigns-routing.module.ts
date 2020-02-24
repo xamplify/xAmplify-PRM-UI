@@ -41,6 +41,7 @@ export const campaignRoutes: Routes = [
   { path: "re-distribute-manage/:id", component: EventCampaignComponent },
   { path: ":campaignId/remove-access", component: PreviewPartnersComponent },
   { path: "calendar", component: CalendarComponent },
+  { path: "calendar/:teamMemberId", component: CalendarComponent },
   { path: "sms", component: CreateSmsCampaignComponent }
 ];
 

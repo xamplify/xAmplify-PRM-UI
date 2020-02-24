@@ -527,6 +527,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     	      );
     	    }catch(error) {this.logger.error('error'+error); }
           }
+        
+          
+          goToCalendarView(){
+              if(this.teamMemberId>0){
+                this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId])
+              }else{
+                this.router.navigate(['/home/campaigns/calendar']);
+              }
+          }     
           
     /************Adding Workflows**************** */
     addWorkFlows(campaign:Campaign){

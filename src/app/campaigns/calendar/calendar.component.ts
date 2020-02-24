@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { CampaignService } from '../services/campaign.service';
 import { SocialService } from '../../social/services/social.service';
@@ -80,9 +80,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
   logListName = "";
   previewCampaign: any;
   selectedSortedOption:any = this.sortByDropDown[this.sortByDropDown.length-1];
+  teamMemberId: number = 0;
+
   constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
     public referenceService: ReferenceService, private router: Router, public videoUtilService:VideoUtilService, public xtremandLogger:XtremandLogger,
-    public contactService:ContactService, public pagerService:PagerService, public utilService:UtilService) {
+    public contactService:ContactService, public pagerService:PagerService, public utilService:UtilService,private route: ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.hasCampaignRole = this.referenceService.hasSelectedRole(this.referenceService.roles.campaignRole);
     this.hasStatsRole = this.referenceService.hasSelectedRole(this.referenceService.roles.statsRole);
@@ -95,7 +97,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
   getCampaignCalendarView() {
     $('#calendar').fullCalendar('removeEvents');
     var view = $('#calendar').fullCalendar('getView');
-    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId };
+    let teamMemberAnalytics = false;
+    if(this.teamMemberId>0){
+      teamMemberAnalytics = true;
+    }
+    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId,'teamMemberAnalytics':teamMemberAnalytics,'teamMemberId':this.teamMemberId };
     this.loading = true;
     this.campaignService.getCampaignCalendarView(request)
       .subscribe(
@@ -134,6 +140,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   renderCalendar() {
     const self = this;
+    this.teamMemberId = this.route.snapshot.params['teamMemberId'];
     $('#calendar').fullCalendar({
       header: {
         left: 'prev,next today',
@@ -212,6 +219,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.renderCalendar();
   }
   ngOnDestroy() {
+  }
+
+  goToManageCampaigns(){
+    if(this.teamMemberId>0){
+      this.router.navigate(['/home/campaigns/manage/'+this.teamMemberId]);
+    }else{
+      this.router.navigate(['/home/campaigns/manage/']);
+    }
+    
   }
 
 }
