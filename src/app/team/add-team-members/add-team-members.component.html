@@ -278,11 +278,11 @@
                                     <tr id="list-team-member-{{i}}" [class.disabled]="authenticationService.isSuperAdmin()">
                                         <td>
                                             <ng-container *ngIf="loginAsTeamMemberAccess">
-                                                <button *ngIf="teamMember.status.toLocaleString()=='APPORVE'" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
+                                                <button *ngIf="teamMember.status.toLocaleString()=='APPORVE' || teamMember.status==0" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
                                                     <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                                                 </button>
 
-                                                <button *ngIf="teamMember.status.toLocaleString()!='APPORVE'" class="btn btn-default btn-xs fif inactive" title="Can't login for inactive team member">
+                                                <button *ngIf="teamMember.status.toLocaleString()!='APPORVE' && teamMember.status!=0" class="btn btn-default btn-xs fif inactive" title="Can't login for inactive team member">
                                                     <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                                                 </button>
 
