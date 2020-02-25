@@ -260,9 +260,9 @@
                                     <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
                                     </li>
-                                    <!-- <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+                                    <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('categories');clearCustomResponse()">Categories</a>
-                                    </li> -->
+                                    </li>
                                 </ul>
                             </div>
                             <div class="portlet-body clearfix">
