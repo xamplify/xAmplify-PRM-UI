@@ -1651,9 +1651,6 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     saveOrUpdateCategory() {
         this.referenceService.startLoader(this.addCategoryLoader);
-        if (this.isAddCategory) {
-            this.category.companyId = this.referenceService.companyId;
-        }
         this.category.createdUserId = this.loggedInUserId;
         this.userService.saveOrUpdateCategory(this.category)
             .subscribe(
