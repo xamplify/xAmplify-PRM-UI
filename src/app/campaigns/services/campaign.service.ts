@@ -489,6 +489,12 @@ export class CampaignService {
             .map(( response: any ) => response );
     }
     
+    downRegularVideoCampaignViews( campaignId: number, campaignType: string): Observable<Response> {
+        this.logger.info( campaignId );
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
+            .map(( response: any ) => response );
+    }
+    
     
     downloadPartnerLeadList( campaignId: number, partnerId, leadType: any): Observable<Response> {
         this.logger.info( campaignId );
