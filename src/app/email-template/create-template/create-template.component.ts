@@ -31,6 +31,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     loggedInUserId = 0;
     companyProfileImages:string[]=[];
+    categoryNames:any;
     emailTemplate:EmailTemplate = new EmailTemplate();
     clickedButtonName = "";
     videoGif = "xtremand-video.gif";
@@ -49,13 +50,12 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
-    console.log('client Id: '+authenticationService.clientId+'and secret id: '+authenticationService.clientSecret);
-
 
     if ( emailTemplateService.emailTemplate != undefined ) {
         var names: any = [];
         let self = this;
         self.loggedInUserId = this.authenticationService.getUserId();
+
         emailTemplateService.getAvailableNames( self.loggedInUserId ).subscribe(
             ( data: any ) => { names = data; },
             error => { this.logger.error( "error in getAvailableNames(" + self.loggedInUserId + ")", error ); },
@@ -69,6 +69,15 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             error => { this.logger.error( "error in getAllCompanyProfileImages(" + self.loggedInUserId + ")", error ); },
             () => this.logger.info( "Finished getAllCompanyProfileImages()" ) );
 
+
+            // authenticationService.getCategoryNamesByUserId( self.loggedInUserId ).subscribe(
+            //     ( data: any ) => {
+            //         self.categoryNames = data.data;
+            //     },
+            //     error => { this.logger.error( "error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error ); },
+            //     () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
+
+        
         var request = function( method, url, data, type, callback ) {
             var req = new XMLHttpRequest();
             req.onreadystatechange = function() {
@@ -104,7 +113,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         var save = function( jsonContent: string, htmlContent: string ) {
             self.emailTemplate = new EmailTemplate();
             self.emailTemplate.body = htmlContent;
-            console.log(self.emailTemplate.body);
             self.emailTemplate.jsonBody = jsonContent;
             if ( emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.videoGif ) < 0 ) {
@@ -147,10 +155,28 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                 }
             }*/
 
+
+            
             if ( !isDefaultTemplate ) {
                 var buttons = $( '<div>' )
-                    .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' )
-                    .append( self.createButton( 'Save As', function() {
+                    .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' );
+                    // var dropDown = '<div class="form-group">';
+                    // dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
+                    // dropDown+='<select class="form-control" id="category-dropdown">';
+                    // console.log(self.categoryNames);
+                    // $.each(self.categoryNames,function(_index:number,category:any){
+                    //     let categoryId = category.id;
+                    //     if(self.emailTemplateService.emailTemplate.categoryId==categoryId){
+                    //         dropDown+='<option value='+category.id+' selected>'+category.name+'</option>';
+                    //     }else{
+                    //         dropDown+='<option value='+category.id+'>'+category.name+'</option>';
+                    //     }
+                    // });
+                    // dropDown+='</select>';
+                    // dropDown+='</div><br>';
+                    // buttons.append(dropDown);
+                   
+                    buttons.append( self.createButton( 'Save As', function() {
                         self.clickedButtonName = "SAVE_AS";
                         self.saveTemplate();
                     } ) ).append( self.createButton( 'Update', function() {
@@ -164,11 +190,24 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                         swal.close();
                         console.log( 'Cancel' );
                     } ) );
+
+                   
                 swal( { title: title, html: buttons, showConfirmButton: false, showCancelButton: false } );
             } else {
                 var buttons = $( '<div>' )
-                    .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' )
-                    .append( self.createButton( 'Save', function() {
+                    .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' );
+                    // var dropDown = '<div class="form-group">';
+                    // dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
+                    // dropDown+='<select class="form-control" id="category-dropdown">';
+                    // console.log(self.categoryNames);
+                    // $.each(self.categoryNames,function(_index:number,category:any){
+                    //     dropDown+='<option value='+category.id+'>'+category.name+'</option>';
+                    // });
+                    // dropDown+='</select>';
+                    // dropDown+='</div><br>';
+                    // buttons.append(dropDown);
+                   
+                    buttons.append( self.createButton( 'Save', function() {
                         self.clickedButtonName = "SAVE";
                         self.saveTemplate();
                     } ) ).append( self.createButton( 'Cancel', function() {
@@ -200,7 +239,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                         if ( names.indexOf( value.toLocaleLowerCase() ) > -1 ) {
                             $( '#save,#update,#save-as' ).attr( 'disabled', 'disabled' );
                             $( '#templateNameSpanError' ).text( 'Duplicate Name' );
-                            console.log( value );
                         } else {
                             $( '#templateNameSpanError' ).empty();
                             $( '#save,#update,#save-as' ).removeAttr( 'disabled' );
@@ -330,6 +368,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
       emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
       emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
+    //  emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
       let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate||emailTemplate.beeEventCoBrandingTemplate;
       if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.BASIC;
@@ -374,6 +413,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.user = new User();
       emailTemplate.user.userId = this.loggedInUserId;
       this.updateCompanyLogo(emailTemplate);
+     // emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
               this.refService.stopLoader(this.httpRequestLoader);

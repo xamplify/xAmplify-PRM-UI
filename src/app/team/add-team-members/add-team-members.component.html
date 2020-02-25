@@ -332,8 +332,6 @@
                                             </td>
                                             <td *ngIf="!isOnlyPartner"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <!--                                     <td><input type="checkbox"  disabled="disabled" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
- -->
                                         </ng-template>
                                         <ng-template #enable>
                                             <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">

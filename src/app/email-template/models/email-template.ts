@@ -36,4 +36,5 @@ export class EmailTemplate {
 	hubSpotTemplate = false;
 	hubSpotEmailTemplate: { hubspot_id: number; };
 	source:EmailTemplateSource;
+	categoryId:number;
 }

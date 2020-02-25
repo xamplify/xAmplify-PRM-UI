@@ -134,6 +134,12 @@ export class AuthenticationService {
             .catch((error: any) => { return error; });
     }
 
+    getCategoryNamesByUserId(userId: number) {
+      return this.http.get(this.REST_URL + 'category/listAllCategoryNamesByLoggedInUserId/' + userId + '?access_token=' + this.access_token)
+          .map((res: Response) => { return res.json(); })
+          .catch((error: any) => { return error; });
+  }
+
 
     getUserId(): number {
         try{
