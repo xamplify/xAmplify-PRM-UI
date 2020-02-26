@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
+import { Component, OnInit,OnDestroy,Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { EmailTemplateService } from '../services/email-template.service';
@@ -73,9 +73,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
+    isFolderView:boolean  = false;
+    isGridView:boolean = false;
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
-        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, public campaignAccess:CampaignAccess) {
+        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, public campaignAccess:CampaignAccess,public renderer:Renderer) {
+        this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         if(refService.isCreated){
@@ -244,6 +247,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         try {
            if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
             this.isListView = ! this.refService.isGridView;
+            this.isGridView = this.refService.isGridView;
             this.pagination.maxResults = 12;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
@@ -430,4 +434,23 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.emailTemplate = emailTemplate;
         $("#email_spam_check").modal('show');
     }
+
+
+    setViewType(viewType:string){
+        if("List"==viewType){
+            this.isListView = true;
+            this.isGridView = false;
+            this.isFolderView = false;
+        }else if("Grid"==viewType){
+            this.isListView = false;
+            this.isGridView = true;
+            this.isFolderView = false;
+        }else if("Folder"==viewType){
+            this.isListView = false;
+            this.isGridView = false;
+            this.isFolderView = true;
+        }
+    }
+
+
 }
