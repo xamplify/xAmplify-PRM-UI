@@ -92,7 +92,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
         this.isOnlyPartner = this.authenticationService.isOnlyPartner()
     }
-    showMessageOnTop(message){
+    showMessageOnTop(message:string){
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse( 'SUCCESS', message, true );
     }
@@ -107,7 +107,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 ( data: any ) => {
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
-                    console.log(pagination)
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 ( error: string ) => {

@@ -79,7 +79,7 @@
                     </div>
                 </div>
 
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && isGridView"></app-grid-loader>
+                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && isGridView"></app-landing-page-loader>
                 <app-list-loader *ngIf=" httpRequestLoader.isLoading && isListView "></app-list-loader>
                 <app-error-pages *ngIf="httpRequestLoader.isServerError "></app-error-pages>
                 <section *ngIf="isListView ">
@@ -111,6 +111,9 @@
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                                                 <span><b>{{emailTemplate.name}}</b></span>
                                             </h4>
+                                            <h6 class="moreipsis">
+                                                <span><b>{{emailTemplate.category}}</b></span>
+                                            </h6>
                                             <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                 <h6 class="moreipsis">
                                                     <span> Shared By <b>{{emailTemplate.vendorName}}</b></span>
@@ -163,7 +166,7 @@
                     </ng-container>
                 </section>
 
-                <div class="row" *ngIf="isGridView || httpRequestLoader.isLoading" style="padding: 0px 3px 0px 3px;">
+                <div class="row" *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box">
                             <span class="ribbon1">
@@ -177,6 +180,7 @@
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
+                                <h6><span><b>{{emailTemplate.category}}</b></span></h6>
                                 <h6 *ngIf="emailTemplate.type=='PARTNER'">
                                     Shared On <b>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
