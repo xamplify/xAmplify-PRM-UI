@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
-
+import {UserService} from '../../core/services/user.service';
 import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
@@ -15,6 +15,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { EmailTemplateSource } from '../models/email-template-source';
+import { SortOption } from '../../core/models/sort-option';
 
 declare var $, swal: any;
 
@@ -22,7 +23,7 @@ declare var $, swal: any;
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination,HttpRequestLoader, ActionsDescription, CampaignAccess]
+    providers: [Pagination,HttpRequestLoader, ActionsDescription, CampaignAccess,SortOption]
 })
 export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
@@ -75,9 +76,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isListView: boolean = false;
     isFolderView:boolean  = false;
     isGridView:boolean = false;
+    emailTemplateCategoryPagination:Pagination = new Pagination();
+    categorySortOption: SortOption = new SortOption();
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
-        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, public campaignAccess:CampaignAccess,public renderer:Renderer) {
+        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
+        public campaignAccess:CampaignAccess,public renderer:Renderer,public userService:UserService) {
         this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
@@ -290,7 +294,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             .subscribe(
             ( data: string ) => {
                 if(data=="Success"){
-                    document.getElementById( 'emailTemplateListDiv_' + id ).remove();
+                    //document.getElementById( 'emailTemplateListDiv_' + id ).remove();
                     this.refService.showInfo( "Email Template Deleted Successfully", "" );
                     this.selectedEmailTemplateName =  name+ ' deleted successfully';
                     this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
@@ -451,5 +455,9 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         }
     }
 
+
+    getUpdatedValue($event:any){
+      this.setViewType($event);
+    }
 
 }

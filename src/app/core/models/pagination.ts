@@ -54,4 +54,5 @@ export class Pagination {
 	partnerOrContactEmailId = "";
 	teamMemberAnalytics = false;
 	teamMemberId:number = 0;
+    categoryType: string;
 }

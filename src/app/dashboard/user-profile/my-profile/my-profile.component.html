@@ -260,7 +260,7 @@
                                     <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
                                     </li>
-                                    <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+                                    <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
                                         <a (click)="activateTab('categories');clearCustomResponse()">Categories</a>
                                     </li>
                                 </ul>
@@ -1079,7 +1079,6 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" (click)="closeDeleteCategoryModal()">Cancel</button>
                 <button type="button" class="btn btn-primary" title="Move items to other category and delete existing category" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
-                <button type="button" class="btn btn-primary" (click)="deleteCategoryWithoutTransferring()">Delete</button>
             </div>
         </div>
     </div>
