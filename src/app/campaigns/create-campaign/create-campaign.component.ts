@@ -306,6 +306,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.setActiveTabForVideo();
             this.campaign.countryId = this.countries[0].id;
             this.onSelect(this.campaign.countryId);
+            if(this.campaignType=='landingPage'){
+                this.campaign.emailNotification = true;
+            }
         }
         if ( this.authenticationService.user != undefined ) {
             this.loggedInUserId = this.authenticationService.getUserId();
