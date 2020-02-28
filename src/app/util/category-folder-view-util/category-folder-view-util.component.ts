@@ -45,9 +45,9 @@ export class CategoryFolderViewUtilComponent implements OnInit {
   listCategories(pagination:Pagination){
     if (this.referenceService.companyId > 0) {
         pagination.companyId = this.referenceService.companyId;
-        // if(this.moduleType==1){
-        //     pagination.categoryType = 'e';
-        // }
+        if(this.moduleType==1){
+             pagination.categoryType = 'e';
+         }
         this.referenceService.startLoader(this.httpRequestLoader);
         this.userService.getCategories(this.pagination)
             .subscribe(

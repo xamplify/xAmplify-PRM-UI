@@ -36,6 +36,7 @@
     </div>
     <br>
     <div class="row mix-grid p10">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
         <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
         <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
             <div *ngFor="let emailTemplateCategory of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
@@ -67,11 +68,14 @@
             </div>
         </ng-container>
     </div>
-    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-        <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-    </div>
-    <!-- End of 24 -->
-    <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-        <strong>No Categories Found.</strong>
-    </div>
+    <ng-container *ngIf="!httpRequestLoader.isServerError && !httpRequestLoader.isLoading ">
+        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+        </div>
+        <!-- End of 24 -->
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+            <strong>No Categories Found.</strong>
+        </div>
+    </ng-container>
+
 </div>
