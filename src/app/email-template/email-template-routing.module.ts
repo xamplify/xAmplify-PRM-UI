@@ -17,8 +17,11 @@ import {CkEditorUploadComponent} from '../ck-editor-upload-component/ck-editor-u
 export const emailRoutes: Routes = [
 { path: '', redirectTo: 'manage', pathMatch: 'full' },
 { path: 'manage', component: ManageTemplateComponent },
+{ path: 'manage/:categoryId', component: ManageTemplateComponent },
 { path: 'select', component: SelectTemplateComponent },
 { path: 'create', component: CreateTemplateComponent },
+{ path: 'edit', component: CreateTemplateComponent },
+{ path: 'edit/:categoryId', component: CreateTemplateComponent },
 //{ path: 'upload', component: UploadEmailTemplateComponent },
 { path: 'upload/:type', component: CkEditorUploadComponent },
 //{ path: 'marketo/upload', component: UploadMarketoEmailTemplateComponent },

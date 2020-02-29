@@ -1,5 +1,5 @@
 import { Component, OnInit,OnDestroy,Renderer } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 
 import { EmailTemplateService } from '../services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
@@ -76,12 +76,11 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isListView: boolean = false;
     isFolderView:boolean  = false;
     isGridView:boolean = false;
-    emailTemplateCategoryPagination:Pagination = new Pagination();
-    categorySortOption: SortOption = new SortOption();
+    categoryId:number = 0;
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
-        public campaignAccess:CampaignAccess,public renderer:Renderer,public userService:UserService) {
+        public campaignAccess:CampaignAccess,public renderer:Renderer,public userService:UserService,private route: ActivatedRoute) {
         this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
@@ -208,7 +207,11 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                         this.router.navigate( ["/home/emailtemplates/update"] );
                     } else {
                         this.emailTemplateService.isNewTemplate = false;
-                        this.router.navigate( ["/home/emailtemplates/create"] );
+                        if(this.categoryId>0){
+                            this.router.navigate( ["/home/emailtemplates/edit/"+this.categoryId] );
+                        }else{
+                            this.router.navigate( ["/home/emailtemplates/edit"] );
+                        }
                     }
                 }
 
@@ -248,12 +251,23 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     ngOnInit() {
       this.selectedSortedOption =  this.sortByDropDown[0];
         try {
-           if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
-            this.isListView = ! this.refService.isGridView;
-            this.isGridView = this.refService.isGridView;
-            this.isFolderView = false;
-            this.pagination.maxResults = 12;
-            this.listEmailTemplates( this.pagination );
+            if(this.router.url.endsWith('manage/')){
+                this.setViewType('Folder');
+            }else{
+                if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
+                this.isListView = ! this.refService.isGridView;
+                this.isGridView = this.refService.isGridView;
+                this.isFolderView = false;
+                this.pagination.maxResults = 12;
+                this.categoryId = this.route.snapshot.params['categoryId'];
+                if(this.categoryId!=undefined){
+                    this.pagination.categoryId = this.categoryId;
+                    this.pagination.categoryType = 'e';
+                }
+                this.listEmailTemplates( this.pagination );
+            }
+
+           
         } catch ( error ) {
             this.refService.showError( error, "ngOnInit", "ManageTemplatesComponent" );
         }
@@ -445,31 +459,36 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.isListView = true;
             this.isGridView = false;
             this.isFolderView = false;
+            this.navigateToManageSection();    
         }else if("Grid"==viewType){
             this.isListView = false;
             this.isGridView = true;
             this.isFolderView = false;
+            this.navigateToManageSection();    
         }else if("Folder"==viewType){
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
-            this.pagination.categoryType = '';
-            this.pagination.categoryId = 0;
+            if(this.categoryId>0){
+                this.router.navigateByUrl('/home/emailtemplates/manage/');
+            }
+            
+        }
+    }
+
+    navigateToManageSection(){
+        if(this.router.url.endsWith('manage/')){
+            this.router.navigateByUrl('/home/emailtemplates/manage');
         }
     }
 
 
     getUpdatedValue(event:any){
         let viewType = event.viewType;
-        let categoryId = event.categoryId;
         if(viewType!=undefined){
             this.setViewType(viewType);
         }
-         if(categoryId!=undefined){
-             this.pagination.categoryType = 'e';
-             this.pagination.categoryId = categoryId;
-             this.ngOnInit();
-         }
+        
     }
 
 }

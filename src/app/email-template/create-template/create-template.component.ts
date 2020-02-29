@@ -1,6 +1,6 @@
 import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
 import { User } from '../../core/models/user';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
@@ -47,9 +47,9 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     pagination:Pagination = new Pagination();
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
-
+    categoryId:number = 0;
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
-                private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
+                private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location,private route:ActivatedRoute) {
 
     if ( emailTemplateService.emailTemplate != undefined ) {
         var names: any = [];
@@ -389,7 +389,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               this.refService.stopLoader(this.httpRequestLoader);
               if(!isOnDestroy){
                   this.refService.isCreated = true;
-                  this.router.navigate(["/home/emailtemplates/manage"]);
+                  this.navigateToManageSection();
               }else{
                   this.emailTemplateService.goToManage();
               }
@@ -419,7 +419,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               this.refService.stopLoader(this.httpRequestLoader);
               if(!isOnDestroy){
                   this.refService.isUpdated = true;
-                  this.router.navigate(["/home/emailtemplates/manage"]);
+                  this.navigateToManageSection();
+                 
               }else{
                   this.emailTemplateService.goToManage();
               }
@@ -430,6 +431,15 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               },
           () => console.log( "Email Template Updated" )
           );
+  }
+
+  navigateToManageSection(){
+    let categoryId = this.route.snapshot.params['categoryId'];
+    if(categoryId>0){
+      this.router.navigate(["/home/emailtemplates/manage/"+categoryId]);
+    }else{
+      this.router.navigate(["/home/emailtemplates/manage"]);
+    }
   }
 
   updateCompanyLogo(emailTemplate:EmailTemplate){

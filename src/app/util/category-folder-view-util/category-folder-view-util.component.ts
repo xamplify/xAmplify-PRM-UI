@@ -37,7 +37,6 @@ export class CategoryFolderViewUtilComponent implements OnInit {
 
     setViewType(type: string) {
         this.inputObject['viewType'] = type;
-        this.inputObject['categoryId'] = 0;
         this.valueUpdate.emit(this.inputObject);
     }
 
@@ -109,9 +108,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     }
     eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
-    viewItems(categoryId:number) {
-        this.inputObject['categoryId'] = categoryId;
-        this.valueUpdate.emit(this.inputObject);
+    viewItemsByCategoryId(categoryId:number) {
+        this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
     }
 
 
