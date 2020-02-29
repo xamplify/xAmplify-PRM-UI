@@ -41,7 +41,7 @@
         <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
             <div *ngFor="let emailTemplateCategory of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
                 <div class="ffolder big gray">
-                    <div class="grid-box-folder">
+                    <div class="grid-box">
                         <div id="category-icon-div">
                             <i class="{{emailTemplateCategory.icon}}" id="category-icon-size"></i>
                         </div>
@@ -63,6 +63,11 @@
                             </b>
                             </span>
                         </h6>
+                        <div class="bar">
+                            <a data-toggle="tooltip" data-placement="top" title="View Items" (click)="viewItems(emailTemplateCategory.id)">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

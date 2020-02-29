@@ -79,10 +79,6 @@
     height: 170px;
 }
 
-.display-ib {
-    display: inline-block;
-}
-
 #right-margin {
     margin-right: 90px;
 }
@@ -106,7 +102,7 @@
 
 #select-dropdown {
     position: relative;
-    right: -3px;
+    right: -9px;
 }
 
 #custom-view-banner {
@@ -127,4 +123,5 @@
 
 .custom-flex {
     display: inline-flex;
+    margin-left: -10px;
 }

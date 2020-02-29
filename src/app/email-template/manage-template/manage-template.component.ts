@@ -251,6 +251,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
            if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
             this.isListView = ! this.refService.isGridView;
             this.isGridView = this.refService.isGridView;
+            this.isFolderView = false;
             this.pagination.maxResults = 12;
             this.listEmailTemplates( this.pagination );
         } catch ( error ) {
@@ -452,12 +453,23 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
+            this.pagination.categoryType = '';
+            this.pagination.categoryId = 0;
         }
     }
 
 
-    getUpdatedValue($event:any){
-      this.setViewType($event);
+    getUpdatedValue(event:any){
+        let viewType = event.viewType;
+        let categoryId = event.categoryId;
+        if(viewType!=undefined){
+            this.setViewType(viewType);
+        }
+         if(categoryId!=undefined){
+             this.pagination.categoryType = 'e';
+             this.pagination.categoryId = categoryId;
+             this.ngOnInit();
+         }
     }
 
 }
