@@ -39,32 +39,32 @@
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
         <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
         <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-            <div *ngFor="let emailTemplateCategory of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+            <div *ngFor="let category of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
                 <div class="ffolder big gray">
                     <div class="grid-box">
                         <div id="category-icon-div">
-                            <i class="{{emailTemplateCategory.icon}}" id="category-icon-size"></i>
+                            <i class="{{category.icon}}" id="category-icon-size"></i>
                         </div>
-                        <h4 class="ellipsis" title="{{emailTemplateCategory.name}}">
-                            {{emailTemplateCategory.name | slice:0:22}}
-                            <span *ngIf="emailTemplateCategory.name?.length>22">...</span>
+                        <h4 class="ellipsis" title="{{category.name}}">
+                            {{category.name | slice:0:22}}
+                            <span *ngIf="category.name?.length>22">...</span>
                         </h4><br><br>
-                        <span class="view-banner" id="custom-view-banner">{{emailTemplateCategory.count}}</span>
-                        <h6 [title]="emailTemplateCategory.createdBy">By
-                            <b>{{emailTemplateCategory.createdBy | slice:0:15}}<span
-                                    *ngIf="emailTemplateCategory.createdBy?.length>15">...</span></b>
+                        <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
+                        <h6 [title]="category.createdBy">By
+                            <b>{{category.createdBy | slice:0:15}}<span
+                                    *ngIf="category.createdBy?.length>15">...</span></b>
                         </h6>
                         <h6>
                             <span>Created On</span>
                             <span><b>
                                     <span
-                                        *ngIf="!referenceService.isSafariBrowser()">{{emailTemplateCategory.displayTime |date:'mediumDate'}},{{emailTemplateCategory.displayTime |date:'shortTime'}}</span>
-                            <span *ngIf="referenceService.isSafariBrowser()">{{emailTemplateCategory.displayTime}}</span>
+                                        *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},{{category.displayTime |date:'shortTime'}}</span>
+                            <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
                             </b>
                             </span>
                         </h6>
                         <div class="bar">
-                            <a data-toggle="tooltip" data-placement="top" title="View Items" (click)="viewItems(emailTemplateCategory.id)">
+                            <a data-toggle="tooltip" data-placement="top" title="View Items" (click)="viewItemsByCategoryId(category.id)">
                                 <i class="fa fa-eye"></i>
                             </a>
                         </div>

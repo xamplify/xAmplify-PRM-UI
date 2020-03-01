@@ -51,6 +51,7 @@ export class UploadEmailTemplateComponent implements OnInit, OnDestroy {
     saveButtonName: string = "SAVE";
     coBrandingLogo: boolean = false;
     @ViewChild( "myckeditor" ) ckeditor: any;
+    categoryNames: any;
     constructor( public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
         private emailTemplate: EmailTemplate, private logger: XtremandLogger, private authenticationService: AuthenticationService, public refService: ReferenceService,
         public callActionSwitch: CallActionSwitch ) {
@@ -283,6 +284,7 @@ export class UploadEmailTemplateComponent implements OnInit, OnDestroy {
             this.ckeConfig = {
                 allowedContent: true,
             };
+            this.getCategories();
         } catch ( errr ) { }
     }
 
@@ -342,6 +344,14 @@ export class UploadEmailTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
+    getCategories(){
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.categoryNames = data.data;
+            },
+            error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+            () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
+    }
 
 
 }

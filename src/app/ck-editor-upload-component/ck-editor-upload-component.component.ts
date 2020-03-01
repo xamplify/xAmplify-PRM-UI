@@ -56,12 +56,14 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
     coBrandingLogo: boolean = false;
     @ViewChild( "myckeditor" ) ckeditor: any;
     type:string = "";
+    categoryNames: any;
   constructor( public emailTemplateService: EmailTemplateService, private userService: UserService, private router: Router,
           private emailTemplate: EmailTemplate, private logger: XtremandLogger, private authenticationService: AuthenticationService, public refService: ReferenceService,
           public callActionSwitch: CallActionSwitch,private route: ActivatedRoute,private hubSpotService: HubSpotService) {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.type = this.route.snapshot.params['type'];
       this.getAvailableNames();
+      this.getCategories();
       if(this.type=="custom" ||this.type=="customv"){
           this.ngFileUploadForCustomTemplates();
       }else if(this.type=="marketo" || this.type=="hubspot"){
@@ -269,6 +271,7 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
       this.emailTemplate.type = EmailTemplateType.UPLOADED;
       this.emailTemplate.onDestroy = isOnDestroy;
       this.emailTemplate.draft = isOnDestroy;
+      this.emailTemplate.categoryId = $('#upload-custom-categoryId option:selected').val();
       if (this.type=="custom" || this.model.uploadType=="REGULAR") {
           this.emailTemplate.regularTemplate = true;
           this.emailTemplate.desc = "Regular Template";
@@ -395,5 +398,16 @@ ngOnDestroy() {
       } catch ( errr ) { }
   
   }
+
+  getCategories(){
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a) { return a.id; });
+            this.model.categoryId = categoryIds[0];
+        },
+        error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+        () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
+}
 
 }
