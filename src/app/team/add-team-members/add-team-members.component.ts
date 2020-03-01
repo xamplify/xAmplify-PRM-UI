@@ -239,7 +239,7 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 
 	save() {
-		let emailIds = this.teamMembers.map(function (a) { return a.emailId; });
+		let emailIds = this.teamMembers.map(function (a) { return a.emailId.toLowerCase(); });
 		let recipientsArray = emailIds.sort();
 		let duplicateEmailIds = [];
 		for (var i = 0; i < recipientsArray.length - 1; i++) {
@@ -464,6 +464,7 @@ export class AddTeamMembersComponent implements OnInit {
 			this.teamMemberUi = new TeamMemberUi();
 			this.isUploadCsv = false;
 			this.isAddTeamMember = false;
+			this.hideErrorMessageDiv();
 		} catch (error) {
 			this.showUIError(error);
 		}
