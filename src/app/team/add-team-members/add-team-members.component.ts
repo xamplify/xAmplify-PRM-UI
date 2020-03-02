@@ -464,7 +464,6 @@ export class AddTeamMembersComponent implements OnInit {
 			this.teamMemberUi = new TeamMemberUi();
 			this.isUploadCsv = false;
 			this.isAddTeamMember = false;
-			this.hideErrorMessageDiv();
 		} catch (error) {
 			this.showUIError(error);
 		}
