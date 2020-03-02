@@ -1316,8 +1316,8 @@
                                                                 </ng-container>
                                                                 <a> <span *ngIf="userListDTOObj?.length>2" (click)="resetActive($event, 40, 'step-4')">...</span> <span *ngIf="userListDTOObj?.length == 0">0 contactlists</span></a>
                                                                 <br>
-                                                                <span *ngIf="campaign.emailNotification || !campaign.channelCampaign" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                                <span *ngIf="!campaign.emailNotification && campaign.channelCampaign" id="red-font">No email will be sent to partners.</span>
+                                                                <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                                <span *ngIf="!campaign.emailNotification" id="red-font">No email will be sent.</span>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
                                                                 <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>
