@@ -50,6 +50,10 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             pagination.companyId = this.referenceService.companyId;
             if (this.moduleType == 1) {
                 pagination.categoryType = 'e';
+            }else if(this.moduleType==2){
+                pagination.categoryType = 'f';
+            }else if(this.moduleType==3){
+                pagination.categoryType = 'l';
             }
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(this.pagination)
@@ -109,7 +113,12 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
     viewItemsByCategoryId(categoryId:number) {
-        this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
+        if(this.moduleType==1){
+            this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
+        }else if(this.moduleType==2){
+            this.router.navigate( ['home/forms/manage/' + categoryId] );
+        }
+        
     }
 
 

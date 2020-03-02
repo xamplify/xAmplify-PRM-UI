@@ -67,10 +67,12 @@ export class AddFormComponent implements OnInit, OnDestroy {
     isFullScreenView = false;
     toolTip = "Maximize";
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    loggedInUserId: number;
+    categoryNames: any;
     constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
         public authenticationService:AuthenticationService,public formService:FormService,
         private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch) {
-            
+            this.loggedInUserId = this.authenticationService.getUserId();
         if(this.formService.form===undefined){
             if(this.router.url==="/home/forms/edit"){
                 this.router.navigate(["/home/forms/manage"]);
@@ -107,6 +109,21 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.removeBlurClass();
         }
         this.listFormNames();
+        this.listCategories();
+    }
+
+    listCategories(){
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.categoryNames = data.data;
+                let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+                if(this.isAdd){
+                    this.form.categoryId = categoryIds[0];
+                }
+                
+            },
+            error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+            () => this.logger.info( "Finished listCategories()" ) );
     }
     
     listExistingColumns(list){
@@ -643,6 +660,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
          }
      }
 
-
+     selectCategory(event){
+         this.form.categoryId = event;
+     }
 
 }
