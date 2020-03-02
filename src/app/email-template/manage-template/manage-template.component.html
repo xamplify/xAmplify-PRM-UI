@@ -116,7 +116,7 @@
                                                 <span><b>{{emailTemplate.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis">
-                                                <span><b>{{emailTemplate.category}}</b></span>
+                                                <span>Category <b>{{emailTemplate.category}}</b></span>
                                             </h6>
                                             <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                 <h6 class="moreipsis">
@@ -184,7 +184,7 @@
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
-                                <h6><span><b>{{emailTemplate.category}}</b></span></h6>
+                                <h6><span>Catgegory <b>{{emailTemplate.category}}</b></span></h6>
                                 <h6 *ngIf="emailTemplate.type=='PARTNER'">
                                     Shared On <b>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
