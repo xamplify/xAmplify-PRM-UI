@@ -210,7 +210,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a *ngIf="authenticationService.isVendor() || authenticationService.isOrgAdmin()" [routerLink]="['/home/dashboard/sso-samlsecurity']"> <i class="fa fa-cog"></i> Saml Settings
+                                <a *ngIf="authenticationService.checkSamlSettingsUserRoles()" [routerLink]="['/home/dashboard/sso-samlsecurity']"> <i class="fa fa-cog"></i> Saml Settings
                                 </a>
                             </li>
                             <li class="divider"></li>

@@ -64,7 +64,7 @@ export class AddTeamMembersComponent implements OnInit {
 	config2: any = { 'placeholder': 'type here', 'sourceField': ['emailId'] };
 	teamMemberIdToDelete: number = 0;
 	selectedTeamMemberEmailId: string = "";
-	allEmailIds:string[] = [];
+	allEmailIds: string[] = [];
 	selectedId: number = 0;
 	contactAccess: boolean = false;
 	isOnlyPartner: boolean = false;
@@ -84,13 +84,13 @@ export class AddTeamMembersComponent implements OnInit {
 		this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.isOrgAdmin = this.authenticationService.isOrgAdmin();
-		if(this.isLoggedInAsTeamMember){
-			if(this.isOrgAdmin|| this.authenticationService.isVendorPartner() || this.authenticationService.isVendor()){
+		if (this.isLoggedInAsTeamMember) {
+			if (this.isOrgAdmin || this.authenticationService.isVendorPartner() || this.authenticationService.isVendor()) {
 				this.hasAccessToUpdate = true;
-			}else{
+			} else {
 				this.hasAccessToUpdate = false;
 			}
-		}else{
+		} else {
 			this.hasAccessToUpdate = true;
 		}
 	}
@@ -239,41 +239,54 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 
 	save() {
-		$("#empty-roles-div").hide();
-		this.referenceService.goToTop();
-		this.teamMemberUi.emptyRolesLength = this.validateRoles('add-team-member-table', 'team-member-');
-		if (this.teamMemberUi.emptyRolesLength == 0) {
-			this.errorMessage = "";
-			this.referenceService.startLoader(this.httpRequestLoader);
-			this.teamMemberService.save(this.teamMembers, this.userId)
-				.subscribe(
-					data => {
-						this.referenceService.stopLoader(this.httpRequestLoader);
-						if (data.statusCode == 3000) {
-							this.successMessage = "Team Member(s) added successfully.";
-							this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
-							this.pagination.pageIndex = 1;
-							this.listTeamMembers(this.pagination);
-							this.clearRows();
-							this.listDropDown();
-						} else {
-							this.showErrorMessageDiv(data.message);
-						}
+		let emailIds = this.teamMembers.map(function (a) { return a.emailId.toLowerCase(); });
+		let recipientsArray = emailIds.sort();
+		let duplicateEmailIds = [];
+		for (var i = 0; i < recipientsArray.length - 1; i++) {
+			if (recipientsArray[i + 1] == recipientsArray[i]) {
+				duplicateEmailIds.push(recipientsArray[i]);
+			}
+		}
+		if (duplicateEmailIds.length == 0) {
+			$("#empty-roles-div").hide();
+			this.referenceService.goToTop();
+			this.teamMemberUi.emptyRolesLength = this.validateRoles('add-team-member-table', 'team-member-');
+			if (this.teamMemberUi.emptyRolesLength == 0) {
+				this.errorMessage = "";
+				this.referenceService.startLoader(this.httpRequestLoader);
+				this.teamMemberService.save(this.teamMembers, this.userId)
+					.subscribe(
+						data => {
+							this.referenceService.stopLoader(this.httpRequestLoader);
+							if (data.statusCode == 3000) {
+								this.successMessage = "Team Member(s) added successfully.";
+								this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+								this.pagination.pageIndex = 1;
+								this.listTeamMembers(this.pagination);
+								this.clearRows();
+								this.listDropDown();
+							} else {
+								this.showErrorMessageDiv(data.message);
+							}
 
-					},
-					error => {
-					this.referenceService.stopLoader(this.httpRequestLoader);
-					let statusCode = JSON.parse(error['status']);
-                    if (statusCode == 409) {
-                        this.customResponse = new CustomResponse('ERROR', "Team Member already exists", true);
-                    } else {
-                        this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
-                    }
-					},
-					() => this.logger.log(" Completed save()")
-				);
+						},
+						error => {
+							this.referenceService.stopLoader(this.httpRequestLoader);
+							let statusCode = JSON.parse(error['status']);
+							if (statusCode == 409) {
+								this.customResponse = new CustomResponse('ERROR', "Team Member already exists", true);
+							} else {
+								this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+							}
+						},
+						() => this.logger.log(" Completed save()")
+					);
+			} else {
+				this.showErrorMessageDiv("Please assign at least one role to your team member");
+			}
 		} else {
-			this.showErrorMessageDiv("Please assign at least one role to your team member");
+		let message =  "Please remove duplicate rows "+ duplicateEmailIds.join();
+		this.customResponse = new CustomResponse('ERROR',message, true);
 		}
 
 	}
@@ -341,7 +354,7 @@ export class AddTeamMembersComponent implements OnInit {
 		this.listTeamMembers(this.pagination);
 	}
 
-	
+
 
 	addTeamMember() {
 		try {
@@ -424,7 +437,7 @@ export class AddTeamMembersComponent implements OnInit {
 			emailId = emailId.toLowerCase();
 			this.teamMembers = this.spliceArray(this.teamMembers, emailId);
 			let tableRows = $("#add-team-member-table > tbody > tr").length;
-			if (tableRows == 0) {
+			if (tableRows == 0 || this.teamMembers.length == 0) {
 				this.clearRows();
 			}
 			this.listDropDown();
@@ -719,22 +732,22 @@ export class AddTeamMembersComponent implements OnInit {
 	showAddTeamMember() {
 		$("#csv-error-div").hide();
 		$('#addTeamMember').modal('show');
-		
+
 	}
 
-	listAllEmailIds(){
+	listAllEmailIds() {
 		this.referenceService.loading(this.httpRequestLoader, true);
 		this.teamMemberService.getAllEmailIds()
-		.subscribe(
-			data => {
+			.subscribe(
+				data => {
 					this.allEmailIds = data;
-			},
-			error => {
-				this.allEmailIds = [];
-				this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
-			},
-			() => this.logger.log("showAddTeamMember() done")
-		);
+				},
+				error => {
+					this.allEmailIds = [];
+					this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
+				},
+				() => this.logger.log("showAddTeamMember() done")
+			);
 	}
 	clearForm() {
 		this.emaillIdDivClass = this.defaultClass;
@@ -844,20 +857,20 @@ export class AddTeamMembersComponent implements OnInit {
 	}
 
 	loginAs(teamMember: TeamMember) {
-		this.loginAsTeamMember(teamMember.emailId,false);
+		this.loginAsTeamMember(teamMember.emailId, false);
 
 	}
 
-	loginAsTeamMember(emailId:string,isLoggedInAsAdmin:boolean) {
+	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
 		this.loading = true;
 		this.authenticationService.getUserByUserName(emailId)
 			.subscribe(
 				response => {
-					if(isLoggedInAsAdmin){
+					if (isLoggedInAsAdmin) {
 						localStorage.removeItem('adminId');
 						localStorage.removeItem('adminEmailId');
 						this.isLoggedInAsTeamMember = false;
-					}else{
+					} else {
 						let adminId = JSON.parse(localStorage.getItem('adminId'));
 						if (adminId == null) {
 							localStorage.adminId = JSON.stringify(this.userId);
@@ -868,9 +881,9 @@ export class AddTeamMembersComponent implements OnInit {
 					let self = this;
 					setTimeout(function () {
 						self.router.navigate(['home/dashboard/'])
-						.then(() => {
-							window.location.reload();
-						})
+							.then(() => {
+								window.location.reload();
+							})
 					}, 500);
 				},
 				(error: any) => {
@@ -881,33 +894,33 @@ export class AddTeamMembersComponent implements OnInit {
 			);
 	}
 
-	logoutAsTeamMember(){
+	logoutAsTeamMember() {
 		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
-		this.loginAsTeamMember(adminEmailId,true);
+		this.loginAsTeamMember(adminEmailId, true);
 	}
 
 
 
-	showPopup(teamMember: TeamMember){
+	showPopup(teamMember: TeamMember) {
 		this.selectedId = 0;
 		this.deletePopupLoader = true;
-		$('#delete-team-member-popup').modal( 'show' );
-		this.teamMemberService.listEmailIdsForTransferData(this.userId,this.isOnlyPartner)
-		.subscribe(
-			data => {
-				this.setDropDownData(data);
-				this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
-				this.teamMemberIdToDelete = teamMember.teamMemberId;
-				this.selectedTeamMemberEmailId = teamMember.emailId;
-				this.deletePopupLoader = false;
-			},
-			error => {
-				$('#delete-team-member-popup').modal( 'hide' );
-				this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
+		$('#delete-team-member-popup').modal('show');
+		this.teamMemberService.listEmailIdsForTransferData(this.userId, this.isOnlyPartner)
+			.subscribe(
+				data => {
+					this.setDropDownData(data);
+					this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
+					this.teamMemberIdToDelete = teamMember.teamMemberId;
+					this.selectedTeamMemberEmailId = teamMember.emailId;
+					this.deletePopupLoader = false;
+				},
+				error => {
+					$('#delete-team-member-popup').modal('hide');
+					this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
 
-			},
-			() => this.logger.log("listAllOrgAdminsAndSupervisors() done")
-		);
+				},
+				() => this.logger.log("listAllOrgAdminsAndSupervisors() done")
+			);
 
 	}
 
@@ -939,6 +952,7 @@ export class AddTeamMembersComponent implements OnInit {
 					this.selectedTeamMemberEmailId = "";
 					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
 					this.listTeamMembers(this.pagination);
+					this.listAllEmailIds();
 					this.clearRows();
 				},
 				error => { this.logger.errorPage(error) },
