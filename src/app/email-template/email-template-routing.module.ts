@@ -27,6 +27,7 @@ export const emailRoutes: Routes = [
 //{ path: 'marketo/upload', component: UploadMarketoEmailTemplateComponent },
 //{ path: 'marketo/update', component: UpdateMarketoTemplateComponent },
 { path: 'update', component: UpdateTemplateComponent },
+{ path: 'update/:categoryId', component: UpdateTemplateComponent },
 { path: 'videoEmails/emaileditor', component: EmailEditorComponent },
 { path: 'regularEmails/emaileditor', component: EmailEditorComponent },
 { path: 'help', component: HelpComponent },

@@ -201,10 +201,10 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 this.emailTemplateService.emailTemplate = data;
                 //this.router.navigate( ["/home/emailtemplates/update"] );
                 if(data.source.toString() === "MARKETO" || data.source.toString() === "HUBSPOT"){
-                    this.router.navigate( ["/home/emailtemplates/update"] );
+                   this.navigateToEditPage();
                 }else{
                     if ( data.regularTemplate || data.videoTemplate ) {
-                        this.router.navigate( ["/home/emailtemplates/update"] );
+                        this.navigateToEditPage();
                     } else {
                         this.emailTemplateService.isNewTemplate = false;
                         if(this.categoryId>0){
@@ -222,6 +222,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             }
             );
 
+    }
+
+    navigateToEditPage(){
+        if(this.categoryId>0){
+            this.router.navigate( ["/home/emailtemplates/update/"+this.categoryId] );
+        }else{
+            this.router.navigate( ["/home/emailtemplates/update"] );
+        }
     }
 
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTemplates(); } }
