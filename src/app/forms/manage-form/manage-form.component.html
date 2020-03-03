@@ -42,10 +42,10 @@
                       class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i
                       class="fa fa-th-large p10" aria-hidden="true"></i></span>
-                                    <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')"><i
+                                    <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined') && showFolderView" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')"><i
                       class="fa fa-folder-open-o p10" aria-hidden="true"></i></span>
                                     <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder')">
-                    <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                 </ng-container>
                                 <div class="inputs" align="right" style="float: right">
                                     <div style="float: left;">

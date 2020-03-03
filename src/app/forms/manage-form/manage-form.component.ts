@@ -47,6 +47,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     isFolderView: boolean = false;
     isGridView: boolean = false;
     categoryId: number = 0;
+    showFolderView = true;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
     constructor(public referenceService: ReferenceService,
@@ -56,6 +57,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
         this.referenceService.renderer = this.renderer;
         this.categoryId = this.route.snapshot.params['categoryId'];
+        if(this.router.url.indexOf('/manage')>-1){
+            this.showFolderView = true;
+        }else{
+            this.showFolderView = false;
+        }
         if (this.categoryId != undefined) {
             this.pagination.categoryId = this.categoryId;
             this.pagination.categoryType = 'f';
@@ -104,7 +110,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.isGridView = this.referenceService.isGridView;
             this.isFolderView = false;
             this.listForms(this.pagination);
-
         }
 
 
