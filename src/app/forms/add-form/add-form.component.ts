@@ -1,4 +1,5 @@
 import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CustomResponse } from '../../common/models/custom-response';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -71,11 +72,11 @@ export class AddFormComponent implements OnInit, OnDestroy {
     categoryNames: any;
     constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
         public authenticationService:AuthenticationService,public formService:FormService,
-        private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch) {
+        private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch,public route:ActivatedRoute) {
             this.loggedInUserId = this.authenticationService.getUserId();
         if(this.formService.form===undefined){
-            if(this.router.url==="/home/forms/edit"){
-                this.router.navigate(["/home/forms/manage"]);
+            if(this.router.url.indexOf("/home/forms/edit")>-1){
+                this.navigateToManageSection();
             }
         }
         
@@ -599,7 +600,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
              this.showSweetAlert(this.duplicateLabelMessage);
             }else{
              this.referenceService.isUpdated = true;
-             this.router.navigate(["/home/forms/manage"]);
+             this.navigateToManageSection();
             }
             
          },
@@ -656,12 +657,21 @@ export class AddFormComponent implements OnInit, OnDestroy {
          if(this.isAdd){
              this.router.navigate(["/home/design/add"]);
          }else{
-             this.router.navigate(["/home/forms/manage"]);
+            this.navigateToManageSection();
          }
      }
 
      selectCategory(event){
          this.form.categoryId = event;
      }
+
+     navigateToManageSection(){
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+          this.router.navigate(["/home/forms/manage/"+categoryId]);
+        }else{
+          this.router.navigate(["/home/forms/manage"]);
+        }
+      }
 
 }

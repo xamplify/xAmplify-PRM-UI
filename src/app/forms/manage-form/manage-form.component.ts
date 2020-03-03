@@ -55,6 +55,11 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         public router: Router, public formService: FormService, public logger: XtremandLogger,
         public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
         this.referenceService.renderer = this.renderer;
+        this.categoryId = this.route.snapshot.params['categoryId'];
+        if (this.categoryId != undefined) {
+            this.pagination.categoryId = this.categoryId;
+            this.pagination.categoryType = 'f';
+        }
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
@@ -68,31 +73,42 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.campaignId = this.route.snapshot.params['alias'];
-        this.landingPageId = this.route.snapshot.params['landingPageId'];
-        this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
-        this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
-        this.partnerId = this.route.snapshot.params['partnerId'];
-        if (this.campaignId != undefined) {
-            this.pagination.campaignId = this.campaignId;
-            this.pagination.campaignForm = true;
-        } else if (this.landingPageId > 0) {
-            this.pagination.landingPageId = this.landingPageId;
-            this.pagination.landingPageForm = true;
-            this.landingPagesRouterLink = "/home/pages/manage";
-        } else if (this.landingPageCampaignId > 0) {
-            this.pagination.campaignId = this.landingPageCampaignId;
-            this.pagination.landingPageCampaignForm = true;
-            this.pagination.partnerId = this.partnerId;
-        } else if (this.partnerLandingPageAlias != undefined) {
-            this.pagination.landingPageAlias = this.partnerLandingPageAlias;
-            this.pagination.partnerLandingPageForm = true;
-            this.landingPagesRouterLink = "/home/pages/partner";
+
+        if (this.router.url.endsWith('manage/')) {
+            this.setViewType('Folder');
         } else {
-            this.onlyForms = true;
+            this.campaignId = this.route.snapshot.params['alias'];
+            this.landingPageId = this.route.snapshot.params['landingPageId'];
+            this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
+            this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
+            this.partnerId = this.route.snapshot.params['partnerId'];
+            if (this.campaignId != undefined) {
+                this.pagination.campaignId = this.campaignId;
+                this.pagination.campaignForm = true;
+            } else if (this.landingPageId > 0) {
+                this.pagination.landingPageId = this.landingPageId;
+                this.pagination.landingPageForm = true;
+                this.landingPagesRouterLink = "/home/pages/manage";
+            } else if (this.landingPageCampaignId > 0) {
+                this.pagination.campaignId = this.landingPageCampaignId;
+                this.pagination.landingPageCampaignForm = true;
+                this.pagination.partnerId = this.partnerId;
+            } else if (this.partnerLandingPageAlias != undefined) {
+                this.pagination.landingPageAlias = this.partnerLandingPageAlias;
+                this.pagination.partnerLandingPageForm = true;
+                this.landingPagesRouterLink = "/home/pages/partner";
+            } else {
+                this.onlyForms = true;
+            }
+            this.isListView = !this.referenceService.isGridView;
+            this.isGridView = this.referenceService.isGridView;
+            this.isFolderView = false;
+            this.listForms(this.pagination);
+
         }
-        this.isListView = !this.referenceService.isGridView;
-        this.listForms(this.pagination);
+
+
+
     }
 
 
@@ -184,7 +200,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             .subscribe(
                 (response: any) => {
                     if (response.statusCode == 200) {
-                        document.getElementById('formListDiv_' + form.id).remove();
+                        //document.getElementById('formListDiv_' + form.id).remove();
                         this.referenceService.showInfo("Form Deleted Successfully", "");
                         const message = response.message;
                         this.customResponse = new CustomResponse('SUCCESS', message, true);
@@ -221,7 +237,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                     this.ngxloading = false;
                     if (data.statusCode === 200) {
                         this.formService.form = data.data;
-                        this.router.navigate(["/home/forms/edit"]);
+                        let categoryId = this.route.snapshot.params['categoryId'];
+                        if (categoryId > 0) {
+                            this.router.navigate(["/home/forms/edit/" + categoryId]);
+                        } else {
+                            this.router.navigate(["/home/forms/edit"]);
+                        }
                     } else {
                         swal("Please Contact Admin!", data.message, "error");
                     }

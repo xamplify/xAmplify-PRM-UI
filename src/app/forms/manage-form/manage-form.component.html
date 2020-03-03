@@ -4,7 +4,7 @@
             <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i class="fa fa-angle-right"></i></li>
             <li *ngIf="onlyForms">
-                <a [routerLink]="['../../design/add']">Create Design</a> <i class="fa fa-angle-right"></i>
+                <a [routerLink]="['/home/design/add']">Create Design</a> <i class="fa fa-angle-right"></i>
             </li>
 
             <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
@@ -73,11 +73,24 @@
                 <section *ngIf="isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
-                            <table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
+                            <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0">
                                 <thead>
                                     <tr>
-                                        <th class="visible-xs" colspan="1" style="width: 45%">Form List</th>
-                                        <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form Details</th>
+                                        <!-- <th class="visible-xs" colspan="1" style="width: 45%">Form</th>
+                                        <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form</th> -->
+
+                                        <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
+                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',2)">
+                                            </span>
+                                            <span class="gridHeader">Form</span>
+                                        </th>
+                                        <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
+                                            <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',1)">
+                                            </span>
+                                            <span class="gridHeader">Form</span>
+                                        </th>
+
+
                                         <th class="hidden-xs text-center">Created On</th>
                                         <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width">Actions</th>
                                         <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner">Actions</th>
@@ -86,17 +99,17 @@
                                 <tbody>
                                     <tr *ngFor="let form of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs" style="width: 10%;">
-                                            <img class="img-class-list" src="assets/images/form.png" alt="{{form.name}}">
+                                            <img class="img-class-list" src="assets/images/form.png" alt="Image Not Found">
                                         </td>
                                         <td>
-                                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                                                {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
+                                            <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
+                                                <span><b>{{form.name}}</b></span>
                                             </h4>
-                                            <h6 style="display: table">
-                                                Created By <b>{{form.createdName}}</b>
+                                            <h6 class="moreipsis" title="{{form.categoryName}}">
+                                                <span> Category <b>{{form.categoryName}}</b></span>
                                             </h6>
-                                            <h6>
-                                                From <b>{{form.companyName}}</b>
+                                            <h6 class="moreipsis" title="{{form.createdName}}">
+                                                <span> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
                                             <h6 class="view-banner">Form</h6>
                                         </td>
@@ -161,18 +174,18 @@
                                 {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
+                                <h6 title="{{form.categoryName}}">
+                                    Category <b>{{form.categoryName | slice:0:17}}</b>
+                                    <span *ngIf="form.categoryName?.length>17">..</span>
+                                </h6>
                                 <h6>
                                     Created On <b>
-                    <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
-                  </b>
+                                 <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
+                                </b>
                                 </h6>
                                 <h6 title="{{form.createdName}}">
                                     By <b>{{form.createdName | slice:0:17}}</b>
                                     <span *ngIf="form.createdName?.length>17">..</span>
-                                </h6>
-                                <h6 title="{{form.companyName}}">
-                                    From <b>{{form.companyName | slice:0:17}}</b>
-                                    <span *ngIf="form.companyName?.length>17">..</span>
                                 </h6>
                             </div>
                             <div class="ribbon">
