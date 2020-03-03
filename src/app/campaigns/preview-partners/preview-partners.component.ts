@@ -84,7 +84,10 @@ export class PreviewPartnersComponent implements OnInit {
                 this.partnerActionResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
                 this.listPartners(this.partnersPagination);
             },
-            error => { this.logger.errorPage( error ) },
+            error => { 
+                this.refService.loading( this.campaignPartnerLoader, false );
+                this.partnerActionResponse = new CustomResponse( 'ERROR', this.refService.serverErrorMessage, true );
+        },
             () => console.log( "Partner Deleted Successfully" )
             );
     }
