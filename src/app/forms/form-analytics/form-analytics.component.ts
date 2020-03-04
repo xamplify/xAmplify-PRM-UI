@@ -18,6 +18,7 @@ export class FormAnalyticsComponent implements OnInit {
     partnerId: number = 0;
     alias: string = "";
     campaignAlias: string = "";
+    categoryId: number = 0;
     formName = "";
     pagination: Pagination = new Pagination();
     columns: Array<any> = new Array<any>();
@@ -45,6 +46,7 @@ export class FormAnalyticsComponent implements OnInit {
         this.exportingObject['formId'] = this.formId;
         this.exportingObject['isPublicEventLeads'] = false;
         this.exportingObject['partnerId'] = this.partnerId;
+
         if ( this.campaignAlias != undefined ) {
             this.campaignForms = true;
         }
@@ -60,6 +62,9 @@ export class FormAnalyticsComponent implements OnInit {
             }else{
                 this.routerLink = "/home/forms/clpf/" + this.campaignAlias;
             }
+        }else if(this.router.url.indexOf("/category/")>-1){
+            this.categoryId = this.route.snapshot.params['categoryId'];
+            this.routerLink = "/home/forms/manage/"+this.categoryId;
         }
         else {
             this.isPartnerNavigation = false;
