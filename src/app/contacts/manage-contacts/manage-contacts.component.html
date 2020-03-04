@@ -339,7 +339,7 @@
 																class="fa fa-info"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0" data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_saveAs}}"
-																(click)="saveAsNewList(contactList.id,contactList.name)">
+																(click)="saveAsNewList(contactList.id,contactList.name,contactList.public)">
 																<i class="fa fa-files-o"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0"
 																(click)="downloadContactList(contactList.id, contactList.name)"
@@ -446,7 +446,7 @@
 													class="fa fa-info" style="color: white;"></i>
 												</a> <a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_saveAs}}"
-													(click)="saveAsNewList(contactList.id,contactList.name)"
+													(click)="saveAsNewList(contactList.id,contactList.name, contactList.public)"
 													[class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
 													data-rel="fancybox-button" style="left: 60%;"> <i
 													class="fa fa-files-o" aria-hidden="true"
@@ -966,6 +966,25 @@
 	    </div>
 	    </div>
 	</div>
+	
+	<!-- start   -->
+				<div class="form-group" class="col-xs-12"
+					*ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner" >
+					<label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
+					<div class="col-xs-8">
+						
+							<switch [status]="model.isPublic" [onText]="'Public'"
+								[offText]="'Private'"
+								[onColor]="callActionSwitch.onGreenColorSwitch"
+								[offColor]="callActionSwitch.offPrivateColor"
+								[size]="callActionSwitch.size"
+								(statusChange)="changeStatus($event)"> </switch>
+						
+					</div>
+				</div>
+				<!-- end  -->
+	
+	
 	</div>
 
 			<div class="modal-footer">

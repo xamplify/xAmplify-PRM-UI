@@ -3,17 +3,20 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { EditContactsComponent } from 'app/contacts/edit-contacts/edit-contacts.component';
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 
 declare var $:any;
 
 @Component({
   selector: 'app-save-as',
   templateUrl: './save-as.component.html',
-  styleUrls: ['./save-as.component.css']
+  styleUrls: ['./save-as.component.css'],
+  providers: [CallActionSwitch]
 })
 export class SaveAsComponent implements OnInit {
   @Input() listName: any;
   @Input() saveAsListName:any;
+  @Input() isPartner: boolean;
   @Output() notifyParentSaveAs: EventEmitter<any>;
   saveAsError = '';
   /********Legal Basis******/
@@ -24,9 +27,13 @@ export class SaveAsComponent implements OnInit {
   isValidLegalOptions = true;
   gdprStatus = true;
   selectedLegalBasisOptions = [];
+  
+  public model: any = {};
 
-  constructor(public referenceService:ReferenceService, public editContactsComponent:EditContactsComponent, public xtremandLogger:XtremandLogger) {
+  constructor(public referenceService:ReferenceService, public editContactsComponent:EditContactsComponent, public xtremandLogger:XtremandLogger,
+		  public callActionSwitch: CallActionSwitch) {
     this.notifyParentSaveAs = new EventEmitter();
+    this.model.isPublic = true;
     
    }
 
@@ -42,7 +49,7 @@ export class SaveAsComponent implements OnInit {
         } else {
             if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
                 if(this.isValidLegalOptions){
-                    this.editContactsComponent.saveDuplicateContactList(this.saveAsListName,this.selectedLegalBasisOptions);
+                    this.editContactsComponent.saveDuplicateContactList(this.saveAsListName,this.selectedLegalBasisOptions, this.model.isPublic );
                     $('#saveAsModal').modal('hide');
                     this.notifyParentSaveAs.emit('success');
                 }
@@ -75,6 +82,11 @@ export class SaveAsComponent implements OnInit {
       }else{
           this.isValidLegalOptions = true;
       }
+  }
+  
+  changeStatus(event){
+      this.model.isPublic = event;
+      
   }
   
 

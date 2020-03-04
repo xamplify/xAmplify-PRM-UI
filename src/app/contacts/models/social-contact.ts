@@ -33,4 +33,5 @@ export class SocialContact{
     type:string;
     externalListId:number;
     isShowDetails = false;
+    publicList=false;
 }

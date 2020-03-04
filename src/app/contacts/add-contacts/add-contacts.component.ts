@@ -24,6 +24,7 @@ import { HubSpotService } from 'app/core/services/hubspot.service';
 import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 
 declare var swal, $, Papa: any;
 
@@ -36,7 +37,7 @@ declare var swal, $, Papa: any;
         '../../../assets/css/form.css',
         './add-contacts.component.css',
         '../../../assets/css/numbered-textarea.css', '../../../assets/css/phone-number-plugin.css'],
-    providers: [FileUtil, SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent]
+    providers: [FileUtil, SocialContact, ZohoContact, SalesforceContact, Pagination, CountryNames, Properties, RegularExpressions, PaginationComponent, CallActionSwitch]
 })
 export class AddContactsComponent implements OnInit, OnDestroy {
     settingSocialNetwork: string;
@@ -159,7 +160,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
-        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService) {
+        private router: Router, public pagination: Pagination, public xtremandLogger: XtremandLogger, public countryNames: CountryNames, private hubSpotService: HubSpotService, public userService: UserService,
+        public callActionSwitch: CallActionSwitch) {
         this.pageNumber = this.paginationComponent.numberPerPage[0];
         this.addContactuser.country = ( this.countryNames.countries[0] );
         let currentUrl = this.router.url;
@@ -181,6 +183,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             file.withCredentials = false;
         };
         this.model.contactListName = '';
+        this.model.isPublic = true;
         this.userName = '';
         this.password = '';
         this.contactType = '';
@@ -778,7 +781,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     
     oneAtTimeSaveAfterGotPermition(){
         this.loading = true;
-        this.contactService.saveContactList( this.newUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.newUsers, this.model.contactListName, this.isPartner,this.model.isPublic )
         .subscribe(
         data => {
             data = data;
@@ -890,7 +893,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.xtremandLogger.info( "update contacts #contactSelectedListId " + " data => " + JSON.stringify( this.clipboardUsers ) );
         this.setLegalBasisOptions(this.clipboardUsers);
-        this.contactService.saveContactList( this.clipboardUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
             .subscribe(
             data => {
                 data = data;
@@ -1001,7 +1004,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveCsvContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.contacts);
-        this.contactService.saveContactList( this.contacts, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
             data = data;
@@ -1432,6 +1435,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveGoogleContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.socialContact.contacts);
+        this.socialContact.publicList  = this.model.isPublic;
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
@@ -1486,7 +1490,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveGoogleSelectedContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
             data = data;
@@ -1864,6 +1868,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveZohoContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.socialContact.contacts);
+        this.socialContact.publicList  = this.model.isPublic;
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
@@ -1919,7 +1924,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveZohoSelectedContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
             data = data;
@@ -2244,7 +2249,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveSalesForceSelectedContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
             this.loading = false;
@@ -2302,6 +2307,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveSalesForceContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.socialContact.contacts);
+        this.socialContact.publicList  = this.model.isPublic;
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
@@ -2730,6 +2736,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveMarketoContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.socialContact.contacts);
+        this.socialContact.publicList  = this.model.isPublic;
         this.contactService.saveMarketoContactList( this.socialContact )
         .subscribe(
         data => {
@@ -2778,7 +2785,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveMarketoSelectedContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
             data = data;
@@ -3244,6 +3251,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.socialContact.userId = this.authenticationService.getUserId();
         this.socialContact.externalListId = this.hubSpotSelectContactListOption;
         this.setLegalBasisOptions(this.socialContact.contacts);
+        this.socialContact.publicList  = this.model.isPublic;
         this.hubSpotService.saveHubSpotContacts(this.socialContact)
         .subscribe(
         data => {
@@ -3267,7 +3275,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     saveHubSpotSelectedContactsWithPermission(){
         this.loading = true;
         this.setLegalBasisOptions(this.allselectedUsers);
-        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner )
+        this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
             data = data;
@@ -3299,6 +3307,11 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 contact.legalBasis = self.selectedLegalBasisOptions;
              });
         }
+    }
+    
+    changeStatus(event){
+    	this.model.isPublic = event;
+    	
     }
    
     

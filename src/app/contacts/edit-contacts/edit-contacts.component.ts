@@ -2192,7 +2192,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.saveAsListName = undefined;
 		this.refService.namesArray = undefined;
 	}
-	saveDuplicateContactList(name: string, selectedLegalBasisOptions: any) {
+	saveDuplicateContactList(name: string, selectedLegalBasisOptions: any, isPublic:boolean) {
 		try {
 
 			if (name != "") {
@@ -2211,7 +2211,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						value.legalBasis = selectedLegalBasisOptions;
 					});
 					console.log(listUsers);
-					this.contactService.saveContactList(listUsers, name, this.isPartner)
+					this.contactService.saveContactList(listUsers, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
 								$('#saveAsEditModal').modal('hide');
@@ -2257,7 +2257,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					}
 
 					console.log(this.selectedContactForSave);
-					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner)
+					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
 								this.goToContactOrPartnerUrl();
