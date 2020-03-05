@@ -251,22 +251,28 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
-        if (this.router.url.includes('home/pages/partner')) {
-            this.isPartnerLandingPage = true;
-        } else {
-            this.selectedLandingPageTypeIndex = 0;
-            this.pagination.filterKey = "All";
-            this.isPartnerLandingPage = false;
+
+        if(this.router.url.endsWith('manage/')){
+            this.setViewType('Folder');
+        }else{
+            if (this.router.url.includes('home/pages/partner')) {
+                this.isPartnerLandingPage = true;
+            } else {
+                this.selectedLandingPageTypeIndex = 0;
+                this.pagination.filterKey = "All";
+                this.isPartnerLandingPage = false;
+            }
+            this.isListView = !this.referenceService.isGridView;
+            this.isGridView = this.referenceService.isGridView;
+            this.isFolderView = false;
+            this.categoryId = this.route.snapshot.params['categoryId'];
+            if (this.categoryId != undefined) {
+                this.pagination.categoryId = this.categoryId;
+                this.pagination.categoryType = 'e';
+            }
+            this.listLandingPages(this.pagination);
         }
-        this.isListView = !this.referenceService.isGridView;
-        this.isGridView = this.referenceService.isGridView;
-        this.isFolderView = false;
-        this.categoryId = this.route.snapshot.params['categoryId'];
-        if (this.categoryId != undefined) {
-            this.pagination.categoryId = this.categoryId;
-            this.pagination.categoryType = 'e';
-        }
-        this.listLandingPages(this.pagination);
+        
     }
 
 

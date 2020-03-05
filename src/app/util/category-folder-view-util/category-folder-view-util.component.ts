@@ -105,10 +105,10 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     }
 
     getAllCategoryFilteredResults(pagination: Pagination) {
-        this.pagination.pageIndex = 1;
-        this.pagination.searchKey = this.categorySortOption.searchKey;
-        this.pagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, this.pagination);
-        this.listCategories(this.pagination);
+        pagination.pageIndex = 1;
+        pagination.searchKey = this.categorySortOption.searchKey;
+        pagination = this.utilService.sortOptionValues(this.categorySortOption.selectedCategoryDropDownOption, pagination);
+        this.listCategories(pagination);
     }
     eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
@@ -117,6 +117,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
         }else if(this.moduleType==2){
             this.router.navigate( ['home/forms/manage/' + categoryId] );
+        }else if(this.moduleType==3){
+            this.router.navigate( ['home/pages/manage/' + categoryId] );
         }
         
     }

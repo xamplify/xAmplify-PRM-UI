@@ -22,6 +22,9 @@
     <div class="row" *ngIf="statusCode==200">
         <div class="col-md-12">
             <div class="portlet light clearfix">
+                <ng-container *ngIf="isFolderView">
+                    <app-category-folder-view-util [moduleType]=3 (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+                </ng-container>
                 <!-- <div class="portlet-title" style="border-bottom: none;">
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -89,7 +92,7 @@
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div>
-                                <ul class="mix-filter">
+                                <ul class="mix-filter" *ngIf="!isFolderView">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
