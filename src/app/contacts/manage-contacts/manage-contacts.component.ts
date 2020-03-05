@@ -1540,6 +1540,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
 
     saveListAsNewList(contactListName: string, isPublic:boolean) {
         try {
+        	if(this.isPartner){
+        		isPublic = true;
+        	}
+        	
+        
             this.contactService.saveContactList(this.contactListUsers, contactListName, this.isPartner, isPublic)
                 .subscribe(
                 data => {
