@@ -57,3 +57,7 @@ span.ui-column-resizer {
 .margin-space {
     margin-left: 3px !important;
 }
+
+.display-ib {
+    display: inline-block;
+}
