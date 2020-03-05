@@ -163,7 +163,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     var dropDown = '<div class="form-group">';
                     dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
                     dropDown+='<select class="form-control" id="category-dropdown">';
-                    console.log(self.categoryNames);
                     $.each(self.categoryNames,function(_index:number,category:any){
                         let categoryId = category.id;
                         if(self.emailTemplateService.emailTemplate.categoryId==categoryId){

@@ -19,5 +19,6 @@ export class LandingPage {
     showYourPartnersLogo:boolean = false;
     partnerLandingPage = false;
     type:LandingPageType;
+    categoryId:number = 0;
 
 }
