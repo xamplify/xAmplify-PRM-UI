@@ -62,10 +62,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }else{
             this.showFolderView = false;
         }
-        if (this.categoryId != undefined) {
-            this.pagination.categoryId = this.categoryId;
-            this.pagination.categoryType = 'f';
-        }
+       
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
@@ -88,13 +85,22 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
             this.partnerId = this.route.snapshot.params['partnerId'];
+            if (this.categoryId>0 && (this.landingPageId==undefined||this.landingPageId==0)) {
+                this.pagination.categoryId = this.categoryId;
+                this.pagination.categoryType = 'f';
+            }
             if (this.campaignId != undefined) {
                 this.pagination.campaignId = this.campaignId;
                 this.pagination.campaignForm = true;
             } else if (this.landingPageId > 0) {
                 this.pagination.landingPageId = this.landingPageId;
                 this.pagination.landingPageForm = true;
-                this.landingPagesRouterLink = "/home/pages/manage";
+                if(this.categoryId>0){
+                    this.landingPagesRouterLink = "/home/pages/manage/"+this.categoryId;
+                }else{
+                    this.landingPagesRouterLink = "/home/pages/manage";
+                }
+                
             } else if (this.landingPageCampaignId > 0) {
                 this.pagination.campaignId = this.landingPageCampaignId;
                 this.pagination.landingPageCampaignForm = true;
@@ -297,7 +303,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/home/forms/' + form.alias + '/' + this.landingPageCampaignId + '/analytics']);
             }
         } else if (this.pagination.landingPageForm) {
-            this.router.navigate(['/home/forms/lf/' + form.alias + '/' + this.landingPageId + '/analytics']);
+            if(this.categoryId>0){
+                this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + form.alias + '/' + this.landingPageId + '/analytics']);
+            }else{
+                this.router.navigate(['/home/forms/lf/' + form.alias + '/' + this.landingPageId + '/analytics']);
+
+            }
         } else if (this.pagination.partnerLandingPageForm) {
             this.router.navigate(['/home/forms/partner/f/' + form.id + '/' + this.partnerLandingPageAlias + '/analytics']);
         } else {

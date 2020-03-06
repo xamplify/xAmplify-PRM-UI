@@ -26,7 +26,10 @@ export const routes: Routes = [
     {path: "lf/:landingPageId",component:LandingPageFormsComponent},
     {path: "partner/lf/:partnerLandingPageAlias",component:LandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId",component:CampaignLandingPageFormsComponent},
-    {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent}
+    {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent},
+    {path: "category/:categoryId/lf/:landingPageId",component:LandingPageFormsComponent},
+    { path: "category/:categoryId/lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
+
 
 ];
 

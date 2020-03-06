@@ -1,132 +1,125 @@
 <div class="page-content">
-	<div class="page-bar">
-		<ul class="page-breadcrumb">
-			<li *ngIf="!authenticationService.isSuperAdmin()">
-				<i class="fa fa-home"></i>
-				<a [routerLink]="referenceService.homeRouter">Home</a>
-				<i class="fa fa-angle-right"></i>
-			</li>
-			<li>
-				<a [routerLink]="['/home/pages/manage']">Manage Pages</a><i class="fa fa-angle-right"></i>
-			</li>
-			<li>
-				<a routerLink="{{routerLink}}">Manage Forms</a>
-				<i class="fa fa-angle-right"></i>
-			</li>
-			<li>
-				<a>Analytics</a> 
-			</li>
-		</ul>
-	</div>
-	<div class="row" id="responsive">
-	<div class="col-xs-12 p5" *ngIf="statusCode==200">
-			<div class="portlet light">
-				<div class="portlet-title">
-					<div class="caption">
-						<span class="caption-subject font-red-sunglo uppercase">{{formName}}</span>
-					</div>
-					<div class="inputs" align="right" style="float: right">
-						<a class="close-circle" routerLink="{{routerLink}}" data-toggle="tooltip" data-placement="top"
-							title="Close">
-							<i class="fa fa-times"></i>
-						</a>
-						<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-							<i class="fa fa-refresh"></i>
-						</a>
-						<!-- <div style="float: left;">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li *ngIf="!authenticationService.isSuperAdmin()">
+                <i class="fa fa-home"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a routerLink="{{pagesRouterLink}}">Manage Pages</a><i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a routerLink="{{formsRouterLink}}">Manage Forms</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a>Analytics</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row" id="responsive">
+        <div class="col-xs-12 p5" *ngIf="statusCode==200">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject font-red-sunglo uppercase">{{formName}}</span>
+                    </div>
+                    <div class="inputs" align="right" style="float: right">
+                        <a class="close-circle" routerLink="{{routerLink}}" data-toggle="tooltip" data-placement="top" title="Close">
+                            <i class="fa fa-times"></i>
+                        </a>
+                        <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                        <!-- <div style="float: left;">
 						 <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
                       		<option *ngFor="let sortOption of columns" [ngValue]="sortOption">{{sortOption.labelName}}</option>
                     	</select>
 					</div> -->
-						<div class="portlet-input input-inline input-small" id="search-margin">
-							<div class="input-icon right" id="icon-right">
-								<input type="text" id="search-text" class="form-control" [(ngModel)]="searchKey"
-									[ngModelOptions]="{standalone: true}" placeholder="search..."
-									(keypress)="eventHandler($event.keyCode)">
-								<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
-									(click)="searchKey='';search()"></button>
-								<button type="submit" class="search-box-item-click" (click)="search()"><i
+                        <div class="portlet-input input-inline input-small" id="search-margin">
+                            <div class="input-icon right" id="icon-right">
+                                <input type="text" id="search-text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';search()"></button>
+                                <button type="submit" class="search-box-item-click" (click)="search()"><i
 										class="fa fa-search"></i></button>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-				<div class="alert alert-danger" *ngIf="httpRequestLoader.isServerError"><strong>Oops!Something went wrong.Please try after sometime.</strong></div>
-				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
-					<table class="table tgrid">
-						<thead>
-							<tr>
-								<ng-container *ngFor="let column of columns;let i  = index">
-									<ng-container *ngIf="i<=3">
-										<th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
-									</ng-container>
-								</ng-container>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
-								<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
-									<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
-										<td *ngIf="columnIndex<=3">{{columnValue.value}}</td>
-									</ng-container>
-									<td>
-										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
-											title="View More Columns" *ngIf="columns.length>4">
-											<i class="fa"
-												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"></i>
-										</a>
-									</td>
-								</tr>
-								<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
-									<td colspan="5">
-										<table id="expanded-table" class="table tgrid table-bordered">
-											<tr *ngFor="let column of columns;let i  = index;">
-												<th *ngIf="i>=4">
-													{{column.labelName}}<span class="required" *ngIf="column.required">*</span>
-												</th>
-												<td *ngIf="i>=4">
-													{{formDataRow.values[i].value}}
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</ng-container>
-						</tbody>
-					</table>
-				</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				<div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isServerError" class="pg8">
-					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-						(notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-				</div>
-				<!-- End of 24 -->
-				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-					<strong>No Data Found.</strong>
-				</div>
-			</div>
-		</div>
+                <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+                <div class="alert alert-danger" *ngIf="httpRequestLoader.isServerError"><strong>Oops!Something went wrong.Please try after sometime.</strong></div>
+                <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
+                    <table class="table tgrid">
+                        <thead>
+                            <tr>
+                                <ng-container *ngFor="let column of columns;let i  = index">
+                                    <ng-container *ngIf="i<=3">
+                                        <th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
+                                    </ng-container>
+                                </ng-container>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
+                                <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
+                                    <ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
+                                        <td *ngIf="columnIndex<=3">{{columnValue.value}}</td>
+                                    </ng-container>
+                                    <td>
+                                        <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip" title="View More Columns" *ngIf="columns.length>4">
+                                            <i class="fa" [ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
+                                    <td colspan="5">
+                                        <table id="expanded-table" class="table tgrid table-bordered">
+                                            <tr *ngFor="let column of columns;let i  = index;">
+                                                <th *ngIf="i>=4">
+                                                    {{column.labelName}}<span class="required" *ngIf="column.required">*</span>
+                                                </th>
+                                                <td *ngIf="i>=4">
+                                                    {{formDataRow.values[i].value}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
 
-		<div class="col-xs-12 p5" *ngIf="statusCode==404">
-			<div class="alert alert-danger">
-				<strong>
+                <div *ngIf="pagination.pagedItems.length !== 0 && !httpRequestLoader.isServerError" class="pg8">
+                    <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                </div>
+                <!-- End of 24 -->
+                <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                    <strong>No Data Found.</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 p5" *ngIf="statusCode==404">
+            <div class="alert alert-danger">
+                <strong>
 					<h4>Form does not exists</h4>
 				</strong>
-			</div>
-		</div>
+            </div>
+        </div>
 
 
-		<div class="col-xs-12 p5" *ngIf="statusCode==403">
-			<div class="alert alert-danger">
-				<strong>
+        <div class="col-xs-12 p5" *ngIf="statusCode==403">
+            <div class="alert alert-danger">
+                <strong>
 					<h4>Access Denied</h4>
 				</strong>
-			</div>
-		</div>
+            </div>
+        </div>
 
-	</div>
-	<app-scroll-top></app-scroll-top>
+    </div>
+    <app-scroll-top></app-scroll-top>
 </div>

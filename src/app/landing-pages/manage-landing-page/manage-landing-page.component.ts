@@ -242,7 +242,12 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     }
 
     goToFormAnalytics(id: number) {
-        this.router.navigate(['/home/forms/lf/' + id]);
+        if(this.categoryId>0){
+            this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
+        }else{
+            this.router.navigate(['/home/forms/lf/' + id]);
+
+        }
     }
     goToPartnerLandingPageFormAnalytics(alias: string) {
         this.router.navigate(['/home/forms/partner/lf/' + alias]);
