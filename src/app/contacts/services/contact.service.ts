@@ -35,6 +35,7 @@ export class ContactService {
     partnerListName: string;
     socialCallbackName: string;
     isLoadingList: boolean;
+    publicList : boolean;
 
     url = this.authenticationService.REST_URL + "admin/";
     contactsUrl = this.authenticationService.REST_URL + "userlists/";

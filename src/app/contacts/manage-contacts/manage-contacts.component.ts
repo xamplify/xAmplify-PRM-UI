@@ -617,6 +617,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         this.showEdit = true;
         $("#pagination").hide();
     }
+    
+    setListType(publicList:boolean){
+    	  this.contactService.publicList=publicList;
+    }
 
     backToManageContactPage() { }
 

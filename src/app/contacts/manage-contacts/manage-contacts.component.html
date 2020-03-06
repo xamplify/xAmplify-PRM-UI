@@ -256,7 +256,7 @@
 													<th class="visible-xs" colspan="1" style="width: 50%">List
 														Info</th>
 														
-														
+													<th class="hidden-xs" ><span [hidden]="isPartner">Type</span></th> 
 													<th class="hidden-xs">Created On</th>
 													<th class="text-center hidden-xs">Total
 														{{checkingContactTypeName}}s</th>
@@ -316,6 +316,12 @@
 															</h5>
 														</h5>
 													</td>
+													<td class="hidden-xs">
+													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
+													 <span *ngIf="contactList.publicList">Public</span>
+													<span *ngIf="!contactList.publicList">Private</span> 
+													</h5>
+														</td>
 													<td class="hidden-xs"><app-timestamp
 															[isOnlyDate]="true"
 															[dateAndTime]="contactList.createdDate">
@@ -327,7 +333,7 @@
 														<div class="actions-block override-actions" *ngIf="contactList.emailValidationInd">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isPartner() || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
-																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
+																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_edit}}"> <i
 																class="fa fa-pencil-square-o"></i>
