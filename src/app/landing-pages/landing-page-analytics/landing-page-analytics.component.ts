@@ -45,6 +45,8 @@ export class LandingPageAnalyticsComponent implements OnInit {
     barChartFilterErrorMessage:string="";
     landingPageAnalyticsPostDto:LandingPageAnalyticsPostDto = new LandingPageAnalyticsPostDto();
     partnerEmailId:string = "";
+    managePagesRouterLink = "/home/pages/manage";
+    routerLink = "";
     constructor(public route: ActivatedRoute, public landingPageService: LandingPageService, public referenceService: ReferenceService,
         public pagerService: PagerService, public authenticationService: AuthenticationService, 
         public router: Router,public logger: XtremandLogger,public sortOption:SortOption,public videoUtilService: VideoUtilService ) {
@@ -57,6 +59,12 @@ export class LandingPageAnalyticsComponent implements OnInit {
         this.campaignId = this.route.snapshot.params['campaignId'];
         this.landingPageAlias = this.route.snapshot.params['alias'];
         this.partnerId = this.route.snapshot.params['partnerId'];
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+            this.routerLink = this.managePagesRouterLink+"/"+categoryId;
+        }else{
+            this.routerLink = this.managePagesRouterLink;
+        }
         if(this.campaignId!=undefined){
             this.pagination.campaignId = this.campaignId;
             this.landingPageId = 0;

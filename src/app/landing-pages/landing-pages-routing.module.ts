@@ -18,6 +18,8 @@ export const routes: Routes = [
     { path: "partner/:alias/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/campaign/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/:partnerId/campaign/analytics", component: LandingPageAnalyticsComponent },
+    { path: ":landingPageId/category/:categoryId/analytics", component: LandingPageAnalyticsComponent }
+
 
     ];
 @NgModule( {
