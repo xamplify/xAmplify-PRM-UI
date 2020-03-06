@@ -70,16 +70,20 @@ export class AddFormComponent implements OnInit, OnDestroy {
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     loggedInUserId: number;
     categoryNames: any;
+    routerLink: string="/home/forms/manage";
     constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
         public authenticationService:AuthenticationService,public formService:FormService,
         private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch,public route:ActivatedRoute) {
             this.loggedInUserId = this.authenticationService.getUserId();
+        let categoryId = this.route.snapshot.params['categoryId'];
+         if(categoryId>0){
+             this.routerLink+= "/"+categoryId;
+         }   
         if(this.formService.form===undefined){
             if(this.router.url.indexOf("/home/forms/edit")>-1){
                 this.navigateToManageSection();
             }
         }
-        
         if(this.formService.form!==undefined){
             this.isAdd = false;
             this.formTitle = "Edit Form Details";

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router,ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -13,7 +13,6 @@ import { SortOption } from '../../core/models/sort-option';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UtilService } from '../../core/services/util.service';
 import { PreviewPopupComponent } from '../../forms/preview-popup/preview-popup.component';
-import { User } from '../../core/models/user';
 /*************Landing Page***************/
 import { LandingPageService } from '../services/landing-page.service';
 import { LandingPage } from '../models/landing-page';
@@ -44,10 +43,15 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
     categoryId: number = 0;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     categoryNames: any;
+    routerLink = "/home/pages/manage";
     constructor(private landingPageService: LandingPageService, private router: Router, private logger: XtremandLogger,
         private authenticationService: AuthenticationService, public referenceService: ReferenceService, private location: Location,
-        private formService: FormService, public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService,private route:ActivatedRoute) {
+        public pagerService: PagerService, public sortOption: SortOption, public utilService: UtilService,private route:ActivatedRoute) {
         this.id = this.landingPageService.id;
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+            this.routerLink+= "/"+categoryId;
+        }
         if (this.id > 0) {
             var names: any = [];
             let self = this;

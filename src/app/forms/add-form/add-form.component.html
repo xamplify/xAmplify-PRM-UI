@@ -9,10 +9,10 @@
                 <i class="fa fa-home"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i class="fa fa-angle-right"></i>
-                <a *ngIf="isAdd" [routerLink]="['../../design/add']">Create Design</a> <i *ngIf="isAdd" class="fa fa-angle-right"></i>
+                <a *ngIf="isAdd" [routerLink]="['/home/design/add']">Create Design</a> <i *ngIf="isAdd" class="fa fa-angle-right"></i>
             </li>
             <li *ngIf="!isAdd">
-                <a [routerLink]="['../../forms/manage']">Manage Forms</a><i class="fa fa-angle-right"></i>
+                <a routerLink="{{routerLink}}">Manage Forms</a><i class="fa fa-angle-right"></i>
             </li>
             <li>
                 <a>Create Form</a>

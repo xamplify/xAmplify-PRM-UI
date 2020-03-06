@@ -173,7 +173,12 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     editLandingPage(id: number) {
         this.landingPageService.id = id;
-        this.router.navigate(["/home/pages/add"]);
+        if(this.categoryId>0){
+            this.router.navigate( ["/home/pages/add/"+this.categoryId] );
+        }else{
+            this.router.navigate(["/home/pages/add"]);
+        }
+        
     }
 
     deleteById(landingPage: LandingPage) {
@@ -268,7 +273,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.categoryId = this.route.snapshot.params['categoryId'];
             if (this.categoryId != undefined) {
                 this.pagination.categoryId = this.categoryId;
-                this.pagination.categoryType = 'e';
+                this.pagination.categoryType = 'l';
             }
             this.listLandingPages(this.pagination);
         }

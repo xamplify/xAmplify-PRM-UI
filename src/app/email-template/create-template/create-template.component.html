@@ -1,39 +1,38 @@
 <div class="page-content" [style.background-color]="refService.pageContnetBgColor">
-   <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
-   <ng-container *ngIf="!httpRequestLoader.isLoading">
-      <div class="row">
-         <div class="col-xs-12">
-            <div class="tile">
-               <div class="page-bar">
-                  <ul class="page-breadcrumb" *ngIf="loadTemplate">
-                     <li>
-                        <i class="fa fa-home"></i>
-                        <a [routerLink]="refService.homeRouter">Home</a>
-                        <i class="fa fa-angle-right"></i>
-                     </li>
-                     <li *ngIf="emailTemplateService.isNewTemplate">
-                     	<a [routerLink]="['../../emailtemplates/select']">Select Templates</a><i class="fa fa-angle-right"></i>
-                     </li>
-                     <li *ngIf="!emailTemplateService.isNewTemplate"><a [routerLink]="['../../emailtemplates/manage']">Manage Templates</a>
-                      <i class="fa fa-angle-right"></i>
-                   </li>
-                     <li>
-                        <a><span *ngIf="emailTemplateService.isNewTemplate; else Other">Create</span>
+    <app-loader [model]="httpRequestLoader.isHorizontalCss" *ngIf="httpRequestLoader.isLoading"></app-loader>
+    <ng-container *ngIf="!httpRequestLoader.isLoading">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tile">
+                    <div class="page-bar">
+                        <ul class="page-breadcrumb" *ngIf="loadTemplate">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a [routerLink]="refService.homeRouter">Home</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li *ngIf="emailTemplateService.isNewTemplate">
+                                <a [routerLink]="['/home/emailtemplates/select']">Select Templates</a><i class="fa fa-angle-right"></i>
+                            </li>
+                            <li *ngIf="!emailTemplateService.isNewTemplate">
+                                <a routerLink="{{manageRouterLink}}">Manage Templates</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <a><span *ngIf="emailTemplateService.isNewTemplate; else Other">Create</span>
                           <ng-template #Other>Update</ng-template> Template</a>
-                     </li>
-                  </ul>
-                  <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>
-                  <!--   <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate"></app-preview-popup> -->
-                  <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your email templates">
+                            </li>
+                        </ul>
+                        <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>
+                        <!--   <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate"></app-preview-popup> -->
+                        <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your email templates">
                   	<i class="fa fa-plus-circle"></i>
 				  </button> -->
-                  <div id="bee-plugin-container"></div>
-               </div>
+                        <div id="bee-plugin-container"></div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </ng-container>
-   <app-scroll-top></app-scroll-top>
+        </div>
+    </ng-container>
+    <app-scroll-top></app-scroll-top>
 </div>
-
-

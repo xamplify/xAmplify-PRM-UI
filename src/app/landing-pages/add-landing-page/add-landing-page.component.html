@@ -1,139 +1,37 @@
 <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor">
- <div class="my-container">
-    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  </div>
-  <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
-   <ng-container *ngIf="!httpRequestLoader.isLoading">
-      <div class="row">
-         <div class="col-xs-12">
-            <div class="tile">
-               <div class="page-bar">
-                  <ul class="page-breadcrumb" *ngIf="loadLandingPage">
-                     <li>
-                        <i class="fa fa-home"></i>
-                        <a [routerLink]="referenceService.homeRouter">Home</a>
-                        <i class="fa fa-angle-right"></i>
-                     </li>
-                     <li *ngIf="defaultLandingPage">
-                     	<a [routerLink]="['../../pages/select']">Select  Page</a>
-                        <i class="fa fa-angle-right"></i>
-                     </li>
-                     <li *ngIf="!defaultLandingPage">
-                     	<a [routerLink]="['../../pages/manage']">Manage Pages</a>
-                        <i class="fa fa-angle-right"></i>
-                     </li>
-                     <li>
-                        <a *ngIf="defaultLandingPage">Create Page</a>
-                        <a *ngIf="!defaultLandingPage">Edit Page</a>
-                     </li>
-                  </ul>
-                       <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
-                  <div id="bee-plugin-container"></div>
-               </div>
-            </div>
-         </div>
-      </div>
-   </ng-container>
-   <app-scroll-top></app-scroll-top>
-   
-   
-    <!-- ----------------------List Available Forms------------------- -->
-    <div class="modal right " id="forms-list" data-backdrop="static">
-      <div class="modal-dialog modal-lg" style="width: 75%;right:0">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close-circle" data-dismiss="modal">
-              <i class="fa fa-times"></i>
-            </button>
-            <h4 class="modal-title text-center">Forms</h4>
-          </div>
-          <div class="modal-body">
-          <div class="row" *ngIf="!formsError">
-          <div class="col-xs-12 p5">
-			<div class="portlet light">
-				<div class="portlet-title">
-					<div class="inputs"  id="right">
-						<div id="left">
-						 <select class="form-control" [(ngModel)]="sortOption.formsSortOption"  (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                      		<option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
-                       			 {{option.name}}</option>
-                    	</select>
-					</div>
-						 <div class="portlet-input input-inline input-small" id="search">
-		                    <div class="input-icon right" id="search-icon">
-		                      <input type="text" id="search-text" class="form-control" [(ngModel)]="sortOption.searchKey"
-		                        [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-		                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey"	(click)="sortOption.searchKey='';searchForms();"></button>
-		                      <button type="submit" class="search-box-item-click" (click)="searchForms()"><i class="fa fa-search"></i> </button>
-		                    </div>
-                  		</div>
-					</div>
-				</div>
-				<app-list-loader *ngIf="formsLoader.isLoading"></app-list-loader>
-				<div class="table-responsive" *ngIf="!formsLoader.isLoading">
-					<table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
-						<thead>
-						  <tr>
-							 <th>Form Details</th>
-							 <th class="text-center">Link</th>
-							 <th class="text-center">Copy & Preview</th>
-						  </tr>
-						</thead>
-						<tbody>
-							<tr *ngFor="let form of pagination.pagedItems ;let i =index">
-							  <td>
-								 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
-									{{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
-								 </h4>
-								 <h6>
-									Created By <b>{{form.createdName}}</b>
-								 </h6>
-								 <h6>
-									From <b>{{form.companyName}}</b>
-								 </h6>
-							  </td>
-							  <td>
-							  	<input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form.alias}}" #userinput>
-							  	<font class="success" id="copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
-							  </td>
-							  <td id="actions-row">
-								 <div class="actions-block override-actions">
-								 	<a data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
-									  <i class="fa fa-copy"></i>
-									</a>
-									
-									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
-									  <i class="fa fa-eye"></i>
-									</a>
-									
-								 </div>
-							  </td>
-							</tr>
-						 </tbody>
-					</table>
-				</div>
-
-				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
-					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
-						(notifyParentDropDown)="listForms($event)" [hidden]="formsLoader.isLoading"></app-pagination>
-				</div>
-				<!-- End of 24 -->
-				<div *ngIf="pagination.totalRecords==0 && !formsLoader.isLoading" class="alert alert-info">
-					<strong>No Forms Found.</strong>
-				</div>
-			</div>
-		</div>
-		</div>
-		
-			<div *ngIf="formsError">
-				<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-			</div>
-		
-          </div>
-          <div class="modal-footer">
-			<a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
-		</div>
-        </div>
-      </div>
+    <div class="my-container">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-</div>
+    <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+    <ng-container *ngIf="!httpRequestLoader.isLoading">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="tile">
+                    <div class="page-bar">
+                        <ul class="page-breadcrumb" *ngIf="loadLandingPage">
+                            <li>
+                                <i class="fa fa-home"></i>
+                                <a [routerLink]="referenceService.homeRouter">Home</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li *ngIf="defaultLandingPage">
+                                <a [routerLink]="['/home/pages/select']">Select  Page</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li *ngIf="!defaultLandingPage">
+                                <a routerLink="{{routerLink}}">Manage Pages</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                            <li>
+                                <a *ngIf="defaultLandingPage">Create Page</a>
+                                <a *ngIf="!defaultLandingPage">Edit Page</a>
+                            </li>
+                        </ul>
+                        <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>
+                        <div id="bee-plugin-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <app-scroll-top></app-scroll-top>

@@ -40,6 +40,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     loggedInUserId = 0;
     showDropDown = false;
     categoryNames: any;
+    routerLink = "/home/emailtemplates/manage";
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,public refService:ReferenceService,
@@ -47,6 +48,9 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
         let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+            this.routerLink+= "/"+categoryId;
+        }
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.emailTemplateService.emailTemplate == undefined){
             this.navigateToManageSection();

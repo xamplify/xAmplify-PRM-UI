@@ -48,9 +48,13 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
     categoryId:number = 0;
+    manageRouterLink = "/home/emailtemplates/manage";
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
                 private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location,private route:ActivatedRoute) {
-
+    this.categoryId = this.route.snapshot.params['categoryId'];
+    if(this.categoryId>0){
+        this.manageRouterLink+= "/"+this.categoryId;
+    }
     if ( emailTemplateService.emailTemplate != undefined ) {
         var names: any = [];
         let self = this;
@@ -198,7 +202,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                     var dropDown = '<div class="form-group">';
                     dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
                     dropDown+='<select class="form-control" id="category-dropdown">';
-                    console.log(self.categoryNames);
                     $.each(self.categoryNames,function(_index:number,category:any){
                         dropDown+='<option value='+category.id+'>'+category.name+'</option>';
                     });
