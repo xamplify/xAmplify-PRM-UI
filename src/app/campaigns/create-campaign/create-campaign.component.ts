@@ -555,11 +555,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
       if(event===13 && type==='myvideos'){ this.searchVideo();}
       if(event===13 && type==='channel'){ this.searchChannelVideo();}
       if(event===13 && type==='contact'){ this.searchContactList();}
-      if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
+      if(event===13 && type==='emailTemplate'){  this.searchEmailTemplate();}
       if(event===13 && type==='landingPages'){ this.searchLandingPage();}
   }
-  eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
-  eventUrlHandler(keyCode: any, url:any) {  if (keyCode === 13) {  this.searchClickEmailTemplate(url); } }
+  
 
   ngOnInit(){
         Metronic.init();
@@ -1595,11 +1594,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddReply(reply:Reply){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-        /*if(this.campaignType=="video"){
-            reply.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-        }else{
-            reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }*/
         reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(reply.emailTemplatesPagination.searchKey==null || reply.emailTemplatesPagination.searchKey==""){
             reply.emailTemplatesPagination.campaignDefaultTemplate = true;
@@ -1626,11 +1620,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddOnClick(url:Url){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-     /*   if(this.campaignType=="video"){
-            url.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-        }else{
-            url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }*/
         url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(url.emailTemplatesPagination.searchKey==null || url.emailTemplatesPagination.searchKey==""){
             url.emailTemplatesPagination.campaignDefaultTemplate = true;
@@ -1880,12 +1869,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.loadAllEmailTemplates(this.emailTemplatesPagination);
         }
-       /* if(this.isOnlyPartner){
-            this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
-        }else{
-            this.loadEmailTemplates(this.emailTemplatesPagination);
-        }
-        */
+       
     }
     searchReplyEmailTemplate(reply:Reply){
         reply.emailTemplatesPagination.pageIndex = 1;

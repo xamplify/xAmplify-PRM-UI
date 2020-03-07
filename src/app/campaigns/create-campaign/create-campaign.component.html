@@ -1704,26 +1704,22 @@
                                                                         <div class="portlet-title">
                                                                             <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
                                                                                 <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">
-                                                                                    All Email Templates</li>
+                                                                                    All</li>
                                                                                 <li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">
-                                                                                    Basic Templates</li>
-                                                                                <!-- <li class="filter" (click)="filterReplyTemplates('RICH',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">Rich Templates</li> -->
+                                                                                    Basic</li>
                                                                                 <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">
-                                                                                    Uploaded Email Templates</li>
+                                                                                    Uploaded</li>
                                                                                 <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">
-                                                                                    Partner Templates</li>
+                                                                                    Partner</li>
                                                                             </ul>
-                                                                            <div class="input-icon pull-right col-xs-3" style="padding-right: 0px">
-                                                                                <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventReplyHandler($event.keyCode, reply)">
-                                                                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput=''"></button>
-                                                                                <button type="submit" class="search-box-item-click" (click)="searchReplyEmailTemplate(reply)"><i
-                                                                                        class="fa fa-search"
-                                                                                        style="padding-top: 3px !important; font-size: 18px !important;"></i></button>
+                                                                            <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
+                                                                                <input type="text" [(ngModel)]="reply.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search">
+                                                                                <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="reply.emailTemplateSearchInput" (click)="reply.emailTemplateSearchInput='';searchReplyEmailTemplate(reply);"></button>
+                                                                                <button type="button" class="search-box-item-click email-search" (click)="searchReplyEmailTemplate(reply)">
+                                                                                    <i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                                                                             </div>
                                                                         </div>
-                                                                        <!-- <app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader> -->
-                                                                        <app-list-loader [rowsCount]="3" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading">
-                                                                        </app-list-loader>
+                                                                        <app-loader *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"> </app-loader>
                                                                         <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError">
                                                                         </app-error-pages>
                                                                         <ng-container *ngIf="!campaignEmailTemplate.httpRequestLoader.isLoading && !campaignEmailTemplate.httpRequestLoader.isServerError">
@@ -1794,13 +1790,11 @@
                                                                             <!-- current COde -->
                                                                             <ul class="content__list" *ngFor="let emailTemplate of reply.emailTemplatesPagination.pagedItems ;let e =index">
                                                                                 <li (click)="setReplyEmailTemplate(emailTemplate.id,reply,i,emailTemplate.draft)" [class.list__item--selected]="emailTemplate.id==reply.selectedEmailTemplateId" *ngIf="reply.selectedEmailTemplateIdForEdit!=emailTemplate.id" class="list__item">
-                                                                                    <!-- above class [ngClass]="{'list__item--selected':selectedFileIds.indexOf(file.id)>-1}" -->
                                                                                     <div class="flex-row">
                                                                                         <div class="item__select-box-wrapper">
                                                                                             <span class="select-box" [class.hide]="emailTemplate.draft">
                                                                                                 <label>
-                                                                                                    <input
-                                                                                                        *ngIf="!emailTemplate.draft"
+                                                                                                    <input *ngIf="!emailTemplate.draft"
                                                                                                         type="checkbox"
                                                                                                         name="reply-email-template"
                                                                                                         [value]="emailTemplate.id"
@@ -1826,26 +1820,30 @@
                                                                                                 </a>
                                                                                             </span>
                                                                                         </div>
-                                                                                        <div class="item__content" style="text-align: left;">
+                                                                                        <div class="item__content">
                                                                                             <div class="flex-row">
-                                                                                                <span class="item__name" data-toggle="tooltip" [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:15}}
-                                                                                                        <span
-                                                                                                            *ngIf="emailTemplate.name?.length>15">..</span></b>
+                                                                                                <span class="item_name"  [title]="emailTemplate.name">
+                                                                                                <b>{{emailTemplate.name | slice:0:15}}
+                                                                                                     <span *ngIf="emailTemplate.name?.length>15">..</span></b>
                                                                                                 </span>
-                                                                                                <div class="item__last-modified">
-                                                                                                    <span [title]="emailTemplate.createdBy"><span>By:
-                                                                                                        </span>{{emailTemplate.createdBy | slice:0:15}}
-                                                                                                    <span *ngIf="emailTemplate.createdBy?.length>15">..</span>
-                                                                                                    </span>
-                                                                                                </div>
-                                                                                                <div class="item__last-modified">
+                                                                                                 <span lass="item__name" title="created on" style="float:left">
                                                                                                     <span>
                                                                                                         <app-timestamp
                                                                                                             [isOnlyDate]="true"
                                                                                                             [dateAndTime]="emailTemplate.createdDate">
                                                                                                         </app-timestamp>
                                                                                                     </span>
-                                                                                                </div>
+                                                                                                    </span>
+                                                                                                    <span  class="campaign-email-template-category" [title]="emailTemplate.createdBy">
+                                                                                                    <span>By:</span>{{emailTemplate.createdBy | slice:0:12}}
+                                                                                                    <span *ngIf="emailTemplate.createdBy?.length>12">..</span>
+                                                                                                    </span>
+                                                                                                    
+                                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate?.category}}">
+                                                                                                		<b>Category:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+                                                                                               			<font *ngIf="emailTemplate?.category?.length>5">..</font>
+                                                                                            		</span>
+                                                                                                    
                                                                                                 <div class="item__actions">
                                                                                                     <span> <a
                                                                                                             style="float:left;right: -6px;"
@@ -2003,24 +2001,23 @@
                                                                                     <div class="col-xs-12 col-sm-8 text-left">
                                                                                         <ul class="mix-filter" *ngIf="!isOnlyPartner">
                                                                                             <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex">
-                                                                                                All Email Templates</li>
+                                                                                                All</li>
                                                                                             <li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">
-                                                                                                Basic Templates</li>
-                                                                                            <!-- <li class="filter" (click)="filterClickTemplates('RICH',2,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">Rich Templates</li> -->
+                                                                                                Basic</li>
                                                                                             <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">
-                                                                                                Uploaded Email Templates
+                                                                                                Uploaded
                                                                                             </li>
                                                                                             <li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">
-                                                                                                Partner Templates</li>
+                                                                                                Partner</li>
                                                                                         </ul>
                                                                                     </div>
                                                                                     <div class="col-xs-12 col-sm-4">
-                                                                                        <div class="input-icon pull-right" style="padding-right: 0px">
-                                                                                            <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search" (keypress)="eventUrlHandler($event.keyCode, url)">
-                                                                                            <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput=''"></button>
-                                                                                            <button type="submit" class="search-box-item-click" (click)="searchClickEmailTemplate(url)"><i
-                                                                                                    class="fa fa-search"
-                                                                                                    style="padding-top: 3px !important; font-size: 18px !important;"></i></button>
+
+                                                                                        <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
+                                                                                            <input type="text" [(ngModel)]="url.emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search">
+                                                                                            <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="url.emailTemplateSearchInput" (click)="url.emailTemplateSearchInput='';searchClickEmailTemplate(url);"></button>
+                                                                                            <button type="submit" class="search-box-item-click email-search" (click)="searchClickEmailTemplate(url)">
+                                                                                                <i class="fa fa-search" style="font-size: 16px !important;padding:5px !important;"></i></button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -2059,7 +2056,7 @@
                                                                                             </div>
                                                                                             <div class="item__content" style="text-align:left">
                                                                                                 <div class="flex-row">
-                                                                                                    <span class="item__name" [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:15}}</b><b
+                                                                                                    <span class="campaign-email-template-category" [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:15}}</b><b
                                                                                                             *ngIf="url.emailTemplate?.name?.length>15">..</b>
                                                                                                     </span>
 
