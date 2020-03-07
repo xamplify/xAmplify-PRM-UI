@@ -1032,7 +1032,7 @@
                                                                                     <div class="item__content">
                                                                                         <div class="flex-row">
                                                                                             <span class="item__name" style="float:left" [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b
-                                                                                                    *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
+                                                                                                    *ngIf="campaign.emailTemplate?.name?.length>15">..</b>
                                                                                             </span>
                                                                                             <br>
                                                                                             <span lass="item__name" title="created on" style="float:left">
@@ -1046,13 +1046,13 @@
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type!='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.createdBy}}">
                                                                                                     <b>By:</b><span>{{campaign?.emailTemplate?.createdBy|slice:0:12}}<span
-                                                                                                            *ngIf="campaign?.emailTemplate?.createdBy?.length>12">...</span></span>
+                                                                                                            *ngIf="campaign?.emailTemplate?.createdBy?.length>12">..</span></span>
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type=='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.vendorName}}">
                                                                                                     <b>By:</b><span>{{campaign?.emailTemplate?.vendorName|slice:0:12}}<span
-                                                                                                            *ngIf="campaign?.emailTemplate?.vendorName?.length>12">...</span></span>
+                                                                                                            *ngIf="campaign?.emailTemplate?.vendorName?.length>12">..</span></span>
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <span *ngIf="campaign?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{campaign?.emailTemplate?.category}}">
@@ -1108,11 +1108,10 @@
                                                                             <div class="item__content">
                                                                                 <div class="flex-row">
                                                                                     <span class="item__name" style="float:left" [title]="emailTemplate.name"><b>{{emailTemplate.name |slice:0:15}}</b><b
-                                                                                            *ngIf="emailTemplate?.name?.length>15">...</b>
+                                                                                            *ngIf="emailTemplate?.name?.length>15">..</b>
                                                                                     </span>
                                                                                     <br>
                                                                                     <span lass="item__name" title="created on" style="float:left">
-                                                                                        <!-- <b *ngIf="emailTemplate.createdDate">Created On:</b>{{emailTemplate.createdDate}} -->
                                                                                         <span>
                                                                                             <app-timestamp
                                                                                                 [isOnlyDate]="true"
@@ -1124,18 +1123,18 @@
                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
                                                                                             <b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
-                                                                                                    *ngIf="emailTemplate.createdBy?.length>12">...</span></span>
+                                                                                                    *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
                                                                                         </span>
                                                                                     </ng-container>
                                                                                     <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.vendorName}}">
                                                                                             <b>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
-                                                                                                    *ngIf="emailTemplate.vendorName?.length>12">...</span></span>
+                                                                                                    *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
                                                                                         </span>
                                                                                     </ng-container>
-                                                                                    <span class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                        <b>Category:</b><font>{{emailTemplate.category|slice:0:5}}</font>
-                                                                                        <font *ngIf="emailTemplate.category?.length>5">..</font>
+                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
+                                                                                        <b>Category:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+                                                                                        <font *ngIf="emailTemplate?.category?.length>5">..</font>
                                                                                     </span>
                                                                                     <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
                                                                                     <div class="item__actions">
@@ -1188,12 +1187,11 @@
 
                 <!-- -------------------------------------Landing Page Tab--------------------------------------------------------- -->
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
-                    <!-- <div *ngIf="emailTemplatesPagination.totalRecords==0" class="alert alert-danger"><strong>No Email Templates Found</strong></div> -->
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
                         <div class="portlet light">
                             <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
                                 <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'landingPages')">
-                                <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput=''"></button>
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput='';searchLandingPage()"></button>
                                 <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()"><i class="fa fa-search"
                                         style="font-size: 16px !important;padding:5px !important;"></i></button>
                             </div>
@@ -1238,8 +1236,8 @@
                                                                                     </div>
                                                                                     <div class="item__content">
                                                                                         <div class="flex-row">
-                                                                                            <span class="item__name" style="float:left" [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b><b
-                                                                                                    *ngIf="campaign.landingPage?.name?.length>15">...</b>
+                                                                                            <span class="campaign-email-template-category" [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b><b
+                                                                                                    *ngIf="campaign.landingPage?.name?.length>15">..</b>
                                                                                             </span>
                                                                                             <br>
                                                                                             <span lass="item__name" title="created on" style="float:left">
@@ -1252,10 +1250,13 @@
                                                                                                 </span>
                                                                                             </span>
                                                                                             <br>
-                                                                                            <span style="float:left" title="{{campaign?.landingPage?.createdUser}}">
-                                                                                                <b>By:</b>
-                                                                                                <span>{{campaign?.landingPage?.createdUser|slice:0:12}}<span
-                                                                                                        *ngIf="campaign?.landingPage?.createdUser?.length>12">...</span></span>
+                                                                                            <span class="campaign-email-template-category" title="{{campaign?.landingPage?.createdUser}}">
+                                                                                                <b>By:</b><span>{{campaign.landingPage?.createdUser|slice:0:13}}<span
+                                                                                                        *ngIf="campaign.landingPage?.createdUser?.length>13">..</span></span>
+                                                                                            </span>
+                                                                                            <span *ngIf="campaign.landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{campaign.landingPage?.categoryName}}">
+                                                                                                <b>Category:</b><font>{{campaign?.landingPage?.categoryName|slice:0:7}}</font>
+                                                                                                <font *ngIf="campaign?.landingPage?.categoryName?.length>7">..</font>
                                                                                             </span>
                                                                                             <div class="item__actions">
                                                                                                 <span> <a
@@ -1304,8 +1305,8 @@
                                                                             </div>
                                                                             <div class="item__content">
                                                                                 <div class="flex-row">
-                                                                                    <span class="item__name" style="float:left" [title]="landingPage.name"><b>{{landingPage.name |slice:0:17}}</b><b
-                                                                                            *ngIf="landingPage?.name?.length>15">...</b>
+                                                                                    <span class="campaign-email-template-category" [title]="landingPage.name"><b>{{landingPage.name |slice:0:15}}</b><b
+                                                                                            *ngIf="landingPage?.name?.length>15">..</b>
                                                                                     </span>
                                                                                     <br>
                                                                                     <span lass="item__name" title="created on" style="float:left">
@@ -1317,9 +1318,13 @@
                                                                                         </span>
                                                                                     </span>
                                                                                     <br>
-                                                                                    <span style="float:left" title="{{landingPage.createdUser}}">
-                                                                                        <b>By:</b><span>{{landingPage.createdUser|slice:0:12}}<span
-                                                                                                *ngIf="landingPage.createdUser?.length>12">...</span></span>
+                                                                                    <span class="campaign-email-template-category" title="{{landingPage.createdUser}}">
+                                                                                        <b>By:</b><span>{{landingPage.createdUser|slice:0:13}}<span
+                                                                                                *ngIf="landingPage.createdUser?.length>13">..</span></span>
+                                                                                    </span>
+                                                                                    <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{landingPage?.categoryName}}">
+                                                                                        <b>Category:</b><font>{{landingPage?.categoryName|slice:0:7}}</font>
+                                                                                        <font *ngIf="landingPage?.categoryName?.length>7">..</font>
                                                                                     </span>
                                                                                     <div class="item__actions">
                                                                                         <span> <a
@@ -1347,7 +1352,7 @@
                                                     </div>
                                                 </div>
                                             </ng-container>
-                                            <div *ngIf="landingPagePagination.totalRecords==0 &&!landingPageLoader.isLoading" class="alert alert-info">
+                                            <div *ngIf="landingPagePagination.totalRecords==0 &&!landingPageLoader.isLoading" class="alert alert-info alert-top-padding-xamplify">
                                                 <strong>No pages found</strong>
                                             </div>
                                             <div style="text-align:left;" [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
@@ -1443,7 +1448,7 @@
                                                     <div id="main_video_src" [hidden]="campaignType!='video'"></div>
                                                     <div class="pricing hover-effect" [hidden]="campaignType=='video'">
                                                         <div class="pricing-head">
-                                                            <h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">...</span>
+                                                            <h4 title="{{campaign.campaignName}}">Campaign name: {{campaign.campaignName | slice:0:30}}<span *ngIf="campaign.campaignName?.length>30">..</span>
                                                             </h4>
                                                             <h4>
                                                                 <ng-container *ngIf="campaignType=='regular'">
@@ -1483,12 +1488,12 @@
                                                                         <a *ngIf="i<2" (click)="loadUsers(contactList.id,contactsUsersPagination,contactList.name)" title="{{contactList.name}}">
                                                                             <span *ngIf="contactList.name">
                                                                                 {{contactList.name | slice:0:40}}<span
-                                                                                    *ngIf="contactList.name?.length>40">...</span></span>
+                                                                                    *ngIf="contactList.name?.length>40">..</span></span>
                                                                         </a>
                                                                     </div>
                                                                 </ng-container>
                                                                 <a> <span *ngIf="userListDTOObj?.length>2"
-                                                                        (click)="resetActive($event, 40, 'step-4')">...</span>
+                                                                        (click)="resetActive($event, 40, 'step-4')">..</span>
                                                                     <span *ngIf="userListDTOObj?.length == 0">0
                                                                         contactlists</span></a>
                                                                 <br>
@@ -1526,7 +1531,7 @@
                                                                     <a (click)="getTemplateById(emailTemplate)" title="{{emailTemplate.name}}">
                                                                         <ng-container
                                                                             *ngIf="emailTemplate.name?.length>50">
-                                                                            {{emailTemplate.name | slice:0:50}}...
+                                                                            {{emailTemplate.name | slice:0:50}}..
                                                                         </ng-container>
                                                                         <ng-container
                                                                             *ngIf="emailTemplate.name?.length<=50">
@@ -1538,7 +1543,7 @@
                                                                     <a (click)="showLandingPagePreview(landingPage)" title="{{landingPage?.name}}">
                                                                         <ng-container
                                                                             *ngIf="landingPage?.name?.length>50">
-                                                                            {{landingPage?.name | slice:0:50}}...
+                                                                            {{landingPage?.name | slice:0:50}}..
                                                                         </ng-container>
                                                                         <ng-container
                                                                             *ngIf="landingPage?.name?.length<=50">
@@ -1750,7 +1755,7 @@
                                                                                             <div class="item__content" style="text-align: left;">
                                                                                                 <div class="flex-row">
                                                                                                     <span class="item__name" [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:15}}</b><b
-                                                                                                            *ngIf="reply.emailTemplate?.name?.length>15">...</b>
+                                                                                                            *ngIf="reply.emailTemplate?.name?.length>15">..</b>
                                                                                                     </span>
                                                                                                     <span lass="item__name" title="created on" style="float:left">
                                                                                                         <span>
@@ -1760,7 +1765,7 @@
                                                                                                             </app-timestamp>
                                                                                                         </span>
                                                                                                     </span>
-                                                                                                    <span *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}....</span>
+                                                                                                    <span *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}...</span>
                                                                                                     <span *ngIf="reply.emailTemplate.createdBy?.length<=20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</span>
 
                                                                                                     <div class="item__actions">
@@ -1825,12 +1830,12 @@
                                                                                             <div class="flex-row">
                                                                                                 <span class="item__name" data-toggle="tooltip" [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:15}}
                                                                                                         <span
-                                                                                                            *ngIf="emailTemplate.name?.length>15">...</span></b>
+                                                                                                            *ngIf="emailTemplate.name?.length>15">..</span></b>
                                                                                                 </span>
                                                                                                 <div class="item__last-modified">
                                                                                                     <span [title]="emailTemplate.createdBy"><span>By:
                                                                                                         </span>{{emailTemplate.createdBy | slice:0:15}}
-                                                                                                    <span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+                                                                                                    <span *ngIf="emailTemplate.createdBy?.length>15">..</span>
                                                                                                     </span>
                                                                                                 </div>
                                                                                                 <div class="item__last-modified">
@@ -2055,13 +2060,13 @@
                                                                                             <div class="item__content" style="text-align:left">
                                                                                                 <div class="flex-row">
                                                                                                     <span class="item__name" [title]="url.emailTemplate.name"><b>{{url.emailTemplate.name |slice:0:15}}</b><b
-                                                                                                            *ngIf="url.emailTemplate?.name?.length>15">...</b>
+                                                                                                            *ngIf="url.emailTemplate?.name?.length>15">..</b>
                                                                                                     </span>
 
                                                                                                     <div class="item__last-modified">
                                                                                                         <span [title]="emailTemplate.createdBy"><span>By:
                                                                                                             </span>{{emailTemplate.createdBy | slice:0:15}}
-                                                                                                        <span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+                                                                                                        <span *ngIf="emailTemplate.createdBy?.length>15">..</span>
                                                                                                         </span>
                                                                                                     </div>
                                                                                                     <div class="item__last-modified">
@@ -2079,7 +2084,7 @@
                                     <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="url.emailTemplate.createdDate">
                                      </app-timestamp></span>
                                     </span>
-                                    <span *ngIf="url.emailTemplate.createdBy?.length>20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</span>
+                                    <span *ngIf="url.emailTemplate.createdBy?.length>20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}...</span>
                                     <span *ngIf="url.emailTemplate.createdBy?.length<=20" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</span>
  -->
                                                                                                     <div class="item__actions">
@@ -2142,12 +2147,12 @@
                                                                                             <div class="flex-row">
                                                                                                 <span class="item__name" data-toggle="tooltip" [title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:15}}
                                                                                                         <span
-                                                                                                            *ngIf="emailTemplate.name?.length>15">...</span></b>
+                                                                                                            *ngIf="emailTemplate.name?.length>15">..</span></b>
                                                                                                 </span>
                                                                                                 <div class="item__last-modified">
                                                                                                     <span [title]="emailTemplate.createdBy"><span>By:
                                                                                                         </span>{{emailTemplate.createdBy | slice:0:15}}
-                                                                                                    <span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+                                                                                                    <span *ngIf="emailTemplate.createdBy?.length>15">..</span>
                                                                                                     </span>
                                                                                                 </div>
                                                                                                 <div class="item__last-modified">
@@ -2312,7 +2317,7 @@
                         </button>
                         <div>
                             <h4 class="modal-title" id="user-list-name" align="center" title="{{listName}}">
-                                <b>{{listName|slice:0:20}}<span *ngIf="listName?.length>20">...</span></b>
+                                <b>{{listName|slice:0:20}}<span *ngIf="listName?.length>20">..</span></b>
                             </h4>
                         </div>
                     </div>

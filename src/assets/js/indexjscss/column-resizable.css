@@ -61,3 +61,7 @@ span.ui-column-resizer {
 .display-ib {
     display: inline-block;
 }
+
+.alert-top-padding-xamplify {
+    margin-top: 10px;
+}
