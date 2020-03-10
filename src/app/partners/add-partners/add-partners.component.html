@@ -253,7 +253,7 @@
             <ul class="dropdown-menu pull-right">
                 <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
                 <li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
-                <li><a id="saveAs_button" [class.disabled]="isSaveAsList" *ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(); editContactComponent.addPartnerSave = true">Save
+                <li><a id="saveAs_button" [class.disabled]="isSaveAsList" *ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(true); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
                 <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
 						To Excel</a></li>
@@ -969,7 +969,8 @@
     </div>
 </div>
 
-<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" [gdprInput]="parentInput" [isPartner]="isPartner" (notifyParentSaveAs)="closeSaveAsModal()"  ></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" [gdprInput]="parentInput" [isPartner]="isPartner"
+ [showGDPR]="showGDPR"  (notifyParentSaveAs)="closeSaveAsModal()"  ></app-save-as>
 <!-- <div class="modal right fade" id="saveAsAddPartnerModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">

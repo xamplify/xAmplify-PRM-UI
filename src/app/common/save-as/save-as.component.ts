@@ -73,7 +73,7 @@ export class SaveAsComponent implements OnInit {
 	     const names = this.referenceService.namesArray;
 	     const inputName = this.saveAsListName.toLowerCase().replace( /\s/g, '' );
 	     //this.validateLegalBasisOptions();
-	        if ( $.inArray( inputName, names ) > -1 ) {
+	        if ( $.inArray( inputName, names ) > -1 && this.isPartner) {
 	            this.saveAsError = 'This list name is already taken.';
 	        } else {
 	            if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {

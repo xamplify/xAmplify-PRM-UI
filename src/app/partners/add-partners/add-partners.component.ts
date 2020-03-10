@@ -116,6 +116,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isSaveAsList = false;
     isDuplicateEmailId = false;
     isCheckTC = true;
+    showGDPR : boolean;
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -2279,8 +2280,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     
    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
    
-   saveAsChange(){
+   saveAsChange(showGDPR: boolean){
     try {
+    	this.showGDPR = showGDPR;
         this.isSaveAsList = true;
         this.saveAsListName = this.editContactComponent.addCopyToField();
 

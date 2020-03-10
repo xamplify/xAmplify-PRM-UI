@@ -171,6 +171,11 @@ export class ContactService {
         if(isPartner == false){
             this.successMessage = true;
         }
+        
+        if(isPartner){
+        	isPublic = true;
+        }
+        
         var requestoptions = new RequestOptions( {
             body:  users,
         })
