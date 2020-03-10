@@ -313,7 +313,7 @@
 						</div>
 						<!-- Contact List Name Text Box -->
 						<div class="row">
-							<div class="col-xs-12 col-md-6">
+							<div class="col-xs-12 col-md-4">
 								<div class="form-group">
 									<label for="name" class="col-xs-12 col-sm-4 control-label">{{checkingContactTypeName}} List Name*</label>
 									<div class="col-xs-12 col-sm-8">
@@ -334,7 +334,26 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-md-6">
+							<!--  // -->
+							<div class="col-xs-12 col-md-4">
+							<div class="portlet-title" style="display:block">
+							<h4 class="pull-left f-w-600">Public vs Private</h4>
+							<div class="pull-right" style="margin: 5px 5px 0px 0px;">
+							<switch 
+									[status]="model.isPublic"
+									[onText]="'Public'" 
+									[offText]="'Private'"
+									[onColor]="callActionSwitch.onGreenColorSwitch"
+									[offColor]="callActionSwitch.offPrivateColor"
+									[size]="callActionSwitch.size"
+									(statusChange)="changeStatus($event)">
+							</switch>
+							</div>
+						</div>
+						</div>
+							
+							<!--  // -->
+							<div class="col-xs-12 col-md-4">
 								<section class="pull-right" style="margin-bottom: 10px; margin-top: 3px;">
 									<button id="sample_editable_1_new" class="btn green" (click)="saveContacts()">
 										Save <i class="fa fa-save"></i>

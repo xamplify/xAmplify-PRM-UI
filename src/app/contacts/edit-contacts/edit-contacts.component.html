@@ -39,7 +39,7 @@
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
 								<span *ngIf="!isDefaultPartnerList" data-toggle="tooltip" data-placement="top" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
-								(click)="updateContactListNameAlert()">
+								(click)="saveAs(false)">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
 									<!-- <span *ngIf="!isDefaultPartnerList">List</span> -->
@@ -191,7 +191,7 @@
 															</a></li>
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"
-																(click)="saveAs()">Save As </a></li>
+																(click)="saveAs(true)">Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
@@ -204,7 +204,7 @@
 													</div>
 													</div>
 										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0"
-															(click)="saveAs()" style="margin-right: 5px; background-color: white; color: #777070">
+															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070">
 															Save As<!-- <i class="fa fa-save"></i> -->
 														</button>
 								</div>
@@ -1168,7 +1168,8 @@
 </div>
 
 
-<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner" 
+   [showGDPR]="showGDPR" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"

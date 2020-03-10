@@ -313,6 +313,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.campaignType = this.refService.selectedCampaignType;
             this.setActiveTabForVideo();
             this.campaign.countryId = this.countries[0].id;
+            this.campaign.emailNotification = true;
             this.onSelect(this.campaign.countryId);
         }
         if ( this.authenticationService.user != undefined ) {

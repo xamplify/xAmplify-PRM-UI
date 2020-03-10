@@ -195,18 +195,18 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group" *ngIf="!isOnlyPartner  && campaign.channelCampaign && campaignType!='sms'">
+                                            <div class="form-group" *ngIf="!isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
                                                 <label class="control-label col-sm-4">Notify Partners ?</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="setPartnerEmailNotification($event)">
                                                     </switch>
                                                     <span style="cursor: pointer;color: #54a7e9;">
-                                                        <i class="fa fa-question-circle" data-toggle="tooltip"
-                                                            data-placement="top"
-                                                            title="Sending email notifications to your partners about your campaign"
-                                                            style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
-                                                    </span>
+
+                                                       
+														<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Send email notifications to your partners about your campaign" style="font-size: 20px;float: left;margin: -14px 0 0 15px;"></i>
+													</span>
+
                                                 </div>
                                             </div>
 
@@ -255,7 +255,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group" *ngIf="campaign.emailNotification || !campaign.channelCampaign">
+                                            <div class="form-group" *ngIf="campaign.emailNotification">
                                                 <label class="control-label col-sm-4">Notify Me When</label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
@@ -1506,10 +1506,12 @@
                                                                     <span *ngIf="userListDTOObj?.length == 0">0
                                                                         contactlists</span></a>
                                                                 <br>
-                                                                <span *ngIf="campaign.emailNotification || !campaign.channelCampaign" id="blue-font">This email will be sent to
-                                                                    {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                                <span *ngIf="!campaign.emailNotification && campaign.channelCampaign" id="red-font">No email will be sent to
-                                                                    partners.</span>
+
+                                                               
+
+                                                                <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
+                                                                <span *ngIf="!campaign.emailNotification" id="red-font">No email will be sent.</span>
+
                                                             </td>
                                                             <td style="text-align: right" width="20%">
                                                                 <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>

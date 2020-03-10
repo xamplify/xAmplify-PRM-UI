@@ -16,7 +16,7 @@
         </div>
         
          <!-- ------------Legal Basis------------ -->
-        <div class="form-group" *ngIf="gdprStatus">
+        <div class="form-group" *ngIf="gdprStatus && showGDPR">
         <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
 	    <div id="multiselect-sample" class="control-section">
 	    <div class="col-lg-14">
@@ -28,12 +28,30 @@
 	    </div>
 	    </div>
     </div>
+    
+    	<!-- start   -->
+				<div class="form-group" class="col-xs-12" *ngIf="!isPartner">
+					
+					<label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
+					<div class="col-xs-8">
+						
+							<switch [status]="model.isPublic" [onText]="'Public'"
+								[offText]="'Private'"
+								[onColor]="callActionSwitch.onGreenColorSwitch"
+								[offColor]="callActionSwitch.offPrivateColor"
+								[size]="large"
+								(statusChange)="changeStatus($event)"> </switch>
+						
+					</div>
+				</div>
+				<!-- end  -->
         
         
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Close</button>
-        <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()">Save changes</button>
+        <button type="button" class="btn btn-primary"  (click)="saveAsInputChecking()" *ngIf="showGDPR">Save changes</button>
+        <button type="button" class="btn btn-primary"  (click)="updateListType()" *ngIf="!showGDPR">Update</button>
       </div>
     </div>
   </div>

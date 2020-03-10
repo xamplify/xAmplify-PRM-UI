@@ -1593,7 +1593,28 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   listTotalCampaignViews(campaignId: number) {
-    try {
+	  try {
+	      //this.isLeadListDownloadProcessing = true;
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType)
+	        .subscribe(
+	          data => {
+	          this.downloadFile(data, 'campaignviews', campaignId);
+	          this.isLoadingDownloadList = false;
+	          },
+	          (error: any) => {
+	            this.xtremandLogger.error(error);
+	            this.xtremandLogger.errorPage(error);
+	            this.isLoadingDownloadList = false;
+	          },
+	          () => this.xtremandLogger.info("download completed")
+	        );
+	    } catch (error) {
+	      this.xtremandLogger.error(error, "ManageContactsComponent", "downRegularVideoCampaignViews()");
+	      this.isLoadingDownloadList = false;
+	    }
+	  
+	  
+	 /* try {
     if(this.campaignType === 'REGULAR' || this.campaignType === 'VIDEO'){
     	this.campaignTotalViewsPagination.campaignType = this.campaignType;
     }
@@ -1607,7 +1628,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           error => console.log(error),
           () => console.log()
         );
-    } catch (error) { this.xtremandLogger.error('error' + error); }
+    } catch (error) { this.xtremandLogger.error('error' + error); } */
   }
 
   getCampaignUsersWatchedTotalInfo(countryCode, totalRecord: number) {

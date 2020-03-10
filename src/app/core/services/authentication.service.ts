@@ -453,6 +453,17 @@ export class AuthenticationService {
           .catch((error: any) => { return error; });
     }
 
+    checkSamlSettingsUserRoles(){
+      const currentUser = localStorage.getItem('currentUser');
+      if(currentUser !== undefined && currentUser != null){
+        let roles = JSON.parse(currentUser)['roles'];
+       let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2);
+       if(rolesExists.length > 0){
+        return true;
+       }
+    }
+  }
+
     extractData( res: Response ) {
         let body = res.json();
         console.log( body );
