@@ -22,6 +22,7 @@ export class SaveAsComponent implements OnInit {
   @Output() notifyParentSaveAs: EventEmitter<any>;
   public model: any = {};
   saveAsError = '';
+  existingListName:any;
   /********Legal Basis******/
   @Input() gdprInput :any;
   legalBasisOptions :Array<LegalBasisOption>;
@@ -73,7 +74,7 @@ export class SaveAsComponent implements OnInit {
 	     const names = this.referenceService.namesArray;
 	     const inputName = this.saveAsListName.toLowerCase().replace( /\s/g, '' );
 	     //this.validateLegalBasisOptions();
-	        if ( $.inArray( inputName, names ) > -1 && this.isPartner) {
+	        if ( inputName!=this.existingListName  && $.inArray( inputName, names ) > -1 ) {
 	            this.saveAsError = 'This list name is already taken.';
 	        } else {
 	            if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
@@ -97,6 +98,7 @@ export class SaveAsComponent implements OnInit {
     }
 
   ngOnInit() {
+	  this.existingListName = this.saveAsListName;
       this.fields = { text: 'name', value: 'id' };
       if(this.gdprInput!=undefined){
           this.legalBasisOptions = this.gdprInput.legalBasisOptions;

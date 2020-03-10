@@ -345,7 +345,7 @@
 																class="fa fa-info"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0" data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_saveAs}}"
-																(click)="saveAsNewList(contactList.id,contactList.name,contactList.public)">
+																(click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
 																<i class="fa fa-files-o"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0"
 																(click)="downloadContactList(contactList.id, contactList.name)"
@@ -452,7 +452,7 @@
 													class="fa fa-info" style="color: white;"></i>
 												</a> <a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_saveAs}}"
-													(click)="saveAsNewList(contactList.id,contactList.name, contactList.public)"
+													(click)="saveAsNewList(contactList.id,contactList.name, contactList.publicList)"
 													[class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
 													data-rel="fancybox-button" style="left: 60%;"> <i
 													class="fa fa-files-o" aria-hidden="true"
