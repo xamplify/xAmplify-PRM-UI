@@ -1061,7 +1061,7 @@
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <span *ngIf="campaign?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{campaign?.emailTemplate?.category}}">
-                                                                                                <b>Category:</b><font>{{campaign?.emailTemplate?.category|slice:0:5}}</font>
+                                                                                                <b>Folder:</b><font>{{campaign?.emailTemplate?.category|slice:0:5}}</font>
                                                                                                 <font *ngIf="campaign?.emailTemplate?.category?.length>5">..</font>
                                                                                             </span>
                                                                                             <div class="item__actions">
@@ -1138,7 +1138,7 @@
                                                                                         </span>
                                                                                     </ng-container>
                                                                                     <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                        <b>Category:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+                                                                                        <b>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
                                                                                         <font *ngIf="emailTemplate?.category?.length>5">..</font>
                                                                                     </span>
                                                                                     <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
@@ -1264,7 +1264,7 @@
                                                                                                         *ngIf="campaign.landingPage?.createdUser?.length>13">..</span></span>
                                                                                             </span>
                                                                                             <span *ngIf="campaign.landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{campaign.landingPage?.categoryName}}">
-                                                                                                <b>Category:</b><font>{{campaign?.landingPage?.categoryName|slice:0:7}}</font>
+                                                                                                <b>Folder:</b><font>{{campaign?.landingPage?.categoryName|slice:0:7}}</font>
                                                                                                 <font *ngIf="campaign?.landingPage?.categoryName?.length>7">..</font>
                                                                                             </span>
                                                                                             <div class="item__actions">
@@ -1332,7 +1332,7 @@
                                                                                                 *ngIf="landingPage.createdUser?.length>13">..</span></span>
                                                                                     </span>
                                                                                     <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{landingPage?.categoryName}}">
-                                                                                        <b>Category:</b><font>{{landingPage?.categoryName|slice:0:7}}</font>
+                                                                                        <b>Folder:</b><font>{{landingPage?.categoryName|slice:0:7}}</font>
                                                                                         <font *ngIf="landingPage?.categoryName?.length>7">..</font>
                                                                                     </span>
                                                                                     <div class="item__actions">

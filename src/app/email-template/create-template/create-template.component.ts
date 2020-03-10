@@ -165,7 +165,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                 var buttons = $( '<div>' )
                     .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' );
                     var dropDown = '<div class="form-group">';
-                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
+                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown+='<select class="form-control" id="category-dropdown">';
                     $.each(self.categoryNames,function(_index:number,category:any){
                         let categoryId = category.id;
@@ -200,7 +200,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                 var buttons = $( '<div>' )
                     .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' );
                     var dropDown = '<div class="form-group">';
-                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
+                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                     dropDown+='<select class="form-control" id="category-dropdown">';
                     $.each(self.categoryNames,function(_index:number,category:any){
                         dropDown+='<option value='+category.id+'>'+category.name+'</option>';

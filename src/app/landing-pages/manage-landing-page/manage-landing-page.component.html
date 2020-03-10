@@ -196,7 +196,7 @@
                                                 <span><b>{{landingPage.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis" *ngIf="!isPartnerLandingPage">
-                                                <span>Category <b>{{landingPage.categoryName}}</b></span>
+                                                <span>Folder <b>{{landingPage.categoryName}}</b></span>
                                             </h6>
                                             <ng-container>
                                                 <h6 class="moreipsis" title="{{landingPage.createdUser}}">
@@ -275,7 +275,7 @@
                                         {{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
                                     <span class="view-banner">{{landingPage.type}}</span>
                                     <h6 title="{{landingPage.categoryName}}" *ngIf="!isPartnerLandingPage">
-                                        Category <strong>{{landingPage.categoryName | slice:0:25}}</strong>
+                                        Folder <strong>{{landingPage.categoryName | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.categoryName?.length>25">..</span>
                                     </h6>
                                     <h6 *ngIf="!isPartnerLandingPage">Created On <strong>

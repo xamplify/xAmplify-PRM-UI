@@ -310,7 +310,7 @@
                         <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
-                        <label>Select a category <font class="invalid-form-name">*</font></label>
+                        <label>Select a folder <font class="invalid-form-name">*</font></label>
                         <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
                         <option *ngFor="let category of categoryNames" [value]="category.id">
                           {{category.name}}

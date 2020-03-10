@@ -106,7 +106,7 @@
                                                 <span><b>{{form.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis" title="{{form.categoryName}}">
-                                                <span> Category <b>{{form.categoryName}}</b></span>
+                                                <span> Folder <b>{{form.categoryName}}</b></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{form.createdName}}">
                                                 <span> Created By <b>{{form.createdName}}</b></span>
@@ -175,7 +175,7 @@
                             </h4>
                             <div>
                                 <h6 title="{{form.categoryName}}">
-                                    Category <b>{{form.categoryName | slice:0:17}}</b>
+                                    Folder <b>{{form.categoryName | slice:0:17}}</b>
                                     <span *ngIf="form.categoryName?.length>17">..</span>
                                 </h6>
                                 <h6>

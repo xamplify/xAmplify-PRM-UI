@@ -137,7 +137,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 dropDown+= '</div><br>';
                                 /**********Folder List************** */
                                 dropDown+= '<div class="form-group">';
-                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Folder</label>';
+                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                                 dropDown+='<select class="form-control" id="page-folder-dropdown">';
                                 $.each(self.categoryNames,function(_index:number,category:any){
                                     let categoryId = category.id;
@@ -185,7 +185,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 dropDown+= '</div><br>';
                                 /**********Folder List************** */
                                 dropDown+= '<div class="form-group">';
-                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Folder</label>';
+                                dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
                                 dropDown+='<select class="form-control" id="page-folder-dropdown">';
                                 $.each(self.categoryNames,function(_index:number,category:any){
                                     dropDown+='<option value='+category.id+'>'+category.name+'</option>';
