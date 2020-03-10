@@ -986,7 +986,7 @@
                                     <i class="fa fa-search cesf-xamp"></i></button>
                             </div>
                             <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
-                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length>0" style="color: red;"></i>
+                                <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
                                 <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
                             </button>
                             <div class="portlet-body">
@@ -1194,12 +1194,16 @@
                 <div class="row setup-content step hiddenStepInfo" id="step-5" *ngIf="campaignType=='landingPage'">
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
                         <div class="portlet light">
-                            <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
+                            <div class="input-icon right pull-right cebp">
                                 <input type="text" [(ngModel)]="landingPageSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'landingPages')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="landingPageSearchInput" (click)="landingPageSearchInput='';searchLandingPage()"></button>
                                 <button type="submit" class="search-box-item-click email-search" (click)="searchLandingPage()"><i class="fa fa-search"
                                         style="font-size: 16px !important;padding:5px !important;"></i></button>
                             </div>
+                            <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
+                                <i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
+                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
+                            </button>
                             <div class="portlet-body">
                                 <div class="row">
                                     <form role="form" class="form-horizontal form-bordered form-label-stripped">
@@ -1755,10 +1759,10 @@
                                                                                             </div>
                                                                                             <div class="item__content" style="text-align: left;">
                                                                                                 <div class="flex-row">
-                                                                                                    <span class="item__name" [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:15}}</b><b
-                                                                                                            *ngIf="reply.emailTemplate?.name?.length>15">..</b>
+                                                                                                    <span class="item__name" [title]="reply.emailTemplate.name"><b>{{reply.emailTemplate.name |slice:0:8}}</b><b
+                                                                                                            *ngIf="reply.emailTemplate?.name?.length>8">..</b>
                                                                                                     </span>
-                                                                                                    <span lass="item__name" title="created on" style="float:left">
+                                                                                                    <span lass="item__name" title="created on">
                                                                                                         <span>
                                                                                                             <app-timestamp
                                                                                                                 [isOnlyDate]="true"
@@ -1766,8 +1770,8 @@
                                                                                                             </app-timestamp>
                                                                                                         </span>
                                                                                                     </span>
-                                                                                                    <span *ngIf="reply.emailTemplate.createdBy?.length>20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:20}}...</span>
-                                                                                                    <span *ngIf="reply.emailTemplate.createdBy?.length<=20" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</span>
+                                                                                                    <span *ngIf="reply.emailTemplate.createdBy?.length>12" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy|slice:0:12}}...</span>
+                                                                                                    <span *ngIf="reply.emailTemplate.createdBy?.length<=12" title="{{reply.emailTemplate.createdBy}}">{{reply.emailTemplate.createdBy}}</span>
 
                                                                                                     <div class="item__actions">
                                                                                                         <span> <a
@@ -1828,10 +1832,10 @@
                                                                                         <div class="item__content">
                                                                                             <div class="flex-row">
                                                                                                 <span class="item_name"  [title]="emailTemplate.name">
-                                                                                                <b>{{emailTemplate.name | slice:0:15}}
-                                                                                                     <span *ngIf="emailTemplate.name?.length>15">..</span></b>
-                                                                                                </span>
-                                                                                                 <span lass="item__name" title="created on" style="float:left">
+                                                                                                <b>{{emailTemplate.name | slice:0:12}}
+                                                                                                     <span *ngIf="emailTemplate.name?.length>12">..</span></b>
+                                                                                                </span><br>
+                                                                                                 <span lass="item__name" title="created on">
                                                                                                     <span>
                                                                                                         <app-timestamp
                                                                                                             [isOnlyDate]="true"
@@ -1844,10 +1848,6 @@
                                                                                                     <span *ngIf="emailTemplate.createdBy?.length>12">..</span>
                                                                                                     </span>
                                                                                                     
-                                                                                                    <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate?.category}}">
-                                                                                                		<b>Category:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
-                                                                                               			<font *ngIf="emailTemplate?.category?.length>5">..</font>
-                                                                                            		</span>
                                                                                                     
                                                                                                 <div class="item__actions">
                                                                                                     <span> <a
@@ -2433,10 +2433,8 @@
             </div>
             <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
                 <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
-                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">
-                    Apply
-                </button>
-                <!-- <button  type="button" id="apply-folder-button"  class="btn btn-primary" (click)="applyFilter()">Apply</button> -->
+                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
+                   
             </div>
         </div>
     </div>

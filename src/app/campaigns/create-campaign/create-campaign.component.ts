@@ -631,8 +631,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadContacts();
         }
         this.listAllTeamMemberEmailIds();
-        /***********Load Email Template Filters Data********/
-        this.listEmailTemplateFolders();
+        /***********Load Email Template Filters/LandingPages Filter Data********/
+        this.listEmailTemplateOrLandingPageFolders();
+       
     }
 
     loadContacts(){
@@ -3169,26 +3170,39 @@ closeFilterPopup(){
 }
 
 applyFilter(){
-    if(this.selectedFolderIds.length>0){
-        this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
-        this.emailTemplatesPagination.categoryFilter = true;
+    if(this.campaignType=="landingPage"){
+        if(this.selectedFolderIds.length>0){
+            this.landingPagePagination.categoryIds = this.selectedFolderIds;
+            this.landingPagePagination.categoryFilter = true;
+        }else{
+            this.landingPagePagination.categoryIds = [];
+            this.landingPagePagination.categoryFilter = false;
+        }
+        this.listLandingPages(this.landingPagePagination);
     }else{
-        this.emailTemplatesPagination.categoryIds = [];
-        this.emailTemplatesPagination.categoryFilter = false;
+        if(this.selectedFolderIds.length>0){
+            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            this.emailTemplatesPagination.categoryFilter = true;
+        }else{
+            this.emailTemplatesPagination.categoryIds = [];
+            this.emailTemplatesPagination.categoryFilter = false;
+        }
+        this.loadEmailTemplates(this.emailTemplatesPagination);
     }
-    this.loadEmailTemplates(this.emailTemplatesPagination);
+
+  
     this.closeFilterPopup();
 }
 
-listEmailTemplateFolders(){
+listEmailTemplateOrLandingPageFolders(){
     this.folderFields = { text: 'name', value: 'id' };
-    this.campaignService.listEmailTemplateCategories(this.loggedInUserId).
+    this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId,this.campaignType).
     subscribe(data =>{
        this.emailTemplateFolders = data;
     },error =>{
         this.folderErrorCustomResponse = new CustomResponse();
         this.folderErrorCustomResponse = new CustomResponse('ERROR', this.refService.serverErrorMessage, true);
-    }, () => this.logger.log("listEmailTemplateFolders()"));
+    }, () => this.logger.log("listEmailTemplateOrLandingPageFolders()"));
   }
 
  
