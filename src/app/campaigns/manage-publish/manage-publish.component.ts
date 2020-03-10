@@ -139,7 +139,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
             data => {
                 this.campaigns = data.campaigns;
-                $.each(this.campaigns, function (index, campaign) {
+                $.each(this.campaigns, function (_index:number, campaign) {
                     campaign.displayTime = new Date(campaign.utcTimeInString);
                     campaign.createdDate = new Date(campaign.createdDate);
                 });

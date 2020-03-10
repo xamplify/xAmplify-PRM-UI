@@ -1,10 +1,10 @@
-import { Component, OnInit,OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit,OnDestroy,Renderer } from '@angular/core';
+import { Router,ActivatedRoute } from '@angular/router';
 
 import { EmailTemplateService } from '../services/email-template.service';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
-
+import {UserService} from '../../core/services/user.service';
 import { Pagination } from '../../core/models/pagination';
 import { EmailTemplate } from '../models/email-template';
 import { EmailTemplateType } from '../../email-template/models/email-template-type';
@@ -15,6 +15,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { EmailTemplateSource } from '../models/email-template-source';
+import { SortOption } from '../../core/models/sort-option';
 
 declare var $, swal: any;
 
@@ -22,7 +23,7 @@ declare var $, swal: any;
     selector: 'app-manage-template',
     templateUrl: './manage-template.component.html',
     styleUrls: ['./manage-template.component.css', '../../../assets/css/video-css/ribbons.css'],
-    providers: [Pagination,HttpRequestLoader, ActionsDescription, CampaignAccess]
+    providers: [Pagination,HttpRequestLoader, ActionsDescription, CampaignAccess,SortOption]
 })
 export class ManageTemplateComponent implements OnInit,OnDestroy {
     isPreview = false;
@@ -73,9 +74,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
+    isFolderView:boolean  = false;
+    isGridView:boolean = false;
+    categoryId:number = 0;
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
-        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, public campaignAccess:CampaignAccess) {
+        public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
+        public campaignAccess:CampaignAccess,public renderer:Renderer,public userService:UserService,private route: ActivatedRoute) {
+        this.refService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
         if(refService.isCreated){
@@ -89,7 +95,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
         this.isOnlyPartner = this.authenticationService.isOnlyPartner()
     }
-    showMessageOnTop(message){
+    showMessageOnTop(message:string){
         $(window).scrollTop(0);
         this.customResponse = new CustomResponse( 'SUCCESS', message, true );
     }
@@ -104,7 +110,6 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 ( data: any ) => {
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems( pagination, data.emailTemplates );
-                    console.log(pagination)
                     this.refService.loading(this.httpRequestLoader, false);
                 },
                 ( error: string ) => {
@@ -196,13 +201,17 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 this.emailTemplateService.emailTemplate = data;
                 //this.router.navigate( ["/home/emailtemplates/update"] );
                 if(data.source.toString() === "MARKETO" || data.source.toString() === "HUBSPOT"){
-                    this.router.navigate( ["/home/emailtemplates/update"] );
+                   this.navigateToEditPage();
                 }else{
                     if ( data.regularTemplate || data.videoTemplate ) {
-                        this.router.navigate( ["/home/emailtemplates/update"] );
+                        this.navigateToEditPage();
                     } else {
                         this.emailTemplateService.isNewTemplate = false;
-                        this.router.navigate( ["/home/emailtemplates/create"] );
+                        if(this.categoryId>0){
+                            this.router.navigate( ["/home/emailtemplates/edit/"+this.categoryId] );
+                        }else{
+                            this.router.navigate( ["/home/emailtemplates/edit"] );
+                        }
                     }
                 }
 
@@ -213,6 +222,14 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             }
             );
 
+    }
+
+    navigateToEditPage(){
+        if(this.categoryId>0){
+            this.router.navigate( ["/home/emailtemplates/update/"+this.categoryId] );
+        }else{
+            this.router.navigate( ["/home/emailtemplates/update"] );
+        }
     }
 
     eventHandler(keyCode: any) {  if (keyCode === 13) {  this.searchTemplates(); } }
@@ -242,10 +259,23 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     ngOnInit() {
       this.selectedSortedOption =  this.sortByDropDown[0];
         try {
-           if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
-            this.isListView = ! this.refService.isGridView;
-            this.pagination.maxResults = 12;
-            this.listEmailTemplates( this.pagination );
+            if(this.router.url.endsWith('manage/')){
+                this.setViewType('Folder');
+            }else{
+                if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
+                this.isListView = ! this.refService.isGridView;
+                this.isGridView = this.refService.isGridView;
+                this.isFolderView = false;
+                this.pagination.maxResults = 12;
+                this.categoryId = this.route.snapshot.params['categoryId'];
+                if(this.categoryId!=undefined){
+                    this.pagination.categoryId = this.categoryId;
+                    this.pagination.categoryType = 'e';
+                }
+                this.listEmailTemplates( this.pagination );
+            }
+
+           
         } catch ( error ) {
             this.refService.showError( error, "ngOnInit", "ManageTemplatesComponent" );
         }
@@ -287,7 +317,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             .subscribe(
             ( data: string ) => {
                 if(data=="Success"){
-                    document.getElementById( 'emailTemplateListDiv_' + id ).remove();
+                    //document.getElementById( 'emailTemplateListDiv_' + id ).remove();
                     this.refService.showInfo( "Email Template Deleted Successfully", "" );
                     this.selectedEmailTemplateName =  name+ ' deleted successfully';
                     this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
@@ -430,4 +460,43 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.emailTemplate = emailTemplate;
         $("#email_spam_check").modal('show');
     }
+
+
+    setViewType(viewType:string){
+        if("List"==viewType){
+            this.isListView = true;
+            this.isGridView = false;
+            this.isFolderView = false;
+            this.navigateToManageSection();    
+        }else if("Grid"==viewType){
+            this.isListView = false;
+            this.isGridView = true;
+            this.isFolderView = false;
+            this.navigateToManageSection();    
+        }else if("Folder"==viewType){
+            this.isListView = false;
+            this.isGridView = false;
+            this.isFolderView = true;
+            if(this.categoryId>0){
+                this.router.navigateByUrl('/home/emailtemplates/manage/');
+            }
+            
+        }
+    }
+
+    navigateToManageSection(){
+        if(this.router.url.endsWith('manage/')){
+            this.router.navigateByUrl('/home/emailtemplates/manage');
+        }
+    }
+
+
+    getUpdatedValue(event:any){
+        let viewType = event.viewType;
+        if(viewType!=undefined){
+            this.setViewType(viewType);
+        }
+        
+    }
+
 }

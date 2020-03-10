@@ -1,6 +1,6 @@
 import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { EmailTemplateService } from '../services/email-template.service';
 import { User } from '../../core/models/user';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
@@ -47,10 +47,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
     pagination:Pagination = new Pagination();
     formsError:boolean = false;
     customResponse: CustomResponse = new CustomResponse();
-
+    categoryId:number = 0;
+    manageRouterLink = "/home/emailtemplates/manage";
     constructor(public emailTemplateService:EmailTemplateService,private router:Router, private logger:XtremandLogger,
-                private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location) {
-
+                private authenticationService:AuthenticationService,public refService:ReferenceService,private location:Location,private route:ActivatedRoute) {
+    this.categoryId = this.route.snapshot.params['categoryId'];
+    if(this.categoryId>0){
+        this.manageRouterLink+= "/"+this.categoryId;
+    }
     if ( emailTemplateService.emailTemplate != undefined ) {
         var names: any = [];
         let self = this;
@@ -70,12 +74,12 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             () => this.logger.info( "Finished getAllCompanyProfileImages()" ) );
 
 
-            // authenticationService.getCategoryNamesByUserId( self.loggedInUserId ).subscribe(
-            //     ( data: any ) => {
-            //         self.categoryNames = data.data;
-            //     },
-            //     error => { this.logger.error( "error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error ); },
-            //     () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
+            authenticationService.getCategoryNamesByUserId( self.loggedInUserId ).subscribe(
+                ( data: any ) => {
+                    self.categoryNames = data.data;
+                },
+                error => { this.logger.error( "error in getCategoryNamesByUserId(" + self.loggedInUserId + ")", error ); },
+                () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
 
         
         var request = function( method, url, data, type, callback ) {
@@ -160,21 +164,20 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             if ( !isDefaultTemplate ) {
                 var buttons = $( '<div>' )
                     .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' );
-                    // var dropDown = '<div class="form-group">';
-                    // dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
-                    // dropDown+='<select class="form-control" id="category-dropdown">';
-                    // console.log(self.categoryNames);
-                    // $.each(self.categoryNames,function(_index:number,category:any){
-                    //     let categoryId = category.id;
-                    //     if(self.emailTemplateService.emailTemplate.categoryId==categoryId){
-                    //         dropDown+='<option value='+category.id+' selected>'+category.name+'</option>';
-                    //     }else{
-                    //         dropDown+='<option value='+category.id+'>'+category.name+'</option>';
-                    //     }
-                    // });
-                    // dropDown+='</select>';
-                    // dropDown+='</div><br>';
-                    // buttons.append(dropDown);
+                    var dropDown = '<div class="form-group">';
+                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                    dropDown+='<select class="form-control" id="category-dropdown">';
+                    $.each(self.categoryNames,function(_index:number,category:any){
+                        let categoryId = category.id;
+                        if(self.emailTemplateService.emailTemplate.categoryId==categoryId){
+                            dropDown+='<option value='+category.id+' selected>'+category.name+'</option>';
+                        }else{
+                            dropDown+='<option value='+category.id+'>'+category.name+'</option>';
+                        }
+                    });
+                    dropDown+='</select>';
+                    dropDown+='</div><br>';
+                    buttons.append(dropDown);
                    
                     buttons.append( self.createButton( 'Save As', function() {
                         self.clickedButtonName = "SAVE_AS";
@@ -196,16 +199,15 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             } else {
                 var buttons = $( '<div>' )
                     .append( ' <div class="form-group"><input class="form-control" type="text" value="' + templateName + '" id="templateNameId" maxLength="200"><span class="help-block" id="templateNameSpanError" style="color:#a94442"></span></div><br>' );
-                    // var dropDown = '<div class="form-group">';
-                    // dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select Category</label>';
-                    // dropDown+='<select class="form-control" id="category-dropdown">';
-                    // console.log(self.categoryNames);
-                    // $.each(self.categoryNames,function(_index:number,category:any){
-                    //     dropDown+='<option value='+category.id+'>'+category.name+'</option>';
-                    // });
-                    // dropDown+='</select>';
-                    // dropDown+='</div><br>';
-                    // buttons.append(dropDown);
+                    var dropDown = '<div class="form-group">';
+                    dropDown+= '<label style="color: #575757;font-size: 17px; font-weight: 500;">Select a folder</label>';
+                    dropDown+='<select class="form-control" id="category-dropdown">';
+                    $.each(self.categoryNames,function(_index:number,category:any){
+                        dropDown+='<option value='+category.id+'>'+category.name+'</option>';
+                    });
+                    dropDown+='</select>';
+                    dropDown+='</div><br>';
+                    buttons.append(dropDown);
                    
                     buttons.append( self.createButton( 'Save', function() {
                         self.clickedButtonName = "SAVE";
@@ -368,7 +370,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.videoCoBrandingTemplate = emailTemplateService.emailTemplate.videoCoBrandingTemplate;
       emailTemplate.beeEventTemplate = emailTemplateService.emailTemplate.beeEventTemplate;
       emailTemplate.beeEventCoBrandingTemplate = emailTemplateService.emailTemplate.beeEventCoBrandingTemplate;
-    //  emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
+       emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
       let isCoBrandingTemplate = emailTemplate.regularCoBrandingTemplate || emailTemplate.videoCoBrandingTemplate||emailTemplate.beeEventCoBrandingTemplate;
       if(emailTemplateService.emailTemplate.subject.indexOf('basic')>-1 && !isCoBrandingTemplate){
           emailTemplate.type = EmailTemplateType.BASIC;
@@ -389,7 +391,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               this.refService.stopLoader(this.httpRequestLoader);
               if(!isOnDestroy){
                   this.refService.isCreated = true;
-                  this.router.navigate(["/home/emailtemplates/manage"]);
+                  this.navigateToManageSection();
               }else{
                   this.emailTemplateService.goToManage();
               }
@@ -413,13 +415,14 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.user = new User();
       emailTemplate.user.userId = this.loggedInUserId;
       this.updateCompanyLogo(emailTemplate);
-     // emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
+      emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
               this.refService.stopLoader(this.httpRequestLoader);
               if(!isOnDestroy){
                   this.refService.isUpdated = true;
-                  this.router.navigate(["/home/emailtemplates/manage"]);
+                  this.navigateToManageSection();
+                 
               }else{
                   this.emailTemplateService.goToManage();
               }
@@ -430,6 +433,15 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
               },
           () => console.log( "Email Template Updated" )
           );
+  }
+
+  navigateToManageSection(){
+    let categoryId = this.route.snapshot.params['categoryId'];
+    if(categoryId>0){
+      this.router.navigate(["/home/emailtemplates/manage/"+categoryId]);
+    }else{
+      this.router.navigate(["/home/emailtemplates/manage"]);
+    }
   }
 
   updateCompanyLogo(emailTemplate:EmailTemplate){

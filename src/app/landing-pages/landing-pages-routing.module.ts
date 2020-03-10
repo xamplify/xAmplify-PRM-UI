@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from "@angular/router";
 import { SelectLandingPageComponent } from './select-landing-page/select-landing-page.component';
 import { AddLandingPageComponent } from './add-landing-page/add-landing-page.component';
@@ -11,12 +10,16 @@ export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
     { path: "select", component: SelectLandingPageComponent },
     { path: "add", component: AddLandingPageComponent },
+    { path: "add/:categoryId", component: AddLandingPageComponent },
     { path: "manage", component: ManageLandingPageComponent },
+    { path: "manage/:categoryId", component: ManageLandingPageComponent },
     { path: "partner", component: PartnerLandingPageComponent },
     { path: ":landingPageId/analytics", component: LandingPageAnalyticsComponent },
     { path: "partner/:alias/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/campaign/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/:partnerId/campaign/analytics", component: LandingPageAnalyticsComponent },
+    { path: ":landingPageId/category/:categoryId/analytics", component: LandingPageAnalyticsComponent }
+
 
     ];
 @NgModule( {

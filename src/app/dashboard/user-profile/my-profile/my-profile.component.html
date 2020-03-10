@@ -260,9 +260,9 @@
                                     <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
                                     </li>
-                                    <!-- <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
-                                        <a (click)="activateTab('categories');clearCustomResponse()">Categories</a>
-                                    </li> -->
+                                    <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
+                                        <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="portlet-body clearfix">
@@ -775,7 +775,7 @@
                                                         <tr>
                                                             <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
                                                                 <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'category-list',2)"> </span>
-                                                                <span class="gridHeader">Category</span>
+                                                                <span class="gridHeader">Folder</span>
                                                             </th>
                                                             <th class="text-center" id="border-bottom">Created On</th>
                                                             <th class="text-center" id="border-bottom">Items Count</th>
@@ -835,7 +835,7 @@
                                             </div>
                                             <!-- End of 24 -->
                                             <div *ngIf="categoryPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                                                <strong>No Categories Found.</strong>
+                                                <strong>No Folders Found.</strong>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -1065,21 +1065,20 @@
                 <button type="button" class="close-circle" (click)="closeDeleteCategoryModal()">
                     <i class="fa fa-times"></i>
                 </button>
-                <h4 class="modal-title text-center">Move Items & Delete Category</h4>
+                <h4 class="modal-title text-center">Move Items & Delete Folder</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Select Category</label>
+                    <label>Select Folder</label>
                     <select class="form-control" [(ngModel)]="selectedCategoryIdForTransferItems">
-                        <option value="0">Please select a category</option>
+                        <option value="0">Please select a folder</option>
                         <option *ngFor="let category of exisitingCategories" [ngValue]="category.id">{{category.name}}</option>
                         </select>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" (click)="closeDeleteCategoryModal()">Cancel</button>
-                <button type="button" class="btn btn-primary" title="Move items to other category and delete existing category" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
-                <button type="button" class="btn btn-primary" (click)="deleteCategoryWithoutTransferring()">Delete</button>
+                <button type="button" class="btn btn-primary" title="Move items to other foler and delete existing folder" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
             </div>
         </div>
     </div>

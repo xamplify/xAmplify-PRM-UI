@@ -1046,11 +1046,15 @@ a.disabled {
                   <input type="text" [(ngModel)]="emailTemplateSearchInput"	[ngModelOptions]="{standalone: true}" class="form-control"
                     placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear"	style="padding: 5px;" *ngIf="emailTemplateSearchInput"
-                    (click)="emailTemplateSearchInput='';"></button>
+                    (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
                   <button type="submit" class="search-box-item-click email-search"	(click)="searchEmailTemplate()">
                     <i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;"></i>
                   </button>
-                </div>
+				</div>
+				<button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
+					<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
+					<i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
+				</button>
                 </div>
 
 				    	<div class="portlet-body clearfix">
@@ -1078,18 +1082,21 @@ a.disabled {
                                   <div class="flex-row">
                                     <span class="item__name"
                                       [title]="eventCampaign.selectedEditEmailTemplate.name"><b>{{eventCampaign.selectedEditEmailTemplate.name |slice:0:15}}</b><b *ngIf="eventCampaign.selectedEditEmailTemplate?.name?.length>15">...</b>
-                                    </span>
-                                    <div class="item__last-modified">
-                                  <span [title]="eventCampaign.selectedEditEmailTemplate.createdBy"><span>By: </span>{{eventCampaign.selectedEditEmailTemplate.createdBy | slice:0:15}}
-                                  <span *ngIf="eventCampaign.selectedEditEmailTemplate.createdBy?.length>15">...</span>
-                                  </span>
-                                </div>
+									</span>
+									<br>
+									<span class="item__name"  [title]="eventCampaign.selectedEditEmailTemplate.createdBy"><span>By: </span>{{eventCampaign.selectedEditEmailTemplate.createdBy | slice:0:12}}
+									<span *ngIf="eventCampaign.selectedEditEmailTemplate.createdBy?.length>12">...</span>
+									</span>
+									<br>
                                     <span lass="item__name" title="created on" style="float:left">
-                                        <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
                                           [dateAndTime]="eventCampaign?.selectedEditEmailTemplate?.createdDate">
                                         </app-timestamp></span>
-                                    </span>
+									</span>
+									<span *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{eventCampaign?.selectedEditEmailTemplate?.category}}">
+										<b>Folder:</b><font>{{eventCampaign?.selectedEditEmailTemplate?.category|slice:0:5}}</font>
+										<font *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>5">..</font>
+									</span>
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
@@ -1131,16 +1138,24 @@ a.disabled {
 															[title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
 															<span *ngIf="emailTemplate.name?.length>18">...</span></b>
 														</span>
-														<div class="item__last-modified">
-															<span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
-															<span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+														<br>
+															<span class="item__name"  [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:12}}
+															<span *ngIf="emailTemplate.createdBy?.length>12">...</span>
 															</span>
-														</div>
-														<div class="item__last-modified">
-															<span><app-timestamp [isOnlyDate]="true"
-																	[dateAndTime]="emailTemplate.createdDate">
-																</app-timestamp></span>
-														</div>
+														<br>
+															<span class="item__name" title="created on" style="float:left">
+																<span>
+																	<app-timestamp
+																		[isOnlyDate]="true"
+																		[dateAndTime]="emailTemplate.createdDate">
+																	</app-timestamp>
+																</span>
+															</span>
+														<br>
+														<span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate?.category}}">
+															<b>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+															<font *ngIf="emailTemplate?.category?.length>5">..</font>
+														</span>
 														<div class="item__actions">
 															<span> <a class="fm external-link" target="_BLANK"
 																data-toggle="tooltip" data-placement="top"
@@ -1750,6 +1765,38 @@ a.disabled {
 			</div>
 		</div>
 	</div>
+</div>
+
+
+<!-----------------------------View Filter Popup----------->
+<div class="modal fade right" id="filterPopup" tabindex="-1" role="dialog" aria-labelledby="filterPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeFilterPopup()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h5 class="modal-title text-center">Apply Filter</h5>
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="folderErrorCustomResponse" *ngIf="folderErrorCustomResponse.isVisible">
+                </app-response-message>
+                <div class="form-group" *ngIf="!folderErrorCustomResponse.isVisible">
+                    <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+                     [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                      [dataSource]='emailTemplateFolders' [fields]='folderFields'
+                       [placeholder]='folderFilterPlaceHolder' (blur)='applyFilter()'>
+                </ejs-multiselect>
+                <span class="requried" *ngIf="!isFolderSelected">Please select at least one option</span>
+                </div>
+            </div>
+            <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
+                <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
+                   
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- <div id="listOfFormsModal" class="modal right fade" role="dialog"
