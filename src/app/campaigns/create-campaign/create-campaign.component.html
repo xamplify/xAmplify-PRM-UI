@@ -978,12 +978,17 @@
                                 <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex">Video Co-Branding</li>
                                 <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner && isPartnerToo">Partner</li>
                             </ul>
-                            <div class="input-icon right pull-right" style="padding-top: 4px;right: 8px;">
+
+                            <div class="input-icon right pull-right cebp">
                                 <input type="text" [(ngModel)]="emailTemplateSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search here" (keypress)="eventHandler($event.keyCode, 'emailTemplate')">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" style="padding:8px;" *ngIf="emailTemplateSearchInput" (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
-                                <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()"><i class="fa fa-search"
-                                        style="font-size: 16px !important;padding:5px !important;"></i></button>
+                                <button type="submit" class="search-box-item-click email-search" (click)="searchEmailTemplate()">
+                                    <i class="fa fa-search cesf-xamp"></i></button>
                             </div>
+                            <button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
+                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length>0" style="color: red;"></i>
+                                <i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
+                            </button>
                             <div class="portlet-body">
                                 <div class="row">
                                     <form role="form" class="form-horizontal form-bordered form-label-stripped">
@@ -2404,3 +2409,35 @@
     </div>
 </div>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
+<!-----------------------------View Filter Popup----------->
+<div class="modal fade right" id="filterPopup" tabindex="-1" role="dialog" aria-labelledby="filterPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeFilterPopup()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h5 class="modal-title text-center">Apply Filter</h5>
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="folderErrorCustomResponse" *ngIf="folderErrorCustomResponse.isVisible">
+                </app-response-message>
+                <div class="form-group" *ngIf="!folderErrorCustomResponse.isVisible">
+                    <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+                     [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                      [dataSource]='emailTemplateFolders' [fields]='folderFields'
+                       [placeholder]='folderFilterPlaceHolder' (blur)='applyFilter()'>
+                </ejs-multiselect>
+                <span class="requried" *ngIf="!isFolderSelected">Please select at least one option</span>
+                </div>
+            </div>
+            <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
+                <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">
+                    Apply
+                </button>
+                <!-- <button  type="button" id="apply-folder-button"  class="btn btn-primary" (click)="applyFilter()">Apply</button> -->
+            </div>
+        </div>
+    </div>
+</div>

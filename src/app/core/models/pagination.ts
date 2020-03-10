@@ -55,5 +55,7 @@ export class Pagination {
 	teamMemberAnalytics = false;
 	teamMemberId:number = 0;
     categoryType: string;
-    categoryId: number=0;
+	categoryId: number=0;
+	categoryIds:number[] = [];
+	categoryFilter = false;
 }

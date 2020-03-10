@@ -18,7 +18,6 @@ a.disabled {
     border-color: red
 }
 
-
 /* action.css*/
 
 .hiddenStepInfo {
@@ -77,7 +76,6 @@ a.disabled {
     border-right: none;
     /* width: 20% */
 }
-
 
 /* .step .col-md-2:last-child {
     border: 1px solid #C0C0C0;
@@ -145,7 +143,6 @@ a.disabled {
     font-size: 40px;
 }
 
-
 /* publish.css*/
 
 .btn-squared-default {
@@ -169,7 +166,6 @@ a.disabled {
 .btn-squared-default-plain:hover {
     border: 0px solid white;
 }
-
 
 /*	--------------------------------------------------
 	:: Table Filter
@@ -217,7 +213,6 @@ a.disabled {
     cursor: default;
 }
 
-
 /* .table-filter tr td:first-child {
 	width: 38px;
 }
@@ -246,8 +241,7 @@ a.disabled {
     color: white;
 }
 
-#myTable td,
-#myTable th {
+#myTable td, #myTable th {
     padding: 10px;
     border: 1px solid goldenrod;
 }
@@ -417,7 +411,6 @@ video {
     min-width: 100%;
 }
 
-
 /*.label-radio:hover {
     label:hover {
         background-color: #ccc;
@@ -433,7 +426,6 @@ a.disabled {
     pointer-events: none;
     cursor: not-allowed;
 }
-
 
 /* @author Manas Ranjan Sahoo */
 
@@ -524,8 +516,7 @@ label img {
     cursor: pointer
 }
 
-.img-wrap .close,
-.text-center {
+.img-wrap .close, .text-center {
     text-align: center
 }
 
@@ -680,31 +671,19 @@ label img {
     background-color: #0077B5
 }
 
-.btn-facebook.active,
-.btn-facebook:active,
-.btn-facebook:focus,
-.btn-facebook:hover {
+.btn-facebook.active, .btn-facebook:active, .btn-facebook:focus, .btn-facebook:hover {
     background-color: #30487b
 }
 
-.btn-twitter.active,
-.btn-twitter:active,
-.btn-twitter:focus,
-.btn-twitter:hover {
+.btn-twitter.active, .btn-twitter:active, .btn-twitter:focus, .btn-twitter:hover {
     background-color: #259be4
 }
 
-.btn-google.active,
-.btn-google:active,
-.btn-google:focus,
-.btn-google:hover {
+.btn-google.active, .btn-google:active, .btn-google:focus, .btn-google:hover {
     background-color: #d54724
 }
 
-.btn-linkedin.active,
-.btn-linkedin:active,
-.btn-linkedin:focus,
-.btn-linkedin:hover {
+.btn-linkedin.active, .btn-linkedin:active, .btn-linkedin:focus, .btn-linkedin:hover {
     background-color: #17709e
 }
 
@@ -724,8 +703,7 @@ label img {
     display: inline-flex;
 }
 
-.dashboard-stat2,
-.portlet {
+.dashboard-stat2, .portlet {
     border-radius: 0 !important;
     /* padding-top: 2em; */
 }
@@ -797,7 +775,6 @@ div.tab {
     background-color: #f1f1f1;
 }
 
-
 /* Style the buttons inside the tab */
 
 div.tab button {
@@ -811,20 +788,17 @@ div.tab button {
     font-size: 17px;
 }
 
-
 /* Change background color of buttons on hover */
 
 div.tab button:hover {
     background-color: #ddd;
 }
 
-
 /* Create an active/current tablink class */
 
 div.tab button.active {
     background-color: #ccc;
 }
-
 
 /* Style the tab content */
 
@@ -958,7 +932,6 @@ h3 {
     font-size: 15px;
     padding-top: 0px;
 }
-
 
 /* NEW DESIGN CSS FOR CAMPAIGN STEPS  */
 
@@ -1157,8 +1130,7 @@ label img {
     cursor: pointer
 }
 
-.img-wrap .close,
-.text-center {
+.img-wrap .close, .text-center {
     text-align: center
 }
 
@@ -1289,8 +1261,7 @@ label img {
     color: #757575
 }
 
-.modal-body .lead:last-child,
-.modal-body p:last-child {
+.modal-body .lead:last-child, .modal-body p:last-child {
     margin-bottom: 0
 }
 
@@ -1311,8 +1282,7 @@ label img {
     box-shadow: none
 }
 
-.modal-footer .btn:focus,
-.modal-footer .btn:hover {
+.modal-footer .btn:focus, .modal-footer .btn:hover {
     color: #00796B
 }
 
@@ -1453,8 +1423,7 @@ body {
     margin-top: 3px
 }
 
-.box .ribbon i.fa-twitter,
-.box .ribbon i.fa-linkedin {
+.box .ribbon i.fa-twitter, .box .ribbon i.fa-linkedin {
     margin-left: -5px
 }
 
@@ -1851,7 +1820,6 @@ legend {
     margin-left: 5px;
 }
 
-
 /*below css are push to CRM css */
 
 .pos {
@@ -1864,7 +1832,6 @@ legend {
     width: 65px;
     height: 65px;
 }
-
 
 /* The customcheck */
 
@@ -1881,7 +1848,6 @@ legend {
     user-select: none;
 }
 
-
 /* Hide the browser's default checkbox */
 
 .customcheck input {
@@ -1889,7 +1855,6 @@ legend {
     opacity: 0;
     cursor: pointer;
 }
-
 
 /* Create a custom checkbox */
 
@@ -1903,13 +1868,11 @@ legend {
     border-radius: 5px;
 }
 
-
 /* On mouse-over, add a grey background color */
 
 .customcheck:hover input~.checkmark {
     background-color: #ccc;
 }
-
 
 /* When the checkbox is checked, add a blue background */
 
@@ -1917,7 +1880,6 @@ legend {
     background-color: #5db85d;
     border-radius: 50%;
 }
-
 
 /* Create the checkmark/indicator (hidden when not checked) */
 
@@ -1927,13 +1889,11 @@ legend {
     display: none;
 }
 
-
 /* Show the checkmark when checked */
 
 .customcheck input:checked~.checkmark:after {
     display: block;
 }
-
 
 /* Style the checkmark/indicator */
 
@@ -1996,4 +1956,34 @@ legend {
     white-space: nowrap;
     text-overflow: ellipsis;
     display: inline-block;
+}
+
+.campaign-email-template-filter-icon {
+    font-size: 16px !important;
+    right: 38px;
+    background: #f1f3fa !important;
+    width: 39px !important;
+    padding-top: 3px !important;
+    position: absolute;
+    top: 15px;
+}
+
+.cebp {
+    padding-top: 4px;
+    right: 55px;
+}
+
+.cesf-xamp {
+    font-size: 16px !important;
+    padding: 5px !important;
+    margin-left: -2px;
+}
+
+.folder-modal-footer{
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+.requried{
+    color: red;
 }

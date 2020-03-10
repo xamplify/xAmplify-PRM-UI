@@ -39,6 +39,9 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Category as folder } from 'app/dashboard/models/category';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -47,7 +50,7 @@ var moment = require('moment-timezone');
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -265,6 +268,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      senderMergeTag:SenderMergeTag = new SenderMergeTag();
      isPushToCrm = false;
 
+     /************Filter Folder*****************/
+    public selectedFolderIds= [];
+    public emailTemplateFolders:Array<folder>;
+    public folderFields: any;
+    public folderFilterPlaceHolder: string = 'Select folder';
+    folderErrorCustomResponse: CustomResponse = new CustomResponse();
+    isFolderSelected = true;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -280,8 +290,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
                         console.log(data)
                         this.enableLeads = data.enableLeads;
-                        console.log(this.enableLeads);
-
                     });
                 })
                 authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
@@ -549,7 +557,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     }
     count(status:any){
-     console.log(status);
     }
     eventHandler(event, type:string){
       if(event===13 && type==='myvideos'){ this.searchVideo();}
@@ -624,7 +631,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadContacts();
         }
         this.listAllTeamMemberEmailIds();
-
+        /***********Load Email Template Filters Data********/
+        this.listEmailTemplateFolders();
     }
 
     loadContacts(){
@@ -3152,5 +3160,40 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
    }
 
+   showFolderFilterPopup(){
+    $('#filterPopup').modal('show');
+    }
 
+closeFilterPopup(){
+    $('#filterPopup').modal('hide');
 }
+
+applyFilter(){
+    if(this.selectedFolderIds.length>0){
+        this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+        this.emailTemplatesPagination.categoryFilter = true;
+    }else{
+        this.emailTemplatesPagination.categoryIds = [];
+        this.emailTemplatesPagination.categoryFilter = false;
+    }
+    this.loadEmailTemplates(this.emailTemplatesPagination);
+    this.closeFilterPopup();
+}
+
+listEmailTemplateFolders(){
+    this.folderFields = { text: 'name', value: 'id' };
+    this.campaignService.listEmailTemplateCategories(this.loggedInUserId).
+    subscribe(data =>{
+       this.emailTemplateFolders = data;
+    },error =>{
+        this.folderErrorCustomResponse = new CustomResponse();
+        this.folderErrorCustomResponse = new CustomResponse('ERROR', this.refService.serverErrorMessage, true);
+    }, () => this.logger.log("listEmailTemplateFolders()"));
+  }
+
+ 
+
+
+ 
+}
+
