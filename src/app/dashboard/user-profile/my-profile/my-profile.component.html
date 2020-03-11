@@ -260,7 +260,7 @@
                                     <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
                                     </li>
-                                    <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
+                                    <li *ngIf="!isOnlyPartner && !isPartnerTeamMember" [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
                                         <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
                                     </li>
                                 </ul>

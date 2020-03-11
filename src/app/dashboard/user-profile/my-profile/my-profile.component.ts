@@ -139,7 +139,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isDeleteCategory: any;
     selectedCategoryIdForTransferItems = 0;
     exisitingCategories = new Array<Category>();
-
+    isOnlyPartner = false;
+    isPartnerTeamMember = false;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -318,7 +319,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-            this.authenticationService.isOnlyPartner();
+            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+            this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
             if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
                 if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
