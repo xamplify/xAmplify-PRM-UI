@@ -256,7 +256,7 @@
 													<th class="visible-xs" colspan="1" style="width: 50%">List
 														Info</th>
 														
-														
+													<th class="hidden-xs" ><span [hidden]="isPartner">Type</span></th> 
 													<th class="hidden-xs">Created On</th>
 													<th class="text-center hidden-xs">Total
 														{{checkingContactTypeName}}s</th>
@@ -316,6 +316,12 @@
 															</h5>
 														</h5>
 													</td>
+													<td class="hidden-xs">
+													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
+													 <span *ngIf="contactList.publicList">Public</span>
+													<span *ngIf="!contactList.publicList">Private</span> 
+													</h5>
+														</td>
 													<td class="hidden-xs"><app-timestamp
 															[isOnlyDate]="true"
 															[dateAndTime]="contactList.createdDate">
@@ -327,7 +333,7 @@
 														<div class="actions-block override-actions" *ngIf="contactList.emailValidationInd">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isPartner() || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
-																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList)"
+																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_edit}}"> <i
 																class="fa fa-pencil-square-o"></i>
@@ -339,7 +345,7 @@
 																class="fa fa-info"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0" data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_saveAs}}"
-																(click)="saveAsNewList(contactList.id,contactList.name)">
+																(click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
 																<i class="fa fa-files-o"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0"
 																(click)="downloadContactList(contactList.id, contactList.name)"
@@ -446,7 +452,7 @@
 													class="fa fa-info" style="color: white;"></i>
 												</a> <a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_saveAs}}"
-													(click)="saveAsNewList(contactList.id,contactList.name)"
+													(click)="saveAsNewList(contactList.id,contactList.name, contactList.publicList)"
 													[class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
 													data-rel="fancybox-button" style="left: 60%;"> <i
 													class="fa fa-files-o" aria-hidden="true"
@@ -966,6 +972,26 @@
 	    </div>
 	    </div>
 	</div>
+	
+	<!-- start   -->
+				<div class="form-group" class="col-xs-12"
+					*ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner" >
+					<label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
+					<div class="col-xs-8">
+						
+							<switch [status]="model.isPublic" 
+							      [onText]="'Public'"
+								[offText]="'Private'"
+								[onColor]="callActionSwitch.onGreenColorSwitch"
+								[offColor]="callActionSwitch.offPrivateColor"
+								[size]="large"
+								(statusChange)="changeStatus($event)"> </switch>
+						
+					</div>
+				</div>
+				<!-- end  -->
+	
+	
 	</div>
 
 			<div class="modal-footer">

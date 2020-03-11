@@ -1,0 +1,86 @@
+<!----Folder View------>
+<div>
+    <div class="portlet-title">
+        <div class="row">
+            <div class="page-toolbar col-xs-12">
+                <div class="btn-group pull-right">
+                    <ng-container class='m10'>
+                        <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')"><i class="fa fa-th-list p10"
+                                aria-hidden="true"></i></span> &nbsp;
+                        <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')"><i
+                                class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                        <span class="btn btn-xs hidden-xs l-g-view margin-space disabled" data-toggle="tooltip" data-placement="bottom" title="Folder View"><i class="fa fa-folder-open-o p10"
+                                aria-hidden="true"></i></span>
+                    </ng-container>
+                    <div class="inputs float-right custom-flex">
+                        <div id="left">
+                            <select class="form-control" [(ngModel)]="categorySortOption.selectedCategoryDropDownOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                                <option *ngFor="let option of categorySortOption.categorySortDropDownOptions"
+                                    [ngValue]="option">
+                                    {{option.name}}</option>
+                            </select>
+                        </div>
+                        <div class="portlet-input input-inline" id="search-div">
+                            <div class="input-icon right" id="icon">
+                                <input type="text" id="sort-text" class="form-control" [(ngModel)]="categorySortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a folder" (keypress)="eventHandler($event.keyCode)">
+                                <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="categorySortOption.searchKey" (click)="categorySortOption.searchKey='';searchCategories();"></button>
+                                <button type="submit" class="search-box-item-click" (click)="searchCategories()">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row mix-grid p10">
+        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
+        <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+        <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+            <div *ngFor="let category of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
+                <div class="ffolder big gray">
+                    <div class="grid-box">
+                        <div id="category-icon-div">
+                            <i class="{{category.icon}}" id="category-icon-size"></i>
+                        </div>
+                        <h4 class="ellipsis" title="{{category.name}}">
+                            {{category.name | slice:0:22}}
+                            <span *ngIf="category.name?.length>22">...</span>
+                        </h4><br><br>
+                        <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
+                        <h6 [title]="category.createdBy">By
+                            <b>{{category.createdBy | slice:0:15}}<span
+                                    *ngIf="category.createdBy?.length>15">...</span></b>
+                        </h6>
+                        <h6>
+                            <span>Created On</span>
+                            <span><b>
+                                    <span
+                                        *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},{{category.displayTime |date:'shortTime'}}</span>
+                            <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
+                            </b>
+                            </span>
+                        </h6>
+                        <div class="bar">
+                            <a data-toggle="tooltip" data-placement="top" title="View Items" (click)="viewItemsByCategoryId(category.id)">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <ng-container *ngIf="!httpRequestLoader.isServerError && !httpRequestLoader.isLoading ">
+        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+        </div>
+        <!-- End of 24 -->
+        <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+            <strong>No Categories Found.</strong>
+        </div>
+    </ng-container>
+
+</div>

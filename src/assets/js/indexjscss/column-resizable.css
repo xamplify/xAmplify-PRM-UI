@@ -54,3 +54,14 @@ span.ui-column-resizer {
     float: right;
 }
 
+.margin-space {
+    margin-left: 3px !important;
+}
+
+.display-ib {
+    display: inline-block;
+}
+
+.alert-top-padding-xamplify {
+    margin-top: 10px;
+}

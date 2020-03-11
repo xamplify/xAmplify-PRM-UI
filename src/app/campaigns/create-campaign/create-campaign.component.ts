@@ -39,6 +39,9 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Category as folder } from 'app/dashboard/models/category';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -47,7 +50,7 @@ var moment = require('moment-timezone');
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -265,6 +268,13 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      senderMergeTag:SenderMergeTag = new SenderMergeTag();
      isPushToCrm = false;
 
+     /************Filter Folder*****************/
+    public selectedFolderIds= [];
+    public emailTemplateFolders:Array<folder>;
+    public folderFields: any;
+    public folderFilterPlaceHolder: string = 'Select folder';
+    folderErrorCustomResponse: CustomResponse = new CustomResponse();
+    isFolderSelected = true;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -280,8 +290,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
                         console.log(data)
                         this.enableLeads = data.enableLeads;
-                        console.log(this.enableLeads);
-
                     });
                 })
                 authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
@@ -550,17 +558,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     }
     count(status:any){
-     console.log(status);
     }
     eventHandler(event, type:string){
       if(event===13 && type==='myvideos'){ this.searchVideo();}
       if(event===13 && type==='channel'){ this.searchChannelVideo();}
       if(event===13 && type==='contact'){ this.searchContactList();}
-      if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
+      if(event===13 && type==='emailTemplate'){  this.searchEmailTemplate();}
       if(event===13 && type==='landingPages'){ this.searchLandingPage();}
   }
-  eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
-  eventUrlHandler(keyCode: any, url:any) {  if (keyCode === 13) {  this.searchClickEmailTemplate(url); } }
+  
 
   ngOnInit(){
         Metronic.init();
@@ -626,7 +632,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadContacts();
         }
         this.listAllTeamMemberEmailIds();
-
+        /***********Load Email Template Filters/LandingPages Filter Data********/
+        this.listEmailTemplateOrLandingPageFolders();
+       
     }
 
     loadContacts(){
@@ -1596,11 +1604,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddReply(reply:Reply){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-        /*if(this.campaignType=="video"){
-            reply.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-        }else{
-            reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }*/
         reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(reply.emailTemplatesPagination.searchKey==null || reply.emailTemplatesPagination.searchKey==""){
             reply.emailTemplatesPagination.campaignDefaultTemplate = true;
@@ -1627,11 +1630,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddOnClick(url:Url){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-     /*   if(this.campaignType=="video"){
-            url.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-        }else{
-            url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }*/
         url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(url.emailTemplatesPagination.searchKey==null || url.emailTemplatesPagination.searchKey==""){
             url.emailTemplatesPagination.campaignDefaultTemplate = true;
@@ -1881,12 +1879,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.loadAllEmailTemplates(this.emailTemplatesPagination);
         }
-       /* if(this.isOnlyPartner){
-            this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
-        }else{
-            this.loadEmailTemplates(this.emailTemplatesPagination);
-        }
-        */
+       
     }
     searchReplyEmailTemplate(reply:Reply){
         reply.emailTemplatesPagination.pageIndex = 1;
@@ -3169,5 +3162,53 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
    }
 
+   showFolderFilterPopup(){
+    $('#filterPopup').modal('show');
+    }
 
+closeFilterPopup(){
+    $('#filterPopup').modal('hide');
 }
+
+applyFilter(){
+    if(this.campaignType=="landingPage"){
+        if(this.selectedFolderIds.length>0){
+            this.landingPagePagination.categoryIds = this.selectedFolderIds;
+            this.landingPagePagination.categoryFilter = true;
+        }else{
+            this.landingPagePagination.categoryIds = [];
+            this.landingPagePagination.categoryFilter = false;
+        }
+        this.listLandingPages(this.landingPagePagination);
+    }else{
+        if(this.selectedFolderIds.length>0){
+            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            this.emailTemplatesPagination.categoryFilter = true;
+        }else{
+            this.emailTemplatesPagination.categoryIds = [];
+            this.emailTemplatesPagination.categoryFilter = false;
+        }
+        this.loadEmailTemplates(this.emailTemplatesPagination);
+    }
+
+  
+    this.closeFilterPopup();
+}
+
+listEmailTemplateOrLandingPageFolders(){
+    this.folderFields = { text: 'name', value: 'id' };
+    this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId,this.campaignType).
+    subscribe(data =>{
+       this.emailTemplateFolders = data;
+    },error =>{
+        this.folderErrorCustomResponse = new CustomResponse();
+        this.folderErrorCustomResponse = new CustomResponse('ERROR', this.refService.serverErrorMessage, true);
+    }, () => this.logger.log("listEmailTemplateOrLandingPageFolders()"));
+  }
+
+ 
+
+
+ 
+}
+

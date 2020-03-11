@@ -170,6 +170,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	csvPagedItems: any[];
 	isCheckTC = true;
 	contactOption = "";
+	showGDPR : boolean;
+	
 
 	filterOptions = [
 		{ 'name': '', 'value': 'Field Name*' },
@@ -2181,18 +2183,23 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.saveAsListName = this.contactListName + '_copy';
 		return this.saveAsListName;
 	}
-	saveAs() {
-		try {
-			this.saveAsListName = this.addCopyToField();
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
-		}
+    saveAs(showGDPR: boolean) {
+        try {
+            this.showGDPR = showGDPR;
+            if (this.showGDPR) {
+                this.saveAsListName = this.addCopyToField();
+            } else {
+                this.saveAsListName = this.contactListName;
+            }
+        } catch (error) {
+            this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
+        }
 	}
 	closeSaveAsModal() {
 		this.saveAsListName = undefined;
 		this.refService.namesArray = undefined;
 	}
-	saveDuplicateContactList(name: string, selectedLegalBasisOptions: any) {
+	saveDuplicateContactList(name: string, selectedLegalBasisOptions: any, isPublic:boolean) {
 		try {
 
 			if (name != "") {
@@ -2211,7 +2218,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						value.legalBasis = selectedLegalBasisOptions;
 					});
 					console.log(listUsers);
-					this.contactService.saveContactList(listUsers, name, this.isPartner)
+					this.contactService.saveContactList(listUsers, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
 								$('#saveAsEditModal').modal('hide');
@@ -2257,7 +2264,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					}
 
 					console.log(this.selectedContactForSave);
-					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner)
+					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
 								this.goToContactOrPartnerUrl();
@@ -2587,6 +2594,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
 		}
 	}
+	
+	   updateContactListNameType(newContactListName: string, isPublic:boolean) {
+	        try {
+	            var object = {
+	                "id": this.selectedContactListId,
+	                "name": newContactListName,
+	                "publicList": isPublic
+	            }
+	            this.addContactModalClose();
+	            this.contactService.updateContactListName(object)
+	                .subscribe(
+	                    (data: any) => {
+	                        console.log(data);
+	                        this.selectedContactListName = newContactListName;
+	                        if (this.isPartner) {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
+	                        } else {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
+	                        }
+	                    },
+	                    error => this.xtremandLogger.error(error),
+	                    () => this.xtremandLogger.info("EditContactsComponent updateContactListName() finished")
+	                )
+	        } catch (error) {
+	            this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
+	        }
+	    }
 
 	loadContactListsNames() {
 		try {

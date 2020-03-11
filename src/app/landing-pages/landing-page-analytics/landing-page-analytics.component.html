@@ -1,104 +1,104 @@
 <div class="page-content">
-<div class="page-bar">
-    <ul class="page-breadcrumb">
-      <li *ngIf="!authenticationService.isSuperAdmin()">
-        <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i>
-      </li>
-      <li *ngIf="authenticationService.isSuperAdmin()">
-      	<i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
-      <li>
-      <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign'">
-				<a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
-	  </li>
-       <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
-      		<a [routerLink]="['/home/pages/manage']">Manage Pages</a><i class="fa fa-angle-right"></i>
-      	</li>
-      	 <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='PartnerLandingPage'">
-      		<a [routerLink]="['/home/pages/partner']">Manage Pages</a><i class="fa fa-angle-right"></i>
-      	</li>
-      <li>
-        <a>Page Analytics</a>
-        <span *ngIf="partnerEmailId?.length>0"><b>({{partnerEmailId}})</b></span>
-      </li>
-    </ul>
-  </div>
-<div class="row" id="responsive">
-			<ng-container  *ngTemplateOutlet="estimateTemplate;context:landingPageAnalyticsContext"></ng-container>
-           <div class="col-xs-6" *ngIf="viewsStatusCode==200">
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li *ngIf="!authenticationService.isSuperAdmin()">
+                <i class="fa fa-home"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li *ngIf="authenticationService.isSuperAdmin()">
+                <i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+            <li>
+                <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign'">
+                    <a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
+                </li>
+                <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
+                    <a routerLink="{{routerLink}}">Manage Pages</a><i class="fa fa-angle-right"></i>
+                </li>
+                <li *ngIf="landingPageAnalyticsPostDto.analyticsTypeString=='PartnerLandingPage'">
+                    <a [routerLink]="['/home/pages/partner']">Manage Pages</a><i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <a>Page Analytics</a>
+                    <span *ngIf="partnerEmailId?.length>0"><b>({{partnerEmailId}})</b></span>
+                </li>
+        </ul>
+    </div>
+    <div class="row" id="responsive">
+        <ng-container *ngTemplateOutlet="estimateTemplate;context:landingPageAnalyticsContext"></ng-container>
+        <div class="col-xs-6" *ngIf="viewsStatusCode==200">
             <div class="portlet light">
-              <div class="portlet-title">
-                <div class="caption">
-                  <i class="fa fa-globe"></i>
-                  <span class="caption-subject">Viewership Map</span>
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-globe"></i>
+                        <span class="caption-subject">Viewership Map</span>
+                    </div>
                 </div>
-              </div>
-              <div class="portlet-body">
-                <app-worldmap *ngIf="landingPageViewsData" [worldMapData]='landingPageViewsData' (notifyParent)="getViewsByCountryCode($event)"></app-worldmap>
-              </div>
+                <div class="portlet-body">
+                    <app-worldmap *ngIf="landingPageViewsData" [worldMapData]='landingPageViewsData' (notifyParent)="getViewsByCountryCode($event)"></app-worldmap>
+                </div>
             </div>
-          </div>
-          
-       <div class="col-xs-12 col-sm-6 p5">
-		<!-- BEGIN PORTLET-->
-		<div class="portlet light">
-			<div class="portlet-title">
-				<div class="caption">
-					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp uppercase">Page Views</span>
-				</div>
-       		 <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
-					<span id="font" class="right">
+        </div>
+
+        <div class="col-xs-12 col-sm-6 p5">
+            <!-- BEGIN PORTLET-->
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-bar-chart font-green-sharp hide"></i>
+                        <span class="caption-subject font-green-sharp uppercase">Page Views</span>
+                    </div>
+                    <div class="panel-title pull-right" *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
+                        <span id="font" class="right">
 					<select class="form-control" style="cursor: pointer" [(ngModel)]="daySort" (ngModelChange)="getBarChartAnalytics($event.value)">
 						<option *ngFor="let sort of videoUtilService.sortMonthDates" [ngValue]="sort"> {{sort.name}} </option>
 					</select>
 				</span>
-			</div>
-			</div>
-			<div class="portlet-body" id="min-height">
-				<ng-container *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
-					<app-bar-chart *ngIf="barChartData?.views?.length>0" [viewsBarData]="barChartData" (notifyParent)="viewInDetail($event)"></app-bar-chart>
-       			 	<div *ngIf="barChartData?.views?.length ==0" style="max-width: 100%;text-align: center;">
-						<span id="empty-data">No data available</span>
-					</div>
-				</ng-container>
-				<ng-container *ngIf="barChartErrorMessage?.length>0">
-					<div class="alert alert-danger">
-						<strong>{{barChartErrorMessage}}</strong>
-					</div>
-				</ng-container>
-      		</div>
-		</div>
-		<!-- END PORTLET-->
-	</div>
-          
-          <div class="col-xs-12 p5" *ngIf="statusCode==404 && landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
-			<div class="alert alert-danger">
-				<strong>
+                    </div>
+                </div>
+                <div class="portlet-body" id="min-height">
+                    <ng-container *ngIf="barChartStatusCode==200 && barChartErrorMessage?.length==0">
+                        <app-bar-chart *ngIf="barChartData?.views?.length>0" [viewsBarData]="barChartData" (notifyParent)="viewInDetail($event)"></app-bar-chart>
+                        <div *ngIf="barChartData?.views?.length ==0" style="max-width: 100%;text-align: center;">
+                            <span id="empty-data">No data available</span>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="barChartErrorMessage?.length>0">
+                        <div class="alert alert-danger">
+                            <strong>{{barChartErrorMessage}}</strong>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <!-- END PORTLET-->
+        </div>
+
+        <div class="col-xs-12 p5" *ngIf="statusCode==404 && landingPageAnalyticsPostDto.analyticsTypeString=='Campaign&LandingPage'">
+            <div class="alert alert-danger">
+                <strong>
 					<h4>Page does not exists</h4>
 				</strong>
-			</div>
-		</div>
+            </div>
+        </div>
 
-		<div class="col-xs-12 p5" *ngIf="statusCode==403">
-			<div class="alert alert-danger">
-				<strong>
+        <div class="col-xs-12 p5" *ngIf="statusCode==403">
+            <div class="alert alert-danger">
+                <strong>
 					<h4>Access Denied</h4>
 				</strong>
-			</div>
-		</div>
+            </div>
         </div>
+    </div>
 </div>
 <ng-template #estimateTemplate let-xtreme="analyticsData">
-	<ng-container *ngIf="xtreme!=null">
-		<div class="col-xs-12">
+    <ng-container *ngIf="xtreme!=null">
+        <div class="col-xs-12">
             <div class="portlet light">
-              <div class="portlet-title">
-					<div class="caption">
-						<span class="caption-subject font-red-sunglo uppercase">Page Statistics</span>
-					</div>
-					<!-- <div class="inputs" align="right">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject font-red-sunglo uppercase">Page Statistics</span>
+                    </div>
+                    <!-- <div class="inputs" align="right">
 						<a class="close-circle" (click)="refreshList(xtreme)" data-toggle="tooltip" data-placement="top" title="Refresh">
 							<i class="fa fa-refresh margin"></i>
 						</a>
@@ -119,79 +119,75 @@
 							</div>
 						</div>
 					</div> -->
-				</div>
-              
-               <app-list-loader  *ngIf="xtreme.loader.isLoading"></app-list-loader>
-              <div class="portlet-body"  *ngIf="!xtreme.loader.isLoading">
-              	<table class="table tgrid">
-              		<thead>
-              			<tr>
-              				<th>Date & Time</th>
-              				<th>Location</th>
-              				<th>Device</th>
-              			</tr>
-              		</thead>
-              		 <tbody>
-                    <tr *ngFor="let item of xtreme?.pagedItems" style="cursor: pointer;">
-                    <td>
-                         <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.displayTime"> </app-timestamp>
-                    </td>
-                     <td class="center">
-                   		<app-location  [userLocation]="item"> </app-location>
-                   	</td>
-                   	<td class="center">
-						<app-platform [deviceTypeOs]="false" [userPlatform]="item"> </app-platform>
-					</td>
-                    </tr>
-                  </tbody>
-              	</table>
-              </div>
-               <div *ngIf="xtreme?.pagedItems.length !== 0" class="pg8">
-					<app-pagination [pagination]="xtreme" (notifyParent)="setPage($event,xtreme)"
-						(notifyParentDropDown)="listAnalytics($event)" [hidden]="xtreme.loader.isLoading"></app-pagination>
-				</div>
-		        <div *ngIf="xtreme?.totalRecords==0 && !xtreme.loader.isLoading" class="alert alert-info">
-		          <strong>No Analytics Found.</strong>
-		        </div>
+                </div>
+
+                <app-list-loader *ngIf="xtreme.loader.isLoading"></app-list-loader>
+                <div class="portlet-body" *ngIf="!xtreme.loader.isLoading">
+                    <table class="table tgrid">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Location</th>
+                                <th>Device</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of xtreme?.pagedItems" style="cursor: pointer;">
+                                <td>
+                                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.displayTime"> </app-timestamp>
+                                </td>
+                                <td class="center">
+                                    <app-location [userLocation]="item"> </app-location>
+                                </td>
+                                <td class="center">
+                                    <app-platform [deviceTypeOs]="false" [userPlatform]="item"> </app-platform>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="xtreme?.pagedItems.length !== 0" class="pg8">
+                    <app-pagination [pagination]="xtreme" (notifyParent)="setPage($event,xtreme)" (notifyParentDropDown)="listAnalytics($event)" [hidden]="xtreme.loader.isLoading"></app-pagination>
+                </div>
+                <div *ngIf="xtreme?.totalRecords==0 && !xtreme.loader.isLoading" class="alert alert-info">
+                    <strong>No Analytics Found.</strong>
+                </div>
             </div>
-          </div>
-          </ng-container>
-          </ng-template>
- <div class="modal right " id="country-views-modal" data-backdrop="static">
+        </div>
+    </ng-container>
+</ng-template>
+<div class="modal right " id="country-views-modal" data-backdrop="static">
     <div class="modal-dialog modal-lg" style="width: 75%;right:0">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close-circle" (click)="closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeModal()">
             <i class="fa fa-times"></i>
           </button>
-          	<ng-container *ngIf="barChartPopUp">
-          		 <h4 class="modal-title text-center uppercase">Page Statistics By {{videoUtilService.timePeriod}}</h4>
-          	</ng-container>
-          	<ng-container *ngIf="!barChartPopUp">
-          		 <h4 class="modal-title text-center uppercase">Page Statistics By Country</h4>
-          	</ng-container>
+                <ng-container *ngIf="barChartPopUp">
+                    <h4 class="modal-title text-center uppercase">Page Statistics By {{videoUtilService.timePeriod}}</h4>
+                </ng-container>
+                <ng-container *ngIf="!barChartPopUp">
+                    <h4 class="modal-title text-center uppercase">Page Statistics By Country</h4>
+                </ng-container>
+            </div>
+            <div class="modal-body">
+
+                <ng-container *ngIf="barChartPopUp && barChartFilterErrorMessage?.length>0">
+                    <div class="alert alert-danger">
+                        <strong>{{barChartFilterErrorMessage}}</strong>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="!barChartPopUp">
+                    <ng-container *ngTemplateOutlet="estimateTemplate;context:countryViewsAnalyticsContext">
+                    </ng-container>
+                </ng-container>
+
+                <ng-container *ngIf="barChartPopUp && barChartFilterErrorMessage?.length==0">
+                    <ng-container *ngTemplateOutlet="estimateTemplate;context:barChartViewsAnalyticsContext">
+                    </ng-container>
+                </ng-container>
+            </div>
         </div>
-        <div class="modal-body">
-        
-        <ng-container *ngIf="barChartPopUp && barChartFilterErrorMessage?.length>0">
-        		<div class="alert alert-danger">
-						<strong>{{barChartFilterErrorMessage}}</strong>
-					</div>
-        </ng-container>
-        
-        <ng-container *ngIf="!barChartPopUp">
-        	 <ng-container 
-  				 *ngTemplateOutlet="estimateTemplate;context:countryViewsAnalyticsContext">
-		</ng-container>
-        </ng-container>
-        
-        <ng-container *ngIf="barChartPopUp && barChartFilterErrorMessage?.length==0">
-        	 <ng-container 
-  				 *ngTemplateOutlet="estimateTemplate;context:barChartViewsAnalyticsContext">
-		</ng-container>
-        </ng-container>
-        </div>
-      </div>
     </div>
- </div>   
- 
+</div>

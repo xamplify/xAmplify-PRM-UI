@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,ViewChild,AfterViewInit,Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -11,17 +11,16 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { LandingPage } from '../models/landing-page';
 import { UtilService } from '../../core/services/util.service';
-import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
-import {PreviewLandingPageComponent} from '../preview-landing-page/preview-landing-page.component';
+import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
 
-declare var swal:any, $: any;
+declare var swal: any, $: any;
 @Component({
-  selector: 'app-manage-landing-page',
-  templateUrl: './manage-landing-page.component.html',
-  styleUrls: ['./manage-landing-page.component.css'],
-  providers: [Pagination, HttpRequestLoader,ActionsDescription,SortOption],
+    selector: 'app-manage-landing-page',
+    templateUrl: './manage-landing-page.component.html',
+    styleUrls: ['./manage-landing-page.component.css'],
+    providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption],
 })
 export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
@@ -31,47 +30,42 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     loggedInUserId = 0;
     customResponse: CustomResponse = new CustomResponse();
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
-    isListView = false;
     private dom: Document;
     message = "";
     campaignId = 0;
     statusCode = 200;
     isPartnerLandingPage = false;
-    landingPageAliasUrl:string = "";
+    landingPageAliasUrl: string = "";
     selectedLandingPageTypeIndex = 0;
-    iframeEmbedUrl: string="";
+    iframeEmbedUrl: string = "";
     deleteAndEditAccess = false;
+    categoryId: number = 0;
+    isListView = false;
+    isGridView = false;
+    isFolderView = false;
+    showFolderView = false;
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
-    constructor( public referenceService: ReferenceService,
-            public httpRequestLoader: HttpRequestLoader, public pagerService:
-                PagerService, public authenticationService: AuthenticationService,
-            public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-      public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute) {
+    constructor(public referenceService: ReferenceService,
+        public httpRequestLoader: HttpRequestLoader, public pagerService:
+            PagerService, public authenticationService: AuthenticationService,
+        public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
+        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
-        if ( this.referenceService.isCreated ) {
+        if (this.referenceService.isCreated) {
             this.message = "Page created successfully";
-            this.showMessageOnTop(this.message );
-        } else if ( this.referenceService.isUpdated) {
+            this.showMessageOnTop(this.message);
+        } else if (this.referenceService.isUpdated) {
             this.message = "Page updated successfully";
-            this.showMessageOnTop( this.message );
+            this.showMessageOnTop(this.message);
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
     }
 
-    ngOnInit() {
-        if(this.router.url.includes('home/pages/partner')){
-            this.isPartnerLandingPage = true;
-        }else{
-            this.selectedLandingPageTypeIndex = 0;
-            this.pagination.filterKey = "All";
-            this.isPartnerLandingPage = false;
-        }
-        this.listLandingPages(this.pagination);
+    
 
-    }
-
-    showAllLandingPages(type:string,index:number){
+    showAllLandingPages(type: string, index: number) {
         this.selectedLandingPageTypeIndex = index;
         this.pagination.filterKey = type;
         this.listLandingPages(this.pagination);
@@ -79,13 +73,13 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
 
 
-    listLandingPages( pagination: Pagination ) {
-        this.referenceService.loading( this.httpRequestLoader, true );
-        this.landingPageService.list( pagination,this.isPartnerLandingPage ).subscribe(
-            ( response: any ) => {
+    listLandingPages(pagination: Pagination) {
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
+            (response: any) => {
                 const data = response.data;
                 this.statusCode = response.statusCode;
-                if(this.statusCode==200){
+                if (this.statusCode == 200) {
                     pagination.totalRecords = data.totalRecords;
                     this.sortOption.totalRecords = data.totalRecords;
                     $.each(data.landingPages, function (index, landingPage) {
@@ -94,69 +88,69 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
                 console.log(data.landingPages);
-                this.referenceService.loading( this.httpRequestLoader, false );
+                this.referenceService.loading(this.httpRequestLoader, false);
 
             },
-            ( error: any ) => { this.logger.errorPage( error ); } );
+            (error: any) => { this.logger.errorPage(error); });
     }
 
 
     /********************Pagaination&Search Code*****************/
 
     /*************************Sort********************** */
-    sortBy( text: any ) {
+    sortBy(text: any) {
         this.sortOption.formsSortOption = text;
-        this.getAllFilteredResults( this.pagination );
+        this.getAllFilteredResults(this.pagination);
     }
 
 
     /*************************Search********************** */
     searchLandingPages() {
-        this.getAllFilteredResults( this.pagination );
+        this.getAllFilteredResults(this.pagination);
     }
 
-    paginationDropdown(items:any){
+    paginationDropdown(items: any) {
         this.sortOption.itemsSize = items;
         this.getAllFilteredResults(this.pagination);
     }
 
     /************Page************** */
-    setPage( event: any ) {
+    setPage(event: any) {
         this.pagination.pageIndex = event.page;
-        this.listLandingPages( this.pagination );
+        this.listLandingPages(this.pagination);
     }
 
-    getAllFilteredResults( pagination: Pagination ) {
+    getAllFilteredResults(pagination: Pagination) {
         this.pagination.pageIndex = 1;
         this.pagination.searchKey = this.sortOption.searchKey;
         this.pagination = this.utilService.sortOptionValues(this.sortOption.formsSortOption, this.pagination);
-        this.listLandingPages( this.pagination );
+        this.listLandingPages(this.pagination);
     }
-    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchLandingPages(); } }
+    eventHandler(keyCode: any) { if (keyCode === 13) { this.searchLandingPages(); } }
     /********************Pagaination&Search Code*****************/
-    showMessageOnTop( message ) {
-        $( window ).scrollTop( 0 );
-        this.customResponse = new CustomResponse( 'SUCCESS', message, true );
+    showMessageOnTop(message) {
+        $(window).scrollTop(0);
+        this.customResponse = new CustomResponse('SUCCESS', message, true);
     }
 
     /***********Preview Email Template*********************/
-    showPreview( landingPage: LandingPage ) {
-        if(this.isPartnerLandingPage){
+    showPreview(landingPage: LandingPage) {
+        if (this.isPartnerLandingPage) {
             landingPage.showPartnerCompanyLogo = true;
             landingPage.partnerId = this.loggedInUserId;
             landingPage.partnerLandingPage = true;
-        }else{
+        } else {
             landingPage.showYourPartnersLogo = true;
         }
         this.previewLandingPageComponent.showPreview(landingPage);
-      }
+    }
 
 
     /***********Delete**************/
-    confirmDelete(landingPage:LandingPage){
+    confirmDelete(landingPage: LandingPage) {
         try {
             let self = this;
-            swal( {
+            swal({
                 title: 'Are you sure?',
                 text: "You won’t be able to undo this action!",
                 type: 'warning',
@@ -165,94 +159,135 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 swalCancelButtonColor: '#999',
                 confirmButtonText: 'Yes, delete it!'
 
-            }).then( function() {
+            }).then(function () {
                 self.deleteById(landingPage);
-            }, function( dismiss: any ) {
-                console.log( 'you clicked on option' + dismiss );
+            }, function (dismiss: any) {
+                console.log('you clicked on option' + dismiss);
             });
-        } catch ( error ) {
-            this.logger.error(this.referenceService.errorPrepender+" confirmDelete():"+error);
+        } catch (error) {
+            this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
             this.referenceService.showServerError(this.httpRequestLoader);
         }
     }
 
 
-    editLandingPage(id:number){
+    editLandingPage(id: number) {
         this.landingPageService.id = id;
-        this.router.navigate(["/home/pages/add"]);
-      }
+        if(this.categoryId>0){
+            this.router.navigate( ["/home/pages/add/"+this.categoryId] );
+        }else{
+            this.router.navigate(["/home/pages/add"]);
+        }
+        
+    }
 
-    deleteById(landingPage:LandingPage){
+    deleteById(landingPage: LandingPage) {
         this.referenceService.loading(this.httpRequestLoader, true);
         this.referenceService.goToTop();
-        this.landingPageService.deletebById( landingPage.id )
-        .subscribe(
-        ( response: any ) => {
-            if(response.statusCode==200){
-                $('#landingPageListDiv_'+landingPage.id).remove();
-                let message = landingPage.name+" deleted successfully";
-                this.customResponse = new CustomResponse('SUCCESS',message,true );
-                this.pagination.pageIndex = 1;
-                this.listLandingPages(this.pagination);
-            }else{
-                let campaignNames = "";
-                $.each(response.data,function(index,value){
-                    campaignNames+= (index+1)+"."+value+"<br><br>";
-                });
-                let message = response.message+"<br><br>"+campaignNames;
-                this.customResponse = new CustomResponse('ERROR',message,true );
-                this.referenceService.loading(this.httpRequestLoader, false);
-            }
+        this.landingPageService.deletebById(landingPage.id)
+            .subscribe(
+                (response: any) => {
+                    if (response.statusCode == 200) {
+                        $('#landingPageListDiv_' + landingPage.id).remove();
+                        let message = landingPage.name + " deleted successfully";
+                        this.customResponse = new CustomResponse('SUCCESS', message, true);
+                        this.pagination.pageIndex = 1;
+                        this.listLandingPages(this.pagination);
+                    } else {
+                        let campaignNames = "";
+                        $.each(response.data, function (index, value) {
+                            campaignNames += (index + 1) + "." + value + "<br><br>";
+                        });
+                        let message = response.message + "<br><br>" + campaignNames;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    }
 
-        },
-        ( error: string ) => {
-            this.referenceService.showServerErrorMessage(this.httpRequestLoader);
-            this.customResponse = new CustomResponse('ERROR',this.httpRequestLoader.message,true);
-            }
-        );
+                },
+                (error: string) => {
+                    this.referenceService.showServerErrorMessage(this.httpRequestLoader);
+                    this.customResponse = new CustomResponse('ERROR', this.httpRequestLoader.message, true);
+                }
+            );
     }
 
-/*****Show Landing Page Embed Link/Preview Page */
-  showPageLinkPopup(landingPage:LandingPage){
-          this.landingPage = landingPage;
-          this.copiedLinkCustomResponse = new CustomResponse();
-          if(this.isPartnerLandingPage){
-              this.landingPageAliasUrl = this.authenticationService.APP_URL+"pl/"+this.landingPage.alias;
-          }else{
-              this.landingPageAliasUrl = this.authenticationService.APP_URL+"l/"+this.landingPage.alias;
-          }
+    /*****Show Landing Page Embed Link/Preview Page */
+    showPageLinkPopup(landingPage: LandingPage) {
+        this.landingPage = landingPage;
+        this.copiedLinkCustomResponse = new CustomResponse();
+        if (this.isPartnerLandingPage) {
+            this.landingPageAliasUrl = this.authenticationService.APP_URL + "pl/" + this.landingPage.alias;
+        } else {
+            this.landingPageAliasUrl = this.authenticationService.APP_URL + "l/" + this.landingPage.alias;
+        }
         this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.landingPageAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';
 
-       $('#landing-page-url-modal').modal('show');
-      }
+        $('#landing-page-url-modal').modal('show');
+    }
 
-  /*********Copy The Link/Iframe Link */
-  copyInputMessage(inputElement:any,type:string) {
-    this.referenceService.goToTop();
-    this.copiedLinkCustomResponse = new CustomResponse();
-    inputElement.select();
-    document.execCommand('copy');
-    inputElement.setSelectionRange(0, 0);
-    let message = type+' Copied to clipboard successfully.';
-    if(type==="Page Link"){
-      $("#copy-link").select();
-    }else{
-      $("#text-area").select();
+    /*********Copy The Link/Iframe Link */
+    copyInputMessage(inputElement: any, type: string) {
+        this.referenceService.goToTop();
+        this.copiedLinkCustomResponse = new CustomResponse();
+        inputElement.select();
+        document.execCommand('copy');
+        inputElement.setSelectionRange(0, 0);
+        let message = type + ' Copied to clipboard successfully.';
+        if (type === "Page Link") {
+            $("#copy-link").select();
+        } else {
+            $("#text-area").select();
+        }
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', message, true);
     }
-    this.copiedLinkCustomResponse = new CustomResponse('SUCCESS',message, true);
-  }
 
-    goToFormAnalytics(id:number){
-        this.router.navigate(['/home/forms/lf/'+id]);
+    goToFormAnalytics(id: number) {
+        if(this.categoryId>0){
+            this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
+        }else{
+            this.router.navigate(['/home/forms/lf/' + id]);
+
+        }
     }
-    goToPartnerLandingPageFormAnalytics(alias:string){
-        this.router.navigate(['/home/forms/partner/lf/'+alias]);
+    goToPartnerLandingPageFormAnalytics(alias: string) {
+        this.router.navigate(['/home/forms/partner/lf/' + alias]);
     }
-    goToLandingPageAnalytics(id:number){
-        this.router.navigate(['/home/pages/'+id+'/analytics']);
+    goToLandingPageAnalytics(id: number) {
+        if(this.categoryId>0){
+            this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
+        }else{
+            this.router.navigate(['/home/pages/' + id + '/analytics']);
+        }
+       
     }
-    goToPartnerLandingPageAnalytics(alias:string){
-        this.router.navigate(['/home/pages/partner/'+alias+'/analytics']);
+    goToPartnerLandingPageAnalytics(alias: string) {
+        this.router.navigate(['/home/pages/partner/' + alias + '/analytics']);
+    }
+
+
+    ngOnInit() {
+
+        if(this.router.url.endsWith('manage/')){
+            this.setViewType('Folder');
+        }else{
+            if (this.router.url.includes('home/pages/partner')) {
+                this.isPartnerLandingPage = true;
+            } else {
+                this.selectedLandingPageTypeIndex = 0;
+                this.pagination.filterKey = "All";
+                this.isPartnerLandingPage = false;
+            }
+            this.isListView = !this.referenceService.isGridView;
+            this.isGridView = this.referenceService.isGridView;
+            this.isFolderView = false;
+            this.categoryId = this.route.snapshot.params['categoryId'];
+            if (this.categoryId != undefined) {
+                this.pagination.categoryId = this.categoryId;
+                this.pagination.categoryType = 'l';
+            }
+            this.listLandingPages(this.pagination);
+        }
+        
     }
 
 
@@ -262,6 +297,44 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.message = "";
         this.landingPage = new LandingPage();
         swal.close();
+    }
+
+
+    setViewType(viewType: string) {
+        if ("List" == viewType) {
+            this.isListView = true;
+            this.isGridView = false;
+            this.isFolderView = false;
+            this.navigateToManageSection();
+        } else if ("Grid" == viewType) {
+            this.isListView = false;
+            this.isGridView = true;
+            this.isFolderView = false;
+            this.navigateToManageSection();
+        } else if ("Folder" == viewType) {
+            this.isListView = false;
+            this.isGridView = false;
+            this.isFolderView = true;
+            if (this.categoryId > 0) {
+                this.router.navigateByUrl('/home/pages/manage/');
+            }
+
+        }
+    }
+
+    navigateToManageSection() {
+        if (this.router.url.endsWith('manage/')) {
+            this.router.navigateByUrl('/home/pages/manage');
+        }
+    }
+
+
+    getUpdatedValue(event: any) {
+        let viewType = event.viewType;
+        if (viewType != undefined) {
+            this.setViewType(viewType);
+        }
+
     }
 
 }

@@ -831,4 +831,14 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
+        let url = "listEmailTemplateCategories";
+        if("landingPage"==campaignType){
+            url = "listLandingPageCategories"
+        }
+        return this.http.get(this.URL + "category/"+url+"/"+userId+"?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

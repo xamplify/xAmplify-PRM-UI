@@ -1,4 +1,5 @@
 import { Component, OnInit,OnDestroy,ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CustomResponse } from '../../common/models/custom-response';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -67,16 +68,22 @@ export class AddFormComponent implements OnInit, OnDestroy {
     isFullScreenView = false;
     toolTip = "Maximize";
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    loggedInUserId: number;
+    categoryNames: any;
+    routerLink: string="/home/forms/manage";
     constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
         public authenticationService:AuthenticationService,public formService:FormService,
-        private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch) {
-            
+        private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch,public route:ActivatedRoute) {
+            this.loggedInUserId = this.authenticationService.getUserId();
+        let categoryId = this.route.snapshot.params['categoryId'];
+         if(categoryId>0){
+             this.routerLink+= "/"+categoryId;
+         }   
         if(this.formService.form===undefined){
-            if(this.router.url==="/home/forms/edit"){
-                this.router.navigate(["/home/forms/manage"]);
+            if(this.router.url.indexOf("/home/forms/edit")>-1){
+                this.navigateToManageSection();
             }
         }
-        
         if(this.formService.form!==undefined){
             this.isAdd = false;
             this.formTitle = "Edit Form Details";
@@ -107,6 +114,21 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.removeBlurClass();
         }
         this.listFormNames();
+        this.listCategories();
+    }
+
+    listCategories(){
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.categoryNames = data.data;
+                let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+                if(this.isAdd){
+                    this.form.categoryId = categoryIds[0];
+                }
+                
+            },
+            error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+            () => this.logger.info( "Finished listCategories()" ) );
     }
     
     listExistingColumns(list){
@@ -582,7 +604,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
              this.showSweetAlert(this.duplicateLabelMessage);
             }else{
              this.referenceService.isUpdated = true;
-             this.router.navigate(["/home/forms/manage"]);
+             this.navigateToManageSection();
             }
             
          },
@@ -639,10 +661,21 @@ export class AddFormComponent implements OnInit, OnDestroy {
          if(this.isAdd){
              this.router.navigate(["/home/design/add"]);
          }else{
-             this.router.navigate(["/home/forms/manage"]);
+            this.navigateToManageSection();
          }
      }
 
+     selectCategory(event){
+         this.form.categoryId = event;
+     }
 
+     navigateToManageSection(){
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+          this.router.navigate(["/home/forms/manage/"+categoryId]);
+        }else{
+          this.router.navigate(["/home/forms/manage"]);
+        }
+      }
 
 }

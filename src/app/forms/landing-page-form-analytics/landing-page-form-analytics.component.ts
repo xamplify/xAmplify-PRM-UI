@@ -30,7 +30,9 @@ export class LandingPageFormAnalyticsComponent implements OnInit {
     selectedSortedOption: any;
     searchKey = "";
     landingPageForms = false;
-    routerLink = "/home/forms/manage";
+    formsRouterLink = "/home/forms/manage";
+    pagesRouterLink = "/home/pages/manage";
+    categoryId:number = 0;
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService,
@@ -38,6 +40,8 @@ export class LandingPageFormAnalyticsComponent implements OnInit {
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
+        this.categoryId = this.route.snapshot.params['categoryId'];
+
     }
 
     ngOnInit() {
@@ -46,7 +50,13 @@ export class LandingPageFormAnalyticsComponent implements OnInit {
         if ( this.landingPageId != undefined ) {
             this.pagination.landingPageId = parseInt( this.landingPageId );
             this.landingPageForms = true;
-            this.routerLink = "/home/forms/lf/" + this.pagination.landingPageId;
+            if(this.categoryId>0){
+                this.formsRouterLink = "/home/forms/category/" +this.categoryId+"/lf/"+ this.pagination.landingPageId;
+                this.pagesRouterLink = "/home/pages/manage/" +this.categoryId;
+            }else{
+                this.formsRouterLink = "/home/forms/lf/" + this.pagination.landingPageId;
+                this.pagesRouterLink = "/home/pages/manage";
+            }
         }
         this.listSubmittedData( this.pagination );
     }

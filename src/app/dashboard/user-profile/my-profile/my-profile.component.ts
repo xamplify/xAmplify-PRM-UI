@@ -124,7 +124,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     categoryPagination: Pagination = new Pagination();
     categorySortOption: SortOption = new SortOption();
     isAddCategory = false;
-    categoryModalTitle = "Add a New Category";
+    categoryModalTitle = "Add a New Folder";
     formErrorClass = "form-group form-error";
     defaultFormClass = "form-group";
     categoryNameErrorMessage = "";
@@ -1580,6 +1580,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     addCategory() {
         this.isAddCategory = true;
         this.category = new Category();
+        this.categoryModalTitle = 'Add a New Folder';
         this.categoyButtonSubmitText = "Save";
         this.listExistingCategoryNames();
     }
@@ -1681,7 +1682,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.categoyButtonSubmitText = "Update";
             $('#addCategoryModalPopup').modal('show');
             this.referenceService.startLoader(this.addCategoryLoader);
-            this.categoryModalTitle = 'Edit Category Details';
+            this.categoryModalTitle = 'Edit Folder Details';
             this.listExistingCategoryNames();
             this.userService.getCategoryById(id)
                 .subscribe(

@@ -176,9 +176,8 @@
                                                     </ng-container>
                                                 </span>
                                                 <span align="right" title="Upload Date">
-                                                    <!-- <b *ngIf="campaign.launched || !campaign.launched && campaign.launchedOn?.length > 0">{{campaign.launchedOn}}</b> -->
                                                     <b
-                                                        *ngIf="campaign.scheduleType=='NOW' || campaign.scheduleType=='SCHEDULE'">
+                                                        *ngIf="campaign.scheduleType=='NOW'">
                                                         <app-timestamp *ngIf="!refService.isSafariBrowser()"
                                                             [isOnlyDate]="false" [dateAndTime]="campaign.displayTime">
                                                         </app-timestamp>
@@ -191,6 +190,12 @@
                                                         </app-timestamp>
                                                         <span
                                                             *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                                                    </b>
+
+                                                    <b *ngIf="campaign.scheduleType==='SCHEDULE'">
+                                                        <span>{{campaign.campaignScheduleDateInString}}</span>
+                                                        <br>
+                                                        <span>{{campaign.campaignScheduleTimeInString}}</span>
                                                     </b>
                                                 </span>
                                             </td>
@@ -543,9 +548,15 @@
                                                     </ng-container>
                                                     </span>
                                                     <span title="Upload date"><b>
-                                                            <span
-                                                                *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
-                                                    <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                                                       <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
+                                                        <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
+                                                        <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>
+                                                       </ng-container> 
+                                                       <ng-container *ngIf="campaign.scheduleType==='SCHEDULE'">
+                                                        <span>{{campaign.campaignScheduleDateInString}}</span>
+                                                        <br>
+                                                        <span>{{campaign.campaignScheduleTimeInString}}</span>
+                                                       </ng-container>
                                                     </b>
                                                     </span>
                                                 </h6>

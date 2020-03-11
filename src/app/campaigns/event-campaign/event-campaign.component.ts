@@ -36,6 +36,7 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { EnvService } from 'app/env.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { Category as folder } from 'app/dashboard/models/category';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
 import { Form } from 'app/forms/models/form';
@@ -195,7 +196,12 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  isValidCrmOption = true;
 
  senderMergeTag:SenderMergeTag = new SenderMergeTag();
-
+ public selectedFolderIds= [];
+ public emailTemplateFolders:Array<folder>;
+ public folderFields: any;
+ public folderFilterPlaceHolder: string = 'Select folder';
+ folderErrorCustomResponse: CustomResponse = new CustomResponse();
+ isFolderSelected = true;
 
 
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
@@ -460,6 +466,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.ckeConfig = {
       allowedContent: true,
     };
+
+    this.listEmailTemplatesFolders();
     
   }
   ngAfterViewInit() {
@@ -2509,6 +2517,38 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
       }
     }
+
+
+    showFolderFilterPopup(){
+        $('#filterPopup').modal('show');
+        }
+    
+    closeFilterPopup(){
+        $('#filterPopup').modal('hide');
+    }
+    
+    applyFilter(){
+        if(this.selectedFolderIds.length>0){
+            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            this.emailTemplatesPagination.categoryFilter = true;
+        }else{
+            this.emailTemplatesPagination.categoryIds = [];
+            this.emailTemplatesPagination.categoryFilter = false;
+        }
+        this.loadEmailTemplates(this.emailTemplatesPagination);
+        this.closeFilterPopup();
+    }
+    
+    listEmailTemplatesFolders(){
+        this.folderFields = { text: 'name', value: 'id' };
+        this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId,'email').
+        subscribe(data =>{
+           this.emailTemplateFolders = data;
+        },error =>{
+            this.folderErrorCustomResponse = new CustomResponse();
+            this.folderErrorCustomResponse = new CustomResponse('ERROR', this.referenceService.serverErrorMessage, true);
+        }, () => this.logger.log("listEmailTemplatesFolders()"));
+      }
 
 
 }

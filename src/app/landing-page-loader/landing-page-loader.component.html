@@ -1,5 +1,17 @@
-<div *ngFor="let number of [0,1,2]" class="col-md-4">
-  <div class="grid-box">
-    <div class="text-input__loading--line rect-box"></div>
-  </div>
-</div>
+<ng-container *ngIf="maxBoxLength==3">
+    <div *ngFor="let number of [0,1,2]" class="col-md-4">
+        <div class="grid-box">
+            <div class="text-input__loading--line rect-box"></div>
+        </div>
+    </div>
+
+</ng-container>
+
+<ng-container *ngIf="maxBoxLength==4">
+    <div *ngFor="let number of [0,1,2,3]" class="col-md-3">
+        <div class="grid-box">
+            <div class="text-input__loading--line rect-box"></div>
+        </div>
+    </div>
+
+</ng-container>
