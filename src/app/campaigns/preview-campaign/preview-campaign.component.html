@@ -35,7 +35,14 @@
                                     <ng-container *ngIf="campaign.campaignScheduleType !== 'SCHEDULE'; else schedule">on </ng-container>
                                     <ng-template #schedule>for </ng-template>
                                     <ng-container *ngIf="campaign.campaignScheduleType === 'SAVE'; else launchTime">{{campaign.startTime | date:'mediumDate'}}, {{campaign.startTime | date:'shortTime'}}</ng-container>
-                                    <ng-template #launchTime>{{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}</ng-template>
+                                    <ng-template #launchTime>
+                                    <ng-container *ngIf="campaign.campaignScheduleType == 'SCHEDULE'">
+                                    	{{campaign.campaignScheduleDateInString}}  {{campaign.campaignScheduleTimeInString}}
+                                    </ng-container>
+                                    <ng-container *ngIf="campaign.campaignScheduleType !== 'SCHEDULE'">
+                                    {{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}
+                                    </ng-container>
+                                    </ng-template>
                                     <span *ngIf="previewCampaignType ==='EVENT'">{{ campaign?.launchTimeInString}}</span>
                                 </h6>
                             </div>
