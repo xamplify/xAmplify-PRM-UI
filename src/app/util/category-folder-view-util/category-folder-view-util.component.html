@@ -73,14 +73,13 @@
             </div>
         </ng-container>
     </div>
-    <ng-container *ngIf="!httpRequestLoader.isServerError && !httpRequestLoader.isLoading ">
-        <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+    
+    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
         </div>
         <!-- End of 24 -->
         <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
             <strong>No Categories Found.</strong>
         </div>
-    </ng-container>
 
 </div>
