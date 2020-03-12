@@ -141,6 +141,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     exisitingCategories = new Array<Category>();
     isOnlyPartner = false;
     isPartnerTeamMember = false;
+    isFolderPreview = false;
+    folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
+    hasItems = false;
+    folderItemsData:any;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1777,6 +1781,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             );
     }
 
+    previewItems(category:Category){
+        this.hasItems = false;
+        this.folderItemsData = {};
+        this.isFolderPreview = true;
+        this.referenceService.startLoader(this.folderPreviewLoader);
+        this.userService.getItemsCount(category.id)
+        .subscribe(
+            (response: any) => {
+                this.folderItemsData = response.data;
+                this.folderItemsData.selectedCategory = category.name;
+                this.folderItemsData.categoryId = category.id;
+                this.referenceService.stopLoader(this.folderPreviewLoader);
+            },
+            (error: string) => {
+                this.referenceService.stopLoader(this.folderPreviewLoader);
+                this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+            }
+        );
+    }
 
+    goToFolder(categoryId:number,type:string){
+        this.ngxloading = true;
+        if("e"==type){
+            this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
+        }else if("f"==type){
+            this.router.navigate(['/home/forms/manage/'+categoryId]);
+        }else if("p"==type){
+            this.router.navigate(['/home/pages/manage/'+categoryId]);
+        }
+    }
 
 }
