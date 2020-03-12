@@ -50,6 +50,7 @@ import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-analytics/save-geo-location-analytics.component';
 import { SendCampaignsComponent } from './send-campaigns/send-campaigns.component';
 import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-util/category-folder-view-util.component';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 
 
@@ -62,7 +63,7 @@ import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-ut
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
         TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
         PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
-        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent, SendCampaignsComponent,CategoryFolderViewUtilComponent],
+        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent, SendCampaignsComponent,CategoryFolderViewUtilComponent,AddFolderModalPopupComponent],
 
 
     exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
@@ -71,7 +72,7 @@ import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-ut
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
 
         ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent,SendCampaignsComponent,CategoryFolderViewUtilComponent]
+        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent,SendCampaignsComponent,CategoryFolderViewUtilComponent,AddFolderModalPopupComponent]
 
 })
 export class CommonComponentModule { }
