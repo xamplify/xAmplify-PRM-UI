@@ -288,16 +288,18 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             mergeTags.push( { name: 'Vendor EmailId', value: '{{vendor_emailId}}' } );
         }
 
-
+        
 
         if ( refService.defaultPlayerSettings != null ) {
             var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
+            var roleHash = self.authenticationService.vendorRoleHash;
             var beeConfig = {
                 uid: beeUserId,
                 container: 'bee-plugin-container',
                 autosave: 15,
                 language: 'en-US',
                 mergeTags: mergeTags,
+                roleHash: roleHash,
                 onSave: function( jsonFile, htmlFile ) {
                     save( jsonFile, htmlFile );
                 },

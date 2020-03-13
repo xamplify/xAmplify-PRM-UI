@@ -61,6 +61,8 @@ export class AuthenticationService {
     formValues = [];
     isPartnerRsvp = false;
     logedInCustomerCompanyNeme: string;
+    vendorRoleHash = "";
+    partnerRoleHash  = "";
 
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;
@@ -73,6 +75,8 @@ export class AuthenticationService {
         this.clientId = this.envService.clientId;
         this.clientSecret = this.envService.clientSecret;
         this.imagesHost = this.envService.imagesHost;
+        this.vendorRoleHash = this.envService.vendorRoleHash;
+        this.partnerRoleHash = this.envService.partnerRoleHash;
     }
 
     getOptions(): RequestOptions {
