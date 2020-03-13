@@ -34,8 +34,8 @@
   
   window.__env.clientId = "6639d69f-523f-44ca-b809-a00daa26b367";
   window.__env.clientSecret = "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
-  window._env.vendorRoleHash = "xvendorrole";
-  window._env.partnerRoleHash = "xpartnerrole";
+  window.__env.vendorRoleHash = "xvendorrole";
+  window.__env.partnerRoleHash = "xpartnerrole";
 
   //
   

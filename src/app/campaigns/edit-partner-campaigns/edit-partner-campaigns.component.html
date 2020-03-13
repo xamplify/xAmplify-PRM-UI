@@ -21,6 +21,8 @@
             </ul>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
+        <ng-container *ngIf="!isEditPartnerTemplate">
         <div class="portlet light shadow">
             <div class="portlet-title">
                 <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
@@ -176,7 +178,7 @@
                             <legend>
                                 Selected email template
                             </legend>
-                            <div class="row m0" (click)="previewEmailTemplate(campaign.emailTemplate)" style="cursor: pointer;">
+                            <div class="row m0"  style="cursor: pointer;">
                                 <div class="col-xs-3">
                                     <img src="{{campaign.emailTemplate.subject}}" height="100">
                                 </div>
@@ -194,32 +196,10 @@
                                             <span *ngIf="campaign.emailTemplate.createdBy?.length>15">...</span>
                                         </h5>
                                     </a>
+                                    <br>
+                                    <a class="pull-right btn btn-primary btn-sm" (click)="previewEmailTemplate(campaign.emailTemplate)">  <i class="fa fa-eye"></i> Preview </a>
+                                    <a  class="pull-right btn btn-primary btn-sm" style="margin-right: 6px" (click)="editPartnerTemplate(campaign.emailTemplate)"> <i class="fa fa-edit"></i> Edit </a>
                                 </div>
-                                <!--  <div class="col-xs-1">
-                 <ng-container class="pull-right">
-				         <div class="btn-group pull-right" id="download-template" (click)="$event.stopPropagation()">
-								<span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop"></span>
-								<span  data-toggle="dropdown" title="Download"></span>
-								<ul class="dropdown-menu pull-right">
-									<li>
-									  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'html')" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'" 
-	                    	 							data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" >
-	                    	 							<i class="fa fa-file" style="width: 30px;"></i>
-											 Download Html
-										</a>
-									</li>
-									<li>
-									  	<a (click)="referenceService.downloadTemplate(campaign.campaignId,'pdf')"
-										*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || campaign.campaignType === 'EVENT'"
-										data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button">
-										<i class="fa fa-file-pdf-o" style="width: 30px;"></i>
-										Download Pdf
-										</a>
-									</li>
-								</ul>
-						</div>
-                        </ng-container>
-                </div> -->
                             </div>
                         </fieldset>
 
@@ -701,9 +681,25 @@
                 </form>
             </div>
         </div>
+        </ng-container>
+        <ng-container *ngIf="isEditPartnerTemplate">
+            <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="portlet light shadow">
+                <div class="portlet-title">
+                    <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
+                    <a class="close-circle pull-right" data-dismiss="modal" (click)="isEditPartnerTemplate=false">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+                <div class="portlet-body clearfix">
+                    <div id="partner-template-bee-container"></div>
+                </div></div>
+        </ng-container>
     </div>
     <app-scroll-top></app-scroll-top>
 </div>
+
+
 
 <app-preview-video *ngIf="videoFile" [videoFile]="videoFile" (notifyParent)="closePreviewVideoModal($event)"></app-preview-video>
 <!--email template preview-->
