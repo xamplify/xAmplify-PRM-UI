@@ -29,7 +29,6 @@ import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { ConsoleLoggerService } from 'app/error-pages/services/console-logger.service';
-import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { User } from '../../core/models/user';
 
 declare var  BeePlugin,$,flatpickr,CKEDITOR,require,swal:any;
@@ -173,7 +172,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     allUsersCount: number;
     
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
-    @ViewChild('createBeeTemplateComponent') createBeeTemplateComponent: CreateBeeTemplateComponent;
     isEditPartnerTemplate = false;
     start: any;
     pressed: boolean;
@@ -1341,122 +1339,10 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   setLinkOpened(event){
       this.campaign.linkOpened = event;
   }
-  editPartnerTemplate(emailTemplate:EmailTemplate){
-      if(emailTemplate.jsonBody!=undefined){
-        this.isEditPartnerTemplate = true;
-        var request = function (method, url, data, type, callback) {
-            var req = new XMLHttpRequest();
-            req.onreadystatechange = function () {
-              if (req.readyState === 4 && req.status === 200) {
-                var response = JSON.parse(req.responseText);
-                callback(response);
-              } else if (req.readyState === 4 && req.status !== 200) {
-                console.error('Access denied, invalid credentials. Please check you entered a valid client_id and client_secret.');
-              }
-            };
-        
-            req.open(method, url, true);
-            if (data && type) {
-              if (type === 'multipart/form-data') {
-                var formData = new FormData();
-                for (var key in data) {
-                  formData.append(key, data[key]);
-                }
-                data = formData;
-              }
-              else {
-                req.setRequestHeader('Content-type', type);
-              }
-            }
-        
-            req.send(data);
-          };
 
-          let self = this;
-          var save = function (jsonContent: string, htmlContent: string) {
-            self.partnerTemplateLoader = true;
-            emailTemplate.jsonBody = jsonContent;
-            emailTemplate.body = htmlContent;
-            emailTemplate.user = new User();
-            emailTemplate.user.userId = self.loggedInUserId;
-            self.updatePartnerTemplate(emailTemplate);
-          };
-
-
-          var beeUserId = "bee-370";
-          var beeConfig = {
-              uid: beeUserId,
-              container: 'partner-template-bee-container',
-              autosave: 15,
-              language: 'en-US',
-              onSave: function( jsonFile, htmlFile ) {
-                  save( jsonFile, htmlFile );
-              },
-              onSaveAsTemplate: function( jsonFile ) { // + thumbnail?
-                  //save('newsletter-template.json', jsonFile);
-              },
-              onAutoSave: function( jsonFile ) { // + thumbnail?
-                  console.log( new Date().toISOString() + ' autosaving...' );
-                  window.localStorage.setItem( 'newsletter.autosave', jsonFile );
-                  
-              },
-              onSend: function( htmlFile ) {
-                  //write your send test function here
-                  console.log( htmlFile );
-              },
-              onError: function( errorMessage ) {
-              }
-          };
-
-          var bee = null;
-          request(
-              'POST',
-              'https://auth.getbee.io/apiauth',
-              'grant_type=password&client_id=' + this.authenticationService.clientId + '&client_secret=' + this.authenticationService.clientSecret + '',
-              'application/x-www-form-urlencoded',
-              function( token: any ) {
-                  BeePlugin.create( token, beeConfig, function( beePluginInstance: any ) {
-                      bee = beePluginInstance;
-                      request(
-                          'GET',
-                          'https://rsrc.getbee.io/api/templates/m-bee',
-                          null,
-                          null,
-                          function( template: any ) {
-                              if(emailTemplate!=undefined){
-                                var body = emailTemplate.jsonBody;
-                                emailTemplate.jsonBody = body;
-                                var jsonBody = JSON.parse( body );
-                                bee.load( jsonBody );
-                                bee.start( jsonBody );
-                              }else{
-                                alert("Unable to load the template");
-                              }
-                          } );
-                  } );
-              } );
-      }else{
-        swal( "", "This template cannot be edited.", "error" );
-
-      }
-      
+  editPartnerTemplate(){
+      this.isEditPartnerTemplate = true;
   }
-
-updatePartnerTemplate(emailTemplate:EmailTemplate){
-    this.emailTemplateService.updatePartnerTemplate(emailTemplate).
-    subscribe(
-        data => {
-            this.isEditPartnerTemplate = false;
-            this.partnerTemplateLoader = false;
-            this.customResponse = new CustomResponse('SUCCESS', 'Template updated successfully', true);
-        },
-        error => {
-            this.partnerTemplateLoader = false;
-            this.referenceService.showSweetAlertErrorMessage(error);
-            },
-        () => console.log( "Email Template Updated" )
-        );
-}
 
   
 }

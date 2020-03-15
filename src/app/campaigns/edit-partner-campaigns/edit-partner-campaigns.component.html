@@ -198,7 +198,7 @@
                                     </a>
                                     <br>
                                     <a class="pull-right btn btn-primary btn-sm" (click)="previewEmailTemplate(campaign.emailTemplate)">  <i class="fa fa-eye"></i> Preview </a>
-                                    <a  class="pull-right btn btn-primary btn-sm" style="margin-right: 6px" (click)="editPartnerTemplate(campaign.emailTemplate)"> <i class="fa fa-edit"></i> Edit </a>
+                                    <a *ngIf="campaign?.emailTemplate?.editPartnerTemplate"  class="pull-right btn btn-primary btn-sm" style="margin-right: 6px" (click)="editPartnerTemplate()"> <i class="fa fa-edit"></i> Edit </a>
                                 </div>
                             </div>
                         </fieldset>
@@ -692,7 +692,7 @@
                     </a>
                 </div>
                 <div class="portlet-body clearfix">
-                    <div id="partner-template-bee-container"></div>
+                    <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
                 </div></div>
         </ng-container>
     </div>
