@@ -38,4 +38,8 @@ export class EmailTemplate {
 	source:EmailTemplateSource;
 	categoryId:number;
 	editPartnerTemplate = false;
+	vendorCompanyLogoPath = "";
+	partnerCompanyLogoPath = "";
+	vendorCompanyId:number = 0;
+	userId:number = 0;
 }
