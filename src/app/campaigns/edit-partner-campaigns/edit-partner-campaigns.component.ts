@@ -1341,7 +1341,17 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   }
 
   editPartnerTemplate(){
-      this.isEditPartnerTemplate = true;
+      this.isEditPartnerTemplate = false;
+      if(this.campaign.emailTemplate.vendorCompanyId!=undefined && this.campaign.emailTemplate.vendorCompanyId>0){
+          if(this.campaign.emailTemplate.jsonBody!=undefined){
+              this.isEditPartnerTemplate = true;
+          }else{
+              this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" );
+          }
+      }else{
+          this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" );
+         
+      }
   }
 
   

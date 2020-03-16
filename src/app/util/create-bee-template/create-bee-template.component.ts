@@ -34,6 +34,7 @@ export class CreateBeeTemplateComponent implements OnInit {
 
 editPartnerTemplate() {
   let emailTemplate = this.partnerEmailTemplate;
+  console.log(emailTemplate);
   if(emailTemplate.vendorCompanyId!=undefined && emailTemplate.vendorCompanyId>0){
     if(emailTemplate.jsonBody!=undefined){
       var request = function (method, url, data, type, callback) {
@@ -156,13 +157,13 @@ editPartnerTemplate() {
                               bee.load( jsonBody );
                               bee.start( jsonBody );
                             }else{
-                              alert("Unable to load the template");
+                              this.referenceService.showSweetAlert( "", "Unable to load the template", "error" );
                             }
                         } );
                 } );
             } );
 }else{
-this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" )
+this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" );
 }
   }else{
     this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" )
