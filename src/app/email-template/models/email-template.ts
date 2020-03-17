@@ -37,4 +37,9 @@ export class EmailTemplate {
 	hubSpotEmailTemplate: { hubspot_id: number; };
 	source:EmailTemplateSource;
 	categoryId:number;
+	editPartnerTemplate = false;
+	vendorCompanyLogoPath = "";
+	partnerCompanyLogoPath = "";
+	vendorCompanyId:number = 0;
+	userId:number = 0;
 }

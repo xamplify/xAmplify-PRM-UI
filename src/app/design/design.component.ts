@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { AuthenticationService } from '../core/services/authentication.service';
 import { XtremandLogger } from '../error-pages/xtremand-logger.service';
-
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { CustomResponse } from 'app/common/models/custom-response';
 @Component({
   selector: 'app-design',
   templateUrl: './design.component.html',
@@ -13,7 +14,10 @@ export class DesignComponent implements OnInit {
     form:boolean = false;
     landingPage:boolean = false;
     landingPageDescription:string = "";
-  constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService) { }
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    customResponse:CustomResponse = new CustomResponse();
+  constructor(public logger: XtremandLogger,public authenticationService: AuthenticationService) {
+   }
 
   ngOnInit() {
       this.landingPageDescription = "Create custom  pages with xAmplify that convert more visitors than any other website.";
@@ -41,5 +45,11 @@ export class DesignComponent implements OnInit {
           () => this.logger.info("Finished getModuleAccess()")
       );
   }
+  openCreateFolderPopup(){
+      this.addFolderModalPopupComponent.openPopup();
+  }
 
+  showSuccessMessage(message:any){
+    this.customResponse = new CustomResponse('SUCCESS',message, true);
+  }
 }

@@ -13,7 +13,7 @@ import { ContentManagement } from 'app/videos/models/content-management';
 
 @Injectable()
 export class EmailTemplateService {
-
+   
 
     emailTemplate:EmailTemplate;
     public pagination: Pagination;
@@ -182,6 +182,13 @@ export class EmailTemplateService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    updatePartnerTemplate(emailTemplate: EmailTemplate) {
+        return this.http.post(this.URL + `email-template/updatePartnerTemplate/?access_token=${this.authenticationService.access_token}`, emailTemplate)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
 
     importMarketoEmailTemplates(userId: number,body: any[]): any
     {

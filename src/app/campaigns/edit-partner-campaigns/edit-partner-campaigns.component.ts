@@ -29,8 +29,9 @@ import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { ConsoleLoggerService } from 'app/error-pages/services/console-logger.service';
+import { User } from '../../core/models/user';
 
-declare var  $,flatpickr,CKEDITOR,require:any;
+declare var  BeePlugin,$,flatpickr,CKEDITOR,require,swal:any;
 var moment = require('moment-timezone');
 
 @Component({
@@ -171,10 +172,13 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     allUsersCount: number;
     
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    isEditPartnerTemplate = false;
     start: any;
     pressed: boolean;
     startX: any;
     startWidth: any;
+    companyProfileImages:string[]=[];
+    partnerTemplateLoader = false;
 
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
@@ -1238,6 +1242,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       this.isListView = !this.referenceService.isGridView;
       this.validateLaunchForm();
   }
+
   isEven(n) {
     if(n % 2 === 0){ return true;}
       return false;
@@ -1333,6 +1338,20 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   
   setLinkOpened(event){
       this.campaign.linkOpened = event;
+  }
+
+  editPartnerTemplate(){
+      this.isEditPartnerTemplate = false;
+      if(this.campaign.emailTemplate.vendorCompanyId!=undefined && this.campaign.emailTemplate.vendorCompanyId>0){
+          if(this.campaign.emailTemplate.jsonBody!=undefined){
+              this.isEditPartnerTemplate = true;
+          }else{
+              this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" );
+          }
+      }else{
+          this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" );
+         
+      }
   }
 
   

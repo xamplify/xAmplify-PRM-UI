@@ -65,3 +65,16 @@ span.ui-column-resizer {
 .alert-top-padding-xamplify {
     margin-top: 10px;
 }
+
+.required {
+	color: red;
+}
+
+.add-button-xamplify{
+	color: white;
+    background-color: #008fd5;
+}
+
+.add-button-xamplify:hover {
+  background-color: #3f51b5;
+}

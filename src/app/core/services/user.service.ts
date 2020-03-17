@@ -318,6 +318,12 @@ export class UserService {
         .catch( this.handleError );
     }
 
+    getItemsCount(categoryId:number){
+        return this.http.get(this.CATEGORIES_URL+"getItemsCountDetailsByCategoryId/"+categoryId+"?access_token=" + this.authenticationService.access_token,"")
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
     
 
     private handleServerError(error: any) {

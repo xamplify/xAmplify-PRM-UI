@@ -124,7 +124,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     categoryPagination: Pagination = new Pagination();
     categorySortOption: SortOption = new SortOption();
     isAddCategory = false;
-    categoryModalTitle = "Add a New Folder";
+    categoryModalTitle = "Enter Folder Details";
     formErrorClass = "form-group form-error";
     defaultFormClass = "form-group";
     categoryNameErrorMessage = "";
@@ -139,7 +139,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isDeleteCategory: any;
     selectedCategoryIdForTransferItems = 0;
     exisitingCategories = new Array<Category>();
-
+    isOnlyPartner = false;
+    isPartnerTeamMember = false;
+    isFolderPreview = false;
+    folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
+    hasItems = false;
+    folderItemsData:any;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -318,7 +323,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-            this.authenticationService.isOnlyPartner();
+            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+            this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
             if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
                 if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
@@ -1580,7 +1586,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     addCategory() {
         this.isAddCategory = true;
         this.category = new Category();
-        this.categoryModalTitle = 'Add a New Folder';
+        this.categoryModalTitle = 'Enter Folder Details';
         this.categoyButtonSubmitText = "Save";
         this.listExistingCategoryNames();
     }
@@ -1775,6 +1781,35 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             );
     }
 
+    previewItems(category:Category){
+        this.hasItems = false;
+        this.folderItemsData = {};
+        this.isFolderPreview = true;
+        this.referenceService.startLoader(this.folderPreviewLoader);
+        this.userService.getItemsCount(category.id)
+        .subscribe(
+            (response: any) => {
+                this.folderItemsData = response.data;
+                this.folderItemsData.selectedCategory = category.name;
+                this.folderItemsData.categoryId = category.id;
+                this.referenceService.stopLoader(this.folderPreviewLoader);
+            },
+            (error: string) => {
+                this.referenceService.stopLoader(this.folderPreviewLoader);
+                this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+            }
+        );
+    }
 
+    goToFolder(categoryId:number,type:string){
+        this.ngxloading = true;
+        if("e"==type){
+            this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
+        }else if("f"==type){
+            this.router.navigate(['/home/forms/manage/'+categoryId]);
+        }else if("p"==type){
+            this.router.navigate(['/home/pages/manage/'+categoryId]);
+        }
+    }
 
 }

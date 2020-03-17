@@ -202,7 +202,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  public folderFilterPlaceHolder: string = 'Select folder';
  folderErrorCustomResponse: CustomResponse = new CustomResponse();
  isFolderSelected = true;
-
+ isEditPartnerTemplate = false;
 
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
@@ -2550,5 +2550,18 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }, () => this.logger.log("listEmailTemplatesFolders()"));
       }
 
-
+editPartnerTemplate(){
+    this.isEditPartnerTemplate = false;
+    if(this.eventCampaign.emailTemplate.vendorCompanyId!=undefined && this.eventCampaign.emailTemplate.vendorCompanyId>0){
+        if(this.eventCampaign.emailTemplate.jsonBody!=undefined){
+            this.isEditPartnerTemplate = true;
+        }else{
+            this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" );
+        }
+    }else{
+        this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" );
+       
+    }
+    
+}
 }
