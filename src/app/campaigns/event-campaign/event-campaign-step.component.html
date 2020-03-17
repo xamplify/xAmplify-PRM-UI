@@ -36,7 +36,7 @@ a.disabled {
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="page-bar" [hidden]="loader">
-	<ng-container *ngIf="!isEditPartnerTemplate">
+	<div [hidden]="isEditPartnerTemplate">
 		<div class="container"
 			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
@@ -1605,8 +1605,8 @@ a.disabled {
           </div>
        <!--   end step four launch   -->
 		</div>
-	</ng-container>
-	<ng-container *ngIf="isEditPartnerTemplate">
+	</div>
+	<div [hidden]="!isEditPartnerTemplate">
 		<div class="portlet light shadow">
 			<div class="portlet-title" style="display: block;">
 				<h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
@@ -1614,10 +1614,10 @@ a.disabled {
 					<i class="fa fa-times"></i>
 				</a>
 			</div>
-			<div class="portlet-body clearfix">
-				<app-create-bee-template [partnerEmailTemplate]="eventCampaign.emailTemplate"></app-create-bee-template>
+			<div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate">
+				<app-create-bee-template  [partnerEmailTemplate]="eventCampaign.emailTemplate"></app-create-bee-template>
 			</div></div>
-	</ng-container>
+		</div>
 	
 		
 	</div>

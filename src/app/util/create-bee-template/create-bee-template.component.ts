@@ -34,7 +34,6 @@ export class CreateBeeTemplateComponent implements OnInit {
 
 editPartnerTemplate() {
   let emailTemplate = this.partnerEmailTemplate;
-  console.log(emailTemplate);
   if(emailTemplate.vendorCompanyId!=undefined && emailTemplate.vendorCompanyId>0){
     if(emailTemplate.jsonBody!=undefined){
       var request = function (method, url, data, type, callback) {

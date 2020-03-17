@@ -22,7 +22,7 @@
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
-        <ng-container *ngIf="!isEditPartnerTemplate">
+        <div [hidden]="isEditPartnerTemplate">
         <div class="portlet light shadow">
             <div class="portlet-title">
                 <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Redistribute a Campaign</h4>
@@ -681,8 +681,8 @@
                 </form>
             </div>
         </div>
-        </ng-container>
-        <ng-container *ngIf="isEditPartnerTemplate">
+    </div>
+        <div [hidden]="!isEditPartnerTemplate">
             <ngx-loading [show]="partnerTemplateLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="portlet light shadow">
                 <div class="portlet-title">
@@ -691,10 +691,10 @@
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
-                <div class="portlet-body clearfix">
+                <div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate">
                     <app-create-bee-template [partnerEmailTemplate]="campaign.emailTemplate"></app-create-bee-template>
                 </div></div>
-        </ng-container>
+            </div>
     </div>
     <app-scroll-top></app-scroll-top>
 </div>
