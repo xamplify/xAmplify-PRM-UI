@@ -878,19 +878,26 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					(data: any) => {
 						data = data;
 						this.allUsers = this.contactsByType.allContactsCount;
-						console.log("update Contacts ListUsers:" + data);
-						if (!this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+						if(data.statusCode==200){
+							$('#contactListDiv_' + this.selectedContactListId).remove();
+						    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+						    this.contactService.deleteUserSucessMessage = true;
+							this.refresh();
+						}else{
+							if (!this.isPartner) {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+							} else {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							}
+							$.each(this.selectedContactListIds, function(index: number, value: any) {
+								$('#row_' + value).remove();
+								console.log(index + "value" + value);
+							});
+							this.checkingLoadContactsCount = true;
+							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+							this.selectedContactListIds.length = 0;
 						}
-						$.each(this.selectedContactListIds, function(index: number, value: any) {
-							$('#row_' + value).remove();
-							console.log(index + "value" + value);
-						});
-						this.checkingLoadContactsCount = true;
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-						this.selectedContactListIds.length = 0;
+						
 					},
 					(error: any) => {
 						//let body: string = error['_body'];
@@ -929,7 +936,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			}, function(dismiss: any) {
 				console.log('you clicked on option' + dismiss);
 			});
-			
+
 			// if ((this.totalRecords == 1 && this.isDefaultPartnerList == false) || (this.totalRecords == this.selectedContactListIds.length && this.isDefaultPartnerList == false)) {
 			// 	swal({
 			// 		title: 'Are you sure?',
