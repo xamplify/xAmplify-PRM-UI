@@ -318,8 +318,10 @@
 													</td>
 													<td class="hidden-xs">
 													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
-													 <span *ngIf="contactList.publicList">Public</span>
-													<span *ngIf="!contactList.publicList">Private</span> 
+													 <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_public}}">Public</span>
+													<span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_private}}">Private</span> 
 													</h5>
 														</td>
 													<td class="hidden-xs"><app-timestamp

@@ -7,6 +7,9 @@ export class ActionsDescription {
     contact_list_synchronize = 'Synchronize list';
     contact_list_info = 'List Info';
     contact_list_download = 'Download list';
+    contact_list_private = 'This list and subsequent campaigns can only be viewed by you and admins.';
+    contact_list_public = 'This list and subsequent campaigns can be viewed by all team members and admins.';
+    
 
     contact_edit = 'Edit';
     contact_delete = 'Delete'

@@ -209,7 +209,7 @@
                                                     <ng-container *ngIf="campaign.launched">
                                                         <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
-                                                            <span class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
+                                                            <span [class.disablednew]="!campaign.hasAccess" class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
                                                         </a>
 
                                                         <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
@@ -220,12 +220,12 @@
 
                                                         <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
                                                             title="{{actionsDescription.campaign_report}}">
-                                                            <i class="fa fa-line-chart"></i>
+                                                          <span [class.disablednew]="!campaign.hasAccess" ><i class="fa fa-line-chart"></i></span>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container class="pull-right">
                                                         <div class="btn-group pull-right">
-                                                            <span class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown" (click)="checkLastElement(i)"></span><span class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
+                                                            <span [class.disablednew]="!campaign.hasAccess" class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown" (click)="checkLastElement(i)"></span><span class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
 
                                                             <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
                                                                 <li *ngIf="!campaign.launched">
