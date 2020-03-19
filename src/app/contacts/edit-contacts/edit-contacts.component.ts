@@ -880,12 +880,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							$('#contactListDiv_' + contactListId).remove();
 							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
 							this.contactService.deleteUserSucessMessage = true;
-							this.loading  = true;
-							let self = this;
-							setTimeout(function () { 
-								self.refresh();
-							},500);
-							
+							this.goBackToManageList();
 						}else if(data.statusCode==201){
 							this.allUsers = this.contactsByType.allContactsCount;
 							console.log("update Contacts ListUsers:" + data);
@@ -901,7 +896,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 							this.checkingLoadContactsCount = true;
 							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 							this.selectedContactListIds.length = 0;
-							this.backToEditContacts();
 						}
 						
 					},
@@ -1880,8 +1874,8 @@ goBackToManageList(){
 							} else {
 								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
 							}
+							this.checkingLoadContactsCount = true
 							this.editContactListLoadAllUsers(this.contactListId, this.pagination);
-							this.backToEditContacts();
 						}else{
 						$('#contactListDiv_' + this.contactListId).remove();
 						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
