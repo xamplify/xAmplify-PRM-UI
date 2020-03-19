@@ -54,6 +54,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
                 pagination.categoryType = 'f';
             }else if(this.moduleType==3){
                 pagination.categoryType = 'l';
+            }else if(this.moduleType==4){
+                pagination.categoryType = 'c';
             }
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(this.pagination)
@@ -119,6 +121,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             this.router.navigate( ['home/forms/manage/' + categoryId] );
         }else if(this.moduleType==3){
             this.router.navigate( ['home/pages/manage/' + categoryId] );
+        }else if(this.moduleType==4){
+            this.router.navigate( ['home/campaigns/manage/' + categoryId] );
         }
         
     }

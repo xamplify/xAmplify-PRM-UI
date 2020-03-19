@@ -78,5 +78,6 @@ export class Campaign {
     publicEventCampaign:boolean = false;
     allowDownload = false;
     sendCampaignToIndividual = false;
+    categoryName = "";
 
 }
