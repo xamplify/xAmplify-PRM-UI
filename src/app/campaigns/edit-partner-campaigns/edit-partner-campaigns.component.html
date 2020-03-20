@@ -276,6 +276,7 @@
                                                                    		<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
 																		<span class="gridHeader">List Name</span>
                                                                     </th>
+                                                                    <th class="text-center"> Type </th>
                                                                     <th class="text-center"> Date Uploaded </th>
                                                                     <th class="text-center"> Preview </th>
                                                                 </tr>
@@ -296,6 +297,13 @@
                                                                     <td class="text-center moreipsis" title="{{contacts.name}}">
                                                                         <span> {{contacts.name}}</span>
                                                                     </td>
+																	<td class="text-center moreipsis"><span
+																		*ngIf="contacts.publicList">Public</span> <span
+																		*ngIf="!contacts.publicList">Private</span></td>
+
+																	<!--  <td class="text-center moreipsis" title="{{contacts.publicList}}">
+                                                                        <span> {{contacts.publicList}}</span>
+                                                                    </td> -->
 
 
                                                                     <td class="text-center sorting_1">
