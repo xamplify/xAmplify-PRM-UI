@@ -581,7 +581,7 @@
                                                             </a>
                                                             <span class="badge" id="notification-list">{{campaign.formsCount}}</span>
                                                         </ng-container>
-                                                        <a *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
+                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||   hasCampaignRole || isOnlyPartner || authenticationService.module.isVendor) && campaign.publicEventAlias?.length>=6 && campaign.campaignType.indexOf('EVENT') > -1 && campaign.publicEventCampaign" data-rel="fancybox-button"
                                                             (click)="openEventUrlModal(campaign)" title="Copy Public Event Url">
                                                             <i class="fa fa-files-o"></i>
                                                         </a>
