@@ -79,5 +79,6 @@ export class Campaign {
     allowDownload = false;
     sendCampaignToIndividual = false;
     categoryName = "";
+    categoryId:number = 0;
 
 }

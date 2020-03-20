@@ -152,6 +152,10 @@
                                                     <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
                                                 </div>
                                             </div>
+
+                                          
+
+
                                             <div class="form-group" *ngIf="!isOnlyPartner" style="margin-top: -12px;">
                                                 <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}"><b>Through
                                                         Partner</b></label>
@@ -237,16 +241,31 @@
                                                     </font>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <!-- <input type="text"  id="email"	placeholder="Email" class="form-control" [(ngModel)]="campaign.email" name="email" (input)="validateEmail(campaign.email);validateForm();validateField('email');" maxlength="200" />
-											<span class="pull-left" *ngIf="!isValidEmail &&campaign.email?.length>0" style="color: red">Invalid Email Id</span> -->
                                                     <select class="form-control" name="campaign.email" [(ngModel)]="campaign.email" style="width: 100%" (change)="setFromName()">
                                                         <option *ngFor="let teamMember of teamMemberEmailIds"
                                                             [ngValue]="teamMember.emailId">
                                                             {{teamMember.emailId}}
                                                         </option>
                                                     </select>
+
                                                 </div>
                                             </div>
+
+                                            <div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
+                                                <label class="control-label col-sm-4">Folder
+                                                    <font style="color: red"><b>*</b>
+                                                    </font>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
+                                                        <option *ngFor="let category of categoryNames"
+                                                            [ngValue]="category.id">
+                                                             {{category.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4">Pre Header<font
                                                         style="color: red"><b>*</b></font></label>

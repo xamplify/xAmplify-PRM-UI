@@ -128,6 +128,9 @@
                                             <h5 class="moreipsis mobile-left" [title]="campaign.companyName">
                                                 <span> From <b>{{campaign.companyName}}</b></span>
                                             </h5>
+                                            <h5 class="moreipsis mobile-left" [title]="campaign.categoryName">
+                                                <span> Folder <b>{{campaign.categoryName}}</b></span>
+                                            </h5>
                                             <h5 class="ellipsis view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</h5>
                                         </td>
                                         <td class="moreipsis custom-center hidden-xs">
