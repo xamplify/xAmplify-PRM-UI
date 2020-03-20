@@ -287,13 +287,11 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  }
 
  listCategories(){
-    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;
-            if(this.eventCampaign.categoryId==undefined || this.eventCampaign.categoryId==0){
-                let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
-                this.eventCampaign.categoryId = categoryIds[0];
-            }
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            this.eventCampaign.categoryId = categoryIds[0];
         },
         error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
         () => this.logger.info( "Finished listCategories()" ) );
@@ -325,7 +323,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        this.eventCampaign.categoryId = this.campaignService.eventCampaign.categoryId;    
         if(this.eventCampaign.dataShare == undefined){
         this.eventCampaign.dataShare = false;
         }
@@ -483,12 +480,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
 
     this.listEmailTemplatesFolders();
     this.listCategories();
+
     
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
       this.detailsTab = true;
-      this.resetTabClass()
+      this.resetTabClass();
   }
 
   ngAfterViewChecked(){
