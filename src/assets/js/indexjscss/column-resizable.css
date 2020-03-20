@@ -78,3 +78,11 @@ span.ui-column-resizer {
 .add-button-xamplify:hover {
   background-color: #3f51b5;
 }
+
+.private-campaign-disabled{
+    border: 1px solid #bdbdbd !important;
+	background: #bdbdbd !important;
+	color: white !important;
+    cursor: not-allowed !important;
+    
+}

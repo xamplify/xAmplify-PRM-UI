@@ -179,7 +179,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     startWidth: any;
     companyProfileImages:string[]=[];
     partnerTemplateLoader = false;
-
+    categoryNames: any;
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -616,6 +616,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
             'subjectLine': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
+            'categoryId':this.campaign.categoryId,
             'preHeader': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
@@ -1241,7 +1242,22 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       } );
       this.isListView = !this.referenceService.isGridView;
       this.validateLaunchForm();
+      this.listCategories();
   }
+
+  listCategories(){
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
+                this.campaign.categoryId = categoryIds[0];
+            }
+           
+        },
+        error => { this.xtremandLogger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+        () => this.xtremandLogger.info( "Finished listCategories()" ) );
+}
 
   isEven(n) {
     if(n % 2 === 0){ return true;}
