@@ -67,6 +67,8 @@ export class EventCampaign {
     
     emailIds = [];
     eventStarted = false;
+    categoryId:number = 0;
+    categoryName:string = "";
 
 
     constructor() {

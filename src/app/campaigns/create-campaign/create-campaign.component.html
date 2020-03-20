@@ -153,10 +153,23 @@
                                                 </div>
                                             </div>
 
-                                          
+                                            <div class="form-group" *ngIf="campaignType!='sms'">
+                                                <label class="control-label col-sm-4">Folder
+                                                    <font style="color: red"><b>*</b>
+                                                    </font>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
+                                                        <option *ngFor="let category of categoryNames"
+                                                            [ngValue]="category.id">
+                                                             {{category.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
 
-                                            <div class="form-group" *ngIf="!isOnlyPartner" style="margin-top: -12px;">
+                                            <div class="form-group" *ngIf="!isOnlyPartner">
                                                 <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}"><b>Through
                                                         Partner</b></label>
                                                 <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}">Through
@@ -251,20 +264,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4">Folder
-                                                    <font style="color: red"><b>*</b>
-                                                    </font>
-                                                </label>
-                                                <div class="col-sm-8">
-                                                    <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
-                                                        <option *ngFor="let category of categoryNames"
-                                                            [ngValue]="category.id">
-                                                             {{category.name}}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                          
 
                                             <div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
                                                 <label class="control-label col-sm-4">Pre Header<font
