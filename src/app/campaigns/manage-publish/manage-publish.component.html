@@ -598,7 +598,7 @@
                                                             <b style="color: white">{{campaign.redistributedCount}}</b>
                                                         </a>
 
-                                                        <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right" title="{{actionsDescription.campaign_report}}">
+                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right" title="{{actionsDescription.campaign_report}}">
                                                             <i class="fa fa-line-chart"></i>
                                                         </a>
                                                         <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
@@ -610,7 +610,7 @@
                                                         </a>
 
                                                     </ng-container>
-                                                    <span *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
+                                                    <span [class.disablednew]="!campaign.hasAccess" *ngIf="!campaign.showCancelButton || campaign.vendorCampaignDeleted ">
                                                         <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip"
                                                             data-placement="top" title="Preview">
                                                             <i class="fa fa-eye mr5"></i>
