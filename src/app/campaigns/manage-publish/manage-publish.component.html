@@ -589,7 +589,7 @@
                                                              data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
                                                             <i class="fa fa-reply-all"></i>
                                                             </a> -->
-                                                        <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                                             title="Invite More">
                                                             <i class="fa fa-users"></i>
                                                         </a>
