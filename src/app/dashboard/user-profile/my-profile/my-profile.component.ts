@@ -1801,15 +1801,20 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-    goToFolder(categoryId:number,type:string){
-        this.ngxloading = true;
-        if("e"==type){
-            this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
-        }else if("f"==type){
-            this.router.navigate(['/home/forms/manage/'+categoryId]);
-        }else if("p"==type){
-            this.router.navigate(['/home/pages/manage/'+categoryId]);
+    goToFolder(categoryId:number,type:string,count:number){
+        if(count>0){
+            this.ngxloading = true;
+            if("e"==type){
+                this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
+            }else if("f"==type){
+                this.router.navigate(['/home/forms/manage/'+categoryId]);
+            }else if("p"==type){
+                this.router.navigate(['/home/pages/manage/'+categoryId]);
+            }else if("c"==type){
+                this.router.navigate(['/home/campaigns/manage/'+categoryId]);
+            }
         }
+        
     }
 
 }

@@ -260,7 +260,7 @@
                                     <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
                                     </li>
-                                    <li *ngIf="!isOnlyPartner && !isPartnerTeamMember" [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
+                                    <li  [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
                                         <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
                                     </li>
                                 </ul>
@@ -853,39 +853,65 @@
                                             <table class='table tgrid table-hover table-sm'>
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-center">Module</th>
-                                                        <th class="text-center">Count</th>
-                                                        <th class="text-center">Preview</th>
+                                                        <th>Module</th>
+                                                        <th>Count</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="text-center">Email Templates</td>
-                                                        <td class="text-center">{{folderItemsData.emailTemplateCount}}</td>
-                                                        <td class="text-center">
-                                                            <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="goToFolder(folderItemsData.categoryId,'e')">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
+                                                    <tr [className]="folderItemsData?.emailTemplateCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'"  (click)="goToFolder(folderItemsData.categoryId,'e',folderItemsData.emailTemplateCount)">
+                                                        <td>
+                                                            <h5 class="xamplify-folder-banner">Email Templates</h5>
+                                                            <img class="img-class-list" src="assets/images/email-template-folder-preview.png">
                                                         </td>
+                                                        <td>
+                                                            <div  class="override-actions">
+                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
+                                                                   <span [className]="folderItemsData?.emailTemplateCount>0 ? 'circled-number' : ' circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.emailTemplateCount}}</b></span>
+                                                               </a>
+                                                            </div >
+                                                        </td> 
                                                     </tr>
-                                                    <tr>
-                                                        <td class="text-center">Forms</td>
-                                                        <td class="text-center">{{folderItemsData.formCount}}</td>
-                                                        <td class="text-center">
-                                                            <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="goToFolder(folderItemsData.categoryId,'f')">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
+                                                    <tr [className]="folderItemsData?.formCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'"  (click)="goToFolder(folderItemsData.categoryId,'f',folderItemsData.formCount)">
+                                                        <td> 
+                                                            <h5 class="xamplify-folder-banner">Forms</h5>
+                                                            <img class="img-class-list" src="assets/images/form.png">
+                                                        </td>
+                                                        <td>
+                                                            <div class="override-actions">
+                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
+                                                                    <span [className]="folderItemsData?.formCount>0 ? 'circled-number' : 'circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.formCount}}</b></span>
+                                                                </a>
+                                                            </div>
+                                                        </td> 
+                                                       
+                                                    </tr>
+                                                    <tr [className]="folderItemsData?.pageCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(folderItemsData.categoryId,'p',folderItemsData.pageCount)">
+                                                        <td>
+                                                            <h5 class="xamplify-folder-banner">Pages</h5>
+                                                            <img class="img-class-list" src="assets/images/page-folder-preview.png">
+                                                        </td>
+                                                        <td>
+                                                            <div class="override-actions">
+                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
+                                                                    <span [className]="folderItemsData?.pageCount>0 ? 'circled-number' : ' circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.pageCount}}</b></span>
+                                                                </a>
+                                                            </div>
+                                                        </td> 
+                                                    </tr>
 
+                                                    <tr [className]="folderItemsData?.campaignCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(folderItemsData.categoryId,'c',folderItemsData.campaignCount)">
+                                                        <td>
+                                                            <h5 class="xamplify-folder-banner">Campaigns</h5>
+                                                            <img class="img-class-list" src="assets/images/campaign-folder-preview.png">
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="text-center">Pages</td>
-                                                        <td class="text-center">{{folderItemsData.pageCount}}</td>
-                                                        <td class="text-center">
-                                                            <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="goToFolder(folderItemsData.categoryId,'p')">
-                                                                <i class="fa fa-eye"></i>
-                                                            </a>
-                                                        </td>
+                                                        <td>
+                                                            <div class="override-actions">
+                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
+                                                                    <span [className]="folderItemsData?.campaignCount>0 ? 'circled-number' : 'circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.campaignCount}}</b></span>
+                                                                </a>
+                                                            </div>
+                                                        </td> 
+                                                        
                                                     </tr>
                                                 </tbody>
                                             </table>

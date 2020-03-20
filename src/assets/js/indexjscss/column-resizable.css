@@ -86,3 +86,52 @@ span.ui-column-resizer {
     cursor: not-allowed !important;
     
 }
+
+.img-class-list{
+	height: 80px;
+    width: auto;
+    margin: 0;
+    background: #f2f4f9;
+    border: solid 1px #008fd5;
+    border-radius: 1px;
+}
+.img-class{
+	height: 80px;
+    width: auto;
+    margin: 0;
+}
+
+.xamplify-folder-banner{
+background-color: #00a6e8;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    width: 158px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 0 0;
+}
+
+.xamplify-cursor-pointer{
+	cursor: pointer;
+}
+
+.actions-block i, .circled-number {
+    border: 1px solid #5bb2f5;
+    color: #5bb2f5;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px !important;
+    vertical-align: middle;
+    margin-right: 7px;
+    font-size: 13px !important;
+}
+
+.circled-number {
+    display: inline-block;
+}
+.xampify-cursor-not-allowed{
+	cursor: not-allowed;
+}
