@@ -234,7 +234,7 @@
                                                     </ng-container>
                                                     <ng-container class="pull-right">
                                                         <div class="btn-group pull-right">
-                                                            <span [class.disablednew]="!campaign.hasAccess" class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown" (click)="checkLastElement(i)"></span><span class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
+                                                            <span [class.disablednew]="!campaign.hasAccess" class="glyphicon glyphicon-cog dropdown-toggle gearDropdownMenu" data-toggle="dropdown" (click)="checkLastElement(i)"></span><span [class.disablednew]="!campaign.hasAccess" class="caret dropdown-toggle caretDropdownMenu" data-toggle="dropdown"></span>
 
                                                             <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
                                                                 <li *ngIf="!campaign.launched">
