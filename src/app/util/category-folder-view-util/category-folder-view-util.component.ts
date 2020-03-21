@@ -63,6 +63,10 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             if(teamMemberId!=undefined){
                 pagination.teamMemberId = teamMemberId;
             }
+            let partnerCompanyId = this.moduleType['partnerCompanyId'];
+            if(partnerCompanyId!=undefined){
+                pagination.partnerCompanyId = partnerCompanyId;
+            }
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(this.pagination)
                 .subscribe(
@@ -128,7 +132,13 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         }else if(type==2){
             this.router.navigate( ['home/forms/manage/' + categoryId] );
         }else if(type==3){
-            this.router.navigate( ['home/pages/manage/' + categoryId] );
+			let partnerLandingPage = this.moduleType['partnerLandingPage'];
+			if(partnerLandingPage){
+				 this.router.navigate( ['home/pages/partner/' + categoryId] );
+			}else{
+				 this.router.navigate( ['home/pages/manage/' + categoryId] );
+			}
+           
         }else if(type==4){
             let teamMemberId = this.moduleType['teamMemberId'];
             if(teamMemberId!=undefined && teamMemberId>0){

@@ -58,4 +58,5 @@ export class Pagination {
 	categoryId: number=0;
 	categoryIds:number[] = [];
 	categoryFilter = false;
+	partnerCompanyId:number = 0;
 }
