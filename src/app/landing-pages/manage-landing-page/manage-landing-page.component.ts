@@ -44,6 +44,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isGridView = false;
     isFolderView = false;
     showFolderView = false;
+    exportObject:any = {};
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -87,7 +88,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
-                console.log(data.landingPages);
                 this.referenceService.loading(this.httpRequestLoader, false);
 
             },
@@ -315,6 +315,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
+            this.exportObject['type'] = 3;
             if (this.categoryId > 0) {
                 this.router.navigateByUrl('/home/pages/manage/');
             }

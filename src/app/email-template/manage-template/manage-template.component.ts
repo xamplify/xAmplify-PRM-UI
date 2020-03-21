@@ -77,6 +77,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isFolderView:boolean  = false;
     isGridView:boolean = false;
     categoryId:number = 0;
+    exportObject:any = {};
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
@@ -477,6 +478,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
+            this.exportObject['type'] = 1;
             if(this.categoryId>0){
                 this.router.navigateByUrl('/home/emailtemplates/manage/');
             }

@@ -49,6 +49,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     categoryId: number = 0;
     showFolderView = true;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
+    exportObject:any = {};
 
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -343,6 +344,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
+            this.exportObject['type'] = 2;
             if (this.categoryId > 0) {
                 this.router.navigateByUrl('/home/forms/manage/');
             }

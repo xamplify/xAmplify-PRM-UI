@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="portlet light clearfix" style="box-shadow: none;">
                 <ng-container *ngIf="isFolderView">
-                    <app-category-folder-view-util [moduleType]=1 (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+                    <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
 
                 <div class="portlet-title" style="border-bottom: none">

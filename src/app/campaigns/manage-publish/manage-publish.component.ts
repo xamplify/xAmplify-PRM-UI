@@ -87,6 +87,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     isFolderView:boolean  = false;
     isGridView:boolean = false;
     categoryId:number = 0;
+    exportObject:any = {};
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -223,15 +224,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         try {
-            if(this.router.url.endsWith('manage/')){
+            this.teamMemberId = this.route.snapshot.params['teamMemberId'];
+            if(this.teamMemberId!=undefined){
+                this.pagination.teamMemberAnalytics = true;
+            }else{
+                this.pagination.teamMemberAnalytics = false;
+            }
+            if(this.router.url.endsWith('/')){
                 this.setViewType('Folder');
             }else{
-                this.teamMemberId = this.route.snapshot.params['teamMemberId'];
-                if(this.teamMemberId!=undefined){
-                    this.pagination.teamMemberAnalytics = true;
-                }else{
-                    this.pagination.teamMemberAnalytics = false;
-                }
                 this.refService.manageRouter = true;
                 if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
                 else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
@@ -246,8 +247,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }
                 this.listCampaign(this.pagination);
             }
-
-
 			
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
@@ -576,8 +575,15 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
+            this.exportObject['type'] = 4;
+            this.exportObject['teamMemberId'] = this.teamMemberId;
             if(this.categoryId>0){
-                this.router.navigateByUrl('/home/campaigns/manage/');
+                if(this.teamMemberId!=undefined && this.teamMemberId>0){
+                    this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
+                }else{
+                    this.router.navigateByUrl('/home/campaigns/manage/');
+                }
+                
             }
             
         }
