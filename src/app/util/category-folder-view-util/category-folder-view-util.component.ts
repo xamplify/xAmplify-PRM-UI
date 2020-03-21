@@ -41,6 +41,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.customResponse = new CustomResponse();
         this.inputObject = {};
         this.listCategories(this.pagination);
     }
@@ -66,6 +67,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             this.userService.getCategories(this.pagination)
                 .subscribe(
                     response => {
+                        this.customResponse = new CustomResponse();
                         const data = response.data;
                         pagination.totalRecords = data.totalRecords;
                         this.categorySortOption.totalRecords = data.totalRecords;
