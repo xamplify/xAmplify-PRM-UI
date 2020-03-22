@@ -56,7 +56,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
                 pagination.categoryType = 'f';
             }else if(type==3){
                 pagination.categoryType = 'l';
-            }else if(type==4){
+            }else if(type==4 || type==5){
                 pagination.categoryType = 'c';
             }
             let teamMemberId = this.moduleType['teamMemberId'];
@@ -146,6 +146,8 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             }else{
                 this.router.navigate( ['home/campaigns/manage/' + categoryId] );
             }
+        }else if(type==5){
+            this.router.navigate( ['home/campaigns/partner/f/' + categoryId] );
         }
         
     }

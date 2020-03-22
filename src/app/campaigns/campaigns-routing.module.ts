@@ -33,6 +33,8 @@ export const campaignRoutes: Routes = [
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
   { path: "partner/:type", component: PartnerCampaignsComponent },
+  { path: "partner/:type/", component: PartnerCampaignsComponent },
+  { path: "partner/f/:categoryId", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
   { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
   { path: "preview/:id", component: PreviewCampaignComponent },

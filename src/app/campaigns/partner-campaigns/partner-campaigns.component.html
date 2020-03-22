@@ -36,7 +36,7 @@
             <div class="tabbable tabbable-custom tabbable-noborder">
                 <div class="tab-content">
                     <div class="page-bar m10">
-                        <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0">
+                        <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0" *ngIf="!isFolderView">
                             <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
                                 All</li>
                             <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
@@ -46,22 +46,27 @@
                             <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
                             <li class="filter" style="display: none;">Own Template</li>
                         </ul>
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6"  *ngIf="!isFolderView">
                             <div class="row btn-group pull-right">
                                 <div class="col-xs-4 col-sm-4 col-md-4 hidden-xs">
                                     <div style="float: right">
                                         <ng-container class='m10'>
-                                            <button class="btn btn-xs hidden-xs l-g-view" [disabled]="isListView" (click)="isListView = true" title="List View">
+                                            <button class="btn btn-xs hidden-xs l-g-view" [disabled]="isListView"   (click)="setViewType('List')" title="List View">
 												<i class="fa fa-th-list p10" aria-hidden="true"></i>
 											</button>
-                                            <button class="btn btn-xs hidden-xs l-g-view" [disabled]="!isListView" (click)="isListView = false" title="Grid View">
+                                            <button class="btn btn-xs hidden-xs l-g-view" [disabled]="isGridView"  (click)="setViewType('Grid')" title="Grid View">
 												<i class="fa fa-th-large p10" aria-hidden="true"></i>
-											</button>
+                                            </button>
+                                            <button *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view"  title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')">
+                                                <i class="fa fa-folder-open-o p10" aria-hidden="true"></i>
+                                            </button>
+                                         <button *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view"  title="Go back" (click)="setViewType('Folder')">
+                                                <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                         </button>
                                         </ng-container>
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-sm-4 col-md-4 p0">
-                                    <!-- <div class="inputs" align="right" style="float: right"> -->
                                     <div style="float: left;">
                                         <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
 											<option *ngFor="let sortOption of sortByDropDown" [ngValue]="sortOption">
@@ -81,12 +86,15 @@
                             </div>
                         </div>
                     </div>
-
-                    <app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView"></app-grid-loader>
+                    <ng-container *ngIf="isFolderView">
+                        <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
+                    </ng-container>
+                    <app-grid-loader *ngIf="httpRequestLoader.isLoading && isGridView"></app-grid-loader>
                     <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
-                    <section class='m10' *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+
+                    <section class='m10' *ngIf="isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                         <div class="table-responsive" style="border:none">
-                            <table class='table tgrid table-hover table-sm' *ngIf="isListView" id="redistribute-campaign-list">
+                            <table class='table tgrid table-hover table-sm' id="redistribute-campaign-list">
                                 <thead>
                                     <tr>
                                         <th colspan="2" style="width: 30%">
@@ -225,7 +233,7 @@
                 <div *ngIf="totalRecords <= 0 && isListView" class="alert alert-info">
                     <strong>No campaigns found</strong>
                 </div>
-                <div class="tab-pane active" *ngIf="!isListView">
+                <div class="tab-pane active" *ngIf="isGridView">
                     <div class="margin-top-10">
                         <div class="row mix-grid p10">
                             <app-loader *ngIf="httpRequestLoader.isLoading"></app-loader>
@@ -244,8 +252,16 @@
                                             <b>{{campaign.createdBy | slice:0:15}}<span
 														*ngIf="campaign.createdBy?.length>15">...</span></b></h6>
                                         <h6 [title]="campaign.companyName">From
-                                            <b>{{campaign.companyName | slice:0:15}}<span
-														*ngIf="campaign.companyName?.length>15">...</span></b></h6>
+                                            <b>{{campaign.companyName | slice:0:15}}
+                                                <span *ngIf="campaign.companyName?.length>15">...</span>
+                                            </b>
+                                        </h6>
+
+                                        <h6 [title]="campaign.categoryName">Folder
+                                            <b>{{campaign.categoryName | slice:0:15}}
+                                                <span *ngIf="campaign.categoryName?.length>15">...</span>
+                                            </b>
+                                        </h6>
                                         <h6>Received On <b>
 													<app-timestamp [isOnlyDate]="false"
 														[dateAndTime]="campaign.displayTime"> </app-timestamp>
@@ -324,19 +340,18 @@
                         </div>
                     </div>
                     <!-- End of 24 -->
-                    <div *ngIf="totalRecords <= 0 && !isListView &&  !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="alert alert-info">
+                    <div *ngIf="totalRecords <= 0 && isGridView &&  !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="alert alert-info">
                         <strong>No campaigns found</strong>
                     </div>
                 </div>
+                <ng-container *ngIf="isListView || isGridView">
                 <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
                     <div *ngIf="pagination.pagedItems.length !== 0">
                         <app-pagination [pagination]="pagination" [type]="'campaign'" (notifyParent)="setPage($event)" (notifyParentDropDown)="getAllFilteredResults($event)">
                         </app-pagination>
-                        <!-- <select class="form-control" style="float: right; width: auto;" [(ngModel)]="itemsSize" (ngModelChange)="getNumberOfItemsPerPage($event)">
-								<option *ngFor="let itemPerPage of numberOfItemsPerPage" [ngValue]="itemPerPage">{{itemPerPage.name}}</option>
-							</select> -->
                     </div>
                 </div>
+            </ng-container>
             </div>
             <!-- End Of tab Content -->
         </div>
