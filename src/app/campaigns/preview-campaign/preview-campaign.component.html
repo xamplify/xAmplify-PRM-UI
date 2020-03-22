@@ -26,8 +26,8 @@
                                 <i class="fa fa-bullhorn"></i>
                             </div>
                             <div class="media-body">
-                                <h5 *ngIf="previewCampaignType !=='EVENT'" title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice:0:30}} <span *ngIf="campaign?.campaignName?.length>30">...</span></h5>
-                                <h5 *ngIf="previewCampaignType ==='EVENT'" title="{{campaign?.campaign}}">{{campaign?.campaign | slice:0:30}} <span *ngIf="campaign?.campaign?.length>30">...</span></h5>
+                                <h5 *ngIf="previewCampaignType !=='EVENT'" title="{{campaign?.campaignName}}">{{campaign?.campaignName | slice:0:20}} <span *ngIf="campaign?.campaignName?.length>20">...</span></h5>
+                                <h5 *ngIf="previewCampaignType ==='EVENT'" title="{{campaign?.campaign}}">{{campaign?.campaign | slice:0:20}} <span *ngIf="campaign?.campaign?.length>20">...</span></h5>
                                 <h6>
                                     <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
                                     <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
@@ -57,7 +57,7 @@
                                 <h6>{{campaign.email}}</h6>
                             </div>
                         </div>
-                        <div class="media col-xs-12 col-sm-6">
+                        <div class="media col-xs-12 col-sm-6" *ngIf="campaignType!='SOCIAL'">
                             <div class="media-left p10">
                                 <i class="fa fa-folder-open-o"></i>
                             </div>
@@ -469,7 +469,7 @@
             </div>
             <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
                 <div class="actions-block text-center m10" *ngIf="campaign">
-                	 <a  (click)="changeTheFolder(campaign)"   data-toggle="tooltip" data-placement="top" title="Change the folder">
+                	 <a *ngIf="campaignType!='SOCIAL'"  (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
                             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                     </a>
                     <ng-container *ngIf="campaign.launched">
@@ -834,7 +834,7 @@
     <div class="modal-dialog modal-css" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button  type="button" class="close-circle"  data-dismiss="modal" *ngIf="!customResponse.isVisible">
+                <button  type="button" class="close-circle"  data-dismiss="modal">
                     <i class="fa fa-times"></i>
                 </button>
                 <h4 class="modal-title text-center">Change Folder</h4>
@@ -843,11 +843,13 @@
                 <div style="position: relative; top:-10px;">
                     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
                 </div>
-                <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
-                <ng-container *ngIf="!loader">
+                <app-modal-popup-loader *ngIf="folderPreviewLoader"></app-modal-popup-loader>
+                <ng-container *ngIf="!folderPreviewLoader">
                 <div class="form-group">
                     <label>Campaign Name</label>
-                    <input disabled="disabled" type="text" class="form-control"  value="{{campaign.campaignName}}">
+                    <input *ngIf="campaignType!='EVENT'" disabled="disabled" type="text" class="form-control"  value="{{campaign.campaignName}}">
+                    <input *ngIf="campaignType=='EVENT'" disabled="disabled" type="text" class="form-control"  value="{{campaign.campaign}}">
+
                 </div>
                 <div class="form-group">
                     <label>Select a folder <font class="required">*</font></label>
@@ -859,7 +861,7 @@
                 </div>
                 </ng-container>
             </div>
-            <div class="modal-footer" *ngIf="!loader">
+            <div class="modal-footer" *ngIf="!folderPreviewLoader">
                 <button type="submit"  class="btn green-haze" (click)="updateFolder()" id="full-screen">Update</button>
                 <button type="button"  class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>

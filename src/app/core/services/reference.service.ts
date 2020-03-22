@@ -1932,6 +1932,10 @@ export class ReferenceService {
 		swal(errorMessage, "", "error");
 	}
 
+	showSweetAlertServerErrorMessage() {
+		swal(this.properties.serverErrorMessage, "", "error");
+	}
+
 	showModalPopup(modalId) {
 		$('.modal .modal-body').css('overflow-y', 'auto');
 		$("#" + modalId).modal('show');
