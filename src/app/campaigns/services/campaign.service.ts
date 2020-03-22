@@ -841,4 +841,10 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    updateFolder(campaignId: number,categoryId:number,updatedUserId:number) {
+        return this.http.get(this.URL + "campaign/changeFolder/" + campaignId +"/"+categoryId+"/"+updatedUserId+ "?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 }

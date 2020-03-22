@@ -145,7 +145,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     isLoadingDownloadList = false;
     downloadTypeName = "";
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
-
+    categoryNames: any;
+    loader = true;
 
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
@@ -1220,5 +1221,42 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           this.showContactType = false;
       }
   }
+
+  changeTheFolder(campaign:Campaign){
+    console.log(campaign);
+    this.loader = true;
+    $('#show-campaign-popup').modal('show');
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+      ( data: any ) => {
+          this.categoryNames = data.data;
+          this.loader = false;
+      },
+      error => { this.loader = false; $('#show-campaign-popup').modal('hide');this.referenceService.showSweetAlertErrorMessage(error);},
+      () => this.xtremandLogger.info( "Finished listCategories()" ) );
+
+
+  }
+
+  updateFolder(){
+   this.loader = true;
+   let campaignId = this.campaign.campaignId;
+   let categoryId = this.campaign.categoryId;
+   this.campaignService.updateFolder(campaignId,categoryId,this.loggedInUserId).subscribe(
+    ( data: any ) => {
+      let message = "Folder updated successfully.Please wait...";
+        this.customResponse = new CustomResponse('SUCCESS',message,true);
+        let self = this;
+        setTimeout(function(){ 
+          $('#myModal').modal('hide');
+          $('#show-campaign-popup').modal('hide');
+          self.router.navigate([self.router.url] );
+         }, 500);
+
+    },
+    error => { this.loader = false; $('#show-campaign-popup').modal('hide');this.referenceService.showSweetAlertErrorMessage(error);},
+    () => this.xtremandLogger.info( "Finished updateFolder()" ) );
+
+  }
+
   
 }

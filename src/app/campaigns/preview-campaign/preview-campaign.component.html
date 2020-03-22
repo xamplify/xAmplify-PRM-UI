@@ -16,9 +16,9 @@
                         <h6>
                             <span class="campaign-label ml10">{{previewCampaignType}} campaign</span>
                             <span class="campaign-label {{campaign.campaignScheduleType | lowercase}}">
-            <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
-            <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
-          </span>
+                            <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
+                            <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
+                            </span>
                         </h6>
 
                         <div class="media col-xs-12 col-sm-6">
@@ -55,6 +55,14 @@
                             <div class="media-body">
                                 <h5>{{campaign.fromName}}</h5>
                                 <h6>{{campaign.email}}</h6>
+                            </div>
+                        </div>
+                        <div class="media col-xs-12 col-sm-6">
+                            <div class="media-left p10">
+                                <i class="fa fa-folder-open-o"></i>
+                            </div>
+                            <div class="media-body">
+                                <h5>{{campaign.categoryName}}</h5>
                             </div>
                         </div>
                     </fieldset>
@@ -461,6 +469,9 @@
             </div>
             <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
                 <div class="actions-block text-center m10" *ngIf="campaign">
+                	 <a  (click)="changeTheFolder(campaign)"   data-toggle="tooltip" data-placement="top" title="Change the folder">
+                            <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                    </a>
                     <ng-container *ngIf="campaign.launched">
                         <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="navigateRedistributedCampaigns(campaign)"
                             data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
@@ -817,3 +828,41 @@
     </div>
 </div>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
+
+<!-----------------Change The Folder---------------->
+<div class="modal right fade" id="show-campaign-popup" tabindex="-1" role="dialog" aria-labelledby="show-campaign-popup" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-css" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button  type="button" class="close-circle"  data-dismiss="modal" *ngIf="!customResponse.isVisible">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4 class="modal-title text-center">Change Folder</h4>
+            </div>
+            <div class="modal-body">
+                <div style="position: relative; top:-10px;">
+                    <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+                </div>
+                <app-modal-popup-loader *ngIf="loader"></app-modal-popup-loader>
+                <ng-container *ngIf="!loader">
+                <div class="form-group">
+                    <label>Campaign Name</label>
+                    <input disabled="disabled" type="text" class="form-control"  value="{{campaign.campaignName}}">
+                </div>
+                <div class="form-group">
+                    <label>Select a folder <font class="required">*</font></label>
+                    <select class="form-control" [(ngModel)]="campaign.categoryId" [ngModelOptions]="{standalone: true}">
+                    <option *ngFor="let category of categoryNames" [value]="category.id">
+                      {{category.name}}
+                    </option>
+                </select>
+                </div>
+                </ng-container>
+            </div>
+            <div class="modal-footer" *ngIf="!loader">
+                <button type="submit"  class="btn green-haze" (click)="updateFolder()" id="full-screen">Update</button>
+                <button type="button"  class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
