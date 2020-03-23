@@ -373,4 +373,9 @@ td h5 {
 	font-size: 14px;
 }
 
-.disablednew { pointer-events: none; opacity: 0.7; }
+.disablednew { 
+	pointer-events: none; 
+	opacity: 0.7;
+	color: gray;
+	border-color: gray;
+	}

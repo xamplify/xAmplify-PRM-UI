@@ -228,9 +228,9 @@
                                                         </a>
 
 
-                                                        <a *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
+                                                        <a [class.disablednew]="!campaign.hasAccess"  *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
                                                             title="{{actionsDescription.campaign_report}}">
-                                                          <span [class.disablednew]="!campaign.hasAccess" ><i class="fa fa-line-chart"></i></span>
+                                                          <span><i [class.disablednew]="!campaign.hasAccess" class="fa fa-line-chart"></i></span>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container class="pull-right">
