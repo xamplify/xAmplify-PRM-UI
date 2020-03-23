@@ -60,7 +60,7 @@ export class UserService {
 
     signUp( data: User ) {
         console.log( data );
-        return this.http.post( this.URL + "register/signup/user", data )
+        return this.http.post( this.URL + "register/signup/user?companyProfileName=" + this.authenticationService.companyProfileName , data )
             .map( this.extractData )
             .catch( this.signUpHandleError );
 
@@ -99,7 +99,7 @@ export class UserService {
             .catch(( error: any ) => { return error });
     }
     activateAccount( alias: string ) {
-        return this.http.get( this.URL + "register/verifyemail/user?alias=" + alias )
+        return this.http.get( this.URL + "register/verifyemail/user?alias=" + alias + "&companyProfileName="+this.authenticationService.companyProfileName)
             .map( this.extractData )
             .catch( this.handleError );
     }

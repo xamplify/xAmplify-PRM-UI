@@ -58,6 +58,9 @@ export class AdminReportComponent implements OnInit {
     campaignAccess = new CampaignAccess();
     userAlias:string = "";
     @ViewChild('dynamicEmailContentComponent') dynamicEmailContentComponent: DynamicEmailContentComponent;
+
+    accessAccountVanityURL:string;
+
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
 
@@ -375,13 +378,19 @@ public authenticationService: AuthenticationService, public router:Router) {
   }
   
   sendWelcomeEmail(response:any){
-      this.dynamicEmailContentComponent.openModal(response.alias,response.emailId);
+    if(response !== undefined){
+        this.dynamicEmailContentComponent.openModal(response);
+      //this.dynamicEmailContentComponent.openModal(response.alias,response.emailId);
+    }      
   }
   
-  openLinkInPopup(alias:string){
-      this.copiedLinkCustomResponse = new CustomResponse();
-      this.userAlias = alias;
-      $('#user-alias-modal').modal('show');
+  openLinkInPopup(report:any){
+      if(report !== undefined){
+        this.copiedLinkCustomResponse = new CustomResponse();
+        this.userAlias = report.alias;
+        this.accessAccountVanityURL = window.location.protocol + "//" + report.companyProfileName +"." + window.location.hostname +"/axAa/"+report.alias ;
+        $('#user-alias-modal').modal('show');
+      }      
   }
   
   /*********Copy The Link */

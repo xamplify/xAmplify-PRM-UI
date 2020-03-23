@@ -138,4 +138,5 @@ export class Properties {
   UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
   UPLOAD_METADATA_TEXT2='Success! Processed the metadata and saved into the system.';
 
+  VANITY_URL_ERROR1 = "You are not associated to vendor company";
 }

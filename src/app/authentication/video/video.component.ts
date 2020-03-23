@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Properties } from '../../common/models/properties';
+import { AuthenticationService } from 'app/core/services/authentication.service';
 
 @Component({
   selector: 'app-video',
   templateUrl: './video.component.html',
-  styleUrls: ['./video.component.css','../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
+  styleUrls: ['./video.component.css', '../../../assets/css/default.css', '../../../assets/css/authentication-page.css'],
   providers: [Properties]
 })
 export class VideoComponent implements OnInit {
 
-  constructor(public properties: Properties) { }
+  constructor(public properties: Properties, private authService: AuthenticationService) { }
 
   ngOnInit() {
+    if (this.authService.v_companyLogoImagePath != undefined && this.authService.v_companyLogoImagePath != '') {
+       this.properties.COMPANY_LOGO = this.authService.v_companyLogoImagePath;
+      //this.properties.COMPANY_LOGO = "assets/images/logo.jpg";
+    }
   }
-
 }
