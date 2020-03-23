@@ -1687,14 +1687,9 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png", "");
 
 		}
-		if (this.campaignType === "EVENT") {
-			if (campaign.nurtureCampaign || userProfile.id != this.eventCampaignId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
-		} else {
-			if (campaign.nurtureCampaign || userProfile.id != campaign.userId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
+		let isRedistributeSection = this.router.url.indexOf("/re-distribute")>-1;
+		if (campaign.nurtureCampaign || isRedistributeSection) {
+			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
 		updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
 		$("#email-template-content").append(updatedBody);
@@ -1730,14 +1725,9 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"", "<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
 			updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png", "");
 		}
-		if (this.campaignType === "EVENT") {
-			if (campaign.nurtureCampaign || userProfile.id != this.eventCampaignId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
-		} else {
-			if (campaign.nurtureCampaign || userProfile.id != campaign.userId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
+		let isRedistributeSection = this.router.url.indexOf("/re-distribute")>-1;
+		if (campaign.nurtureCampaign || isRedistributeSection) {
+			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
 		/************My Merge Tags Info**********/
 		updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
