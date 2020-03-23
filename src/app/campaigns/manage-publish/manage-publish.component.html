@@ -624,7 +624,7 @@
                                                         </a>
                                                     </span>
 
-                                                    <span *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted">
+                                                    <span  [class.disablednew]="!campaign.hasAccess" *ngIf="campaign.showCancelButton && !campaign.vendorCampaignDeleted">
                                                         <a *ngIf="hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor"
                                                             data-toggle="tooltip" data-placement="top"
                                                             title="Cancel Event" data-rel="fancybox-button"
