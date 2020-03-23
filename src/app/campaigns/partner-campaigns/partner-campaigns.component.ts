@@ -58,7 +58,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public isError: boolean = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    isListView = false;
     campaignType:string;
     role = '';
     customResponse: CustomResponse = new CustomResponse();
@@ -66,7 +65,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     loadingEmailTemplate: boolean =false;
-
+    isListView: boolean = false;
+    isFolderView:boolean  = false;
+    isGridView:boolean = false;
+    categoryId:number = 0;
+    exportObject:any = {};
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
@@ -115,7 +118,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.filterValue = null;
             pagination.filterKey = null;
         }
-        
         
         this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
           .subscribe(
@@ -176,11 +178,22 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
     ngOnInit() {
         try {
-            this.isListView = !this.referenceService.isGridView;
-            // this.pagination.maxResults = 12;
-            this.pagination.pageIndex = 1;
-            this.campaignType = this.route.snapshot.params['type'];
-            this.listCampaign(this.pagination);
+            if(this.router.url.endsWith('/')){
+                this.setViewType('Folder');
+            }else{
+                this.isListView = !this.referenceService.isGridView;
+                this.isGridView = this.referenceService.isGridView;
+                this.isFolderView = false;
+                this.pagination.pageIndex = 1;
+                this.campaignType = this.route.snapshot.params['type'];
+                this.categoryId = this.route.snapshot.params['categoryId'];
+                if(this.categoryId!=undefined){
+                    this.pagination.categoryId = this.categoryId;
+                    this.pagination.categoryType = 'c';
+                }
+                this.listCampaign(this.pagination);
+            }
+           
         } catch (error) {
             this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
         }
@@ -383,6 +396,43 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngOnDestroy() {
         this.adddMoreReceiversComponent.eventRedistributionMessage = ""
     }
-    
+    setViewType(viewType:string){
+        if("List"==viewType){
+            this.isListView = true;
+            this.isGridView = false;
+            this.isFolderView = false;
+            this.navigateToManageSection();    
+        }else if("Grid"==viewType){
+            this.isListView = false;
+            this.isGridView = true;
+            this.isFolderView = false;
+            this.navigateToManageSection();    
+        }else if("Folder"==viewType){
+            this.isListView = false;
+            this.isGridView = false;
+            this.isFolderView = true;
+            this.exportObject['type'] = 5;
+            this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+            if(this.categoryId>0){
+                this.router.navigateByUrl('/home/campaigns/partner/all/');
+            }
+            
+        }
+    }
+
+    navigateToManageSection(){
+        if(this.router.url.endsWith('/')){
+            this.router.navigateByUrl('/home/campaigns/partner/all');
+        }
+    }
+
+
+    getUpdatedValue(event:any){
+        let viewType = event.viewType;
+        if(viewType!=undefined){
+            this.setViewType(viewType);
+        }
+        
+    }
     
 }

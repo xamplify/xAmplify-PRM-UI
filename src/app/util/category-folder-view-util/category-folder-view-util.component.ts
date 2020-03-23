@@ -21,7 +21,7 @@ declare var $: any;
 export class CategoryFolderViewUtilComponent implements OnInit {
 
 
-    @Input() moduleType: number;
+    @Input() moduleType: any;
     @Output() valueUpdate = new EventEmitter();
     inputObject:any;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
@@ -41,6 +41,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.customResponse = new CustomResponse();
         this.inputObject = {};
         this.listCategories(this.pagination);
     }
@@ -48,17 +49,29 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     listCategories(pagination: Pagination) {
         if (this.referenceService.companyId > 0) {
             pagination.companyId = this.referenceService.companyId;
-            if (this.moduleType == 1) {
+            let type = this.moduleType['type'];
+            if (type == 1) {
                 pagination.categoryType = 'e';
-            }else if(this.moduleType==2){
+            }else if(type==2){
                 pagination.categoryType = 'f';
-            }else if(this.moduleType==3){
+            }else if(type==3){
                 pagination.categoryType = 'l';
+            }else if(type==4 || type==5){
+                pagination.categoryType = 'c';
+            }
+            let teamMemberId = this.moduleType['teamMemberId'];
+            if(teamMemberId!=undefined){
+                pagination.teamMemberId = teamMemberId;
+            }
+            let partnerCompanyId = this.moduleType['partnerCompanyId'];
+            if(partnerCompanyId!=undefined){
+                pagination.partnerCompanyId = partnerCompanyId;
             }
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(this.pagination)
                 .subscribe(
                     response => {
+                        this.customResponse = new CustomResponse();
                         const data = response.data;
                         pagination.totalRecords = data.totalRecords;
                         this.categorySortOption.totalRecords = data.totalRecords;
@@ -113,12 +126,28 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCategories(); } }
 
     viewItemsByCategoryId(categoryId:number) {
-        if(this.moduleType==1){
+        let type = this.moduleType['type'];
+        if(type==1){
             this.router.navigate( ['home/emailtemplates/manage/' + categoryId] );
-        }else if(this.moduleType==2){
+        }else if(type==2){
             this.router.navigate( ['home/forms/manage/' + categoryId] );
-        }else if(this.moduleType==3){
-            this.router.navigate( ['home/pages/manage/' + categoryId] );
+        }else if(type==3){
+			let partnerLandingPage = this.moduleType['partnerLandingPage'];
+			if(partnerLandingPage){
+				 this.router.navigate( ['home/pages/partner/' + categoryId] );
+			}else{
+				 this.router.navigate( ['home/pages/manage/' + categoryId] );
+			}
+           
+        }else if(type==4){
+            let teamMemberId = this.moduleType['teamMemberId'];
+            if(teamMemberId!=undefined && teamMemberId>0){
+                this.router.navigate( ['home/campaigns/manage/' + categoryId+"/"+teamMemberId] );
+            }else{
+                this.router.navigate( ['home/campaigns/manage/' + categoryId] );
+            }
+        }else if(type==5){
+            this.router.navigate( ['home/campaigns/partner/f/' + categoryId] );
         }
         
     }

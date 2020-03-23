@@ -145,7 +145,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     isLoadingDownloadList = false;
     downloadTypeName = "";
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
-
+    categoryNames: any;
+    folderPreviewLoader = true;
 
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
@@ -1220,5 +1221,65 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           this.showContactType = false;
       }
   }
+
+  changeTheFolder(){
+    this.folderPreviewLoader = true;
+    $('#show-campaign-popup').modal('show');
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+      ( data: any ) => {
+          this.categoryNames = data.data;
+          this.folderPreviewLoader = false;
+      },
+      error => {
+        this.callErrorResponse();
+        },
+      () => this.xtremandLogger.info( "Finished listCategories()" ) );
+
+
+  }
+
+  updateFolder(){
+   this.folderPreviewLoader = true;
+   let campaignId;
+   let categoryId;
+   if(this.campaign.campaignType=='EVENT'){
+    campaignId = this.campaign.id;
+   }else{
+    campaignId = this.campaign.campaignId;
+   }
+   categoryId = this.campaign.categoryId;
+   if(campaignId!=undefined && categoryId!=undefined && campaignId>0 && categoryId>0){
+    this.campaignService.updateFolder(campaignId,categoryId,this.loggedInUserId).subscribe(
+      ( data: any ) => {
+        let message = "Folder updated successfully.Please wait...";
+          this.customResponse = new CustomResponse('SUCCESS',message,true);
+          let self = this;
+          setTimeout(function(){ 
+            $('#myModal').modal('hide');
+            $('#show-campaign-popup').modal('hide');
+            self.folderPreviewLoader = false;
+            self.router.navigate([self.router.url] );
+           }, 500);
+  
+      },
+      error => { 
+          this.callErrorResponse();
+        },
+      () => this.xtremandLogger.info( "Finished updateFolder()" ) );
+   }else{
+    this.folderPreviewLoader = false;
+    this.customResponse = new CustomResponse('ERROR','CampaignId/FolderId cannot be null',true);
+   }
+   
+
+  }
+
+  callErrorResponse(){
+    this.folderPreviewLoader = false; 
+    $('#show-campaign-popup').modal('hide');
+    $('#myModal').modal('hide');
+     this.referenceService.showSweetAlertServerErrorMessage();
+  }
+
   
 }

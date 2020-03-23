@@ -853,7 +853,7 @@ export class AddTeamMembersComponent implements OnInit {
 
 	goToCampaignAnalytics(teamMemberId: number) {
 		this.loading = true;
-		this.router.navigate(['/home/campaigns/manage/' + teamMemberId])
+		this.router.navigate(['/home/campaigns/manage/tm/' + teamMemberId])
 	}
 
 	loginAs(teamMember: TeamMember) {

@@ -44,6 +44,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isGridView = false;
     isFolderView = false;
     showFolderView = false;
+    exportObject:any = {};
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
@@ -87,7 +88,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
-                console.log(data.landingPages);
                 this.referenceService.loading(this.httpRequestLoader, false);
 
             },
@@ -188,7 +188,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             .subscribe(
                 (response: any) => {
                     if (response.statusCode == 200) {
-                        $('#landingPageListDiv_' + landingPage.id).remove();
                         let message = landingPage.name + " deleted successfully";
                         this.customResponse = new CustomResponse('SUCCESS', message, true);
                         this.pagination.pageIndex = 1;
@@ -267,16 +266,17 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
 
-        if(this.router.url.endsWith('manage/')){
+        if (this.router.url.includes('home/pages/partner')) {
+            this.isPartnerLandingPage = true;
+        } else {
+            this.selectedLandingPageTypeIndex = 0;
+            this.pagination.filterKey = "All";
+            this.isPartnerLandingPage = false;
+        }
+
+        if(this.router.url.endsWith('manage/') || this.router.url.endsWith('partner/')){
             this.setViewType('Folder');
         }else{
-            if (this.router.url.includes('home/pages/partner')) {
-                this.isPartnerLandingPage = true;
-            } else {
-                this.selectedLandingPageTypeIndex = 0;
-                this.pagination.filterKey = "All";
-                this.isPartnerLandingPage = false;
-            }
             this.isListView = !this.referenceService.isGridView;
             this.isGridView = this.referenceService.isGridView;
             this.isFolderView = false;
@@ -315,8 +315,17 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.isListView = false;
             this.isGridView = false;
             this.isFolderView = true;
+            this.exportObject['type'] = 3;
+            if(this.isPartnerLandingPage){
+                this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+            }
+            this.exportObject['partnerLandingPage'] = this.isPartnerLandingPage;
             if (this.categoryId > 0) {
-                this.router.navigateByUrl('/home/pages/manage/');
+                if(this.isPartnerLandingPage){
+                    this.router.navigateByUrl('/home/pages/partner/');
+                }else{
+                    this.router.navigateByUrl('/home/pages/manage/');
+                }
             }
 
         }
@@ -325,6 +334,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     navigateToManageSection() {
         if (this.router.url.endsWith('manage/')) {
             this.router.navigateByUrl('/home/pages/manage');
+        }else if(this.router.url.endsWith('partner/')){
+            this.router.navigateByUrl('/home/pages/partner');
         }
     }
 

@@ -52,6 +52,20 @@
                                     <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
                                     />
                                 </div>
+
+                                <div class="form-group" [attr.class]="fromEmaiDivClass">
+                                    <label class="control-label">Folder
+                                        <font style="color: red"><b>*</b>
+                                        </font>
+                                    </label>
+                                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
+                                            <option *ngFor="let category of categoryNames"
+                                                [ngValue]="category.id">
+                                                 {{category.name}}
+                                            </option>
+                                        </select>
+                                </div>
+
                                 <div class="form-group" [attr.class]="subjectLineDivClass">
                                     <label for="exampleInputPassword1">Subject line</label>
                                     <font style="color: red">
@@ -276,6 +290,7 @@
                                                                    		<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'user_list_tb',1)"> </span>
 																		<span class="gridHeader">List Name</span>
                                                                     </th>
+                                                                    <th class="text-center"> Type </th>
                                                                     <th class="text-center"> Date Uploaded </th>
                                                                     <th class="text-center"> Preview </th>
                                                                 </tr>
@@ -296,6 +311,13 @@
                                                                     <td class="text-center moreipsis" title="{{contacts.name}}">
                                                                         <span> {{contacts.name}}</span>
                                                                     </td>
+																	<td class="text-center moreipsis"><span
+																		*ngIf="contacts.publicList">Public</span> <span
+																		*ngIf="!contacts.publicList">Private</span></td>
+
+																	<!--  <td class="text-center moreipsis" title="{{contacts.publicList}}">
+                                                                        <span> {{contacts.publicList}}</span>
+                                                                    </td> -->
 
 
                                                                     <td class="text-center sorting_1">

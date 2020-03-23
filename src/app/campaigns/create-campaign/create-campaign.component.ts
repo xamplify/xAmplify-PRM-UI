@@ -275,6 +275,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     public folderFilterPlaceHolder: string = 'Select folder';
     folderErrorCustomResponse: CustomResponse = new CustomResponse();
     isFolderSelected = true;
+    categoryNames: any;
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -610,7 +611,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              }
          }
 
-
+        this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
@@ -635,6 +636,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         /***********Load Email Template Filters/LandingPages Filter Data********/
         this.listEmailTemplateOrLandingPageFolders();
        
+    }
+
+    listCategories(){
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.categoryNames = data.data;
+                let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+                if(this.isAdd || this.campaign.categoryId==undefined || this.campaign.categoryId==0){
+                    this.campaign.categoryId = categoryIds[0];
+                }
+                
+            },
+            error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+            () => this.logger.info( "Finished listCategories()" ) );
     }
 
     loadContacts(){
@@ -2050,6 +2065,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
             'subjectLine': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
+            'categoryId':this.campaign.categoryId,
             'preHeader': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,

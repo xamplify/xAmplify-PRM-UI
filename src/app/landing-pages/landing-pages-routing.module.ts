@@ -14,6 +14,7 @@ export const routes: Routes = [
     { path: "manage", component: ManageLandingPageComponent },
     { path: "manage/:categoryId", component: ManageLandingPageComponent },
     { path: "partner", component: PartnerLandingPageComponent },
+ 	{ path: "partner/:categoryId", component: PartnerLandingPageComponent },
     { path: ":landingPageId/analytics", component: LandingPageAnalyticsComponent },
     { path: "partner/:alias/analytics", component: LandingPageAnalyticsComponent },
     { path: ":campaignId/campaign/analytics", component: LandingPageAnalyticsComponent },

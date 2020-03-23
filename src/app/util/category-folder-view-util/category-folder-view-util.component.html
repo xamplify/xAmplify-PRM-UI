@@ -22,7 +22,7 @@
                         </div>
                         <div class="portlet-input input-inline" id="search-div">
                             <div class="input-icon right" id="icon">
-                                <input type="text" id="sort-text" class="form-control" [(ngModel)]="categorySortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a folder" (keypress)="eventHandler($event.keyCode)">
+                                <input type="text" id="sort-text" class="form-control" [(ngModel)]="categorySortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search here" (keypress)="eventHandler($event.keyCode)">
                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="categorySortOption.searchKey" (click)="categorySortOption.searchKey='';searchCategories();"></button>
                                 <button type="submit" class="search-box-item-click" (click)="searchCategories()">
                                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -38,7 +38,7 @@
     <div class="row mix-grid p10">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible && !httpRequestLoader.isLoading "></app-response-message>
         <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
-        <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+        <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading">
             <div *ngFor="let category of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
                 <div class="ffolder big gray">
                     <div class="grid-box">
@@ -79,7 +79,7 @@
         </div>
         <!-- End of 24 -->
         <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-            <strong>No Categories Found.</strong>
+            <strong>No Folders Found.</strong>
         </div>
 
 </div>

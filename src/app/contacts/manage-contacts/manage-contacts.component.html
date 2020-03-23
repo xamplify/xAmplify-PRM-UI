@@ -318,8 +318,10 @@
 													</td>
 													<td class="hidden-xs">
 													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
-													 <span *ngIf="contactList.publicList">Public</span>
-													<span *ngIf="!contactList.publicList">Private</span> 
+													 <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_public}}">Public</span>
+													<span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
+																title="{{actionsDescription.contact_list_private}}">Private</span> 
 													</h5>
 														</td>
 													<td class="hidden-xs"><app-timestamp
@@ -434,6 +436,20 @@
 												<app-timestamp [isOnlyDate]="true"
 													[dateAndTime]="contactList.createdDate"> </app-timestamp>
 											</h6>
+											<!--  -->
+												<td class="hidden-xs">
+													<h6 class="mt10 mb0 ellipsis"
+														*ngIf="!contactList?.partnerUserList">
+														Type
+														<span *ngIf="contactList.publicList" data-toggle="tooltip"
+															data-placement="top"
+															title="{{actionsDescription.contact_list_public}}"><b>Public</b></span>
+														<span *ngIf="!contactList.publicList"
+															data-toggle="tooltip" data-placement="top"
+															title="{{actionsDescription.contact_list_private}}"><b>Private</b></span>
+													</h6>
+												</td>
+												<!--  -->
 											<div class="bar"
 												*ngIf="!authenticationService.isSuperAdmin() && contactList.emailValidationInd">
 												<a [class.disabled]="!contactList.emailValidationInd"

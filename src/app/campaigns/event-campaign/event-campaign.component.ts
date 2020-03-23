@@ -203,7 +203,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  folderErrorCustomResponse: CustomResponse = new CustomResponse();
  isFolderSelected = true;
  isEditPartnerTemplate = false;
-
+ categoryNames: any;
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -285,6 +285,18 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  eventHandler(event:any){
   if(event===13) { this.searchEmailTemplate();}
  }
+
+ listCategories(){
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            this.eventCampaign.categoryId = categoryIds[0];
+        },
+        error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+        () => this.logger.info( "Finished listCategories()" ) );
+}
+
  ngOnInit() {
     if(!this.reDistributeEvent && !this.isEventUpdate){
       this.authenticationService.isShowForms = true;
@@ -311,7 +323,6 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        
         if(this.eventCampaign.dataShare == undefined){
         this.eventCampaign.dataShare = false;
         }
@@ -468,12 +479,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     };
 
     this.listEmailTemplatesFolders();
+    this.listCategories();
+
     
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
       this.detailsTab = true;
-      this.resetTabClass()
+      this.resetTabClass();
   }
 
   ngAfterViewChecked(){
@@ -1137,6 +1150,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     const customEventCampaign = {
       'id':eventCampaign.id,
       'campaign': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign),
+      'categoryId':eventCampaign.categoryId,
       'user':eventCampaign.user,
       'message':eventCampaign.message,
       'subjectLine':eventCampaign.subjectLine,
