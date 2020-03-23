@@ -570,7 +570,7 @@
                                                 <div class="bar">
                                                     <!--Buttons Start Here-->
                                                     <ng-container *ngIf="!campaign.launched">
-                                                        <a *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
+                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
 														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
                                                             <i class="fa fa-pencil-square-o"></i>
                                                         </a>
