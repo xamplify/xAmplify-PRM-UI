@@ -19,6 +19,9 @@
                     <a> Redistribute Campaign</a>
                 </li>
             </ul>
+            <div id="folder-margin-xamp">
+                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+            </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
@@ -811,3 +814,4 @@
     </div>
 </div>
 <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

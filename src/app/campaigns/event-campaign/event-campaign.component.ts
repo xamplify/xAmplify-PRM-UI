@@ -37,9 +37,10 @@ import { HubSpotService } from 'app/core/services/hubspot.service';
 import { EnvService } from 'app/env.service';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Category as folder } from 'app/dashboard/models/category';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { Form } from 'app/forms/models/form';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
-import { Form } from 'app/forms/models/form';
 var moment = require('moment-timezone');
 
 @Component({
@@ -204,6 +205,9 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  isFolderSelected = true;
  isEditPartnerTemplate = false;
  categoryNames: any;
+ @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+ folderCustomResponse:CustomResponse = new CustomResponse();
+completeLoader = false;
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -287,11 +291,13 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  }
 
  listCategories(){
+     this.completeLoader = true;
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;
             let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
             this.eventCampaign.categoryId = categoryIds[0];
+            this.completeLoader = false;
         },
         error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
         () => this.logger.info( "Finished listCategories()" ) );
@@ -2578,4 +2584,16 @@ editPartnerTemplate(){
     }
     
 }
+
+  openCreateFolderPopup(){
+    this.folderCustomResponse = new CustomResponse('');
+    this.addFolderModalPopupComponent.openPopup();
+    }
+
+showSuccessMessage(message:any){
+  this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
+  this.listCategories();
+}
+
+
 }

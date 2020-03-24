@@ -135,3 +135,7 @@ background-color: #00a6e8;
 .xampify-cursor-not-allowed{
 	cursor: not-allowed;
 }
+#folder-margin-xamp{
+    margin-top: 4px;
+    margin-right: 4px;
+}

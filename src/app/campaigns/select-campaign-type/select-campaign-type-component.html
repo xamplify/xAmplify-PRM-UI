@@ -116,13 +116,17 @@
 
     <div class="row">
         <div class="col-md-12">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
             <div class="portlet light" style="padding-left: 30px !important;padding-right: 30px !important;">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-cogs"></i>Create a campaign <small style="font-size: 12px">Which type of campaign would you like to create?</small>
                     </div>
-
+                    <div>
+                        <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+                    </div>
                 </div>
                 <div class="portlet-body">
                     <div class="row clearfix">
@@ -275,3 +279,4 @@
         </div>
     </div>
 </div>
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit,ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -8,6 +8,8 @@ import { CampaignService } from '../services/campaign.service';
 import { UserService } from 'app/core/services/user.service';
 import { CampaignAccess } from '../models/campaign-access';
 import { HomeComponent } from 'app/core/home/home.component';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 declare var Metronic, Layout , Demo,TableManaged,swal:any;
 @Component({
@@ -30,7 +32,8 @@ export class SelectCampaignTypeComponent implements OnInit{
     emailCampaign = false;
     socialCampaign = false;
     eventCampaign = false;
-
+    customResponse:CustomResponse = new CustomResponse();
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     constructor(private logger:XtremandLogger,private router:Router,public refService:ReferenceService,public authenticationService:AuthenticationService,
       public campaignService: CampaignService, public userService:UserService, public campaignAccess: CampaignAccess,
       public homeComponent:HomeComponent){
@@ -117,6 +120,15 @@ export class SelectCampaignTypeComponent implements OnInit{
          this.refService.selectedCampaignType = "landingPage";
          this.router.navigate(["/home/campaigns/create"]);
      }
+
+     openCreateFolderPopup(){
+      this.customResponse = new CustomResponse();
+      this.addFolderModalPopupComponent.openPopup();
+  }
+
+  showSuccessMessage(message:any){
+    this.customResponse = new CustomResponse('SUCCESS',message, true);
+  }
 
 
 }

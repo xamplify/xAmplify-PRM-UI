@@ -42,6 +42,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Category as folder } from 'app/dashboard/models/category';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -276,6 +277,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     folderErrorCustomResponse: CustomResponse = new CustomResponse();
     isFolderSelected = true;
     categoryNames: any;
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    folderCustomResponse:CustomResponse = new CustomResponse();
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -286,6 +290,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
 				private render:Renderer
             ){
+
 				this.refService.renderer = this.render;
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
@@ -635,10 +640,11 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listAllTeamMemberEmailIds();
         /***********Load Email Template Filters/LandingPages Filter Data********/
         this.listEmailTemplateOrLandingPageFolders();
-       
+      
     }
 
     listCategories(){
+       	this.loading = true;
         this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
             ( data: any ) => {
                 this.categoryNames = data.data;
@@ -646,7 +652,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 if(this.isAdd || this.campaign.categoryId==undefined || this.campaign.categoryId==0){
                     this.campaign.categoryId = categoryIds[0];
                 }
-                
+             this.loading = false;
             },
             error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
             () => this.logger.info( "Finished listCategories()" ) );
@@ -3221,6 +3227,17 @@ listEmailTemplateOrLandingPageFolders(){
         this.folderErrorCustomResponse = new CustomResponse('ERROR', this.refService.serverErrorMessage, true);
     }, () => this.logger.log("listEmailTemplateOrLandingPageFolders()"));
   }
+
+
+  openCreateFolderPopup(){
+    this.folderCustomResponse = new CustomResponse('');
+    this.addFolderModalPopupComponent.openPopup();
+    }
+
+showSuccessMessage(message:any){
+  this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
+  this.listCategories();
+}
 
  
 
