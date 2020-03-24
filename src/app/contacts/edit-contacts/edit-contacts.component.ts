@@ -1641,7 +1641,7 @@ goBackToManageList(){
 					this.xtremandLogger.log(this.allUsers);
 
 
-					this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords);
+					this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords, pagination.searchKey);
 
 
 					var contactIds = this.pagination.pagedItems.map(function(a) { return a.id; });
@@ -2482,11 +2482,12 @@ goBackToManageList(){
 		}
 	}
 
-	loadAllContactListUsers(contactSelectedListId: number, totalRecords: number) {
+	loadAllContactListUsers(contactSelectedListId: number, totalRecords: number, searchKey:any) {
 		try {
 			this.selectedContactListId = contactSelectedListId;
 			this.gettingAllUserspagination.maxResults = totalRecords;
 			this.gettingAllUserspagination.pageIndex = 1;
+			this.gettingAllUserspagination.searchKey = searchKey;
 			this.contactService.loadUsersOfContactList(contactSelectedListId, this.gettingAllUserspagination)
 				.subscribe(
 					(data: any) => {
