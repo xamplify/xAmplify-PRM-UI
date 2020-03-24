@@ -25,13 +25,11 @@ import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
-import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
-import { ConsoleLoggerService } from 'app/error-pages/services/console-logger.service';
-import { User } from '../../core/models/user';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
-declare var  BeePlugin,$,flatpickr,CKEDITOR,require,swal:any;
+declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
 
 @Component({
@@ -180,6 +178,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     companyProfileImages:string[]=[];
     partnerTemplateLoader = false;
     categoryNames: any;
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    folderCustomResponse:CustomResponse = new CustomResponse();
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -1246,6 +1246,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
   }
 
   listCategories(){
+      this.loading = true;
     this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
         ( data: any ) => {
             this.categoryNames = data.data;
@@ -1253,6 +1254,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
                 this.campaign.categoryId = categoryIds[0];
             }
+            this.loading = false;
            
         },
         error => { this.xtremandLogger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
@@ -1370,5 +1372,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       }
   }
 
-  
+  openCreateFolderPopup(){
+    this.folderCustomResponse = new CustomResponse('');
+    this.addFolderModalPopupComponent.openPopup();
+    }
+
+showSuccessMessage(message:any){
+  this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
+  this.listCategories();
+}
+
 }

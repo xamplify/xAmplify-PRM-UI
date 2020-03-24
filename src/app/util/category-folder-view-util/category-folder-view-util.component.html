@@ -41,7 +41,7 @@
         <ng-container *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading">
             <div *ngFor="let category of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
                 <div class="ffolder big gray">
-                    <div class="grid-box">
+                    <div class="grid-box" style="max-height: 194px;">
                         <div id="category-icon-div">
                             <i class="{{category.icon}}" id="category-icon-size"></i>
                         </div>
@@ -53,6 +53,10 @@
                         <h6 [title]="category.createdBy">By
                             <b>{{category.createdBy | slice:0:15}}<span
                                     *ngIf="category.createdBy?.length>15">...</span></b>
+                        </h6>
+                        <h6 [title]="category.companyName">From
+                            <b>{{category.companyName | slice:0:20}}<span
+                                    *ngIf="category.companyName?.length>20">...</span></b>
                         </h6>
                         <h6>
                             <span>Created On</span>
@@ -74,7 +78,7 @@
         </ng-container>
     </div>
     
-    <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+    <div *ngIf="pagination.pagedItems.length !== 0" style="margin-top: 25px;">
             <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
         </div>
         <!-- End of 24 -->

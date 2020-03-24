@@ -33,10 +33,16 @@ a.disabled {
       <li *ngIf="reDistributeEvent || reDistributeEventManage; else other">Redistribute Event Campaign</li>
       <ng-template #other><li>Event Campaign</li></ng-template>
 		</ul>
+		 <div id="folder-margin-xamp">
+                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+            </div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="page-bar" [hidden]="loader">
+	 <app-response-message class="pg8" [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+            </app-response-message>
 	<div [hidden]="isEditPartnerTemplate">
+	<ngx-loading [show]="completeLoader"[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="container"
 			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
@@ -1894,3 +1900,4 @@ a.disabled {
 		</div>
 	</div>
 </div> -->
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

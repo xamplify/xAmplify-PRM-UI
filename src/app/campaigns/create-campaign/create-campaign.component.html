@@ -29,10 +29,15 @@
                     <a>Create Campaign</a>
                 </li>
             </ul>
+            <div id="folder-margin-xamp">
+                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+            </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <!-- End of Line 2 -->
         <div class="page-bar">
+            <app-response-message class="pg8" [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+            </app-response-message>
             <div class="container" style="width: 100%;border-radius: 0;border: 1px solid #869ab3;border-top: 0;box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);padding-bottom: 10px;">
                 <div style="display: flex;padding-top: 1em;">
                     <div id="step2" [attr.class]="campaignDetailsTabClass" (click)="resetActive($event, 0, 'step-2');" [ngStyle]="{ 'width': width }">
@@ -2460,3 +2465,4 @@
         </div>
     </div>
 </div>
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>
