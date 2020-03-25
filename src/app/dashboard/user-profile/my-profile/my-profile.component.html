@@ -862,7 +862,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr *ngFor="let item of categoryPreviewItem.items">
+                                                    <tr *ngFor="let item of categoryPreviewItem.items" [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
                                                         <td>
                                                             <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
                                                             <img class="img-class-list" src="{{item.moduleIcon}}">
@@ -881,72 +881,6 @@
 
                                             </table>
 
-                                            <!-- <table class='table tgrid table-hover table-sm'>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Module</th>
-                                                        <th>Count</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr [className]="(folderItemsData?.emailTemplateCount>0 && folderItemsData.emailTemplateCountPreviewAccess )? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'"  (click)="goToFolder(folderItemsData.categoryId,'e',folderItemsData.emailTemplateCount)">
-                                                        <td>
-                                                            <h5 class="xamplify-folder-banner">Email Templates</h5>
-                                                            <img class="img-class-list" src="assets/images/email-template-folder-preview.png">
-                                                        </td>
-                                                        <td>
-                                                            <div  class="override-actions">
-                                                                <a  [title]="folderItemsData.emailTemplateCountPreviewAccess? 'Count': 'Permission denied'  ">
-                                                                   <span [className]="(folderItemsData?.emailTemplateCount>0 && folderItemsData.emailTemplateCountPreviewAccess) ? 'circled-number' : ' circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.emailTemplateCount}}</b></span>
-                                                               </a>
-                                                            </div >
-                                                        </td> 
-                                                    </tr>
-
-                                                    <tr [className]="folderItemsData?.formCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'"  (click)="goToFolder(folderItemsData.categoryId,'f',folderItemsData.formCount)">
-                                                        <td> 
-                                                            <h5 class="xamplify-folder-banner">Forms</h5>
-                                                            <img class="img-class-list" src="assets/images/form.png">
-                                                        </td>
-                                                        <td>
-                                                            <div class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                    <span [className]="folderItemsData?.formCount>0 ? 'circled-number' : 'circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.formCount}}</b></span>
-                                                                </a>
-                                                            </div>
-                                                        </td> 
-                                                       
-                                                    </tr>
-                                                    <tr [className]="folderItemsData?.pageCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(folderItemsData.categoryId,'p',folderItemsData.pageCount)">
-                                                        <td>
-                                                            <h5 class="xamplify-folder-banner">Pages</h5>
-                                                            <img class="img-class-list" src="assets/images/page-folder-preview.png">
-                                                        </td>
-                                                        <td>
-                                                            <div class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                    <span [className]="folderItemsData?.pageCount>0 ? 'circled-number' : ' circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.pageCount}}</b></span>
-                                                                </a>
-                                                            </div>
-                                                        </td> 
-                                                    </tr>
-
-                                                    <tr [className]="folderItemsData?.campaignCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(folderItemsData.categoryId,'c',folderItemsData.campaignCount)">
-                                                        <td>
-                                                            <h5 class="xamplify-folder-banner">Campaigns</h5>
-                                                            <img class="img-class-list" src="assets/images/campaign-folder-preview.png">
-                                                        </td>
-                                                        <td>
-                                                            <div class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                    <span [className]="folderItemsData?.campaignCount>0 ? 'circled-number' : 'circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.campaignCount}}</b></span>
-                                                                </a>
-                                                            </div>
-                                                        </td> 
-                                                        
-                                                    </tr>
-                                                </tbody>
-                                            </table> -->
                                         </div>
                                     </ng-container>
                                     
