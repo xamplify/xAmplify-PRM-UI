@@ -5,6 +5,9 @@
             <div class="page-toolbar col-xs-12">
                 <div class="btn-group pull-right">
                     <ng-container class='m10'>
+                        <span *ngIf="isFromCampaignModule" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View"><i
+                            class="fa fa-calendar p10" (click)="goToCalendarView()"></i>
+                    </span>
                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')"><i class="fa fa-th-list p10"
                                 aria-hidden="true"></i></span> &nbsp;
                         <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" (click)="setViewType('Grid')"><i

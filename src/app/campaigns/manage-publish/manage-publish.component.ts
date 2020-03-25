@@ -546,9 +546,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           
           goToCalendarView(){
               if(this.teamMemberId>0){
-                this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId])
+                if(this.categoryId!=undefined && this.categoryId>0){
+                    this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
+                }else{
+                    this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId]);
+                }
+                
               }else{
-                this.router.navigate(['/home/campaigns/calendar']);
+                  if(this.categoryId!=undefined && this.categoryId>0){
+                    this.router.navigate(['/home/campaigns/calendar/f/'+this.categoryId]);
+                  }else{
+                    this.router.navigate(['/home/campaigns/calendar']);
+                  }
+                
               }
           }     
           
@@ -590,8 +600,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     navigateToManageSection(){
-        if(this.router.url.endsWith('manage/')){
-            this.router.navigateByUrl('/home/campaigns/manage');
+        if(this.router.url.endsWith('/')){
+            if(this.teamMemberId!=undefined){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
+            
         }
     }
 

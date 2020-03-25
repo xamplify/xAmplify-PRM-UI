@@ -81,7 +81,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   previewCampaign: any;
   selectedSortedOption:any = this.sortByDropDown[this.sortByDropDown.length-1];
   teamMemberId: number = 0;
-
+  categoryId:number = 0;
   constructor(public authenticationService: AuthenticationService, private campaignService: CampaignService, private socialService: SocialService,
     public referenceService: ReferenceService, private router: Router, public videoUtilService:VideoUtilService, public xtremandLogger:XtremandLogger,
     public contactService:ContactService, public pagerService:PagerService, public utilService:UtilService,private route: ActivatedRoute) {
@@ -101,7 +101,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if(this.teamMemberId>0){
       teamMemberAnalytics = true;
     }
-    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId,'teamMemberAnalytics':teamMemberAnalytics,'teamMemberId':this.teamMemberId };
+    var request = { startTime: view.start._d, endTime: view.end._d, userId: this.loggedInUserId,'teamMemberAnalytics':teamMemberAnalytics,'teamMemberId':this.teamMemberId,'categoryId':this.categoryId };
     this.loading = true;
     this.campaignService.getCampaignCalendarView(request)
       .subscribe(
@@ -141,6 +141,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   renderCalendar() {
     const self = this;
     this.teamMemberId = this.route.snapshot.params['teamMemberId'];
+    this.categoryId = this.route.snapshot.params['categoryId'];
     $('#calendar').fullCalendar({
       header: {
         left: 'prev,next today',
@@ -223,9 +224,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   goToManageCampaigns(){
     if(this.teamMemberId>0){
-      this.router.navigate(['/home/campaigns/manage/'+this.teamMemberId]);
+      if(this.categoryId!=undefined && this.categoryId>0){
+        this.router.navigate(['/home/campaigns/manage/'+this.categoryId+"/"+this.teamMemberId]);
+      }else{
+        this.router.navigate(['/home/campaigns/manage/tm/'+this.teamMemberId]);
+      }
+      
     }else{
-      this.router.navigate(['/home/campaigns/manage/']);
+      if(this.categoryId!=undefined && this.categoryId>0){
+        this.router.navigate(['/home/campaigns/manage/'+this.categoryId]);
+      }else{
+        this.router.navigate(['/home/campaigns/manage/']);
+      }
+      
     }
     
   }

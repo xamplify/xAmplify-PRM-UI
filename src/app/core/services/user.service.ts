@@ -318,8 +318,8 @@ export class UserService {
         .catch( this.handleError );
     }
 
-    getItemsCount(categoryId:number){
-        return this.http.get(this.CATEGORIES_URL+"getItemsCountDetailsByCategoryId/"+categoryId+"?access_token=" + this.authenticationService.access_token,"")
+    getItemsCount(categoryId:number,loggedInUserId:number){
+        return this.http.get(this.CATEGORIES_URL+"getItemsCountDetailsByCategoryId/"+categoryId+"/"+loggedInUserId+"?access_token=" + this.authenticationService.access_token,"")
         .map( this.extractData )
         .catch( this.handleError );
     }

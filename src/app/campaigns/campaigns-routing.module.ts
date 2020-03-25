@@ -47,6 +47,8 @@ export const campaignRoutes: Routes = [
   { path: ":campaignId/remove-access", component: PreviewPartnersComponent },
   { path: "calendar", component: CalendarComponent },
   { path: "calendar/:teamMemberId", component: CalendarComponent },
+  { path: "calendar/f/:categoryId", component: CalendarComponent },
+  { path: "calendar/:teamMemberId/:categoryId", component: CalendarComponent },
   { path: "sms", component: CreateSmsCampaignComponent }
 ];
 
