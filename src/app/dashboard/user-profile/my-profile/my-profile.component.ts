@@ -1521,12 +1521,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.category = new Category();
         if (this.referenceService.companyId > 0) {
             pagination.companyId = this.referenceService.companyId;
+            pagination.userId = this.loggedInUserId;
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(pagination)
                 .subscribe(
                     response => {
                         const data = response.data;
                         pagination.totalRecords = data.totalRecords;
+                        pagination.previewAccess = data.previewAccess;
                         this.categorySortOption.totalRecords = data.totalRecords;
                         $.each(data.categories, function (_index: number, category: any) {
                             category.displayTime = new Date(category.createdTimeInString);

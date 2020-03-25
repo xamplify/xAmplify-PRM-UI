@@ -820,8 +820,12 @@
                                                                             <i class="fa fa-trash-o"></i>
                                                                         </a>
                                                                     </ng-container>
-                                                                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
+                                                                    <a *ngIf="categoryPagination.previewAccess && category.count>0" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
                                                                         <i class="fa fa-eye"></i>
+                                                                    </a>
+
+                                                                    <a *ngIf="!categoryPagination.previewAccess || category.count==0" title="Preview is disabled">
+                                                                        <i class="fa fa-eye disabled-event"></i>
                                                                     </a>
 
                                                                 </div>
