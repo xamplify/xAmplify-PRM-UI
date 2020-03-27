@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Http, Response, RequestOptions, Headers } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
-import { VanityURL } from "app/core/models/vanity.url";
+import { VanityURL } from "../models/vanity.url";
 
 @Injectable()
 export class VanityURLService {
@@ -23,7 +23,7 @@ export class VanityURLService {
         //console.log("Router URL :" + window.location.href);
         //console.log("Router URL :" + window.location.hostname);
     
-       // let url = "TGAInfoSolutions.xamplify.com";
+       //let url = "TGAInfoSolutions.xamplify.com";
         let url =window.location.hostname;
     
         if (!url.includes("release")) {
