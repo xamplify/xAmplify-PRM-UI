@@ -28,27 +28,26 @@ export class EmailStatsAnalyticsComponent implements OnInit {
   totalClickedPagination: Pagination = new Pagination();
   totalWatchedPagination: Pagination = new Pagination();
    isDownloadCsvFile = false;
+   emailStats:any;
   constructor(public authenticationService:AuthenticationService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public pagerService:PagerService) { }
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.getEmailActionCount(this.loggedInUserId);
-    this.emailWatchedCount(this.loggedInUserId);
+    this.getCount();
   }
 
-  getEmailActionCount(userId: number) {
-    this.referenceService.loading(this.emailStatsLoader,true);
-    this.dashboardService.getEmailActionCount(userId)
-        .subscribe(
-            data => {
-                this.dashboardReport.totalEmailOpenedCount = data['email_opened_count'];
-                this.dashboardReport.totalEmailClickedCount = data['email_url_clicked_count'] + data['email_gif_clicked_count'];
-            },
-            error => this.xtremandLogger.log(error),
-            () => this.xtremandLogger.log('emailOpenedCount completed')
-        );
-}
+  getCount(){
+    this.dashboardService.getEmailStats(this.loggedInUserId)
+    .subscribe(
+        response => {
+            this.emailStats = response.data;
+        },
+        error => this.xtremandLogger.log(error),
+        () => this.xtremandLogger.log('getCount() completed')
+    );
+  }
 
+ 
 emailWatchedCount(userId: number) {
     this.dashboardService.loadEmailWatchedCount(userId)
         .subscribe(

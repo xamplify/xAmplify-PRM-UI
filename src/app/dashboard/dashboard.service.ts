@@ -294,6 +294,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getEmailStats(userId:number) {
+        const url = this.dashboardAnalytics+ 'emailStats/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         // console.log("response.json(): "+body);
