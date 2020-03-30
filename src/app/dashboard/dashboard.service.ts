@@ -9,11 +9,13 @@ import 'rxjs/add/observable/throw';
 
 import { AuthenticationService } from '../core/services/authentication.service';
 import { SocialConnection } from '../social/models/social-connection';
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 
 @Injectable()
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
+    dashboardAnalytics = this.authenticationService.REST_URL +"dashboard/views/"
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
@@ -267,6 +269,27 @@ export class DashboardService {
         console.log(pagination);
         const url = this.demoUrl+ 'list?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+     /******27/03/2020. To get all modules count in dashboard */   
+     getModuleAnalytics(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics+ 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getVendorActivityAnalytics(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics+ 'vendorActivityAnalytics?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listVendorsByLoggedInUserId(userId:number) {
+        const url = this.dashboardAnalytics+ 'getVendorCompanyDetails/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
     }

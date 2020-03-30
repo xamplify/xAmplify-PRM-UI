@@ -1,0 +1,29 @@
+<div class="row">
+  <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
+      <div class="portlet-title">
+          <h4 class="pull-left m10 f-w-600 text-primary">Campaigns that have been shared with you (Vendor Activity)</h4>
+      </div>
+      <app-dashboard-loader *ngIf="httpRequestLoader.isLoading"></app-dashboard-loader>
+      <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+       <ng-container *ngFor="let dto of vendorActivityViewDtos">
+        <div [attr.class]="divClass" (click)="goToRedistributeDiv(dto.name)">
+          <div class="pricing hover-effect pointer">
+              <div class="pricing-head ">
+                  <h4 id="image-style">
+                      <img alt="{{dto.name}}" class="pricing-head-img img-responsive" src="{{dto.imagePath}}"></h4>
+              </div>
+              <div class="pricing-footer">
+                  <h4 id="notification-text">{{dto.name}}</h4>
+                  <h3 id="notification">{{dto.count}}</h3>
+              </div>
+          </div>
+      </div>
+       </ng-container>
+       
+      
+
+      </div>
+
+      </div>
+</div>
