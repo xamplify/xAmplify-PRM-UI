@@ -7,6 +7,9 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
+import { UtilService } from 'app/core/services/util.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-email-stats-analytics',
@@ -27,20 +30,30 @@ export class EmailStatsAnalyticsComponent implements OnInit {
   totalOpenListPagination: Pagination = new Pagination();
   totalClickedPagination: Pagination = new Pagination();
   totalWatchedPagination: Pagination = new Pagination();
-   isDownloadCsvFile = false;
-   emailStats:any;
-  constructor(public authenticationService:AuthenticationService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public pagerService:PagerService) { }
+  isDownloadCsvFile = false;
+  emailStats:any;
+  dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
+  constructor(public authenticationService:AuthenticationService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public pagerService:PagerService,public utilService:UtilService,public route:ActivatedRoute) { }
 
   ngOnInit() {
-    this.loggedInUserId = this.authenticationService.getUserId();
-    this.getCount();
+    this.dashboardAnalyticsDto.userId = this.authenticationService.getUserId();
+    let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    if(companyProfileName!=undefined && companyProfileName!=""){
+      this.dashboardAnalyticsDto.vanityUrlFilter = true;
+      this.dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
+    }else{
+      this.dashboardAnalyticsDto.vanityUrlFilter = false;
+    }
+   this.getCount();
   }
 
   getCount(){
-    this.dashboardService.getEmailStats(this.loggedInUserId)
+    this.referenceService.loading(this.emailStatsLoader,true);
+    this.dashboardService.getEmailStats(this.dashboardAnalyticsDto)
     .subscribe(
         response => {
             this.emailStats = response.data;
+            this.referenceService.loading(this.emailStatsLoader,false);
         },
         error => this.xtremandLogger.log(error),
         () => this.xtremandLogger.log('getCount() completed')

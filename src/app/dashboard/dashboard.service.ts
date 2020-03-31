@@ -294,9 +294,9 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getEmailStats(userId:number) {
-        const url = this.dashboardAnalytics+ 'emailStats/'+userId+'?access_token=' + this.authenticationService.access_token;
-        return this.http.get(url, "")
+    getEmailStats(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics+ 'emailStats/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
             .map(this.extractData)
             .catch(this.handleError);
     }
