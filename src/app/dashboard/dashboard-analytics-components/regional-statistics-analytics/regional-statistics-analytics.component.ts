@@ -8,7 +8,9 @@ import { Pagination } from 'app/core/models/pagination';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { DashboardReport } from 'app/core/models/dashboard-report';
-
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
+import { ActivatedRoute } from '@angular/router';
+import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
 declare var $: any;
 
 @Component({
@@ -33,33 +35,32 @@ export class RegionalStatisticsAnalyticsComponent implements OnInit {
   dashboardReport: DashboardReport = new DashboardReport();
   logListName = "";
   isDownloadCsvFile = false;
-  constructor(public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public authenticationService:AuthenticationService, public pagination: Pagination, public pagerService: PagerService,public referenceService:ReferenceService) {
+  dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
+
+  constructor(public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public authenticationService:AuthenticationService, public pagination: Pagination, public pagerService: PagerService,public referenceService:ReferenceService,public route:ActivatedRoute,public vanityUrlService:VanityURLService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
   ngOnInit() {
-    this.getCountriesTotalViewsData();
+    this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+    this.getRegionalStatistics();
+  }
+
+  getRegionalStatistics(){
+    this.referenceService.loading(this.regionalStatisticsLoader,true);
+    this.dashboardService.getRegionalStatistics(this.dashboardAnalyticsDto).
+    subscribe(result => {
+        this.countryViewsData = result.data;
+        this.xtremandLogger.log(this.countryViewsData);
+        this.referenceService.loading(this.regionalStatisticsLoader,false);
+    },
+    (error: any) => {
+        this.xtremandLogger.error(error);
+        this.referenceService.loading(this.regionalStatisticsLoader,false);
+    });
   }
 
 
-  getCountriesTotalViewsData() {
-    this.referenceService.loading(this.regionalStatisticsLoader,true);
-    try {
-        this.dashboardService.getCountryViewsDetails().
-            subscribe(result => {
-                this.countryViewsData = result.countrywiseusers;
-                this.xtremandLogger.log(this.countryViewsData);
-                this.referenceService.loading(this.regionalStatisticsLoader,false);
-            },
-            (error: any) => {
-                this.xtremandLogger.error(error);
-                this.referenceService.loading(this.regionalStatisticsLoader,false);
-               // this.xtremandLogger.errorPage(error);
-            });
-    } catch (error) {
-        this.xtremandLogger.error(error);
-    }
-}
 clickWorldMapReports(event: any) {
     this.getCampaignUsersWatchedInfo(event);
 }

@@ -364,9 +364,12 @@ generateBarChartForEmailLogs(names, opened, clicked, watched, maxValue: number) 
 // }
 
 filterByCompanyProfileName(){
+	
     if(this.vendorCompanyProfileName!=undefined &&this.vendorCompanyProfileName!=""){
+	localStorage.setItem('vanityUrlCompanyProfielName', JSON.stringify(this.vendorCompanyProfileName));
         this.router.navigate(['/home/dashboard/vanity/'+this.vendorCompanyProfileName]);
     }else{
+	localStorage.setItem('vanityUrlCompanyProfielName', JSON.stringify(""));
         this.router.navigate(['/home/dashboard/default']);
     }
     

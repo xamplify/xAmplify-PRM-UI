@@ -10,6 +10,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 import { UtilService } from 'app/core/services/util.service';
 import { ActivatedRoute } from '@angular/router';
+import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
 
 @Component({
   selector: 'app-email-stats-analytics',
@@ -33,19 +34,11 @@ export class EmailStatsAnalyticsComponent implements OnInit {
   isDownloadCsvFile = false;
   emailStats:any;
   dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
-  constructor(public authenticationService:AuthenticationService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public pagerService:PagerService,public utilService:UtilService,public route:ActivatedRoute) { }
+  constructor(public authenticationService:AuthenticationService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public referenceService:ReferenceService,public pagerService:PagerService,public utilService:UtilService,public route:ActivatedRoute,public vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
-    this.dashboardAnalyticsDto.userId = this.authenticationService.getUserId();
-    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if(companyProfileName!=undefined && companyProfileName!=""){
-      this.dashboardAnalyticsDto.vanityUrlFilter = true;
-      this.dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
-    }else{
-      this.dashboardAnalyticsDto.vanityUrlFilter = false;
-    }
-   this.getCount();
+    this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+    this.getCount();
   }
 
   getCount(){

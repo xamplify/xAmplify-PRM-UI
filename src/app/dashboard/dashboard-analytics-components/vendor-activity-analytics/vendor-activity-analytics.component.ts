@@ -8,7 +8,8 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 import { DashboardService } from 'app/dashboard/dashboard.service';
 import {VendorActivityViewDto} from "app/dashboard/models/vendor-activity-view-dto";
-
+import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
+declare  var $:any;
 @Component({
   selector: 'app-vendor-activity-analytics',
   templateUrl: './vendor-activity-analytics.component.html',
@@ -24,19 +25,11 @@ export class VendorActivityAnalyticsComponent implements OnInit {
   divClass = "col-xs-12 col-sm-4";
   ngxLoading=false;
   constructor(public authenticationService: AuthenticationService,public referenceService:ReferenceService,
-    private xtremandLogger: XtremandLogger, public router: Router,public httpRequestLoader: HttpRequestLoader,public dashboardService:DashboardService,public route:ActivatedRoute) { }
+    private xtremandLogger: XtremandLogger, public router: Router,public httpRequestLoader: HttpRequestLoader,public dashboardService:DashboardService,public route:ActivatedRoute,private vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.dashboardAnalyticsDto.userId = this.loggedInUserId;
-    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if(companyProfileName!=undefined && companyProfileName!=""){
-      this.dashboardAnalyticsDto.vanityUrlFilter = true;
-      this.dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
-    }else{
-      this.dashboardAnalyticsDto.vanityUrlFilter = false;
-    }
+    this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     this.getVendorActivityAnalytics();
   }
 

@@ -7,6 +7,8 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 import { ReferenceService } from 'app/core/services/reference.service';
 import {DashboardModuleAnalyticsViewDto} from "app/dashboard/models/dashboard-module-analytics-view-dto";
+import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
+
 @Component({
   selector: 'app-module-analytics',
   templateUrl: './module-analytics.component.html',
@@ -18,20 +20,12 @@ export class ModuleAnalyticsComponent implements OnInit {
   loader = true;
   ngxLoading = false;
   constructor(public router: Router,public xtremandLogger:XtremandLogger,public dashboardService: DashboardService,
-    public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute) { 
+    public authenticationService: AuthenticationService,public referenceService:ReferenceService,private route: ActivatedRoute,private vanityUrlService:VanityURLService) { 
 
     }
 
   ngOnInit() {
-    this.dashboardAnalyticsDto.userId = this.authenticationService.getUserId();
-    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
-    let companyProfileName = this.authenticationService.companyProfileName;
-    if(companyProfileName!=undefined && companyProfileName!=""){
-      this.dashboardAnalyticsDto.vanityUrlFilter = true;
-      this.dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;
-    }else{
-      this.dashboardAnalyticsDto.vanityUrlFilter = false;
-    }
+    this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     this.getModulesAnaltyics();
   }
 

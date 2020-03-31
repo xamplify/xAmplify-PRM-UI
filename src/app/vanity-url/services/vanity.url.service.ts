@@ -3,6 +3,7 @@ import { Http, Response, RequestOptions, Headers } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURL } from "../models/vanity.url";
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 
 @Injectable()
 export class VanityURLService {
@@ -23,7 +24,7 @@ export class VanityURLService {
         //console.log("Router URL :" + window.location.href);
         //console.log("Router URL :" + window.location.hostname);
     
-       //let url = "TGAInfoSolutions.xamplify.com";
+      // let url = "Swt.xamplify.com";
         let url =window.location.hostname;
     
         if (!url.includes("release")) {
@@ -42,6 +43,19 @@ export class VanityURLService {
             }
           }
         }
+      }
+
+      addVanityUrlFilterDTO(dto:DashboardAnalyticsDto){
+        dto.userId = this.authenticationService.getUserId();
+     //   let companyProfileName = this.authenticationService.companyProfileName;
+       let companyProfileName =  JSON.parse(localStorage.getItem('vanityUrlCompanyProfielName'));
+        if(companyProfileName!=undefined && companyProfileName!=""){
+          dto.vanityUrlFilter = true;
+          dto.vendorCompanyProfileName = companyProfileName;
+        }else{
+          dto.vanityUrlFilter = false;
+        }
+        return dto;
       }
 
     extractData(res: Response) {
