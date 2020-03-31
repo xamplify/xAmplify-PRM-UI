@@ -29,7 +29,8 @@ export class VendorActivityAnalyticsComponent implements OnInit {
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.dashboardAnalyticsDto.userId = this.loggedInUserId;
-    let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined && companyProfileName!=""){
       this.dashboardAnalyticsDto.vanityUrlFilter = true;
       this.dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;

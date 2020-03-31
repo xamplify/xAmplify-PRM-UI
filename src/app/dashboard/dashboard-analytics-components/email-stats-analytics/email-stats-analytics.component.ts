@@ -37,7 +37,8 @@ export class EmailStatsAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardAnalyticsDto.userId = this.authenticationService.getUserId();
-    let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined && companyProfileName!=""){
       this.dashboardAnalyticsDto.vanityUrlFilter = true;
       this.dashboardAnalyticsDto.vendorCompanyProfileName = companyProfileName;

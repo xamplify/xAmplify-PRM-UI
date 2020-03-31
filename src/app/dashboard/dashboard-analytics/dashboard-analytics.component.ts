@@ -59,7 +59,8 @@ export class DashboardAnalyticsComponent implements OnInit {
    }
 
   ngOnInit() {
-    let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    //let companyProfileName = this.route.snapshot.params['vendorCompanyProfileName'];
+    let companyProfileName = this.authenticationService.companyProfileName;
     if(companyProfileName!=undefined){
         this.vendorCompanyProfileName = companyProfileName;
     }
