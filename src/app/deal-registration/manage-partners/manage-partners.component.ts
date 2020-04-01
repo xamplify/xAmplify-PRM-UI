@@ -49,6 +49,10 @@ export class ManagePartnersComponent implements OnInit
     {
         this.partnerList = true;
         //this.referenceService.leadList = this.leadList;
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this. pagination.vanityUrlFilter = true;
+        }
         if (this.isCampaignByLeads)
             this.listCampaignPartners(this.pagination);
         else

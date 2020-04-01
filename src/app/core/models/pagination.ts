@@ -54,4 +54,6 @@ export class Pagination {
 	partnerOrContactEmailId = "";
 	teamMemberAnalytics = false;
 	teamMemberId:number = 0;
+	vanityUrlFilter:boolean = false;
+	vendorCompanyProfileName:String;
 }

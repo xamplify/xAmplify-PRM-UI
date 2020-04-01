@@ -19,6 +19,7 @@ import { isNumber } from 'util';
 import { Roles } from '../../core/models/roles';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from 'app/core/services/user.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var  $:any;
 
@@ -737,7 +738,10 @@ export class ManageDealsComponent implements OnInit
     {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            pagination.vanityUrlFilter = true;
+        }        
         this.dealRegistrationService.listCampaignsByPartner(pagination)
             .subscribe(
                 data =>
@@ -765,7 +769,10 @@ export class ManageDealsComponent implements OnInit
     {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            pagination.vanityUrlFilter = true;
+        }
         this.dealRegistrationService.listCampaignsDealsByPartner(pagination)
             .subscribe(
                 data =>

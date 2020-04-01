@@ -10,6 +10,7 @@ import { Campaign } from '../models/campaign';
 import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 declare var swal, $, Promise: any;
 @Injectable()
 export class CampaignService {
@@ -831,4 +832,19 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    // Added by Vivek for Vanity URL
+
+    getUserCampaignReportForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto) {
+        var url = this.URL + "dashboard/views/get-user-campaign-report?access_token=" + this.authenticationService.access_token;
+        return this.http.post(url, dashboardAnalyticsDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listCampaignInteractionsDataForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto, reportType: string) {        
+        var url = this.URL + "dashboard/views/list-campaign-interactions?access_token=" + this.authenticationService.access_token + '&limit=4'  + '&reportType=' + reportType;
+        return this.http.post(url, dashboardAnalyticsDto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

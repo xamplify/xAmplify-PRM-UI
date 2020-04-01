@@ -13,6 +13,8 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { DashboardService } from '../dashboard.service';
 import { UtilService } from 'app/core/services/util.service';
+import { DashboardAnalyticsDto } from '../models/dashboard-analytics-dto';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 @Component({
@@ -49,10 +51,11 @@ export class DashboardAnalyticsComponent implements OnInit {
    maxBarChartNumber: number;
    isMaxBarChartNumber = true;
    emailStatisticsLoader:HttpRequestLoader = new HttpRequestLoader();
+   dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
 
   constructor(public authenticationService: AuthenticationService,public userService: UserService,
     public referenceService: ReferenceService,public xtremandLogger: XtremandLogger,public properties: Properties,public campaignService:CampaignService,
-    public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute) {
+    public dashBoardService:DashboardService,public utilService:UtilService,public router:Router,private route: ActivatedRoute, private vanityURLService:VanityURLService) {
     this.isOnlyUser = this.authenticationService.isOnlyUser();
     this.utilService.setRouterLocalStorage('dashboard');
 
@@ -70,6 +73,7 @@ export class DashboardAnalyticsComponent implements OnInit {
     }
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getDefaultPage(this.loggedInUserId);
+    this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     this.getUserCampaignReport();
     
     Metronic.init();
@@ -139,8 +143,8 @@ setDashboardAsDefaultPage(event: any) {
 getUserCampaignReport() {
   this.referenceService.loading(this.topFourCampaignsLoader,true);
   this.referenceService.loading(this.emailStatisticsLoader,true);
-  this.topFourLoading = true;
-  this.campaignService.getUserCampaignReport(this.loggedInUserId)
+  this.topFourLoading = true;  
+  this.campaignService.getUserCampaignReportForVanityURL(this.dashboardAnalyticsDto)
       .subscribe(
           data => {
               this.userCampaignReport = data['userCampaignReport'];
@@ -176,7 +180,8 @@ if (('CUSTOM' === userCampaignReport.campaignReportOption) && (null != userCampa
 }
 
 listCampaignInteractionsData(userId: number, reportType: string) {
-this.campaignService.listCampaignInteractionsData(userId, reportType)
+
+this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnalyticsDto,reportType)
     .subscribe(
         data => {
           //  this.campaignIdArray = [];
