@@ -85,7 +85,7 @@ export class DashboardAnalyticsComponent implements OnInit {
     Index.initCharts();
     Index.initChat();
     Tasks.initDashboardWidget();
-    this.listVendorsByLoggedInUserId(this.loggedInUserId);
+    //this.listVendorsByLoggedInUserId(this.loggedInUserId);
     this.xtremandLogger.log(this.authenticationService.getRoles());
   }
 
@@ -105,7 +105,7 @@ export class DashboardAnalyticsComponent implements OnInit {
         );
 }
 
-listVendorsByLoggedInUserId(userId: number) {
+    listVendorsByLoggedInUserId(userId: number) {
     this.ngxLoading = true;
     this.dashBoardService.listVendorsByLoggedInUserId(userId)
         .subscribe(
