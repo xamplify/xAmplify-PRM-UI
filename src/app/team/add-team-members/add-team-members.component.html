@@ -115,7 +115,7 @@
                                 <th class="rest-header">
                                     <i class="fa fa-check-circle" aria-hidden="true"></i><br>All
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
                                 </th>
                                 <th class="rest-header" *ngIf="contactAccess">
@@ -124,16 +124,16 @@
                                 <th class="rest-header">
                                     <i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i><br>Stats
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-paint-brush" aria-hidden="true"></i><br>Design
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-share-square-o" aria-hidden="true"></i><br>Social Share
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-users" aria-hidden="true"></i><br>Partners
                                 </th>
                                 <!--  <th class="rest-header">
@@ -166,19 +166,19 @@
                                         <input type="checkbox" (change)="addAllAuthorities($event,teamMember,'add-team-member-table',i)" class="check-all-{{i}}" [(ngModel)]="teamMember.all">
                                         <br>
                                     </td>
-                                    <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+                                    <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
                                     <td *ngIf="contactAccess"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
                                     <td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
-                                    <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+                                    <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
-                                    <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+                                    <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
-                                    <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+                                    <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
-                                    <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+                                    <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
                                     </td>
                                     <!--                                 <td><input type="checkbox" id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td> -->
                                     <td class="left">
@@ -237,7 +237,7 @@
                                 <th class="rest-header">
                                     <i class="fa fa-check-circle" aria-hidden="true"></i><br>All
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
                                 </th>
                                 <th class="rest-header" *ngIf="contactAccess">
@@ -246,16 +246,16 @@
                                 <th class="rest-header">
                                     <i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-line-chart" aria-hidden="true"></i><br>Stats
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-paint-brush" aria-hidden="true"></i><br>Design
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-share-square-o" aria-hidden="true"></i><br>Social Share
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartner">
+                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
                                     <i class="fa fa-users" aria-hidden="true"></i><br>Partners
                                 </th>
                                 <!-- <th class="rest-header">
@@ -318,35 +318,35 @@
                                         <ng-container *ngIf="(teamMember.orgAdmin || teamMember.all);then disable else enable">
                                         </ng-container>
                                         <ng-template #disable>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
                                             <td *ngIf="contactAccess"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
                                             <td><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" disabled="disabled" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
                                         </ng-template>
                                         <ng-template #enable>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
                                             <td *ngIf="contactAccess"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
                                             <td><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <td *ngIf="!isOnlyPartner"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+                                            <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
                                             <!--                                     <td><input type="checkbox"  id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
  -->
