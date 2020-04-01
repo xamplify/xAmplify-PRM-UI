@@ -14,6 +14,7 @@ import { User } from '../../core/models/user';
 import { DealType } from '../models/deal-type';
 import { DealQuestions } from '../models/deal-questions';
 import { DealDynamicProperties } from '../models/deal-dynamic-properties';
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 
 @Injectable()
 export class DealRegistrationService
@@ -395,6 +396,20 @@ export class DealRegistrationService
     {
         var url = this.URL + "validate-sf-enabled/"+dealId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getOpportunitesAnalyticsForVendor(userId:number) {
+        const url =  this.authenticationService.REST_URL +'dashboard/views/opportunities/vendor/analytics/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getOpportunitesAnalyticsForPartner(dto: DashboardAnalyticsDto) {
+        const url =  this.authenticationService.REST_URL +'dashboard/views/opportunities/partner/analytics/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url,dto)
             .map(this.extractData)
             .catch(this.handleError);
     }
