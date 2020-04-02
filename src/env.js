@@ -9,7 +9,7 @@
   
   /*************Local*******************************/
   window.__env.CLIENT_URL = 'http://localhost:4200/'; // local client app server
-  window.__env.SERVER_URL = 'http://localhost:9090/'; // xamplify backend production server
+  window.__env.SERVER_URL = 'http://localhost:8080/'; // xamplify backend production server
   window.__env.imagesHost = "https://release.xamp.io/vod/images/";
   
   
