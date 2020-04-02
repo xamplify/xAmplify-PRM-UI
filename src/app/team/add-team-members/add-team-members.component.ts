@@ -75,6 +75,7 @@ export class AddTeamMembersComponent implements OnInit {
 	deletePopupLoader = false;
 	addModalPopUpLoader = false;
 	loginAsTeamMemberAccess: false;
+	isOnlyPartnerOrPartnerTeamMember = false;
 	/**********Constructor**********/
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
@@ -141,6 +142,7 @@ export class AddTeamMembersComponent implements OnInit {
 						this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
 						this.authenticationService.hasOnlyPartnerRole = this.isOnlyPartner;
 						this.contactAccess = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
+						this.isOnlyPartnerOrPartnerTeamMember = this.isOnlyPartner || this.authenticationService.isPartnerTeamMember;
 					} else {
 						this.authenticationService.loggedInUserRole = 'User';
 					}

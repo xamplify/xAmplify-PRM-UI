@@ -820,8 +820,12 @@
                                                                             <i class="fa fa-trash-o"></i>
                                                                         </a>
                                                                     </ng-container>
-                                                                    <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
+                                                                    <a *ngIf="categoryPagination.previewAccess" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
                                                                         <i class="fa fa-eye"></i>
+                                                                    </a>
+
+                                                                    <a *ngIf="!categoryPagination.previewAccess" title="You do not have permission to preview">
+                                                                        <i class="fa fa-eye disabled-event"></i>
                                                                     </a>
 
                                                                 </div>
@@ -843,14 +847,14 @@
                                     <ng-container *ngIf="isFolderPreview">
                                         <app-dashboard-loader *ngIf="folderPreviewLoader.isLoading"></app-dashboard-loader>
                                         <div class="portlet-title" *ngIf="!folderPreviewLoader.isLoading">
-                                            <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">{{folderItemsData.selectedCategory}}</h4>
+                                            <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">{{categoryPreviewItem.categoryName}}</h4>
                                             <a class="close-circle pull-right" (click)="isFolderPreview=false">
                                                 <i class="fa fa-times"></i>
                                             </a>
                                         </div>
                                         <br>
                                         <div class="table table-responsive top-padding-5px" *ngIf="!folderPreviewLoader.isLoading">
-                                            <table class='table tgrid table-hover table-sm'>
+                                            <table  class='table tgrid table-hover table-sm'>
                                                 <thead>
                                                     <tr>
                                                         <th>Module</th>
@@ -858,63 +862,25 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr [className]="folderItemsData?.emailTemplateCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'"  (click)="goToFolder(folderItemsData.categoryId,'e',folderItemsData.emailTemplateCount)">
+                                                    <tr *ngFor="let item of categoryPreviewItem.items" [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
                                                         <td>
-                                                            <h5 class="xamplify-folder-banner">Email Templates</h5>
-                                                            <img class="img-class-list" src="assets/images/email-template-folder-preview.png">
+                                                            <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
+                                                            <img class="img-class-list" src="{{item.moduleIcon}}">
                                                         </td>
                                                         <td>
                                                             <div  class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                   <span [className]="folderItemsData?.emailTemplateCount>0 ? 'circled-number' : ' circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.emailTemplateCount}}</b></span>
-                                                               </a>
+                                                                <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'">
+                                                                   <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
+                                                                   <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
+                                                                </a>
                                                             </div >
                                                         </td> 
                                                     </tr>
-                                                    <tr [className]="folderItemsData?.formCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'"  (click)="goToFolder(folderItemsData.categoryId,'f',folderItemsData.formCount)">
-                                                        <td> 
-                                                            <h5 class="xamplify-folder-banner">Forms</h5>
-                                                            <img class="img-class-list" src="assets/images/form.png">
-                                                        </td>
-                                                        <td>
-                                                            <div class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                    <span [className]="folderItemsData?.formCount>0 ? 'circled-number' : 'circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.formCount}}</b></span>
-                                                                </a>
-                                                            </div>
-                                                        </td> 
-                                                       
-                                                    </tr>
-                                                    <tr [className]="folderItemsData?.pageCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(folderItemsData.categoryId,'p',folderItemsData.pageCount)">
-                                                        <td>
-                                                            <h5 class="xamplify-folder-banner">Pages</h5>
-                                                            <img class="img-class-list" src="assets/images/page-folder-preview.png">
-                                                        </td>
-                                                        <td>
-                                                            <div class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                    <span [className]="folderItemsData?.pageCount>0 ? 'circled-number' : ' circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.pageCount}}</b></span>
-                                                                </a>
-                                                            </div>
-                                                        </td> 
-                                                    </tr>
 
-                                                    <tr [className]="folderItemsData?.campaignCount>0 ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(folderItemsData.categoryId,'c',folderItemsData.campaignCount)">
-                                                        <td>
-                                                            <h5 class="xamplify-folder-banner">Campaigns</h5>
-                                                            <img class="img-class-list" src="assets/images/campaign-folder-preview.png">
-                                                        </td>
-                                                        <td>
-                                                            <div class="override-actions">
-                                                                <a data-toggle="tooltip" data-placement="top" title="Count">
-                                                                    <span [className]="folderItemsData?.campaignCount>0 ? 'circled-number' : 'circled-number xampify-cursor-not-allowed'"><b>{{folderItemsData.campaignCount}}</b></span>
-                                                                </a>
-                                                            </div>
-                                                        </td> 
-                                                        
-                                                    </tr>
                                                 </tbody>
+
                                             </table>
+
                                         </div>
                                     </ng-container>
                                     

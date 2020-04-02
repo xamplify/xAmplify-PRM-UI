@@ -1178,5 +1178,34 @@
         </div>
     </div>
 </div>
+
+
+
 <!--Open Pop up-->
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+
+
+<!-- Cloud Partner Saving Modal Popup -->
+<div class="modal fade" id="cloudPartnersModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-copy" role="document">
+        <div class="modal-content" style="width: 80%;top: 100px;left: 60px">
+            <div class="modal-header">
+                <h4 class="modal-title f-w-600"> Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <h4 class="modal-title f-w-600"> <font style="color: red;"> Alert!!!</font> Once you proceed, All the processed emails will be onboarded as Channel Managers (partners). </h4>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <input type="checkbox" [(ngModel)]="cloudPartnersModalCheckBox" [ngModelOptions]="{standalone: true}" name="cloudPartnersModalCheckBoxTC"  checked>
+                    <font style="color: red;">*</font>
+                    I agree that all onboarded partners will receive partner signup notification emails and will act as our channel managers (partners).
+                   	<br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelPartners()">Decline</button>
+                <button type="button" [disabled]="!cloudPartnersModalCheckBox" class="btn btn-primary" (click)="proceed()">Accept</button>
+            </div>
+        </div>
+    </div>

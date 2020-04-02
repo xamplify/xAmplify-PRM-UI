@@ -125,3 +125,7 @@
     display: inline-flex;
     margin-left: -10px;
 }
+
+.margin-right-calendar{
+    margin-right: 5px;
+}

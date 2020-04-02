@@ -185,7 +185,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isValidLegalOptions = true;
     filePreview = false;
     @ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
-
+   cloudPartnersModalCheckBox = false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -1934,44 +1934,61 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4 ) {
                 this.savePartnerUsers();
             }
-
-            if ( this.selectedAddPartnerOption == 3 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveGoogleContacts();
-                } else
-                    this.saveGoogleContactSelectedUsers();
+            if ( this.selectedAddPartnerOption == 3  || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9) {
+                this.openCloudPartnerPopUp();
             }
-
-            if ( this.selectedAddPartnerOption == 6 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveZohoContacts();
-                } else
-                    this.saveZohoContactSelectedUsers();
-            }
-
-            if ( this.selectedAddPartnerOption == 7 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveSalesforceContacts();
-                } else
-                    this.saveSalesforceContactSelectedUsers();
-            } 
-            if ( this.selectedAddPartnerOption == 8 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveMarketoContacts();
-                } else
-                    this.saveMarketoContactSelectedUsers();
-            }
-
-            if(this.selectedAddPartnerOption == 9){
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveHubSpotContacts();
-                } else{
-                    this.saveHubSpotContactSelectedUsers();
-                }                
-            }
+            
         }
        
     }
+
+	openCloudPartnerPopUp(){
+        this.cloudPartnersModalCheckBox = false;
+		$('#cloudPartnersModal').modal('show');
+    }
+    
+    proceed(){
+        this.cloudPartnersModalCheckBox = false;
+        $('#cloudPartnersModal').modal('hide');
+        if ( this.selectedAddPartnerOption == 3 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveGoogleContacts();
+            } else
+                this.saveGoogleContactSelectedUsers();
+        }
+
+        if ( this.selectedAddPartnerOption == 6 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveZohoContacts();
+            } else
+                this.saveZohoContactSelectedUsers();
+        }
+
+        if ( this.selectedAddPartnerOption == 7 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveSalesforceContacts();
+            } else
+                this.saveSalesforceContactSelectedUsers();
+        } 
+        if ( this.selectedAddPartnerOption == 8 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveMarketoContacts();
+            } else{
+            this.saveMarketoContactSelectedUsers();
+            }
+                
+        }
+
+        if(this.selectedAddPartnerOption == 9){
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveHubSpotContacts();
+            } else{
+                this.saveHubSpotContactSelectedUsers();
+            }                
+        }
+
+    }
+
     
     validateLegalBasisOptions(){
         this.isValidLegalOptions = true;

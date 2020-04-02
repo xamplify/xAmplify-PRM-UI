@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import { SortOption } from '../../core/models/sort-option';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -27,11 +27,13 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     categorySortOption: SortOption = new SortOption();
+    isFromCampaignModule = false;
 
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
-        public userService: UserService, public utilService: UtilService) {
+        public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) {
+        this.isFromCampaignModule = this.router.url.indexOf("campaigns")>-1; 
 
     }
 
@@ -152,5 +154,14 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         
     }
 
+    goToCalendarView(){
+        let teamMemberId = this.route.snapshot.params['teamMemberId'];
+        if(teamMemberId!=undefined && teamMemberId>0){
+            this.router.navigate(['/home/campaigns/calendar/' + teamMemberId]);
+        }else{
+            this.router.navigate(['/home/campaigns/calendar']);
+        }
+     
+    }
 
 }

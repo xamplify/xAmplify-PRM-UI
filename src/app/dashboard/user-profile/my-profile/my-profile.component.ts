@@ -29,6 +29,8 @@ import { GdprSetting } from '../../models/gdpr-setting';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Category } from '../../models/category';
+import { CategoryPreviewItem } from '../../models/category-preview-item';
+
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
@@ -144,7 +146,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isFolderPreview = false;
     folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
     hasItems = false;
-    folderItemsData:any;
+    categoryPreviewItem  = new CategoryPreviewItem();
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1521,12 +1523,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.category = new Category();
         if (this.referenceService.companyId > 0) {
             pagination.companyId = this.referenceService.companyId;
+            pagination.userId = this.loggedInUserId;
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(pagination)
                 .subscribe(
                     response => {
                         const data = response.data;
                         pagination.totalRecords = data.totalRecords;
+                        pagination.previewAccess = data.previewAccess;
                         this.categorySortOption.totalRecords = data.totalRecords;
                         $.each(data.categories, function (_index: number, category: any) {
                             category.displayTime = new Date(category.createdTimeInString);
@@ -1783,15 +1787,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     previewItems(category:Category){
         this.hasItems = false;
-        this.folderItemsData = {};
+        this.categoryPreviewItem = new CategoryPreviewItem();
         this.isFolderPreview = true;
         this.referenceService.startLoader(this.folderPreviewLoader);
-        this.userService.getItemsCount(category.id)
+        this.userService.getItemsCount(category.id,this.loggedInUserId)
         .subscribe(
             (response: any) => {
-                this.folderItemsData = response.data;
-                this.folderItemsData.selectedCategory = category.name;
-                this.folderItemsData.categoryId = category.id;
+                this.categoryPreviewItem.items = response.data;
+                this.categoryPreviewItem.categoryId = category.id;
+                this.categoryPreviewItem.categoryName = category.name;
+                console.log(this.categoryPreviewItem);
                 this.referenceService.stopLoader(this.folderPreviewLoader);
             },
             (error: string) => {
@@ -1801,16 +1806,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-    goToFolder(categoryId:number,type:string,count:number){
-        if(count>0){
+    goToFolder(categoryId:number,item:any){
+        let count = item.moduleItemsCount;
+        let type = item.moduleName;
+        if(count>0 && item.previewAccess){
             this.ngxloading = true;
-            if("e"==type){
+            if("Email Templates"==type){
                 this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
-            }else if("f"==type){
+            }else if("Forms"==type){
                 this.router.navigate(['/home/forms/manage/'+categoryId]);
-            }else if("p"==type){
+            }else if("Pages"==type){
                 this.router.navigate(['/home/pages/manage/'+categoryId]);
-            }else if("c"==type){
+            }else if("Campaigns"==type){
                 this.router.navigate(['/home/campaigns/manage/'+categoryId]);
             }
         }
