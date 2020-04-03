@@ -135,6 +135,12 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if(this.pagination.teamMemberAnalytics){
             this.pagination.teamMemberId = this.teamMemberId;
         }
+
+        //Added by Vivek for Vanity URL
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this. pagination.vanityUrlFilter = true;
+        }
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
