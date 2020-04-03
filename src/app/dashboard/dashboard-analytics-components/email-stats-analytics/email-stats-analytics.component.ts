@@ -73,7 +73,7 @@ listOfEmailOpenLogs(actionId: number) {
   this.paginationType = 'open';
   this.isLoadingList = true;
   //if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
-  this.dashboardService.listEmailOpenLogs(this.loggedInUserId, actionId, this.pagination)
+  this.dashboardService.listEmailOpenLogsForVanityURL(actionId, this.pagination,this.dashboardAnalyticsDto)
       .subscribe(
           (result: any) => {
               result.forEach((element) => {
@@ -112,7 +112,7 @@ downloadFuctionality(){
 
 listOfAllEmailOpenLogs() {
   this.totalOpenListPagination.maxResults = this.dashboardReport.totalEmailOpenedCount;
-  this.dashboardService.listEmailOpenLogs(this.loggedInUserId, 13, this.totalOpenListPagination)
+  this.dashboardService.listEmailOpenLogsForVanityURL(13, this.totalOpenListPagination, this.dashboardAnalyticsDto)
       .subscribe(
           (result: any) => {
             result.forEach((element) => {
@@ -127,7 +127,7 @@ listOfAllEmailOpenLogs() {
 
 listOfAllEmailClickedLogs() {
   this.totalClickedPagination.maxResults = this.dashboardReport.totalEmailClickedCount;
-  this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.totalClickedPagination)
+  this.dashboardService.listEmailClickedLogsForVanityURL(this.totalClickedPagination, this.dashboardAnalyticsDto)
       .subscribe(
           result => {
              result.forEach((element) => {
@@ -143,7 +143,7 @@ listOfAllEmailClickedLogs() {
 
 listOfAllWatchedLogs() {
   this.totalWatchedPagination.maxResults = this.dashboardReport.totalEmailWatchedCount;
-  this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.totalWatchedPagination)
+  this.dashboardService.listOfWatchedLogsForVanityURL(this.totalWatchedPagination, this.dashboardAnalyticsDto)
       .subscribe(
           (data: any) => {
               data.forEach((element) => {
@@ -160,7 +160,7 @@ listOfEmailClickedLogs() {
     this.paginationType = 'clicked';
     this.isLoadingList = true;
    //if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
-    this.dashboardService.listEmailClickedLogs(this.loggedInUserId, this.pagination)
+    this.dashboardService.listEmailClickedLogsForVanityURL(this.pagination,this.dashboardAnalyticsDto)
         .subscribe(
             result => {
                 result.forEach((element) => {
@@ -181,7 +181,7 @@ listOfWatchedLogs() {
     this.paginationType = 'watched';
     this.isLoadingList = true;
    // if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
-    this.dashboardService.listOfWatchedLogs(this.loggedInUserId, this.pagination)
+    this.dashboardService.listOfWatchedLogsForVanityURL(this.pagination,this.dashboardAnalyticsDto)
         .subscribe(
             (data: any) => {
               data.forEach((element) => {

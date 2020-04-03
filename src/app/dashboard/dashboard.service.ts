@@ -308,6 +308,27 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    listEmailOpenLogsForVanityURL(actionId: number, pagination: Pagination,dto: DashboardAnalyticsDto) {        
+            const url = this.authenticationService.REST_URL + "dashboard/views/email-logs-by-user-and-action" + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
+            return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listOfWatchedLogsForVanityURL(pagination: Pagination,dto: DashboardAnalyticsDto) {        
+            const url = this.authenticationService.REST_URL + "dashboard/views/watched-users" + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
+            return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listEmailClickedLogsForVanityURL(pagination: Pagination,dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + "dashboard/views/email-click-logs-by-user" + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
+            return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     private extractData(res: Response) {
         let body = res.json();
