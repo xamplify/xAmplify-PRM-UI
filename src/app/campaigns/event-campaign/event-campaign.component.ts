@@ -329,6 +329,14 @@ completeLoader = false;
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
+        this.isPushToCrm = this.eventCampaign.pushToMarketingAutomation;
+        this.eventCampaign.pushToCRM = [];
+        if(this.eventCampaign.pushToMarketo){
+            this.eventCampaign.pushToCRM.push('marketo');
+        }
+        if(this.eventCampaign.pushToHubspot){
+            this.eventCampaign.pushToCRM.push('hubspot');
+        }
         if(this.eventCampaign.dataShare == undefined){
         this.eventCampaign.dataShare = false;
         }
@@ -1191,7 +1199,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'smsService':this.smsService,
       'smsText':this.smsText,
       'socialStatusList': this.socialStatusList,
-      'forms': this.selectedFormData
+      'forms': this.selectedFormData,
+      'pushToCRM':eventCampaign.pushToCRM
     }
     eventCampaign = customEventCampaign;
    }

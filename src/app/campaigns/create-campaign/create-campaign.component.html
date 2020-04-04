@@ -355,13 +355,9 @@
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
                                                             <div class="col-sm-1 ui-switch-custom-div">
-                                                                <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
-                                                                <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushToCrm()"
-                                                                    id="falseAction">
+                                                                <switch [status]="campaign.pushToMarketingAutomation" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                    (statusChange)="pushToCrm()">
                                                                 </switch>
-                                                                <!--  <switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)"
-                                                                    id="trueAction" *ngIf="pushToMarketo">
-                                                                </switch> -->
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
                                                                 <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into marketing automation">
@@ -378,11 +374,8 @@
                                                         <div div class="col-md-6" *ngIf="enableLeads">
                                                             <div class="  cenetered-block1">
                                                                 <div class="">
-                                                                    <!-- <div>
-                                                                        <input class="pos" name="vehicle1" type="checkbox" value="">
-                                                                    </div> -->
                                                                     <label class="customcheck">
-                                                                        <input type="checkbox"
+                                                                        <input type="checkbox" [checked]="campaign.pushToMarketo"
                                                                             (click)="pushToCrmRequest('marketo', $event)">
                                                                         <span class="checkmark"></span>
                                                                     </label>
@@ -396,11 +389,8 @@
                                                         <div div class="col-md-6" *ngIf="enableLeads">
                                                             <div class="cenetered-block1">
                                                                 <div class="">
-                                                                    <!-- <div>
-                                                                        <input class="pos" name="vehicle1" type="checkbox" value="">
-                                                                    </div> -->
                                                                     <label class="customcheck">
-                                                                        <input type="checkbox"
+                                                                        <input type="checkbox" [checked]="campaign.pushToHubspot"
                                                                             (click)="pushToCrmRequest('hubspot', $event)">
                                                                         <span class="checkmark"></span>
                                                                     </label>
