@@ -342,6 +342,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            this.isPushToCrm = this.campaign.pushToMarketingAutomation;
+            if(this.campaign.pushToMarketo){
+                this.pushToCRM.push('marketo');
+            }
+            if(this.campaign.pushToHubspot){
+                this.pushToCRM.push('hubspot');
+            }
+
             this.userListDTOObj = this.campaignService.campaign.userLists;
             if(this.userListDTOObj===undefined){ this.userListDTOObj = [];}
             if(this.campaign.campaignTypeInString=="REGULAR"){

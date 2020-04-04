@@ -69,7 +69,9 @@ export class EventCampaign {
     eventStarted = false;
     categoryId:number = 0;
     categoryName:string = "";
-
+	pushToHubspot = false;
+	pushToSalesforce = false;
+	pushToMarketingAutomation = false;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());

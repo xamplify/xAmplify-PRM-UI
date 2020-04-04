@@ -248,14 +248,9 @@ a.disabled {
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
                                                             <div class="col-sm-1 ui-switch-custom-div">
-                                                                <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
-                                                                <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" 
-                                                                [size]="callActionSwitch.size" (click)="pushToCrm()"
-                                                                    id="falseAction">
+                                                                <switch [status]="eventCampaign.pushToMarketingAutomation" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                    (statusChange)="pushToCrm()">
                                                                 </switch>
-                                                               <!--  <switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)"
-                                                                    id="trueAction" *ngIf="pushToMarketo">
-                                                                </switch> -->
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -10px">
                                                                 <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into marketing automation">
@@ -275,7 +270,7 @@ a.disabled {
                                                                         <input class="pos" name="vehicle1" type="checkbox" value="">
                                                                     </div> -->
                                                                     <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('marketo', $event)">
+                                                                            <input type="checkbox" (click)="pushToCrmRequest('marketo', $event)" [checked]="eventCampaign.pushToMarketo">
                                                                             <span class="checkmark"></span>
                                                                           </label>
                                                                     <img class="image-size" src="assets/images/crm/marketo-crm.png">
@@ -292,7 +287,7 @@ a.disabled {
                                                                         <input class="pos" name="vehicle1" type="checkbox" value="">
                                                                     </div> -->
                                                                     <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)" >
+                                                                            <input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)"  [checked]="eventCampaign.pushToHubspot">
                                                                             <span class="checkmark"></span>
                                                                           </label>
                                                                     <img class="image-size" src="assets/images/crm/hubspot-crm.png">
