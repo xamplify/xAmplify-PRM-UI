@@ -254,6 +254,7 @@ export class ManageDealsComponent implements OnInit
 
       getOpportunitesAnalyticsForPartner(){
         this.opportunitiesAnalyticsLoader = true;
+        this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.dealRegistrationService.getOpportunitesAnalyticsForPartner(this.dashboardAnalyticsDto).
         subscribe(result => {
             this.opportunitiesAnalytics = result.data;
