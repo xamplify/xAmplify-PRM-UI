@@ -134,9 +134,9 @@
                                                         <i class="fa fa-line-chart"></i>
                                                         <span class="badge" id="notification">{{form.count}}</span>
                                                     </a>
-                                                    <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
+                                                    <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
                                                         <img src="../assets/images/disabled-icon.png">
-                                                    </a>
+                                                    </a> -->
                                                 </ng-container>
                                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare)|| !form.campaignForm || form.landingPageForm">
                                                     <!-------------Disable onclick if count==0   ----->
@@ -207,9 +207,9 @@
                                         <i class="fa fa-line-chart"></i>
                                     </a>
                                     <span class="badge" id="notification-list">{{form.count}}</span>
-                                    <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
+                                    <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
                                         <img src="../assets/images/disabled-icon.png">
-                                    </a>
+                                    </a> -->
                                 </ng-container>
                                 <ng-container *ngIf="(form.campaignForm&&form.dataShare) || !form.campaignForm || form.landingPageForm">
                                     <ng-container *ngIf="form.count==0">

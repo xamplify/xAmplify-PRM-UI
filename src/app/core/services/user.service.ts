@@ -324,6 +324,13 @@ export class UserService {
         .catch( this.handleError );
     }
 
+    getModulesDisplayDefaultView( userId: number ) {
+        return this.http.get( this.URL + "admin/getModulesDisplayDefaultView/" + userId + "?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+
     
 
     private handleServerError(error: any) {
