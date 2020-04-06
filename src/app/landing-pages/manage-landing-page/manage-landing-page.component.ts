@@ -15,6 +15,8 @@ import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import {PreviewLandingPageComponent} from '../preview-landing-page/preview-landing-page.component';
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
+import {VanityURLService} from "app/vanity-url/services/vanity.url.service";
 
 declare var swal:any, $: any;
 @Component({
@@ -42,11 +44,12 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     iframeEmbedUrl: string="";
     deleteAndEditAccess = false;
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor( public referenceService: ReferenceService,
             public httpRequestLoader: HttpRequestLoader, public pagerService:
                 PagerService, public authenticationService: AuthenticationService,
             public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-      public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute) {
+      public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute,public vanityUrlService:VanityURLService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if ( this.referenceService.isCreated ) {
@@ -62,6 +65,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         if(this.router.url.includes('home/pages/partner')){
             this.isPartnerLandingPage = true;
+            this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+            this.pagination.vanityUrlFilter = this.dashboardAnalyticsDto.vanityUrlFilter;
+            this.pagination.vendorCompanyProfileName = this.dashboardAnalyticsDto.vendorCompanyProfileName;
         }else{
             this.selectedLandingPageTypeIndex = 0;
             this.pagination.filterKey = "All";
