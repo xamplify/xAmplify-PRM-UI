@@ -95,7 +95,7 @@ export class EmailStatsAnalyticsComponent implements OnInit {
     }
     cancelEmailStateModalPopUp() {
         this.pagination = new Pagination();
-        this.pagination.pageIndex = 1;
+        this.pagination.pageIndex = 1;  
         this.pagination.maxResults = 12;
         this.downloadDataList.length = 0;
         if (this.dashboardReport.emailLogList) { this.dashboardReport.emailLogList.length = 0; }
@@ -180,7 +180,7 @@ export class EmailStatsAnalyticsComponent implements OnInit {
                     });
                     this.dashboardReport.emailLogList = data;
                     this.isLoadingList = false;
-                    this.pagination.totalRecords = data.totalRecords;
+                    this.pagination.totalRecords = result.totalRecords;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
 
                 },
@@ -203,7 +203,7 @@ export class EmailStatsAnalyticsComponent implements OnInit {
                     });
                     this.dashboardReport.emailLogList = data;
                     this.isLoadingList = false;
-                    this.pagination.totalRecords = data.totalRecords;
+                    this.pagination.totalRecords = result.totalRecords;
                     this.pagination = this.pagerService.getPagedItems(this.pagination, this.dashboardReport.emailLogList);
                 },
                 error => this.xtremandLogger.log(error),
