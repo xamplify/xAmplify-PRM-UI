@@ -4,6 +4,8 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { ReferenceService } from '../../../core/services/reference.service';
 import { User } from '../../../core/models/user';
 import { Properties } from '../../../common/models/properties';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
     selector: 'app-profile-lock',
@@ -25,8 +27,9 @@ export class ProfileLockComponent implements OnInit {
     { "name": "twitter", "iconName": "twitter" },
     { "name": "google", "iconName": "googleplus" },
     { "name": "linkedin", "iconName": "linkedin" }]
+    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(public authenticationService: AuthenticationService,private router: Router,
-      public properties: Properties, public referenceService: ReferenceService) {
+      public properties: Properties, public referenceService: ReferenceService, private vanityURLService:VanityURLService) {
         this.password = '';
     }
     errorHandler(event:any){ event.target.src='assets/images/icon-user-default.png';}
@@ -58,7 +61,10 @@ export class ProfileLockComponent implements OnInit {
         if(this.password && this.userData.emailId){
         const authorization = 'Basic ' + btoa('my-trusted-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
-        this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
+        if(this.authenticationService.companyProfileName !== null && this.authenticationService.companyProfileName !== ""){
+            this.dashboardAnalyticsDto =  this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+        }
+        this.authenticationService.login(authorization, body, this.userData.emailId,this.dashboardAnalyticsDto).subscribe(result => {
           if (localStorage.getItem('currentUser')) { this.redirectTo(JSON.parse(localStorage.getItem('currentUser')));
            } else {  this.logError(); }
            },
