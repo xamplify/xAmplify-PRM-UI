@@ -16,6 +16,7 @@ declare var swal,require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -65,6 +66,7 @@ export class AuthenticationService {
     v_companyLogoImagePath:string;
     companyProfileName:string = "";
     vanityURLEnabled: boolean = false;
+    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;
         this.APP_URL = this.envService.CLIENT_URL;
@@ -93,7 +95,7 @@ export class AuthenticationService {
         return options;
     }
 
-    login(authorization: string, body: string, userName: string) {
+    login(authorization: string, body: string, userName: string, dashboardAnalyticsDto:DashboardAnalyticsDto) {
         const url = this.REST_URL + 'oauth/token';
         const headers = new Headers();
         headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -101,10 +103,11 @@ export class AuthenticationService {
         const options = { headers: headers };
         return this.http.post(url, body, options).map((res: Response) => {
             this.map = res.json();
+           this.dashboardAnalyticsDto = dashboardAnalyticsDto;
             return this.map;
         })
             .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
-                + '&access_token=' + this.map.access_token, '')
+                + '&access_token=' + this.map.access_token, this.dashboardAnalyticsDto)
                 .map((res: Response) => {
                     const userToken = {
                         'userName': userName,
@@ -127,7 +130,7 @@ export class AuthenticationService {
                 }));
     }
     getUserByUserName(userName: string) {
-        return this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName + '&access_token=' + this.access_token, '')
+        return this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName + '&access_token=' + this.access_token, this.dashboardAnalyticsDto)
             .map((res: Response) => { return res.json(); })
             .catch((error: any) => { return error; });
     }

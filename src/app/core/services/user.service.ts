@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
 import {RequestDemo} from '../../authentication/request-demo/request-demo';
 import {GdprSetting} from '../../dashboard/models/gdpr-setting';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 
 @Injectable()
 export class UserService {
@@ -23,7 +24,7 @@ export class UserService {
     CATEGORIES_URL = this.URL+'category/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
-
+    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(
         private http: Http,
         private authenticationService: AuthenticationService, public httpClient:HttpClient ) {
@@ -94,7 +95,7 @@ export class UserService {
     }
 
     getUserByUserName( userName: string ) {
-        return this.http.post( this.URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.authenticationService.access_token, "" )
+        return this.http.post( this.URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.authenticationService.access_token, this.dashboardAnalyticsDto )
             .map(( res: Response ) => { return res.json() })
             .catch(( error: any ) => { return error });
     }

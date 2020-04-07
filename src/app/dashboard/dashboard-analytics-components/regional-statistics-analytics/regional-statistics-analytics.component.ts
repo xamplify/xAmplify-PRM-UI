@@ -73,7 +73,7 @@ getCampaignUsersWatchedInfo(countryCode) {
         this.countryCode = countryCode.toUpperCase();
         this.paginationType = "countryWiseUsers";
         //if(!this.isCalledPagination){ this.pagination.maxResults = 12; this.isCalledPagination = true;}
-        this.dashboardService.worldMapCampaignDetails(this.loggedInUserId, this.countryCode, this.pagination)
+        this.dashboardService.worldMapCampaignDetailsForVanityURL(this.countryCode, this.pagination,this.dashboardAnalyticsDto)
             .subscribe(
                 (result: any) => {
                     this.loading = false;

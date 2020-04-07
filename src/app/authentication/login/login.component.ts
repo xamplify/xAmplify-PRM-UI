@@ -12,6 +12,7 @@ import { Role } from '../../core/models/role';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 
 declare const $: any;
 
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "linkedin", "iconName": "linkedin" }];
 
   roles: Array<Role>;    
+  dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
   constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     /*if(this.router.url=="/logout"){
@@ -79,7 +81,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginWithUser(userName:string){
     const authorization = 'Basic ' + btoa('my-trusted-client:');
           const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-          this.authenticationService.login(authorization, body, userName).subscribe(result => {
+         if(this.authenticationService.companyProfileName !== null && this.authenticationService.companyProfileName !== ""){
+          this.dashboardAnalyticsDto =  this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+         }          
+          this.authenticationService.login(authorization, body, userName,this.dashboardAnalyticsDto).subscribe(result => {
             if (localStorage.getItem('currentUser')) {
               // if user is coming from login
               const currentUser = JSON.parse(localStorage.getItem('currentUser'));

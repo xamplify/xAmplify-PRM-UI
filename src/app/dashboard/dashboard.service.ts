@@ -22,6 +22,7 @@ export class DashboardService {
     sortDates =  [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
       { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
 
+    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
@@ -208,7 +209,7 @@ export class DashboardService {
 
     getVendorsMyProfile(vendorEmail: any) {
         const url = this.authenticationService.REST_URL+ 'admin/getUserByUserName?access_token=' + this.authenticationService.access_token + '&userName=' + vendorEmail + '&isSuperAdmin=true';
-        return this.http.post(url,"")
+        return this.http.post(url,this.dashboardAnalyticsDto)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -329,6 +330,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    worldMapCampaignDetailsForVanityURL(countryCode: string, pagination: Pagination,dto: DashboardAnalyticsDto){
+        const url = this.authenticationService.REST_URL+ "dashboard/views/world-map-detail-report?access_token="+this.authenticationService.access_token+
+        "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex+"&countryCode="+countryCode;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();
