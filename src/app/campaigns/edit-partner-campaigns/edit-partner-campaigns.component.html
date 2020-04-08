@@ -61,10 +61,11 @@
                                         <font style="color: red"><b>*</b>
                                         </font>
                                     </label>
-                                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
+                                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%" (change)="setCategoryTitle($event)">
                                             <option *ngFor="let category of categoryNames"
                                                 [ngValue]="category.id">
-                                                 {{category.name}}
+                                                 {{category.name | slice:0:60}}
+                                                 <span *ngIf="category.name?.length>60">...</span>
                                             </option>
                                         </select>
                                 </div>
