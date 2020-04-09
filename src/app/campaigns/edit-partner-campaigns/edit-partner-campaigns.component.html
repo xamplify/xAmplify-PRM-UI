@@ -64,8 +64,7 @@
                                         <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%" (change)="setCategoryTitle($event)">
                                             <option *ngFor="let category of categoryNames"
                                                 [ngValue]="category.id">
-                                                 {{category.name | slice:0:60}}
-                                                 <span *ngIf="category.name?.length>60">...</span>
+                                                 {{category.name}}
                                             </option>
                                         </select>
                                 </div>
