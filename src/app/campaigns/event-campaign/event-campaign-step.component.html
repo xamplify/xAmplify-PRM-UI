@@ -1076,7 +1076,7 @@ a.disabled {
 
 				    	<div class="portlet-body clearfix">
                  <section  style="min-height: 200px;">
-                 <ng-container *ngIf="showSelectedTemplate && eventCampaign.selectedEditEmailTemplate.id"><!-- !hideCoBrandedEmailTemplate -->
+                 <ng-container *ngIf="showSelectedEmailTemplate && eventCampaign.selectedEditEmailTemplate.id"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1">
                          <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id" (click)="emailTemplateSelection(eventCampaign.selectedEditEmailTemplate)">
@@ -1151,12 +1151,13 @@ a.disabled {
 												</div>
 												<div class="item__content">
 													<div class="flex-row">
-														<span class="item__name" data-toggle="tooltip"
+														<span class="item__name"
 															[title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
 															<span *ngIf="emailTemplate.name?.length>18">...</span></b>
 														</span>
 														<br>
-															<span class="item__name"  [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:12}}
+															<span class="item__name"  [title]="emailTemplate.createdBy">
+																<span>By: </span>{{emailTemplate.createdBy | slice:0:12}}
 															<span *ngIf="emailTemplate.createdBy?.length>12">...</span>
 															</span>
 														<br>
