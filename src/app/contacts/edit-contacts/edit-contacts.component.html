@@ -212,7 +212,11 @@
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-xs-12 col-md-6 col-sm-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
+											<ng-container *ngIf="showAddOptions">
+											<div class="col-xs-12 col-md-6 col-sm-6 p0" 
+											*ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
+											 authenticationService.module.isVendor || authenticationService.module.isPartner || 
+											 (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -221,8 +225,8 @@
 														One at a Time
 														<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;"></i>
 													</button>
-                        </div>
-                        <ng-container *ngIf="!refService.isMobileScreenSize()">
+                       							 </div>
+                        					<ng-container *ngIf="!refService.isMobileScreenSize()">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="copyFrom_clipboard" class="btn green"
 														[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
@@ -243,9 +247,10 @@
 															(change)="fileChange(input)" accept=".csv" #input
 															[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
 													</div>
-                        </div>
-                        </ng-container>
+												</div>
+												</ng-container>
 											</div>
+										</ng-container>		
 								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
 									<div class="col-xs-2 col-md-2 col-sm-2">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"

@@ -51,7 +51,7 @@
 							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</button>
 					</li> -->
-                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
+                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'">
                         <!-- <button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
 						(click)="openRequestAsVendorModal()">Refer a vendor</button> -->
                         <div class="btn-group refer-vendor-button">
