@@ -19,6 +19,7 @@ export class LogRegularCampaignComponent implements OnInit {
   templateId: number;
   templatehtml: string;
   alias: string;
+  customCampaignError = 'Sorry !This campaign has been removed.'
     errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
     ' <div class="portlet-body clearfix">' +
     '<h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >Sorry !This campaign has been removed</h3></div></div></div>';
@@ -32,6 +33,13 @@ export class LogRegularCampaignComponent implements OnInit {
     this.alias = this.activatedRoute.snapshot.params['alias'];
     this.getRegularTemplateHtml();
   }
+  
+  errorMessage(){
+      this.errorHtml =  '<div class="page-content"><div class="portlet light" style="border: navajowhite;">' +
+        ' <div class="portlet-body clearfix">' +
+        '<h3 style="color: blue;text-align: center;margin-top: 150px;font-weight: bold;" >'+this.customCampaignError+'</h3></div></div></div>';
+
+}
 
   getRegularTemplateHtml() {
     try {
@@ -60,11 +68,12 @@ export class LogRegularCampaignComponent implements OnInit {
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
         }, (error: any) => {
-           console.log(error);
+            this.processor.remove(this.processor);
             this.xtremandLogger.error('log regular campaign component: regular campaign():' + error);
+            this.xtremandLogger.error(error);
+            this.customCampaignError = JSON.parse(error._body).message;
+            this.errorMessage();
             document.getElementById('regular-campaign').innerHTML = this.errorHtml;
-           this.processor.remove(this.processor);
-          // this.xtremandLogger.errorPage(error);
         },
         () => console.log('getRegularTemplateHtml method completed:')
         );
