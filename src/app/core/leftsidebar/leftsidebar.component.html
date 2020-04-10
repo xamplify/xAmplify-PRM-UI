@@ -14,14 +14,14 @@
                 </a>
             </li>
 
-            <li *ngIf="authService.user.hasCompany && authService.module.isPartner" [ngClass]="{'active': location.path().includes('partners')}">
+            <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType!='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('partners')">
                     <i class="fa fa-handshake-o"></i>
                     <span class="title">Partners</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
-                <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }">
+                <ul class="sub-menu" [ngStyle]="{'display': partners? 'block': 'none' }" >
                     <li>
                         <a [routerLink]="['./partners/add']">
                             <i class="fa fa-users"></i>
@@ -35,6 +35,15 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+
+            <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType=='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
+                <a [routerLink]="['./partners/manage']">
+                    <i class="fa fa-handshake-o"></i>
+                    <span class="title">Manage Partners</span>
+                    <span class="arrow "></span>
+                    <span class="selected"></span>
+                </a>
             </li>
 
             <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('content') || location.path().includes('content')}">

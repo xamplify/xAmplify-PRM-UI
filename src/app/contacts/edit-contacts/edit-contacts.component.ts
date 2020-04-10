@@ -205,6 +205,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	public placeHolder: string = 'Select Legal Basis Options';
 	isValidLegalOptions = true;
 	isValidClipBoardData = false;
+	sourceType = "";
+	showAddOptions = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -213,13 +215,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 		this.addContactuser.country = (this.countryNames.countries[0]);
 		this.contactsByType.selectedCategory = "all";
-
+		this.sourceType = this.authenticationService.getSource();
 		let currentUrl = this.router.url;
 		if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
-			this.checkingContactTypeName = "Contact"
+			this.checkingContactTypeName = "Contact";
+			this.showAddOptions = true;
 		} else {
 			this.isPartner = true;
+			if(this.sourceType!="ALLBOUND"){
+				this.showAddOptions = true;
+			}else{
+				this.showAddOptions = false;
+			}
 			this.checkingContactTypeName = "Partner";
 			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
 			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
@@ -233,7 +241,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
 
 		}
-
 		this.users = new Array<User>();
 		this.notifyParent = new EventEmitter<User>();
 		this.hasContactRole = this.refService.hasRole(this.refService.roles.contactsRole);

@@ -116,7 +116,8 @@ export class AuthenticationService {
                         'hasCompany': res.json().hasCompany,
                         'roles': res.json().roles,
                         'campaignAccessDto':res.json().campaignAccessDto,
-                        'logedInCustomerCompanyNeme':res.json().companyName
+                        'logedInCustomerCompanyNeme':res.json().companyName,
+						            'source':res.json().source
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     this.access_token = this.map.access_token;
@@ -159,6 +160,13 @@ export class AuthenticationService {
         this.xtremandLogger.error('error'+error);
       }
     }
+
+	getSource(){
+		const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser != null) {
+            return currentUser.source;
+        }
+	}
     hasCompany(): boolean {
       try{
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));

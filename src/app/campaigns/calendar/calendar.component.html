@@ -29,7 +29,8 @@
 
 <div id="ca-{{campaign.id}}" *ngFor="let campaign of campaigns" class='clearfix m10 hidden' style="min-width: 1500px">
     <h6>
-        <span class="campaign-label">{{campaign.type}} campaign</span>
+        <span class="campaign-label" *ngIf="campaign.type=='LANDINGPAGE'">PAGE campaign</span>
+        <span class="campaign-label" *ngIf="campaign.type!='LANDINGPAGE'">{{campaign.type}} campaign</span>
         <span class="campaign-label {{campaign.status | lowercase}}">
     <ng-container *ngIf="campaign.status === 'NOW'; else default">Launched</ng-container>
     <ng-template #default>{{campaign.status | titlecase}}d</ng-template>
