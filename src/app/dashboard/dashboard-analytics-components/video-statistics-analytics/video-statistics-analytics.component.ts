@@ -6,6 +6,8 @@ import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { UtilService } from 'app/core/services/util.service';
 import { Router } from '@angular/router';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $:any;
 @Component({
@@ -21,7 +23,8 @@ export class VideoStatisticsAnalyticsComponent implements OnInit {
   heatMapSort: any;
   videoStatesTooltip = 'Current Month';
   videoStatisticsLoader: HttpRequestLoader = new HttpRequestLoader();
-  constructor(public referenceService:ReferenceService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public utilService:UtilService,public router: Router) { 
+  dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+  constructor(public referenceService:ReferenceService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public utilService:UtilService,public router: Router, private vanityURLService:VanityURLService) { 
     this.sortDates = this.dashboardService.sortDates;
     this.daySort = this.sortDates[3];
     this.referenceService.daySortValue = this.daySort.value;
@@ -34,6 +37,7 @@ export class VideoStatisticsAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.getVideoStatesSparklineChartsInfo(30);
+    this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
   }
 
   selectedSortByValue(event: any) {
@@ -45,7 +49,7 @@ export class VideoStatisticsAnalyticsComponent implements OnInit {
 
 getVideoStatesSparklineChartsInfo(daysCount) {
   try {
-      this.dashboardService.getVideoStatesInformation(daysCount).
+      this.dashboardService.getVideoStatsInformationForVanityURL(daysCount,this.dashboardAnalyticsDto).
           subscribe(result => {
               this.xtremandLogger.log(result);
               this.referenceService.viewsSparklineValues = result;
@@ -135,6 +139,4 @@ sparklineDataWithRouter(value: number, date: any, reportName: string) {
       this.router.navigate(['./home/dashboard/reports']);
   }
 }
-
-
 }
