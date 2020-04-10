@@ -217,6 +217,8 @@
                                                 <!----Buttons start here----->
                                                 <div class="actions-block override-actions">
                                                     <ng-container *ngIf="campaign.launched">
+
+                                                        <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
                                                         <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) ||
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount>0" (click)="goToRedistributedCampaigns(campaign)" data-toggle="tooltip" data-placement="top" title="Show Redistributed Campaigns">
                                                             <span [class.disablednew]="!campaign.hasAccess" class="circled-number"><b>{{campaign.redistributedCount}}</b></span>
@@ -226,7 +228,7 @@
 														 (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
                                                             <span class="circled-number disabled"><b>{{campaign.redistributedCount}}</b></span>
                                                         </a>
-
+                                                         </ng-container>   
 
                                                         <a [class.disablednew]="!campaign.hasAccess"  *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" data-rel="fancybox-button" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="top"
                                                             title="{{actionsDescription.campaign_report}}">

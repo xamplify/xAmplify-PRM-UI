@@ -14,7 +14,8 @@
                     <fieldset>
                         <legend>Campaign details:</legend>
                         <h6>
-                            <span class="campaign-label ml10">{{previewCampaignType}} campaign</span>
+                            <span class="campaign-label ml10" *ngIf="previewCampaignType=='LANDINGPAGE'">PAGE campaign</span>
+                            <span class="campaign-label ml10" *ngIf="previewCampaignType!='LANDINGPAGE'">{{previewCampaignType}} campaign</span>
                             <span class="campaign-label {{campaign.campaignScheduleType | lowercase}}">
                             <ng-container *ngIf="campaign.campaignScheduleType === 'NOW'; else default">Launched</ng-container>
                             <ng-template #default>{{campaign.campaignScheduleType | titlecase}}d</ng-template>
@@ -155,15 +156,16 @@
                                             <div class="flex-row">
                                                 <div class="item__select-box-wrapper">
                                                     <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
-                                                    <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
-                          target="_BLANK"> <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.landingPage.thumbnailPath}}">
-                          </a>
-                        </span>
+                                                    <span class="ng-scope">
+                                                    <a class="item__preview item__preview--image img-container custom" target="_BLANK"> 
+                                                        <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.landingPage.thumbnailPath}}">
+                                                    </a>
+                                                    </span>
                                                 </div>
 
                                                 <div class="item__content">
                                                     <div class="flex-row">
-                                                        <span class="item__name" [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:20}}</b>
+                                                        <span class="item__name" [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b>
                             <b *ngIf="campaign.landingPage?.name?.length>20">...</b>
                           </span>
                                                         <br>

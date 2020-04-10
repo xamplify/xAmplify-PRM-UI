@@ -48,6 +48,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   public onAddedFunc = this.beforeAdd.bind(this);
   private addFirstAttemptFailed = false;
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
+  sourceType = "";
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
@@ -55,6 +56,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
         this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if(userName!=undefined){
+      this.sourceType = this.authenticationService.getSource();
         if (this.refService.topNavbarUserService === false || this.utilService.topnavBareLoading === false) {
             this.refService.topNavbarUserService = true;
             this.utilService.topnavBareLoading = true;
