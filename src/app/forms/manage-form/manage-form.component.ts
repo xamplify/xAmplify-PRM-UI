@@ -116,7 +116,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             }
             let showManageFormsList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined || !this.onlyForms;
             if(showManageFormsList){
-                this.modulesDisplayType.isListView = true;
+                this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                    this.modulesDisplayType.isListView = true;
+                    this.modulesDisplayType.isGridView = false;
+                }
                 this.modulesDisplayType.isFolderListView = false;
                 this.modulesDisplayType.isFolderGridView = false;
                 this.listForms(this.pagination);
@@ -344,13 +349,13 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
-            this.navigateToManageSection();
+            this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = true;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
-            this.navigateToManageSection();
+            this.navigateToManageSection(viewType);
         } else if ("Folder-Grid" == viewType) {
             this.modulesDisplayType.isListView = false;
             this.modulesDisplayType.isGridView = false;
@@ -372,15 +377,38 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    navigateToManageSection() {
-        if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST" && (this.categoryId==undefined || this.categoryId==0)){
+    navigateToManageSection(viewType:string) {
+       if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
             this.modulesDisplayType.isFolderGridView = false;
             this.modulesDisplayType.isFolderListView = false;
             this.listForms(this.pagination);
-        }else if(this.router.url.endsWith('manage/')){
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listForms(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listForms(this.pagination);
+        }
+        else if(this.router.url.endsWith('manage/')){
             this.router.navigateByUrl('/home/forms/manage');
         }
     }
+
+    
 
 
     getUpdatedValue(event: any) {
