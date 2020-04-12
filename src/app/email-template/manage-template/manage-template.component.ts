@@ -74,7 +74,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     httpRequestLoader:HttpRequestLoader = new HttpRequestLoader();
     customResponse: CustomResponse = new CustomResponse();
     isListView: boolean = false;
-    isFolderView:boolean  = false;
+    isFolderGridView:boolean  = false;
     isGridView:boolean = false;
     categoryId:number = 0;
     exportObject:any = {};
@@ -261,12 +261,12 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
       this.selectedSortedOption =  this.sortByDropDown[0];
         try {
             if(this.router.url.endsWith('manage/')){
-                this.setViewType('Folder');
+                this.setViewType('Folder-Grid');
             }else{
                 if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
                 this.isListView = ! this.refService.isGridView;
                 this.isGridView = this.refService.isGridView;
-                this.isFolderView = false;
+                this.isFolderGridView = false;
                 this.pagination.maxResults = 12;
                 this.categoryId = this.route.snapshot.params['categoryId'];
                 if(this.categoryId!=undefined){
@@ -467,17 +467,17 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         if("List"==viewType){
             this.isListView = true;
             this.isGridView = false;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();    
         }else if("Grid"==viewType){
             this.isListView = false;
             this.isGridView = true;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();    
-        }else if("Folder"==viewType){
+        }else if("Folder-Grid"==viewType){
             this.isListView = false;
             this.isGridView = false;
-            this.isFolderView = true;
+            this.isFolderGridView = true;
             this.exportObject['type'] = 1;
             if(this.categoryId>0){
                 this.router.navigateByUrl('/home/emailtemplates/manage/');

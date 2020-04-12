@@ -142,6 +142,7 @@ export class UtilService {
 				'source':data.source
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
+		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
     }
 
     isLoggedAsTeamMember(){

@@ -330,6 +330,13 @@ export class UserService {
             .catch( this.handleError );
     }
 
+    updateDefaultDisplayView( userId: number,type:string ) {
+        return this.http.get( this.URL + "admin/updateDefaultDisplayView/" + userId + "/"+type+"?access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+
 
     
 

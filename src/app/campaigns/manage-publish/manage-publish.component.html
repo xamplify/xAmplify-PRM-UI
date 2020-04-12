@@ -32,7 +32,7 @@
                 <div class="tabbable tabbable-custom tabbable-noborder">
                     <div class="tab-content">
                         <div class="page-bar m10">
-                            <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0" *ngIf="!isFolderView" style="display: inline-flex">
+                            <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0" *ngIf="!isFolderGridView" style="display: inline-flex">
                                 <!-- <li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li> -->
                                 <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
                                 <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign">
@@ -48,7 +48,7 @@
                                 <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign">Page</li>
                                 <li class="filter" style="display: none;">Own Template</li>
                             </ul>
-                            <div class="page-toolbar col-xs-12 col-sm-12 col-md-8" *ngIf="!isFolderView">
+                            <div class="page-toolbar col-xs-12 col-sm-12 col-md-8" *ngIf="!isFolderGridView">
                                 <div class="row btn-group pull-right">
                                     <div class="col-xs-2 col-sm-4 col-md-5 p0">
                                         <div style="float: right">
@@ -60,10 +60,11 @@
                                                     aria-hidden="true"></i></span>
                                                 <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i class="fa fa-th-large p10"
                                                         aria-hidden="true"></i></span>
-                                                <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')">
-                                                    <i class="fa fa-folder-open-o p10"
+                                                <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                                                 title="Folder Grid View" [class.disabled]="isFolderGridView" (click)="setViewType('Folder-Grid')">
+                                                    <i class="fa fa-folder p10"
                                                         aria-hidden="true"></i></span>
-                                                <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder')">
+                                                <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                                 <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                             </ng-container>
                                         </div>
@@ -91,10 +92,10 @@
                                 </div>
                             </div>
                         </div>
-                        <ng-container *ngIf="isFolderView">
+                        <ng-container *ngIf="isFolderGridView">
                             <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                         </ng-container>
-                        <app-grid-loader *ngIf="httpRequestLoader.isLoading && (isGridView || isFolderView)"></app-grid-loader>
+                        <app-grid-loader *ngIf="httpRequestLoader.isLoading && (isGridView || isFolderGridView)"></app-grid-loader>
                         <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
                         <!-----List View--------->
                         <section class='m10' *ngIf="isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">

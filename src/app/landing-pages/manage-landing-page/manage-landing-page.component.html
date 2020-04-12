@@ -22,7 +22,7 @@
     <div class="row" *ngIf="statusCode==200">
         <div class="col-md-12">
             <div class="portlet light clearfix">
-                <ng-container *ngIf="isFolderView">
+                <ng-container *ngIf="isFolderGridView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
                 <!-- <div class="portlet-title" style="border-bottom: none;">
@@ -92,7 +92,7 @@
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div>
-                                <ul class="mix-filter" *ngIf="!isFolderView">
+                                <ul class="mix-filter" *ngIf="!isFolderGridView">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
@@ -114,18 +114,19 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!isFolderView">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!isFolderGridView">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
                                     <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="setViewType('List')"><i class="fa fa-th-list p10"
                                             aria-hidden="true"></i></span> &nbsp;
                                     <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i class="fa fa-th-large p10"
                                             aria-hidden="true"></i></span>
-                                        <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')">
-                                            <i class="fa fa-folder-open-o p10" aria-hidden="true"></i></span>
-                                            <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder')">
+                                        <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                        title="Folder Grid View" [class.disabled]="isFolderGridView" (click)="setViewType('Folder-Grid')">
+                                            <i class="fa fa-folder p10" aria-hidden="true"></i></span>
+                                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                             <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                            </span>
+                                        </span>
                                 </ng-container>
                                 <div class="inputs" id="right" style="display: inline-flex;">
                                     <div *ngIf="!isPartnerLandingPage">
@@ -162,7 +163,7 @@
                 <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && isGridView">
                 </app-landing-page-loader>
                 <app-list-loader *ngIf=" httpRequestLoader.isLoading && isListView "></app-list-loader>
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && isFolderView"></app-grid-loader>
+                <app-grid-loader *ngIf="httpRequestLoader.isLoading && isFolderGridView"></app-grid-loader>
                 <section *ngIf="isListView ">
                     <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                         <div class="table-responsive">

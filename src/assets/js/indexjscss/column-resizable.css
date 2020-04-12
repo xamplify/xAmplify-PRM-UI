@@ -139,3 +139,12 @@ background-color: #00a6e8;
     margin-top: 4px;
     margin-right: 4px;
 }
+
+#custom-response-div{
+    position: relative;
+    top: -10px;
+}
+#fa-custom-width {
+	font-size: 50px;
+	color: #15c1df;
+}

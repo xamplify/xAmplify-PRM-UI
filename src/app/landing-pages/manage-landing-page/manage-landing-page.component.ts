@@ -42,8 +42,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     categoryId: number = 0;
     isListView = false;
     isGridView = false;
-    isFolderView = false;
-    showFolderView = false;
+    isFolderGridView = false;
     exportObject:any = {};
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     constructor(public referenceService: ReferenceService,
@@ -275,11 +274,11 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         }
 
         if(this.router.url.endsWith('manage/') || this.router.url.endsWith('partner/')){
-            this.setViewType('Folder');
+            this.setViewType('Folder-Grid');
         }else{
             this.isListView = !this.referenceService.isGridView;
             this.isGridView = this.referenceService.isGridView;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.categoryId = this.route.snapshot.params['categoryId'];
             if (this.categoryId != undefined) {
                 this.pagination.categoryId = this.categoryId;
@@ -304,17 +303,17 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if ("List" == viewType) {
             this.isListView = true;
             this.isGridView = false;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();
         } else if ("Grid" == viewType) {
             this.isListView = false;
             this.isGridView = true;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();
-        } else if ("Folder" == viewType) {
+        } else if ("Folder-Grid" == viewType) {
             this.isListView = false;
             this.isGridView = false;
-            this.isFolderView = true;
+            this.isFolderGridView = true;
             this.exportObject['type'] = 3;
             if(this.isPartnerLandingPage){
                 this.exportObject['partnerCompanyId'] = this.referenceService.companyId;

@@ -84,7 +84,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedCampaign:any;
     teamMemberId: number;
     isListView: boolean = false;
-    isFolderView:boolean  = false;
+    isFolderGridView:boolean  = false;
     isGridView:boolean = false;
     categoryId:number = 0;
     exportObject:any = {};
@@ -231,14 +231,14 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.pagination.teamMemberAnalytics = false;
             }
             if(this.router.url.endsWith('/')){
-                this.setViewType('Folder');
+                this.setViewType('Folder-Grid');
             }else{
                 this.refService.manageRouter = true;
                 if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
                 else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
                 this.isListView = ! this.refService.isGridView;
                 this.isGridView = this.refService.isGridView;
-                this.isFolderView = false;
+                this.isFolderGridView = false;
                 this.pagination.maxResults = 12;
                 this.categoryId = this.route.snapshot.params['categoryId'];
                 if(this.categoryId!=undefined){
@@ -574,17 +574,17 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         if("List"==viewType){
             this.isListView = true;
             this.isGridView = false;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();    
         }else if("Grid"==viewType){
             this.isListView = false;
             this.isGridView = true;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();    
-        }else if("Folder"==viewType){
+        }else if("Folder-Grid"==viewType){
             this.isListView = false;
             this.isGridView = false;
-            this.isFolderView = true;
+            this.isFolderGridView = true;
             this.exportObject['type'] = 4;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             if(this.categoryId>0){

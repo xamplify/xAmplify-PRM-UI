@@ -66,7 +66,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     loadingEmailTemplate: boolean =false;
     isListView: boolean = false;
-    isFolderView:boolean  = false;
+    isFolderGridView:boolean  = false;
     isGridView:boolean = false;
     categoryId:number = 0;
     exportObject:any = {};
@@ -179,11 +179,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngOnInit() {
         try {
             if(this.router.url.endsWith('/')){
-                this.setViewType('Folder');
+                this.setViewType('Folder-Grid');
             }else{
                 this.isListView = !this.referenceService.isGridView;
                 this.isGridView = this.referenceService.isGridView;
-                this.isFolderView = false;
+                this.isFolderGridView = false;
                 this.pagination.pageIndex = 1;
                 this.campaignType = this.route.snapshot.params['type'];
                 this.categoryId = this.route.snapshot.params['categoryId'];
@@ -400,17 +400,17 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         if("List"==viewType){
             this.isListView = true;
             this.isGridView = false;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();    
         }else if("Grid"==viewType){
             this.isListView = false;
             this.isGridView = true;
-            this.isFolderView = false;
+            this.isFolderGridView = false;
             this.navigateToManageSection();    
-        }else if("Folder"==viewType){
+        }else if("Folder-Grid"==viewType){
             this.isListView = false;
             this.isGridView = false;
-            this.isFolderView = true;
+            this.isFolderGridView = true;
             this.exportObject['type'] = 5;
             this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
             if(this.categoryId>0){

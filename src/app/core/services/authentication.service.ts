@@ -120,6 +120,7 @@ export class AuthenticationService {
 						            'source':res.json().source
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
+                    localStorage.setItem('defaultDisplayType',res.json().modulesDisplayType);
                     this.access_token = this.map.access_token;
                     this.refresh_token = this.map.refresh_token;
                     this.expires_in = this.map.expires_in;

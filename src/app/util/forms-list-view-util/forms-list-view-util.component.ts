@@ -9,25 +9,21 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
-import { Form } from '../models/form';
+import { Form } from 'app/forms/models/form';
 import { UtilService } from '../../core/services/util.service';
-import { Inject } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
-import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
-import { FormService } from '../services/form.service';
-import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
-import {ModulesDisplayType } from 'app/util/models/modules-display-type';
-
+import { FormService } from '../../forms/services/form.service';
+import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
 declare var swal, $: any;
 
 @Component({
-    selector: 'app-manage-form',
-    templateUrl: './manage-form.component.html',
-    styleUrls: ['./manage-form.component.css', '../add-form/add-form.component.css', '../preview/form-preview.component.css'],
-    providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption],
+  selector: 'app-forms-list-view-util',
+  templateUrl: './forms-list-view-util.component.html',
+  styleUrls: ['./forms-list-view-util.component.css','../../forms/add-form/add-form.component.css', '../../forms/preview/form-preview.component.css'],
+  providers: [Pagination, HttpRequestLoader, ActionsDescription, SortOption],
+
 })
-export class ManageFormComponent implements OnInit, OnDestroy {
+export class FormsListViewUtilComponent implements OnInit {
     landingPagesRouterLink: string;
     onlyForms = false;
     form: Form = new Form();
@@ -37,7 +33,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     customResponse: CustomResponse = new CustomResponse();
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     
-    private dom: Document;
     message = "";
     campaignId = 0;
     landingPageId = 0;
@@ -46,12 +41,13 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     partnerId = 0;
     statusCode = 200;
     deleteAndEditAccess = false;
-   
     categoryId: number = 0;
     showFolderView = true;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     exportObject:any = {};
-    modulesDisplayType = new ModulesDisplayType();
+    isListView = false;
+    isGridView: boolean = false;
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -59,12 +55,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
         this.referenceService.renderer = this.renderer;
         this.categoryId = this.route.snapshot.params['categoryId'];
-        if(this.router.url.indexOf('/manage')>-1){
-            this.showFolderView = true;
-        }else{
-            this.showFolderView = false;
-        }
-       
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
@@ -75,14 +65,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.showMessageOnTop(this.message);
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
-        this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     }
 
     ngOnInit() {
-        if (this.router.url.endsWith('manage/')) {
-            this.setViewType('Folder-Grid');
-        } else {
-            this.campaignId = this.route.snapshot.params['alias'];
+        this.isListView = true;
+        this.isGridView = false;
+        this.campaignId = this.route.snapshot.params['alias'];
             this.landingPageId = this.route.snapshot.params['landingPageId'];
             this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];
@@ -114,20 +102,8 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             } else {
                 this.onlyForms = true;
             }
-            let showManageFormsList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined || !this.onlyForms;
-            if(showManageFormsList){
-                this.modulesDisplayType.isListView = true;
-                this.modulesDisplayType.isFolderListView = false;
-                this.modulesDisplayType.isFolderGridView = false;
-                this.listForms(this.pagination);
-            }else if(this.modulesDisplayType.isFolderGridView){
-                this.setViewType('Folder-Grid');
-            }else if(this.modulesDisplayType.isFolderListView){
-                this.setViewType('Folder-List');
-            }
             
-        }
-
+            this.listForms(this.pagination);
 
 
     }
@@ -195,7 +171,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             let self = this;
             swal({
                 title: 'Are you sure?',
-                text: "You won’t be able to undo this action!",
+                text: "You wonâ€™t be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -338,58 +314,15 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     }
 
 
-    setViewType(viewType: string) {
-        if ("List" == viewType) {
-            this.modulesDisplayType.isListView = true;
-            this.modulesDisplayType.isGridView = false;
-            this.modulesDisplayType.isFolderGridView = false;
-            this.modulesDisplayType.isFolderListView = false;
-            this.navigateToManageSection();
-        } else if ("Grid" == viewType) {
-            this.modulesDisplayType.isListView = false;
-            this.modulesDisplayType.isGridView = true;
-            this.modulesDisplayType.isFolderGridView = false;
-            this.modulesDisplayType.isFolderListView = false;
-            this.navigateToManageSection();
-        } else if ("Folder-Grid" == viewType) {
-            this.modulesDisplayType.isListView = false;
-            this.modulesDisplayType.isGridView = false;
-            this.modulesDisplayType.isFolderListView = false;
-            this.modulesDisplayType.isFolderGridView = true;
-            this.exportObject['type'] = 2;
-            this.exportObject['folderType'] = viewType;
-            if (this.categoryId > 0) {
-                this.router.navigateByUrl('/home/forms/manage/');
-            }
-        }else if("Folder-List" == viewType){
-            this.modulesDisplayType.isListView = false;
-            this.modulesDisplayType.isGridView = false;
-            this.modulesDisplayType.isFolderGridView = false;
-            this.modulesDisplayType.isFolderListView = true;
-			this.exportObject['folderType'] = viewType;
-            this.exportObject['type'] = 2;
-
+    setViewType(type:string){
+        if("List"==type){
+            this.isListView = true;
+            this.isGridView = false;
+        }else if("Grid"==type){
+            this.isListView = false;
+            this.isGridView = true;
         }
     }
-
-    navigateToManageSection() {
-        if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST" && (this.categoryId==undefined || this.categoryId==0)){
-            this.modulesDisplayType.isFolderGridView = false;
-            this.modulesDisplayType.isFolderListView = false;
-            this.listForms(this.pagination);
-        }else if(this.router.url.endsWith('manage/')){
-            this.router.navigateByUrl('/home/forms/manage');
-        }
-    }
-
-
-    getUpdatedValue(event: any) {
-        let viewType = event.viewType;
-        if (viewType != undefined) {
-            this.setViewType(viewType);
-        }
-
-    }
-
+   
 
 }
