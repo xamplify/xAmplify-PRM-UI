@@ -18,6 +18,8 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+
 declare var swal, $: any;
 
 @Component({
@@ -83,10 +85,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     addWorkflows = false;
     selectedCampaign:any;
     teamMemberId: number;
-    isListView: boolean = false;
-    isFolderGridView:boolean  = false;
-    isGridView:boolean = false;
     categoryId:number = 0;
+    modulesDisplayType = new ModulesDisplayType();
     exportObject:any = {};
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
@@ -116,6 +116,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
     }
 
 
@@ -133,6 +134,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
+        this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
         if(this.pagination.teamMemberAnalytics){
@@ -150,8 +152,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
                 this.refService.loading(this.httpRequestLoader, false);
+                this.isloading = false;
             },
             error => {
+                this.isloading = false;
                 this.logger.errorPage(error);
             },
             () => this.logger.info("Finished listCampaign()", this.campaigns)
@@ -236,16 +240,29 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 this.refService.manageRouter = true;
                 if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
                 else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
-                this.isListView = ! this.refService.isGridView;
-                this.isGridView = this.refService.isGridView;
-                this.isFolderGridView = false;
+                
                 this.pagination.maxResults = 12;
                 this.categoryId = this.route.snapshot.params['categoryId'];
                 if(this.categoryId!=undefined){
                     this.pagination.categoryId = this.categoryId;
                     this.pagination.categoryType = 'c';
                 }
-                this.listCampaign(this.pagination);
+                let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+                if(showList){
+                    this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                    this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                    if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                        this.modulesDisplayType.isListView = true;
+                        this.modulesDisplayType.isGridView = false;
+                    }
+                    this.modulesDisplayType.isFolderListView = false;
+                    this.modulesDisplayType.isFolderGridView = false;
+                    this.listCampaign(this.pagination);
+                }else if(this.modulesDisplayType.isFolderGridView){
+                    this.setViewType('Folder-Grid');
+                }else if(this.modulesDisplayType.isFolderListView){
+                    this.setViewType('Folder-List');
+                }
             }
 			
         } catch (error) {
@@ -572,20 +589,24 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     setViewType(viewType:string){
         if("List"==viewType){
-            this.isListView = true;
-            this.isGridView = false;
-            this.isFolderGridView = false;
-            this.navigateToManageSection();    
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
-            this.isListView = false;
-            this.isGridView = true;
-            this.isFolderGridView = false;
-            this.navigateToManageSection();    
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
-            this.isListView = false;
-            this.isGridView = false;
-            this.isFolderGridView = true;
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView = false;
             this.exportObject['type'] = 4;
+            this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
             if(this.categoryId>0){
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
@@ -595,12 +616,42 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }
                 
             }
-            
+        }else if("Folder-List"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 4;
         }
     }
 
-    navigateToManageSection(){
-        if(this.router.url.endsWith('/')){
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listCampaign(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listCampaign(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listCampaign(this.pagination);
+        }else  if(this.router.url.endsWith('/')){
             if(this.teamMemberId!=undefined){
                 this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
             }else{

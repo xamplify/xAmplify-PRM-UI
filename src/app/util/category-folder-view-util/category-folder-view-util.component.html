@@ -5,7 +5,7 @@
             <div class="page-toolbar col-xs-12">
                 <div class="btn-group pull-right">
                     <ng-container class='m10'>
-                        <span *ngIf="isFromCampaignModule" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View"><i
+                        <span *ngIf="isFromCampaignModule && !isFromRedistributedCampaignSection" class="btn btn-xs hidden-xs l-g-view margin-right-calendar" data-toggle="tooltip" data-placement="bottom" title="Calendar View"><i
                             class="fa fa-calendar p10" (click)="goToCalendarView()"></i>
                     </span>
                         <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" (click)="setViewType('List')">
@@ -134,7 +134,12 @@
                 <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
                     <td colspan="5">
                         <ng-container *ngIf="category.expanded">
-                            <app-forms-list-view-util></app-forms-list-view-util>
+                        	<ng-container *ngIf="selectedModuleType==2">
+                        		<app-forms-list-view-util [folderListViewInput]="folderListViewInput"></app-forms-list-view-util>
+                        	</ng-container>
+                        	<ng-container *ngIf="selectedModuleType==4 || selectedModuleType==5">
+                        		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-campaigns-list-view-util>
+                        	</ng-container>
                         </ng-container>
                     </td>
                  </tr>   

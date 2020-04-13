@@ -26,13 +26,16 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     customResponse: CustomResponse = new CustomResponse();
     categorySortOption: SortOption = new SortOption();
     isFromCampaignModule = false;
+	isFromRedistributedCampaignSection = false;
     folderViewType = "List";
 	folderListViewInput = {};
+	selectedModuleType = "";
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
         public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) {
         this.isFromCampaignModule = this.router.url.indexOf("campaigns")>-1; 
+ 		this.isFromRedistributedCampaignSection = this.router.url.indexOf("campaigns/partner")>-1; 
 
     }
 
@@ -46,6 +49,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.inputObject = {};
         this.folderListViewInput = {};
         this.folderViewType = this.moduleType['folderType'];
+		this.selectedModuleType = this.moduleType['type'];
         this.listCategories(this.pagination);
     }
 
@@ -53,6 +57,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         pagination.companyId = this.referenceService.companyId;
         pagination.userId = this.authenticationService.getUserId();
         let type = this.moduleType['type'];
+		this.selectedModuleType = type;
         if (type == 1) {
             pagination.categoryType = 'e';
         }else if(type==2){
@@ -163,7 +168,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     }
 
     viewFolderItems(category:any,selectedIndex:number){
-        $.each(this.pagination.pagedItems, function (index, row) {
+        $.each(this.pagination.pagedItems, function (index:number, row:any) {
             if (selectedIndex != index) {
               row.expanded = false;
             }
@@ -171,12 +176,9 @@ export class CategoryFolderViewUtilComponent implements OnInit {
           category.expanded = !category.expanded;  
           $('.child-row-list-view').css("background-color", "#fff");          
         if (category.expanded) {
-            this.folderListViewInput['folderListExpanded'] = true;
             this.folderListViewInput['categoryId'] = category.id;
             $('#folder-row-' + selectedIndex).css("background-color", "#d3d3d357");
         } else {
-            this.folderListViewInput['folderListExpanded'] = false;
-		    this.folderListViewInput['categoryId'] = 0;
             $('#folder-row-' + selectedIndex).css("background-color", "#fff");
         }
     }

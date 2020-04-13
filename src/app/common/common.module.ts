@@ -53,6 +53,7 @@ import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-ut
 import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
 import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
+import { CampaignsListViewUtilComponent } from 'app/util/campaigns-list-view-util/campaigns-list-view-util.component';
 
 
 
@@ -65,16 +66,18 @@ import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-
         DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
         TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent,
         PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent,
-        ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent],
+        ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
+		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent],
 
 
     exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
         BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-
-        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent]
+        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, 
+		PreviewPopupComponent,PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, 
+		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
+		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent]
 
 })
 export class CommonComponentModule { }

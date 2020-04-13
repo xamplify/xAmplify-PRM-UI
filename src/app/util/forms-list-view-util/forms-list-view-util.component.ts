@@ -47,14 +47,13 @@ export class FormsListViewUtilComponent implements OnInit {
     exportObject:any = {};
     isListView = false;
     isGridView: boolean = false;
-
+	@Input()folderListViewInput:any;
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public formService: FormService, public logger: XtremandLogger,
         public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
         this.referenceService.renderer = this.renderer;
-        this.categoryId = this.route.snapshot.params['categoryId'];
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
@@ -70,7 +69,10 @@ export class FormsListViewUtilComponent implements OnInit {
     ngOnInit() {
         this.isListView = true;
         this.isGridView = false;
-        this.campaignId = this.route.snapshot.params['alias'];
+		if(this.folderListViewInput!=undefined){
+			this.categoryId = this.folderListViewInput['categoryId'];
+		}
+        	this.campaignId = this.route.snapshot.params['alias'];
             this.landingPageId = this.route.snapshot.params['landingPageId'];
             this.landingPageCampaignId = this.route.snapshot.params['landingPageCampaignId'];
             this.partnerLandingPageAlias = this.route.snapshot.params['partnerLandingPageAlias'];

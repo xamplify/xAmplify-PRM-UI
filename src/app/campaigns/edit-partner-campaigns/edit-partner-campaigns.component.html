@@ -61,7 +61,7 @@
                                         <font style="color: red"><b>*</b>
                                         </font>
                                     </label>
-                                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%" (change)="setCategoryTitle($event)">
+                                        <select class="form-control" name="campaign.categoryId" [(ngModel)]="campaign.categoryId" style="width: 100%">
                                             <option *ngFor="let category of categoryNames"
                                                 [ngValue]="category.id">
                                                  {{category.name}}

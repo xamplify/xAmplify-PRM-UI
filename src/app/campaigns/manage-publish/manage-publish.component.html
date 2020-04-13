@@ -32,7 +32,7 @@
                 <div class="tabbable tabbable-custom tabbable-noborder">
                     <div class="tab-content">
                         <div class="page-bar m10">
-                            <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0" *ngIf="!isFolderGridView" style="display: inline-flex">
+                            <ul class="mix-filter col-xs-12 col-sm-12 col-md-4 p0 m0" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView" style="display: inline-flex">
                                 <!-- <li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li> -->
                                 <li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == selectedCampaignTypeIndex">All</li>
                                 <li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == selectedCampaignTypeIndex" *ngIf="campaignAccess.emailCampaign">
@@ -48,7 +48,7 @@
                                 <li class="filter" (click)="filterCampaigns('LANDINGPAGE',6)" [class.campaign-type-selected]="6 == selectedCampaignTypeIndex" *ngIf="campaignAccess.landingPageCampaign">Page</li>
                                 <li class="filter" style="display: none;">Own Template</li>
                             </ul>
-                            <div class="page-toolbar col-xs-12 col-sm-12 col-md-8" *ngIf="!isFolderGridView">
+                            <div class="page-toolbar col-xs-12 col-sm-12 col-md-8" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                                 <div class="row btn-group pull-right">
                                     <div class="col-xs-2 col-sm-4 col-md-5 p0">
                                         <div style="float: right">
@@ -56,14 +56,27 @@
                                                 <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Calendar View"><i
                                                         class="fa fa-calendar p10" (click)="goToCalendarView()"></i>
                                                 </span>
-                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="setViewType('List')"><i class="fa fa-th-list p10"
-                                                    aria-hidden="true"></i></span>
-                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i class="fa fa-th-large p10"
-                                                        aria-hidden="true"></i></span>
-                                                <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
-                                                 title="Folder Grid View" [class.disabled]="isFolderGridView" (click)="setViewType('Folder-Grid')">
-                                                    <i class="fa fa-folder p10"
-                                                        aria-hidden="true"></i></span>
+                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
+                                                    title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                                                    <i class="fa fa-th-list p10" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" 
+                                                    title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                                                    <i class="fa fa-th-large p10"  aria-hidden="true"></i>
+                                                </span>
+                                                <ng-container *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')">
+                                                    <span  class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                                                    title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView"
+                                                     (click)="setViewType('Folder-Grid')">
+                                                        <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                                    </span>
+                                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom"
+                                                     title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" 
+                                                     (click)="setViewType('Folder-List')">
+                                                        <i  class="fa fa-folder-open-o p10" aria-hidden="true"></i>
+                                                </span>
+                                                </ng-container>
+
                                                 <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                                 <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                             </ng-container>
@@ -92,15 +105,15 @@
                                 </div>
                             </div>
                         </div>
-                        <ng-container *ngIf="isFolderGridView">
+                        <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                             <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                         </ng-container>
-                        <app-grid-loader *ngIf="httpRequestLoader.isLoading && (isGridView || isFolderGridView)"></app-grid-loader>
-                        <app-list-loader *ngIf="httpRequestLoader.isLoading && isListView"></app-list-loader>
+                        <app-grid-loader *ngIf="httpRequestLoader.isLoading && (modulesDisplayType.isGridView || modulesDisplayType.isFolderGridView)"></app-grid-loader>
+                        <app-list-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isListView"></app-list-loader>
                         <!-----List View--------->
-                        <section class='m10' *ngIf="isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                        <section class='m10' *ngIf="modulesDisplayType.isListView && totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                             <div class="table-responsive">
-                                <table [class.bottomTableCss]="pagination.pagedItems.length<5" class='table tgrid table-hover table-sm hidden-xs' *ngIf="isListView" id="manage-campaign-list">
+                                <table [class.bottomTableCss]="pagination.pagedItems.length<5" class='table tgrid table-hover table-sm hidden-xs' *ngIf="modulesDisplayType.isListView" id="manage-campaign-list">
                                     <thead>
                                         <tr>
                                             <th colspan="2" style="width: 30%">
@@ -315,7 +328,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <table class='table tgrid table-sm visible-xs' *ngIf="isListView">
+                                <table class='table tgrid table-sm visible-xs' *ngIf="modulesDisplayType.isListView">
                                     <thead>
                                         <tr>
                                             <th colspan="1">Campaign</th>
@@ -472,10 +485,10 @@
                                 </table>
                             </div>
                         </section>
-                        <div *ngIf="totalRecords <= 0 && isListView" class="alert alert-info">
+                        <div *ngIf="totalRecords <= 0 && modulesDisplayType.isListView" class="alert alert-info">
                             <strong>No campaigns found</strong>
                         </div>
-                        <div class="tab-pane active" *ngIf="isGridView">
+                        <div class="tab-pane active" *ngIf="modulesDisplayType.isGridView">
                             <!----Grid View------>
                             <div class="margin-top-10">
                                 <div class="row mix-grid p10">
@@ -648,11 +661,11 @@
                                 </div>
                             </div>
                             <!-- End of 24 -->
-                            <div *ngIf="totalRecords <= 0 && !isListView" class="alert alert-info">
+                            <div *ngIf="totalRecords <= 0 && !modulesDisplayType.isListView" class="alert alert-info">
                                 <strong>No campaigns found</strong>
                             </div>
                         </div>
-                        <ng-container *ngIf="isListView || isGridView">
+                        <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                         <div [hidden]="totalRecords <= 0 || httpRequestLoader.isLoading || httpRequestLoader.isServerError" style="background:white">
                             <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
                                 <app-pagination [pagination]="pagination" [type]="'campaign'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
