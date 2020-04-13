@@ -127,13 +127,14 @@ export class HomeComponent implements OnInit {
     }
   
   getPartnerCampaignsNotifications(){
-    if(!this.referenceService.eventCampaignTabAccess){
+    if(!this.referenceService.eventCampaignTabAccess || !this.referenceService.socialCampaignTabAccess){
       const url = "partner/access/" + this.userId + "?access_token=" + this.token;
       this.userService.getEventAccessTab(url)
           .subscribe(
               data => {
                   console.log(data);
                   this.referenceService.eventCampaignTabAccess = data.event;
+                  this.referenceService.socialCampaignTabAccess = data.social;
               },
               error => { },
               () => this.xtremandLogger.info('Finished home component CampaignNotification()')
