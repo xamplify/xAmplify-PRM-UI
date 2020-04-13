@@ -9,7 +9,7 @@ import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
-declare var $:any;
+declare var $: any;
 @Component({
   selector: 'app-video-statistics-analytics',
   templateUrl: './video-statistics-analytics.component.html',
@@ -19,12 +19,12 @@ declare var $:any;
 export class VideoStatisticsAnalyticsComponent implements OnInit {
   daySort: any;
   sortDates: any;
-  sortHeatMapValues:any;
+  sortHeatMapValues: any;
   heatMapSort: any;
   videoStatesTooltip = 'Current Month';
   videoStatisticsLoader: HttpRequestLoader = new HttpRequestLoader();
   dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
-  constructor(public referenceService:ReferenceService,public dashboardService:DashboardService,public xtremandLogger:XtremandLogger,public utilService:UtilService,public router: Router, private vanityURLService:VanityURLService) { 
+  constructor(public referenceService: ReferenceService, public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public utilService: UtilService, public router: Router, private vanityURLService: VanityURLService) {
     this.sortDates = this.dashboardService.sortDates;
     this.daySort = this.sortDates[3];
     this.referenceService.daySortValue = this.daySort.value;
@@ -36,42 +36,44 @@ export class VideoStatisticsAnalyticsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getVideoStatesSparklineChartsInfo(30);
     this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+    if (this.dashboardAnalyticsDto.userId !== 0 && this.dashboardAnalyticsDto.vendorCompanyProfileName) {
+      this.getVideoStatesSparklineChartsInfo(30);
+    }
   }
 
   selectedSortByValue(event: any) {
     this.xtremandLogger.log(event);
     this.referenceService.daySortValue = event;
-    this.videoStatesTooltip =  this.utilService.setTooltipMessage(event);
+    this.videoStatesTooltip = this.utilService.setTooltipMessage(event);
     this.getVideoStatesSparklineChartsInfo(event);
-}
-
-getVideoStatesSparklineChartsInfo(daysCount) {
-  try {
-      this.dashboardService.getVideoStatsInformationForVanityURL(daysCount,this.dashboardAnalyticsDto).
-          subscribe(result => {
-              this.xtremandLogger.log(result);
-              this.referenceService.viewsSparklineValues = result;
-              this.viewsSparklineData(result.views, result.dates);
-              this.minutesSparklineData(result.minutesWatched, result.dates);
-              this.averageSparklineData(result.averageDuration, result.dates);
-              this.xtremandLogger.log(this.referenceService.viewsSparklineValues);
-          },
-              (error: any) => {
-                  this.xtremandLogger.error(error);
-               //   this.xtremandLogger.errorPage(error);
-              });
-  } catch (error) {
-      this.xtremandLogger.error('error in world map dashboard ' + error);
   }
-}
 
-viewsSparklineData(result, dates) {
-  const self = this;
-  const myvalues = result;
-  const offsetValues = dates;
-  $('#sparkline_bar').sparkline(myvalues, {
+  getVideoStatesSparklineChartsInfo(daysCount) {
+    try {
+      this.dashboardService.getVideoStatsInformationForVanityURL(daysCount, this.dashboardAnalyticsDto).
+        subscribe(result => {
+          this.xtremandLogger.log(result);
+          this.referenceService.viewsSparklineValues = result;
+          this.viewsSparklineData(result.views, result.dates);
+          this.minutesSparklineData(result.minutesWatched, result.dates);
+          this.averageSparklineData(result.averageDuration, result.dates);
+          this.xtremandLogger.log(this.referenceService.viewsSparklineValues);
+        },
+          (error: any) => {
+            this.xtremandLogger.error(error);
+            //   this.xtremandLogger.errorPage(error);
+          });
+    } catch (error) {
+      this.xtremandLogger.error('error in world map dashboard ' + error);
+    }
+  }
+
+  viewsSparklineData(result, dates) {
+    const self = this;
+    const myvalues = result;
+    const offsetValues = dates;
+    $('#sparkline_bar').sparkline(myvalues, {
       type: 'bar',
       width: '100',
       barWidth: 2,
@@ -80,21 +82,21 @@ viewsSparklineData(result, dates) {
       negBarColor: '#e02222',
       tooltipFormat: '<span >views:{{value}} <br>{{offset:offset}}</span>',
       tooltipValueLookups: { 'offset': offsetValues }
-  });
-  $(document).ready(function () {
+    });
+    $(document).ready(function () {
       $('#sparkline_bar').bind('sparklineClick', function (ev) {
-          const sparkline = ev.sparklines[0],
-              region = sparkline.getCurrentRegionFields();
-          self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "views");
+        const sparkline = ev.sparklines[0],
+          region = sparkline.getCurrentRegionFields();
+        self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "views");
       });
-  });
-}
+    });
+  }
 
-minutesSparklineData(result, dates) {
-  const self = this;
-  const myvalues = result;
-  const offsetValues = dates;
-  $('#sparkline_bar2').sparkline(myvalues, {
+  minutesSparklineData(result, dates) {
+    const self = this;
+    const myvalues = result;
+    const offsetValues = dates;
+    $('#sparkline_bar2').sparkline(myvalues, {
       type: 'bar',
       width: '100',
       barWidth: 2,
@@ -103,21 +105,21 @@ minutesSparklineData(result, dates) {
       negBarColor: '#e02222',
       tooltipFormat: '<span >minutes:{{value}} <br>{{offset:offset}}</span>',
       tooltipValueLookups: { 'offset': offsetValues }
-  });
-  $(document).ready(function () {
+    });
+    $(document).ready(function () {
       $('#sparkline_bar2').bind('sparklineClick', function (ev) {
-          const sparkline = ev.sparklines[0],
-              region = sparkline.getCurrentRegionFields();
-          self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "minutes watched");
+        const sparkline = ev.sparklines[0],
+          region = sparkline.getCurrentRegionFields();
+        self.sparklineDataWithRouter(region[0].value, offsetValues[region[0].offset], "minutes watched");
       });
-  });
-}
+    });
+  }
 
-averageSparklineData(result, dates) {
-  const myvalues = result;
-  this.xtremandLogger.log(myvalues);
-  const offsetValues = dates;
-  $('#sparkline_line').sparkline(myvalues, {
+  averageSparklineData(result, dates) {
+    const myvalues = result;
+    this.xtremandLogger.log(myvalues);
+    const offsetValues = dates;
+    $('#sparkline_line').sparkline(myvalues, {
       type: 'line',
       width: '100',
       barWidth: 2,
@@ -125,18 +127,18 @@ averageSparklineData(result, dates) {
       barColor: '#35aa47',
       negBarColor: '#e02222',
       tooltipValueLookups: { 'offset': offsetValues }
-  });
-}
+    });
+  }
 
 
-sparklineDataWithRouter(value: number, date: any, reportName: string) {
-  if (date === undefined || date === null) {
+  sparklineDataWithRouter(value: number, date: any, reportName: string) {
+    if (date === undefined || date === null) {
       this.xtremandLogger.log("date is " + date);
-  } else {
+    } else {
       this.referenceService.viewsDate = date;
       this.referenceService.clickedValue = value;
       this.referenceService.reportName = reportName;
       this.router.navigate(['./home/dashboard/reports']);
+    }
   }
-}
 }

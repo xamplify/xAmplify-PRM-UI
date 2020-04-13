@@ -66,6 +66,7 @@ export class AuthenticationService {
     v_companyLogoImagePath:string;
     companyProfileName:string = "";
     vanityURLEnabled: boolean = false;
+    vanityURLink:string = "";
     dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;

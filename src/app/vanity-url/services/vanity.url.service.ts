@@ -5,6 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { VanityURL } from "../models/vanity.url";
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 
+
 @Injectable()
 export class VanityURLService {
 
@@ -24,8 +25,8 @@ export class VanityURLService {
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
-    // let url = "Swt.xamplify.com";
-   // let url = "TGAInfoSolutions.xamplify.com";
+     //let url = "key.xamplify.com";
+    //let url = "TGAInfoSolutions.xamplify.com";
     let url =window.location.hostname;
 
     if (!url.includes("release")) {
@@ -36,6 +37,7 @@ export class VanityURLService {
         if (this.authenticationService.v_companyName == undefined || this.authenticationService.v_companyLogoImagePath == undefined) {
           this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.authenticationService.v_companyName = result.companyName;
+            this.authenticationService.vanityURLink= result.vanityURLink;
             //this.authenticationService.v_companyLogoImagePath = "assets/images/logo.jpg";
             this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
           }, error => {

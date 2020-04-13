@@ -248,7 +248,8 @@
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
           </app-response-message>
-          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form?.alias}}" #userinput>
+          <input type="text" *ngIf= "!authenticationService.vanityURLEnabled" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form?.alias}}" #userinput>
+          <input type="text" *ngIf= "authenticationService.vanityURLEnabled" class="form-control" readonly="readonly" value="{{authenticationService.vanityURLink}}f/{{form?.alias}}" #userinput>
         </div>
         <div class="modal-footer">
           <!-- <a class="btn btn-info" href="{{authenticationService.APP_URL}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
