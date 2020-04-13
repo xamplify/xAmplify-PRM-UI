@@ -49,7 +49,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         this.inputObject = {};
         this.folderListViewInput = {};
         this.folderViewType = this.moduleType['folderType'];
-		this.selectedModuleType = this.moduleType['type'];
+        this.selectedModuleType = this.moduleType['type'];
         this.listCategories(this.pagination);
     }
 

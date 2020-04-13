@@ -14,8 +14,8 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
-import { EmailTemplateSource } from '../models/email-template-source';
 import { SortOption } from '../../core/models/sort-option';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $, swal: any;
 
@@ -78,6 +78,7 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
     isGridView:boolean = false;
     categoryId:number = 0;
     exportObject:any = {};
+    modulesDisplayType = new ModulesDisplayType();
     constructor( private emailTemplateService: EmailTemplateService, private router: Router,
         private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
         public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
@@ -94,7 +95,8 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         }
         this.hasAllAccess = this.refService.hasAllAccess();
         this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner()
+        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
     }
     showMessageOnTop(message:string){
         $(window).scrollTop(0);
@@ -264,16 +266,29 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 this.setViewType('Folder-Grid');
             }else{
                 if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
-                this.isListView = ! this.refService.isGridView;
-                this.isGridView = this.refService.isGridView;
-                this.isFolderGridView = false;
                 this.pagination.maxResults = 12;
                 this.categoryId = this.route.snapshot.params['categoryId'];
                 if(this.categoryId!=undefined){
                     this.pagination.categoryId = this.categoryId;
                     this.pagination.categoryType = 'e';
                 }
-                this.listEmailTemplates( this.pagination );
+                let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+                if(showList){
+                    this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                    this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                    if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                        this.modulesDisplayType.isListView = true;
+                        this.modulesDisplayType.isGridView = false;
+                    }
+                    this.modulesDisplayType.isFolderListView = false;
+                    this.modulesDisplayType.isFolderGridView = false;
+                    this.listEmailTemplates( this.pagination );
+                }else if(this.modulesDisplayType.isFolderGridView){
+                    this.setViewType('Folder-Grid');
+                }else if(this.modulesDisplayType.isFolderListView){
+                    this.setViewType('Folder-List');
+                }
+               
             }
 
            
@@ -465,29 +480,66 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
 
     setViewType(viewType:string){
         if("List"==viewType){
-            this.isListView = true;
-            this.isGridView = false;
-            this.isFolderGridView = false;
-            this.navigateToManageSection();    
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.navigateToManageSection(viewType);    
         }else if("Grid"==viewType){
-            this.isListView = false;
-            this.isGridView = true;
-            this.isFolderGridView = false;
-            this.navigateToManageSection();    
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.navigateToManageSection(viewType);    
         }else if("Folder-Grid"==viewType){
-            this.isListView = false;
-            this.isGridView = false;
-            this.isFolderGridView = true;
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView  = false;
             this.exportObject['type'] = 1;
+            this.exportObject['folderType'] = viewType;
             if(this.categoryId>0){
                 this.router.navigateByUrl('/home/emailtemplates/manage/');
             }
             
+        }else if("Folder-List"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 1;
         }
     }
 
-    navigateToManageSection(){
-        if(this.router.url.endsWith('manage/')){
+    
+
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listEmailTemplates(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listEmailTemplates(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listEmailTemplates(this.pagination);
+        }else if(this.router.url.endsWith('manage/')){
             this.router.navigateByUrl('/home/emailtemplates/manage');
         }
     }

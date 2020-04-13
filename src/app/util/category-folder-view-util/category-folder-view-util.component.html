@@ -18,7 +18,7 @@
                             <i class="fa fa-folder p10"  aria-hidden="true"></i>
                         </span>
                         <span class="btn btn-xs hidden-xs l-g-view margin-space" [class.disabled]="folderViewType=='Folder-List'"  (click)="folderViewType='Folder-List'" data-toggle="tooltip" data-placement="bottom" title="Folder List View">
-                            <i class="fa fa-folder-open-o p10"  aria-hidden="true"></i>
+                            <i class="fa fa-folder-open p10"  aria-hidden="true"></i>
                         </span>
                     </ng-container>
                     <div class="inputs float-right custom-flex">
@@ -128,18 +128,23 @@
                         <span *ngIf="referenceService.isSafariBrowser()">{{category.displayTime}}</span>
                     </td>
                     <td class="text-center">
-                        <span>{{category.count}}</span>
+                        <div  class="override-actions">
+                            <span class="circled-number"><b>{{category.count}}</b></span>
+                        </div> 
                     </td>
                 </tr>
                 <tr [ngClass]="{'hidden': !category.expanded}" id="list-folder-items">
                     <td colspan="5">
                         <ng-container *ngIf="category.expanded">
+                            <ng-container *ngIf="selectedModuleType==1">
+                        		<app-email-templates-list-view-util [folderListViewInput]="folderListViewInput"></app-email-templates-list-view-util>
+                            </ng-container>
                         	<ng-container *ngIf="selectedModuleType==2">
                         		<app-forms-list-view-util [folderListViewInput]="folderListViewInput"></app-forms-list-view-util>
                         	</ng-container>
                         	<ng-container *ngIf="selectedModuleType==4 || selectedModuleType==5">
                         		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-campaigns-list-view-util>
-                        	</ng-container>
+                            </ng-container>
                         </ng-container>
                     </td>
                  </tr>   
