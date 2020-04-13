@@ -145,6 +145,9 @@
                         	<ng-container *ngIf="selectedModuleType==4 || selectedModuleType==5">
                         		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-campaigns-list-view-util>
                             </ng-container>
+                            <ng-container *ngIf="selectedModuleType==3">
+                        		<app-landing-pages-list-view-util [folderListViewInput]="folderListViewInput"></app-landing-pages-list-view-util>
+                            </ng-container>
                         </ng-container>
                     </td>
                  </tr>   

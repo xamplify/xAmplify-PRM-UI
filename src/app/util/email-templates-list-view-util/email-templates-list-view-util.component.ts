@@ -24,7 +24,7 @@ declare var $, swal: any;
   styleUrls: ['./email-templates-list-view-util.component.css','../../email-template/manage-template/manage-template.component.css'],
   providers: [Pagination,HttpRequestLoader, ActionsDescription, CampaignAccess,SortOption]
 })
-export class EmailTemplatesListViewUtilComponent implements OnInit {
+export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   isPreview = false;
   emailTemplate: EmailTemplate;
   emailPreview: string;

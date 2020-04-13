@@ -64,6 +64,10 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             pagination.categoryType = 'f';
         }else if(type==3){
             pagination.categoryType = 'l';
+			pagination.partnerView = false;
+			if(this.router.url.indexOf("/pages/partner")>-1){
+				pagination.partnerView = true;
+			}
         }else if(type==4 || type==5){
             pagination.categoryType = 'c';
         }

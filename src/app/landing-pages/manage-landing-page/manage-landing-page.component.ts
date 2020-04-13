@@ -14,6 +14,8 @@ import { UtilService } from '../../core/services/util.service';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+
 
 declare var swal: any, $: any;
 @Component({
@@ -45,6 +47,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isFolderGridView = false;
     exportObject:any = {};
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    modulesDisplayType = new ModulesDisplayType();
+
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -61,6 +65,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.showMessageOnTop(this.message);
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
+        this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
+
     }
 
     
@@ -264,7 +270,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
-
         if (this.router.url.includes('home/pages/partner')) {
             this.isPartnerLandingPage = true;
         } else {
@@ -276,15 +281,27 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if(this.router.url.endsWith('manage/') || this.router.url.endsWith('partner/')){
             this.setViewType('Folder-Grid');
         }else{
-            this.isListView = !this.referenceService.isGridView;
-            this.isGridView = this.referenceService.isGridView;
-            this.isFolderGridView = false;
             this.categoryId = this.route.snapshot.params['categoryId'];
             if (this.categoryId != undefined) {
                 this.pagination.categoryId = this.categoryId;
                 this.pagination.categoryType = 'l';
             }
-            this.listLandingPages(this.pagination);
+            let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+            if(showList){
+                this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                    this.modulesDisplayType.isListView = true;
+                    this.modulesDisplayType.isGridView = false;
+                }
+                this.modulesDisplayType.isFolderListView = false;
+                this.modulesDisplayType.isFolderGridView = false;
+                this.listLandingPages(this.pagination);
+            }else if(this.modulesDisplayType.isFolderGridView){
+                this.setViewType('Folder-Grid');
+            }else if(this.modulesDisplayType.isFolderListView){
+                this.setViewType('Folder-List');
+            }
         }
         
     }
@@ -301,20 +318,24 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     setViewType(viewType: string) {
         if ("List" == viewType) {
-            this.isListView = true;
-            this.isGridView = false;
-            this.isFolderGridView = false;
-            this.navigateToManageSection();
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
-            this.isListView = false;
-            this.isGridView = true;
-            this.isFolderGridView = false;
-            this.navigateToManageSection();
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.navigateToManageSection(viewType);
         } else if ("Folder-Grid" == viewType) {
-            this.isListView = false;
-            this.isGridView = false;
-            this.isFolderGridView = true;
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView  = false;
             this.exportObject['type'] = 3;
+            this.exportObject['folderType'] = viewType;
             if(this.isPartnerLandingPage){
                 this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
             }
@@ -326,12 +347,47 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     this.router.navigateByUrl('/home/pages/manage/');
                 }
             }
-
+        }else if("Folder-List"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 3;
+            if(this.isPartnerLandingPage){
+                this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+            }
+            this.exportObject['partnerLandingPage'] = this.isPartnerLandingPage;
         }
     }
 
-    navigateToManageSection() {
-        if (this.router.url.endsWith('manage/')) {
+
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listLandingPages(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listLandingPages(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listLandingPages(this.pagination);
+        }else if (this.router.url.endsWith('manage/')) {
             this.router.navigateByUrl('/home/pages/manage');
         }else if(this.router.url.endsWith('partner/')){
             this.router.navigateByUrl('/home/pages/partner');
