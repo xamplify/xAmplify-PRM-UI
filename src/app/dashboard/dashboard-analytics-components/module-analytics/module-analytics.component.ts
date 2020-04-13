@@ -55,7 +55,7 @@ export class ModuleAnalyticsComponent implements OnInit {
       }else if(moduleId==4){
         this.router.navigate(["/home/dashboard/vendors"]);
       }else if(moduleId==5){
-        this.router.navigate(["/home/campaigns/manage"]);
+        this.router.navigate(["/home/contacts/manage"]);
       }else if(moduleId==6){
         this.router.navigate(["/home/social/manage/all"]);
       }else if(moduleId==7){

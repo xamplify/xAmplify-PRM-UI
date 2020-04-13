@@ -24,13 +24,20 @@ export class VendorActivityAnalyticsComponent implements OnInit {
   statusCode:number = 0;
   divClass = "col-xs-12 col-sm-4";
   ngxLoading=false;
+  showVendorActivity = false;
   constructor(public authenticationService: AuthenticationService,public referenceService:ReferenceService,
     private xtremandLogger: XtremandLogger, public router: Router,public httpRequestLoader: HttpRequestLoader,public dashboardService:DashboardService,public route:ActivatedRoute,private vanityUrlService:VanityURLService) { }
 
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-    this.getVendorActivityAnalytics();
+    if(this.authenticationService.module.isReDistribution || this.authenticationService.isShowRedistribution){
+      this.showVendorActivity = true;
+      this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+      this.getVendorActivityAnalytics();
+    }else{
+      this.showVendorActivity = false;
+    }
+    
   }
 
   getVendorActivityAnalytics(){
