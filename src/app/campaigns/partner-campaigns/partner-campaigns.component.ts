@@ -221,7 +221,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             if(type=="landingPage"){
                 type = "page";
             }
-            this.router.navigate( ['/home/campaigns/partner/' + type] );
+            if(this.router.url.indexOf("/partner/f/")>-1){
+                this.router.navigate( ['/home/campaigns/partner/f/'+this.categoryId+'/' + type] );
+            }else{
+                this.router.navigate( ['/home/campaigns/partner/' + type] );
+            }
+            
         }
     }
 

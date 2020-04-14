@@ -248,7 +248,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                     this.pagination.categoryType = 'c';
                 }
                 let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
-                if(showList){
+				let isTeamMemberFilter = this.router.url.indexOf("manage/tm")>-1;
+                if(showList || isTeamMemberFilter){
                     this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
                     this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
                     if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
@@ -608,6 +609,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.exportObject['type'] = 4;
             this.exportObject['folderType'] = viewType;
             this.exportObject['teamMemberId'] = this.teamMemberId;
+			alert(this.teamMemberId);
             if(this.categoryId>0){
                 if(this.teamMemberId!=undefined && this.teamMemberId>0){
                     this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
@@ -623,6 +625,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             this.modulesDisplayType.isFolderListView = true;
 			this.exportObject['folderType'] = viewType;
             this.exportObject['type'] = 4;
+			this.exportObject['teamMemberId'] = this.teamMemberId;
         }
     }
 
