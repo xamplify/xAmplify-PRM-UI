@@ -30,8 +30,6 @@ import { ManageDealCommentsComponent } from "../deal-registration/manage-deal-co
 import { AddLeadsComponent } from "../deal-registration/add-leads/add-leads.component";
 import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
 import { SharedRssModule } from "app/shared/shared-rss.module";
-import { AddMoreReceiversComponent } from './add-more-receivers/add-more-receivers.component';
-import { PublicEventEmailPopupComponent } from './public-event-email-popup/public-event-email-popup.component';
 import { EventCheckInComponent } from './event-check-in/event-check-in.component';
 import { CampaignWorkFlowsModalPopupComponent } from './campaign-work-flows-modal-popup/campaign-work-flows-modal-popup.component';
 import { CampaignWorkFlowsUtilComponent } from './campaign-work-flows-util/campaign-work-flows-util.component';
@@ -67,8 +65,6 @@ import { ClickedUrlsVendorAnalyticsComponent } from './clicked-urls-vendor-analy
     DealRegistrationComponent,
     ManageDealCommentsComponent,
     AddLeadsComponent,
-    AddMoreReceiversComponent,
-    PublicEventEmailPopupComponent,
     EventCheckInComponent,
     CampaignWorkFlowsModalPopupComponent,
     CampaignWorkFlowsUtilComponent,
