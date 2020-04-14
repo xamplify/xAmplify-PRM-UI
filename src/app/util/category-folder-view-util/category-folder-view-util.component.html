@@ -142,12 +142,16 @@
                         	<ng-container *ngIf="selectedModuleType==2">
                         		<app-forms-list-view-util [folderListViewInput]="folderListViewInput"></app-forms-list-view-util>
                         	</ng-container>
-                        	<ng-container *ngIf="selectedModuleType==4 || selectedModuleType==5">
-                        		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-campaigns-list-view-util>
-                            </ng-container>
-                            <ng-container *ngIf="selectedModuleType==3">
+                        	<ng-container *ngIf="selectedModuleType==3">
                         		<app-landing-pages-list-view-util [folderListViewInput]="folderListViewInput"></app-landing-pages-list-view-util>
                             </ng-container>
+                        	<ng-container *ngIf="selectedModuleType==4">
+                        		<app-campaigns-list-view-util [folderListViewInput]="folderListViewInput"></app-campaigns-list-view-util>
+                            </ng-container>
+                            <ng-container *ngIf="selectedModuleType==5">
+                        		<p>Redistribtued</p>
+                            </ng-container>
+                            
                         </ng-container>
                     </td>
                  </tr>   

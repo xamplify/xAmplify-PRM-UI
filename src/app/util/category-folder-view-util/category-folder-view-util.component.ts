@@ -65,11 +65,14 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         }else if(type==3){
             pagination.categoryType = 'l';
 			pagination.partnerView = false;
-			if(this.router.url.indexOf("/pages/partner")>-1){
+			if(this.router.url.indexOf("/partner")>-1){
 				pagination.partnerView = true;
 			}
         }else if(type==4 || type==5){
             pagination.categoryType = 'c';
+			if(this.router.url.indexOf("/partner")>-1){
+				pagination.partnerView = true;
+			}
         }
         let teamMemberId = this.moduleType['teamMemberId'];
         if(teamMemberId!=undefined){
