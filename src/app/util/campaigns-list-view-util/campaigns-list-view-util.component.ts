@@ -240,7 +240,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
           this.pagination.maxResults = 12;
           if(this.folderListViewInput!=undefined){
 			this.categoryId = this.folderListViewInput['categoryId'];
-		}
+			}
           if(this.categoryId!=undefined){
               this.pagination.categoryId = this.categoryId;
               this.pagination.categoryType = 'c';
