@@ -44,6 +44,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     partnerId = 0;
     statusCode = 200;
     deleteAndEditAccess = false;
+    formAliasUrl:string="";
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
 
     constructor( public referenceService: ReferenceService,
@@ -240,8 +241,13 @@ export class ManageFormComponent implements OnInit, OnDestroy {
       }
 
       showFormUrl(form:Form){
-          this.form = form;
+          this.form = form;         
           this.copiedLinkCustomResponse = new CustomResponse();
+          if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
+            this.formAliasUrl = this.authenticationService.vanityURLink + "f/" + this.form.alias;
+          }else{              
+            this.formAliasUrl = this.authenticationService.APP_URL + "f/" + this.form.alias;
+          }          
           $('#form-url-modal').modal('show');
       }
 
