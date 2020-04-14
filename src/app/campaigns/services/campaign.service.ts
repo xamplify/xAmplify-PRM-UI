@@ -11,6 +11,7 @@ import { Pagination } from '../../core/models/pagination';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CampaignWorkflowPostDto } from '../models/campaign-workflow-post-dto';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+
 declare var swal, $, Promise: any;
 @Injectable()
 export class CampaignService {
@@ -50,6 +51,9 @@ export class CampaignService {
     }
 
     saveCampaign(data: any) {
+        if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName){
+            data['companyProfileName'] = this.authenticationService.companyProfileName;
+        }
         return this.http.post(this.URL + "admin/createCampaign?access_token=" + this.authenticationService.access_token, data)
             .map(this.extractData)
             .catch(this.handleError);
