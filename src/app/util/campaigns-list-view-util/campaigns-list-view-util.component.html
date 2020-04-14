@@ -83,7 +83,7 @@
                                             </th>
                                             <th class="center" style="width: 28%">Status</th>
                                             <th class="center" style="width: 15%">Created On</th>
-                                            <th style="width: 25%;text-align:right"></th>
+                                            <th style="width: 25%;text-align:right">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -190,7 +190,7 @@
                                             </td>
                                             <td class="center">
                                                 <!----Buttons start here----->
-                                                <div class="actions-block override-actions" style="display: none;">
+                                                <div class="actions-block override-actions">
                                                     <ng-container *ngIf="campaign.launched">
 
                                                         <ng-container *ngIf="campaign.campaignType!='LANDINGPAGE'">
@@ -543,7 +543,7 @@
                                                         <span *ngIf="!campaign.launched && (campaign.scheduleType==='SAVE' || campaign.scheduleType==='NOW')">Saved</span>
                                                     </ng-container>
                                                 </div>
-                                                <div class="bar" style="display: none;">
+                                                <div class="bar">
                                                     <!--Buttons Start Here-->
                                                     <ng-container *ngIf="!campaign.launched">
                                                         <a [class.disablednew]="!campaign.hasAccess" *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
@@ -849,8 +849,8 @@
         </div>
     </div>
 </div>
-<!-- <app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
-<app-add-more-receivers #addMoreReceivers></app-add-more-receivers> -->
+<app-preview-campaign *ngIf="previewCampaign" [previewCampaignId]="previewCampaign" [previewCampaignType]="campaignType" (closeNotifyParent)="closePreviewCampaign($event)"></app-preview-campaign>
+<!-- <app-add-more-receivers #addMoreReceivers></app-add-more-receivers> -->
 <!-- -----------------Sending Public Event Email Pop Up------->
 <!-- <app-public-event-email-popup #publiEventEmailPopup></app-public-event-email-popup> -->
 <!-----------------Adding New Workflows Popup-->
