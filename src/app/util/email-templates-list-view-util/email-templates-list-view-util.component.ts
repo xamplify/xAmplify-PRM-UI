@@ -256,21 +256,16 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedSortedOption =  this.sortByDropDown[0];
       try {
-          if(this.router.url.endsWith('manage/')){
-              this.setViewType('Folder-Grid');
-          }else{
-              if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
-              this.pagination.maxResults = 12;
-              if(this.folderListViewInput!=undefined){
-				this.categoryId = this.folderListViewInput['categoryId'];
-		  	  }
-              if(this.categoryId!=undefined){
-                  this.pagination.categoryId = this.categoryId;
-                  this.pagination.categoryType = 'e';
-              }
-              this.listEmailTemplates( this.pagination );
+        if(!this.refService.companyId){ this.getCompanyIdByUserId()} else { this.getOrgCampaignTypes();}
+        this.pagination.maxResults = 12;
+        if(this.folderListViewInput!=undefined){
+          this.categoryId = this.folderListViewInput['categoryId'];
           }
-
+        if(this.categoryId!=undefined){
+            this.pagination.categoryId = this.categoryId;
+            this.pagination.categoryType = 'e';
+        }
+        this.listEmailTemplates( this.pagination );
          
       } catch ( error ) {
           this.refService.showError( error, "ngOnInit", "ManageTemplatesComponent" );
