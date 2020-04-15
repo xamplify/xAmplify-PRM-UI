@@ -172,7 +172,7 @@ a.disabled {
     border-radius: 3px;
 }
 
-img {
+.email-template-preview {
     height: 96px;
     width: 51px;
     margin-left: 18px;

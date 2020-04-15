@@ -57,9 +57,9 @@
                                         title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-folder p10" aria-hidden="true"></i>
                                     </span>
-                                    <span  class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                    <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
                                         title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                        <i class="fa fa-folder-open p10" aria-hidden="true"></i>
+                                        <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
                                     </span>
                                 </ng-container>
                                     <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
@@ -118,8 +118,8 @@
                                 <tbody>
                                     <tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
-                                            <img *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" style="border: 1px solid #e0e0e0;">
+                                            <img class="email-template-preview" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                            <img class="email-template-preview" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
@@ -188,8 +188,8 @@
                                     Co-Branding</span>
                             <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
                             </span>
-                            <img *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                            <img *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
+                            <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
+                            <img class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>

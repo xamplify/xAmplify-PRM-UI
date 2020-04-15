@@ -25,68 +25,6 @@
                 <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-                <!-- <div class="portlet-title" style="border-bottom: none;">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-lg-12">
-                            <div class="col-xs-12 col-sm-7 col-lg-7 p0">
-                                <ul class="mix-filter">
-                                    <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
-                                    <ng-container *ngIf="!isPartnerLandingPage">
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
-                                        </li>
-                                    </ng-container>
-                                    <ng-container *ngIf="isPartnerLandingPage">
-                                        <li class="filter" (click)="showAllLandingPages('PUBLIC',5)" [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('PRIVATE',6)" [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private
-                                        </li>
-                                    </ng-container>
-                                </ul>
-                            </div>
-                            <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                                <div class="page-toolbar">
-                                    <div class="btn-group pull-right">
-                                        <div class="inputs" id="right" style="display: inline-flex;">
-                                            <div id="left" *ngIf="!isPartnerLandingPage">
-                                                <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                    <option *ngFor="let option of sortOption.manageFormsSortOptions"
-                                                        [ngValue]="option">
-                                                        {{option.name}}</option>
-                                                </select>
-                                            </div>
-
-                                            <div *ngIf="isPartnerLandingPage">
-                                                <select class="form-control" [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                    <option
-                                                        *ngFor="let option of sortOption.partnerLandingPageSortOptions"
-                                                        [ngValue]="option">
-                                                        {{option.name}}</option>
-                                                </select>
-                                            </div>
-
-
-                                            <div class="portlet-input input-inline" id="search-div">
-                                                <div class="input-icon right" id="icon">
-                                                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLandingPages();"></button>
-                                                    <button type="submit" class="search-box-item-click" (click)="searchLandingPages()">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
 
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
@@ -128,9 +66,9 @@
                                             title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
                                                 <i class="fa fa-folder p10" aria-hidden="true"></i>
                                         </span>
-                                        <span  class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                        <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
                                             title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
-                                                <i class="fa fa-folder-open p10" aria-hidden="true"></i>
+                                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
                                         </span>
                                  </ng-container>
 
@@ -138,7 +76,7 @@
                                             <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
                                         </span>
                                 </ng-container>
-                                <div class="inputs" id="right" style="display: inline-flex;">
+                                <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
                                     <div *ngIf="!isPartnerLandingPage">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option *ngFor="let option of sortOption.manageFormsSortOptions"
@@ -198,7 +136,7 @@
                                 <tbody>
                                     <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                            <img id="landing-page-image-preview-custom-css" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">

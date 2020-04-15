@@ -69,10 +69,10 @@
                                                      (click)="setViewType('Folder-Grid')">
                                                         <i class="fa fa-folder p10" aria-hidden="true"></i>
                                                     </span>
-                                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom"
+                                                    <span class="btn btn-xs hidden-xs l-g-view folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom"
                                                      title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" 
                                                      (click)="setViewType('Folder-List')">
-                                                        <i  class="fa fa-folder-open p10" aria-hidden="true"></i>
+                                                        <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
                                                 </span>
                                                 </ng-container>
 
@@ -81,7 +81,6 @@
                                             </ng-container>
                                         </div>
                                     </div>
-                                    <!-- <div class="inputs" align="right" style="float: right"> -->
                                     <div class="col-xs-5 col-sm-4 col-md-3">
                                         <div style="float: left;">
                                             <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
@@ -94,7 +93,6 @@
                                     <div class="col-xs-5 col-sm-4 col-md-4" style="padding-right: 0px;">
                                         <div class="portlet-input input-inline input-small">
                                             <div class="input-icon" style="position:relative;right: -11px;">
-                                                <!-- <i class="icon-magnifier" (click)="searchCampaigns()" style="cursor: pointer;"></i>-->
                                                 <input type="text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)" style="padding-left: 10px !important;">
                                                 <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey" (click)="searchKey='';searchCampaigns();"></button>
                                                 <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search"></i></button>
