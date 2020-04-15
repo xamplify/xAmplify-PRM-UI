@@ -157,7 +157,7 @@
                                 <a (click)="activateTab('password');clearCustomResponse()">
                                     <i class="fa fa-key"></i> Change Password </a>
                             </li>
-                            <li *ngIf="(authenticationService.isOrgAdmin())">
+                           <!--  <li *ngIf="(authenticationService.isOrgAdmin())">
                                 <a [class.disabled]="authenticationService.isSuperAdmin()">
                                     <div class="col-xs-2 p0"><i class="icon-settings"></i></div>
                                     <div class="col-xs-5 p0">
@@ -172,7 +172,7 @@
                                         </label>
                                     </div>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <!-- END MENU -->
