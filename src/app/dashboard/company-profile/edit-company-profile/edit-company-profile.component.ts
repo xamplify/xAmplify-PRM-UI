@@ -166,6 +166,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     serverErrorMessage = "Oops!Something went wrong.Please try after sometime";
     userId = 0;
     countryFromBrowser:string = "";
+    showVendorLogo:boolean= true;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -1404,4 +1405,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        //this.campaignAccess.vendorTier1 = event;
    }
 
+   setVendorLogoEnabled(event:any){
+    this.companyProfile.showVendorCompanyLogo = event;
+   }
 }

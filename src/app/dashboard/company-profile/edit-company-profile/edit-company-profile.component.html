@@ -407,6 +407,18 @@
 									<span *ngIf="aboutUsError" style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
 								</div>
 								</div>
+								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+									<div class="form-group">
+										<label class="control-label">Show My Logo <font
+											style="color: #f55d7a"><b>*</b></font></label>
+									   <div>
+										<switch [status]="companyProfile.showVendorCompanyLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+											(statusChange)="setVendorLogoEnabled($event)">
+											</switch>
+										</div>											
+									</div>
+								</div>
+								
 								<!-- <div class="form-group">
 								<label class="control-label">About Us</label>
 								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs"></textarea>

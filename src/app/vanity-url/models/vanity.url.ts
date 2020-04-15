@@ -3,4 +3,5 @@ export class VanityURL{
     companyLogoImagePath: string;
     companyBgImagePath: string;
     vanityURLink:string;
+    showVendorCompanyLogo:boolean;
 }

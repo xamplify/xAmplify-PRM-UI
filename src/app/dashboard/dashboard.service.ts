@@ -21,8 +21,7 @@ export class DashboardService {
     pagination: Pagination;
     sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
     { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
-
-    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+    
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
@@ -207,9 +206,9 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getVendorsMyProfile(vendorEmail: any) {
+    getVendorsMyProfile(vendorEmail: any) {        
         const url = this.authenticationService.REST_URL + 'admin/getUserByUserName?access_token=' + this.authenticationService.access_token + '&userName=' + vendorEmail + '&isSuperAdmin=true';
-        return this.http.post(url, this.dashboardAnalyticsDto)
+        return this.http.post(url, '')
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -347,33 +346,33 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    getVideoViewsLevelOneReportsForVanityURL(daysInterval: number, dateValue: any,dto: DashboardAnalyticsDto) {
+    getVideoViewsLevelOneReportsForVanityURL(daysInterval: number, dateValue: any, dto: DashboardAnalyticsDto) {
         console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level1?access_token=' + this.authenticationService.access_token +
-        '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue ;
+            '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
-        .map(this.extractData)
-        .catch(this.handleError);
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     getVideoViewsLevelTwoReportsForVanityURL(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
         console.log("data value is " + dateValue);
-        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue ;
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getVideoMinutesWatchedLevelOneReportsForVanityURL(daysInterval: any, dateValue: number,dto: DashboardAnalyticsDto) {
+    getVideoMinutesWatchedLevelOneReportsForVanityURL(daysInterval: any, dateValue: number, dto: DashboardAnalyticsDto) {
         console.log("date value is " + dateValue);
         const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level1?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, dto)
-        .map(this.extractData)
-        .catch(this.handleError);
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     getVideoMinutesWatchedLevelTwoReportsForVanityURL(daysInterval: any, dateValue: number, videoId: number, pagination: Pagination) {
         console.log("date value is " + dateValue);
-        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId  + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);

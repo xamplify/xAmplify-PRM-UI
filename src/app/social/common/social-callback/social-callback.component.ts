@@ -4,8 +4,6 @@ import { SocialConnection } from '../../../social/models/social-connection';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
-import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
-import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component( {
     selector: 'app-social-callback',
@@ -16,10 +14,10 @@ export class SocialCallbackComponent implements OnInit {
     providerName: string;
     socialConnection: SocialConnection = new SocialConnection();
     error: string;
-    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+    
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService,
-        private refService: ReferenceService, private vanityURLService:VanityURLService) { }
+        private refService: ReferenceService) { }
 
     callback( providerName: string ) {
         let client_id: string;
@@ -54,10 +52,7 @@ export class SocialCallbackComponent implements OnInit {
                     const authorization = 'Basic' + btoa( client_id + ':' );
                     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
 
-                    if(this.authenticationService.companyProfileName !== null && this.authenticationService.companyProfileName !== ""){
-                        this.dashboardAnalyticsDto =  this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-                    }
-                    this.authenticationService.login( authorization, body, this.refService.userName,this.dashboardAnalyticsDto)
+                    this.authenticationService.login( authorization, body, this.refService.userName)
                         .subscribe( result => {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {

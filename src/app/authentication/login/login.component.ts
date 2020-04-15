@@ -12,7 +12,6 @@ import { Role } from '../../core/models/role';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 
 declare const $: any;
 
@@ -36,8 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "google", "iconName": "googleplus" },
   { "name": "linkedin", "iconName": "linkedin" }];
 
-  roles: Array<Role>;    
-  dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+  roles: Array<Role>;      
   constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     /*if(this.router.url=="/logout"){
@@ -81,10 +79,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginWithUser(userName:string){
     const authorization = 'Basic ' + btoa('my-trusted-client:');
           const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-         if(this.authenticationService.companyProfileName !== null && this.authenticationService.companyProfileName !== ""){
-          this.dashboardAnalyticsDto =  this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-         }          
-          this.authenticationService.login(authorization, body, userName,this.dashboardAnalyticsDto).subscribe(result => {
+                   
+          this.authenticationService.login(authorization, body, userName).subscribe(result => {
             if (localStorage.getItem('currentUser')) {
               // if user is coming from login
               const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -97,6 +93,16 @@ export class LoginComponent implements OnInit, OnDestroy {
               //     this.router.navigate([this.authenticationService.redirectUrl]);
               //     this.authenticationService.redirectUrl = null;
               // }
+
+              this.authenticationService.getVanityURLUserRoles(userName).subscribe(result =>{
+                let currentUser = localStorage.getItem('currentUser');
+                if(currentUser){
+                  const parsedObject = JSON.parse(currentUser);
+                  parsedObject.roles = result.data;
+                  localStorage.setItem("currentUser", JSON.stringify(parsedObject));
+                }
+              });
+
             } else {
               this.loading = false;
               this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
