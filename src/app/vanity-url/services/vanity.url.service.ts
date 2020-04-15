@@ -38,6 +38,7 @@ export class VanityURLService {
           this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.authenticationService.v_companyName = result.companyName;
             this.authenticationService.vanityURLink= result.vanityURLink;
+            this.authenticationService.v_showCompanyLogo= result.showVendorCompanyLogo;
             //this.authenticationService.v_companyLogoImagePath = "assets/images/logo.jpg";
             this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
           }, error => {
@@ -49,7 +50,9 @@ export class VanityURLService {
   }
 
   addVanityUrlFilterDTO(dto: DashboardAnalyticsDto) {
-    dto.userId = this.authenticationService.getUserId();
+    if(this.authenticationService.getUserId()){
+      dto.userId = this.authenticationService.getUserId();
+    }    
     let companyProfileName = this.authenticationService.companyProfileName;
    // let companyProfileName =  JSON.parse(localStorage.getItem('vanityUrlCompanyProfielName'));
     if (companyProfileName != undefined && companyProfileName != "") {
