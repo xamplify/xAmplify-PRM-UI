@@ -190,4 +190,13 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         }
     }
 
+getUpdatedItemsCount(event:any){
+    let categoryId = event['categoryId'];
+    let itemsCount = event['itemsCount'];
+    if(itemsCount>0){
+        itemsCount = itemsCount-1;
+    }
+    $('#count-'+this.selectedModuleType+"-"+categoryId).text(itemsCount);
+}
+
 }

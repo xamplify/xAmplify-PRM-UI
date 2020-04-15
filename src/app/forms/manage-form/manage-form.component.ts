@@ -11,9 +11,6 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { Form } from '../models/form';
 import { UtilService } from '../../core/services/util.service';
-import { Inject } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
-import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { FormService } from '../services/form.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
@@ -200,7 +197,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             let self = this;
             swal({
                 title: 'Are you sure?',
-                text: "You won’t be able to undo this action!",
+                text: "You won't be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',

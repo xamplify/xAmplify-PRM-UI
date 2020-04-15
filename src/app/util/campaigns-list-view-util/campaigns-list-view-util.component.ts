@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy,ViewChild,Renderer,Input } from '@angular/core';
+import { Component, OnInit, OnDestroy,ViewChild,Renderer,Input,Output,EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
@@ -88,6 +88,7 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   modulesDisplayType = new ModulesDisplayType();
   exportObject:any = {};
   @Input() folderListViewInput:any;
+  @Output() updatedItemsCount = new EventEmitter();
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
       public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
@@ -95,23 +96,6 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.utilService.setRouterLocalStorage('managecampaigns');
       this.itemsSize = this.numberOfItemsPerPage[0];
-      if (this.refService.campaignSuccessMessage == "SCHEDULE") {
-          this.showMessageOnTop();
-          this.campaignSuccessMessage = "Campaign scheduled successfully";
-          this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-      } else if (this.refService.campaignSuccessMessage == "SAVE") {
-          this.showMessageOnTop();
-          this.campaignSuccessMessage = "Campaign saved successfully";
-          this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-      } else if (this.refService.campaignSuccessMessage == "NOW") {
-          this.showMessageOnTop();
-          this.campaignSuccessMessage = "Campaign launched successfully";
-          this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-      } else if (this.refService.campaignSuccessMessage == "UPDATE") {
-          this.showMessageOnTop();
-          this.campaignSuccessMessage = "Campaign updated successfully";
-          this.customResponse = new CustomResponse('SUCCESS', this.campaignSuccessMessage, true);
-      }
       this.hasCampaignRole = this.refService.hasSelectedRole(this.refService.roles.campaignRole);
       this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
       this.hasAllAccess = this.refService.hasAllAccess();
@@ -333,6 +317,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
               this.pagination.pageIndex = 1;
               this.listCampaign(this.pagination);
               this.listNotifications();
+              this.exportObject['categoryId'] = this.categoryId;
+              this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+              this.updatedItemsCount.emit(this.exportObject);
           },
           error => { this.logger.errorPage(error) },
           () => console.log("Campaign Deleted Successfully")

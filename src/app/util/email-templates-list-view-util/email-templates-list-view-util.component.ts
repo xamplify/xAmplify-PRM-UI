@@ -1,4 +1,4 @@
-import { Component, OnInit,OnDestroy,Renderer,Input } from '@angular/core';
+import { Component, OnInit,OnDestroy,Renderer,Input,Output,EventEmitter } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 
 import { EmailTemplateService } from 'app/email-template/services/email-template.service';
@@ -79,7 +79,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   exportObject:any = {};
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
-
+  @Output() updatedItemsCount = new EventEmitter();
   constructor( private emailTemplateService: EmailTemplateService, private router: Router,
       private pagerService: PagerService, public refService: ReferenceService, public actionsDescription: ActionsDescription,
       public pagination: Pagination,public authenticationService:AuthenticationService,private logger:XtremandLogger, 
@@ -87,13 +87,6 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
       this.refService.renderer = this.renderer;
       this.loggedInUserId = this.authenticationService.getUserId();
       this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
-      if(refService.isCreated){
-         this.message = "Template created successfully";
-         this.showMessageOnTop(this.message);
-      }else if(refService.isUpdated){
-          this.message = "Template updated successfully";
-          this.showMessageOnTop(this.message);
-      }
       this.hasAllAccess = this.refService.hasAllAccess();
       this.hasEmailTemplateRole = this.refService.hasSelectedRole(this.refService.roles.emailTemplateRole);
       this.isOnlyPartner = this.authenticationService.isOnlyPartner();
@@ -292,7 +285,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
           let self = this;
           swal( {
               title: 'Are you sure?',
-              text: "You wonâ€™t be able to undo this action!",
+              text: "You won't be able to undo this action!",
               type: 'warning',
               showCancelButton: true,
               swalConfirmButtonColor: '#54a7e9',
@@ -328,6 +321,9 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
                   this.isCampaignEmailTemplate = false;
                   this.pagination.pageIndex = 1;
                   this.listEmailTemplates(this.pagination);
+                  this.exportObject['categoryId'] = this.categoryId;
+                  this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+                  this.updatedItemsCount.emit(this.exportObject);
               }else{
                   this.isEmailTemplateDeleted = false;
                   this.isCampaignEmailTemplate = true;

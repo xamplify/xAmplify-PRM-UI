@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Renderer,Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Renderer,Input,Output,EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -50,7 +50,7 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
   @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
-
+  @Output() updatedItemsCount = new EventEmitter();
   constructor(public referenceService: ReferenceService,
       public httpRequestLoader: HttpRequestLoader, public pagerService:
           PagerService, public authenticationService: AuthenticationService,
@@ -59,14 +59,6 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.loggedInUserId = this.authenticationService.getUserId();
       this.referenceService.renderer = this.renderer;
       this.pagination.userId = this.loggedInUserId;
-      if (this.referenceService.isCreated) {
-          this.message = "Page created successfully";
-          this.showMessageOnTop(this.message);
-      } else if (this.referenceService.isUpdated) {
-          this.message = "Page updated successfully";
-          this.showMessageOnTop(this.message);
-      }
-      this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
       this.modulesDisplayType.isListView = true;
 
 
@@ -160,7 +152,7 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
           let self = this;
           swal({
               title: 'Are you sure?',
-              text: "You wonâ€™t be able to undo this action!",
+              text: "You won't be able to undo this action!",
               type: 'warning',
               showCancelButton: true,
               swalConfirmButtonColor: '#54a7e9',
@@ -200,6 +192,9 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
                       this.customResponse = new CustomResponse('SUCCESS', message, true);
                       this.pagination.pageIndex = 1;
                       this.listLandingPages(this.pagination);
+                      this.exportObject['categoryId'] = this.categoryId;
+					  this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+                      this.updatedItemsCount.emit(this.exportObject);
                   } else {
                       let campaignNames = "";
                       $.each(response.data, function (index, value) {
