@@ -1224,6 +1224,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     deleteDealType(i, dealType) {
+        this.ngxloading = true;
         try {
             this.logger.info("Deal Type in sweetAlert() " + dealType.id);
             let self = this;
@@ -1239,9 +1240,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }).then(function (myData: any) {
                 console.log("dealType showAlert then()" + dealType);
                 self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-                    console.log(result)
-                    self.removeDealType(i, dealType.id);
-                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                    if(result.statusCode==200){
+                        self.removeDealType(i, dealType.id);
+                        self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                    }else if(result.statusCode==403){
+                        self.customResponseForm = new CustomResponse('ERROR', result.message, true);
+                    }else{
+                        self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
+                    }
+                    self.ngxloading = false;
+                    
                 }, (error) => {
                     self.ngxloading = false;
 
