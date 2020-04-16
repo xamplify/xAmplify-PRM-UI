@@ -181,7 +181,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     companyId: number = 0;
     selectedLegalBasisOptions = [];
     public fields: any;
-    public placeHolder: string = 'Select Legal Basis Options';
+    public placeHolder: string = 'Select Legal Basis';
     isValidLegalOptions = true;
     filePreview = false;
     @ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;

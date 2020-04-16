@@ -156,7 +156,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     selectedLegalBasisOptions = [];
     filePreview = false;
     public fields: any;
-    public placeHolder: string = 'Select Legal Basis Options';
+    public placeHolder: string = 'Select Legal Basis';
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,

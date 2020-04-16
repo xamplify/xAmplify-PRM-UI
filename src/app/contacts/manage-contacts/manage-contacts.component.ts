@@ -183,7 +183,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     termsAndConditionStatus = true;
     public fields: any;
 
-    public placeHolder: string = 'Select Legal Basis Options';
+    public placeHolder: string = 'Select Legal Basis';
     isValidLegalOptions = true;
     selectedLegalBasisOptions = [];
 

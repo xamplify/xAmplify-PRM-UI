@@ -27,7 +27,7 @@ export class SaveAsComponent implements OnInit {
   @Input() gdprInput :any;
   legalBasisOptions :Array<LegalBasisOption>;
   public fields: any;
-  public placeHolder: string = 'Select Legal Basis Options';
+  public placeHolder: string = 'Select Legal Basis';
   isValidLegalOptions = true;
   gdprStatus = true;
   selectedLegalBasisOptions = [];

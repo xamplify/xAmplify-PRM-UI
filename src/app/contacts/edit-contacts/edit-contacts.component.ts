@@ -202,7 +202,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	companyId: number = 0;
 	selectedLegalBasisOptions = [];
 	public fields: any;
-	public placeHolder: string = 'Select Legal Basis Options';
+	public placeHolder: string = 'Select Legal Basis';
 	isValidLegalOptions = true;
 	isValidClipBoardData = false;
 	sourceType = "";
@@ -1946,7 +1946,7 @@ goBackToManageList(){
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
 			message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
 		} else {
-			message = "The contacts(s) will be deleted and action can't be undo.";
+			message = "The contact(s) will be deleted and this action can't be undone.";
 		}
 
 		let self = this;
