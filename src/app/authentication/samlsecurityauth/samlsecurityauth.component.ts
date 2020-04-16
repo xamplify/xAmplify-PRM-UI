@@ -80,6 +80,7 @@ export class SamlsecurityauthComponent implements OnInit {
 		'source':res.source
       };
       localStorage.setItem('currentUser', JSON.stringify(userToken));
+	  localStorage.setItem('defaultDisplayType',res.modulesDisplayType);
    
       if (this.authenticationService.user.hasCompany) {
         this.router.navigateByUrl('/home/dashboard');

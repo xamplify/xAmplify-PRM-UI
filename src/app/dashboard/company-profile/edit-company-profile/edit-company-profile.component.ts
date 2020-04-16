@@ -418,6 +418,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
  					};
                     localStorage.clear();
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
+					localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
                     console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 
               },
