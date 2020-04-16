@@ -3,7 +3,7 @@
         <strong>Editing This Scheduled Campaign Is Not Allowed As Campaign Already Launched</strong>
     </div>
 
-    <ngx-loading [show]="isloading || refService.loadingPreview" [config]="{ backdropBorderRadius: '14px' }">
+    <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }">
     </ngx-loading>
     <div style="position: relative; top:-5px;">
         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -635,6 +635,181 @@
             </div>
         </div>
     </ng-container>
+    <!-- <ng-container *ngIf="addWorkflows">
+        <app-campaign-work-flows-util [campaignOutPut]="selectedCampaign" (messageEvent)="receiveNotificationFromWorkflows($event)">
+        </app-campaign-work-flows-util>
+    </ng-container> -->
+
+    <!-- Save As Modal -->
+<div class="modal right fade" id="saveAsModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-copy" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title f-w-600" id="saveAsModalLabel">Copy Campaign</h4>
+                <button type="button" class="close-circle" data-dismiss="modal" style=" position: relative;top: -24px;">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="campaignName">Campaign Name</label>
+                    <input class="form-control" type="text" id="campaignName" [(ngModel)]="saveAsCampaignName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="saveAsCampaign()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="campaignFilterModal" class="modal right fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-copy">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4 class="modal-title">Filter</h4>
+            </div>
+            <div class="modal-body" style="padding: 28px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <input class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green">Submit</button>
+                <button type="button" class="btn green" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade right" id="cancelEventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal" (click)="closeCancelEventodal()">
+                    <i class="fa fa-times"></i>
+                </a>
+                <h4 class="modal-title" id="myModalLabel">Canceling the event</h4>
+            </div>
+            <div class="modal-body">
+                <section>
+                    <div class="col-xs-12 col-sm-12">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="eventTitle" class="col-sm-3 labal-css color-css">Event Title </label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="eventTitle" [attr.disabled]="true" placeholder="Event Title" [(ngModel)]="eventCampaign.campaign" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
+                                    By <span class=text-danger>*</span>
+                                </label>
+                                <div class="col-sm-9">
+                                    <input type="text" [attr.disabled]="true" class="form-control pull-left" placeholder="Hosted By" [(ngModel)]="eventCampaign.fromName" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
+                                    Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
+                                </label>
+                                <div class="col-sm-9 p0">
+                                    <div class="col-sm-6">
+                                        <input [attr.disabled]="true" type="text" id="startDatePicker" class="form-control flatpickr" placeholder="Start" [(ngModel)]="eventCampaign.campaignEventTimes[0].startTimeString" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" id="enDatePicker" [attr.disabled]="true" [disabled]="true" class="form-control flatpickr" placeholder="End" [(ngModel)]="eventCampaign.campaignEventTimes[0].endTimeString" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <input type="checkbox" id="allDay" class="form-check-input mt10" [attr.disabled]="true" [checked]="eventCampaign.campaignEventTimes[0].allDay">
+                                        <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="hostedBy" class="col-sm-3 labal-css color-css">Online
+                                    Meeting</label>
+                                <div class="col-sm-9">
+                                    <switch [disabled]="true" [status]="eventCampaign.onlineMeeting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
+                                    </switch>
+                                </div>
+                            </div>
+                            <section *ngIf="!eventCampaign.onlineMeeting">
+                                <div class="form-group">
+                                    <label for="hostedBy" class="col-sm-3 labal-css color-css">Location
+                                        Name <span class="text-danger" style="position: absolute;">*</span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input type="text" [attr.disabled]="true" class="form-control" id="eventDateTime" placeholder="Corporate headquarters, local restaurant, etc." [(ngModel)]="eventCampaign.campaignLocation.location" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" [attr.disabled]="true" class="form-control" id="address1" placeholder="Street Address" maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.street" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                    <div class="col-sm-offset-3 col-sm-9 pt10">
+                                        <input type="text" [attr.disabled]="true" class="form-control" id="address2" placeholder="Address2" maxlength="25" [(ngModel)]="eventCampaign.campaignLocation.address2" [ngModelOptions]="{standalone: true}">
+                                    </div>
+
+                                    <div class="col-sm-offset-3 col-sm-9 pt10">
+                                        <div class="col-sm-6" style="padding-left: 0px">
+                                            <input type="text" [attr.disabled]="true" class="form-control" id="city" placeholder="City" [(ngModel)]="eventCampaign.campaignLocation.city" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                        <div class="col-sm-6" style="padding-right: 0px">
+                                            <input type="text" [attr.disabled]="true" class="form-control" id="state" placeholder="State" [(ngModel)]="eventCampaign.campaignLocation.state" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-offset-3 col-sm-9 pt10">
+                                        <div class="col-sm-6" style="padding-left: 0px">
+                                            <input type="text" class="form-control" [attr.disabled]="true" [(ngModel)]="eventCampaign.campaignLocation.country" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                        <div class="col-sm-6" style="padding-right: 0px">
+                                            <input type="text" [attr.disabled]="true" class="form-control" id="zip" placeholder="Zip" maxlength="10" [(ngModel)]="eventCampaign.campaignLocation.zip" [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </form>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 labal-css color-css">Email subject<font style="color: red"> <b>*</b>
+                            </font>
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="subjectLine" placeholder="Cancel Event Subject Line" class="form-control" (input)="validateCancelEventButton()" [(ngModel)]="cancelEventSubjectLine" name="subjectLine" maxlength="200" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 labal-css color-css" style="padding-top: 25px;">Cancel Message<font
+                                style="color: red"> <b>*</b>
+                            </font>
+                        </label>
+                        <div class="col-sm-9" style="padding-top: 10px;">
+                            <textarea [(ngModel)]="cancelEventMessage" [ngModelOptions]="{standalone: true}" (input)="validateCancelEventButton()" placeholder="Add a comment..."></textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="pull-right" style="margin: 0px 29px 0px 0px;">
+                <div class="right-css">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" (click)="closeCancelEventodal()">Close</button>
+                    <button type="button" class="btn btn-primary" [disabled]="!cancelEventButton" (click)="cancelEvent()">Cancel
+                        Event</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     
 <!-- ----------------------Copy Link Modal------------------- -->
 <div class="modal right " id="public-event-url-modal" data-backdrop="static">
