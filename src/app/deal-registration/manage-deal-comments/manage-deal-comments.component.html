@@ -382,7 +382,7 @@
     <div>
         <!-- <img src="https://aravindu.com/vod/images/14663/05112018/profilePicture/65DD83D1-A768-411E-8A37-3D79B1F858BC.jpeg" width="35" alt="Profile of Bradley Jones" title="Bradley Jones" /> -->
         <button  (click)="postComment(comment)" *ngIf="comment.comment" class="btn btn-primary"
-        [disabled]="!comment.comment " [style.pointer-events]="comment.comment ? 'auto' : 'none' ">Submit</button>
+        [disabled]="!comment.comment || isError " [style.pointer-events]="comment.comment.length>0 ? 'auto' : 'none' ">Submit</button>
     </div>
 
 

@@ -142,7 +142,7 @@ export class ManageCommentsComponent implements OnInit
   }
   validateComment(comment: string)
   {
-    if (comment.length == 0)
+    if ($.trim(comment).length == 0)
       this.isError = true;
     else
       this.isError = false;

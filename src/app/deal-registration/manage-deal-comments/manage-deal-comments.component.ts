@@ -5,6 +5,7 @@ import { DealRegistrationService } from '../services/deal-registration.service';
 import { User } from '../../core/models/user';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { ReferenceService } from '../../core/services/reference.service';
+declare var $:any;
 @Component({
   selector: 'app-manage-deal-comments',
   templateUrl: './manage-deal-comments.component.html',
@@ -78,7 +79,7 @@ export class ManageDealCommentsComponent implements OnInit
   }
   validateComment(comment: string)
   {
-    if (comment.length == 0)
+    if ($.trim(comment).length == 0)
       this.isError = true;
     else
       this.isError = false;
