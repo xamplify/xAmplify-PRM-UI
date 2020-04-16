@@ -12,16 +12,17 @@ import { RssLoaderComponent } from '../social/rss/rss-loader/rss-loader.componen
 import { SearchComponent } from '../social/rss/search/search.component';
 
 import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
-import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
+/*import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
+*/
 import { ConnectAccountsComponent } from '../social/common/connect-accounts/connect-accounts.component';
 import { SocialLoaderComponent } from '../social/common/social-loader/social-loader.component';
 
 @NgModule({
         imports: [SharedModule],
         declarations: [RssComponent, FeedUpdateComponent, DiscoverComponent, LeftNavComponent, CollectionComponent, SourceComponent, FeedComponent, RssLoaderComponent, SearchComponent
-        ,UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
+        ,UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         exports: [RssComponent, FeedUpdateComponent, DiscoverComponent, LeftNavComponent, CollectionComponent, SourceComponent, FeedComponent, RssLoaderComponent, SearchComponent
-          ,UpdateStatusComponent, SocialStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
+          ,UpdateStatusComponent, ConnectAccountsComponent, SocialLoaderComponent],
         providers: [],
 })
 

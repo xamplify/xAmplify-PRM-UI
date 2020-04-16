@@ -19,8 +19,6 @@ declare var $: any;
     providers: [Pagination, HttpRequestLoader, SortOption]
 })
 export class CategoryFolderViewUtilComponent implements OnInit {
-
-
     @Input() moduleType: any;
     @Output() valueUpdate = new EventEmitter();
     inputObject:any;
@@ -28,12 +26,16 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     customResponse: CustomResponse = new CustomResponse();
     categorySortOption: SortOption = new SortOption();
     isFromCampaignModule = false;
-
+	isFromRedistributedCampaignSection = false;
+    folderViewType = "List";
+	folderListViewInput = {};
+	selectedModuleType = "";
     constructor(private router: Router,
         private pagerService: PagerService, public referenceService: ReferenceService,
         public pagination: Pagination, public authenticationService: AuthenticationService, private logger: XtremandLogger,
         public userService: UserService, public utilService: UtilService,private route: ActivatedRoute) {
         this.isFromCampaignModule = this.router.url.indexOf("campaigns")>-1; 
+ 		this.isFromRedistributedCampaignSection = this.router.url.indexOf("campaigns/partner")>-1; 
 
     }
 
@@ -45,52 +47,60 @@ export class CategoryFolderViewUtilComponent implements OnInit {
     ngOnInit() {
         this.customResponse = new CustomResponse();
         this.inputObject = {};
+        this.folderListViewInput = {};
+        this.folderViewType = this.moduleType['folderType'];
+        this.selectedModuleType = this.moduleType['type'];
         this.listCategories(this.pagination);
     }
 
     listCategories(pagination: Pagination) {
-        if (this.referenceService.companyId > 0) {
-            pagination.companyId = this.referenceService.companyId;
-            let type = this.moduleType['type'];
-            if (type == 1) {
-                pagination.categoryType = 'e';
-            }else if(type==2){
-                pagination.categoryType = 'f';
-            }else if(type==3){
-                pagination.categoryType = 'l';
-            }else if(type==4 || type==5){
-                pagination.categoryType = 'c';
-            }
-            let teamMemberId = this.moduleType['teamMemberId'];
-            if(teamMemberId!=undefined){
-                pagination.teamMemberId = teamMemberId;
-            }
-            let partnerCompanyId = this.moduleType['partnerCompanyId'];
-            if(partnerCompanyId!=undefined){
-                pagination.partnerCompanyId = partnerCompanyId;
-            }
-            this.referenceService.startLoader(this.httpRequestLoader);
-            this.userService.getCategories(this.pagination)
-                .subscribe(
-                    response => {
-                        this.customResponse = new CustomResponse();
-                        const data = response.data;
-                        pagination.totalRecords = data.totalRecords;
-                        this.categorySortOption.totalRecords = data.totalRecords;
-                        $.each(data.categories, function (_index: number, category: any) {
-                            category.displayTime = new Date(category.createdTimeInString);
-                        });
-                        pagination = this.pagerService.getPagedItems(pagination, data.categories);
-                        this.referenceService.stopLoader(this.httpRequestLoader);
-                    },
-                    (error: any) => {
-                        this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
-                    },
-                    () => this.logger.info('Finished listEmailTemplateCategories()')
-                );
-        } else {
-            this.referenceService.showSweetAlertErrorMessage("Unable to get companyId");
+        pagination.companyId = this.referenceService.companyId;
+        pagination.userId = this.authenticationService.getUserId();
+        let type = this.moduleType['type'];
+		this.selectedModuleType = type;
+        if (type == 1) {
+            pagination.categoryType = 'e';
+        }else if(type==2){
+            pagination.categoryType = 'f';
+        }else if(type==3){
+            pagination.categoryType = 'l';
+			pagination.partnerView = false;
+			if(this.router.url.indexOf("/partner")>-1){
+				pagination.partnerView = true;
+			}
+        }else if(type==4 || type==5){
+            pagination.categoryType = 'c';
+			if(this.router.url.indexOf("/partner")>-1){
+				pagination.partnerView = true;
+			}
         }
+        let teamMemberId = this.moduleType['teamMemberId'];
+        if(teamMemberId!=undefined){
+            pagination.teamMemberId = teamMemberId;
+        }
+        let partnerCompanyId = this.moduleType['partnerCompanyId'];
+        if(partnerCompanyId!=undefined){
+            pagination.partnerCompanyId = partnerCompanyId;
+        }
+        this.referenceService.startLoader(this.httpRequestLoader);
+        this.userService.getCategories(this.pagination)
+            .subscribe(
+                response => {
+                    this.customResponse = new CustomResponse();
+                    const data = response.data;
+                    pagination.totalRecords = data.totalRecords;
+                    this.categorySortOption.totalRecords = data.totalRecords;
+                    $.each(data.categories, function (_index: number, category: any) {
+                        category.displayTime = new Date(category.createdTimeInString);
+                    });
+                    pagination = this.pagerService.getPagedItems(pagination, data.categories);
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                },
+                (error: any) => {
+                    this.customResponse = this.referenceService.showServerErrorResponse(this.httpRequestLoader);
+                },
+                () => this.logger.info('Finished listCategories()')
+            );
     }
 
 
@@ -163,5 +173,30 @@ export class CategoryFolderViewUtilComponent implements OnInit {
         }
      
     }
+
+    viewFolderItems(category:any,selectedIndex:number){
+        $.each(this.pagination.pagedItems, function (index:number, row:any) {
+            if (selectedIndex != index) {
+              row.expanded = false;
+            }
+          });
+          category.expanded = !category.expanded;  
+          $('.child-row-list-view').css("background-color", "#fff");          
+        if (category.expanded) {
+            this.folderListViewInput['categoryId'] = category.id;
+            $('#folder-row-' + selectedIndex).css("background-color", "#d3d3d357");
+        } else {
+            $('#folder-row-' + selectedIndex).css("background-color", "#fff");
+        }
+    }
+
+getUpdatedItemsCount(event:any){
+    let categoryId = event['categoryId'];
+    let itemsCount = event['itemsCount'];
+    if(itemsCount>0){
+        itemsCount = itemsCount-1;
+    }
+    $('#count-'+this.selectedModuleType+"-"+categoryId).text(itemsCount);
+}
 
 }

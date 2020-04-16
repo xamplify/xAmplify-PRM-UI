@@ -34,6 +34,7 @@ import { CategoryPreviewItem } from '../../models/category-preview-item';
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
+import {ModulesDispalyType} from "app/dashboard/models/modules-dispaly-type.enum";
 
 declare var swal, $, videojs: any;
 
@@ -147,6 +148,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
     hasItems = false;
     categoryPreviewItem  = new CategoryPreviewItem();
+	ModuleDisplayTypeEnum = ModulesDispalyType;
+    modulesDisplayTypeString = ModulesDispalyType[ModulesDispalyType.LIST];
+    modulesDisplayTypeError = false;
+    modulesDisplayTypeList = [];
+    modulesDisplayViewcustomResponse: CustomResponse = new CustomResponse();
+    updateDisplayViewError = false;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -322,6 +329,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.isGridView(this.authenticationService.getUserId());
             }
             else { this.referenceService.isGridView = true; }
+			this.getModulesDisplayDefaultView();
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
@@ -1216,6 +1224,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     deleteDealType(i, dealType) {
+        this.ngxloading = true;
         try {
             this.logger.info("Deal Type in sweetAlert() " + dealType.id);
             let self = this;
@@ -1231,9 +1240,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }).then(function (myData: any) {
                 console.log("dealType showAlert then()" + dealType);
                 self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-                    console.log(result)
-                    self.removeDealType(i, dealType.id);
-                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                    if(result.statusCode==200){
+                        self.removeDealType(i, dealType.id);
+                        self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                    }else if(result.statusCode==403){
+                        self.customResponseForm = new CustomResponse('ERROR', result.message, true);
+                    }else{
+                        self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
+                    }
+                    self.ngxloading = false;
+                    
                 }, (error) => {
                     self.ngxloading = false;
 
@@ -1822,6 +1838,55 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         }
         
+    }
+
+/*************Default Display View */
+
+    getModulesDisplayDefaultView(){
+        this.modulesDisplayTypeError = false;
+        this.modulesDisplayViewcustomResponse = new CustomResponse();
+        this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
+            .subscribe(
+                data => {
+                    if(data.statusCode==200){
+                        this.modulesDisplayTypeString = data.data;
+                    }else{
+                        this.modulesDisplayTypeError = true;
+                        this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                    }
+                },
+                error => {
+                    this.modulesDisplayTypeError = true;
+                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                    },
+                () => { }
+            );
+    }
+
+    setDefaultView(){
+        this.ngxloading = true;
+        this.modulesDisplayViewcustomResponse = new CustomResponse();
+        this.updateDisplayViewError = false;
+        let selectedValue = $("input[name=moduleDisplayType]:checked").val();
+        this.userService.updateDefaultDisplayView(this.authenticationService.getUserId(),selectedValue)
+        .subscribe(
+            data => {
+                this.ngxloading = false;
+                if(data.statusCode==200){
+                    this.modulesDisplayViewcustomResponse = new CustomResponse('SUCCESS',data.message,true);
+ 					localStorage.setItem('defaultDisplayType',selectedValue);
+                }else{
+                    this.updateDisplayViewError = true;
+                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                }
+            },
+            error => {
+                this.updateDisplayViewError = true;
+                this.ngxloading = false;
+                this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                },
+            () => { }
+        );
     }
 
 }

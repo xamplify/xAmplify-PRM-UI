@@ -186,13 +186,17 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     filePreview = false;
     @ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
    cloudPartnersModalCheckBox = false;
+   sourceType = "";
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService,
         public callActionSwitch: CallActionSwitch) {
-
+        this.sourceType = this.authenticationService.getSource();
+        if(this.sourceType=="ALLBOUND"){
+            this.router.navigate( ['/access-denied'] );
+        }
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();

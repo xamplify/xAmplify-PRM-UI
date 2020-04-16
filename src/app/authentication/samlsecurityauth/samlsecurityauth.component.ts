@@ -66,7 +66,6 @@ export class SamlsecurityauthComponent implements OnInit {
     this.authenticationService.refresh_token = result.refresh_token;
     this.authenticationService.expires_in = result.expires_in;
     this.authenticationService.getUserByUserName(this.userName).subscribe((res: any) => {
-      console.log();
       this.authenticationService.user.hasCompany = res.hasCompany;
       const userToken = {
         'userName': this.userName,
@@ -77,9 +76,11 @@ export class SamlsecurityauthComponent implements OnInit {
         'hasCompany': res.hasCompany,
         'roles': res.roles,
         'campaignAccessDto': res.campaignAccessDto,
-        'logedInCustomerCompanyNeme': res.companyName
+        'logedInCustomerCompanyNeme': res.companyName,
+		'source':res.source
       };
       localStorage.setItem('currentUser', JSON.stringify(userToken));
+	  localStorage.setItem('defaultDisplayType',res.modulesDisplayType);
    
       if (this.authenticationService.user.hasCompany) {
         this.router.navigateByUrl('/home/dashboard');

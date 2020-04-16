@@ -30,36 +30,44 @@
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12">
             <div class="portlet light clearfix" style="min-height: 644px;">
-                <ng-container *ngIf="isFolderView">
+                <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
-                        <div class="page-toolbar col-xs-12" *ngIf="!isFolderView">
+                        <div class="page-toolbar col-xs-12" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
-                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="setViewType('List')"><i
-                      class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
-                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i
-                      class="fa fa-th-large p10" aria-hidden="true"></i></span>
-                                    <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined') && showFolderView" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')"><i
-                      class="fa fa-folder-open-o p10" aria-hidden="true"></i></span>
-                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder')">
+                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                                        <i class="fa fa-th-list p10" aria-hidden="true"></i></span> &nbsp;
+                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                                    </span>
+                                <ng-container *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined') && showFolderView">
+                                         <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
+                                                <i  class="fa fa-folder p10" aria-hidden="true"></i>
+                                        </span>
+                                        <span class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
+                                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
+                                    </span>
+                                    </ng-container>                
+
+                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                 </ng-container>
                                 <div class="inputs" align="right" style="float: right">
                                     <div style="float: left;">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                      <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
-                        {{option.name}}</option>
-                    </select>
+                                        <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
+                                            {{option.name}}</option>
+                                        </select>
                                     </div>
                                     <div class="portlet-input input-inline input-small" style="margin-right: 10px;">
                                         <div class="input-icon right" style="position: relative;right: -11px;">
                                             <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
                                             <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchForms();"></button>
-                                            <button type="submit" class="search-box-item-click" (click)="searchForms()"><i
-                          class="fa fa-search"></i></button>
+                                            <button type="submit" class="search-box-item-click" (click)="searchForms()">
+                                                <i   class="fa fa-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -67,10 +75,10 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && isGridView"></app-landing-page-loader>
-                <app-list-loader *ngIf=" httpRequestLoader.isLoading && isListView "></app-list-loader>
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && isFolderView"></app-grid-loader>
-                <section *ngIf="isListView">
+                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView"></app-landing-page-loader>
+                <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
+                <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
+                <section *ngIf="modulesDisplayType.isListView">
                     <ng-container *ngIf="!httpRequestLoader.isLoading">
                         <div class="table-responsive">
                             <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0">
@@ -166,7 +174,7 @@
                     </ng-container>
                 </section>
 
-                <div class="row" *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
+                <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let form of pagination.pagedItems ;let i =index" id="formListDiv_{{form.id}}">
                         <div class="grid-box">
                             <img class="img-class" src="assets/images/form.png" alt="{{form.name}}">
@@ -233,7 +241,7 @@
                         </div>
                     </div>
                 </div>
-                <ng-container *ngIf="isListView || isGridView">
+                <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listForms($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
                     </div>

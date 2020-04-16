@@ -20,6 +20,7 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { User } from '../../core/models/user';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $, swal: any;
 
@@ -124,7 +125,6 @@ export class ReferenceService {
 	pressed: boolean;
 	startX: any;
 	startWidth: any;
-
 
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
@@ -1965,5 +1965,40 @@ export class ReferenceService {
 				this.pressed = false;
 			}
 		});
+	}
+
+	setDefaultDisplayType(modulesDisplayType:ModulesDisplayType){
+		let defaultDisplayType = localStorage.getItem('defaultDisplayType');
+		if("LIST"==defaultDisplayType){
+            modulesDisplayType.isListView = true;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else if("GRID"==defaultDisplayType){
+            modulesDisplayType.isListView = false;
+            modulesDisplayType.isGridView = true;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else if("FOLDER_LIST"==defaultDisplayType){
+			modulesDisplayType.isListView = false;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = true;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else if("FOLDER_GRID"==defaultDisplayType){
+            modulesDisplayType.isListView = false;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = true;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else{
+            modulesDisplayType.isListView = true;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+		}
+		return modulesDisplayType;
 	}
 }

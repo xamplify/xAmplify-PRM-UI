@@ -11,12 +11,11 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { Form } from '../models/form';
 import { UtilService } from '../../core/services/util.service';
-import { Inject } from "@angular/core";
-import { DOCUMENT } from "@angular/platform-browser";
-import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { FormService } from '../services/form.service';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+
 declare var swal, $: any;
 
 @Component({
@@ -34,7 +33,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     loggedInUserId = 0;
     customResponse: CustomResponse = new CustomResponse();
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
-    isListView = false;
+    
     private dom: Document;
     message = "";
     campaignId = 0;
@@ -44,13 +43,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     partnerId = 0;
     statusCode = 200;
     deleteAndEditAccess = false;
-    isFolderView: boolean = false;
-    isGridView: boolean = false;
+   
     categoryId: number = 0;
     showFolderView = true;
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     exportObject:any = {};
-
+    modulesDisplayType = new ModulesDisplayType();
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
@@ -74,12 +72,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             this.showMessageOnTop(this.message);
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
+        this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     }
 
     ngOnInit() {
-
         if (this.router.url.endsWith('manage/')) {
-            this.setViewType('Folder');
+            this.setViewType('Folder-Grid');
         } else {
             this.campaignId = this.route.snapshot.params['alias'];
             this.landingPageId = this.route.snapshot.params['landingPageId'];
@@ -113,10 +111,23 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             } else {
                 this.onlyForms = true;
             }
-            this.isListView = !this.referenceService.isGridView;
-            this.isGridView = this.referenceService.isGridView;
-            this.isFolderView = false;
-            this.listForms(this.pagination);
+            let showManageFormsList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined || !this.onlyForms;
+            if(showManageFormsList){
+                this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                    this.modulesDisplayType.isListView = true;
+                    this.modulesDisplayType.isGridView = false;
+                }
+                this.modulesDisplayType.isFolderListView = false;
+                this.modulesDisplayType.isFolderGridView = false;
+                this.listForms(this.pagination);
+            }else if(this.modulesDisplayType.isFolderGridView){
+                this.setViewType('Folder-Grid');
+            }else if(this.modulesDisplayType.isFolderListView){
+                this.setViewType('Folder-List');
+            }
+            
         }
 
 
@@ -186,7 +197,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
             let self = this;
             swal({
                 title: 'Are you sure?',
-                text: "You won’t be able to undo this action!",
+                text: "You won't be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -331,32 +342,70 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     setViewType(viewType: string) {
         if ("List" == viewType) {
-            this.isListView = true;
-            this.isGridView = false;
-            this.isFolderView = false;
-            this.navigateToManageSection();
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);
         } else if ("Grid" == viewType) {
-            this.isListView = false;
-            this.isGridView = true;
-            this.isFolderView = false;
-            this.navigateToManageSection();
-        } else if ("Folder" == viewType) {
-            this.isListView = false;
-            this.isGridView = false;
-            this.isFolderView = true;
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);
+        } else if ("Folder-Grid" == viewType) {
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isFolderGridView = true;
             this.exportObject['type'] = 2;
+            this.exportObject['folderType'] = viewType;
             if (this.categoryId > 0) {
                 this.router.navigateByUrl('/home/forms/manage/');
             }
+        }else if("Folder-List" == viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 2;
 
         }
     }
 
-    navigateToManageSection() {
-        if (this.router.url.endsWith('manage/')) {
+    navigateToManageSection(viewType:string) {
+       if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listForms(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listForms(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listForms(this.pagination);
+        }
+        else if(this.router.url.endsWith('manage/')){
             this.router.navigateByUrl('/home/forms/manage');
         }
     }
+
+    
 
 
     getUpdatedValue(event: any) {

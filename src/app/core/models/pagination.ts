@@ -60,4 +60,5 @@ export class Pagination {
 	categoryFilter = false;
 	partnerCompanyId:number = 0;
 	previewAccess = false;
+	partnerView = false;
 }

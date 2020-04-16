@@ -17,7 +17,7 @@
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div class="col-md-12">
             <div class="portlet light clearfix" style="box-shadow: none;">
-                <ng-container *ngIf="isFolderView">
+                <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
 
@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div *ngIf="!isOnlyPartner">
-                                <ul class="mix-filter" *ngIf="!isFolderView">
+                                <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView &&!modulesDisplayType.isFolderListView">
                                     <li class="filter" (click)="filterTemplates('NONE',false,0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
                                     <li class="filter" (click)="filterTemplates('BASIC',false,2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex">Basic</li>
                                     <li class="filter" (click)="filterTemplates('BASIC',true,4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign">Video</li>
@@ -44,17 +44,28 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!isFolderView">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
-                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="setViewType('List')"><i class="fa fa-th-list p10"
-                                            aria-hidden="true"></i></span> &nbsp;
-                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i class="fa fa-th-large p10"
-                                            aria-hidden="true"></i></span>
-                                    <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')"><i class="fa fa-folder-open-o p10"
-                                            aria-hidden="true"></i></span>
-                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder')">
-                                    <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
+                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                                        <i class="fa fa-th-list p10"   aria-hidden="true"></i></span> &nbsp;
+                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                                        <i class="fa fa-th-large p10" aria-hidden="true"></i>
+                                    </span>
+                                   <ng-container *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')">
+                                    <span  class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                        title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
+                                        <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                    </span>
+                                    <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
+                                        title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
+                                        <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
+                                    </span>
+                                </ng-container>
+                                    <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                        title="Go back" (click)="setViewType('Folder-Grid')"> 
+                                        <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
+                                    </span>
                                 </ng-container>
                                 <div class="inputs" align="right" style="float: right">
                                     <ng-container>
@@ -78,12 +89,12 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && isGridView">
+                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView">
                 </app-landing-page-loader>
-                <app-list-loader *ngIf=" httpRequestLoader.isLoading && isListView "></app-list-loader>
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && isFolderView"></app-grid-loader>
+                <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
+                <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
                 <app-error-pages *ngIf="httpRequestLoader.isServerError "></app-error-pages>
-                <section *ngIf="isListView ">
+                <section *ngIf="modulesDisplayType.isListView ">
                     <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                         <div class="table-responsive">
                             <table class='table tgrid table-hover table-sm' id="manage-email-template-list" *ngIf="pagination.pagedItems?.length>0">
@@ -107,8 +118,8 @@
                                 <tbody>
                                     <tr *ngFor="let emailTemplate of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
-                                            <img *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" style="border: 1px solid #e0e0e0;">
+                                            <img class="email-template-preview" *ngIf="emailTemplate.subject" src="{{emailTemplate.subject}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                            <img class="email-template-preview" *ngIf="!emailTemplate.subject" src="assets/images/bee-template/rich-simple.jpg" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
@@ -169,7 +180,7 @@
                     </ng-container>
                 </section>
 
-                <div class="row" *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
+                <div class="row" *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box">
                             <span class="ribbon1">
@@ -177,8 +188,8 @@
                                     Co-Branding</span>
                             <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
                             </span>
-                            <img *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
-                            <img *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
+                            <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
+                            <img class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
                             <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
@@ -246,7 +257,7 @@
                         </div>
                     </div>
                 </div>
-                <ng-container *ngIf="isListView || isGridView">
+                <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                     <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listEmailTemplates($event)" [hidden]="httpRequestLoader.isLoading">
                         </app-pagination>

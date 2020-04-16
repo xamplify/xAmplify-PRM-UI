@@ -413,10 +413,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         'hasCompany': data.hasCompany,
                         'roles': data.roles,
                         'campaignAccessDto':data.campaignAccessDto,
-                        'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName']
-                    };
+                        'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName'],
+						'source':data.source	                   
+ 					};
                     localStorage.clear();
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
+					localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
                     console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 
               },
@@ -479,8 +481,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'hasCompany': self.authenticationService.user.hasCompany,
                                 'roles': JSON.parse(currentUser)['roles'],
                                 'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto'],
-                                'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName']
-                            };
+                                'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName'],
+								'source':JSON.parse(currentUser)['source']                         
+  							};
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
                             self.homeComponent.getTeamMembersDetails();
@@ -1376,7 +1379,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        let self = this;
        swal({
            title:message,
-           type: "success"
+           type: "success",
+           allowOutsideClick: false
        }).then(function() {
            self.router.navigate(["home/dashboard/admin-report"]);
        });

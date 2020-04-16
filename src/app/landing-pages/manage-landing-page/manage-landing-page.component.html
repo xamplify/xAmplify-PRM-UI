@@ -22,77 +22,15 @@
     <div class="row" *ngIf="statusCode==200">
         <div class="col-md-12">
             <div class="portlet light clearfix">
-                <ng-container *ngIf="isFolderView">
+                <ng-container *ngIf="modulesDisplayType.isFolderGridView || modulesDisplayType.isFolderListView">
                     <app-category-folder-view-util [moduleType]="exportObject" (valueUpdate)="getUpdatedValue($event)"></app-category-folder-view-util>
                 </ng-container>
-                <!-- <div class="portlet-title" style="border-bottom: none;">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-lg-12">
-                            <div class="col-xs-12 col-sm-7 col-lg-7 p0">
-                                <ul class="mix-filter">
-                                    <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
-                                    <ng-container *ngIf="!isPartnerLandingPage">
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
-                                        </li>
-                                    </ng-container>
-                                    <ng-container *ngIf="isPartnerLandingPage">
-                                        <li class="filter" (click)="showAllLandingPages('PUBLIC',5)" [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public
-                                        </li>
-                                        <li class="filter" (click)="showAllLandingPages('PRIVATE',6)" [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private
-                                        </li>
-                                    </ng-container>
-                                </ul>
-                            </div>
-                            <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                                <div class="page-toolbar">
-                                    <div class="btn-group pull-right">
-                                        <div class="inputs" id="right" style="display: inline-flex;">
-                                            <div id="left" *ngIf="!isPartnerLandingPage">
-                                                <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                    <option *ngFor="let option of sortOption.manageFormsSortOptions"
-                                                        [ngValue]="option">
-                                                        {{option.name}}</option>
-                                                </select>
-                                            </div>
-
-                                            <div *ngIf="isPartnerLandingPage">
-                                                <select class="form-control" [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
-                                                    <option
-                                                        *ngFor="let option of sortOption.partnerLandingPageSortOptions"
-                                                        [ngValue]="option">
-                                                        {{option.name}}</option>
-                                                </select>
-                                            </div>
-
-
-                                            <div class="portlet-input input-inline" id="search-div">
-                                                <div class="input-icon right" id="icon">
-                                                    <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="search..." (keypress)="eventHandler($event.keyCode)">
-                                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchLandingPages();"></button>
-                                                    <button type="submit" class="search-box-item-click" (click)="searchLandingPages()">
-                                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
 
                 <div class="portlet-title" style="border-bottom: none">
                     <div class="row">
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div>
-                                <ul class="mix-filter" *ngIf="!isFolderView">
+                                <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                                     <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
                                         <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
@@ -114,20 +52,31 @@
                             </div>
                         </div>
 
-                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!isFolderView">
+                        <div class="page-toolbar col-xs-12 col-sm-12 col-md-6" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
                             <div class="btn-group pull-right">
                                 <ng-container class='m10'>
-                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="setViewType('List')"><i class="fa fa-th-list p10"
-                                            aria-hidden="true"></i></span> &nbsp;
-                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="isGridView" (click)="setViewType('Grid')"><i class="fa fa-th-large p10"
-                                            aria-hidden="true"></i></span>
-                                        <span *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Folder View" [class.disabled]="isFolderView" (click)="setViewType('Folder')">
-                                            <i class="fa fa-folder-open-o p10" aria-hidden="true"></i></span>
-                                            <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder')">
+                                    <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="modulesDisplayType.isListView" (click)="setViewType('List')">
+                                        <i class="fa fa-th-list p10"  aria-hidden="true"></i>
+                                    </span> &nbsp;
+                                    <span class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="modulesDisplayType.isGridView" (click)="setViewType('Grid')">
+                                        <i class="fa fa-th-large p10"  aria-hidden="true"></i></span>
+
+                                     <ng-container *ngIf="(pagination.categoryId==0 || pagination.categorId=='undefined')">
+                                        <span  class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" 
+                                            title="Folder Grid View" [class.disabled]="modulesDisplayType.isFolderGridView" (click)="setViewType('Folder-Grid')">
+                                                <i class="fa fa-folder p10" aria-hidden="true"></i>
+                                        </span>
+                                        <span  class="btn btn-xs hidden-xs l-g-view margin-space folder-list-span-custom-width" data-toggle="tooltip" data-placement="bottom" 
+                                            title="Folder List View" [class.disabled]="modulesDisplayType.isFolderListView" (click)="setViewType('Folder-List')">
+                                            <img src="assets/images/folder-list.png" class="folder-list-image-custom-css"/>
+                                        </span>
+                                 </ng-container>
+
+                                        <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                             <i class="fa fa-arrow-up p10" aria-hidden="true"></i>
-                                            </span>
+                                        </span>
                                 </ng-container>
-                                <div class="inputs" id="right" style="display: inline-flex;">
+                                <div class="inputs" id="right" style="display: inline-flex;max-width: 369px;">
                                     <div *ngIf="!isPartnerLandingPage">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option *ngFor="let option of sortOption.manageFormsSortOptions"
@@ -159,11 +108,11 @@
                         </div>
                     </div>
                 </div>
-                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && isGridView">
+                <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isGridView">
                 </app-landing-page-loader>
-                <app-list-loader *ngIf=" httpRequestLoader.isLoading && isListView "></app-list-loader>
-                <app-grid-loader *ngIf="httpRequestLoader.isLoading && isFolderView"></app-grid-loader>
-                <section *ngIf="isListView ">
+                <app-list-loader *ngIf=" httpRequestLoader.isLoading && modulesDisplayType.isListView "></app-list-loader>
+                <app-grid-loader *ngIf="httpRequestLoader.isLoading && modulesDisplayType.isFolderGridView"></app-grid-loader>
+                <section *ngIf="modulesDisplayType.isListView ">
                     <ng-container *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                         <div class="table-responsive">
                             <table class='table tgrid table-hover table-sm' id="manage-page-list" *ngIf="pagination.pagedItems?.length>0">
@@ -187,7 +136,7 @@
                                 <tbody>
                                     <tr *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                                         <td class="hidden-xs custom-icon-width">
-                                            <img src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
+                                            <img id="landing-page-image-preview-custom-css" src="{{landingPage.thumbnailPath}}" alt="Image Not Found" style="border: 1px solid #e0e0e0;">
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">
@@ -261,7 +210,7 @@
                 </section>
                 <!---Grid View----->
                 <div class="row">
-                    <ng-container *ngIf="isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
+                    <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
@@ -330,7 +279,7 @@
                         </div>
                     </ng-container>
                 </div>
-                <ng-container *ngIf="isListView || isGridView">
+                <ng-container *ngIf="modulesDisplayType.isListView || modulesDisplayType.isGridView">
                     <div *ngIf="pagination.pagedItems.length !== 0">
                         <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listLandingPages($event)" [hidden]="httpRequestLoader.isLoading">
                         </app-pagination>
