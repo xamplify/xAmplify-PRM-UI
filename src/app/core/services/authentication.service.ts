@@ -107,7 +107,9 @@ export class AuthenticationService {
     return this.http.post(url, body, options).map((res: Response) => {
       this.map = res.json();
       return this.map;
-    })
+    }).flatMap((map) => this.getVanityURLUserRoles(userName,this.map.access_token).map((response: any) => {
+      this.vanityURLUserRoles = response.data;
+    }))
       .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
         + '&access_token=' + this.map.access_token, '')
         .map((res: Response) => {
@@ -123,6 +125,10 @@ export class AuthenticationService {
             'logedInCustomerCompanyNeme': res.json().companyName
           };
           
+          if(this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles){
+            userToken['roles'] = this.vanityURLUserRoles;
+          }
+
           localStorage.setItem('currentUser', JSON.stringify(userToken));
           this.access_token = this.map.access_token;
           this.refresh_token = this.map.refresh_token;
@@ -132,7 +138,7 @@ export class AuthenticationService {
           this.logedInCustomerCompanyNeme = res.json().companyName;
         }));
   }
-  getUserByUserName(userName: string) {   
+  getUserByUserName(userName: string) {
     return this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName + '&access_token=' + this.access_token, '')
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
@@ -491,10 +497,10 @@ export class AuthenticationService {
   }
 
 
-  getVanityURLUserRoles(userName:string){    
+  getVanityURLUserRoles(userName:string, at:string){    
     if(this.vanityURLEnabled && this.companyProfileName){
       this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-      return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + this.access_token, this.dashboardAnalyticsDto)
+      return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + at, this.dashboardAnalyticsDto)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
     }

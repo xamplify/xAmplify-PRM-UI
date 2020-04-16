@@ -92,19 +92,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               // if (this.authenticationService.redirectUrl) {
               //     this.router.navigate([this.authenticationService.redirectUrl]);
               //     this.authenticationService.redirectUrl = null;
-              // }
-
-              if(this.authenticationService.vanityURLEnabled){
-                this.authenticationService.getVanityURLUserRoles(userName).subscribe(result =>{
-                  let currentUser = localStorage.getItem('currentUser');
-                  if(currentUser){
-                    const parsedObject = JSON.parse(currentUser);
-                    parsedObject.roles = result.data;
-                    this.authenticationService.vanityURLUserRoles = result.data;
-                    localStorage.setItem("currentUser", JSON.stringify(parsedObject));
-                  }
-                });
-              }              
+              // }          
 
             } else {
               this.loading = false;
