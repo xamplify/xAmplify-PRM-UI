@@ -57,6 +57,8 @@ export class FormsListViewUtilComponent implements OnInit {
         this.referenceService.renderer = this.renderer;
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
+        this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
+
     }
 
     ngOnInit() {

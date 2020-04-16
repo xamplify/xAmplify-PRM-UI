@@ -60,6 +60,7 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.referenceService.renderer = this.renderer;
       this.pagination.userId = this.loggedInUserId;
       this.modulesDisplayType.isListView = true;
+      this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
 
 
   }
