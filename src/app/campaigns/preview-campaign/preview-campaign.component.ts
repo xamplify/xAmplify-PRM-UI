@@ -40,6 +40,7 @@ import { CampaignType } from '../models/campaign-type';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
 
+
 declare var $:any;
 
 @Component({
@@ -249,6 +250,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
       else { this.selectedEmailTemplateId = this.campaign.emailTemplateDTO.id;}
       this.isChannelCampaign = this.campaign.channelCampaign;
+      this.campaign.eventCancellation    = result.eventCancellation;
+      
       this.campaign.campaignEventTimes = result.campaignEventTimes;
       if(!this.campaign.campaignEventTimes[0]){
         this.campaign.campaignEventTimes = [];
@@ -1280,6 +1283,4 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     $('#myModal').modal('hide');
      this.referenceService.showSweetAlertServerErrorMessage();
   }
-
-  
 }
