@@ -60,10 +60,10 @@ export class LogRegularCampaignComponent implements OnInit {
               updatedBody = updatedBody.replace("<company_name></company_name>", "");
               updatedBody = updatedBody.replace("<Company_Logo>", '');
               updatedBody = updatedBody.replace("<Title_here>", '');
-              updatedBody = updatedBody.replace("<unsubscribeURL>","");
-              updatedBody = updatedBody.replace('click here','');
-              updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails click here"," ");
-              updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails","");
+              //updatedBody = updatedBody.replace("<unsubscribeURL>","");
+              //updatedBody = updatedBody.replace('click here','');
+              //updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails click here"," ");
+              //updatedBody = updatedBody.replace("If you'd like to unsubscribe and stop receiving these emails","");
               this.templatehtml = updatedBody;
               document.getElementById('regular-campaign').innerHTML = this.templatehtml;
               this.processor.remove(this.processor);
