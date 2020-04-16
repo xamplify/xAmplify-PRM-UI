@@ -125,7 +125,7 @@ export class ManageCommentsComponent implements OnInit
               c.userName =c.user.lastName;
           }
           if (c.user.profileImagePath.indexOf(null) > -1) {
-            c.user.profileImagePath = 'assets/admin/pages/media/profile/icon-user-default.png';
+            c.user.profileImagePath = 'assets/images/icon-user-default.png';
           
           } 
         })
