@@ -65,6 +65,7 @@ export class AuthenticationService {
   v_companyName: string;
   v_companyLogoImagePath: string;
   v_showCompanyLogo: boolean = false;
+  vanityURLUserRoles:any;
   companyProfileName: string = "";
   vanityURLEnabled: boolean = false;
   vanityURLink: string = "";
@@ -121,7 +122,7 @@ export class AuthenticationService {
             'campaignAccessDto': res.json().campaignAccessDto,
             'logedInCustomerCompanyNeme': res.json().companyName
           };
-
+          
           localStorage.setItem('currentUser', JSON.stringify(userToken));
           this.access_token = this.map.access_token;
           this.refresh_token = this.map.refresh_token;

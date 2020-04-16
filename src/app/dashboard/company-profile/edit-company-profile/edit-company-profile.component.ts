@@ -417,6 +417,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName']
                     };
                     localStorage.clear();
+                    if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles){
+                        userToken['roles'] = this.authenticationService.vanityURLUserRoles;
+                    }
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 

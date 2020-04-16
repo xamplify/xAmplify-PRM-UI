@@ -878,6 +878,16 @@ export class AddTeamMembersComponent implements OnInit {
 						}
 					}
 					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+
+					if(this.authenticationService.vanityURLEnabled){						
+						  let currentUser = localStorage.getItem('currentUser');
+						  if(currentUser && this.authenticationService.vanityURLUserRoles){
+							const parsedObject = JSON.parse(currentUser);
+							parsedObject.roles = this.authenticationService.vanityURLUserRoles;
+							localStorage.setItem("currentUser", JSON.stringify(parsedObject));
+						  }
+					}
+
 					let self = this;
 					setTimeout(function () {
 						self.router.navigate(['home/dashboard/'])
