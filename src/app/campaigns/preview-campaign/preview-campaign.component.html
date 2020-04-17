@@ -512,7 +512,8 @@
                         </a>
                     </ng-container>
                     <!-- <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="auto" title="Preview Campaign"><i class="fa fa-eye mr5"></i></a> -->
-                    <a *ngIf=" hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor" (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto"
+                    <a *ngIf=" ( (campaign.campaignType!=='EVENT')  && (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) )" 
+                    (click)="confirmDeleteCampaign(campaign)" data-rel="fancybox-button" data-toggle="tooltip" data-placement="auto"
                         title="Delete">
                         <i class="fa fa-trash-o"> </i></a>
                 </div>

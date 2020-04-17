@@ -21,6 +21,7 @@ import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { User } from '../../core/models/user';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 declare var $, swal: any;
 
@@ -125,7 +126,7 @@ export class ReferenceService {
 	pressed: boolean;
 	startX: any;
 	startWidth: any;
-
+	regularExpressions = new RegularExpressions();
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
 		console.log('reference service constructor');
@@ -1613,11 +1614,14 @@ export class ReferenceService {
 	}
 
 	getAnchorTagsFromEmailTemplate(body: string, emailTemplateHrefLinks: any) {
+		let self = this;
 		$(body).find('a').each(function(e) {
 			let href = $(this).attr('href');
 			if (href != undefined && $.trim(href).length > 0) {
 				if (href != "<SocialUbuntuURL>" && href != "https://dummyurl.com" && href != "https://dummycobrandingurl.com" && href != "<unsubscribeURL>") {
-					emailTemplateHrefLinks.push(href);
+					if(self.regularExpressions.URL_PATTERN.test(href)){
+						emailTemplateHrefLinks.push(href);
+					}	
 				}
 
 			}

@@ -8,6 +8,7 @@ import { ContactList } from '../../contacts/models/contact-list';
 import { UserListIds } from '../../contacts/models/user-listIds';
 import { SocialStatus } from '../../social/models/social-status';
 import { Form } from 'app/forms/models/form';
+import {EventCancellation} from './event-cancellation';
 
 
 export class EventCampaign {
@@ -72,6 +73,8 @@ export class EventCampaign {
 	pushToHubspot = false;
 	pushToSalesforce = false;
 	pushToMarketingAutomation = false;
+	
+	eventCancellation : EventCancellation;
 
     constructor() {
         this.campaignEventMedias.push(new CampaignEventMedia());
