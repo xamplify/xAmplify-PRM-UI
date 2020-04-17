@@ -161,7 +161,10 @@ export class AuthenticationService {
       let userId;
       if (!this.user.id) {
         const currentUser = localStorage.getItem('currentUser');
-        userId = JSON.parse(currentUser)['userId'];
+        if(currentUser){
+          userId = JSON.parse(currentUser)['userId'];
+        }
+        
       } else {
         userId = this.user.id;
       }
@@ -497,13 +500,11 @@ export class AuthenticationService {
   }
 
 
-  getVanityURLUserRoles(userName:string, at:string){    
-    if(this.vanityURLEnabled && this.companyProfileName){
+  getVanityURLUserRoles(userName:string, at:string){
       this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
       return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + at, this.dashboardAnalyticsDto)
       .map((res: Response) => { return res.json(); })
       .catch((error: any) => { return error; });
-    }
   }
 
   extractData(res: Response) {
