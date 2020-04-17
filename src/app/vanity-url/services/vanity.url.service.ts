@@ -25,7 +25,7 @@ export class VanityURLService {
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
-     //let url = "key.xamplify.com";
+    //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     let url =window.location.hostname;
 
@@ -37,24 +37,31 @@ export class VanityURLService {
         if (this.authenticationService.v_companyName == undefined || this.authenticationService.v_companyLogoImagePath == undefined) {
           this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
             this.authenticationService.v_companyName = result.companyName;
-            this.authenticationService.vanityURLink= result.vanityURLink;
-            this.authenticationService.v_showCompanyLogo= result.showVendorCompanyLogo;
+            this.authenticationService.vanityURLink = result.vanityURLink;
+            this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
             //this.authenticationService.v_companyLogoImagePath = "assets/images/logo.jpg";
             this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
           }, error => {
             console.log(error);
           });
         }
+        if (!this.authenticationService.vanityURLUserRoles) {
+          let currentUser = localStorage.getItem('currentUser');
+          if (currentUser) {
+            const parsedObject = JSON.parse(currentUser);
+            this.authenticationService.vanityURLUserRoles = parsedObject.roles;
+          }
+        }
       }
     }
   }
 
   addVanityUrlFilterDTO(dto: DashboardAnalyticsDto) {
-    if(this.authenticationService.getUserId()){
+    if (this.authenticationService.getUserId()) {
       dto.userId = this.authenticationService.getUserId();
-    }    
+    }
     let companyProfileName = this.authenticationService.companyProfileName;
-   // let companyProfileName =  JSON.parse(localStorage.getItem('vanityUrlCompanyProfielName'));
+    // let companyProfileName =  JSON.parse(localStorage.getItem('vanityUrlCompanyProfielName'));
     if (companyProfileName != undefined && companyProfileName != "") {
       dto.vanityUrlFilter = true;
       dto.vendorCompanyProfileName = companyProfileName;

@@ -409,13 +409,18 @@
 								</div>
 								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<div class="form-group">
-										<label class="control-label">Show My Logo <font
+										<label class="control-label">Display My Logo <font
 											style="color: #f55d7a"><b>*</b></font></label>
 									   <div>
-										<switch [status]="companyProfile.showVendorCompanyLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+										<switch [status]="companyProfile.showVendorCompanyLogo"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
 											(statusChange)="setVendorLogoEnabled($event)">
-											</switch>
-										</div>											
+											</switch>																			
+										</div>
+										<div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+											<span style="cursor: pointer;color: #54a7e9;">
+												<i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right" title="{{vendorLogoTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 15px;"></i>
+										</span>
+										</div>																					
 									</div>
 								</div>
 								
