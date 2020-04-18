@@ -38,7 +38,7 @@ export class FormPreviewComponent implements OnInit {
     isValidEmailIds = true;
     alertClass ="";
     successAlertClass = "alert alert-success";
-    errorAlertClass = "alert alert-danger";
+    errorAlertClass = "alert-danger error-alert-custom-padding";
     show: boolean;
     formSubmitted = false;
     message: string;
