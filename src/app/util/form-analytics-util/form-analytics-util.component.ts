@@ -48,6 +48,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
     isEventCheckIn = false;
     customResponse: CustomResponse = new CustomResponse();
     publicEventAlias = "";
+    formAnalyticsDownload = false;
+    campaignFormAnalyticsDownload = false;
+    campaignPartnerFormAnalyticsDownload: boolean;
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -67,8 +70,13 @@ export class FormAnalyticsUtilComponent implements OnInit {
             this.partnerId = this.importedObject['partnerId'];
             this.title = this.importedObject['title'];
             if(this.campaignAlias!=undefined){
+                this.campaignFormAnalyticsDownload = true;
                 this.pagination.campaignId = parseInt(this.campaignAlias);
                 this.pagination.partnerId = this.partnerId;
+                if(this.pagination.partnerId!=undefined){
+                    this.campaignFormAnalyticsDownload = false;
+                    this.campaignPartnerFormAnalyticsDownload = true;
+                }
                 this.pagination.publicEventLeads = this.importedObject['isPublicEventLeads'];
                 this.pagination.eventCampaign = this.importedObject['eventCampaign'];
                 this.pagination.totalLeads = this.importedObject['totalLeads'];
@@ -82,7 +90,9 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.pagination.formId = this.formId;
                 this.alias = "";
                 this.pagination.partnerLandingPageForm = true;
-            }
+            }else{
+				this.formAnalyticsDownload = true;
+			}
             this.listSubmittedData( this.pagination );
         }
         
@@ -98,7 +108,6 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.isTotalAttendees = this.pagination.totalAttendees;
                 this.statusCode = response.statusCode;
                 if ( response.statusCode == 200 ) {
-                    //this.formName = data.formName;
                     if(this.title==undefined){
                         this.title = data.formName;
                     }
@@ -162,22 +171,13 @@ export class FormAnalyticsUtilComponent implements OnInit {
         this.router.navigate( ['home/campaigns/' + parseInt( this.campaignAlias ) + '/details'] );
     }
     
-    downloadCsv(){
-        if(this.pagination.totalPartnerLeads){
-            window.open(this.authenticationService.REST_URL+"pl/"+this.pagination.campaignId+"/"+false);
-        }else if(this.pagination.checkInLeads){
-            window.open(this.authenticationService.REST_URL+"eccl/"+this.pagination.campaignId);
-        }else{
-            window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
-        }
-    }
+  
     checkIn(event:any,formDataRow:any){
         let formSubmitId = formDataRow['formSubmittedId'];
         formDataRow['checkedInForEvent'] = event;
         this.referenceService.loading( this.httpRequestLoader, true );
         this.formService.checkInAttendees( this.pagination.campaignId, formSubmitId, event ).subscribe(
             ( response: any ) => {
-                const data = response.data;
                 this.statusCode = response.statusCode;
                 $( window ).scrollTop( 0 );
                 this.customResponse = new CustomResponse( 'SUCCESS', response.message, true );
@@ -188,6 +188,25 @@ export class FormAnalyticsUtilComponent implements OnInit {
     
     openLinkInBrowser(){
         window.open(this.authenticationService.APP_URL+"rsvp/"+this.publicEventAlias+"?type=YES&utm_source=public","_blank");
+    }
+
+    downloadCsv(){
+        if(this.pagination.totalPartnerLeads){
+            window.open(this.authenticationService.REST_URL+"pl/"+this.pagination.campaignId+"/"+false);
+        }else if(this.pagination.checkInLeads){
+            window.open(this.authenticationService.REST_URL+"eccl/"+this.pagination.campaignId);
+        }else if(this.pagination.totalAttendees){
+            window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
+        }else if(this.formAnalyticsDownload){
+	 		window.open(this.authenticationService.REST_URL+"form/download/fa/"+this.alias+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+		}else if(this.campaignFormAnalyticsDownload){
+            window.open(this.authenticationService.REST_URL+"form/download/cfa/"+this.alias+"/"+this.pagination.campaignId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+        }else if(this.campaignPartnerFormAnalyticsDownload){
+            window.open(this.authenticationService.REST_URL+"form/download/cpfa/"+this.alias+"/"+this.pagination.campaignId+"/"+this.pagination.partnerId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+        }else if(this.pagination.partnerLandingPageForm){
+            window.open(this.authenticationService.REST_URL+"form/download/plpf/"+this.partnerLandingPageAlias+"/"+this.formId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+
+        }
     }
     
 
