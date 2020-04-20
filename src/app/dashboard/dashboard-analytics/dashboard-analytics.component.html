@@ -80,7 +80,10 @@
             
 		</div>
 	<div class="portlet-body clearfix">
-	<app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>
+    <app-dynamic-grid-loader *ngIf="topFourCampaignsLoader.isLoading" [gridCount]=4></app-dynamic-grid-loader>
+    <div style="position: relative; top:-4px;">
+        <app-response-message [customResponse]="topFourCampaignErrorResponse" *ngIf="topFourCampaignErrorResponse.isVisible"></app-response-message>
+    </div>
     <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
     <section *ngFor="let campaign of campaigns; let i=index">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
@@ -134,13 +137,6 @@
                                 <div class="caption">
                                     <i class="fa fa-bar-chart"></i>
                                     <span class="caption-subject">Email Statistics</span>
-                                </div>
-                                <div>
-                                    <!-- <div class="panel-title pull-right" *ngIf="categories?.length > 0">
-                                        <span *ngIf="campaigns?.length>0" style="float:right" data-toggle="tooltip" data-placement="top" title='Refresh'>
-                        					<i class="icon-refresh" style="float:right;cursor:pointer;font-size: 14px;margin-top: 2.5px;color: #a0a0a0;" (click)="refreshCampaignBarcharts()"></i>
-                      					</span>
-                                    </div> -->
                                 </div>
                             </div>
                             <div class="portlet-body" style="min-height: 230px;  max-height: 100%; max-width: auto;">

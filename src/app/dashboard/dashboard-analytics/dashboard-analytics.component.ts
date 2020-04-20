@@ -15,6 +15,7 @@ import { DashboardService } from '../dashboard.service';
 import { UtilService } from 'app/core/services/util.service';
 import { DashboardAnalyticsDto } from '../models/dashboard-analytics-dto';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 declare var Metronic, $, Layout, Demo, Index, QuickSidebar, Highcharts, Tasks: any;
 @Component({
@@ -44,6 +45,7 @@ export class DashboardAnalyticsComponent implements OnInit {
   userCampaignReport: CampaignReport = new CampaignReport();
   topFourCampaignsLoader:HttpRequestLoader = new HttpRequestLoader();
   topFourLoading = false;
+  topFourCampaignErrorResponse :CustomResponse = new CustomResponse();
  // campaignIdArray:any[];
    /************Email Statistics*********** */
    trellisBarChartData: any;
@@ -150,7 +152,10 @@ getUserCampaignReport() {
               this.userCampaignReport = data['userCampaignReport'];
               this.launchedCampaignsMaster = data['listLaunchedCampaingns'];
           },
-          error => { this.xtremandLogger.error(error); },
+          error => { 
+             this.topFourLoading = false;
+             this.xtremandLogger.error(error); 
+            },
           () => {
               this.xtremandLogger.info('Finished getUserCampaignReport()');
               if (this.userCampaignReport == null) {
@@ -184,6 +189,7 @@ listCampaignInteractionsData(userId: number, reportType: string) {
 this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnalyticsDto,reportType)
     .subscribe(
         data => {
+            this.topFourCampaignErrorResponse  = new CustomResponse();
           //  this.campaignIdArray = [];
             this.xtremandLogger.info(data);
             this.campaigns = data;
@@ -196,10 +202,14 @@ this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnal
                 this.getCampaignsEamailBarChartReports(campaignIdArray);
             }else{
                 this.topFourLoading = false;
-                this.referenceService.loading(this.emailStatisticsLoader,false);
             }
         },
-        error => { },
+        error => { 
+            this.topFourLoading = false;
+            this.referenceService.showServerError(this.topFourCampaignsLoader);
+            this.referenceService.showServerError(this.emailStatisticsLoader);
+            this.topFourCampaignErrorResponse = new CustomResponse('ERROR','Please Contact Admin.',true);
+         },
         () => this.xtremandLogger.info('Finished listCampaign()')
     );
 }
@@ -273,13 +283,13 @@ getCampaignsEamailBarChartReports(campaignIdArray) {
                     this.isMaxBarChartNumber = true;
                     this.generateBarChartForEmailLogs(result.campaignNames, result.emailOpenedCount, result.emailClickedCount, result.watchedCount, this.maxBarChartNumber);
                 } else {
-                    this.topFourLoading = false;
                     this.referenceService.loading(this.emailStatisticsLoader,false); 
-                    this.isMaxBarChartNumber = false; }
+                    this.isMaxBarChartNumber = false; 
+                }
             },
                 (error: any) => {
                     this.xtremandLogger.error(error);
-                    this.xtremandLogger.errorPage(error);
+                    this.referenceService.showServerError(this.emailStatisticsLoader);
                 });
     } catch (error) {
         this.xtremandLogger.error(error);
