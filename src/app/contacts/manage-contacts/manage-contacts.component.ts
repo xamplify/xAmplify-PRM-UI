@@ -850,7 +850,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
                     "firstName": selectedRow.firstName,
                     "lastName": selectedRow.lastName,
                     "jobTitle": selectedRow.jobTitle,
-                    "company": selectedRow.contactCompany,
+                    "contactCompany": selectedRow.contactCompany,
                     "mobileNumber": selectedRow.mobileNumber,
                     "address": selectedRow.address,
                     "city": selectedRow.city,
