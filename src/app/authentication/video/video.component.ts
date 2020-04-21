@@ -15,6 +15,7 @@ export class VideoComponent implements OnInit {
   ngOnInit() {
     if (this.authService.v_companyLogoImagePath != undefined && this.authService.v_companyLogoImagePath != '') {
        this.properties.COMPANY_LOGO = this.authService.v_companyLogoImagePath;
+       this.properties.xamplify_router= this.authService.vanityURLink;
       //this.properties.COMPANY_LOGO = "assets/images/logo.jpg";
     }
   }

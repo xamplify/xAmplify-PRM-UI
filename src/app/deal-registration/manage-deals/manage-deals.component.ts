@@ -186,7 +186,16 @@ export class ManageDealsComponent implements OnInit
                     this.enableLeads = data.enableLeads;
                     console.log(data)
                     if(!this.isOnlyPartner){
-                        this.showVendor();
+                        if(this.authenticationService.vanityURLEnabled){
+                            if(this.authenticationService.isPartnerTeamMember){
+                                this.showPartner();
+                            }else{
+                                this.isCompanyPartner = false;
+                                this.showVendor();
+                            }
+                        }else{
+                            this.showVendor();
+                        }                        
                     }else{
                         this.showPartner();
                     }
