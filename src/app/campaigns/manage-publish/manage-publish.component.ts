@@ -80,6 +80,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     previewCampaign: any;
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
     publicEventAlias:string = "";
+    publicEventAliasUrl:string = "";
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     @ViewChild('publiEventEmailPopup') publicEventEmailPopupComponent: PublicEventEmailPopupComponent;
     addWorkflows = false;
@@ -492,6 +493,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     openEventUrlModal(campaign:Campaign){
         this.copiedLinkCustomResponse = new CustomResponse();
         this.publicEventAlias = campaign.publicEventAlias;
+        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {           
+            this.publicEventAliasUrl = this.authenticationService.vanityURLink + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
+          }else{              
+            this.publicEventAliasUrl = this.authenticationService.APP_URL + "rsvp/" + this.publicEventAlias +"?type=YES&utm_source=public";
+          }
         $('#public-event-url-modal').modal('show');
     }
     copyUrl(inputElement){

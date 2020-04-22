@@ -877,7 +877,7 @@
             <div class="modal-body">
                 <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
                 </app-response-message>
-                <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}rsvp/{{publicEventAlias}}?type=YES&utm_source=public" #publicEventCampaignUrlInput>
+                <input type="text" class="form-control" readonly="readonly" [ngModel]="publicEventAliasUrl" #publicEventCampaignUrlInput>
             </div>
             <div class="modal-footer">
                 <a class="btn btn-primary" (click)="copyUrl(publicEventCampaignUrlInput)">Copy Link</a>

@@ -19,5 +19,5 @@ export class LandingPage {
     showYourPartnersLogo:boolean = false;
     partnerLandingPage = false;
     type:LandingPageType;
-
+    companyProfileName: string="";
 }
