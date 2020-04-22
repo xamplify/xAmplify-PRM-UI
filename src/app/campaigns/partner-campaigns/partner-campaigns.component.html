@@ -206,27 +206,27 @@
 
 													<ng-container class="pull-right"
 														*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
-														<div class="btn-group pull-right" id="download-template"
+														<div class="btn-group pull-right" id="download-template"  title="Download"
 															*ngIf="campaign.allowDownload">
 															<span
 																class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
 																data-toggle="dropdown" id="download-drop"></span>
-                                                <span data-toggle="dropdown" title="Download"></span>
-                                                <ul class="dropdown-menu pull-right">
-                                                    <li>
-                                                        <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button"
-                                                            target="_blank">
-                                                            <i class="fa fa-file" style="width: 30px;"></i> Download Html
-                                                        </a>
-                                                    </li>
-                                                    <li *ngIf="campaign.campaignType != 'EVENT'">
-                                                        <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"
-                                                            target="_blank">
-                                                            <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                                                 <span data-toggle="dropdown" title="Download"></span>
+                                                                    <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button"
+                                                                            target="_blank">
+                                                                            <i class="fa fa-file" style="width: 30px;"></i> Download Html
+                                                                        </a>
+                                                                    </li>
+                                                                    <li *ngIf="campaign.campaignType != 'EVENT'">
+                                                                        <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"
+                                                                            target="_blank">
+                                                                            <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                             <a *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download" data-rel="fancybox-button">
                                                 <i class="fa fa-download cancelled-event"></i>
                                             </a>

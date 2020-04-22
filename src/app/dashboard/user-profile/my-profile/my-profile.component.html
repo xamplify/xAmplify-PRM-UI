@@ -252,7 +252,7 @@
                                                 class="hidden-xs">Default</span> Player Settings</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
-                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
+                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Deal Registration</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
                                         <a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
