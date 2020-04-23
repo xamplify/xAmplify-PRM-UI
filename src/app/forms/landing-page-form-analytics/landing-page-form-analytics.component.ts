@@ -120,4 +120,8 @@ export class LandingPageFormAnalyticsComponent implements OnInit {
         console.log( text );
     }
 
+    downloadCsv(){
+        window.open(this.authenticationService.REST_URL+"form/download/lpfa/"+this.alias+"/"+this.landingPageId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+    }
+
 }

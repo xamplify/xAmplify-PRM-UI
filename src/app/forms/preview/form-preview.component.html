@@ -9,17 +9,17 @@
 				<h4 class="alert alert-success" id="header-center">
 				<i class="fa fa-check-circle" id="check-mark"></i>Your Form submitted successfully.
 				</h4>
-				<a (click)="showForm()" id="bottom-right">Click here to submit again.</a>
+				<!-- <a (click)="showForm()" id="bottom-right">Click here to submit again.</a> -->
 			</div>
 		</ng-container>
 		
 		
 		<ng-container *ngIf="!formSubmitted">
 			<div class="panel-heading" style="background-color: #d9edf7 !important;color: #4a4747 !important;border-top-left-radius: 0px; border-top-right-radius: 0px">
-			 <a class="close-circle" (click)="refreshForm()" data-toggle="tooltip" data-placement="top"  title="Refresh">
-						<i class="fa fa-refresh" id="line-height"></i>
+			 <a class="close-circle" (click)="refreshForm()"  title="Refresh">
+					<i class="fa fa-refresh" id="line-height"></i>
 				</a>
-				<div class="panel-title" title="{{form.name}}">{{form.name | slice:0:30}}<span *ngIf="form.name?.length>30">..</span></div>
+				<div class="panel-title" title="{{form.name}}">{{form.name | slice:0:50}}<span *ngIf="form.name?.length>50">..</span></div>
 			</div>
 			<div class="panel-body">
 			 <h5 title="{{form.description}}">{{form.description  | slice:0:40}} <span *ngIf="form.description?.length>40">..</span></h5>

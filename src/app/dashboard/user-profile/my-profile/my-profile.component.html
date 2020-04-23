@@ -252,7 +252,7 @@
                                                 class="hidden-xs">Default</span> Player Settings</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
-                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
+                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Deal Registration</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
                                         <a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
@@ -622,14 +622,21 @@
                                                             <!--style="border: 1px solid #ddd;"-->
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" style="color: #847d7d;">EU General Data Protection Regulation(GDPR)&nbsp;&nbsp;
-                                                                        <i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile">
+                                                                        Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes:
+                                                                    </h5>
+                                                                        <ul>
+                                                                            <li id="text-color-my-profile">The ability to designate a legal basis for contacting each person added to a mailing list</li>
+                                                                            <li id="text-color-my-profile" style="margin-top: 5px">Automatic inclusion of an unsubscribe link in every campaign email</li>
+                                                                        </ul>
+                                                                  
+                                                                    <h5 id="text-color-my-profile">
                                                                         <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank">Privacy & consent</a>&nbsp; |
-                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank">Cookies & tracking</a> &nbsp;|
-                                                                        <a class="link" href="https://www.xamplify.com/" target="_blank">Learn More</a>&nbsp;</h5>
-                                                                    <h5 style="color: #847d7d;">
-                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing
+                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank">Cookies & tracking</a> &nbsp;
+                                                                    </h5>
+                                                                    <h5 id="text-color-my-profile">
+                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; 
+                                                                        Only allows marketing
                                                                         emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
@@ -643,7 +650,7 @@
                                                             </div>
                                                         </tr>
                                                     </fieldset><br>
-                                                    <fieldset *ngIf="gdprSetting.gdprStatus">
+                                                    <!-- <fieldset *ngIf="gdprSetting.gdprStatus">
                                                         <legend>Available Options</legend>
                                                         <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
                                                             <div class="flex row">
@@ -723,7 +730,7 @@
                                                                 </div>
                                                             </div>
                                                         </tr>
-                                                    </fieldset>
+                                                    </fieldset> -->
                                                 </tbody>
                                             </table>
                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">

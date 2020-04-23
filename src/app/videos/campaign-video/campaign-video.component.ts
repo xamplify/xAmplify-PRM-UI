@@ -190,6 +190,9 @@ export class CampaignVideoComponent implements OnInit, OnDestroy {
                         this.videoAlias = result.videoAlias;
                         this.templateId = result.templateId;
                         this.logoLink = this.campaignVideoFile.brandingLogoDescUri;
+                        if(!this.logoLink.startsWith("http") || this.logoLink.startsWith("https")){
+                            this.logoLink="//"+this.logoLink;
+                        }
                         this.logoImageUrlPath = this.campaignVideoFile.brandingLogoUri;
                         this.xtremandLogDefaultActions();
                         let checkVideoTag: any

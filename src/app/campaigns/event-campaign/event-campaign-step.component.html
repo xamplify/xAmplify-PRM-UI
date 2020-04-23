@@ -1004,6 +1004,7 @@ a.disabled {
                             <span class="gridHeader">List Name</span>
                         </th>
                           <th style="text-align: center;" *ngIf="showContactType">Type</th>
+                          <th style="text-align: center;">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
                         </tr>
@@ -1021,6 +1022,10 @@ a.disabled {
                           </td>
                           <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
                               *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+                          </td>
+                           <td style="text-align:center" class="moreipsis">
+                              <span *ngIf="contactList.publicList">Public</span>
+							<span *ngIf="!contactList.publicList">Private</span>
                           </td>
 			      							<td class="text-center">
                             	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>

@@ -2280,6 +2280,7 @@ goBackToManageList(){
 						for (let i = 0; i < this.selectedContactListIds.length; i++) {
 							for (let j = 0; j < this.contactService.allPartners.length; j++) {
 								if (this.selectedContactListIds[i] == this.contactService.allPartners[j].id) {
+									this.contactService.allPartners[j].legalBasis = selectedLegalBasisOptions;
 									this.selectedContactForSave.push(this.contactService.allPartners[j]);
 									break;
 								}
@@ -2289,6 +2290,7 @@ goBackToManageList(){
 						for (let i = 0; i < this.selectedContactListIds.length; i++) {
 							for (let j = 0; j < this.totalListUsers.length; j++) {
 								if (this.selectedContactListIds[i] == this.totalListUsers[j].id) {
+									this.totalListUsers[j].legalBasis = selectedLegalBasisOptions;
 									this.selectedContactForSave.push(this.totalListUsers[j]);
 									break;
 								}
