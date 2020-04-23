@@ -123,7 +123,7 @@
                         </a>
                         <li>
                             <li>
-                                <a *ngIf="authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember)" [routerLink]="['./campaigns/select']">
+                                <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
                                     <i class="fa fa-bullhorn"></i>
                                     <span class="title">Create Campaign</span>
                                 </a>
