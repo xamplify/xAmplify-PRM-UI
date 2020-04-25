@@ -465,3 +465,6 @@ hr {
 #i-custom-font-size{
 	font-size: 15px;
 }
+.min-width-icon{
+    min-width: 130px;
+}
