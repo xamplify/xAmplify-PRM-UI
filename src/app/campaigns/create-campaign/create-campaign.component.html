@@ -1732,6 +1732,8 @@
                                                                                     All</li>
                                                                                 <li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">
                                                                                     Basic</li>
+                                                                                <li class="filter" (click)="filterReplyTemplates('REGULAR_CO_BRANDING',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">
+                                                                                        Email Co-Branding</li>
                                                                                 <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">
                                                                                     Uploaded</li>
                                                                                 <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">
@@ -2023,9 +2025,11 @@
                                                                                         <ul class="mix-filter" *ngIf="!isOnlyPartner">
                                                                                             <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex">
                                                                                                 All</li>
-                                                                                            <li class="filter" (click)="filterClickTemplates('BASIC',1,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">
+                                                                                            <li class="filter" (click)="filterClickTemplates('BASIC',1,url)"  [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">
                                                                                                 Basic</li>
-                                                                                            <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" *ngIf="campaignType=='regular'" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">
+                                                                                            <li class="filter" (click)="filterReplyTemplates('REGULAR_CO_BRANDING',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">
+                                                                                                    Email Co-Branding</li>
+                                                                                            <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)"  [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">
                                                                                                 Uploaded
                                                                                             </li>
                                                                                             <li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">

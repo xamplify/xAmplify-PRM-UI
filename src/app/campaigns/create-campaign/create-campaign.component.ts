@@ -1866,8 +1866,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     filterReplyTemplates(type:string,index:number,reply:Reply){
         if(type=="BASIC"){
             reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
-        }else if(type=="RICH"){
-            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+        }else if(type=="REGULAR_CO_BRANDING"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
             reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
         }else if(type=="NONE"){
@@ -1884,8 +1884,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     filterClickTemplates(type:string,index:number,url:Url){
         if(type=="BASIC"){
             url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
-        }else if(type=="RICH"){
-            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+        }else if(type=="REGULAR_CO_BRANDING"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
             url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
         }else if(type=="NONE"){
