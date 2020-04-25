@@ -131,3 +131,14 @@ fieldset img {height: 137px}
 .message-auto{
   border: 1px solid #b7b5b5;padding: 5px 8px; background: #ebebe4;
 }
+.ui-switch-custom-div{
+  width: 7%;
+  padding: 7px 0;
+}
+
+.workflow-style{
+  margin-top: 27px;
+  border-radius: 3px !important;
+}
+
+

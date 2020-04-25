@@ -41,7 +41,7 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 
 
 
-declare var $:any;
+declare var $,swal:any;
 
 @Component({
   selector: 'app-preview-campaign',
@@ -1283,4 +1283,38 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     $('#myModal').modal('hide');
      this.referenceService.showSweetAlertServerErrorMessage();
   }
+
+  changeWorkFlowStatus(workflowId:number,statusInString:string,workflowType:number,reply:Reply,url:Url){
+    this.ngxloading = true;
+    this.campaignService.changeWorkflowStatus(workflowId,statusInString,workflowType).subscribe(
+      ( data: any ) => {
+        if(workflowType==1){
+          reply.statusInString = statusInString;
+        }else if(workflowType==2){
+          url.statusInString = statusInString;
+        }
+          this.referenceService.showSweetAlertSuccessMessage(data.message);
+          this.ngxloading = false;
+      },
+      error => {
+        this.ngxloading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+        },
+      () => this.xtremandLogger.info( "Finished changeWorkflowStatus()" ) );
+  }
+
+  resumeAutoReplyWorkflow(reply:Reply){
+    this.changeWorkFlowStatus(reply.id,'ACTIVE',1,reply,new Url());
+  }
+
+  pauseAutoReplyWorkflow(reply:Reply){
+    this.changeWorkFlowStatus(reply.id,'INACTIVE',1,reply,new Url());
+  }
+  resumeClickedUrlsWorkflow(url:Url){
+    this.changeWorkFlowStatus(url.id,'ACTIVE',2,new Reply(),url);
+   }
+ 
+   pauseClickedUrlsWorkflow(url:Url){
+    this.changeWorkFlowStatus(url.id,'INACTIVE',2,new Reply(),url);
+   }
 }

@@ -1988,3 +1988,11 @@ legend {
     color: red;
 }
 
+.padding-left-zero{
+    padding-left: 0;
+}
+
+.topPixel{
+    top: 0px;
+}
+

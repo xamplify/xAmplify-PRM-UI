@@ -4,6 +4,13 @@
     display: none
 }
 
+.swal2-container {
+  display: -webkit-box;
+  display: flex;
+  position: fixed;
+  z-index: 300000;
+}
+
 .swal2-overlay {
     background-color: rgba(0, 0, 0, .4);
     left: 0;
