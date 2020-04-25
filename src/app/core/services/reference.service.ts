@@ -1922,6 +1922,21 @@ export class ReferenceService {
 		swal(message1, message2, type);
 	}
 
+	showSweetAlertSuccessMessage(message:string){
+		swal({
+			title:message,
+			type: 'success',
+			allowOutsideClick: false
+		})
+	}
+	showSweetAlertFailureMessage(message:string){
+		swal({
+			title:message,
+			type: 'error',
+			allowOutsideClick: false
+		})
+	}
+
 	showSweetAlertErrorMessage(errorMessage: string) {
 		swal(errorMessage, "", "error");
 	}
