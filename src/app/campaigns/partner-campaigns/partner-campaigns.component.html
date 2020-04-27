@@ -207,7 +207,7 @@
 													<ng-container class="pull-right"
 														*ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
 														<div class="btn-group pull-right" id="download-template"  title="Download"
-															*ngIf="campaign.allowDownload">
+															*ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">
 															<span
 																class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
 																data-toggle="dropdown" id="download-drop"></span>
@@ -317,7 +317,7 @@
                                             </ng-container>
 
                                             <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
-                                                <div class="btn-group" id="download-template-grid" *ngIf="campaign.allowDownload">
+                                                <div class="btn-group" id="download-template-grid" *ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">
                                                     <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
                                                     <span data-toggle="dropdown" title="Download"></span>
                                                     <ul class="dropdown-menu pull-right">
