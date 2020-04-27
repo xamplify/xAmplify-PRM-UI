@@ -540,11 +540,11 @@
                         <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
                             <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
                         </a>
-                        <a *ngIf="(campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
+                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor)" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
                             data-toggle="tooltip" data-placement="top" title="Analytics">
                             <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
+                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
                             (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
                             <i class="fa fa-files-o"></i>
                         </a>
