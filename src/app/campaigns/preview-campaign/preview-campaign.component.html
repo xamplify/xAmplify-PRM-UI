@@ -268,7 +268,26 @@
                                                         <form class="role add-reply" id="form-{{reply.divId}}">
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12">
-                                                                    <div class="auto-resp">Auto-response to your e-mail-{{i+1}} </div>
+                                                                    <div class="col-xs-12 p0">
+                                                                        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
+                                                                            <div class="auto-resp">Auto-response to your e-mail-{{i+1}} </div>
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched">
+                                                                            <ng-container *ngIf="reply.statusInString=='ACTIVE'">
+                                                                                    <button class="btn btn-default workflow-style pause-style" (click)="pauseAutoReplyWorkflow(reply)">
+                                                                                        <span class="hidden-xs pause-text-style">Pause</span>
+                                                                                        <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
+                                                                                    </button>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="reply.statusInString=='INACTIVE'">
+                                                                                <button class="btn btn-default workflow-style resume-style" (click)="resumeAutoReplyWorkflow(reply)">
+                                                                                    <span class="hidden-xs resume-text-style">Resume</span>
+                                                                                    <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
+                                                                                </button>
+                                                                            </ng-container>
+                                                                        </div>
+                                                                    </div>
+                                                                    
                                                                     <div class="col-xs-6">
                                                                         <h5 for="reason">Reason</h5>
                                                                         <h6 *ngIf="reply.actionId ==0"> <input type="text" style="width:100%;height: 22px;" disabled value="Email is not opened"></h6>
@@ -307,20 +326,7 @@
                                                                         <h5>Subject</h5>
                                                                         <h6><input type="text" style="width:100%;height: 22px;" disabled value="{{reply.subject}}"></h6>
                                                                     </div>
-                                                                    <div class="col-xs-6" *ngIf="campaign.launched">
-                                                                        <ng-container *ngIf="reply.statusInString=='ACTIVE'">
-                                                                                <button class="btn btn-danger workflow-style" (click)="pauseAutoReplyWorkflow(reply)">
-                                                                                    <span class="hidden-xs">Pause Workflow</span>
-                                                                                    <i class="fa fa-pause" data-toggle="tooltip"></i>
-                                                                                </button>
-                                                                        </ng-container>
-                                                                        <ng-container *ngIf="reply.statusInString=='INACTIVE'">
-                                                                            <button class="btn btn-primary workflow-style" (click)="resumeAutoReplyWorkflow(reply)">
-                                                                                <span class="hidden-xs">Resume Workflow</span>
-                                                                                <i class="fa fa-play" data-toggle="tooltip"></i>
-                                                                            </button>
-                                                                        </ng-container>
-                                                                    </div>
+                                                                  
                                                                 </div>
                                                                 <div class="col-xs-12" style="padding: 0px 29px;">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">

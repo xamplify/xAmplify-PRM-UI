@@ -137,8 +137,21 @@ fieldset img {height: 137px}
 }
 
 .workflow-style{
-  margin-top: 27px;
   border-radius: 3px !important;
+}
+.pause-style{
+  border-color: #ac2925;
+}
+.pause-text-style{
+  color:#ac2925;
+}
+
+.resume-style{
+  border-color: #008fd5;
+}
+
+.resume-text-style{
+  color: #008fd5
 }
 
 

@@ -130,7 +130,7 @@
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                         </td>
                                         <td id="actions-td-width-xamp">
-                                            <div class="actions-block override-actions">
+                                            <div class="actions-block override-actions min-width-icon">
                                                 <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
