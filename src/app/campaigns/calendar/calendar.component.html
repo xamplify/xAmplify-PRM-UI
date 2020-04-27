@@ -55,8 +55,8 @@
             <ng-container *ngIf="campaign.status!=='SCHEDULE'">
                 <span *ngIf="!referenceService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
                 <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
-               </ng-container> 
-               <ng-container *ngIf="campaign.status==='SCHEDULE'">
+            </ng-container> 
+            <ng-container *ngIf="campaign.status==='SCHEDULE'">
                 <span>{{campaign.campaignScheduleDateInString}}</span>
                 <br>
                 <span>{{campaign.campaignScheduleTimeInString}}</span>
