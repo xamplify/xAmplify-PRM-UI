@@ -429,20 +429,6 @@
                                                                         <h5 for="reason">Targeted URLs</h5>
                                                                         <h6><input type="text" style="width:100%;height: 22px;" disabled value="{{url.url}}"></h6>
                                                                     </div>
-                                                                    <div class="col-xs-6" *ngIf="campaign.launched">
-                                                                        <ng-container *ngIf="url.statusInString=='ACTIVE'">
-                                                                                <button class="btn btn-danger workflow-style" (click)="pauseClickedUrlsWorkflow(url)">
-                                                                                    <span class="hidden-xs">Pause Workflow</span>
-                                                                                    <i class="fa fa-pause" data-toggle="tooltip"></i>
-                                                                                </button>
-                                                                        </ng-container>
-                                                                        <ng-container *ngIf="url.statusInString=='INACTIVE'">
-                                                                            <button class="btn btn-primary workflow-style" (click)="resumeClickedUrlsWorkflow(url)">
-                                                                                <span class="hidden-xs">Resume Workflow</span>
-                                                                                <i class="fa fa-play" data-toggle="tooltip"></i>
-                                                                            </button>
-                                                                        </ng-container>
-                                                                    </div>
                                                                 </div>
                                                                 <div class="col-xs-12" style="padding: 0px 29px;">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
@@ -456,10 +442,9 @@
                                                                             <h5>Selected Email Template</h5>
                                                                         </div>
                                                                         <app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-                                                                       <!--  <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages> -->
                                                                         <div class="col-xs-12 p0">
                                                                             <div class="col-xs-8 p0">
-                                                                                <img (click)="showEmailTemplate(campaign,url.emailTemplate)" title="preview" data-toggle="tooltip" data-placement="top" class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{url.emailTemplate.subject}}">
+                                                                                <img alt="Email Template" (click)="showEmailTemplate(campaign,url.emailTemplate)" title="preview" data-toggle="tooltip" data-placement="top" class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{url.emailTemplate.subject}}">
                                                                                 <div class="col-xs-4">
                                                                                     <span class="item__name" [title]="url.emailTemplate.name" data-toggle="tooltip" data-placement="top"><b>{{url.emailTemplate.name |slice:0:35}}</b><b *ngIf="url.emailTemplate?.name?.length>35">...</b>
                                                                                     </span>
