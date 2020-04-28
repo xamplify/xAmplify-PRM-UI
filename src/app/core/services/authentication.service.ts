@@ -408,6 +408,7 @@ export class AuthenticationService {
         module.isOnlyPartner = false;
         module.isReDistribution = false;
         this.isShowRedistribution = false;
+        this.enableLeads = false;
         swal.close();
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {
