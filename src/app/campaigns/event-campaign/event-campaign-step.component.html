@@ -1368,11 +1368,11 @@ a.disabled {
                     <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                     <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
                     <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If partner has not shared event</option>
-                    <option [value]="29" [selected]="reply.actionId ==29">Send reminder if no response</option>
+                    <option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
                     <option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
-                    <option [value]="25" [selected]="reply.actionId ==25">Send email if RSVP Yes</option>
-                    <option [value]="26" [selected]="reply.actionId ==26">Send email If RSVP No</option>
-                    <option [value]="27" [selected]="reply.actionId ==27">Send email If RSVP Maybe</option>
+                    <option [value]="25" [selected]="reply.actionId ==25"> Send email if RSVP Yes</option>
+                    <option [value]="26" [selected]="reply.actionId ==26" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP No</option>
+                    <option [value]="27" [selected]="reply.actionId ==27" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP Maybe</option>
                     <option [value]="28" [selected]="reply.actionId ==28">Send after event</option>
                   </select>
                 </div>
