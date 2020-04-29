@@ -272,7 +272,7 @@
                                                                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
                                                                             <div class="auto-resp">Auto-response to your e-mail-{{i+1}} </div>
                                                                         </div>
-                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched">
+                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched && !campaign.channelCampaign">
                                                                             <ng-container *ngIf="reply.statusInString=='ACTIVE'">
                                                                                     <button class="btn btn-default workflow-style pause-style" (click)="pauseAutoReplyWorkflow(reply)">
                                                                                         <span class="hidden-xs pause-text-style">Pause</span>
@@ -390,7 +390,7 @@
                                                                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
                                                                             <div class="auto-resp"> Auto-response to a website visit - {{i+1}} </div>
                                                                         </div>
-                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched">
+                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched && !campaign.channelCampaign">
                                                                             <ng-container *ngIf="url.statusInString=='ACTIVE'">
                                                                                     <button class="btn btn-default workflow-style pause-style" (click)="pauseClickedUrlsWorkflow(url)">
                                                                                         <span class="hidden-xs pause-text-style">Pause</span>
