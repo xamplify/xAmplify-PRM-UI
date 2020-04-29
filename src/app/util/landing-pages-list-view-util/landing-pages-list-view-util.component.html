@@ -92,7 +92,7 @@
                                             </span>
                                             <span class="gridHeader">Page</span>
                                         </th>
-                                        <th class="hidden-xs text-center">Type</th>
+                                        <th class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">Type</th>
                                         <th class="hidden-xs text-center">Created On</th>
                                         <th class="text-center" style="min-width: 200px;">Actions</th>
                                     </tr>
@@ -122,7 +122,7 @@
                                             <span class="view-banner">{{landingPage.type}}</span>
                                         </td>
 
-                                        <td class="hidden-xs text-center">
+                                        <td class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">
                                             <span *ngIf="landingPage.coBranded" class="view-banner">Co-Branded</span>
                                             <span *ngIf="!landingPage.coBranded" class="view-banner">Regular</span>
                                         </td>
@@ -130,7 +130,7 @@
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                         </td>
                                         <td id="actions-td-width-xamp">
-                                            <div class="actions-block override-actions">
+                                            <div class="actions-block override-actions min-width-icon">
                                                 <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Edit" (click)="editLandingPage(landingPage.id)">
                                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>

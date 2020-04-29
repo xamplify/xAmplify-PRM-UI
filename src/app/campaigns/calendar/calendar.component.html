@@ -52,9 +52,17 @@
 
             <ng-container *ngIf="campaign.status !== 'SCHEDULE'; else schedule">on </ng-container>
             <ng-template #schedule>for </ng-template>
-
-            <ng-container *ngIf="campaign.status === 'SAVE'; else launchTime">{{campaign.updatedTime |date:'mediumDate'}}, {{campaign.updatedTime | date:'shortTime'}}</ng-container>
-            <ng-template #launchTime>{{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}</ng-template>
+            <ng-container *ngIf="campaign.status!=='SCHEDULE'">
+                <span *ngIf="!referenceService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
+                <span *ngIf="referenceService.isSafariBrowser()">{{campaign.displayTime}}</span>
+            </ng-container> 
+            <ng-container *ngIf="campaign.status==='SCHEDULE'">
+                <span>{{campaign.campaignScheduleDateInString}}</span>
+                <br>
+                <span>{{campaign.campaignScheduleTimeInString}}</span>
+               </ng-container>
+            <!-- <ng-container *ngIf="campaign.status === 'SAVE'; else launchTime">{{campaign.updatedTime |date:'mediumDate'}}, {{campaign.updatedTime | date:'shortTime'}}</ng-container>
+            <ng-template #launchTime>{{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}</ng-template> -->
         </h6>
     </div>
 </div>

@@ -109,18 +109,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.events = [];
         this.campaigns = data;
         this.campaigns.forEach(element => {
-          let startTime;
-          if(element.status === 'SAVE'){
-            startTime = element.updatedTime;
-          } else {
-            startTime = element.launchTime;
-          }
-          let event: any = {id: element.id, title: element.campaign, start: startTime, data: element, editable: false, allDay: false};
+          let displayTime = new Date(element.utcTimeInString);
+          element.displayTime = new Date(element.utcTimeInString);
+          let event: any = {id: element.id, title: element.campaign, start: displayTime, data: element, editable: false, allDay: false};
           this.events.push(event);
         });
         $('#calendar').fullCalendar('addEventSource', this.events);
       },
-      error => console.log(error),
+      error => {
+        console.log(error);
+         this.loading = false; 
+      },
       () => {this.loading = false;}
       );
   }

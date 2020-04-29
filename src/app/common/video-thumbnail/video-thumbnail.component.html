@@ -1,3 +1,7 @@
+<ng-container *ngIf="videoFile!=undefined">
+
+
+
 <div class="clearfix" >
   <div class='thumbnail-wrapper' (click)="$event.stopPropagation();showPlayVideo(videoFile)" (mouseenter) ="mouseEnterVideo(videoFile)" (mouseleave) ="mouseLeaveVideo(videoFile)">
     <img alt="" *ngIf="!videoFile?.processed" src="assets/images/Spinner.gif" class="loader-css">
@@ -31,14 +35,15 @@
           <span *ngIf="videoFile.uploadedUserName?.length>20">...</span>
       </span>
     </span>
-    <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile.viewBy!=='DRAFT'}">
-      <span *ngIf="videoFile.viewBy!=='DRAFT'">
+    <h6 class='f-w-600 views-draft'  (click)="showPlayVideo(videoFile)" [ngClass]="{'mt7':videoFile?.viewBy!=='DRAFT'}">
+      <span *ngIf="videoFile?.viewBy!=='DRAFT'">
         <span *ngIf="videoFile.views">{{videoFile.views}} views</span>
         <span *ngIf="!videoFile.views">0 views</span>
       </span>
-      <span *ngIf="videoFile.viewBy==='DRAFT'">0 views</span>
+      <span *ngIf="videoFile?.viewBy==='DRAFT'">0 views</span>
     </h6>
-      <p *ngIf="videoFile.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
+      <p *ngIf="videoFile?.viewBy=='DRAFT'" class="draft-video mb0"> DRAFT</p>
   </a>
 </div>
 </div>
+</ng-container>

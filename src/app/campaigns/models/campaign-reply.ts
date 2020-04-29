@@ -20,4 +20,5 @@ export class Reply{
     showSelectedEmailTemplate:boolean  = false;
     defaultTemplate:boolean = false;
     replyTimeInHoursAndMinutes:string = "";
+    statusInString = 'ACTIVE';
 }

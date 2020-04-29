@@ -106,35 +106,37 @@
                                             <div class="flex-row">
                                                 <div class="item__select-box-wrapper">
                                                     <span class="select-box"> <label> <input type="checkbox" checked="checked"></label></span>
-                                                    <span class="ng-scope"> <a class="item__preview item__preview--image img-container custom"
-                          target="_BLANK"> <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.emailTemplate.subject}}">
-                          </a>
-                        </span>
+                                                    <span class="ng-scope"> 
+                                                        <a class="item__preview item__preview--image img-container custom" target="_BLANK"> 
+                                                        <img class="thumb ng-scope" style="width:98px !important" src="{{campaign.emailTemplate.subject}}">
+                                                        </a>
+                                                    </span>
                                                 </div>
                                                 <div class="item__content">
                                                     <div class="flex-row">
                                                         <span class="item__name" [title]="campaign.emailTemplate.name"><b>{{campaign.emailTemplate.name |slice:0:15}}</b><b *ngIf="campaign.emailTemplate?.name?.length>15">...</b>
-                          </span>
+                                                         </span>
                                                         <span lass="item__name" title="created on" style="float:left">
-                          <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.emailTemplate?.createdDate"></app-timestamp></span>
+                                                         <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.emailTemplate?.createdDate"></app-timestamp></span>
                                                         </span>
                                                         <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()!='PARTNER'">
                                                             <span style="float:left" title="{{campaign.emailTemplate.createdBy}}">
-                                <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
+                                                                <b>By:</b> <span>{{campaign.emailTemplate.createdBy|slice:0:12}}<span *ngIf="campaign.emailTemplate.createdBy?.length>12">...</span></span>
                                                             </span>
                                                         </ng-container>
                                                         <ng-container *ngIf="campaign.emailTemplate?.type?.toLocaleString()=='PARTNER'">
                                                             <span style="float:left" title="{{campaign.emailTemplate.vendorName}}">
-                                <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
+                                                                <b>By:</b>  <span>{{campaign.emailTemplate.vendorName|slice:0:12}}<span *ngIf="campaign.emailTemplate.vendorName?.length>12">...</span></span>
                                                             </span>
                                                         </ng-container>
                                                         <div class="item__actions">
-                                                            <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
-                              data-toggle="tooltip" data-placement="top"
-                              title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(campaign)"> <!-- (click)="preview(file)"  -->
-                                <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                             </a>
-                            </span>
+                                                            <span>
+                                                                 <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Preview"  (click)="$event.stopPropagation();getEmailTemplatePreview(campaign)"> <!-- (click)="preview(file)"  -->
+                                                                     <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                </a>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -166,24 +168,26 @@
                                                 <div class="item__content">
                                                     <div class="flex-row">
                                                         <span class="item__name" [title]="campaign.landingPage.name"><b>{{campaign.landingPage.name |slice:0:15}}</b>
-                            <b *ngIf="campaign.landingPage?.name?.length>20">...</b>
-                          </span>
+                                                             <b *ngIf="campaign.landingPage?.name?.length>20">...</b>
+                                                        </span>
                                                         <br>
                                                         <span lass="item__name" title="created on">
-                          <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.landingPage?.createdDateInString"></app-timestamp></span>
+                                                        <span>
+                                                            <app-timestamp [isOnlyDate]="true" [dateAndTime]="campaign?.landingPage?.createdDateInString"></app-timestamp></span>
                                                         </span>
                                                         <ng-container>
                                                             <span style="float:left" title="{{campaign?.landingPage?.createdUser}}">
-                                <b>By:</b> <span>{{campaign?.landingPage?.createdUser|slice:0:12}}<span *ngIf="campaign?.landingPage?.createdUser?.length>12">...</span></span>
+                                                                 <b>By:</b> <span>{{campaign?.landingPage?.createdUser|slice:0:12}}<span *ngIf="campaign?.landingPage?.createdUser?.length>12">...</span></span>
                                                             </span>
                                                         </ng-container>
                                                         <div class="item__actions">
-                                                            <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
-                              data-toggle="tooltip" data-placement="top"
-                              title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign)">
-                                <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
-                             </a>
-                            </span>
+                                                            <span>
+                                                                 <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Preview"  (click)="$event.stopPropagation();showLandingPagePreview(campaign)">
+                                                                    <i class="fa fa-external-link-square"  aria-hidden="true" style="padding-top: 1px !important;; font-size: 20px; color: #5a5a5a"></i>
+                                                                </a>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -264,7 +268,26 @@
                                                         <form class="role add-reply" id="form-{{reply.divId}}">
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12">
-                                                                    <div class="auto-resp">Auto-response to your e-mail-{{i+1}} </div>
+                                                                    <div class="col-xs-12 p0">
+                                                                        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
+                                                                            <div class="auto-resp">Auto-response to your e-mail-{{i+1}} </div>
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched">
+                                                                            <ng-container *ngIf="reply.statusInString=='ACTIVE'">
+                                                                                    <button class="btn btn-default workflow-style pause-style" (click)="pauseAutoReplyWorkflow(reply)">
+                                                                                        <span class="hidden-xs pause-text-style">Pause</span>
+                                                                                        <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
+                                                                                    </button>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="reply.statusInString=='INACTIVE'">
+                                                                                <button class="btn btn-default workflow-style resume-style" (click)="resumeAutoReplyWorkflow(reply)">
+                                                                                    <span class="hidden-xs resume-text-style">Resume</span>
+                                                                                    <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
+                                                                                </button>
+                                                                            </ng-container>
+                                                                        </div>
+                                                                    </div>
+                                                                    
                                                                     <div class="col-xs-6">
                                                                         <h5 for="reason">Reason</h5>
                                                                         <h6 *ngIf="reply.actionId ==0"> <input type="text" style="width:100%;height: 22px;" disabled value="Email is not opened"></h6>
@@ -303,6 +326,7 @@
                                                                         <h5>Subject</h5>
                                                                         <h6><input type="text" style="width:100%;height: 22px;" disabled value="{{reply.subject}}"></h6>
                                                                     </div>
+                                                                  
                                                                 </div>
                                                                 <div class="col-xs-12" style="padding: 0px 29px;">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
@@ -361,7 +385,26 @@
                                                         <form class="role" id="form-{{url.divId}}" class="add-click">
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12">
-                                                                    <div class="auto-resp"> Auto-response to a website visit - {{i+1}} </div>
+
+                                                                    <div class="col-xs-12 p0">
+                                                                        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-10">
+                                                                            <div class="auto-resp"> Auto-response to a website visit - {{i+1}} </div>
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-2" *ngIf="campaign.launched">
+                                                                            <ng-container *ngIf="url.statusInString=='ACTIVE'">
+                                                                                    <button class="btn btn-default workflow-style pause-style" (click)="pauseClickedUrlsWorkflow(url)">
+                                                                                        <span class="hidden-xs pause-text-style">Pause</span>
+                                                                                        <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
+                                                                                    </button>
+                                                                            </ng-container>
+                                                                            <ng-container *ngIf="url.statusInString=='INACTIVE'">
+                                                                                <button class="btn btn-default workflow-style resume-style" (click)="resumeClickedUrlsWorkflow(url)">
+                                                                                    <span class="hidden-xs resume-text-style">Resume</span>
+                                                                                    <i class="fa fa-play" aria-hidden="true" data-toggle="tooltip"></i>
+                                                                                </button>
+                                                                            </ng-container>
+                                                                        </div>
+                                                                    </div>
                                                                     <div class="col-xs-6">
                                                                         <h5 for="reason">When To Send Email</h5>
                                                                         <h6 *ngIf="url.actionId ==19"><input type="text" style="width:100%;height: 22px;" disabled value="Send if not clicked"></h6>
@@ -399,24 +442,24 @@
                                                                             <h5>Selected Email Template</h5>
                                                                         </div>
                                                                         <app-loader [model]="campaignEmailTemplate.httpRequestLoader.isHorizontalCss" *ngIf="campaignEmailTemplate.httpRequestLoader.isLoading"></app-loader>
-                                                                       <!--  <app-error-pages *ngIf="campaignEmailTemplate.httpRequestLoader.isServerError"></app-error-pages> -->
                                                                         <div class="col-xs-12 p0">
                                                                             <div class="col-xs-8 p0">
-                                                                                <img (click)="showEmailTemplate(campaign,url.emailTemplate)" title="preview" data-toggle="tooltip" data-placement="top" class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{url.emailTemplate.subject}}">
+                                                                                <img alt="Email Template" (click)="showEmailTemplate(campaign,url.emailTemplate)" title="preview" data-toggle="tooltip" data-placement="top" class="thumb ng-scope pointer" style="width: auto; height: 64px;float: left;" src="{{url.emailTemplate.subject}}">
                                                                                 <div class="col-xs-4">
                                                                                     <span class="item__name" [title]="url.emailTemplate.name" data-toggle="tooltip" data-placement="top"><b>{{url.emailTemplate.name |slice:0:35}}</b><b *ngIf="url.emailTemplate?.name?.length>35">...</b>
-                                              </span>
-                                                                                    <span><app-timestamp [isOnlyDate]="true" [dateAndTime]="url.emailTemplate.createdDate">
-                                                  </app-timestamp>
-                                                 </span>
+                                                                                    </span>
+                                                                                    <span>
+                                                                                        <app-timestamp [isOnlyDate]="true" [dateAndTime]="url.emailTemplate.createdDate">
+                                                                                        </app-timestamp>
+                                                                                    </span>
                                                                                     <span *ngIf="url.emailTemplate.createdBy?.length>20" data-toggle="tooltip" data-placement="top" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy|slice:0:20}}....</span>
                                                                                     <span *ngIf="url.emailTemplate.createdBy?.length<=20" data-toggle="tooltip" data-placement="top" title="{{url.emailTemplate.createdBy}}">{{url.emailTemplate.createdBy}}</span>
                                                                                     <span>
-                                                    <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
-                                                    title="Preview"  (click)="$event.stopPropagation();showEmailTemplate(campaign,url.emailTemplate)">
-                                                      <i class="fa fa-external-link-square preview-btn"  aria-hidden="true"></i>
-                                                   </a>
-                                                 </span>
+                                                                                        <a class="fm external-link" target="_BLANK" data-toggle="tooltip" data-placement="top"
+                                                                                        title="Preview"  (click)="$event.stopPropagation();showEmailTemplate(campaign,url.emailTemplate)">
+                                                                                        <i class="fa fa-external-link-square preview-btn"  aria-hidden="true"></i>
+                                                                                    </a>
+                                                                                    </span>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -482,11 +525,11 @@
                         <a *ngIf="(hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor) && campaign.channelCampaign && campaign.redistributedCount==0" data-toggle="tooltip" data-placement="top" title="No Redistributed Campaigns">
                             <span class="circled-number disabled">{{campaign.redistributedCount}}</span>
                         </a>
-                        <a *ngIf="(campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
+                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||hasAllAccess || (hasStatsRole || hasCampaignRole) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor)" data-rel="fancybox-button" (click)="navigateCampaignAnalytics(campaign)"
                             data-toggle="tooltip" data-placement="top" title="Analytics">
                             <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
+                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
                             (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
                             <i class="fa fa-files-o"></i>
                         </a>

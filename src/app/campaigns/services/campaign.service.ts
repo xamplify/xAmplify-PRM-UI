@@ -847,4 +847,20 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
+    changeWorkflowStatus(workflowId:number,workflowStatus:string,workflowType:number){
+        let url = this.URL+"campaign/";
+        if(workflowType==1 && workflowStatus=='INACTIVE'){
+            url+= 'pauseAutoReplyWorkflow';
+        }else if(workflowType==1 && workflowStatus=='ACTIVE'){
+            url+= 'resumeAutoReplyWorkflow';
+        }else if(workflowType==2 && workflowStatus=='INACTIVE'){
+            url+= 'pauseUrlWorkflow';
+        }else if(workflowType==2 && workflowStatus=='ACTIVE'){
+            url+= 'resumeUrlWorkflow';
+        }
+        return this.http.get(url+"/"+workflowId+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
 }
