@@ -290,15 +290,6 @@ export class ManageFormComponent implements OnInit, OnDestroy {
 
     }
 
-    showFormUrl(form: Form) {
-        this.form = form;
-        this.copiedLinkCustomResponse = new CustomResponse();
-        $('#form-url-modal').modal('show');
-    }
-
-
-
-
       showFormUrl(form:Form){
           this.form = form;         
           this.copiedLinkCustomResponse = new CustomResponse();

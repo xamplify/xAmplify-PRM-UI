@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input,Renderer } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -44,7 +44,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     iframeEmbedUrl: string = "";
     deleteAndEditAccess = false;
     categoryId: number = 0;
-    isListView = false;
     isGridView = false;
     isFolderGridView = false;
     exportObject:any = {};
@@ -55,7 +54,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public vanityUrlService: VanityURLService) {
+        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public vanityUrlService: VanityURLService,public renderer:Renderer) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
@@ -299,8 +298,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             }
             let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
             if(showList){
-                this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
-                this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                // this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                // this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
                 if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                     this.modulesDisplayType.isListView = true;
                     this.modulesDisplayType.isGridView = false;

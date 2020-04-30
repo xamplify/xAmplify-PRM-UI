@@ -871,13 +871,14 @@ export class CampaignService {
 
     getCampaignContactsOrPartners(pagination:Pagination){
         return this.http.post(this.URL + "campaign/getCampaignContactsOrPartners?access_token=" + this.authenticationService.access_token, pagination)
-
+        .map(this.extractData)
+            .catch(this.handleError);
+	}
     // Added by Vivek for Vanity URL
 
     getUserCampaignReportForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto) {
         var url = this.URL + "dashboard/views/get-user-campaign-report?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, dashboardAnalyticsDto)
-
             .map(this.extractData)
             .catch(this.handleError);
     }

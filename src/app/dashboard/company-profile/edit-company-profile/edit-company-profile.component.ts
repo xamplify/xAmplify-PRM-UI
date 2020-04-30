@@ -418,8 +418,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             'hasCompany': data.hasCompany,
                             'roles': data.roles,
                             'campaignAccessDto': data.campaignAccessDto,
-                            'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName']
-							 'source':data.source	
+                            'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
+							'source':data.source	
                         };
                         localStorage.clear();
                         if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {

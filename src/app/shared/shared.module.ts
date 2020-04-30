@@ -19,9 +19,6 @@ import { LoadingModule } from 'ngx-loading';
 
 /*import { LoaderComponent } from '../loader/loader.component';
 */import { CountLoaderComponent } from '../count-loader/count-loader.component';
-
-
-import { CountLoaderComponent } from '../count-loader/count-loader.component';
 import { BoxLoaderComponent } from '../box-loader/box-loader.component';
 import { DynamicGridLoaderComponent } from '../dynamic-grid-loader/dynamic-grid-loader.component';
 
