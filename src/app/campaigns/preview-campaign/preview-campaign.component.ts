@@ -148,7 +148,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     senderMergeTag:SenderMergeTag = new SenderMergeTag();
     categoryNames: any;
     folderPreviewLoader = true;
-
+    campaignPartnersOrContactsPagination:Pagination = new Pagination();
+    campaignPartnersOrContactsPreviewError = false;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -213,8 +214,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
-        this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
-        if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
+        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination)
+        // this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
+        // if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
         this.selectedUserlistIds = this.campaign.userListIds;
         this.isChannelCampaign = this.campaign.channelCampaign;
@@ -275,12 +277,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        if ( !this.campaign.campaignLocation.country ) {
            this.campaign.campaignLocation.country = ( this.countryNames.countries[0] );
        }
-       this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
-       if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
-
-      if ( this.campaign.campaignScheduleType === 'SAVE' ) {
-    } else if( this.campaign.campaignScheduleType === 'SCHEDULE' ){
-    }
+      //  this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
+      //  if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
     this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
     for(let i=0; i< this.timezonesCampaignEventTime.length; i++){
       if(this.timezonesCampaignEventTime[i].timezoneId === this.campaign.campaignEventTimes[0].timeZone){
@@ -1145,6 +1143,9 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
         this.emailActionList(this.previewCampaignId, 'open', this.pagination);
       }else if(event.type === 'Clicked URL'){
         this.emailActionList(this.previewCampaignId, 'click', this.pagination);
+      }else if(event.type==='contactsOrPartners'){
+        this.campaignPartnersOrContactsPagination.pageIndex = event.page;
+        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
       }
   }
   paginationDropdown(pagination:Pagination){
@@ -1160,6 +1161,8 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.emailActionList(this.previewCampaignId, 'open', pagination);
     }else if(this.paginationType === 'Clicked URL'){
       this.emailActionList(this.previewCampaignId, 'click', pagination);
+    }else if(this.paginationType=='contactsOrPartners'){
+      this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
     }
   }
   closeModalpreview(){
@@ -1208,19 +1211,19 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       }
       if(isOrgAdmin){
           if(this.campaign.channelCampaign){
-              this.contactType = "partner list(s)";
+              this.contactType = "partner(s)";
               this.showContactType = false;
           }else{
               if(this.campaign.nurtureCampaign){
-                  this.contactType = " contact list(s)";
+                  this.contactType = " contact(s)";
               }else{
-                  this.contactType = " partner / recepient list(s)";
+                  this.contactType = " partner / recepient (s)";
               }
               this.showContactType = true;
           }
 
       }else if(isVendor|| this.authenticationService.isAddedByVendor){
-          this.contactType = "partner list(s)";
+          this.contactType = "partner(s)";
           this.showContactType = false;
       }
   }
@@ -1303,18 +1306,70 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       () => this.xtremandLogger.info( "Finished changeWorkflowStatus()" ) );
   }
 
+pauseOrResume(status:string,type:number,reply:Reply,url:Url){
+  let self = this;
+  swal({
+      title: 'Are you sure to '+status+'?',
+      type: 'warning',
+      showCancelButton: true,
+      swalConfirmButtonColor: '#54a7e9',
+      swalCancelButtonColor: '#999',
+      confirmButtonText: 'Yes, '+status+' it!',
+      allowOutsideClick: false
+  }).then(function () {
+    if(type==1){
+      self.changeWorkFlowStatus(reply.id,'ACTIVE',1,reply,new Url());
+    }else if(type==2){
+      self.changeWorkFlowStatus(reply.id,'INACTIVE',1,reply,new Url());
+    }else if(type==3){
+      self.changeWorkFlowStatus(url.id,'ACTIVE',2,new Reply(),url);
+    }else if(type==4){
+      self.changeWorkFlowStatus(url.id,'INACTIVE',2,new Reply(),url);
+    }
+    
+  }, function (dismiss: any) {
+      console.log('you clicked on option' + dismiss);
+  });
+}
+
   resumeAutoReplyWorkflow(reply:Reply){
-    this.changeWorkFlowStatus(reply.id,'ACTIVE',1,reply,new Url());
+    this.pauseOrResume('Resume',1,reply,new Url());
   }
 
   pauseAutoReplyWorkflow(reply:Reply){
-    this.changeWorkFlowStatus(reply.id,'INACTIVE',1,reply,new Url());
+    this.pauseOrResume('Pause',2,reply,new Url());
   }
   resumeClickedUrlsWorkflow(url:Url){
-    this.changeWorkFlowStatus(url.id,'ACTIVE',2,new Reply(),url);
+    this.pauseOrResume('Resume',3,new Reply(),url);
    }
  
    pauseClickedUrlsWorkflow(url:Url){
-    this.changeWorkFlowStatus(url.id,'INACTIVE',2,new Reply(),url);
+    this.pauseOrResume('Pause',4,new Reply(),url);
+   }
+
+   listCampaignPartnersOrContacts(campaignPartnersOrContactsPagination:Pagination){
+     this.isContactListLoader = true;
+     this.paginationType = 'contactsOrPartners';
+     this.campaignPartnersOrContactsPreviewError = false;
+     campaignPartnersOrContactsPagination.campaignId = this.campaign.campaignId;
+     this.campaignService.getCampaignContactsOrPartners(campaignPartnersOrContactsPagination).
+     subscribe(
+      ( data: any ) => {
+        let response = data.data;
+        campaignPartnersOrContactsPagination.totalRecords = response.totalRecords;
+        campaignPartnersOrContactsPagination = this.pagerService.getPagedItems(campaignPartnersOrContactsPagination, response.list);
+        this.isContactListLoader = false;
+      },
+      error => {
+        this.campaignPartnersOrContactsPreviewError = true;
+        this.isContactListLoader = false;
+        
+        },
+      () => this.xtremandLogger.info( "Finished listCampaignPartnersOrContacts()" ) );
+     
+   }
+
+   changeCampaignUserStatus(campaignUser:any,status:string){
+     campaignUser.status = status;
    }
 }

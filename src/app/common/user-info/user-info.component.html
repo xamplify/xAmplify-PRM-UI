@@ -2,7 +2,9 @@
 	<span *ngIf="(userInfo.firstName |slice:0:1)!=null || (userInfo.emailId |slice:0:1)!=null" class='profile' [style.background-color]="backgroudColor">
 	<span class='uppercase' *ngIf="isPartnerInfo && userInfo.contactCompany |slice:0:1!=null">{{userInfo.contactCompany |slice:0:1}}
 	<span class='uppercase' *ngIf="(userInfo.contactCompany |slice:0:1)==null">{{userInfo.emailId |slice:0:1}}</span></span>
-	<span class='uppercase' *ngIf="!isPartnerInfo">{{userInfo.firstName |slice:0:1}}<span *ngIf="(userInfo.firstName |slice:0:1)==null">{{userInfo.emailId |slice:0:1}}</span> </span>
+	<span class='uppercase' *ngIf="!isPartnerInfo && userInfo.firstName?.length>0">
+	{{userInfo.firstName |slice:0:1}} </span>
+	<span class='uppercase' *ngIf="!isPartnerInfo && userInfo.firstName?.length==0">{{userInfo.emailId |slice:0:1}}</span>
 	</span>
 	<span class="ml10" *ngIf="(userInfo.firstName |slice:0:1)==null && (userInfo.emailId |slice:0:1)==null">-
 	</span>
