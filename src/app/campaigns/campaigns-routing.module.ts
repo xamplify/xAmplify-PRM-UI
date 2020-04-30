@@ -24,12 +24,18 @@ export const campaignRoutes: Routes = [
   { path: "social/:alias", component: SocialCampaignComponent },
   { path: "edit", component: CreateCampaignComponent },
   { path: "manage", component: ManagePublishComponent },
-  { path: "manage/:teamMemberId", component: ManagePublishComponent },
+  { path: "manage/:categoryId", component: ManagePublishComponent },
+  { path: "manage/tm/:teamMemberId", component: ManagePublishComponent },
+  { path: "manage/tm/:teamMemberId/", component: ManagePublishComponent },
+  { path: "manage/:categoryId/:teamMemberId", component: ManagePublishComponent },
   { path: ":campaignId/details", component: AnalyticsComponent },
   { path: ":campaignId/checkin", component: EventCheckInComponent },
   { path: ":campaignId/re-distributed", component: ReDistributedComponent },
   { path: "partner", component: PartnerCampaignsComponent },
   { path: "partner/:type", component: PartnerCampaignsComponent },
+  { path: "partner/:type/", component: PartnerCampaignsComponent },
+  { path: "partner/f/:categoryId", component: PartnerCampaignsComponent },
+  { path: "partner/f/:categoryId/:type", component: PartnerCampaignsComponent },
   { path: "vendor/:type", component: PartnerCampaignsComponent },
   { path: "re-distribute-campaign", component: EditPartnerCampaignsComponent },
   { path: "preview/:id", component: PreviewCampaignComponent },
@@ -42,6 +48,8 @@ export const campaignRoutes: Routes = [
   { path: ":campaignId/remove-access", component: PreviewPartnersComponent },
   { path: "calendar", component: CalendarComponent },
   { path: "calendar/:teamMemberId", component: CalendarComponent },
+  { path: "calendar/f/:categoryId", component: CalendarComponent },
+  { path: "calendar/:teamMemberId/:categoryId", component: CalendarComponent },
   { path: "sms", component: CreateSmsCampaignComponent }
 ];
 

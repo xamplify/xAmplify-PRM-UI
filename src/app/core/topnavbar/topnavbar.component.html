@@ -52,7 +52,11 @@
 							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</button>
 					</li> -->
-                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && !authenticationService.vanityURLEnabled">
+
+                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'"  && !authenticationService.vanityURLEnabled">
+
+                    
+
                         <!-- <button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
 						(click)="openRequestAsVendorModal()">Refer a vendor</button> -->
                         <div class="btn-group refer-vendor-button">
@@ -210,10 +214,10 @@
                                 <a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i class="icon-lock"></i> Lock Screen
                                 </a>
                             </li>
-                            <li>
-                                <a *ngIf="authenticationService.checkSamlSettingsUserRoles()" [routerLink]="['/home/dashboard/sso-samlsecurity']"> <i class="fa fa-cog"></i> Saml Settings
+                            <!-- <li>
+                                <a *ngIf="authenticationService.checkSamlSettingsUserRoles()" [routerLink]="['/home/dashboard/sso-samlsecurity']"> <i class="fa fa-cog"></i> SAML Settings
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
                                 <a> <i class="icon-key"></i> Log Out

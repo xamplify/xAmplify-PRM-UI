@@ -59,7 +59,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     redistributeCampaignUrl='https://xamplify.io/embed/W4UacK';
     addContactsUrl = 'https://xamplify.io/embed/epPjw1';
     logedInCustomerCompanyName: string;
-
+    sourceType = "";
     videoFile:any;
 
     constructor(
@@ -69,6 +69,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         public properties: Properties, public xtremandLogger:XtremandLogger,
         public sanitizer:DomSanitizer, public videoFileService: VideoFileService
     ) {
+      this.sourceType = this.authenticationService.getSource();
         this.dashboardReport = new DashboardReport();
         this.userDefaultPage = new UserDefaultPage();
         this.hasVideoRole = this.referenceService.hasRole(this.referenceService.roles.videRole);

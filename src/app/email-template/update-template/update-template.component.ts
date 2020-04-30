@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { EmailTemplateService } from '../services/email-template.service';
 import { UserService } from '../../core/services/user.service';
@@ -39,26 +39,35 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
     emailTemplateTypes = ["VIDEO","REGULAR"];
     loggedInUserId = 0;
     showDropDown = false;
+    categoryNames: any;
+    routerLink = "/home/emailtemplates/manage";
     constructor(public emailTemplateService: EmailTemplateService, private userService: UserService,
             private router: Router, private emailTemplate: EmailTemplate, private logger: XtremandLogger,
             private authenticationService:AuthenticationService,public refService:ReferenceService,
-            public callActionSwitch: CallActionSwitch) {
+            public callActionSwitch: CallActionSwitch,private route:ActivatedRoute) {
         logger.debug("updateTemplateComponent() Loaded");
         CKEDITOR.config.allowedContent = true;
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+            this.routerLink+= "/"+categoryId;
+        }
         this.loggedInUserId = this.authenticationService.getUserId();
         if(this.emailTemplateService.emailTemplate == undefined){
-            this.router.navigate(["/home/emailtemplates/manage"]);
+            this.navigateToManageSection();
         }
        this.listAvailableNames();
+       this.getCategories();
         this.model.isRegularUpload =0;
         if (emailTemplateService.emailTemplate != undefined) {
-            let body  = emailTemplateService.emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
+            let emailTemplate = emailTemplateService.emailTemplate;
+            let body  = emailTemplate.body.replace(this.emailOpenTrackingUrl,"");
             this.model.content = body;
+            this.model.categoryId = emailTemplate.categoryId;
             this.isValidType = true;
-            this.model.draft = emailTemplateService.emailTemplate.draft;
+            this.model.draft = emailTemplate.draft;
             this.mycontent = this.model.content;
-            this.model.templateName = emailTemplateService.emailTemplate.name;
-            if(emailTemplateService.emailTemplate.source.toString()!="MANUAL"){
+            this.model.templateName = emailTemplate.name;
+            if(emailTemplate.source.toString()!="MANUAL"){
                 if(this.model.draft){
                     this.showDropDown = true;
                     this.model.uploadType = "REGULAR";
@@ -67,6 +76,16 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }
 
     }
+
+    getCategories(){
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.categoryNames = data.data;
+            },
+            error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+            () => this.logger.info( "Finished getCategoryNamesByUserId()" ) );
+    }
+
     
     listAvailableNames(){
        this.emailTemplateService.getAvailableNames(this.authenticationService.getUserId()).subscribe(
@@ -128,6 +147,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplate.createdBy = this.emailTemplateService.emailTemplate.createdBy;
         this.emailTemplate.onDestroy = isOnDestroy;
         this.emailTemplate.draft = isOnDestroy;
+        this.emailTemplate.categoryId = this.model.categoryId;
         if(this.showDropDown){
             if(this.model.uploadType=="REGULAR"){
                 this.emailTemplate.regularTemplate = true;
@@ -154,7 +174,6 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
             this.emailTemplate.user.userId = this.loggedInUserId;
             if(this.emailTemplateService.emailTemplate.source.toString()=="MARKETO"){
                 if(!this.showDropDown){
-                 
                  this.emailTemplate.regularTemplate = this.emailTemplateService.emailTemplate.regularTemplate;
                  this.emailTemplate.regularCoBrandingTemplate = this.coBrandingLogo;
                  this.emailTemplate.videoTemplate = this.emailTemplateService.emailTemplate.videoTemplate;
@@ -178,7 +197,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                 if(data.statusCode==703){
                     this.refService.isUpdated = true;
                     this.emailTemplateService.emailTemplate = new EmailTemplate();
-                    this.router.navigate(["/home/emailtemplates/manage"]);
+                    this.navigateToManageSection();
                 }else{
                     this.clickedButtonName = "";
                     this.isVideoTagError = true;
@@ -207,7 +226,7 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
                     if ( data.statusCode == 8013 ) {
                         this.refService.isUpdated = true;
                         this.emailTemplateService.emailTemplate = new EmailTemplate();
-                        this.router.navigate( ["/home/emailtemplates/manage"] );
+                       this.navigateToManageSection();
                     } else {
                         this.clickedButtonName = "";
                         this.isVideoTagError = true;
@@ -305,7 +324,17 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         }
     }
 
+    selectCategory(event:any){
+        this.model.categoryId = event;
+    }
 
-
+    navigateToManageSection(){
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if(categoryId>0){
+          this.router.navigate(["/home/emailtemplates/manage/"+categoryId]);
+        }else{
+          this.router.navigate(["/home/emailtemplates/manage"]);
+        }
+      }
 
 }

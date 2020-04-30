@@ -70,7 +70,9 @@ export class AuthenticationService {
   vanityURLEnabled: boolean = false;
   vanityURLink: string = "";
   dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
-  constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger) {
+ vendorRoleHash = "";
+ partnerRoleHash = ""; 
+ constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
@@ -80,7 +82,9 @@ export class AuthenticationService {
 
     this.clientId = this.envService.clientId;
     this.clientSecret = this.envService.clientSecret;
-    this.imagesHost = this.envService.imagesHost;
+    this.imagesHost = this.envService.imagesHost; 
+    this.vendorRoleHash = this.envService.vendorRoleHash;
+    this.partnerRoleHash = this.envService.partnerRoleHash;
   }
 
   getOptions(): RequestOptions {
@@ -122,7 +126,8 @@ export class AuthenticationService {
             'hasCompany': res.json().hasCompany,
             'roles': res.json().roles,
             'campaignAccessDto': res.json().campaignAccessDto,
-            'logedInCustomerCompanyNeme': res.json().companyName
+            'logedInCustomerCompanyNeme': res.json().companyName,
+             'source':res.json().source
           };
           
           if(this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles){
@@ -130,6 +135,7 @@ export class AuthenticationService {
           }
 
           localStorage.setItem('currentUser', JSON.stringify(userToken));
+          localStorage.setItem('defaultDisplayType',res.json().modulesDisplayType);
           this.access_token = this.map.access_token;
           this.refresh_token = this.map.refresh_token;
           this.expires_in = this.map.expires_in;
@@ -173,6 +179,13 @@ export class AuthenticationService {
       this.xtremandLogger.error('error' + error);
     }
   }
+
+	getSource(){
+		const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser != null) {
+            return currentUser.source;
+        }
+	}
   hasCompany(): boolean {
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -415,6 +428,7 @@ export class AuthenticationService {
     module.isOnlyPartner = false;
     module.isReDistribution = false;
     this.isShowRedistribution = false;
+        this.enableLeads = false;
     swal.close();
     if (!this.router.url.includes('/userlock')) {
       if (this.envService.CLIENT_URL === 'https://xamplify.io/') {

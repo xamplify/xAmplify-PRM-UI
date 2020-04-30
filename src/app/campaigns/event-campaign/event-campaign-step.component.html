@@ -33,9 +33,16 @@ a.disabled {
       <li *ngIf="reDistributeEvent || reDistributeEventManage; else other">Redistribute Event Campaign</li>
       <ng-template #other><li>Event Campaign</li></ng-template>
 		</ul>
+		 <div id="folder-margin-xamp">
+                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+            </div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
 	<div class="page-bar" [hidden]="loader">
+	 <app-response-message class="pg8" [customResponse]="folderCustomResponse" *ngIf="folderCustomResponse.isVisible">
+            </app-response-message>
+	<div [hidden]="isEditPartnerTemplate">
+	<ngx-loading [show]="completeLoader"[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="container"
 			style="width: 100%; border-radius: 0; border-top: 0;box-shadow: 0 0 5px rgba(0, 0, 0, .4); padding-bottom: 10px;">
 			<div class="alert-danger alert-error" *ngIf="eventError.eventExpiredError" style="margin-top: 19px;font-weight: 600;"> This campaign is no longer available for redistribution.</div>
@@ -111,6 +118,21 @@ a.disabled {
 									style="color: red">Title already Exists</div>
 							</div>
 						</div>
+
+						<div class="form-group">
+							<label for="hostedBy" class="col-sm-3 labal-css color-css">Folder<span class=text-danger>*</span></label>
+							<div class="col-sm-9">
+								<select class="form-control" [(ngModel)]="eventCampaign.categoryId"	[ngModelOptions]="{standalone: true}">
+									<option *ngFor="let category of categoryNames" [value]="category.id">
+									 {{category.name}}
+								</option>
+								</select>
+								<input [attr.disabled]="(isPreviewEvent)? '' : null" *ngIf="isPreviewEvent" type="text" class="form-control" [(ngModel)]="eventCampaign.email"
+									[ngModelOptions]="{standalone: true}">
+							</div>
+						</div>
+
+
 						<div class="form-group">
 							<label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
 								By <span class=text-danger>*</span>
@@ -226,14 +248,9 @@ a.disabled {
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
                                                             <div class="col-sm-1 ui-switch-custom-div">
-                                                                <!-- <ui-switch  [(ngModel)]="p" [checked]="pushToMarketo" (change)="pushMarketo($event)" [ngModelOptions]="{standalone: true}"></ui-switch> -->
-                                                                <switch [status]="false" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" 
-                                                                [size]="callActionSwitch.size" (click)="pushToCrm()"
-                                                                    id="falseAction">
+                                                                <switch [status]="eventCampaign.pushToMarketingAutomation" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
+                                                                    (statusChange)="pushToCrm()">
                                                                 </switch>
-                                                               <!--  <switch [status]="true" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (click)="pushMarketo(pushToMarketo)"
-                                                                    id="trueAction" *ngIf="pushToMarketo">
-                                                                </switch> -->
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -10px">
                                                                 <span style="cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="top" title="Push your leads into marketing automation">
@@ -253,7 +270,7 @@ a.disabled {
                                                                         <input class="pos" name="vehicle1" type="checkbox" value="">
                                                                     </div> -->
                                                                     <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('marketo', $event)">
+                                                                            <input type="checkbox" (click)="pushToCrmRequest('marketo', $event)" [checked]="eventCampaign.pushToMarketo">
                                                                             <span class="checkmark"></span>
                                                                           </label>
                                                                     <img class="image-size" src="assets/images/crm/marketo-crm.png">
@@ -270,7 +287,7 @@ a.disabled {
                                                                         <input class="pos" name="vehicle1" type="checkbox" value="">
                                                                     </div> -->
                                                                     <label class="customcheck">
-                                                                            <input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)" >
+                                                                            <input type="checkbox" (click)="pushToCrmRequest('hubspot', $event)"  [checked]="eventCampaign.pushToHubspot">
                                                                             <span class="checkmark"></span>
                                                                           </label>
                                                                     <img class="image-size" src="assets/images/crm/hubspot-crm.png">
@@ -987,6 +1004,7 @@ a.disabled {
                             <span class="gridHeader">List Name</span>
                         </th>
                           <th style="text-align: center;" *ngIf="showContactType">Type</th>
+                          <th style="text-align: center;">Type</th>
                           <th class="custom-center">Uploaded Date</th>
                           <th class="custom-center">Preview</th>
                         </tr>
@@ -1004,6 +1022,10 @@ a.disabled {
                           </td>
                           <td class='text-center m0' *ngIf="showContactType"><ng-container *ngIf="contactList.partnerUserList"> Partners </ng-container> <ng-container
                               *ngIf="!contactList.partnerUserList"> Contacts </ng-container>
+                          </td>
+                           <td style="text-align:center" class="moreipsis">
+                              <span *ngIf="contactList.publicList">Public</span>
+							<span *ngIf="!contactList.publicList">Private</span>
                           </td>
 			      							<td class="text-center">
                             	<app-timestamp *ngIf="!referenceService.isSafariBrowser()" [isOnlyDate]="true" [dateAndTime]="contactList.createdDate"> </app-timestamp>
@@ -1046,16 +1068,20 @@ a.disabled {
                   <input type="text" [(ngModel)]="emailTemplateSearchInput"	[ngModelOptions]="{standalone: true}" class="form-control"
                     placeholder="Search for a template" (keypress)="eventHandler($event.keyCode)">
                   <button class="glyphicon glyphicon-remove search-box-item-clear"	style="padding: 5px;" *ngIf="emailTemplateSearchInput"
-                    (click)="emailTemplateSearchInput='';"></button>
+                    (click)="emailTemplateSearchInput='';searchEmailTemplate()"></button>
                   <button type="submit" class="search-box-item-click email-search"	(click)="searchEmailTemplate()">
                     <i class="fa fa-search"	style="font-size: 16px !important; padding: 5px !important;"></i>
                   </button>
-                </div>
+				</div>
+				<button type="submit" class="campaign-email-template-filter-icon" (click)="showFolderFilterPopup()">
+					<i class="fa fa-filter cesf-xamp requried" *ngIf="selectedFolderIds?.length>0"></i>
+					<i class="fa fa-filter cesf-xamp" *ngIf="selectedFolderIds?.length==0"></i>
+				</button>
                 </div>
 
 				    	<div class="portlet-body clearfix">
                  <section  style="min-height: 200px;">
-                 <ng-container *ngIf="showSelectedTemplate && eventCampaign.selectedEditEmailTemplate.id"><!-- !hideCoBrandedEmailTemplate -->
+                 <ng-container *ngIf="showSelectedEmailTemplate && eventCampaign.selectedEditEmailTemplate.id"><!-- !hideCoBrandedEmailTemplate -->
                           <div  *ngIf="emailTemplatesPagination.totalRecords>0 && emailTemplatesPagination.pageIndex==1">
                          <ul class="content__list">
                             <li class="list__item" [class.list__item--selected]="eventCampaign.emailTemplate.id === eventCampaign.selectedEditEmailTemplate.id" (click)="emailTemplateSelection(eventCampaign.selectedEditEmailTemplate)">
@@ -1078,18 +1104,21 @@ a.disabled {
                                   <div class="flex-row">
                                     <span class="item__name"
                                       [title]="eventCampaign.selectedEditEmailTemplate.name"><b>{{eventCampaign.selectedEditEmailTemplate.name |slice:0:15}}</b><b *ngIf="eventCampaign.selectedEditEmailTemplate?.name?.length>15">...</b>
-                                    </span>
-                                    <div class="item__last-modified">
-                                  <span [title]="eventCampaign.selectedEditEmailTemplate.createdBy"><span>By: </span>{{eventCampaign.selectedEditEmailTemplate.createdBy | slice:0:15}}
-                                  <span *ngIf="eventCampaign.selectedEditEmailTemplate.createdBy?.length>15">...</span>
-                                  </span>
-                                </div>
+									</span>
+									<br>
+									<span class="item__name"  [title]="eventCampaign.selectedEditEmailTemplate.createdBy"><span>By: </span>{{eventCampaign.selectedEditEmailTemplate.createdBy | slice:0:12}}
+									<span *ngIf="eventCampaign.selectedEditEmailTemplate.createdBy?.length>12">...</span>
+									</span>
+									<br>
                                     <span lass="item__name" title="created on" style="float:left">
-                                        <!-- <b>Created On:</b>{{campaign.emailTemplate.createdDate}} -->
                                         <span><app-timestamp [isOnlyDate]="true"
                                           [dateAndTime]="eventCampaign?.selectedEditEmailTemplate?.createdDate">
                                         </app-timestamp></span>
-                                    </span>
+									</span>
+									<span *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{eventCampaign?.selectedEditEmailTemplate?.category}}">
+										<b>Folder:</b><font>{{eventCampaign?.selectedEditEmailTemplate?.category|slice:0:5}}</font>
+										<font *ngIf="eventCampaign?.selectedEditEmailTemplate?.category?.length>5">..</font>
+									</span>
                                     <div class="item__actions">
                                       <span> <a style="float:left; right: -6px;"  class="fm external-link" target="_BLANK"
                                         data-toggle="tooltip" data-placement="top"
@@ -1127,20 +1156,29 @@ a.disabled {
 												</div>
 												<div class="item__content">
 													<div class="flex-row">
-														<span class="item__name" data-toggle="tooltip"
+														<span class="item__name"
 															[title]="emailTemplate.name"><b>{{emailTemplate.name | slice:0:18}}
 															<span *ngIf="emailTemplate.name?.length>18">...</span></b>
 														</span>
-														<div class="item__last-modified">
-															<span [title]="emailTemplate.createdBy"><span>By: </span>{{emailTemplate.createdBy | slice:0:15}}
-															<span *ngIf="emailTemplate.createdBy?.length>15">...</span>
+														<br>
+															<span class="item__name"  [title]="emailTemplate.createdBy">
+																<span>By: </span>{{emailTemplate.createdBy | slice:0:12}}
+															<span *ngIf="emailTemplate.createdBy?.length>12">...</span>
 															</span>
-														</div>
-														<div class="item__last-modified">
-															<span><app-timestamp [isOnlyDate]="true"
-																	[dateAndTime]="emailTemplate.createdDate">
-																</app-timestamp></span>
-														</div>
+														<br>
+															<span class="item__name" title="created on" style="float:left">
+																<span>
+																	<app-timestamp
+																		[isOnlyDate]="true"
+																		[dateAndTime]="emailTemplate.createdDate">
+																	</app-timestamp>
+																</span>
+															</span>
+														<br>
+														<span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate?.category}}">
+															<b>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+															<font *ngIf="emailTemplate?.category?.length>5">..</font>
+														</span>
 														<div class="item__actions">
 															<span> <a class="fm external-link" target="_BLANK"
 																data-toggle="tooltip" data-placement="top"
@@ -1264,7 +1302,8 @@ a.disabled {
                     
                     <td style="text-align: right" width="20%">
                       <a [class.hide]="reDistributeEvent || reDistributeEventManage || isEventUpdate" class="btn btn-primary btn-sm" [class.disabled]="isPreviewEvent" (click)="resetTabs('templates')">Change</a>
-                    </td>
+					  <a *ngIf="reDistributeEvent || reDistributeEventManage" class="btn btn-primary btn-sm"  (click)="editPartnerTemplate()"><i class="fa fa-edit"></i>Edit</a>
+					</td>
                   </tr>
                 </table>
               </div>
@@ -1329,11 +1368,11 @@ a.disabled {
                     <option [value]="13" [selected]="reply.actionId==13">Email is opened</option>
                     <option [value]="16" [selected]="reply.actionId ==16">Send immediately after email is opened</option>
                     <option [value]="24" [selected]="reply.actionId ==24" [hidden]="reDistributeEvent || reDistributeEventManage || authenticationService.isOnlyPartner()">If partner has not shared event</option>
-                    <option [value]="29" [selected]="reply.actionId ==29">Send reminder if no response</option>
+                    <option [value]="29" [selected]="reply.actionId ==29" *ngIf="!eventCampaign.publicEventCampaign">Send reminder if no response</option>
                     <option [value]="30" [selected]="reply.actionId ==30">Send reminder if responded YES</option>
-                    <option [value]="25" [selected]="reply.actionId ==25">Send email if RSVP Yes</option>
-                    <option [value]="26" [selected]="reply.actionId ==26">Send email If RSVP No</option>
-                    <option [value]="27" [selected]="reply.actionId ==27">Send email If RSVP Maybe</option>
+                    <option [value]="25" [selected]="reply.actionId ==25"> Send email if RSVP Yes</option>
+                    <option [value]="26" [selected]="reply.actionId ==26" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP No</option>
+                    <option [value]="27" [selected]="reply.actionId ==27" *ngIf="!eventCampaign.publicEventCampaign">Send email If RSVP Maybe</option>
                     <option [value]="28" [selected]="reply.actionId ==28">Send after event</option>
                   </select>
                 </div>
@@ -1589,6 +1628,21 @@ a.disabled {
        <!--   end step four launch   -->
 		</div>
 	</div>
+	<div [hidden]="!isEditPartnerTemplate">
+		<div class="portlet light shadow">
+			<div class="portlet-title" style="display: block;">
+				<h4 class="caption-subject font-red-sunglo f-w-600 pull-left">Edit Template</h4>
+				<a class="close-circle pull-right" data-dismiss="modal" (click)="isEditPartnerTemplate=false">
+					<i class="fa fa-times"></i>
+				</a>
+			</div>
+			<div class="portlet-body clearfix" *ngIf="isEditPartnerTemplate">
+				<app-create-bee-template  [partnerEmailTemplate]="eventCampaign.emailTemplate"></app-create-bee-template>
+			</div></div>
+		</div>
+	
+		
+	</div>
 </div>
    <!--   contacts preview modal    -->
 <div class="modal right" id="contactsModal" tabindex="-1" role="dialog" aria-labelledby="contactsModalLabel" data-keyboard="false" data-backdrop="static">
@@ -1752,6 +1806,38 @@ a.disabled {
 	</div>
 </div>
 
+
+<!-----------------------------View Filter Popup----------->
+<div class="modal fade right" id="filterPopup" tabindex="-1" role="dialog" aria-labelledby="filterPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" (click)="closeFilterPopup()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h5 class="modal-title text-center">Apply Filter</h5>
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="folderErrorCustomResponse" *ngIf="folderErrorCustomResponse.isVisible">
+                </app-response-message>
+                <div class="form-group" *ngIf="!folderErrorCustomResponse.isVisible">
+                    <ejs-multiselect [(ngModel)]='selectedFolderIds' [ngModelOptions]="{standalone: true}"
+                     [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
+                      [dataSource]='emailTemplateFolders' [fields]='folderFields'
+                       [placeholder]='folderFilterPlaceHolder' (blur)='applyFilter()'>
+                </ejs-multiselect>
+                <span class="requried" *ngIf="!isFolderSelected">Please select at least one option</span>
+                </div>
+            </div>
+            <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
+                <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
+                   
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- <div id="listOfFormsModal" class="modal right fade" role="dialog"
 	data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
@@ -1815,3 +1901,4 @@ a.disabled {
 		</div>
 	</div>
 </div> -->
+<app-add-folder-modal-popup #addFolderModalPopupComponent (notifyChild)="showSuccessMessage($event)"></app-add-folder-modal-popup>

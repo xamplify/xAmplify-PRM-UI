@@ -11,33 +11,42 @@
     transition: all 0.3s ease-in-out;
     padding: 15px;
 }
+
 .page-bar .page-breadcrumb {
-  padding: 0 0 10px;
-}
-.top-bar-left .title {
-  display: none;
+    padding: 0 0 10px;
 }
 
-#right{
-	float: right;
-	margin-bottom: 10px;
+.top-bar-left .title {
+    display: none;
 }
-#left{
-	float: left;;
+
+#right {
+    float: right;
+    margin-bottom: 10px;
 }
-#search{
-	margin-right: 35px;
+
+#left {
+    float: left;
+    ;
 }
-#search-icon{
-	position: relative;
-	right: -11px;
+
+#search {
+    margin-right: 35px;
 }
-#search-text{
-	height:34px;
+
+#search-icon {
+    position: relative;
+    right: -11px;
 }
-#circle{
-	margin-top: 4px;
+
+#search-text {
+    height: 34px;
 }
-.success{
-	color: green;
+
+#circle {
+    margin-top: 4px;
+}
+
+.success {
+    color: green;
 }

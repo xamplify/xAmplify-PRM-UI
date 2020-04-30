@@ -138,9 +138,11 @@ export class UtilService {
                 'hasCompany': data.hasCompany,
                 'roles': data.roles,
                 'campaignAccessDto':data.campaignAccessDto,
-                'logedInCustomerCompanyNeme':data.companyName
+                'logedInCustomerCompanyNeme':data.companyName,
+				'source':data.source
             };
             localStorage.setItem('currentUser', JSON.stringify(userToken));
+		    localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
     }
 
     isLoggedAsTeamMember(){

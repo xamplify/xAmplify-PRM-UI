@@ -68,33 +68,23 @@ export class DashboardStatsComponent implements OnInit {
   }
 
   goToSocialAccounts(){
-     if(this.dashboardReport.totalSocialAccounts != 0){
-       this.router.navigate(["/home/social/manage/all"]);
-    }
+    this.router.navigate(["/home/social/manage/all"]);
   }
 
   goManageTemplates(){
-      if(this.dashboardReport.toalEmailTemplates != 0){
-        this.router.navigate(["/home/emailtemplates"]);
-     }
+    this.router.navigate(["/home/emailtemplates"]);
    }
 
   goTeamMembers(){
-      if(this.dashboardReport.totalTeamMembers != 0){
-        this.router.navigate(["/home/team/add-team"]);
-     }
+    this.router.navigate(["/home/team/add-team"]);
    }
 
   goToManageCampaigns(){
-      if(this.dashboardReport.totalCreatedCampaigns != 0){
-        this.router.navigate(["/home/campaigns/manage"]);
-     }
+    this.router.navigate(["/home/campaigns/manage"]);
    }
 
   goToManageVideos(){
-      if(this.dashboardReport.totalUploadedvideos != 0){
-        this.router.navigate(["/home/content/videos"]);
-     }
+    this.router.navigate(["/home/content/videos"]);
    }
 
   ngOnInit() {

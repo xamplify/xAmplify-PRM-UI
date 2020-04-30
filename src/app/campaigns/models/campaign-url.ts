@@ -20,4 +20,6 @@ export class Url{
     defaultTemplate:boolean = false;
     replyTimeInHoursAndMinutes:string = "";
     actionId:number = 0;
+    statusInString = 'ACTIVE';
+
 }

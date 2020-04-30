@@ -18,6 +18,8 @@ import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
 import {PublicEventEmailPopupComponent} from '../public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+
 declare var swal, $: any;
 
 @Component({
@@ -60,8 +62,6 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     selectedSortedOption: any = this.sortByDropDown[0];
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     campaignPartnerLoader: HttpRequestLoader = new HttpRequestLoader();
-    isListView = false;
-
     isError = false;
     saveAsCampaignId = 0;
     saveAsCampaignName = '';
@@ -86,10 +86,13 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     addWorkflows = false;
     selectedCampaign:any;
     teamMemberId: number;
+    categoryId:number = 0;
+    modulesDisplayType = new ModulesDisplayType();
+    exportObject:any = {};
     constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
         public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
-        this.refService.renderer = this.renderer;    
+		this.refService.renderer = this.renderer;    
         this.loggedInUserId = this.authenticationService.getUserId();
         this.utilService.setRouterLocalStorage('managecampaigns');
         this.itemsSize = this.numberOfItemsPerPage[0];
@@ -114,6 +117,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.hasStatsRole = this.refService.hasSelectedRole(this.refService.roles.statsRole);
         this.hasAllAccess = this.refService.hasAllAccess();
         this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+        this.modulesDisplayType = this.refService.setDefaultDisplayType(this.modulesDisplayType);
     }
 
 
@@ -131,6 +135,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     listCampaign(pagination: Pagination) {
+        this.isloading = true;
         this.refService.loading(this.httpRequestLoader, true);
         pagination.searchKey = this.searchKey;
         if(this.pagination.teamMemberAnalytics){
@@ -146,7 +151,7 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
             .subscribe(
             data => {
                 this.campaigns = data.campaigns;
-                $.each(this.campaigns, function (index, campaign) {
+                $.each(this.campaigns, function (_index:number, campaign) {
                     campaign.displayTime = new Date(campaign.utcTimeInString);
                     campaign.createdDate = new Date(campaign.createdDate);
                 });
@@ -154,8 +159,10 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
                 this.refService.loading(this.httpRequestLoader, false);
+                this.isloading = false;
             },
             error => {
+                this.isloading = false;
                 this.logger.errorPage(error);
             },
             () => this.logger.info("Finished listCampaign()", this.campaigns)
@@ -228,18 +235,44 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
     ngOnInit() {
         try {
-			this.teamMemberId = this.route.snapshot.params['teamMemberId'];
-			if(this.teamMemberId!=undefined){
+            this.teamMemberId = this.route.snapshot.params['teamMemberId'];
+            if(this.teamMemberId!=undefined){
                 this.pagination.teamMemberAnalytics = true;
             }else{
                 this.pagination.teamMemberAnalytics = false;
             }
-            this.refService.manageRouter = true;
-            if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
-            else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
-            this.isListView = !this.refService.isGridView;
-            this.pagination.maxResults = 12;
-            this.listCampaign(this.pagination);
+            if(this.router.url.endsWith('/')){
+                this.setViewType('Folder-Grid');
+            }else{
+                this.refService.manageRouter = true;
+                if (this.authenticationService.isOnlyPartner() || this.authenticationService.isPartnerTeamMember) { this.setCampaignAccessValues(true, true, true, true,false,false) }
+                else { if (!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes(); } }
+                
+                this.pagination.maxResults = 12;
+                this.categoryId = this.route.snapshot.params['categoryId'];
+                if(this.categoryId!=undefined){
+                    this.pagination.categoryId = this.categoryId;
+                    this.pagination.categoryType = 'c';
+                }
+                let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+				let isTeamMemberFilter = this.router.url.indexOf("manage/tm")>-1;
+                if(showList || isTeamMemberFilter){
+                    this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                    this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                    if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                        this.modulesDisplayType.isListView = true;
+                        this.modulesDisplayType.isGridView = false;
+                    }
+                    this.modulesDisplayType.isFolderListView = false;
+                    this.modulesDisplayType.isFolderGridView = false;
+                    this.listCampaign(this.pagination);
+                }else if(this.modulesDisplayType.isFolderGridView){
+                    this.setViewType('Folder-Grid');
+                }else if(this.modulesDisplayType.isFolderListView){
+                    this.setViewType('Folder-List');
+                }
+            }
+			
         } catch (error) {
             this.logger.error("error in manage-publish-component init() ", error);
         }
@@ -543,9 +576,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
           
           goToCalendarView(){
               if(this.teamMemberId>0){
-                this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId])
+                if(this.categoryId!=undefined && this.categoryId>0){
+                    this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId+"/"+this.categoryId]);
+                }else{
+                    this.router.navigate(['/home/campaigns/calendar/' + this.teamMemberId]);
+                }
+                
               }else{
-                this.router.navigate(['/home/campaigns/calendar']);
+                  if(this.categoryId!=undefined && this.categoryId>0){
+                    this.router.navigate(['/home/campaigns/calendar/f/'+this.categoryId]);
+                  }else{
+                    this.router.navigate(['/home/campaigns/calendar']);
+                  }
+                
               }
           }     
           
@@ -554,6 +597,90 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse();
         this.addWorkflows = true;
         this.selectedCampaign = campaign;
+        
+    }
+
+    setViewType(viewType:string){
+        if("List"==viewType){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);    
+        }else if("Grid"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);    
+        }else if("Folder-Grid"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView = false;
+            this.exportObject['type'] = 4;
+            this.exportObject['folderType'] = viewType;
+            this.exportObject['teamMemberId'] = this.teamMemberId;
+            if(this.categoryId>0){
+                if(this.teamMemberId!=undefined && this.teamMemberId>0){
+                    this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId+"/");
+                }else{
+                    this.router.navigateByUrl('/home/campaigns/manage/');
+                }
+                
+            }
+        }else if("Folder-List"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 4;
+			this.exportObject['teamMemberId'] = this.teamMemberId;
+        }
+    }
+
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listCampaign(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listCampaign(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listCampaign(this.pagination);
+        }else  if(this.router.url.endsWith('/')){
+            if(this.teamMemberId!=undefined){
+                this.router.navigateByUrl('/home/campaigns/manage/tm/'+this.teamMemberId);
+            }else{
+                this.router.navigateByUrl('/home/campaigns/manage');
+            }
+            
+        }
+    }
+
+
+    getUpdatedValue(event:any){
+        let viewType = event.viewType;
+        if(viewType!=undefined){
+            this.setViewType(viewType);
+        }
         
     }
 

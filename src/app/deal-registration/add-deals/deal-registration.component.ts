@@ -188,9 +188,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
                 error => console.log(error),
                 () => {
                     this.dealRegistrationService.listDealTypes(this.campaign.userId).subscribe(dealTypes => {
-
                         this.dealTypes = dealTypes.data;
-
                         this.getLeadData();
 
                     },
@@ -269,11 +267,12 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
         console.log(date);
         this.dealRegistration.estimatedCloseDate = date
 
-        if (!this.defaultDealTypes.includes(this.dealRegistration.dealType) && !this.dealTypes.includes(this.dealRegistration.dealType)) {
+        /*if (!this.defaultDealTypes.includes(this.dealRegistration.dealType) && !this.dealTypes.includes(this.dealRegistration.dealType)) {
             let d = new DealType();
             d.dealType = this.dealRegistration.dealType;
             this.dealTypes.push(d);
-        }
+
+        }*//*******Commented this line because dropdown is having duplicate data */
 
         this.dealRegistration.properties = data.properties;
         this.properties = data.properties;
@@ -932,9 +931,9 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
         }
         //Interpolation date
         if (dd < 10) {
-            returnDate += `0${dd}-`;
+            returnDate += `0${dd}`;
         } else {
-            returnDate += `${dd}-`;
+            returnDate += `${dd}`;
         }
 
         return returnDate;

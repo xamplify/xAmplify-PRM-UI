@@ -5,7 +5,8 @@ import { RouterModule } from '@angular/router';
 
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { TagInputModule } from 'ngx-chips';
+/*import { TagInputModule } from 'ngx-chips';
+*/
 import { HttpModule } from '@angular/http';
 import { FileSelectDirective, FileDropDirective } from 'ng2-file-upload';
 import { FileUploadModule } from 'ng2-file-upload/ng2-file-upload';
@@ -15,10 +16,15 @@ import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 import { TimezonePickerModule } from 'ng2-timezone-selector';
 import { LoadingModule } from 'ngx-loading';
 
-import { LoaderComponent } from '../loader/loader.component';
+
+/*import { LoaderComponent } from '../loader/loader.component';
+*/import { CountLoaderComponent } from '../count-loader/count-loader.component';
+
+
 import { CountLoaderComponent } from '../count-loader/count-loader.component';
 import { BoxLoaderComponent } from '../box-loader/box-loader.component';
 import { DynamicGridLoaderComponent } from '../dynamic-grid-loader/dynamic-grid-loader.component';
+
 
 // import { UpdateStatusComponent } from '../social/common/update-status/update-status.component';
 // import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
@@ -33,12 +39,14 @@ import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
-                  TagInputModule, HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
+                  HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
                   BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule,DragulaModule],
-        declarations: [LoaderComponent, CountLoaderComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent],
+
+        declarations: [CountLoaderComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent],
+
         exports: [FileSelectDirective, FileDropDirective, FormsModule, CommonModule, RouterModule, ColorPickerModule,
-                  FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule, TagInputModule,CommonComponentModule,
-                  HttpModule, Ng2FilterPipeModule, ImageCropperModule ,LoaderComponent, TimepickerModule,
+                  FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
+                  HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
                   NgxCurrencyModule,CountLoaderComponent,DragulaModule,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent],
         providers: [],

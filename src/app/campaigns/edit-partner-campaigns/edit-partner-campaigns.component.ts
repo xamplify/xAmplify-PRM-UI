@@ -25,10 +25,9 @@ import { CampaignContact } from '../models/campaign-contact';
 import { Properties } from '../../common/models/properties';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-page/preview-landing-page.component';
-import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
-import { ConsoleLoggerService } from 'app/error-pages/services/console-logger.service';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -171,11 +170,16 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
     allUsersCount: number;
     
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
+    isEditPartnerTemplate = false;
     start: any;
     pressed: boolean;
     startX: any;
     startWidth: any;
-
+    companyProfileImages:string[]=[];
+    partnerTemplateLoader = false;
+    categoryNames: any;
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    folderCustomResponse:CustomResponse = new CustomResponse();
     constructor(private renderer: Renderer,private router: Router,
             public campaignService: CampaignService,
             private authenticationService: AuthenticationService,
@@ -612,6 +616,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
             'subjectLine': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
+            'categoryId':this.campaign.categoryId,
             'preHeader': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
@@ -1237,7 +1242,25 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       } );
       this.isListView = !this.referenceService.isGridView;
       this.validateLaunchForm();
+      this.listCategories();
   }
+
+  listCategories(){
+      this.loading = true;
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            if(this.campaign.categoryId==0 || this.campaign.categoryId==undefined || categoryIds.indexOf(this.campaign.categoryId)<0){
+                this.campaign.categoryId = categoryIds[0];
+            }
+            this.loading = false;
+           
+        },
+        error => { this.xtremandLogger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+        () => this.xtremandLogger.info( "Finished listCategories()" ) );
+}
+
   isEven(n) {
     if(n % 2 === 0){ return true;}
       return false;
@@ -1335,5 +1358,28 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
       this.campaign.linkOpened = event;
   }
 
-  
+  editPartnerTemplate(){
+      this.isEditPartnerTemplate = false;
+      if(this.campaign.emailTemplate.vendorCompanyId!=undefined && this.campaign.emailTemplate.vendorCompanyId>0){
+          if(this.campaign.emailTemplate.jsonBody!=undefined){
+              this.isEditPartnerTemplate = true;
+          }else{
+              this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" );
+          }
+      }else{
+          this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" );
+         
+      }
+  }
+
+  openCreateFolderPopup(){
+    this.folderCustomResponse = new CustomResponse('');
+    this.addFolderModalPopupComponent.openPopup();
+    }
+
+showSuccessMessage(message:any){
+  this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
+  this.listCategories();
+}
+
 }

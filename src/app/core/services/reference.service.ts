@@ -20,6 +20,8 @@ import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
 import { User } from '../../core/models/user';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import { RegularExpressions } from 'app/common/models/regular-expressions';
 
 declare var $, swal: any;
 
@@ -124,8 +126,7 @@ export class ReferenceService {
 	pressed: boolean;
 	startX: any;
 	startWidth: any;
-
-
+	regularExpressions = new RegularExpressions();
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
 		console.log('reference service constructor');
@@ -1613,11 +1614,14 @@ export class ReferenceService {
 	}
 
 	getAnchorTagsFromEmailTemplate(body: string, emailTemplateHrefLinks: any) {
+		let self = this;
 		$(body).find('a').each(function(e) {
 			let href = $(this).attr('href');
 			if (href != undefined && $.trim(href).length > 0) {
 				if (href != "<SocialUbuntuURL>" && href != "https://dummyurl.com" && href != "https://dummycobrandingurl.com" && href != "<unsubscribeURL>") {
-					emailTemplateHrefLinks.push(href);
+					if(self.regularExpressions.URL_PATTERN.test(href)){
+						emailTemplateHrefLinks.push(href);
+					}	
 				}
 
 			}
@@ -1687,14 +1691,9 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png", "");
 
 		}
-		if (this.campaignType === "EVENT") {
-			if (campaign.nurtureCampaign || userProfile.id != this.eventCampaignId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
-		} else {
-			if (campaign.nurtureCampaign || userProfile.id != campaign.userId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
+		let isRedistributeSection = this.router.url.indexOf("/re-distribute")>-1;
+		if (campaign.nurtureCampaign || isRedistributeSection) {
+			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
 		updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
 		$("#email-template-content").append(updatedBody);
@@ -1730,14 +1729,9 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace("<a href=\"https://dummycobrandingurl.com\"", "<a href=\"https://dummycobrandingurl.com\" style=\"display:none\"");
 			updatedBody = updatedBody.replace("https://xamp.io/vod/images/co-branding.png", "");
 		}
-		if (this.campaignType === "EVENT") {
-			if (campaign.nurtureCampaign || userProfile.id != this.eventCampaignId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
-		} else {
-			if (campaign.nurtureCampaign || userProfile.id != campaign.userId) {
-				updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
-			}
+		let isRedistributeSection = this.router.url.indexOf("/re-distribute")>-1;
+		if (campaign.nurtureCampaign || isRedistributeSection) {
+			updatedBody = this.replacePartnerLogo(updatedBody, partnerLogo, partnerCompanyUrl, campaign);
 		}
 		/************My Merge Tags Info**********/
 		updatedBody = this.replaceMyMergeTags(campaign.myMergeTagsInfo, updatedBody);
@@ -1928,8 +1922,27 @@ export class ReferenceService {
 		swal(message1, message2, type);
 	}
 
+	showSweetAlertSuccessMessage(message:string){
+		swal({
+			title:message,
+			type: 'success',
+			allowOutsideClick: false
+		})
+	}
+	showSweetAlertFailureMessage(message:string){
+		swal({
+			title:message,
+			type: 'error',
+			allowOutsideClick: false
+		})
+	}
+
 	showSweetAlertErrorMessage(errorMessage: string) {
 		swal(errorMessage, "", "error");
+	}
+
+	showSweetAlertServerErrorMessage() {
+		swal(this.properties.serverErrorMessage, "", "error");
 	}
 
 	showModalPopup(modalId) {
@@ -1971,5 +1984,40 @@ export class ReferenceService {
 				this.pressed = false;
 			}
 		});
+	}
+
+	setDefaultDisplayType(modulesDisplayType:ModulesDisplayType){
+		let defaultDisplayType = localStorage.getItem('defaultDisplayType');
+		if("LIST"==defaultDisplayType){
+            modulesDisplayType.isListView = true;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else if("GRID"==defaultDisplayType){
+            modulesDisplayType.isListView = false;
+            modulesDisplayType.isGridView = true;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else if("FOLDER_LIST"==defaultDisplayType){
+			modulesDisplayType.isListView = false;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = true;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else if("FOLDER_GRID"==defaultDisplayType){
+            modulesDisplayType.isListView = false;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = true;
+			modulesDisplayType.isFolderListView = false;
+			modulesDisplayType.defaultDisplayType = defaultDisplayType;
+        }else{
+            modulesDisplayType.isListView = true;
+            modulesDisplayType.isGridView = false;
+			modulesDisplayType.isFolderGridView = false;
+			modulesDisplayType.isFolderListView = false;
+		}
+		return modulesDisplayType;
 	}
 }

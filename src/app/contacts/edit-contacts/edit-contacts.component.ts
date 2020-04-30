@@ -170,6 +170,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	csvPagedItems: any[];
 	isCheckTC = true;
 	contactOption = "";
+	showGDPR : boolean;
+	
 
 	filterOptions = [
 		{ 'name': '', 'value': 'Field Name*' },
@@ -200,9 +202,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	companyId: number = 0;
 	selectedLegalBasisOptions = [];
 	public fields: any;
-	public placeHolder: string = 'Select Legal Basis Options';
+	public placeHolder: string = 'Select Legal Basis';
 	isValidLegalOptions = true;
 	isValidClipBoardData = false;
+	sourceType = "";
+	showAddOptions = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -211,13 +215,19 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 		this.addContactuser.country = (this.countryNames.countries[0]);
 		this.contactsByType.selectedCategory = "all";
-
+		this.sourceType = this.authenticationService.getSource();
 		let currentUrl = this.router.url;
 		if (currentUrl.includes('home/contacts')) {
 			this.isPartner = false;
-			this.checkingContactTypeName = "Contact"
+			this.checkingContactTypeName = "Contact";
+			this.showAddOptions = true;
 		} else {
 			this.isPartner = true;
+			if(this.sourceType!="ALLBOUND"){
+				this.showAddOptions = true;
+			}else{
+				this.showAddOptions = false;
+			}
 			this.checkingContactTypeName = "Partner";
 			this.sortOptions.push({ 'name': 'Company (ASC)', 'value': 'contactCompany-ASC' });
 			this.sortOptions.push({ 'name': 'Company (DESC)', 'value': 'contactCompany-DESC' });
@@ -231,7 +241,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
 
 		}
-
 		this.users = new Array<User>();
 		this.notifyParent = new EventEmitter<User>();
 		this.hasContactRole = this.refService.hasRole(this.refService.roles.contactsRole);
@@ -869,26 +878,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 	removeContactListUsers(contactListId: number) {
 		try {
-			let self = this;
 			this.xtremandLogger.info(this.selectedContactListIds);
-			this.contactService.removeContactListUsers(this.contactListId, this.selectedContactListIds)
+			this.contactService.removeContactListUsers(contactListId, this.selectedContactListIds)
 				.subscribe(
 					(data: any) => {
 						data = data;
-						this.allUsers = this.contactsByType.allContactsCount;
-						console.log("update Contacts ListUsers:" + data);
-						if (!this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+						if(data.statusCode==200){
+							$('#contactListDiv_' + contactListId).remove();
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+							this.contactService.deleteUserSucessMessage = true;
+							this.goBackToManageList();
+						}else if(data.statusCode==201){
+							this.allUsers = this.contactsByType.allContactsCount;
+							console.log("update Contacts ListUsers:" + data);
+							if (!this.isPartner) {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+							} else {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							}
+							$.each(this.selectedContactListIds, function(index: number, value: any) {
+								$('#row_' + value).remove();
+								console.log(index + "value" + value);
+							});
+							this.checkingLoadContactsCount = true;
+							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+							this.selectedContactListIds.length = 0;
 						}
-						$.each(this.selectedContactListIds, function(index: number, value: any) {
-							$('#row_' + value).remove();
-							console.log(index + "value" + value);
-						});
-						this.checkingLoadContactsCount = true;
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-						this.selectedContactListIds.length = 0;
+						
 					},
 					(error: any) => {
 						//let body: string = error['_body'];
@@ -907,44 +923,35 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
+goBackToManageList(){
+	this.loading  = true;
+	let self = this;
+	setTimeout(function () { 
+		self.refresh();
+	},500);
+}
+
 	showAlert(contactListId: number) {
 		this.xtremandLogger.info("userIdForChecked" + this.selectedContactListIds);
 		if (this.selectedContactListIds.length != 0) {
 			this.xtremandLogger.info("contactListId in sweetAlert() " + this.contactListId);
 			let self = this;
-			if (this.totalRecords != 1 || this.totalRecords != this.selectedContactListIds.length) {
-				swal({
-					title: 'Are you sure?',
-					text: "You won't be able to undo this action!",
-					type: 'warning',
-					showCancelButton: true,
-					swalConfirmButtonColor: '#54a7e9',
-					swalCancelButtonColor: '#999',
-					confirmButtonText: 'Yes, delete it!'
+			swal({
+				title: 'Are you sure?',
+				text: "You won't be able to undo this action!",
+				type: 'warning',
+				showCancelButton: true,
+				swalConfirmButtonColor: '#54a7e9',
+				swalCancelButtonColor: '#999',
+				confirmButtonText: 'Yes, delete it!'
 
-				}).then(function(myData: any) {
-					console.log("ManageContacts showAlert then()" + myData);
-					self.removeContactListUsers(contactListId);
-				}, function(dismiss: any) {
-					console.log('you clicked on option' + dismiss);
-				});
-			}
-			if ((this.totalRecords == 1 && this.isDefaultPartnerList == false) || (this.totalRecords == this.selectedContactListIds.length && this.isDefaultPartnerList == false)) {
-				swal({
-					title: 'Are you sure?',
-					text: "Deleting all the " + this.checkingContactTypeName + "s" + " in this list will also cause the list to be deleted. You won't be able to undo this action.",
-					type: 'warning',
-					showCancelButton: true,
-					swalConfirmButtonColor: '#54a7e9',
-					swalCancelButtonColor: '#999',
-					confirmButtonText: 'Yes, delete it!'
-				}).then(function(myData: any) {
-					console.log("ManageContacts showAlert then()" + myData);
-					self.deleteContactList();
-				}, function(dismiss: any) {
-					console.log('you clicked on option' + dismiss);
-				});
-			}
+			}).then(function(myData: any) {
+				console.log("ManageContacts showAlert then()" + myData);
+				self.removeContactListUsers(contactListId);
+			}, function(dismiss: any) {
+				console.log('you clicked on option' + dismiss);
+			});
+			
 		}
 	}
 
@@ -1641,7 +1648,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					this.xtremandLogger.log(this.allUsers);
 
 
-					this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords);
+					this.loadAllContactListUsers(this.selectedContactListId, this.totalRecords, pagination.searchKey);
 
 
 					var contactIds = this.pagination.pagedItems.map(function(a) { return a.id; });
@@ -1861,19 +1868,28 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				.subscribe(
 					(data: any) => {
 						data = data;
-						this.contactsByType.allContactsCount = data.allcontacts;
-						this.contactsByType.invalidContactsCount = data.invalidUsers;
-						this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
-						this.contactsByType.activeContactsCount = data.activecontacts;
-						this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
-						this.allUsers = this.contactsByType.allContactsCount;
-						console.log("update Contacts ListUsers:" + data);
-						if (!this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+						if(data.statusCode==201){
+							this.contactsByType.allContactsCount = data.allcontacts;
+							this.contactsByType.invalidContactsCount = data.invalidUsers;
+							this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
+							this.contactsByType.activeContactsCount = data.activecontacts;
+							this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+							this.allUsers = this.contactsByType.allContactsCount;
+							console.log("update Contacts ListUsers:" + data);
+							if (!this.isPartner) {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+							} else {
+								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+							}
+							this.checkingLoadContactsCount = true
+							this.editContactListLoadAllUsers(this.contactListId, this.pagination);
+						}else{
+						$('#contactListDiv_' + this.contactListId).remove();
+						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+						this.contactService.deleteUserSucessMessage = true;
+						this.goBackToManageList();
 						}
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+						this.contactIds = [];
 					},
 					(error: any) => {
 						// let body: string = error['_body'];
@@ -1930,62 +1946,81 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		} else if (this.isPartner && !this.isDefaultPartnerList) {
 			message = 'This will only delete the partner(s) from this list. To remove the partner(s) completely from your account, please delete the record(s) from the Master List.';
 		} else {
-			message = "The contacts(s) will be deleted and action can't be undo.";
+			message = "The contact(s) will be deleted and this action can't be undone.";
 		}
 
 		let self = this;
-		if (this.totalRecords != 1) {
-			swal({
-				title: 'Are you sure?',
-				text: message,
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
 
-			}).then(function(myData: any) {
-				console.log("ManageContacts showAlert then()" + myData);
-				self.removeContactListUsers1(contactId);
-			}, function(dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		}
+		swal({
+			title: 'Are you sure?',
+			text: message,
+			type: 'warning',
+			showCancelButton: true,
+			swalConfirmButtonColor: '#54a7e9',
+			swalCancelButtonColor: '#999',
+			confirmButtonText: 'Yes, delete it!'
 
-		if (this.totalRecords === 1 && (!this.isDefaultPartnerList)) {
-			swal({
-				title: 'Are you sure?',
-				text: "Deleting all the " + this.checkingContactTypeName + "s" + " in this list will also cause the list to be deleted. You won't be able to undo this action. ",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
+		}).then(function(myData: any) {
+			console.log("ManageContacts showAlert then()" + myData);
+			self.removeContactListUsers1(contactId);
+		}, function(dismiss: any) {
+			console.log('you clicked on option' + dismiss);
+		});
 
-			}).then(function(myData: any) {
-				console.log("ManageContacts showAlert then()" + myData);
-				self.deleteContactList();
-			}, function(dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		}
-		if (this.totalRecords === 1 && this.isDefaultPartnerList) {
-			swal({
-				title: 'Are you sure?',
-				text: "You won't be able to undo this action!",
-				type: 'warning',
-				showCancelButton: true,
-				swalConfirmButtonColor: '#54a7e9',
-				swalCancelButtonColor: '#999',
-				confirmButtonText: 'Yes, delete it!'
 
-			}).then(function(myData: any) {
-				console.log("ManageContacts showAlert then()" + myData);
-				self.removeContactListUsers1(contactId);
-			}, function(dismiss: any) {
-				console.log('you clicked on option' + dismiss);
-			});
-		}
+
+		// if (this.totalRecords != 1) {
+		// 	swal({
+		// 		title: 'Are you sure?',
+		// 		text: message,
+		// 		type: 'warning',
+		// 		showCancelButton: true,
+		// 		swalConfirmButtonColor: '#54a7e9',
+		// 		swalCancelButtonColor: '#999',
+		// 		confirmButtonText: 'Yes, delete it!'
+
+		// 	}).then(function(myData: any) {
+		// 		console.log("ManageContacts showAlert then()" + myData);
+		// 		//self.removeContactListUsers1(contactId);
+		// 	}, function(dismiss: any) {
+		// 		console.log('you clicked on option' + dismiss);
+		// 	});
+		// }
+
+		// if (this.totalRecords === 1 && (!this.isDefaultPartnerList)) {
+		// 	swal({
+		// 		title: 'Are you sure?',
+		// 		text: "Deleting all the " + this.checkingContactTypeName + "s" + " in this list will also cause the list to be deleted. You won't be able to undo this action. ",
+		// 		type: 'warning',
+		// 		showCancelButton: true,
+		// 		swalConfirmButtonColor: '#54a7e9',
+		// 		swalCancelButtonColor: '#999',
+		// 		confirmButtonText: 'Yes, delete it!'
+
+		// 	}).then(function(myData: any) {
+		// 		console.log("ManageContacts showAlert then()" + myData);
+		// 		self.removeContactListUsers1(contactId);
+		// 	}, function(dismiss: any) {
+		// 		console.log('you clicked on option' + dismiss);
+		// 	});
+		// }
+		// if (this.totalRecords === 1 && this.isDefaultPartnerList) {
+		// 	swal({
+		// 		title: 'Are you sure?',
+		// 		text: "You won't be able to undo this action!",
+		// 		type: 'warning',
+		// 		showCancelButton: true,
+		// 		swalConfirmButtonColor: '#54a7e9',
+		// 		swalCancelButtonColor: '#999',
+		// 		confirmButtonText: 'Yes, delete it!'
+
+		// 	}).then(function(myData: any) {
+		// 		console.log("ManageContacts showAlert then()" + myData);
+		// 		self.removeContactListUsers1(contactId);
+		// 	}, function(dismiss: any) {
+		// 		console.log('you clicked on option' + dismiss);
+		// 	});
+		// }
 
 	}
 
@@ -2181,18 +2216,23 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.saveAsListName = this.contactListName + '_copy';
 		return this.saveAsListName;
 	}
-	saveAs() {
-		try {
-			this.saveAsListName = this.addCopyToField();
-		} catch (error) {
-			this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
-		}
+    saveAs(showGDPR: boolean) {
+        try {
+            this.showGDPR = showGDPR;
+            if (this.showGDPR) {
+                this.saveAsListName = this.addCopyToField();
+            } else {
+                this.saveAsListName = this.contactListName;
+            }
+        } catch (error) {
+            this.xtremandLogger.error(error, "editContactComponent", "SaveAsNewListSweetAlert()");
+        }
 	}
 	closeSaveAsModal() {
 		this.saveAsListName = undefined;
 		this.refService.namesArray = undefined;
 	}
-	saveDuplicateContactList(name: string, selectedLegalBasisOptions: any) {
+	saveDuplicateContactList(name: string, selectedLegalBasisOptions: any, isPublic:boolean) {
 		try {
 
 			if (name != "") {
@@ -2211,7 +2251,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						value.legalBasis = selectedLegalBasisOptions;
 					});
 					console.log(listUsers);
-					this.contactService.saveContactList(listUsers, name, this.isPartner)
+					this.contactService.saveContactList(listUsers, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
 								$('#saveAsEditModal').modal('hide');
@@ -2240,6 +2280,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						for (let i = 0; i < this.selectedContactListIds.length; i++) {
 							for (let j = 0; j < this.contactService.allPartners.length; j++) {
 								if (this.selectedContactListIds[i] == this.contactService.allPartners[j].id) {
+									this.contactService.allPartners[j].legalBasis = selectedLegalBasisOptions;
 									this.selectedContactForSave.push(this.contactService.allPartners[j]);
 									break;
 								}
@@ -2249,6 +2290,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						for (let i = 0; i < this.selectedContactListIds.length; i++) {
 							for (let j = 0; j < this.totalListUsers.length; j++) {
 								if (this.selectedContactListIds[i] == this.totalListUsers[j].id) {
+									this.totalListUsers[j].legalBasis = selectedLegalBasisOptions;
 									this.selectedContactForSave.push(this.totalListUsers[j]);
 									break;
 								}
@@ -2257,7 +2299,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					}
 
 					console.log(this.selectedContactForSave);
-					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner)
+					this.contactService.saveContactList(this.selectedContactForSave, name, this.isPartner, isPublic)
 						.subscribe(
 							data => {
 								this.goToContactOrPartnerUrl();
@@ -2449,11 +2491,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	loadAllContactListUsers(contactSelectedListId: number, totalRecords: number) {
+	loadAllContactListUsers(contactSelectedListId: number, totalRecords: number, searchKey:any) {
 		try {
 			this.selectedContactListId = contactSelectedListId;
 			this.gettingAllUserspagination.maxResults = totalRecords;
 			this.gettingAllUserspagination.pageIndex = 1;
+			this.gettingAllUserspagination.searchKey = searchKey;
 			this.contactService.loadUsersOfContactList(contactSelectedListId, this.gettingAllUserspagination)
 				.subscribe(
 					(data: any) => {
@@ -2587,6 +2630,33 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
 		}
 	}
+	
+	   updateContactListNameType(newContactListName: string, isPublic:boolean) {
+	        try {
+	            var object = {
+	                "id": this.selectedContactListId,
+	                "name": newContactListName,
+	                "publicList": isPublic
+	            }
+	            this.addContactModalClose();
+	            this.contactService.updateContactListName(object)
+	                .subscribe(
+	                    (data: any) => {
+	                        console.log(data);
+	                        this.selectedContactListName = newContactListName;
+	                        if (this.isPartner) {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNER_LIST_NAME_UPDATE_SUCCESS, true);
+	                        } else {
+	                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_NAME_UPDATE_SUCCESS, true);
+	                        }
+	                    },
+	                    error => this.xtremandLogger.error(error),
+	                    () => this.xtremandLogger.info("EditContactsComponent updateContactListName() finished")
+	                )
+	        } catch (error) {
+	            this.xtremandLogger.error(error, "editContactComponent", "listNameUpdating()");
+	        }
+	    }
 
 	loadContactListsNames() {
 		try {

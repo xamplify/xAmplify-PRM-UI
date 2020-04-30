@@ -189,6 +189,12 @@
 													</td>
 											</tr> -->
 											<tr>
+												<th>Select source as ALLBOUND</th>
+												<td><input type="checkbox"
+													[(ngModel)]="campaignAccess.allBoundSource"
+													[ngModelOptions]="{standalone: true}"></td>
+											</tr>
+											<tr>
 												<th>Email Campaign</th>
 												<td><input disabled="disabled" type="checkbox"
 													[(ngModel)]="campaignAccess.emailCampaign"
@@ -236,6 +242,7 @@
 													[(ngModel)]="campaignAccess.landingPageCampaign"
 													[ngModelOptions]="{standalone: true}"></td>
 											</tr>
+											
 										</table>
 									</div>
 									<div class="modal-footer">

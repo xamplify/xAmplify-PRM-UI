@@ -39,6 +39,10 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Category as folder } from 'app/dashboard/models/category';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -47,7 +51,7 @@ var moment = require('moment-timezone');
   selector: 'app-create-campaign',
   templateUrl: './create-campaign.component.html',
   styleUrls: ['./create-campaign.component.css', '../../../assets/css/video-css/video-js.custom.css', '../../../assets/css/content.css'],
-  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService]
+  providers:[HttpRequestLoader,CallActionSwitch,Properties,LandingPageService,CheckBoxSelectionService]
 
 })
 export class CreateCampaignComponent implements OnInit,OnDestroy{
@@ -265,6 +269,17 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      senderMergeTag:SenderMergeTag = new SenderMergeTag();
      isPushToCrm = false;
 
+     /************Filter Folder*****************/
+    public selectedFolderIds= [];
+    public emailTemplateFolders:Array<folder>;
+    public folderFields: any;
+    public folderFilterPlaceHolder: string = 'Select folder';
+    folderErrorCustomResponse: CustomResponse = new CustomResponse();
+    isFolderSelected = true;
+    categoryNames: any;
+    @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+    folderCustomResponse:CustomResponse = new CustomResponse();
+
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
                 private logger:XtremandLogger,private videoFileService:VideoFileService,
@@ -275,13 +290,12 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
 				private render:Renderer
             ){
+
 				this.refService.renderer = this.render;
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
                         console.log(data)
                         this.enableLeads = data.enableLeads;
-                        console.log(this.enableLeads);
-
                     });
                 })
                 authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
@@ -328,6 +342,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isAdd = false;
             this.editedCampaignName = this.campaignService.campaign.campaignName;
             this.campaign = this.campaignService.campaign;
+            this.isPushToCrm = this.campaign.pushToMarketingAutomation;
+            if(this.campaign.pushToMarketo){
+                this.pushToCRM.push('marketo');
+            }
+            if(this.campaign.pushToHubspot){
+                this.pushToCRM.push('hubspot');
+            }
+
             this.userListDTOObj = this.campaignService.campaign.userLists;
             if(this.userListDTOObj===undefined){ this.userListDTOObj = [];}
             if(this.campaign.campaignTypeInString=="REGULAR"){
@@ -550,17 +572,15 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     }
     count(status:any){
-     console.log(status);
     }
     eventHandler(event, type:string){
       if(event===13 && type==='myvideos'){ this.searchVideo();}
       if(event===13 && type==='channel'){ this.searchChannelVideo();}
       if(event===13 && type==='contact'){ this.searchContactList();}
-      if(event===13 && type==='emailTemplate'){ this.searchEmailTemplate();}
+      if(event===13 && type==='emailTemplate'){  this.searchEmailTemplate();}
       if(event===13 && type==='landingPages'){ this.searchLandingPage();}
   }
-  eventReplyHandler(keyCode: any, reply:Reply) {  if (keyCode === 13) {  this.searchReplyEmailTemplate(reply); } }
-  eventUrlHandler(keyCode: any, url:any) {  if (keyCode === 13) {  this.searchClickEmailTemplate(url); } }
+  
 
   ngOnInit(){
         Metronic.init();
@@ -604,7 +624,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              }
          }
 
-
+        this.listCategories(); 
         this.validateLaunchForm();
         this.loadCampaignVideos(this.videosPagination);
         this.loadPartnerVideos(this.channelVideosPagination);
@@ -626,7 +646,24 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.loadContacts();
         }
         this.listAllTeamMemberEmailIds();
+        /***********Load Email Template Filters/LandingPages Filter Data********/
+        this.listEmailTemplateOrLandingPageFolders();
+      
+    }
 
+    listCategories(){
+       	this.loading = true;
+        this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId ).subscribe(
+            ( data: any ) => {
+                this.categoryNames = data.data;
+                let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+                if(this.isAdd || this.campaign.categoryId==undefined || this.campaign.categoryId==0){
+                    this.campaign.categoryId = categoryIds[0];
+                }
+             this.loading = false;
+            },
+            error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+            () => this.logger.info( "Finished listCategories()" ) );
     }
 
     loadContacts(){
@@ -1596,11 +1633,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddReply(reply:Reply){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-        /*if(this.campaignType=="video"){
-            reply.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-        }else{
-            reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }*/
         reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(reply.emailTemplatesPagination.searchKey==null || reply.emailTemplatesPagination.searchKey==""){
             reply.emailTemplatesPagination.campaignDefaultTemplate = true;
@@ -1627,11 +1659,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     loadEmailTemplatesForAddOnClick(url:Url){
         this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
         this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
-     /*   if(this.campaignType=="video"){
-            url.emailTemplatesPagination.filterBy = "CampaignVideoEmails";
-        }else{
-            url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
-        }*/
         url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
         if(url.emailTemplatesPagination.searchKey==null || url.emailTemplatesPagination.searchKey==""){
             url.emailTemplatesPagination.campaignDefaultTemplate = true;
@@ -1839,8 +1866,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     filterReplyTemplates(type:string,index:number,reply:Reply){
         if(type=="BASIC"){
             reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
-        }else if(type=="RICH"){
-            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+        }else if(type=="REGULAR_CO_BRANDING"){
+            reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
             reply.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
         }else if(type=="NONE"){
@@ -1857,8 +1884,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     filterClickTemplates(type:string,index:number,url:Url){
         if(type=="BASIC"){
             url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.BASIC;
-        }else if(type=="RICH"){
-            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.RICH;
+        }else if(type=="REGULAR_CO_BRANDING"){
+            url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.REGULAR_CO_BRANDING;
         }else if(type=="UPLOADED"){
             url.emailTemplatesPagination.emailTemplateType = EmailTemplateType.UPLOADED;
         }else if(type=="NONE"){
@@ -1881,12 +1908,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }else{
             this.loadAllEmailTemplates(this.emailTemplatesPagination);
         }
-       /* if(this.isOnlyPartner){
-            this.loadPartnerEmailTemplates(this.emailTemplatesPagination);
-        }else{
-            this.loadEmailTemplates(this.emailTemplatesPagination);
-        }
-        */
+       
     }
     searchReplyEmailTemplate(reply:Reply){
         reply.emailTemplatesPagination.pageIndex = 1;
@@ -2057,6 +2079,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
             'subjectLine': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine),
             'email': this.campaign.email,
+            'categoryId':this.campaign.categoryId,
             'preHeader': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.preHeader),
             'emailOpened': this.campaign.emailOpened,
             'videoPlayed': this.campaign.videoPlayed,
@@ -3169,5 +3192,64 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
    }
 
+   showFolderFilterPopup(){
+    $('#filterPopup').modal('show');
+    }
 
+closeFilterPopup(){
+    $('#filterPopup').modal('hide');
 }
+
+applyFilter(){
+    if(this.campaignType=="landingPage"){
+        if(this.selectedFolderIds.length>0){
+            this.landingPagePagination.categoryIds = this.selectedFolderIds;
+            this.landingPagePagination.categoryFilter = true;
+        }else{
+            this.landingPagePagination.categoryIds = [];
+            this.landingPagePagination.categoryFilter = false;
+        }
+        this.listLandingPages(this.landingPagePagination);
+    }else{
+        if(this.selectedFolderIds.length>0){
+            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            this.emailTemplatesPagination.categoryFilter = true;
+        }else{
+            this.emailTemplatesPagination.categoryIds = [];
+            this.emailTemplatesPagination.categoryFilter = false;
+        }
+        this.loadEmailTemplates(this.emailTemplatesPagination);
+    }
+
+  
+    this.closeFilterPopup();
+}
+
+listEmailTemplateOrLandingPageFolders(){
+    this.folderFields = { text: 'name', value: 'id' };
+    this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId,this.campaignType).
+    subscribe(data =>{
+       this.emailTemplateFolders = data;
+    },error =>{
+        this.folderErrorCustomResponse = new CustomResponse();
+        this.folderErrorCustomResponse = new CustomResponse('ERROR', this.refService.serverErrorMessage, true);
+    }, () => this.logger.log("listEmailTemplateOrLandingPageFolders()"));
+  }
+
+
+  openCreateFolderPopup(){
+    this.folderCustomResponse = new CustomResponse('');
+    this.addFolderModalPopupComponent.openPopup();
+    }
+
+showSuccessMessage(message:any){
+  this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
+  this.listCategories();
+}
+
+ 
+
+
+ 
+}
+

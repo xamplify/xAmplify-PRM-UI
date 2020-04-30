@@ -253,7 +253,7 @@
             <ul class="dropdown-menu pull-right">
                 <li><a id="save_button" *ngIf="selectedAddPartnerOption != 5" (click)="saveContacts()">Save </a></li>
                 <li><a id="cancel_button" *ngIf="selectedAddPartnerOption != 5 || clipBoard" (click)="cancelPartners()">Cancel </a></li>
-                <li><a id="saveAs_button" [class.disabled]="isSaveAsList" *ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(); editContactComponent.addPartnerSave = true">Save
+                <li><a id="saveAs_button" [class.disabled]="isSaveAsList" *ngIf="selectedAddPartnerOption == 5 && !clipBoard" (click)="saveAsChange(true); editContactComponent.addPartnerSave = true">Save
 						As </a></li>
                 <li><a id="exportToExcel" *ngIf="selectedAddPartnerOption == 5 && pagination.pagedItems?.length != 0 && !clipBoard" (click)="downloadPartnerList()">Export
 						To Excel</a></li>
@@ -427,7 +427,7 @@
 						</select>
                     </div>
                     <div class="col-xs-6" style="margin-bottom: 10px">
-                        <button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()">SHOW PREVIEW</button>
+                        <button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()">VERIFY DATA</button>
                     </div>
                     <div class="col-xs-12">
                         <textarea id="copyFromclipTextArea" class="textareaNumber" [(ngModel)]="clipboardTextareaText" placeholder="FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone       FirstName,LastName,Company,Jobtitle,Email,Vertical,Region,PartnerType,Category,Address,City,State,Zip,Country,Phone"
@@ -969,7 +969,8 @@
     </div>
 </div>
 
-<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" [gdprInput]="parentInput" (notifyParentSaveAs)="closeSaveAsModal()"></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="'Partner'" [saveAsListName]="saveAsListName" [gdprInput]="parentInput" [isPartner]="isPartner"
+ [showGDPR]="showGDPR"  (notifyParentSaveAs)="closeSaveAsModal()"  ></app-save-as>
 <!-- <div class="modal right fade" id="saveAsAddPartnerModal" tabindex="-1" role="dialog" aria-labelledby="saveAsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-css" role="document">
     <div class="modal-content">
@@ -1177,5 +1178,35 @@
         </div>
     </div>
 </div>
+
+
+
 <!--Open Pop up-->
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
+
+
+<!-- Cloud Partner Saving Modal Popup -->
+<div class="modal fade" id="cloudPartnersModal" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="tcModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-copy" role="document">
+        <div class="modal-content" style="width: 80%;top: 100px;left: 60px">
+            <div class="modal-header">
+                <h4 class="modal-title f-w-600" style="color: red;"> Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <h4 class="modal-title f-w-600">
+                         All imported partners will automatically receive an invitation to join our xAmplify network.</h4>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <input type="checkbox" [(ngModel)]="cloudPartnersModalCheckBox" [ngModelOptions]="{standalone: true}" name="cloudPartnersModalCheckBoxTC"  checked>
+                    <font style="color: red;">*</font>
+                    I acknowledge that these partners will gain access to campaigns and related materials shared via xAmplify.
+                   	<br>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelPartners()">Cancel</button>
+                <button type="button" [disabled]="!cloudPartnersModalCheckBox" class="btn btn-primary" (click)="proceed()">Accept</button>
+            </div>
+        </div>
+    </div>

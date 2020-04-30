@@ -29,9 +29,12 @@ import { GdprSetting } from '../../models/gdpr-setting';
 import { HttpRequestLoader } from '../../../core/models/http-request-loader';
 import { IntegrationService } from 'app/core/services/integration.service';
 import { Category } from '../../models/category';
+import { CategoryPreviewItem } from '../../models/category-preview-item';
+
 import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
+import {ModulesDispalyType} from "app/dashboard/models/modules-dispaly-type.enum";
 
 declare var swal, $, videojs: any;
 
@@ -124,7 +127,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     categoryPagination: Pagination = new Pagination();
     categorySortOption: SortOption = new SortOption();
     isAddCategory = false;
-    categoryModalTitle = "Add a New Category";
+    categoryModalTitle = "Enter Folder Details";
     formErrorClass = "form-group form-error";
     defaultFormClass = "form-group";
     categoryNameErrorMessage = "";
@@ -139,7 +142,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isDeleteCategory: any;
     selectedCategoryIdForTransferItems = 0;
     exisitingCategories = new Array<Category>();
-
+    isOnlyPartner = false;
+    isPartnerTeamMember = false;
+    isFolderPreview = false;
+    folderPreviewLoader: HttpRequestLoader = new HttpRequestLoader();
+    hasItems = false;
+    categoryPreviewItem  = new CategoryPreviewItem();
+	ModuleDisplayTypeEnum = ModulesDispalyType;
+    modulesDisplayTypeString = ModulesDispalyType[ModulesDispalyType.LIST];
+    modulesDisplayTypeError = false;
+    modulesDisplayTypeList = [];
+    modulesDisplayViewcustomResponse: CustomResponse = new CustomResponse();
+    updateDisplayViewError = false;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -324,10 +338,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.isGridView(this.authenticationService.getUserId());
             }
             else { this.referenceService.isGridView = true; }
+			this.getModulesDisplayDefaultView();
             this.validateUpdatePasswordForm();
             this.validateUpdateUserProfileForm();
             this.userData.displayName = this.userData.firstName ? this.userData.firstName : this.userData.emailId;
-            this.authenticationService.isOnlyPartner();
+            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+            this.isPartnerTeamMember = this.authenticationService.isPartnerTeamMember;
             if ((this.currentUser.roles.length > 1 && this.hasCompany) || (this.authenticationService.user.roles.length > 1 && this.hasCompany)) {
                 if (!this.authenticationService.isOnlyPartner()) {
                     this.getOrgAdminsCount(this.loggedInUserId);
@@ -1217,6 +1233,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     deleteDealType(i, dealType) {
+        this.ngxloading = true;
         try {
             this.logger.info("Deal Type in sweetAlert() " + dealType.id);
             let self = this;
@@ -1232,9 +1249,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             }).then(function (myData: any) {
                 console.log("dealType showAlert then()" + dealType);
                 self.dealRegSevice.deleteDealType(dealType).subscribe(result => {
-                    console.log(result)
-                    self.removeDealType(i, dealType.id);
-                    self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                    if(result.statusCode==200){
+                        self.removeDealType(i, dealType.id);
+                        self.customResponseForm = new CustomResponse('SUCCESS', result.data, true);
+                    }else if(result.statusCode==403){
+                        self.customResponseForm = new CustomResponse('ERROR', result.message, true);
+                    }else{
+                        self.customResponseForm = new CustomResponse('ERROR', self.properties.serverErrorMessage, true);
+                    }
+                    self.ngxloading = false;
+                    
                 }, (error) => {
                     self.ngxloading = false;
 
@@ -1524,12 +1548,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.category = new Category();
         if (this.referenceService.companyId > 0) {
             pagination.companyId = this.referenceService.companyId;
+            pagination.userId = this.loggedInUserId;
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(pagination)
                 .subscribe(
                     response => {
                         const data = response.data;
                         pagination.totalRecords = data.totalRecords;
+                        pagination.previewAccess = data.previewAccess;
                         this.categorySortOption.totalRecords = data.totalRecords;
                         $.each(data.categories, function (_index: number, category: any) {
                             category.displayTime = new Date(category.createdTimeInString);
@@ -1589,6 +1615,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     addCategory() {
         this.isAddCategory = true;
         this.category = new Category();
+        this.categoryModalTitle = 'Enter Folder Details';
         this.categoyButtonSubmitText = "Save";
         this.listExistingCategoryNames();
     }
@@ -1690,7 +1717,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.categoyButtonSubmitText = "Update";
             $('#addCategoryModalPopup').modal('show');
             this.referenceService.startLoader(this.addCategoryLoader);
-            this.categoryModalTitle = 'Edit Category Details';
+            this.categoryModalTitle = 'Edit Folder Details';
             this.listExistingCategoryNames();
             this.userService.getCategoryById(id)
                 .subscribe(
@@ -1783,6 +1810,92 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             );
     }
 
+    previewItems(category:Category){
+        this.hasItems = false;
+        this.categoryPreviewItem = new CategoryPreviewItem();
+        this.isFolderPreview = true;
+        this.referenceService.startLoader(this.folderPreviewLoader);
+        this.userService.getItemsCount(category.id,this.loggedInUserId)
+        .subscribe(
+            (response: any) => {
+                this.categoryPreviewItem.items = response.data;
+                this.categoryPreviewItem.categoryId = category.id;
+                this.categoryPreviewItem.categoryName = category.name;
+                console.log(this.categoryPreviewItem);
+                this.referenceService.stopLoader(this.folderPreviewLoader);
+            },
+            (error: string) => {
+                this.referenceService.stopLoader(this.folderPreviewLoader);
+                this.referenceService.showSweetAlertErrorMessage(this.referenceService.serverErrorMessage);
+            }
+        );
+    }
 
+    goToFolder(categoryId:number,item:any){
+        let count = item.moduleItemsCount;
+        let type = item.moduleName;
+        if(count>0 && item.previewAccess){
+            this.ngxloading = true;
+            if("Email Templates"==type){
+                this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
+            }else if("Forms"==type){
+                this.router.navigate(['/home/forms/manage/'+categoryId]);
+            }else if("Pages"==type){
+                this.router.navigate(['/home/pages/manage/'+categoryId]);
+            }else if("Campaigns"==type){
+                this.router.navigate(['/home/campaigns/manage/'+categoryId]);
+            }
+        }
+        
+    }
+
+/*************Default Display View */
+
+    getModulesDisplayDefaultView(){
+        this.modulesDisplayTypeError = false;
+        this.modulesDisplayViewcustomResponse = new CustomResponse();
+        this.userService.getModulesDisplayDefaultView(this.authenticationService.getUserId())
+            .subscribe(
+                data => {
+                    if(data.statusCode==200){
+                        this.modulesDisplayTypeString = data.data;
+                    }else{
+                        this.modulesDisplayTypeError = true;
+                        this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                    }
+                },
+                error => {
+                    this.modulesDisplayTypeError = true;
+                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                    },
+                () => { }
+            );
+    }
+
+    setDefaultView(){
+        this.ngxloading = true;
+        this.modulesDisplayViewcustomResponse = new CustomResponse();
+        this.updateDisplayViewError = false;
+        let selectedValue = $("input[name=moduleDisplayType]:checked").val();
+        this.userService.updateDefaultDisplayView(this.authenticationService.getUserId(),selectedValue)
+        .subscribe(
+            data => {
+                this.ngxloading = false;
+                if(data.statusCode==200){
+                    this.modulesDisplayViewcustomResponse = new CustomResponse('SUCCESS',data.message,true);
+ 					localStorage.setItem('defaultDisplayType',selectedValue);
+                }else{
+                    this.updateDisplayViewError = true;
+                    this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                }
+            },
+            error => {
+                this.updateDisplayViewError = true;
+                this.ngxloading = false;
+                this.modulesDisplayViewcustomResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                },
+            () => { }
+        );
+    }
 
 }

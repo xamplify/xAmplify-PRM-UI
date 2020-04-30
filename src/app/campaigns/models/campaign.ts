@@ -78,5 +78,11 @@ export class Campaign {
     publicEventCampaign:boolean = false;
     allowDownload = false;
     sendCampaignToIndividual = false;
+    categoryName = "";
+    categoryId:number = 0;
+	pushToMarketo = false;
+	pushToHubspot = false;
+	pushToSalesforce = false;
+	pushToMarketingAutomation = false;
 
 }

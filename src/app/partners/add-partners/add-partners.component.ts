@@ -27,6 +27,7 @@ import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import {SendCampaignsComponent} from '../../common/send-campaigns/send-campaigns.component';
+import { CallActionSwitch } from '../../videos/models/call-action-switch';
 declare var $, Papa, swal, Swal: any;
 
 @Component( {
@@ -36,7 +37,7 @@ declare var $, Papa, swal, Swal: any;
         '../../../assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css', '../../../assets/css/numbered-textarea.css',
         '../../../assets/css/phone-number-plugin.css'],
     providers: [Pagination, SocialPagerService, EditContactsComponent, ManageContactsComponent, CountryNames,
-        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription,FileUtil]
+        Properties, RegularExpressions, PaginationComponent, TeamMemberService, ActionsDescription,FileUtil, CallActionSwitch]
 })
 export class AddPartnersComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
@@ -115,6 +116,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     isSaveAsList = false;
     isDuplicateEmailId = false;
     isCheckTC = true;
+    showGDPR : boolean;
     sortOptions = [
         { 'name': 'Sort By', 'value': '' },
         { 'name': 'Email(A-Z)', 'value': 'emailId-ASC' },
@@ -179,17 +181,22 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     companyId: number = 0;
     selectedLegalBasisOptions = [];
     public fields: any;
-    public placeHolder: string = 'Select Legal Basis Options';
+    public placeHolder: string = 'Select Legal Basis';
     isValidLegalOptions = true;
     filePreview = false;
     @ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
-
+   cloudPartnersModalCheckBox = false;
+   sourceType = "";
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
-        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService ) {
-
+        public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService,
+        public callActionSwitch: CallActionSwitch) {
+        this.sourceType = this.authenticationService.getSource();
+        if(this.sourceType=="ALLBOUND"){
+            this.router.navigate( ['/access-denied'] );
+        }
         this.user = new User();
         this.referenceService.callBackURLCondition = 'partners';
         this.socialPartners = new SocialContact();
@@ -1931,44 +1938,61 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             if ( this.selectedAddPartnerOption == 2 || this.selectedAddPartnerOption == 1 || this.selectedAddPartnerOption == 4 ) {
                 this.savePartnerUsers();
             }
-
-            if ( this.selectedAddPartnerOption == 3 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveGoogleContacts();
-                } else
-                    this.saveGoogleContactSelectedUsers();
+            if ( this.selectedAddPartnerOption == 3  || this.selectedAddPartnerOption == 6 || this.selectedAddPartnerOption == 7 || this.selectedAddPartnerOption == 8 || this.selectedAddPartnerOption == 9) {
+                this.openCloudPartnerPopUp();
             }
-
-            if ( this.selectedAddPartnerOption == 6 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveZohoContacts();
-                } else
-                    this.saveZohoContactSelectedUsers();
-            }
-
-            if ( this.selectedAddPartnerOption == 7 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveSalesforceContacts();
-                } else
-                    this.saveSalesforceContactSelectedUsers();
-            } 
-            if ( this.selectedAddPartnerOption == 8 ) {
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveMarketoContacts();
-                } else
-                    this.saveMarketoContactSelectedUsers();
-            }
-
-            if(this.selectedAddPartnerOption == 9){
-                if ( this.allselectedUsers.length == 0 ) {
-                    this.saveHubSpotContacts();
-                } else{
-                    this.saveHubSpotContactSelectedUsers();
-                }                
-            }
+            
         }
        
     }
+
+	openCloudPartnerPopUp(){
+        this.cloudPartnersModalCheckBox = false;
+		$('#cloudPartnersModal').modal('show');
+    }
+    
+    proceed(){
+        this.cloudPartnersModalCheckBox = false;
+        $('#cloudPartnersModal').modal('hide');
+        if ( this.selectedAddPartnerOption == 3 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveGoogleContacts();
+            } else
+                this.saveGoogleContactSelectedUsers();
+        }
+
+        if ( this.selectedAddPartnerOption == 6 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveZohoContacts();
+            } else
+                this.saveZohoContactSelectedUsers();
+        }
+
+        if ( this.selectedAddPartnerOption == 7 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveSalesforceContacts();
+            } else
+                this.saveSalesforceContactSelectedUsers();
+        } 
+        if ( this.selectedAddPartnerOption == 8 ) {
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveMarketoContacts();
+            } else{
+            this.saveMarketoContactSelectedUsers();
+            }
+                
+        }
+
+        if(this.selectedAddPartnerOption == 9){
+            if ( this.allselectedUsers.length == 0 ) {
+                this.saveHubSpotContacts();
+            } else{
+                this.saveHubSpotContactSelectedUsers();
+            }                
+        }
+
+    }
+
     
     validateLegalBasisOptions(){
         this.isValidLegalOptions = true;
@@ -2277,8 +2301,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     
    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
    
-   saveAsChange(){
+   saveAsChange(showGDPR: boolean){
     try {
+    	this.showGDPR = showGDPR;
         this.isSaveAsList = true;
         this.saveAsListName = this.editContactComponent.addCopyToField();
 
@@ -2294,7 +2319,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.saveAsError = 'This list name is already taken.';
         } else {
             if ( this.saveAsListName !== "" && this.saveAsListName.length < 250 ) {
-              this.editContactComponent.saveDuplicateContactList(this.saveAsListName, []);
+              this.editContactComponent.saveDuplicateContactList(this.saveAsListName, [], true);
               $('#saveAsAddPartnerModal').modal('hide');
             }
             else if(this.saveAsListName === ""){  this.saveAsError = 'List Name is Required.';  }

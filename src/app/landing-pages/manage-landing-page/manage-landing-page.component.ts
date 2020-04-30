@@ -17,7 +17,7 @@ import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
-
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 declare var swal: any, $: any;
 @Component({
     selector: 'app-manage-landing-page',
@@ -43,14 +43,21 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     selectedLandingPageTypeIndex = 0;
     iframeEmbedUrl: string = "";
     deleteAndEditAccess = false;
+    categoryId: number = 0;
+    isListView = false;
+    isGridView = false;
+    isFolderGridView = false;
+    exportObject:any = {};
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+	modulesDisplayType = new ModulesDisplayType();
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
         public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public vanityUrlService: VanityURLService) {
         this.loggedInUserId = this.authenticationService.getUserId();
+        this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
         if (this.referenceService.isCreated) {
             this.message = "Page created successfully";
@@ -60,22 +67,11 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             this.showMessageOnTop(this.message);
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
-    }
-
-    ngOnInit() {
-        if (this.router.url.includes('home/pages/partner')) {
-            this.isPartnerLandingPage = true;
-            this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-            this.pagination.vanityUrlFilter = this.dashboardAnalyticsDto.vanityUrlFilter;
-            this.pagination.vendorCompanyProfileName = this.dashboardAnalyticsDto.vendorCompanyProfileName;
-        } else {
-            this.selectedLandingPageTypeIndex = 0;
-            this.pagination.filterKey = "All";
-            this.isPartnerLandingPage = false;
-        }
-        this.listLandingPages(this.pagination);
+        this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
 
     }
+
+    
 
     showAllLandingPages(type: string, index: number) {
         this.selectedLandingPageTypeIndex = index;
@@ -164,7 +160,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             let self = this;
             swal({
                 title: 'Are you sure?',
-                text: "You won’t be able to undo this action!",
+                text: "You won't be able to undo this action!",
                 type: 'warning',
                 showCancelButton: true,
                 swalConfirmButtonColor: '#54a7e9',
@@ -185,7 +181,12 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     editLandingPage(id: number) {
         this.landingPageService.id = id;
+        if(this.categoryId>0){
+            this.router.navigate( ["/home/pages/add/"+this.categoryId] );
+        }else{
         this.router.navigate(["/home/pages/add"]);
+    }
+
     }
 
     deleteById(landingPage: LandingPage) {
@@ -195,7 +196,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             .subscribe(
                 (response: any) => {
                     if (response.statusCode == 200) {
-                        $('#landingPageListDiv_' + landingPage.id).remove();
                         let message = landingPage.name + " deleted successfully";
                         this.customResponse = new CustomResponse('SUCCESS', message, true);
                         this.pagination.pageIndex = 1;
@@ -257,16 +257,64 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     }
 
     goToFormAnalytics(id: number) {
+        if(this.categoryId>0){
+            this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
+        }else{
         this.router.navigate(['/home/forms/lf/' + id]);
+
+        }
     }
     goToPartnerLandingPageFormAnalytics(alias: string) {
         this.router.navigate(['/home/forms/partner/lf/' + alias]);
     }
     goToLandingPageAnalytics(id: number) {
+        if(this.categoryId>0){
+            this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
+        }else{
         this.router.navigate(['/home/pages/' + id + '/analytics']);
+    }
+       
     }
     goToPartnerLandingPageAnalytics(alias: string) {
         this.router.navigate(['/home/pages/partner/' + alias + '/analytics']);
+    }
+
+
+	ngOnInit() {
+        if (this.router.url.includes('home/pages/partner')) {
+            this.isPartnerLandingPage = true;
+        } else {
+            this.selectedLandingPageTypeIndex = 0;
+            this.pagination.filterKey = "All";
+            this.isPartnerLandingPage = false;
+        }
+
+        if(this.router.url.endsWith('manage/') || this.router.url.endsWith('partner/')){
+            this.setViewType('Folder-Grid');
+        }else{
+            this.categoryId = this.route.snapshot.params['categoryId'];
+            if (this.categoryId != undefined) {
+                this.pagination.categoryId = this.categoryId;
+                this.pagination.categoryType = 'l';
+            }
+            let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+            if(showList){
+                this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                    this.modulesDisplayType.isListView = true;
+                    this.modulesDisplayType.isGridView = false;
+                }
+                this.modulesDisplayType.isFolderListView = false;
+                this.modulesDisplayType.isFolderGridView = false;
+                this.listLandingPages(this.pagination);
+            }else if(this.modulesDisplayType.isFolderGridView){
+                this.setViewType('Folder-Grid');
+            }else if(this.modulesDisplayType.isFolderListView){
+                this.setViewType('Folder-List');
+            }
+        }
+        
     }
 
 
@@ -278,4 +326,93 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         swal.close();
     }
 
+
+    setViewType(viewType: string) {
+        if ("List" == viewType) {
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.navigateToManageSection(viewType);
+        } else if ("Grid" == viewType) {
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.navigateToManageSection(viewType);
+        } else if ("Folder-Grid" == viewType) {
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView  = false;
+            this.exportObject['type'] = 3;
+            this.exportObject['folderType'] = viewType;
+            if(this.isPartnerLandingPage){
+                this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+            }
+            this.exportObject['partnerLandingPage'] = this.isPartnerLandingPage;
+            if (this.categoryId > 0) {
+                if(this.isPartnerLandingPage){
+                    this.router.navigateByUrl('/home/pages/partner/');
+                }else{
+                    this.router.navigateByUrl('/home/pages/manage/');
+                }
+            }
+        }else if("Folder-List"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 3;
+            if(this.isPartnerLandingPage){
+                this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+            }
+            this.exportObject['partnerLandingPage'] = this.isPartnerLandingPage;
+        }
+    }
+
+
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listLandingPages(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listLandingPages(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listLandingPages(this.pagination);
+        }else if (this.router.url.endsWith('manage/')) {
+            this.router.navigateByUrl('/home/pages/manage');
+        }else if(this.router.url.endsWith('partner/')){
+            this.router.navigateByUrl('/home/pages/partner');
+        }
+    }
+
+
+    getUpdatedValue(event: any) {
+        let viewType = event.viewType;
+        if (viewType != undefined) {
+            this.setViewType(viewType);
+        }
+
+    }
+
 }
+

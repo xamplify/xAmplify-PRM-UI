@@ -15,5 +15,6 @@ export class Form {
     landingPageId:number;
     userId:number;
     campaignId:number;
-    partnerCompanyId:number;    
+    partnerCompanyId:number;   
+    categoryId:number = 0; 
 }

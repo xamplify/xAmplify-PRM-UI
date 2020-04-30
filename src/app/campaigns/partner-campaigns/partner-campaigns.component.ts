@@ -17,6 +17,7 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddMoreReceiversComponent} from '../add-more-receivers/add-more-receivers.component';
+import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 
 declare var $,swal: any;
 
@@ -58,7 +59,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     public itemsSize: any = this.numberOfItemsPerPage[0];
     public isError: boolean = false;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
-    isListView = false;
     campaignType:string;
     role = '';
     customResponse: CustomResponse = new CustomResponse();
@@ -66,7 +66,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
     @ViewChild('addMoreReceivers') adddMoreReceiversComponent: AddMoreReceiversComponent;
     loadingEmailTemplate: boolean =false;
-
+    isListView: boolean = false;
+    isFolderGridView:boolean  = false;
+    isGridView:boolean = false;
+    categoryId:number = 0;
+    exportObject:any = {};
+    modulesDisplayType = new ModulesDisplayType();
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
@@ -87,6 +92,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         } else {
             this.role = "Partner"
         }
+        this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
     }
     showMessageOnTop() {
         $(window).scrollTop(0);
@@ -120,7 +126,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 pagination.vanityUrlFilter = true;
             }
         }
-        
         
         this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
           .subscribe(
@@ -181,11 +186,34 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
 
     ngOnInit() {
         try {
-            this.isListView = !this.referenceService.isGridView;
-            // this.pagination.maxResults = 12;
-            this.pagination.pageIndex = 1;
-            this.campaignType = this.route.snapshot.params['type'];
-            this.listCampaign(this.pagination);
+            if(this.router.url.endsWith('/')){
+                this.setViewType('Folder-Grid');
+            }else{
+                this.pagination.pageIndex = 1;
+                this.campaignType = this.route.snapshot.params['type'];
+                this.categoryId = this.route.snapshot.params['categoryId'];
+                if(this.categoryId!=undefined){
+                    this.pagination.categoryId = this.categoryId;
+                    this.pagination.categoryType = 'c';
+                }
+                let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
+                if(showList || this.campaignType!="all"){
+                    this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
+                    this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
+                    if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
+                        this.modulesDisplayType.isListView = true;
+                        this.modulesDisplayType.isGridView = false;
+                    }
+                    this.modulesDisplayType.isFolderListView = false;
+                    this.modulesDisplayType.isFolderGridView = false;
+                    this.listCampaign(this.pagination);
+                }else if(this.modulesDisplayType.isFolderGridView){
+                    this.setViewType('Folder-Grid');
+                }else if(this.modulesDisplayType.isFolderListView){
+                    this.setViewType('Folder-List');
+                }
+            }
+           
         } catch (error) {
             this.xtremandLogger.error("error in partner-campaigns.component.ts init() ", error);
         }
@@ -198,7 +226,12 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             if(type=="landingPage"){
                 type = "page";
             }
-            this.router.navigate( ['/home/campaigns/partner/' + type] );
+            if(this.router.url.indexOf("/partner/f/")>-1){
+                this.router.navigate( ['/home/campaigns/partner/f/'+this.categoryId+'/' + type] );
+            }else{
+                this.router.navigate( ['/home/campaigns/partner/' + type] );
+            }
+            
         }
     }
 
@@ -388,6 +421,80 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     ngOnDestroy() {
         this.adddMoreReceiversComponent.eventRedistributionMessage = ""
     }
-    
+    setViewType(viewType:string){
+        if("List"==viewType){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);    
+        }else if("Grid"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.navigateToManageSection(viewType);    
+        }else if("Folder-Grid"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = true;
+            this.modulesDisplayType.isFolderListView = false;
+            this.exportObject['type'] = 5;
+            this.exportObject['folderType'] = viewType;
+            this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+            if(this.categoryId>0){
+                this.router.navigateByUrl('/home/campaigns/partner/all/');
+            }
+            
+        }else if("Folder-List"==viewType){
+            this.modulesDisplayType.isListView = false;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = true;
+			this.exportObject['folderType'] = viewType;
+            this.exportObject['type'] = 5;
+            this.exportObject['partnerCompanyId'] = this.referenceService.companyId;
+        }
+    }
+
+
+    navigateToManageSection(viewType:string){
+        if("List"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isListView = true;
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.listCampaign(this.pagination);
+        }else if("Grid"==viewType && (this.categoryId==undefined || this.categoryId==0)){
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isFolderGridView = false;
+            this.modulesDisplayType.isFolderListView = false;
+            this.modulesDisplayType.isListView = false;
+            this.listCampaign(this.pagination);
+        }else if(this.modulesDisplayType.defaultDisplayType=="FOLDER_GRID" || this.modulesDisplayType.defaultDisplayType=="FOLDER_LIST"
+                 &&  (this.categoryId==undefined || this.categoryId==0)){
+           this.modulesDisplayType.isFolderGridView = false;
+           this.modulesDisplayType.isFolderListView = false;
+           if("List"==viewType){
+            this.modulesDisplayType.isGridView = false;
+            this.modulesDisplayType.isListView = true;
+           }else{
+            this.modulesDisplayType.isGridView = true;
+            this.modulesDisplayType.isListView = false;
+           }
+           this.listCampaign(this.pagination);
+        }else if(this.router.url.endsWith('/')){
+            this.router.navigateByUrl('/home/campaigns/partner/all');
+        }
+    }
+
+
+    getUpdatedValue(event:any){
+        let viewType = event.viewType;
+        if(viewType!=undefined){
+            this.setViewType(viewType);
+        }
+        
+    }
     
 }

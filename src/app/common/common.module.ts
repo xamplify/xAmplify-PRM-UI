@@ -35,7 +35,7 @@ import { AutoResponseLoaderComponent } from './loader/auto-response-loader/auto-
 import { PreviewPopupComponent } from '../forms/preview-popup/preview-popup.component';
 import { PreviewLandingPageComponent } from '../landing-pages/preview-landing-page/preview-landing-page.component';
 
-import {FormPreviewComponent} from '../forms/preview/form-preview.component';
+import { FormPreviewComponent } from '../forms/preview/form-preview.component';
 
 import { LandingPageLoaderComponent } from '../landing-page-loader/landing-page-loader.component';
 import { DashboardLoaderComponent } from './loader/dashboard-loader/dashboard-loader.component';
@@ -49,28 +49,45 @@ import { FlatpickrComponent } from './flatpickr/flatpickr.component';
 import { InternationalPhoneModule } from 'ng4-intl-phone';
 import { SaveGeoLocationAnalyticsComponent } from '../util/save-geo-location-analytics/save-geo-location-analytics.component';
 import { SendCampaignsComponent } from './send-campaigns/send-campaigns.component';
-
+import { CategoryFolderViewUtilComponent } from '../util/category-folder-view-util/category-folder-view-util.component';
+import { AddFolderModalPopupComponent } from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { CreateBeeTemplateComponent } from 'app/util/create-bee-template/create-bee-template.component';
+import { FormsListViewUtilComponent } from 'app/util/forms-list-view-util/forms-list-view-util.component';
+import { CampaignsListViewUtilComponent } from 'app/util/campaigns-list-view-util/campaigns-list-view-util.component';
+import { EmailTemplatesListViewUtilComponent } from 'app/util/email-templates-list-view-util/email-templates-list-view-util.component';
+import { LandingPagesListViewUtilComponent } from 'app/util/landing-pages-list-view-util/landing-pages-list-view-util.component';
+import { PreviewCampaignComponent } from "app/campaigns/preview-campaign/preview-campaign.component";
+import { SocialStatusComponent } from '../social/common/social-status/social-status.component';
+import { AddMoreReceiversComponent } from 'app/campaigns/add-more-receivers/add-more-receivers.component';
+import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
+import { TagInputModule } from 'ngx-chips'
+import { LoaderComponent } from '../loader/loader.component';
+import { RedistributeCampaignsListViewUtilComponent } from 'app/util/redistribute-campaigns-list-view-util/redistribute-campaigns-list-view-util.component';
 
 
 @NgModule({
-    imports: [InternationalPhoneModule, CommonModule, FormsModule, LoadingModule,MultiSelectAllModule,CheckBoxModule, ButtonModule,BootstrapSwitchModule],
+    imports: [InternationalPhoneModule, CommonModule, FormsModule, LoadingModule, MultiSelectAllModule, CheckBoxModule, ButtonModule, BootstrapSwitchModule,TagInputModule],
     declarations: [DonutChartComponent, PaginationComponent, WorldmapComponent, PieChartComponent,
         BarChartComponent, EmbedModalComponent, EmbedModalComponent, UserInfoComponent, LocationComponent,
         PlatformComponent, ResponseMessageComponent, PreviewVideoComponent, ContactsCampaignsMailsComponent, ListLoaderComponent,
         PlayVideoLoaderComponent, GridLoaderComponent, ExportCsvComponent, AnalyticsLoaderComponent, VideoThumbnailComponent,
-        DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,
-        TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent, DashboardLoaderComponent, 
-        ModalPopupLoaderComponent,FormAnalyticsUtilComponent, PublicPageResponseComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent, SendCampaignsComponent],
+        DetailViewComponent, TimestampComponent, ScrollTopComponent, SaveAsComponent,TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, 
+		ImageCropperComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, PreviewPopupComponent,PreviewLandingPageComponent, FormPreviewComponent,
+		 LandingPageLoaderComponent, DashboardLoaderComponent,ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
+		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
+		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
+		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent],
 
 
-    exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,
-        BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent,ImageCropperComponent,
+    exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,TagInputModule,
+        BarChartComponent, EmbedModalComponent, UserInfoComponent, LocationComponent, PlatformComponent, ImageCropperComponent,
         ResponseMessageComponent, PreviewVideoComponent, PieChartComponent, ListLoaderComponent, GridLoaderComponent, PlayVideoLoaderComponent,
         ExportCsvComponent, LoadingModule, AnalyticsLoaderComponent, VideoThumbnailComponent, DetailViewComponent, TimestampComponent,
-
-        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent,AutoResponseLoaderComponent,PreviewPopupComponent,
-        PreviewLandingPageComponent, FormPreviewComponent,LandingPageLoaderComponent,DashboardLoaderComponent,ModalPopupLoaderComponent,FormAnalyticsUtilComponent,MergeTagsComponent,FlatpickrComponent,SaveGeoLocationAnalyticsComponent,SendCampaignsComponent]
+        ScrollTopComponent, SaveAsComponent, TimestampNewComponent, VideoPlayComponent, EventSendReminderComponent, EmailSpamCheckComponent, AutoResponseLoaderComponent, 
+		PreviewPopupComponent,PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, 
+		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
+		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
+		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent]
 
 })
 export class CommonComponentModule { }

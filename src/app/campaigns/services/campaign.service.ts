@@ -61,7 +61,7 @@ export class CampaignService {
 
     listCampaign(pagination: Pagination, userId: number) {
         userId = this.authenticationService.checkLoggedInUserId(userId);
-        var url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "admin/listCampaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -338,14 +338,14 @@ export class CampaignService {
       }*/
 
     listPartnerCampaigns(pagination: Pagination, userId: number) {
-        var url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/partner-campaigns/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
     cancelEvent(cancelEventData: any, userId: number) {
-        var url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, cancelEventData)
             .map(this.extractData)
             .catch(this.handleError);
@@ -445,7 +445,7 @@ export class CampaignService {
             .catch( this.handleError );
     }
     listCampaignPartners(pagination: Pagination, campaignId: number) {
-        var url = this.URL + "campaign/list-partners-by-campaign-id/" + campaignId + "?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/list-partners-by-campaign-id/" + campaignId + "?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -550,7 +550,7 @@ export class CampaignService {
         hours = hours % 12;
         hours = hours ? hours : 12;
         let mintuesInString = mintues < 10 ? '0'+mintues : mintues;
-        var currentDateTime = month + '/' + today + '/' + year + ' ' + hours + ':' + mintuesInString + ' ' + ampm;
+        let currentDateTime = month + '/' + today + '/' + year + ' ' + hours + ':' + mintuesInString + ' ' + ampm;
         return currentDateTime;
     }
     setHoursAndMinutesToAutoReponseReplyTimes(timeAndHoursString: string) {
@@ -580,7 +580,7 @@ export class CampaignService {
 
     addEmailId(campaign: Campaign, selectedEmailTemplateId: number, selectedLandingPageId :number, nurtureCampaign: boolean) {
         try {
-            var self = this;
+            let self = this;
             swal({
                 title: 'Please Enter Email Id',
                 input: 'email',
@@ -671,7 +671,7 @@ export class CampaignService {
     }
 
     removeUrls(url: string, links: any) {
-        var index = $.inArray(url, links);
+        let index = $.inArray(url, links);
         if (index >= 0) {
             links.splice(index, 1);
         }
@@ -756,14 +756,14 @@ export class CampaignService {
   
   
   listAutoResponseAnalytics(pagination:Pagination) {
-      var url =this.URL+"autoResponse/analytics?access_token="+this.authenticationService.access_token;
+      let url =this.URL+"autoResponse/analytics?access_token="+this.authenticationService.access_token;
       return this.http.post(url, pagination)
       .map(this.extractData)
       .catch(this.handleError);   
   }
 
     getPartnerTemplatePreview(campaignId: any, userId: number) {
-        var url = this.URL + "admin/getPartnerTemplate/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "admin/getPartnerTemplate/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -830,20 +830,72 @@ export class CampaignService {
     }
 
     listCampaignsByUserListIdAndUserId(pagination: Pagination) {
-        var url = this.URL + "campaign/listLaunchedCampaignsByUserListId?access_token=" + this.authenticationService.access_token;
+        let url = this.URL + "campaign/listLaunchedCampaignsByUserListId?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+
+    listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
+        let url = "listEmailTemplateCategories";
+        if("landingPage"==campaignType){
+            url = "listLandingPageCategories"
+        }
+        return this.http.get(this.URL + "category/"+url+"/"+userId+"?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    updateFolder(campaignId: number,categoryId:number,updatedUserId:number) {
+        return this.http.get(this.URL + "campaign/changeFolder/" + campaignId +"/"+categoryId+"/"+updatedUserId+ "?access_token=" + this.authenticationService.access_token,"")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    changeWorkflowStatus(workflowId:number,workflowStatus:string,workflowType:number){
+        let url = this.URL+"campaign/";
+        if(workflowType==1 && workflowStatus=='INACTIVE'){
+            url+= 'pauseAutoReplyWorkflow';
+        }else if(workflowType==1 && workflowStatus=='ACTIVE'){
+            url+= 'resumeAutoReplyWorkflow';
+        }else if(workflowType==2 && workflowStatus=='INACTIVE'){
+            url+= 'pauseUrlWorkflow';
+        }else if(workflowType==2 && workflowStatus=='ACTIVE'){
+            url+= 'resumeUrlWorkflow';
+        }
+        return this.http.get(url+"/"+workflowId+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    getCampaignContactsOrPartners(pagination:Pagination){
+        return this.http.post(this.URL + "campaign/getCampaignContactsOrPartners?access_token=" + this.authenticationService.access_token, pagination)
 
     // Added by Vivek for Vanity URL
 
     getUserCampaignReportForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto) {
         var url = this.URL + "dashboard/views/get-user-campaign-report?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, dashboardAnalyticsDto)
+
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+
+    changeCampaignUserWorkflowStatus(campaignUserWorkflowStatusPostDTO:any){
+        let status = campaignUserWorkflowStatusPostDTO.status;
+        let url = this.URL + "campaign/";
+        if(status=="ACTIVE"){
+            url+='resumeWorkFlowForCampaignUser';
+        }else{
+            url+='pauseWorkFlowForCampaignUser';
+        }
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token, campaignUserWorkflowStatusPostDTO)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     listCampaignInteractionsDataForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto, reportType: string) {        
         var url = this.URL + "dashboard/views/list-campaign-interactions?access_token=" + this.authenticationService.access_token + '&limit=4'  + '&reportType=' + reportType;
@@ -851,4 +903,5 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
 }

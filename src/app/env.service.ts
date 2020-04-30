@@ -18,6 +18,9 @@ export class EnvService {
   
   clientId = "6639d69f-523f-44ca-b809-a00daa26b367";
   clientSecret = "XnD77klwAeUFvYS66CbHMd107DMS441Etg9cCOVc63LTYko8NHa";
+
+  vendorRoleHash = "";
+  partnerRoleHash = "";
   
   
   // Whether or not to enable debug mode

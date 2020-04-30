@@ -18,7 +18,7 @@
 								<a  (click)="openLinkInBrowser()" *ngIf="pagination.checkInLeads"  class="close-circle"  data-toggle="tooltip" data-placement="top" title="Open">
 									<i class="fa fa-link"></i>
 								</a>
-								<a *ngIf="(isTotalLeadsData || isTotalAttendees) && pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
+								<a *ngIf="pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
 									<i class="fa fa-download margin"></i>
 								</a>
 								<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
@@ -35,7 +35,7 @@
 												class="fa fa-search"></i></button>
 									</div>
 								</div>
-					</div>
+							</div>
 				         </div>
 				     </div>
 				   </div>

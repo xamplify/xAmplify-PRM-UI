@@ -157,7 +157,7 @@
                                 <a (click)="activateTab('password');clearCustomResponse()">
                                     <i class="fa fa-key"></i> Change Password </a>
                             </li>
-                            <li *ngIf="(authenticationService.isOrgAdmin())">
+                           <!--  <li *ngIf="(authenticationService.isOrgAdmin())">
                                 <a [class.disabled]="authenticationService.isSuperAdmin()">
                                     <div class="col-xs-2 p0"><i class="icon-settings"></i></div>
                                     <div class="col-xs-5 p0">
@@ -172,7 +172,7 @@
                                         </label>
                                     </div>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                     <!-- END MENU -->
@@ -252,7 +252,7 @@
                                                 class="hidden-xs">Default</span> Player Settings</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
-                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Form/Deal Types</a>
+                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Deal Registration</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
                                         <a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
@@ -260,9 +260,12 @@
                                     <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
                                         <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
                                     </li>
-                                    <!-- <li [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
-                                        <a (click)="activateTab('categories');clearCustomResponse()">Categories</a>
-                                    </li> -->
+                                    <li  [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
+                                        <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
+                                    </li>
+                                    <li [ngClass]="{'active': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
+                                        <a (click)="activateTab('samlSettings');clearCustomResponse()">Saml Settings</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="portlet-body clearfix">
@@ -575,28 +578,37 @@
                                     </div>
                                     <!-- PRIVACY SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'settings'}">
-                                        <form action="#">
-                                            <table class="table table-light">
-                                                <tr>
-                                                    <td>
-                                                        <div class='flex'>
-                                                            <h4 class='f-w-600'>Default View</h4>
-                                                            <section style="margin-left: 7em;">
-                                                                <switch [(status)]="callActionSwitch.isGridView" [onText]="callActionSwitch.onTextValueView" [offText]="callActionSwitch.offTextValueView" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size">
-                                                                </switch>
-                                                            </section>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <!--end profile-settings-->
-                                            <div class="margin-top-10">
-                                                <button type="submit" class="btn green-haze" (click)="setGridView(callActionSwitch.isGridView)">Save
-                                                    Changes</button>
+                                       <div class="container">
+                                            <div id="custom-response-div">
+                                                <app-response-message *ngIf="modulesDisplayViewcustomResponse.isVisible" [customResponse]="modulesDisplayViewcustomResponse"></app-response-message>
                                             </div>
-                                        </form>
+                                            <label class="container-checkbox-xamplify">List
+                                                <input type="radio"  name="moduleDisplayType"  
+                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
+                                                 [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                              <label class="container-checkbox-xamplify">Grid
+                                                <input type="radio"  name="moduleDisplayType" 
+                                                value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]}}" 
+                                                [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                              <label class="container-checkbox-xamplify">Folder Grid
+                                                <input type="radio"  name="moduleDisplayType" 
+                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]}}" [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]">
+                                                <span class="checkmark"></span>
+                                              </label>
+                                              <label class="container-checkbox-xamplify">Folder List
+                                                <input type="radio"  name="moduleDisplayType" 
+                                                value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]}}"
+                                                 [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]"> 
+                                                <span class="checkmark"></span>
+                                              </label>
+                                          </div>
+                                          <div class="margin-top-10">
+                                            <button type="submit" class="btn green-haze" (click)="setDefaultView()">Save   Changes</button>
+                                        </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
 
@@ -613,14 +625,21 @@
                                                             <!--style="border: 1px solid #ddd;"-->
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" style="color: #847d7d;">EU General Data Protection Regulation(GDPR)&nbsp;&nbsp;
-                                                                        <i class="fa fa-info-circle"></i></h5>
-                                                                    <h5 style="color: #847d7d;">
+                                                                    <h5 class="f-w-600" id="text-color-my-profile">
+                                                                        Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes:
+                                                                    </h5>
+                                                                        <ul>
+                                                                            <li id="text-color-my-profile">The ability to designate a legal basis for contacting each person added to a mailing list</li>
+                                                                            <li id="text-color-my-profile" style="margin-top: 5px">Automatic inclusion of an unsubscribe link in every campaign email</li>
+                                                                        </ul>
+                                                                  
+                                                                    <h5 id="text-color-my-profile">
                                                                         <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank">Privacy & consent</a>&nbsp; |
-                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank">Cookies & tracking</a> &nbsp;|
-                                                                        <a class="link" href="https://www.xamplify.com/" target="_blank">Learn More</a>&nbsp;</h5>
-                                                                    <h5 style="color: #847d7d;">
-                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing
+                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank">Cookies & tracking</a> &nbsp;
+                                                                    </h5>
+                                                                    <h5 id="text-color-my-profile">
+                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; 
+                                                                        Only allows marketing
                                                                         emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
@@ -634,7 +653,7 @@
                                                             </div>
                                                         </tr>
                                                     </fieldset><br>
-                                                    <fieldset *ngIf="gdprSetting.gdprStatus">
+                                                    <!-- <fieldset *ngIf="gdprSetting.gdprStatus">
                                                         <legend>Available Options</legend>
                                                         <tr class="col-md-12 col-lg-12" style="border: 1px solid #ddd;margin-top: 12px;">
                                                             <div class="flex row">
@@ -714,7 +733,7 @@
                                                                 </div>
                                                             </div>
                                                         </tr>
-                                                    </fieldset>
+                                                    </fieldset> -->
                                                 </tbody>
                                             </table>
                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
@@ -725,17 +744,22 @@
                                         </form>
                                     </div>
                                     <!-- END GDPR SETTINGS TAB -->
+
+                                    <!-- Saml SETTINGS TAB -->
+                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
+                                        <app-samlsecurity> </app-samlsecurity>
+                                    </div>
+                                    
                                     <!-- Categories -->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'categories'}">
+                                       <ng-container *ngIf="!isFolderPreview">
                                         <app-response-message class="pg8" [customResponse]="categoryResponse" *ngIf="categoryResponse.isVisible">
                                         </app-response-message>
                                         <div class="portlet-title" style="border-bottom: none;">
                                             <div class="row">
                                                 <div class="col-xs-12 col-sm-12 col-lg-12">
                                                     <div class="col-xs-12 col-sm-5 col-lg-5 p0">
-                                                        <ul class="mix-filter">
-                                                            <li class="filter" (click)="addCategory()">Add</li>
-                                                        </ul>
+                                                         <button class="add-button-xamplify"  (click)="addCategory()">Create a Folder</button>
                                                     </div>
                                                     <div class="col-xs-12 col-sm-7 col-lg-7 p0">
                                                         <div class="page-toolbar">
@@ -775,7 +799,7 @@
                                                         <tr>
                                                             <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
                                                                 <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'category-list',2)"> </span>
-                                                                <span class="gridHeader">Category</span>
+                                                                <span class="gridHeader">Folder</span>
                                                             </th>
                                                             <th class="text-center" id="border-bottom">Created On</th>
                                                             <th class="text-center" id="border-bottom">Items Count</th>
@@ -813,7 +837,6 @@
                                                                             <i class="fa fa-trash-o disabled-event"></i>
                                                                         </a>
                                                                     </ng-container>
-
                                                                     <ng-container *ngIf="!category.defaultCategory">
                                                                         <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="getCategoryById(category)">
                                                                             <i class="fa fa-pencil-square-o"></i>
@@ -822,7 +845,13 @@
                                                                             <i class="fa fa-trash-o"></i>
                                                                         </a>
                                                                     </ng-container>
+                                                                    <a *ngIf="categoryPagination.previewAccess" data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewItems(category)">
+                                                                        <i class="fa fa-eye"></i>
+                                                                    </a>
 
+                                                                    <a *ngIf="!categoryPagination.previewAccess" title="You do not have permission to preview">
+                                                                        <i class="fa fa-eye disabled-event"></i>
+                                                                    </a>
 
                                                                 </div>
                                                             </td>
@@ -830,14 +859,56 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <div *ngIf="categoryPagination.pagedItems.length !== 0" class="pg8">
-                                                <app-pagination [pagination]="categoryPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
-                                            </div>
-                                            <!-- End of 24 -->
-                                            <div *ngIf="categoryPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                                                <strong>No Categories Found.</strong>
-                                            </div>
                                         </ng-container>
+                                        <div *ngIf="categoryPagination.pagedItems.length !== 0" class="pg8">
+                                            <app-pagination [pagination]="categoryPagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCategories($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+                                        </div>
+                                        <!-- End of 24 -->
+                                        <div *ngIf="categoryPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+                                            <strong>No Folders Found.</strong>
+                                        </div>
+                                    </ng-container>
+                                    <!--------------Preview Items------------------>
+                                    <ng-container *ngIf="isFolderPreview">
+                                        <app-dashboard-loader *ngIf="folderPreviewLoader.isLoading"></app-dashboard-loader>
+                                        <div class="portlet-title" *ngIf="!folderPreviewLoader.isLoading">
+                                            <h4 class="caption-subject font-red-sunglo f-w-600 pull-left">{{categoryPreviewItem.categoryName}}</h4>
+                                            <a class="close-circle pull-right" (click)="isFolderPreview=false">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+                                        <br>
+                                        <div class="table table-responsive top-padding-5px" *ngIf="!folderPreviewLoader.isLoading">
+                                            <table  class='table tgrid table-hover table-sm'>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Module</th>
+                                                        <th>Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of categoryPreviewItem.items" [className]="(item?.previewAccess  && item.moduleItemsCount>0)  ? 'xamplify-cursor-pointer' : 'xampify-cursor-not-allowed'" (click)="goToFolder(categoryPreviewItem.categoryId,item)" >
+                                                        <td>
+                                                            <h5 class="xamplify-folder-banner">{{item.moduleName}}</h5>
+                                                            <img class="img-class-list" src="{{item.moduleIcon}}">
+                                                        </td>
+                                                        <td>
+                                                            <div  class="override-actions">
+                                                                <a  [title]="item?.previewAccess ? 'Count' : 'You do not have permission to preview'">
+                                                                   <span *ngIf="item.previewAccess" class="circled-number" (click)="goToFolder(categoryPreviewItem.categoryId,item)"><b>{{item.moduleItemsCount}}</b></span>
+                                                                   <span *ngIf="!item.previewAccess" class="circled-number xampify-cursor-not-allowed"><b>{{item.moduleItemsCount}}</b></span>
+                                                                </a>
+                                                            </div >
+                                                        </td> 
+                                                    </tr>
+
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+                                    </ng-container>
+                                    
                                     </div>
                                     <!-- END Categories TAB -->
 
@@ -1041,7 +1112,7 @@
                 <ng-container *ngIf="!addCategoryLoader.isLoading">
                     <div class="form-group" id="categoryNameDiv">
                         <label>Name <font class="required">*</font></label>
-                        <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="1000" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
+                        <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="30" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
@@ -1065,21 +1136,20 @@
                 <button type="button" class="close-circle" (click)="closeDeleteCategoryModal()">
                     <i class="fa fa-times"></i>
                 </button>
-                <h4 class="modal-title text-center">Move Items & Delete Category</h4>
+                <h4 class="modal-title text-center">Move Items & Delete Folder</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Select Category</label>
+                    <label>Select Folder</label>
                     <select class="form-control" [(ngModel)]="selectedCategoryIdForTransferItems">
-                        <option value="0">Please select a category</option>
+                        <option value="0">Please select a folder</option>
                         <option *ngFor="let category of exisitingCategories" [ngValue]="category.id">{{category.name}}</option>
                         </select>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" (click)="closeDeleteCategoryModal()">Cancel</button>
-                <button type="button" class="btn btn-primary" title="Move items to other category and delete existing category" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
-                <button type="button" class="btn btn-primary" (click)="deleteCategoryWithoutTransferring()">Delete</button>
+                <button type="button" class="btn btn-primary" title="Move items to other foler and delete existing folder" [disabled]="selectedCategoryIdForTransferItems==0" (click)="moveAndDeleteCategory()">Move & Delete</button>
             </div>
         </div>
     </div>

@@ -13,9 +13,12 @@ export const routes: Routes = [
     { path: "", redirectTo: "manage", pathMatch: "full" },
     { path: "add", component: AddFormComponent },
     { path: "edit", component: AddFormComponent },
+    { path: "edit/:categoryId", component: AddFormComponent },
     { path: "manage", component: ManageFormComponent },
+    { path: "manage/:categoryId", component: ManageFormComponent },
     { path: ":alias/analytics", component: FormAnalyticsComponent},
     { path: ":alias/:campaignAlias/analytics", component: FormAnalyticsComponent},
+    { path: "category/:alias/:categoryId/analytics", component: FormAnalyticsComponent},
     { path: ":partner/f/:formId/:partnerLandingPageAlias/analytics", component: FormAnalyticsComponent},
     { path: "lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
     { path: ":alias/:campaignAlias/:partnerId/analytics", component: FormAnalyticsComponent},
@@ -23,7 +26,10 @@ export const routes: Routes = [
     {path: "lf/:landingPageId",component:LandingPageFormsComponent},
     {path: "partner/lf/:partnerLandingPageAlias",component:LandingPageFormsComponent},
     {path: "clpf/:landingPageCampaignId",component:CampaignLandingPageFormsComponent},
-    {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent}
+    {path: "clpf/:landingPageCampaignId/:partnerId",component:CampaignLandingPageFormsComponent},
+    {path: "category/:categoryId/lf/:landingPageId",component:LandingPageFormsComponent},
+    { path: "category/:categoryId/lf/:alias/:landingPageAlias/analytics", component: LandingPageFormAnalyticsComponent},
+
 
 ];
 

@@ -22,6 +22,7 @@
 		</li>
 	</ul>
 </div>
+
 <div class="clearfix" id="manageContacts">
 	<div class="row">
 		<div class="col-xs-12">
@@ -39,7 +40,7 @@
 						<div class="page-bar m0">
 							<div class="page-breadcrumb">
 								<span *ngIf="!isDefaultPartnerList" data-toggle="tooltip" data-placement="top" title="Edit Contact list Name" style="cursor:pointer;font-size: 16px; font-family: Open Sans; color: #989292;"
-								(click)="updateContactListNameAlert()">
+								(click)="saveAs(false)">
 								<span class="ellipsis" title="{{selectedContactListName}}">{{selectedContactListName | slice:0:30}}
 												<span *ngIf="selectedContactListName?.length>30">...</span>
 									<!-- <span *ngIf="!isDefaultPartnerList">List</span> -->
@@ -191,7 +192,7 @@
 															</a></li>
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"
-																(click)="saveAs()">Save As </a></li>
+																(click)="saveAs(true)">Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
 																(click)="downloadList()">Export To Excel</a></li>
@@ -204,14 +205,18 @@
 													</div>
 													</div>
 										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0"
-															(click)="saveAs()" style="margin-right: 5px; background-color: white; color: #777070">
+															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070">
 															Save As<!-- <i class="fa fa-save"></i> -->
 														</button>
 								</div>
 								<div class="portlet-body">
 									<div class="table-toolbar">
 										<div class="clearfix">
-											<div class="col-xs-12 col-md-6 col-sm-6 p0" *ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId==uploadedUserId)">
+											<ng-container *ngIf="showAddOptions">
+											<div class="col-xs-12 col-md-6 col-sm-6 p0" 
+											*ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
+											 authenticationService.module.isVendor || authenticationService.module.isPartner || 
+											 (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
@@ -220,8 +225,8 @@
 														One at a Time
 														<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;"></i>
 													</button>
-                        </div>
-                        <ng-container *ngIf="!refService.isMobileScreenSize()">
+                       							 </div>
+                        					<ng-container *ngIf="!refService.isMobileScreenSize()">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="copyFrom_clipboard" class="btn green"
 														[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
@@ -242,9 +247,10 @@
 															(change)="fileChange(input)" accept=".csv" #input
 															[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9" />
 													</div>
-                        </div>
-                        </ng-container>
+												</div>
+												</ng-container>
 											</div>
+										</ng-container>		
 								 <div class="col-xs-12 col-md-6 col-sm-6 p0 pull-right" style="margin-top: 10px;">
 									<div class="col-xs-2 col-md-2 col-sm-2">
 								<div *ngIf="!isSegmentation" (click)="modelForSeg()"
@@ -390,7 +396,7 @@
 												</div>
 												<button class=" col-sm-3 btn btn-default" type="button"
 													style="background-color: #26a69a; color: white"
-													(click)="clipboardShowPreview()">SHOW PREVIEW</button>
+													(click)="clipboardShowPreview()">VERIFY DATA</button>
 											</div>
 											<div class="col-sm-9">
 												<textarea *ngIf="!isPartner" class="textareaNumber" [(ngModel)]="clipboardTextareaText"
@@ -1168,7 +1174,8 @@
 </div>
 
 
-<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
+<app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner" 
+   [showGDPR]="showGDPR" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
 <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"

@@ -22,7 +22,7 @@
                         <div class="col-xs-12 text-center" style="margin-top: 10px;" *ngIf="!sendingRequest">
                             <div class="row pb10" id="user_list_table_view">
                                 <app-loader [model]="contactListLoader.isHorizontalCss" *ngIf="contactListLoader.isLoading"></app-loader>
-                                <app-error-pages *ngIf="contactListLoader.isServerError"></app-error-pages>
+                                <!-- <app-error-pages *ngIf="contactListLoader.isServerError"></app-error-pages> -->
                                 <ng-container *ngIf="!contactListLoader.isLoading && !contactListLoader.isServerError">
                                     <div id="user_list_tb_wrapper" class="dataTables_wrapper form-inline no-footer" style="padding:10px">
                                         <div class="note-vid pull-left">{{contactListSelectMessage}}</div>
@@ -133,9 +133,9 @@
                     </h4>
                 </div>
             </div>
-            <app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader>
+            <!-- <app-loader [model]="contactListDetailLoader.isHorizontalCss" *ngIf="contactListDetailLoader.isLoading"></app-loader> -->
             <div class="modal-body" id="users-modal-body"></div>
-            <app-error-pages *ngIf="contactListDetailLoader.isServerError"></app-error-pages>
+           <!--  <app-error-pages *ngIf="contactListDetailLoader.isServerError"></app-error-pages> -->
             <div class="modal-footer">
                 <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true" (notifyParent)="setPagePagination($event)"></app-pagination>
                 <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>

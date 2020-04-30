@@ -36,9 +36,11 @@ import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { HubSpotService } from 'app/core/services/hubspot.service';
 import { EnvService } from 'app/env.service';
 import { IntegrationService } from 'app/core/services/integration.service';
+import { Category as folder } from 'app/dashboard/models/category';
+import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import { Form } from 'app/forms/models/form';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
-import { Form } from 'app/forms/models/form';
 var moment = require('moment-timezone');
 
 @Component({
@@ -195,9 +197,17 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  isValidCrmOption = true;
 
  senderMergeTag:SenderMergeTag = new SenderMergeTag();
-
-
-
+ public selectedFolderIds= [];
+ public emailTemplateFolders:Array<folder>;
+ public folderFields: any;
+ public folderFilterPlaceHolder: string = 'Select folder';
+ folderErrorCustomResponse: CustomResponse = new CustomResponse();
+ isFolderSelected = true;
+ isEditPartnerTemplate = false;
+ categoryNames: any;
+ @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
+ folderCustomResponse:CustomResponse = new CustomResponse();
+completeLoader = false;
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -279,6 +289,20 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  eventHandler(event:any){
   if(event===13) { this.searchEmailTemplate();}
  }
+
+ listCategories(){
+     this.completeLoader = true;
+    this.authenticationService.getCategoryNamesByUserId(this.loggedInUserId).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            this.eventCampaign.categoryId = categoryIds[0];
+            this.completeLoader = false;
+        },
+        error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.loggedInUserId + ")", error ); },
+        () => this.logger.info( "Finished listCategories()" ) );
+}
+
  ngOnInit() {
     if(!this.reDistributeEvent && !this.isEventUpdate){
       this.authenticationService.isShowForms = true;
@@ -305,7 +329,14 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         (result)=>{
         this.campaignService.eventCampaign = result.data;
         this.eventCampaign = result.data;
-        
+        this.isPushToCrm = this.eventCampaign.pushToMarketingAutomation;
+        this.eventCampaign.pushToCRM = [];
+        if(this.eventCampaign.pushToMarketo){
+            this.eventCampaign.pushToCRM.push('marketo');
+        }
+        if(this.eventCampaign.pushToHubspot){
+            this.eventCampaign.pushToCRM.push('hubspot');
+        }
         if(this.eventCampaign.dataShare == undefined){
         this.eventCampaign.dataShare = false;
         }
@@ -460,12 +491,16 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
     this.ckeConfig = {
       allowedContent: true,
     };
+
+    this.listEmailTemplatesFolders();
+    this.listCategories();
+
     
   }
   ngAfterViewInit() {
    // this.listAllTeamMemberEmailIds();
       this.detailsTab = true;
-      this.resetTabClass()
+      this.resetTabClass();
   }
 
   ngAfterViewChecked(){
@@ -1129,6 +1164,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     const customEventCampaign = {
       'id':eventCampaign.id,
       'campaign': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign),
+      'categoryId':eventCampaign.categoryId,
       'user':eventCampaign.user,
       'message':eventCampaign.message,
       'subjectLine':eventCampaign.subjectLine,
@@ -1163,7 +1199,8 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'smsService':this.smsService,
       'smsText':this.smsText,
       'socialStatusList': this.socialStatusList,
-      'forms': this.selectedFormData
+      'forms': this.selectedFormData,
+      'pushToCRM':eventCampaign.pushToCRM
     }
     eventCampaign = customEventCampaign;
    }
@@ -2509,6 +2546,63 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
       }
     }
+
+
+    showFolderFilterPopup(){
+        $('#filterPopup').modal('show');
+        }
+    
+    closeFilterPopup(){
+        $('#filterPopup').modal('hide');
+    }
+    
+    applyFilter(){
+        if(this.selectedFolderIds.length>0){
+            this.emailTemplatesPagination.categoryIds = this.selectedFolderIds;
+            this.emailTemplatesPagination.categoryFilter = true;
+        }else{
+            this.emailTemplatesPagination.categoryIds = [];
+            this.emailTemplatesPagination.categoryFilter = false;
+        }
+        this.loadEmailTemplates(this.emailTemplatesPagination);
+        this.closeFilterPopup();
+    }
+    
+    listEmailTemplatesFolders(){
+        this.folderFields = { text: 'name', value: 'id' };
+        this.campaignService.listEmailTemplateOrLandingPageFolders(this.loggedInUserId,'email').
+        subscribe(data =>{
+           this.emailTemplateFolders = data;
+        },error =>{
+            this.folderErrorCustomResponse = new CustomResponse();
+            this.folderErrorCustomResponse = new CustomResponse('ERROR', this.referenceService.serverErrorMessage, true);
+        }, () => this.logger.log("listEmailTemplatesFolders()"));
+      }
+
+editPartnerTemplate(){
+    this.isEditPartnerTemplate = false;
+    if(this.eventCampaign.emailTemplate.vendorCompanyId!=undefined && this.eventCampaign.emailTemplate.vendorCompanyId>0){
+        if(this.eventCampaign.emailTemplate.jsonBody!=undefined){
+            this.isEditPartnerTemplate = true;
+        }else{
+            this.referenceService.showSweetAlert( "", "This template cannot be edited.", "error" );
+        }
+    }else{
+        this.referenceService.showSweetAlert( "", "This template can't be edited because the vendor has deleted the campaign.", "error" );
+       
+    }
+    
+}
+
+  openCreateFolderPopup(){
+    this.folderCustomResponse = new CustomResponse('');
+    this.addFolderModalPopupComponent.openPopup();
+    }
+
+showSuccessMessage(message:any){
+  this.folderCustomResponse = new CustomResponse('SUCCESS',message, true);
+  this.listCategories();
+}
 
 
 }

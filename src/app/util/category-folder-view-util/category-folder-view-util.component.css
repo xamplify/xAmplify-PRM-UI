@@ -1,0 +1,135 @@
+/* ---------------Folder Start---------------- */
+
+.ffolder {
+    position: relative;
+    display: inline-block
+}
+
+.ffolder:after,
+.ffolder:before {
+    content: '';
+    display: block;
+    position: absolute
+}
+
+.ffolder.big {
+    margin-top: 45px;
+    width: 100%;
+    height: 170px;
+    border-radius: 0 14px 14px
+}
+
+.ffolder:after {
+    width: 0;
+    height: 0
+}
+
+.ffolder.big:before {
+    top: -24px;
+    left: 0;
+    width: 96px;
+    height: 24px;
+    border-radius: 14px 0 0
+}
+
+.ffolder.big:after {
+    top: -48px;
+    left: 72px;
+    border: 24px solid transparent
+}
+
+.ffolder span {
+    font-size: 12px;
+    /* padding: 2px 8px; */
+    border-radius: 15px;
+    white-space: nowrap
+}
+
+.ffolder.gray {
+    background-color: #8dd8f8
+}
+
+.ffolder.gray span,
+.ffolder.gray:before {
+    background-color: #8dd8f8
+}
+
+.ffolder.gray:after {
+    border-bottom-color: #8dd8f8
+}
+
+.ffolder.gray span {
+    background-color: transparent
+}
+
+.ffolder.gray i {
+    color: #8dd8f8
+}
+
+.grid-box-folder {
+    background: #f1f3fa;
+    height: auto;
+    width: 100%;
+    margin: 0px 0px;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1em;
+    border-radius: 15px;
+    border: 1px solid #dde4fb;
+    height: 170px;
+}
+
+#right-margin {
+    margin-right: 90px;
+}
+
+#search-div {
+    margin-right: 6px;
+}
+
+#icon {
+    position: relative;
+    right: -11px;
+}
+
+#sort-text {
+    height: 34px;
+}
+
+#left {
+    float: left;
+}
+
+#select-dropdown {
+    position: relative;
+    right: -9px;
+}
+
+#custom-view-banner {
+    position: relative;
+    top: -3px;
+    padding: 2px 8px;
+    background-color: #8dd8f8 !important;
+}
+
+#category-icon-size {
+    font-size: 50px;
+}
+
+#category-icon-div {
+    margin-top: 28px;
+    margin-bottom: -5px;
+}
+
+.custom-flex {
+    display: inline-flex;
+    margin-left: -10px;
+}
+
+.margin-right-calendar{
+    margin-right: 5px;
+}
+#fa-folder-custom-size{
+    font-size: 25px;
+    color: #15c1df;
+}

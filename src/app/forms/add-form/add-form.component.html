@@ -1,102 +1,102 @@
 <div class="page-content">
-  <div class="my-container">
-    <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-  </div>
-  <!-- --------------Heading -->
-  <div class="page-bar">
-    <ul class="page-breadcrumb">
-      <li>
-        <i class="fa fa-home"></i>
-        <a [routerLink]="referenceService.homeRouter">Home</a>
-        <i class="fa fa-angle-right"></i>
-        <a *ngIf="isAdd" [routerLink]="['../../design/add']">Create Design</a> <i *ngIf="isAdd" class="fa fa-angle-right"></i>
-      </li>
-      <li *ngIf="!isAdd">
-        <a [routerLink]="['../../forms/manage']">Manage Forms</a><i class="fa fa-angle-right"></i>
-      </li>
-      <li>
-        <a>Create Form</a>
-      </li>
-    </ul>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="portlet light" id="portlet-height">
-          <button  type="button" class="close-circle" (click)="navigateBack()"  aria-hidden="true">
-            <i class="fa fa-times"></i>
-          </button>
-      	<h4 [attr.class]="formNameClass"><b>CREATE FORM</b>
-	      	<!-- <a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
+    <div class="my-container">
+        <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    </div>
+    <!-- --------------Heading -->
+    <div class="page-bar">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right"></i>
+                <a *ngIf="isAdd" [routerLink]="['/home/design/add']">Create Design</a> <i *ngIf="isAdd" class="fa fa-angle-right"></i>
+            </li>
+            <li *ngIf="!isAdd">
+                <a routerLink="{{routerLink}}">Manage Forms</a><i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a>Create Form</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light" id="portlet-height">
+                <button type="button" class="close-circle" (click)="navigateBack()" aria-hidden="true">
+          <i class="fa fa-times"></i>
+        </button>
+                <h4 [attr.class]="formNameClass"><b>CREATE FORM</b>
+                    <!-- <a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
 				(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
 			</a> -->
-		</h4>
-		
-		
-		<div class="portlet-body blur-content" id="add-form-parent-div">
-          <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
-          </app-response-message>
-          <div class="profile-content">
-            <div class="row">
-              <div class="col-md-4" id="custom-fields-div">
-                <div class="portlet light">
-                  <!-- ---Custom Fields------- -->
-                  <div class="portlet-title tabbable-line">
-                    <div class="caption caption-md">
-                      <i class="icon-globe theme-font hide"></i>
-                      <span class="caption-subject font-blue-madison bold uppercase">Custom
-                        fields</span>
-                    </div>
-                  </div>
-                  <div class="portlet-body clearfix">
-                    <div class="tab-content">
-                      <div class="btn-group-form">
-                        <ng-container *ngFor="let customField of customFields;let i=index">
-                          <button (click)="addColumn(customField,false)">{{customField.labelName}}</button>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </div>
+                </h4>
 
-                  <!-- ---Pre Defined Fields------- -->
-                  <div class="portlet-title tabbable-line">
-                    <div class="caption caption-md">
-                      <i class="icon-globe theme-font hide"></i>
-                      <span class="caption-subject font-blue-madison bold uppercase">Predefined 
-                        fields</span>
-                    </div>
-                  </div>
-                  <div class="portlet-body clearfix">
-                    <div class="tab-content">
-                      <div class="btn-group-form">
-                        <ng-container *ngFor="let column of defaultColumns;let i=index">
-                          <button (click)="addColumn(column,true)">{{column.labelName}}</button>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </div>
-                  <hr><br>
-                </div>
-              </div><!-- End Of col-md-4-->
 
-              <!-- ---CREATE FORM -->
-              <div class="col-md-4" id="complete-form-div">
-                <div class="portlet light">
-                  <div class="portlet-title tabbable-line">
-                    <div class="caption caption-md">
-                      <i class="icon-globe theme-font hide"></i>
-                      <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
-                      <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
-	      				<a data-toggle="tooltip" data-placement="top" title="Change Form Details"
-							(click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
-						</a>
-						</h4>
-                    </div>
-                    <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip"  id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
-                  	 <a class="close-circle" data-toggle="tooltip" title="Preview"  id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
-                  </div>
-                  <div class="portlet-body clearfix" id="create-from-div">
-                    <div class="tab-content">
-                        <!-- <div class="profile-image-wrapper" style="cursor:pointer">
+                <div class="portlet-body blur-content" id="add-form-parent-div">
+                    <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                    </app-response-message>
+                    <div class="profile-content">
+                        <div class="row">
+                            <div class="col-md-4" id="custom-fields-div">
+                                <div class="portlet light">
+                                    <!-- ---Custom Fields------- -->
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Custom
+                        fields</span>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body clearfix">
+                                        <div class="tab-content">
+                                            <div class="btn-group-form">
+                                                <ng-container *ngFor="let customField of customFields;let i=index">
+                                                    <button (click)="addColumn(customField,false)">{{customField.labelName}}</button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- ---Pre Defined Fields------- -->
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Predefined
+                        fields</span>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body clearfix">
+                                        <div class="tab-content">
+                                            <div class="btn-group-form">
+                                                <ng-container *ngFor="let column of defaultColumns;let i=index">
+                                                    <button (click)="addColumn(column,true)">{{column.labelName}}</button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr><br>
+                                </div>
+                            </div>
+                            <!-- End Of col-md-4-->
+
+                            <!-- ---CREATE FORM -->
+                            <div class="col-md-4" id="complete-form-div">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
+                                            <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
+                                                <a data-toggle="tooltip" data-placement="top" title="Change Form Details" (click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
+                                        <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
+                                    </div>
+                                    <div class="portlet-body clearfix" id="create-from-div">
+                                        <div class="tab-content">
+                                            <!-- <div class="profile-image-wrapper" style="cursor:pointer">
                           <span></span>
                           <img src="assets/images/company-profile-logo.png" width="196" height="130">
                         
@@ -107,249 +107,233 @@
                             </label>
                           </div>
                         </div> -->
-                      <div class="tab-pane active" [dragula]='"form-options"' [dragulaModel]='columnInfos'>
-                        <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
-                          <div id="form-div" (click)="highLightSelectedColumn(columnInfo)" 
-                            [class.selected]="columnInfo.divId==selectedColumn.divId">
-                            <fieldset class="default-fieldset" id="{{columnInfo.divId}}">
-                              <div class="form-group">
-                                <legend>
-                                  <a id="drag-div">
-                                    <h4>
-                                      <label class="control-label">{{columnInfo.labelName}}
+                                            <div class="tab-pane active" [dragula]='"form-options"' [dragulaModel]='columnInfos'>
+                                                <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
+                                                    <div id="form-div" (click)="highLightSelectedColumn(columnInfo)" [class.selected]="columnInfo.divId==selectedColumn.divId">
+                                                        <fieldset class="default-fieldset" id="{{columnInfo.divId}}">
+                                                            <div class="form-group">
+                                                                <legend>
+                                                                    <a id="drag-div">
+                                                                        <h4>
+                                                                            <label class="control-label">{{columnInfo.labelName}}
                                         <span class="required" *ngIf="columnInfo.required">*</span>
                                       </label>
-                                      <button type="button" class="btn btn-danger btn-xs right-corner"
-                                        (click)="$event.stopPropagation();removeColumn(columnInfo,i)">
+                                                                            <button type="button" class="btn btn-danger btn-xs right-corner" (click)="$event.stopPropagation();removeColumn(columnInfo,i)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                       </button>
-                                    </h4>
-                                    <!-- ---------------------------Text/Email----------------------------- -->
-                                    <ng-container
-                                      *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
-                                      <input type="{{columnInfo.labelType}}" autoComplete="off" maxlength="1000"
-                                        id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}"
-                                        class="form-control disabled" />
-                                    </ng-container>
-                                    <!-- ---------------------------TextArea----------------------------- -->
-                                    <ng-container *ngIf="columnInfo.labelType=='textarea'">
-                                      <textarea rows="4" cols="4" autoComplete="off" maxlength="1000"
-                                        placeholder="{{columnInfo.placeHolder}}" class="form-control disabled"
-                                        id="{{columnInfo.labelId}}"></textarea>
-                                    </ng-container>
-                                    <!-- ---------------------------Radio Button----------------------------- -->
-                                    <ng-container *ngIf="columnInfo.labelType=='radio'">
-                                      <ng-container
-                                        *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
-                                        <div class="form-check">
-                                          <label class="form-check-label">
+                                                                        </h4>
+                                                                        <!-- ---------------------------Text/Email----------------------------- -->
+                                                                        <ng-container *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
+                                                                            <input type="{{columnInfo.labelType}}" autoComplete="off" maxlength="1000" id="{{columnInfo.labelId}}" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" />
+                                                                        </ng-container>
+                                                                        <!-- ---------------------------TextArea----------------------------- -->
+                                                                        <ng-container *ngIf="columnInfo.labelType=='textarea'">
+                                                                            <textarea rows="4" cols="4" autoComplete="off" maxlength="1000" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}"></textarea>
+                                                                        </ng-container>
+                                                                        <!-- ---------------------------Radio Button----------------------------- -->
+                                                                        <ng-container *ngIf="columnInfo.labelType=='radio'">
+                                                                            <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                                                                <div class="form-check">
+                                                                                    <label class="form-check-label">
                                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                                               class="form-check-input">
                                             {{radioButton.name}}
                                           </label>
-                                        </div>
-                                        <br>
-                                      </ng-container>
-                                    </ng-container>
-                                    <!-- ---------------------------Check Box----------------------------- -->
-                                    <ng-container *ngIf="columnInfo.labelType=='checkbox'">
-                                      <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
-                                        <div class="form-check">
-                                          <label class="form-check-label">
+                                                                                </div>
+                                                                                <br>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                        <!-- ---------------------------Check Box----------------------------- -->
+                                                                        <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                                                                            <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                                                                                <div class="form-check">
+                                                                                    <label class="form-check-label">
                                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                                               class="form-check-input">
                                             {{checkBox.name}}
                                           </label>
-                                        </div>
-                                        <br>
-                                      </ng-container>
-                                    </ng-container>
-                                    <!-- ---------------------------DropDown Menu----------------------------- -->
-                                    <ng-container *ngIf="columnInfo.labelType=='select'">
-                                      <select class="form-control">
+                                                                                </div>
+                                                                                <br>
+                                                                            </ng-container>
+                                                                        </ng-container>
+                                                                        <!-- ---------------------------DropDown Menu----------------------------- -->
+                                                                        <ng-container *ngIf="columnInfo.labelType=='select'">
+                                                                            <select class="form-control">
                                         <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
                                           {{dropDownValue.name}}</option>
                                       </select>
-                                    </ng-container>
-                                  </a>
-                                </legend>
-                              </div>
-                            </fieldset>
-                          </div><!-- End of form-div -->
-                        </ng-container>
-                      </div><!-- End of tab pane active -->
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End of Create Form -->
+                                                                        </ng-container>
+                                                                    </a>
+                                                                </legend>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                    <!-- End of form-div -->
+                                                </ng-container>
+                                            </div>
+                                            <!-- End of tab pane active -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Create Form -->
 
-              <!-- ---EDIT FORM INFO -->
-              <div class="col-md-4" *ngIf="isColumnClicked && !isFullScreenView" id="edit-fields-div">
-                <div class="portlet light">
-                  <div class="portlet-title tabbable-line">
-                    <div class="caption caption-md">
-                      <i class="icon-globe theme-font hide"></i>
-                      <span class="caption-subject font-blue-madison bold uppercase">Edit Fields
+                            <!-- ---EDIT FORM INFO -->
+                            <div class="col-md-4" *ngIf="isColumnClicked && !isFullScreenView" id="edit-fields-div">
+                                <div class="portlet light">
+                                    <div class="portlet-title tabbable-line">
+                                        <div class="caption caption-md">
+                                            <i class="icon-globe theme-font hide"></i>
+                                            <span class="caption-subject font-blue-madison bold uppercase">Edit Fields
                         Info</span>
-                    </div>
-                  </div>
-                  <div class="portlet-body clearfix" id="edit-from-div">
-                    <div class="tab-content">
-                      <div class="tab-pane active">
-                        <!-- ----------------Filed Label-------------- -->
-                        <fieldset [attr.class]="selectedColumn.editFormLabelDivClass">
-                          <div class="form-group">
-                            <label class="control-label">Field Label</label><span class="required">*</span>
-                            <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control"
-                              (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
-                          </div>
-                          <!-- ----------------Filed PlaceHolder Text-------------- -->
-                          <div class="form-group"
-                            *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea'">
-                            <label class="control-label">Field Placeholder Text</label>
-                            <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control"
-                              maxlength="1000" />
-                          </div>
-                          <div class="form-group">                           
-                            <label class="control-label">Required</label>
-                            <switch [status]="selectedColumn.required" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-																 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-																 (statusChange)="changeStatus($event,selectedColumn)" >
-																</switch>
-                          </div>
-                        </fieldset>
-                        <!-- ----------------Radio Buttons/Check Boxes-------------- -->
-                        <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass"
-                          *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select'">
-                          <form class="form-inline">
-                            <legend>
-                              <div class="form-group">
-                                <label class="control-label" *ngIf="selectedColumn.labelType=='radio'">Radio
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body clearfix" id="edit-from-div">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active">
+                                                <!-- ----------------Filed Label-------------- -->
+                                                <fieldset [attr.class]="selectedColumn.editFormLabelDivClass">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Field Label</label><span class="required">*</span>
+                                                        <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control" (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
+                                                    </div>
+                                                    <!-- ----------------Filed PlaceHolder Text-------------- -->
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea'">
+                                                        <label class="control-label">Field Placeholder Text</label>
+                                                        <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control" maxlength="1000" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Required</label>
+                                                        <switch [status]="selectedColumn.required" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                                                            (statusChange)="changeStatus($event,selectedColumn)">
+                                                        </switch>
+                                                    </div>
+                                                </fieldset>
+                                                <!-- ----------------Radio Buttons/Check Boxes-------------- -->
+                                                <fieldset [attr.class]="selectedColumn.editFormChoiceDivClass" *ngIf="selectedColumn.labelType=='radio' || selectedColumn.labelType=='checkbox' || selectedColumn.labelType=='select'">
+                                                    <form class="form-inline">
+                                                        <legend>
+                                                            <div class="form-group">
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='radio'">Radio
                                   Button
                                   Choices</label>
-                                <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'">Checkbox
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'">Checkbox
                                   Choices</label>
-                                <label class="control-label" *ngIf="selectedColumn.labelType=='select'">Drop-down
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='select'">Drop-down
                                   Choices</label>
-                                <br><br>
-                                <!-- ---------------Radio Button--------------- -->
-                                <ng-container *ngIf="selectedColumn.labelType=='radio'">
-                                  <span class="info"
-                                    *ngIf="selectedColumn.radioButtonErrorMessage?.length>0">{{selectedColumn.radioButtonErrorMessage}}<br></span>
-                                  <ng-container
-                                    *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
-                                    <br>
-                                    <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
-                                    <input type="text" class="form-control" [(ngModel)]="radioButton.name"
-                                      [ngModelOptions]="{standalone: true}"
-                                      (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
-                                    <button type="button" class="btn btn-success  btn-xs"
-                                      (click)="addChoice(selectedColumn,index)">
+                                                                <br><br>
+                                                                <!-- ---------------Radio Button--------------- -->
+                                                                <ng-container *ngIf="selectedColumn.labelType=='radio'">
+                                                                    <span class="info" *ngIf="selectedColumn.radioButtonErrorMessage?.length>0">{{selectedColumn.radioButtonErrorMessage}}<br></span>
+                                                                    <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
+                                                                        <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
+                                                                        <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                       <span class="glyphicon glyphicon-plus"></span>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs"
-                                      (click)="removeChoice(selectedColumn,index,radioButton)">
+                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,radioButton)">
                                       <span class="glyphicon glyphicon-trash"></span>
                                     </button>
-                                    <br>
-                                  </ng-container>
-                                </ng-container>
-                                <!-- ---------------Check Box--------------- -->
-                                <ng-container *ngIf="selectedColumn.labelType=='checkbox'">
-                                  <span class="info"
-                                    *ngIf="selectedColumn.checkBoxErrorMessage?.length>0">{{selectedColumn.checkBoxErrorMessage}}<br></span>
-                                  <!-- ---------------CheckBoxes--------------- -->
-                                  <ng-container *ngFor="let checkBox of selectedColumn.checkBoxChoices;let index=index">
-                                    <br>
-                                    <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
-                                    <input type="text" class="form-control" [(ngModel)]="checkBox.name"
-                                      [ngModelOptions]="{standalone: true}"
-                                      (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
-                                    <button type="button" class="btn btn-success  btn-xs"
-                                      (click)="addChoice(selectedColumn,index)">
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Check Box--------------- -->
+                                                                <ng-container *ngIf="selectedColumn.labelType=='checkbox'">
+                                                                    <span class="info" *ngIf="selectedColumn.checkBoxErrorMessage?.length>0">{{selectedColumn.checkBoxErrorMessage}}<br></span>
+                                                                    <!-- ---------------CheckBoxes--------------- -->
+                                                                    <ng-container *ngFor="let checkBox of selectedColumn.checkBoxChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
+                                                                        <input type="text" class="form-control" [(ngModel)]="checkBox.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
+                                                                        <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                       <span class="glyphicon glyphicon-plus"></span>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs"
-                                      (click)="removeChoice(selectedColumn,index,checkBox)">
+                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,checkBox)">
                                       <span class="glyphicon glyphicon-trash"></span>
                                     </button>
-                                    <br>
-                                  </ng-container>
-                                </ng-container>
-                                <!-- ---------------Drop down--------------- -->
-                                <ng-container *ngIf="selectedColumn.labelType=='select'">
-                                  <span class="info"
-                                    *ngIf="selectedColumn.dropDownErrorMessage?.length>0">{{selectedColumn.dropDownErrorMessage}}<br></span>
-                                  <!-- ---------------CheckBoxes--------------- -->
-                                  <ng-container *ngFor="let dropDown of selectedColumn.dropDownChoices;let index=index">
-                                    <br>
-                                    <input type="text" class="form-control" [(ngModel)]="dropDown.name"
-                                      [ngModelOptions]="{standalone: true}"
-                                      (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="1000">
-                                    <button type="button" class="btn btn-success  btn-xs"
-                                      (click)="addChoice(selectedColumn,index)">
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                                <!-- ---------------Drop down--------------- -->
+                                                                <ng-container *ngIf="selectedColumn.labelType=='select'">
+                                                                    <span class="info" *ngIf="selectedColumn.dropDownErrorMessage?.length>0">{{selectedColumn.dropDownErrorMessage}}<br></span>
+                                                                    <!-- ---------------CheckBoxes--------------- -->
+                                                                    <ng-container *ngFor="let dropDown of selectedColumn.dropDownChoices;let index=index">
+                                                                        <br>
+                                                                        <input type="text" class="form-control" [(ngModel)]="dropDown.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="1000">
+                                                                        <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
                                       <span class="glyphicon glyphicon-plus"></span>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-xs"
-                                      (click)="removeChoice(selectedColumn,index,dropDown)">
+                                                                        <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,dropDown)">
                                       <span class="glyphicon glyphicon-trash"></span>
                                     </button>
-                                    <br>
-                                  </ng-container>
-                                </ng-container>
-                              </div>
-                            </legend>
-                          </form>
-                        </fieldset>
-                      </div>
+                                                                        <br>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </div>
+                                                        </legend>
+                                                    </form>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Of Row---- -->
+                        <div id="bottom-right">
+                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()">{{buttonName}}</button>
+                            <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div><!-- End Of Row---- -->
-            <div id="bottom-right">
-                <button [disabled]="!form.isValid"  type="submit" class="btn green-haze"  (click)="validateForm()">{{buttonName}}</button>
-                <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true">Cancel</button>
-              </div>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  
-  
-  
-  <div class="modal right " id="add-form-name-modal" data-backdrop="static">
-	<div class="modal-dialog modal-lg" style="width: 75%; right: 0">
-		<div class="modal-content">
-			<div class="modal-header">
-			<button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
-				<i class="fa fa-times"></i>
-			</button>
-				<h4 class="modal-title text-center">{{formTitle}}</h4>
-			</div>
-			<div class="modal-body">
-				<div class="form-group" id="formNameDiv">
-		           	<input type="text" class="form-control" [(ngModel)]="form.name" id="formName"  placeholder="Enter Form Name" maxlength="1000"  (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
-					<span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
-	          	</div>
-	          	<div class="form-group">	
-	          		<textarea class="form-control" placeholder="Description"  [(ngModel)]="form.description" id="description" maxlength="1000" ></textarea>
-	          	</div>
-			</div>
-			<div class="modal-footer">
-				<button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
-			</div>
-		</div>
-	</div>
-</div>
 
- <svg id="svg-filter">
-        <filter id="svg-blur">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3"></feGaussianBlur>
-        </filter>
-    </svg>
+
+
+    <div class="modal right fade" id="add-form-name-modal" data-backdrop="static">
+        <div class="modal-dialog modal-lg" style="width: 75%; right: 0">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
+            <i class="fa fa-times"></i>
+          </button>
+                    <h4 class="modal-title text-center">{{formTitle}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" id="formNameDiv">
+                        <label>Name <font class="invalid-form-name">*</font></label>
+                        <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
+                        <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Select a folder <font class="invalid-form-name">*</font></label>
+                        <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
+                        <option *ngFor="let category of categoryNames" [value]="category.id">
+                          {{category.name}}
+                        </option>
+                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <svg id="svg-filter">
+    <filter id="svg-blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3"></feGaussianBlur>
+    </filter>
+  </svg>
     <app-preview-popup #previewPopUpComponent></app-preview-popup>
-</div><!-- -End Of page-content -->
-
-
+</div>
+<!-- -End Of page-content -->
