@@ -29,4 +29,6 @@ export class CompanyProfile {
     lastName:string = "";
     
     campaignAccessDto:CampaignAccess;
+
+    showVendorCompanyLogo:boolean = true;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Renderer } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { ReferenceService } from '../../core/services/reference.service';
@@ -11,12 +11,13 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { ActionsDescription } from '../../common/models/actions-description';
 import { LandingPage } from '../models/landing-page';
 import { UtilService } from '../../core/services/util.service';
+import { environment } from '../../../environments/environment';
 import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
+import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
+import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
-
-
 declare var swal: any, $: any;
 @Component({
     selector: 'app-manage-landing-page',
@@ -32,6 +33,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     loggedInUserId = 0;
     customResponse: CustomResponse = new CustomResponse();
     copiedLinkCustomResponse: CustomResponse = new CustomResponse();
+    isListView = false;
     private dom: Document;
     message = "";
     campaignId = 0;
@@ -47,13 +49,13 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     isFolderGridView = false;
     exportObject:any = {};
     @ViewChild('previewLandingPageComponent') previewLandingPageComponent: PreviewLandingPageComponent;
-    modulesDisplayType = new ModulesDisplayType();
-
+    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
+	modulesDisplayType = new ModulesDisplayType();
     constructor(public referenceService: ReferenceService,
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
+        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public vanityUrlService: VanityURLService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
@@ -93,6 +95,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                     });
                     pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
                 }
+                console.log(data.landingPages);
                 this.referenceService.loading(this.httpRequestLoader, false);
 
             },
@@ -181,9 +184,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if(this.categoryId>0){
             this.router.navigate( ["/home/pages/add/"+this.categoryId] );
         }else{
-            this.router.navigate(["/home/pages/add"]);
-        }
-        
+        this.router.navigate(["/home/pages/add"]);
+    }
+
     }
 
     deleteById(landingPage: LandingPage) {
@@ -219,10 +222,18 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     showPageLinkPopup(landingPage: LandingPage) {
         this.landingPage = landingPage;
         this.copiedLinkCustomResponse = new CustomResponse();
-        if (this.isPartnerLandingPage) {
-            this.landingPageAliasUrl = this.authenticationService.APP_URL + "pl/" + this.landingPage.alias;
+        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
+            if (this.isPartnerLandingPage) {
+                this.landingPageAliasUrl = this.authenticationService.vanityURLink + "pl/" + this.landingPage.alias;
+            } else {
+                this.landingPageAliasUrl = this.authenticationService.vanityURLink + "l/" + this.landingPage.alias;
+            }
         } else {
-            this.landingPageAliasUrl = this.authenticationService.APP_URL + "l/" + this.landingPage.alias;
+            if (this.isPartnerLandingPage) {
+                this.landingPageAliasUrl = this.authenticationService.APP_URL + "pl/" + this.landingPage.alias;
+            } else {
+                this.landingPageAliasUrl = this.authenticationService.APP_URL + "l/" + this.landingPage.alias;
+            }
         }
         this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.landingPageAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';
 
@@ -249,7 +260,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if(this.categoryId>0){
             this.router.navigate(['/home/forms/category/'+this.categoryId+'/lf/' + id]);
         }else{
-            this.router.navigate(['/home/forms/lf/' + id]);
+        this.router.navigate(['/home/forms/lf/' + id]);
 
         }
     }
@@ -260,8 +271,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         if(this.categoryId>0){
             this.router.navigate(['/home/pages/' + id + '/category/'+this.categoryId+'/analytics']);
         }else{
-            this.router.navigate(['/home/pages/' + id + '/analytics']);
-        }
+        this.router.navigate(['/home/pages/' + id + '/analytics']);
+    }
        
     }
     goToPartnerLandingPageAnalytics(alias: string) {
@@ -269,7 +280,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     }
 
 
-    ngOnInit() {
+	ngOnInit() {
         if (this.router.url.includes('home/pages/partner')) {
             this.isPartnerLandingPage = true;
         } else {
@@ -404,3 +415,4 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     }
 
 }
+

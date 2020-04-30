@@ -149,5 +149,6 @@ export class UtilService {
         let adminId = JSON.parse(localStorage.getItem('adminId'));
         return adminId!=null;
     }
-    
+
+
 }

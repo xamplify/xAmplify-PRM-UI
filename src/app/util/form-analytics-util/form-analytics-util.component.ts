@@ -187,7 +187,11 @@ export class FormAnalyticsUtilComponent implements OnInit {
     }
     
     openLinkInBrowser(){
-        window.open(this.authenticationService.APP_URL+"rsvp/"+this.publicEventAlias+"?type=YES&utm_source=public","_blank");
+        if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink){
+            window.open(this.authenticationService.vanityURLink+"rsvp/"+this.publicEventAlias+"?type=YES&utm_source=public","_blank");
+        }else{
+            window.open(this.authenticationService.APP_URL+"rsvp/"+this.publicEventAlias+"?type=YES&utm_source=public","_blank");
+        }        
     }
 
     downloadCsv(){

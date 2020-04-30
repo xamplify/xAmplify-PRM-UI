@@ -63,7 +63,7 @@
 								 </h6>
 							  </td>
 							  <td [hidden]="authenticationService.isShowForms">
-							  	<input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form.alias}}" #userinput>
+							  	<input type="text" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput>
 							  	<font class="success" id="copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
 							  </td>
 							  <td id="actions-row">

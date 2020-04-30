@@ -62,6 +62,7 @@ import { CommonComponentModule } from 'app/common/common.module';
 import { HubSpotService } from './core/services/hubspot.service';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { IntegrationService } from './core/services/integration.service';
+import { VanityURLService } from './vanity-url/services/vanity.url.service';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { IntegrationService } from './core/services/integration.service';
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,
+        VanityURLService],
     bootstrap: [AppComponent]
 
 })

@@ -6,6 +6,8 @@ import { DashboardService } from '../../dashboard.service';
 import { PagerService } from '../../../core/services/pager.service';
 import { Pagination } from '../../../core/models/pagination';
 import { UtilService } from '../../../core/services/util.service';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $: any;
 
@@ -42,9 +44,9 @@ export class ReportsComponent implements OnInit {
   heatMapTooltip = 'Last 7 Days';
   logListName = "";
   loading = false;
-
+  dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
   constructor(public referenceService: ReferenceService, public router: Router, public dashboardService: DashboardService,
-    public pagerService: PagerService, public pagination: Pagination, public utilService:UtilService) {
+    public pagerService: PagerService, public pagination: Pagination, public utilService:UtilService, private vanityURLService:VanityURLService) {
     this.sortDates = this.dashboardService.sortDates;
     this.resultSparkline = this.referenceService.viewsSparklineValues;
     if (this.resultSparkline === undefined || this.resultSparkline === null) {
@@ -125,7 +127,8 @@ export class ReportsComponent implements OnInit {
     const dateCountValue = this.getCurrentDayFromDate(dateValue);
     if (dateCountValue !== undefined) {
       this.videoViewsLevelFirst = null;
-      this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
+      //this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
+      this.dashboardService.getVideoViewsLevelOneReportsForVanityURL(this.daysCount, dateCountValue,this.dashboardAnalyticsDto).subscribe(
         (result: any) => {
           this.videoViewsLevelFirst = result;
           if (this.videoViewsLevelFirst.length === 0) { this.videoViewsLevelSecond.length = 0; }
@@ -144,7 +147,8 @@ export class ReportsComponent implements OnInit {
     if (dateValue === undefined) { this.viewsDate = this.referenceService.viewsDate; }
     const dateCountValue = this.getCurrentDayFromDate(dateValue);
     if (dateCountValue !== undefined) {
-      this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
+      //this.dashboardService.getVideoViewsLevelOneReports(this.daysCount, dateCountValue).subscribe(
+        this.dashboardService.getVideoViewsLevelOneReportsForVanityURL(this.daysCount, dateCountValue,this.dashboardAnalyticsDto).subscribe(
         (result: any) => {
           this.videoViewsLevelFirst = result;
         },
@@ -157,7 +161,8 @@ export class ReportsComponent implements OnInit {
     this.daysInterval = daysInterval;
     this.dateValue = dateValue;
     this.videoId = videoId;
-    this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
+    //this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, pagination).subscribe(
+    this.dashboardService.getVideoViewsLevelTwoReportsForVanityURL(daysInterval, dateValue, videoId, pagination).subscribe(
       (result: any) => {
         this.videoViewsLevelSecond = result.data;
         this.pagination.totalRecords = result.totalRecords;
@@ -169,7 +174,8 @@ export class ReportsComponent implements OnInit {
 
   getVideoViewsLevelTwoAllUsers(daysInterval, dateValue, videoId, totalRecords) {
       this.gettingAllUsersPagination.maxResults = totalRecords;
-      this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
+      //this.dashboardService.getVideoViewsLevelTwoReports(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
+      this.dashboardService.getVideoViewsLevelTwoReportsForVanityURL(daysInterval, dateValue, videoId, this.gettingAllUsersPagination).subscribe(
         (result: any) => { this.videoViewsLevelSecondAllRecords = result.data; },
         (error: any) => { console.error(error); });
     }
@@ -192,7 +198,8 @@ export class ReportsComponent implements OnInit {
     const dateCountValue = this.getCurrentDayFromDate(dateValue);
     console.log("date count value is " + dateCountValue);
     if (dateCountValue !== undefined) {
-      this.dashboardService.getVideoMinutesWatchedLevelOneReports(this.daysCount, dateCountValue).subscribe(
+      //this.dashboardService.getVideoMinutesWatchedLevelOneReports(this.daysCount, dateCountValue).subscribe(
+       this.dashboardService.getVideoMinutesWatchedLevelOneReportsForVanityURL(this.daysCount, dateCountValue,this.dashboardAnalyticsDto).subscribe(
         (result: any) => {
           this.videoViewsLevelFirst = result;
           console.log(this.videoViewsLevelFirst);
@@ -223,7 +230,8 @@ export class ReportsComponent implements OnInit {
   
   getVideoMinutesWatchedAllUsersLevelTwo(totalRecords) {
       this.allMinutesWatchedPagination.maxResults = totalRecords;
-      this.dashboardService.getVideoMinutesWatchedLevelTwoReports(this.daysInterval, this.dateValue, this.videoId, this.allMinutesWatchedPagination).subscribe(
+      //this.dashboardService.getVideoMinutesWatchedLevelTwoReports(this.daysInterval, this.dateValue, this.videoId, this.allMinutesWatchedPagination).subscribe(
+      this.dashboardService.getVideoMinutesWatchedLevelTwoReportsForVanityURL(this.daysInterval, this.dateValue, this.videoId, this.allMinutesWatchedPagination).subscribe(
         (result: any) => {
           console.log(result);
           this.videoMinutsWatchedTotalRecordsLevelSecond = result.data;
@@ -271,6 +279,7 @@ export class ReportsComponent implements OnInit {
   ngOnInit() {
     //  this.pagination.maxResults = 5;
     console.log(this.resultSparkline);
+    this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
     this.viewsDate = this.referenceService.viewsDate;
     this.viewsValue = this.referenceService.clickedValue;
     this.daysCount = this.referenceService.daySortValue;

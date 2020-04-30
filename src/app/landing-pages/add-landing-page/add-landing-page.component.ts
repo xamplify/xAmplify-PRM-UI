@@ -321,6 +321,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.referenceService.startLoader(this.httpRequestLoader);
         this.landingPage.name = this.name;
         this.landingPage.userId = this.loggedInUserId;
+        this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
         this.landingPage.type = $('#pageType option:selected').val();
         this.landingPage.categoryId =  $.trim($('#page-folder-dropdown option:selected').val());
         this.updateCompanyLogo(this.landingPage);
@@ -359,6 +360,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.landingPage.id = this.id;
         this.landingPage.userId = this.loggedInUserId;
         this.landingPage.categoryId =  $.trim($('#page-folder-dropdown option:selected').val());
+        this.landingPage.companyProfileName = this.authenticationService.companyProfileName;
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage).subscribe(
             data => {

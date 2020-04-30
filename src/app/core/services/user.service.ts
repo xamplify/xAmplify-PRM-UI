@@ -8,8 +8,9 @@ import { ReferenceService } from './reference.service';
 import { DealForms } from '../../deal-registration/models/deal-forms';
 import { HttpClient } from '@angular/common/http';
 import { Pagination } from '../models/pagination';
-import {RequestDemo} from '../../authentication/request-demo/request-demo';
-import {GdprSetting} from '../../dashboard/models/gdpr-setting';
+import { RequestDemo } from '../../authentication/request-demo/request-demo';
+import { GdprSetting } from '../../dashboard/models/gdpr-setting';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 
 @Injectable()
 export class UserService {
@@ -19,184 +20,184 @@ export class UserService {
     loggedInUserData: User;
 
     URL = this.authenticationService.REST_URL;
-    GDPR_SETTING_URL = this.authenticationService.REST_URL+"gdpr/setting/";
-    CATEGORIES_URL = this.URL+'category/';
+    GDPR_SETTING_URL = this.authenticationService.REST_URL + "gdpr/setting/";
+    CATEGORIES_URL = this.URL + 'category/';
     currentUser = JSON.parse(localStorage.getItem('currentUser'));
     unreadNotificationsCount: number;
-
+    
     constructor(
         private http: Http,
-        private authenticationService: AuthenticationService, public httpClient:HttpClient ) {
+        private authenticationService: AuthenticationService, public httpClient: HttpClient) {
     }
 
     getUsers(): Observable<User[]> {
         // get users from api
-        return this.http.get( '/api/users', this.authenticationService.getOptions() )
-            .map(( response: Response ) => response.json() );
+        return this.http.get('/api/users', this.authenticationService.getOptions())
+            .map((response: Response) => response.json());
     }
 
     getVideoDefaultSettings() {
         console.log(this.authenticationService.user.roles);
-        if(this.authenticationService.user.roles.length > 1){
-        return this.http.get( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+        if (this.authenticationService.user.roles.length > 1) {
+            return this.http.get(this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token)
+                .map(this.extractData)
+                .catch(this.handleError);
         }
         else {
             console.log("user role ");
         }
     }
-    updatePlayerSettings( defaultVideoSettings: DefaultVideoPlayer ) {
-        if(this.authenticationService.user.roles.length > 1){
-        return this.http.post( this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
-            , defaultVideoSettings )
-            .map( this.extractData )
-            .catch( this.handleError );
+    updatePlayerSettings(defaultVideoSettings: DefaultVideoPlayer) {
+        if (this.authenticationService.user.roles.length > 1) {
+            return this.http.post(this.URL + 'videos/video-default-settings?userId=' + this.authenticationService.user.id + '&access_token=' + this.authenticationService.access_token
+                , defaultVideoSettings)
+                .map(this.extractData)
+                .catch(this.handleError);
         }
-         else {
+        else {
             console.log("user role ");
         }
     }
 
-    signUp( data: User ) {
-        console.log( data );
-        return this.http.post( this.URL + "register/signup/user", data )
-            .map( this.extractData )
-            .catch( this.signUpHandleError );
+    signUp(data: User) {
+        console.log(data);
+        return this.http.post(this.URL + "register/signup/user?companyProfileName=" + this.authenticationService.companyProfileName, data)
+            .map(this.extractData)
+            .catch(this.signUpHandleError);
 
     }
 
-    sendPassword( emailId: string ) {
-        return this.http.get( this.URL + "register/forgotpassword?emailId=" + emailId )
-            .map( this.extractData )
-            .catch( this.handleError );
+    sendPassword(emailId: string) {
+        return this.http.get(this.URL + "register/forgotpassword?emailId=" + emailId + "&companyProfileName=" + this.authenticationService.companyProfileName)
+            .map(this.extractData)
+            .catch(this.handleError);
 
     }
 
-    updatePassword( data: any ) {
-        console.log( data );
-        return this.http.post( this.URL + "admin/updatePassword?access_token=" + this.authenticationService.access_token, data )
-            .map( this.extractData )
-            .catch( this.handleError );
+    updatePassword(data: any) {
+        console.log(data);
+        return this.http.post(this.URL + "admin/updatePassword?access_token=" + this.authenticationService.access_token, data)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    comparePassword( data: any ) {
-        return this.http.post( this.URL + "admin/comparePassword", data, this.authenticationService.getOptions() )
-            .map( this.extractData )
-            .catch( this.handleError );
+    comparePassword(data: any) {
+        return this.http.post(this.URL + "admin/comparePassword", data, this.authenticationService.getOptions())
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    updateUserProfile( data: any, userId: number ) {
+    updateUserProfile(data: any, userId: number) {
 
-        return this.http.post( this.URL + "admin/updateUser/" + userId + "?access_token=" + this.authenticationService.access_token, data )
-            .map( this.extractData )
-            .catch( this.handleError );
+        return this.http.post(this.URL + "admin/updateUser/" + userId + "?access_token=" + this.authenticationService.access_token, data)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    getUserByUserName( userName: string ) {
-        return this.http.post( this.URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.authenticationService.access_token, "" )
-            .map(( res: Response ) => { return res.json() })
-            .catch(( error: any ) => { return error });
+    getUserByUserName(userName: string) {
+        return this.http.post(this.URL + "admin/getUserByUserName?userName=" + userName + "&access_token=" + this.authenticationService.access_token, '')
+            .map((res: Response) => { return res.json() })
+            .catch((error: any) => { return error });
     }
-    activateAccount( alias: string ) {
-        return this.http.get( this.URL + "register/verifyemail/user?alias=" + alias )
-            .map( this.extractData )
-            .catch( this.handleError );
-    }
-
-    getUserDefaultPage( userId: number ) {
-        return this.http.get( this.URL + "admin/get-user-default-page?userId=" + userId + "&access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    activateAccount(alias: string) {
+        return this.http.get(this.URL + "register/verifyemail/user?alias=" + alias + "&companyProfileName=" + this.authenticationService.companyProfileName)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    setUserDefaultPage( userId: number, defaultPage: string ) {
-        return this.http.get( this.URL + "admin/set-user-default-page?userId=" + userId + "&defaultPage="+ defaultPage + "&access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    getUserDefaultPage(userId: number) {
+        return this.http.get(this.URL + "admin/get-user-default-page?userId=" + userId + "&access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    isGridView( userId: number ) {
-        return this.http.get( this.URL + "admin/get-user-gridview/" + userId + "?access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    setUserDefaultPage(userId: number, defaultPage: string) {
+        return this.http.get(this.URL + "admin/set-user-default-page?userId=" + userId + "&defaultPage=" + defaultPage + "&access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    setGridView( userId: number, isGridView: boolean ) {
-        return this.http.get( this.URL + "admin/set-user-gridview/" + userId + "?isGridView="+ isGridView + "&access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    isGridView(userId: number) {
+        return this.http.get(this.URL + "admin/get-user-gridview/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    getOrgAdminsCount( userId: number ) {
-        return this.http.get( this.URL + "admin/getOrgAdminCount/" + userId + "?access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    setGridView(userId: number, isGridView: boolean) {
+        return this.http.get(this.URL + "admin/set-user-gridview/" + userId + "?isGridView=" + isGridView + "&access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    disableOrgAdmin( userId: number ) {
-        return this.http.get( this.URL + "admin/disableAsOrgAdmin/" + userId + "?access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    getOrgAdminsCount(userId: number) {
+        return this.http.get(this.URL + "admin/getOrgAdminCount/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    listNotifications(userId:number) {
+    disableOrgAdmin(userId: number) {
+        return this.http.get(this.URL + "admin/disableAsOrgAdmin/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listNotifications(userId: number) {
         return this.http.get(this.URL + `notifications/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getUnreadNotificationsCount(userId:number) {
+    getUnreadNotificationsCount(userId: number) {
         return this.http.get(this.URL + `notifications/unread-count/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    markAllAsRead(userId:number) {
+    markAllAsRead(userId: number) {
         return this.http.get(this.URL + `notifications/mark-all-as-read/${userId}?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    markAsRead(notification: any){
+    markAsRead(notification: any) {
         return this.http.post(this.URL + `notifications/mark-as-read?access_token=${this.authenticationService.access_token}`, notification)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    saveBrandLogo(logoPath: string,logoDesc: string,userId: number){
-    console.log("")
+    saveBrandLogo(logoPath: string, logoDesc: string, userId: number) {
+        console.log("")
     }
 
-    isAddedByVendor( userId: number ) {
-        return this.http.get( this.URL + "admin/get-team-member-details/" + userId + "?access_token=" + this.authenticationService.access_token )
-            .map( this.extractData )
-            .catch( this.handleError );
+    isAddedByVendor(userId: number) {
+        return this.http.get(this.URL + "admin/get-team-member-details/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    getRoles(userId:number){
-        return this.http.get( this.URL+ "admin/getRolesByUserId/" + userId + "?access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );
+    getRoles(userId: number) {
+        return this.http.get(this.URL + "admin/getRolesByUserId/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
-    getTeamMemberRoles(userId:number){
-        return this.http.get( this.URL+ "admin/getTeamMemberRoles/" + userId + "?access_token=" + this.authenticationService.access_token )
-        .map( this.extractData )
-        .catch( this.handleError );
+    getTeamMemberRoles(userId: number) {
+        return this.http.get(this.URL + "admin/getTeamMemberRoles/" + userId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    getHomeRoles(uRl){
+    getHomeRoles(uRl) {
         const url = this.URL + uRl;
-        return this.http.get( url,'' )
-        .map( this.extractData )
-        .catch( this.handleError );
+        return this.http.get(url, '')
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    getEventAccessTab(uRl){
+    getEventAccessTab(uRl) {
         const url = this.URL + uRl;
-        return this.http.get( url,'' )
-        .map( this.extractData )
-        .catch( this.handleError );
+        return this.http.get(url, '')
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     loadVendorDetails(uRl, pagination: Pagination) {
@@ -207,115 +208,115 @@ export class UserService {
 
     }
 
-    resendActivationMail(emailId:string) {
-        return this.http.get( this.URL+'/register/resend/activationemail?email='+ emailId )
-        .map( this.extractData )
-        .catch( this.handleError );
+    resendActivationMail(emailId: string) {
+        return this.http.get(this.URL + '/register/resend/activationemail?email=' + emailId)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
-    getSingUpUserDatails(alias:string){
-      return this.http.get( this.URL+'user/'+alias)
-      .map( this.extractData )
-      .catch( this.handleError );
-    }
-
-    getUserByAlias(alias:string){
-        return this.http.get( this.URL+'getUserByAlias/'+alias)
-        .map( this.extractData )
-        .catch( this.handleError );
-      }
-    saveForm(userId:number,form:any){
-        return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/save?access_token=" + this.authenticationService.access_token ,form)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    updateForm(userId:number,form:any){
-        return this.http.post( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/update?access_token=" + this.authenticationService.access_token ,form)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    listForm(userId:number){
-        return this.http.get( this.authenticationService.REST_URL+"/users/"+ userId + "/forms/list?access_token=" + this.authenticationService.access_token)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-    deleteQuestion(question:any){
-        return this.http.post( this.authenticationService.REST_URL+"users/question/remove?access_token=" + this.authenticationService.access_token,question)
-        .map( this.extractData )
-        .catch( this.handleError );
+    getSingUpUserDatails(alias: string) {
+        return this.http.get(this.URL + 'user/' + alias)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    saveUserProfileLogo(file:any){
-      const formData = new FormData();
-      formData.append('file', file, file.name);
-      const url = this.URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
-      return this.httpClient.post(url,formData)
-      .catch(this.handleError);
+    getUserByAlias(alias: string) {
+        return this.http.get(this.URL + 'getUserByAlias/' + alias)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
-    saveDemoRequest(requestDemo:RequestDemo){
-        return this.http.post( this.URL+"save/requestDemo",requestDemo)
-        .map( this.extractData )
-        .catch( this.handleError );
+    saveForm(userId: number, form: any) {
+        return this.http.post(this.authenticationService.REST_URL + "/users/" + userId + "/forms/save?access_token=" + this.authenticationService.access_token, form)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    updateForm(userId: number, form: any) {
+        return this.http.post(this.authenticationService.REST_URL + "/users/" + userId + "/forms/update?access_token=" + this.authenticationService.access_token, form)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    listForm(userId: number) {
+        return this.http.get(this.authenticationService.REST_URL + "/users/" + userId + "/forms/list?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    deleteQuestion(question: any) {
+        return this.http.post(this.authenticationService.REST_URL + "users/question/remove?access_token=" + this.authenticationService.access_token, question)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    accessAccount( data: any ) {
-        return this.http.post( this.URL + "accessAccount/updatePassword", data)
-            .map( this.extractData )
-            .catch( this.handleError );
+    saveUserProfileLogo(file: any) {
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        const url = this.URL + "admin/uploadProfilePicture/" + this.authenticationService.user.id + "?access_token=" + this.authenticationService.access_token
+        return this.httpClient.post(url, formData)
+            .catch(this.handleError);
+    }
+    saveDemoRequest(requestDemo: RequestDemo) {
+        return this.http.post(this.URL + "save/requestDemo", requestDemo)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    saveGdprSetting(gdprSetting:GdprSetting){
-        return this.http.post(this.GDPR_SETTING_URL+"save?access_token="+this.authenticationService.access_token,gdprSetting)
-        .map(this.extractData)
-        .catch(this.handleServerError);
-       }
+    accessAccount(data: any) {
+        return this.http.post(this.URL + "accessAccount/updatePassword", data)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    saveGdprSetting(gdprSetting: GdprSetting) {
+        return this.http.post(this.GDPR_SETTING_URL + "save?access_token=" + this.authenticationService.access_token, gdprSetting)
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
     updateGdprSetting(gdprSetting: GdprSetting) {
         return this.http.post(this.GDPR_SETTING_URL + "update?access_token=" + this.authenticationService.access_token, gdprSetting)
             .map(this.extractData)
             .catch(this.handleServerError);
     }
 
-    getGdprSettingByCompanyId(companyId:number) {
-        return this.http.get(this.GDPR_SETTING_URL + "getByCompanyId/"+companyId+"?access_token=" + this.authenticationService.access_token,"")
+    getGdprSettingByCompanyId(companyId: number) {
+        return this.http.get(this.GDPR_SETTING_URL + "getByCompanyId/" + companyId + "?access_token=" + this.authenticationService.access_token, "")
             .map(this.extractData)
             .catch(this.handleServerError);
     }
 
-    getCategories(pagination:Pagination) {
-        return this.http.post(this.CATEGORIES_URL + "listAll?access_token=" + this.authenticationService.access_token,pagination)
+    getCategories(pagination: Pagination) {
+        return this.http.post(this.CATEGORIES_URL + "listAll?access_token=" + this.authenticationService.access_token, pagination)
             .map(this.extractData)
             .catch(this.handleServerError);
     }
 
-    saveOrUpdateCategory(category:any){
+    saveOrUpdateCategory(category: any) {
         let url = this.CATEGORIES_URL + "save";
-        if(category.id>0){
-           url = this.CATEGORIES_URL + "update";
+        if (category.id > 0) {
+            url = this.CATEGORIES_URL + "update";
         }
-        return this.http.post(url+"?access_token=" + this.authenticationService.access_token,category)
-        .map(this.extractData)
-        .catch(this.handleServerError);
-    }
-
-    listExistingCategoryNames(companyId:number){
-        return this.http.get( this.CATEGORIES_URL+"listAllCategoryNames/"+ companyId + "?access_token=" + this.authenticationService.access_token)
-        .map( this.extractData )
-        .catch( this.handleError );
-    }
-
-    getCategoryById(id:number) {
-        return this.http.get(this.CATEGORIES_URL + "getById/"+id+"?access_token=" + this.authenticationService.access_token,"")
+        return this.http.post(url + "?access_token=" + this.authenticationService.access_token, category)
             .map(this.extractData)
             .catch(this.handleServerError);
     }
 
-    deleteCategory(category:any){
-        let url =  this.CATEGORIES_URL+"deleteById/"+category.id;
-        if(category.isMoveAndDelete){
-            url =  this.CATEGORIES_URL+"moveAndDeleteCategory/"+category.id+"/"+category.idToMoveItems;
+    listExistingCategoryNames(companyId: number) {
+        return this.http.get(this.CATEGORIES_URL + "listAllCategoryNames/" + companyId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCategoryById(id: number) {
+        return this.http.get(this.CATEGORIES_URL + "getById/" + id + "?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleServerError);
+    }
+
+    deleteCategory(category: any) {
+        let url = this.CATEGORIES_URL + "deleteById/" + category.id;
+        if (category.isMoveAndDelete) {
+            url = this.CATEGORIES_URL + "moveAndDeleteCategory/" + category.id + "/" + category.idToMoveItems;
         }
-        return this.http.get(url+"?access_token=" + this.authenticationService.access_token,"")
-        .map( this.extractData )
-        .catch( this.handleError );
+        return this.http.get(url + "?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
     getItemsCount(categoryId:number,loggedInUserId:number){
@@ -340,6 +341,7 @@ export class UserService {
 
     
 
+
     private handleServerError(error: any) {
         return Observable.throw(error);
     }
@@ -347,32 +349,32 @@ export class UserService {
 
 
 
-    private extractData( res: Response ) {
+    private extractData(res: Response) {
         const body = res.json();
         // return body || {};
         return body;
     }
-    private signUpHandleError( error: any){
-      const body = error['_body'];
-      if ( body !== "" ) {
-          const response = JSON.parse( body );
-          return Observable.throw( response );
-      }
-    }
-    private handleError( error: any ) {
+    private signUpHandleError(error: any) {
         const body = error['_body'];
-        if ( body !== "" ) {
-            var response = JSON.parse( body );
-            if ( response.message != undefined ) {
-                return Observable.throw( response.message );
+        if (body !== "") {
+            const response = JSON.parse(body);
+            return Observable.throw(response);
+        }
+    }
+    private handleError(error: any) {
+        const body = error['_body'];
+        if (body !== "") {
+            var response = JSON.parse(body);
+            if (response.message != undefined) {
+                return Observable.throw(response.message);
             } else {
-                return Observable.throw( response.error );
+                return Observable.throw(response.error);
             }
 
         } else {
-            let errMsg = ( error.message ) ? error.message :
+            let errMsg = (error.message) ? error.message :
                 error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
-            return Observable.throw( error );
+            return Observable.throw(error);
         }
 
     }

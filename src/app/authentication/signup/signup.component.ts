@@ -14,6 +14,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $: any;
 
@@ -87,7 +88,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
 
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
-        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
+        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService, private vanityURLService: VanityURLService) {
           if(this.router.url.includes('/signup/')) {  localStorage.removeItem('currentUser');}
           if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
           this.signUpForm = new FormGroup({
@@ -109,6 +110,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.loading = true;
         this.signUpUser.vendorSignUp = this.vendorSignup;
+        this.signUpUser.companyProfileName = this.authenticationService.companyProfileName;
         this.userService.signUp(this.signUpUser)
             .subscribe(
                 data => {
@@ -229,6 +231,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       try{
          this.customResponse = new CustomResponse();
         this.mainLoader = true;
+        this.vanityURLService.checkVanityURLDetails();
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
         if(this.router.url.includes('/signup/')){

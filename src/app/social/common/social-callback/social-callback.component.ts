@@ -14,9 +14,10 @@ export class SocialCallbackComponent implements OnInit {
     providerName: string;
     socialConnection: SocialConnection = new SocialConnection();
     error: string;
+    
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService,
-        private refService: ReferenceService ) { }
+        private refService: ReferenceService) { }
 
     callback( providerName: string ) {
         let client_id: string;
@@ -51,7 +52,7 @@ export class SocialCallbackComponent implements OnInit {
                     const authorization = 'Basic' + btoa( client_id + ':' );
                     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
 
-                    this.authenticationService.login( authorization, body, this.refService.userName )
+                    this.authenticationService.login( authorization, body, this.refService.userName)
                         .subscribe( result => {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {

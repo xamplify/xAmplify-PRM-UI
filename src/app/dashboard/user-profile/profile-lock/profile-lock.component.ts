@@ -25,6 +25,7 @@ export class ProfileLockComponent implements OnInit {
     { "name": "twitter", "iconName": "twitter" },
     { "name": "google", "iconName": "googleplus" },
     { "name": "linkedin", "iconName": "linkedin" }]
+    
     constructor(public authenticationService: AuthenticationService,private router: Router,
       public properties: Properties, public referenceService: ReferenceService) {
         this.password = '';
@@ -58,6 +59,7 @@ export class ProfileLockComponent implements OnInit {
         if(this.password && this.userData.emailId){
         const authorization = 'Basic ' + btoa('my-trusted-client:');
         const body = 'username=' + this.userData.emailId + '&password=' + this.password + '&grant_type=password';
+        
         this.authenticationService.login(authorization, body, this.userData.emailId).subscribe(result => {
           if (localStorage.getItem('currentUser')) { this.redirectTo(JSON.parse(localStorage.getItem('currentUser')));
            } else {  this.logError(); }

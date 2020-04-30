@@ -79,6 +79,11 @@ export class SamlsecurityauthComponent implements OnInit {
         'logedInCustomerCompanyNeme': res.companyName,
 		'source':res.source
       };
+
+      if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles){
+        userToken['roles'] = this.authenticationService.vanityURLUserRoles;
+      }
+
       localStorage.setItem('currentUser', JSON.stringify(userToken));
 	  localStorage.setItem('defaultDisplayType',res.modulesDisplayType);
    

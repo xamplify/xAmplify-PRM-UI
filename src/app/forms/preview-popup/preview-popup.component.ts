@@ -32,6 +32,7 @@ export class PreviewPopupComponent implements OnInit {
     showButton = false;
     selectedFormData: Array<Form> = [];
     selectedFormId: number;
+    formAliasUrl:string = "";
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
    console.log("Is Show forms in preview popup: " + this.authenticationService.isShowForms);
@@ -57,7 +58,12 @@ export class PreviewPopupComponent implements OnInit {
   /************List Available Forms******************/
   showForms(){
       this.formsError = false;
-      this.customResponse = new CustomResponse();
+      this.customResponse = new CustomResponse();      
+      if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink){
+          this.formAliasUrl = this.authenticationService.vanityURLink;
+      }else{
+        this.formAliasUrl = this.authenticationService.APP_URL;
+      }
       this.pagination.userId = this.authenticationService.getUserId();;
       this.listForms(this.pagination);
   }

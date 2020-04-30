@@ -82,7 +82,7 @@ export class AddTeamMembersComponent implements OnInit {
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router, public utilService: UtilService) {
 		this.team = new TeamMember();
 		this.userId = this.authenticationService.getUserId();
-		this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+		//this.isOnlyPartner = this.authenticationService.isOnlyPartner();
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.isOrgAdmin = this.authenticationService.isOrgAdmin();
 		if (this.isLoggedInAsTeamMember) {
@@ -133,16 +133,26 @@ export class AddTeamMembersComponent implements OnInit {
 	hasContactAccess() {
 		let isOrgAdmin = this.authenticationService.isOrgAdmin();
 		let isVendorAndPartner = this.authenticationService.isVendorPartner();
+		this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
 		this.userService.getRoles(this.authenticationService.getUserId())
 			.subscribe(
 				response => {
 					if (response.statusCode == 200) {
 						this.authenticationService.loggedInUserRole = response.data.role;
 						this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-						this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
+						//this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
 						this.authenticationService.hasOnlyPartnerRole = this.isOnlyPartner;
 						this.contactAccess = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
+
 						this.isOnlyPartnerOrPartnerTeamMember = this.isOnlyPartner || this.authenticationService.isPartnerTeamMember;
+
+						if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && (this.authenticationService.loggedInUserRole === "Vendor & Partner" || this.authenticationService.loggedInUserRole === "OrgAdmin & Partner")){
+							this.contactAccess = true;
+							if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0){
+								this.isOnlyPartner = true;
+							}
+						}
+
 					} else {
 						this.authenticationService.loggedInUserRole = 'User';
 					}
@@ -880,6 +890,16 @@ export class AddTeamMembersComponent implements OnInit {
 						}
 					}
 					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+
+					if(this.authenticationService.vanityURLEnabled){						
+						  let currentUser = localStorage.getItem('currentUser');
+						  if(currentUser && this.authenticationService.vanityURLUserRoles){
+							const parsedObject = JSON.parse(currentUser);
+							parsedObject.roles = this.authenticationService.vanityURLUserRoles;
+							localStorage.setItem("currentUser", JSON.stringify(parsedObject));
+						  }
+					}
+
 					let self = this;
 					setTimeout(function () {
 						self.router.navigate(['home/dashboard/'])

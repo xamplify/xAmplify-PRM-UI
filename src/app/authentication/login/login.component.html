@@ -2,7 +2,7 @@
   <div class="loader"></div>
   <img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
 </div>
-<div *ngIf="!mainLoader">
+<div *ngIf="!mainLoader" class="xamplify-background-image" [style.backgroundImage]="'url('+backgroundImageUrl+')'">
 <app-video></app-video>
 <div class="content">
 	<div class="my-container">
@@ -41,13 +41,14 @@
 			</div>
 			<button id="submitBitton" type="submit" class="btn btn-primary pull-right signin">Sign In</button>
 		</form>
-		<div class="form-actions login-form">
+		<div class="form-actions login-form" style="border-bottom: 0!important">
 			<label class="rememberme check">
 				<span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
 			</label>
 			<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		</div>
-		<div class="login-options login-form m5">
+		<div class="row" *ngIf="!authenticationService.vanityURLEnabled" style="border-top: 1px solid #eee;"></div>
+		<div class="login-options login-form m5" *ngIf = "!authenticationService.vanityURLEnabled">
 			<h4>Or login with</h4>
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of socialProviders">

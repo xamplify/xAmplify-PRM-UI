@@ -48,7 +48,7 @@
 			</a>
     </div>
     <!-- contact tab ended -->
-    <div class="col-sm-4 col-xs-6" [ngClass]="{'col-lg-3 col-md-3 ':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||
+    <div *ngIf="(!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember) && authenticationService.vanityURLEnabled" class="col-sm-4 col-xs-6" [ngClass]="{'col-lg-3 col-md-3 ':(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() ||
                      authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember ||  authenticationService.isOrgAdmin()),
                       'col-lg-4 col-md-4':!(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartnerTeamMember)}" >
 			<a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToPartner()" >
@@ -100,7 +100,7 @@
 			</a>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"
-     *ngIf="(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()) && (!authenticationService.isPartnerTeamMember)">
+     *ngIf="(authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isOrgAdmin()) && (!authenticationService.isPartnerTeamMember) && !authenticationService.vanityURLEnabled">
       <a class="dashboard-stat dashboard-stat-lighter purple-soft" (click)="navigateToVendor()" >
         <div class="visual">
           <i class="fa fa-smile-o"></i>
@@ -121,7 +121,7 @@
 
 <!--     For Vendor and partner Team member vendors tile -->
     <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"
-     *ngIf="authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.superiorRole == 'OrgAdmin & Partner'">
+     *ngIf="(authenticationService.superiorRole == 'Vendor & Partner' || authenticationService.superiorRole == 'OrgAdmin & Partner') && !authenticationService.vanityURLEnabled">
       <a class="dashboard-stat dashboard-stat-lighter red-soft" (click)="navigateToVendor()" >
         <div class="visual">
           <i class="fa fa-smile-o"></i>

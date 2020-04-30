@@ -120,6 +120,11 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             pagination.filterValue = null;
             pagination.filterKey = null;
+            // Added by Vivek for Vanity URL Partner Campaings
+            if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+                pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+                pagination.vanityUrlFilter = true;
+            }
         }
         
         this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)

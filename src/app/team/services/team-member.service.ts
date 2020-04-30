@@ -20,7 +20,7 @@ export class TeamMemberService{
     
     
     save(teams:Array<TeamMember>,userId:number){
-        var url =this.URL+"admin/saveTeamMembers?userId="+userId+"&access_token="+this.authenticationService.access_token;
+        var url =this.URL+"admin/saveTeamMembers?userId="+userId+ "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token="+this.authenticationService.access_token;
         return this.http.post(url,teams)
         .map(this.extractData)
         .catch(this.handleError);
@@ -39,6 +39,10 @@ export class TeamMemberService{
         
         userId = this.authenticationService.checkLoggedInUserId(userId);
         
+        if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName){
+            pagination.vanityUrlFilter = true;
+            pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        }
         var url =this.URL+"admin/listTeamMembers/"+userId+"?access_token="+this.authenticationService.access_token;
         return this.http.post(url, pagination)
         .map(this.extractData)

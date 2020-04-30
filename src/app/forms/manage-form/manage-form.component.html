@@ -264,12 +264,13 @@
                     <button type="button" class="close-circle" data-dismiss="modal">
             <i class="fa fa-times"></i>
           </button>
+
                     <h4 class="modal-title text-center">DIRECT LINK FOR YOUR FORM</h4>
                 </div>
                 <div class="modal-body">
                     <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
                     </app-response-message>
-                    <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form?.alias}}" #userinput>
+                    <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                 </div>
                 <div class="modal-footer">
                     <!-- <a class="btn btn-info" href="{{authenticationService.APP_URL}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
@@ -277,6 +278,7 @@
                     <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
                 </div>
             </div>
+
         </div>
     </div>
     <app-scroll-top></app-scroll-top>

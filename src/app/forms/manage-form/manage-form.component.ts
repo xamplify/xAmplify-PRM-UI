@@ -43,9 +43,12 @@ export class ManageFormComponent implements OnInit, OnDestroy {
     partnerId = 0;
     statusCode = 200;
     deleteAndEditAccess = false;
-   
+
     categoryId: number = 0;
     showFolderView = true;
+
+    formAliasUrl:string="";
+
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     exportObject:any = {};
     modulesDisplayType = new ModulesDisplayType();
@@ -293,6 +296,19 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         $('#form-url-modal').modal('show');
     }
 
+
+
+
+      showFormUrl(form:Form){
+          this.form = form;         
+          this.copiedLinkCustomResponse = new CustomResponse();
+          if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
+            this.formAliasUrl = this.authenticationService.vanityURLink + "f/" + this.form.alias;
+          }else{              
+            this.formAliasUrl = this.authenticationService.APP_URL + "f/" + this.form.alias;
+          }          
+          $('#form-url-modal').modal('show');
+      }
 
 
     /**************Edit Form***********/

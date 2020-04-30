@@ -159,7 +159,7 @@
 						<a data-toggle="tooltip" data-placement="top" title="Send welcome email" (click)="$event.stopPropagation();sendWelcomeEmail(report)"> 
 								<i class="fa fa fa-envelope" style="font-size: 20px;margin-left:5px"></i></a>
 								
-						<a data-toggle="tooltip" data-placement="top" title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report.alias)"> 
+						<a data-toggle="tooltip" data-placement="top" title="Copy link" (click)="$event.stopPropagation();openLinkInPopup(report)"> 
 							<i class="fa fa fa-copy" style="font-size: 20px;margin-left:5px"></i></a>
 
 
@@ -315,7 +315,8 @@
         <div class="modal-body">
           <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
           </app-response-message>
-          <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}axAa/{{userAlias}}" #userAliasId>
+          <!-- <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}axAa/{{userAlias}}" #userAliasId> -->
+          <input type="text"  class="form-control" readonly="readonly" value="{{accessAccountVanityURL}}" #userAliasId>
         </div>
         <div class="modal-footer">
           <!-- <a class="btn btn-info" href="{{authenticationService.APP_URL}}f/{{form.alias}}" target="blank">Open in new tab</a> -->

@@ -20,5 +20,6 @@ export class LandingPage {
     partnerLandingPage = false;
     type:LandingPageType;
     categoryId:number = 0;
+    companyProfileName: string="";
 
 }
