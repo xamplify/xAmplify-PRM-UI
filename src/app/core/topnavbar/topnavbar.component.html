@@ -209,10 +209,10 @@
                                 <a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i class="icon-lock"></i> Lock Screen
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a *ngIf="authenticationService.checkSamlSettingsUserRoles()" [routerLink]="['/home/dashboard/sso-samlsecurity']"> <i class="fa fa-cog"></i> SAML Settings
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
                                 <a> <i class="icon-key"></i> Log Out
