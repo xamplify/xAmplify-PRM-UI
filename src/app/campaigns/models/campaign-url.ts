@@ -21,5 +21,6 @@ export class Url{
     replyTimeInHoursAndMinutes:string = "";
     actionId:number = 0;
     statusInString = 'ACTIVE';
+    loader = false;
 
 }
