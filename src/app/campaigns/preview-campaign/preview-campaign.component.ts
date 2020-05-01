@@ -1310,6 +1310,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
   let self = this;
   swal({
       title: 'Are you sure to '+status+'?',
+      text:'This will '+status+' the workflow',
       type: 'warning',
       showCancelButton: true,
       swalConfirmButtonColor: '#54a7e9',
