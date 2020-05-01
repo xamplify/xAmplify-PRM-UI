@@ -863,4 +863,10 @@ export class CampaignService {
         .catch(this.handleError);
     }
 
+    getCampaignContactsOrPartners(pagination:Pagination){
+        return this.http.post(this.URL + "campaign/getCampaignContactsOrPartners?access_token=" + this.authenticationService.access_token, pagination)
+        .map(this.extractData)
+            .catch(this.handleError);
+	}
+
 }
