@@ -390,5 +390,11 @@ filterByCompanyProfileName(){
     
 }
 
+showCampaignDetails(campaign:any){
+    this.ngxLoading = true;
+    this.referenceService.campaignType = campaign[7];
+    this.router.navigate(['/home/campaigns/'+campaign[0]+'/details']);
+  }
+
 
 }
