@@ -214,7 +214,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     setCampaignData(result){
         this.campaign = result;
         console.log(this.campaign);
-        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination)
+        this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
         // this.contactListPagination.campaignUserListIds = this.campaign.userListIds;
         // if(this.campaign.userListIds.length>0){ this.loadContactList(this.contactListPagination);}
         this.selectedEmailTemplateId = this.campaign.selectedEmailTemplateId;
@@ -277,6 +277,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
        if ( !this.campaign.campaignLocation.country ) {
            this.campaign.campaignLocation.country = ( this.countryNames.countries[0] );
        }
+       this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
       //  this.contactListPagination.campaignUserListIds = this.selectedUserlistIds;
       //  if(this.selectedUserlistIds.length>0) { this.loadContactList(this.contactListPagination); }
     this.onChangeCountryCampaignEventTime(this.campaign.campaignEventTimes[0].countryId);
@@ -1351,7 +1352,11 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
      this.isContactListLoader = true;
      this.paginationType = 'contactsOrPartners';
      this.campaignPartnersOrContactsPreviewError = false;
-     campaignPartnersOrContactsPagination.campaignId = this.campaign.campaignId;
+     if(this.campaign.campaignId!=undefined && this.campaign.campaignId>0){
+      campaignPartnersOrContactsPagination.campaignId = this.campaign.campaignId;
+     }else{
+      campaignPartnersOrContactsPagination.campaignId = this.campaign.id;
+     }
      this.campaignService.getCampaignContactsOrPartners(campaignPartnersOrContactsPagination).
      subscribe(
       ( data: any ) => {
