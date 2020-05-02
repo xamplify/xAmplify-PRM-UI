@@ -769,17 +769,15 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     validateProfileNames(value: any) {
         if ($.trim(value).length > 0) {
-            let valueWithSpace = $.trim(value).toLowerCase();
             let valueWithOutSpaces = $.trim(value).toLowerCase().replace(/\s/g, '');
-            if (/\s/.test(value)) {
-                this.setCompanyProfileNameError("Spaces are not allowed");
+            if (!this.regularExpressions.ALPHA_NUMERIC.test(value)) {
+                this.setCompanyProfileNameError("Please Enter Alpha Numerics Only");
             } else if (valueWithOutSpaces.length < 3) {
                 this.setCompanyProfileNameError("Minimum 3 letters required");
             }
             else if (this.companyProfileNames.indexOf(valueWithOutSpaces) > -1) {
                 this.setCompanyProfileNameError("Company Profile Name Already Exists");
             } else {
-                //   $('#saveOrUpdateCompanyButton').prop('disabled',false);
                 this.enableOrDisableButton();
                 this.companyProfileNameError = false;
                 this.companyProfileNameDivClass = this.refService.successClass;

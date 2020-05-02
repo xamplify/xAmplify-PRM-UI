@@ -92,7 +92,7 @@ export class DashboardAnalyticsComponent implements OnInit {
   }
 
   getDefaultPage(userId: number) {
-    this.ngxLoading = true;
+    //this.ngxLoading = true;
     this.userService.getUserDefaultPage(userId)
         .subscribe(
             data => {
@@ -108,7 +108,7 @@ export class DashboardAnalyticsComponent implements OnInit {
 }
 
     listVendorsByLoggedInUserId(userId: number) {
-    this.ngxLoading = true;
+    //this.ngxLoading = true;
     this.dashBoardService.listVendorsByLoggedInUserId(userId)
         .subscribe(
             response => {
@@ -122,7 +122,7 @@ export class DashboardAnalyticsComponent implements OnInit {
 }
 
 setDashboardAsDefaultPage(event: any) {
-  this.ngxLoading = true;
+  //this.ngxLoading = true;
   this.referenceService.userDefaultPage = event ? 'DASHBOARD' : 'WELCOME';
   this.userService.setUserDefaultPage(this.authenticationService.getUserId(), this.referenceService.userDefaultPage)
       .subscribe(

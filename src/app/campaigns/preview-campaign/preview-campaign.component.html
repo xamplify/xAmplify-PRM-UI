@@ -207,21 +207,13 @@
                         <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
                         <div class="table-responsive">
                             <table class="table" [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader" id="campaign-preview-contact-list">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">
-                                           Entity Info
-                                        </th>
-                                        <th scope="col" class="text-center">Pause/Resume</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
                                     <ng-container *ngFor="let campaignUser of campaignPartnersOrContactsPagination.pagedItems; let i = index">
                                         <tr>
                                             <td>
                                                 <app-user-info [userInfo]="campaignUser"></app-user-info>
                                             </td>
-                                            <td class="text-center">
+                                            <td style="display: none;" class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign">
                                                 <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
                                                     <button class="btn btn-default workflow-style pause-style" (click)="changeCampaignUserStatus(campaignUser,'Pause')">
                                                         <span class="hidden-xs pause-text-style">Pause</span>

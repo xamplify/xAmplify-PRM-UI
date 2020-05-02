@@ -264,7 +264,7 @@
                                         <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
-                                        <a (click)="activateTab('samlSettings');clearCustomResponse()">Saml Settings</a>
+                                        <a (click)="activateTab('samlSettings');clearCustomResponse()">SAML Settings</a>
                                     </li>
                                 </ul>
                             </div>
@@ -830,7 +830,7 @@
                                                             <td>
                                                                 <div class="actions-block override-actions">
                                                                     <ng-container *ngIf="category.defaultCategory">
-                                                                        <a data-placement="top" class="disabled-event" title="Default Category Can't Be Edited">
+                                                                        <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
                                                                             <i class="fa fa-pencil-square-o disabled-event"></i>
                                                                         </a>
                                                                         <a id="template-delete" class="disabled-event" data-placement="top" title="Default Category Can't Be Deleted">
@@ -1112,7 +1112,7 @@
                 <ng-container *ngIf="!addCategoryLoader.isLoading">
                     <div class="form-group" id="categoryNameDiv">
                         <label>Name <font class="required">*</font></label>
-                        <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="30" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
+                        <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="55" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
