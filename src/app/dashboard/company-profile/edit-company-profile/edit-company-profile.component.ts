@@ -771,7 +771,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         if ($.trim(value).length > 0) {
             let valueWithOutSpaces = $.trim(value).toLowerCase().replace(/\s/g, '');
             if (!this.regularExpressions.ALPHA_NUMERIC.test(value)) {
-                this.setCompanyProfileNameError("Please Enter Alpha Numerics Only");
+                this.setCompanyProfileNameError("Please enter alpha numerics & lower case letters only");
             } else if (valueWithOutSpaces.length < 3) {
                 this.setCompanyProfileNameError("Minimum 3 letters required");
             }
