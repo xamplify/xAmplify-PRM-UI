@@ -1377,6 +1377,43 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
    }
 
    changeCampaignUserStatus(campaignUser:any,status:string){
+     console.log(campaignUser);
      campaignUser.status = status;
+     campaignUser.loggedInUserId = this.loggedInUserId;
+     let self = this;
+     swal({
+         title: 'Are you sure to '+status+'?',
+         text:'This will '+status+' the workflow',
+         type: 'warning',
+         showCancelButton: true,
+         swalConfirmButtonColor: '#54a7e9',
+         swalCancelButtonColor: '#999',
+         confirmButtonText: 'Yes, '+status+' it!',
+         allowOutsideClick: false
+     }).then(function () {
+        self.changeUserWorkFlowStatus(campaignUser);
+       
+     }, function (dismiss: any) {
+         console.log('you clicked on option' + dismiss);
+     });
    }
+
+   changeUserWorkFlowStatus(campaignUser:any){
+    this.ngxloading = true;
+    this.campaignService.changeUserWorkFlowStatus(campaignUser).subscribe(
+      ( data: any ) => {
+        if(campaignUser.status=="Pause"){
+          campaignUser.statusInString = "INACTIVE";
+        }else if(campaignUser.status=="Resume"){
+          campaignUser.statusInString = "ACTIVE";
+        }
+          this.referenceService.showSweetAlertSuccessMessage(data.message);
+          this.ngxloading = false;
+      },
+      error => {
+        this.ngxloading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+        },
+      () => this.xtremandLogger.info( "Finished changeUserWorkFlowStatus()" ) );
+  }
 }

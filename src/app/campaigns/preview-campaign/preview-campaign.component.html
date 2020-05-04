@@ -213,7 +213,7 @@
                                             <td>
                                                 <app-user-info [userInfo]="campaignUser"></app-user-info>
                                             </td>
-                                            <td style="display:none" class="text-center" *ngIf="!campaign.channelCampaign">
+                                            <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign">
                                                 <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
                                                     <button class="btn btn-default workflow-style pause-style" (click)="changeCampaignUserStatus(campaignUser,'Pause')">
                                                         <span class="hidden-xs pause-text-style">Pause</span>

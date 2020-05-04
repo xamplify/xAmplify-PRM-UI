@@ -869,4 +869,17 @@ export class CampaignService {
             .catch(this.handleError);
 	}
 
+    changeUserWorkFlowStatus(campaignUser:any){
+        let url = this.URL+"campaign/";
+        if(campaignUser.status=="Resume"){
+            url+='resumeWorkFlowForCampaignUser';
+        }else if(campaignUser.status=="Pause"){
+            url+='pauseWorkFlowForCampaignUser';
+        }
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token, campaignUser)
+        .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+
 }
