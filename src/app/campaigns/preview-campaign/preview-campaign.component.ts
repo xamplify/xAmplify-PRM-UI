@@ -1224,8 +1224,13 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
           }
 
       }else if(isVendor|| this.authenticationService.isAddedByVendor){
+        if(this.campaign.nurtureCampaign){
+          this.contactType = " contact(s)";
+        }else{
           this.contactType = "partner(s)";
           this.showContactType = false;
+        }
+         
       }
   }
 
