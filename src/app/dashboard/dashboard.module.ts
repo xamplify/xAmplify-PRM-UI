@@ -44,8 +44,12 @@ import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-comp
 import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
 import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
 import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
+import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons.component';
+import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
+import { SlickModule } from 'ngx-slick';
+
 @NgModule({
-    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
+    imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule, SlickModule.forRoot()],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
         WelcomeComponent, MyProfileComponent, ProfileLockComponent, ProfileHelpComponent, DefaultPageComponent,
         FollowersComponent, SharedComponent,EditCompanyProfileComponent, ReportsComponent, CompanyPageComponent, PartnerNotificationComponent, DashboardStatsComponent, 
@@ -62,7 +66,9 @@ import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-componen
         RegionalStatisticsAnalyticsComponent,
         VideoStatisticsAnalyticsComponent,
         EmailStatsAnalyticsComponent,
-        SocialAccountsAnalyticsComponent
+        SocialAccountsAnalyticsComponent,
+        DashboardButtonsComponent,        
+        DashboardButtonsCarouselComponent,        
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]

@@ -4,6 +4,9 @@ import { AuthenticationService } from "app/core/services/authentication.service"
 import { Observable } from "rxjs/Observable";
 import { VanityURL } from "../models/vanity.url";
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
+import { DashboardButton } from "../models/dashboard.button";
+import { Pagination } from "app/core/models/pagination";
+import { Properties } from "app/common/models/properties";
 
 
 @Injectable()
@@ -21,12 +24,49 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
+  saveDashboardButton(dashboardButton: DashboardButton) {
+    const url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, dashboardButton)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  updateDashboardButton(dashboardButton: DashboardButton) {
+    const url = this.authenticationService.REST_URL + "v_url/update/dashboardButton" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, dashboardButton)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getDashboardButtons(pagination: Pagination) {
+    const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  getDashboardButtonsForCarousel(companyProfileName: string) {
+    const url = this.authenticationService.REST_URL + "v_url/getDashboardButtons/" + companyProfileName + "?access_token=" + this.authenticationService.access_token;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+
+  deleteDashboardButton(id: number) {
+    const url = this.authenticationService.REST_URL + "v_url/delete/dashboardButton/" + id + "?access_token=" + this.authenticationService.access_token;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+
+  getDashboardButtonIcons(iconsFilePath:string) :Observable<any>{
+    return this.http.get(iconsFilePath).map(this.extractData).catch(this.handleError);
+  }
+
   checkVanityURLDetails() {
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
+    //let url = "analytify.xamplify.com";
+    //let url = "tga.xamplify.com";
     let url =window.location.hostname;
 
     if (!url.includes("release")) {
@@ -40,7 +80,12 @@ export class VanityURLService {
             this.authenticationService.vanityURLink = result.vanityURLink;
             this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
             //this.authenticationService.v_companyLogoImagePath = "assets/images/logo.jpg";
-            this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
+            this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;           
+            if(result.companyBgImagePath){
+              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;           
+            }else{
+              this.authenticationService.v_companyBgImagePath = "assets/js/indexjscss/login-background/login_background_big.jpg";
+            }
           }, error => {
             console.log(error);
           });

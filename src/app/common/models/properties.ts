@@ -139,4 +139,8 @@ export class Properties {
   UPLOAD_METADATA_TEXT2='Success! Processed the metadata and saved into the system.';
 
   VANITY_URL_ERROR1 = "You are not associated to vendor company";
+  VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";
+  VANITY_URL_DB_BUTTON_UPDATE_TEXT = "Button updated succesfully";
+  VANITY_URL_DB_BUTTON_DELETE_TEXT = "Button deleted succesfully";
+  VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT = "Button title already exists";
 }

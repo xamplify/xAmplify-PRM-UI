@@ -263,6 +263,9 @@
                                     <li  [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
                                         <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
                                     </li>
+                                    <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
+                                        <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">Dashboard Settings</a>
+                                    </li>
                                     <li [ngClass]="{'active': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
                                         <a (click)="activateTab('samlSettings');clearCustomResponse()">SAML Settings</a>
                                     </li>
@@ -745,6 +748,11 @@
                                     </div>
                                     <!-- END GDPR SETTINGS TAB -->
 
+                                     <!-- Dashboard SETTINGS TAB -->
+                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'dbButtonSettings'}">                                        
+                                        <app-dashboard-buttons> </app-dashboard-buttons>
+                                    </div>
+                                    
                                     <!-- Saml SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
                                         <app-samlsecurity> </app-samlsecurity>

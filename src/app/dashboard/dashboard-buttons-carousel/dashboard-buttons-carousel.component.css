@@ -1,0 +1,22 @@
+.slider{
+  /* width: 1120px; */
+  margin: 0px auto;
+  text-align: center;
+  color: white;
+}
+
+ :host /deep/ .slick-prev {
+    display: block;
+    background: black !important;
+    position: absolute  !important;
+    top: 247px !important;
+    left: 205px !important;
+  }
+
+  :host /deep/ .slick-next {
+    display: block;
+    background: black !important;
+    position: absolute;
+    top: 253px;
+    right: 17px;
+  }

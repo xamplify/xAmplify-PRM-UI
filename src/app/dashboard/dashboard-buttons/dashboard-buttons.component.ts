@@ -1,0 +1,144 @@
+import { Component, OnInit } from '@angular/core';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { AuthenticationService } from 'app/core/services/authentication.service';
+import { DashboardButton } from 'app/vanity-url/models/dashboard.button';
+import { Pagination } from 'app/core/models/pagination';
+import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { CustomResponse } from 'app/common/models/custom-response';
+import { Properties } from 'app/common/models/properties';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
+import { ReferenceService } from 'app/core/services/reference.service';
+import { PagerService } from 'app/core/services/pager.service';
+
+declare var swal: any;
+
+@Component({
+  selector: 'app-dashboard-buttons',
+  templateUrl: './dashboard-buttons.component.html',
+  styleUrls: ['./dashboard-buttons.component.css'],
+  providers: [Properties, HttpRequestLoader]
+})
+export class DashboardButtonsComponent implements OnInit {
+  customResponse: CustomResponse = new CustomResponse();
+  dashboardButton: DashboardButton = new DashboardButton();
+  pagination: Pagination = new Pagination();
+  dashboardButtonList: Array<DashboardButton> = new Array<DashboardButton>();  
+  buttonActionType: boolean;
+  iconNamesFilePath:string ;
+  iconsList:any = [];
+  constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) { 
+    this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';    
+    this.vanityURLService.getDashboardButtonIcons(this.iconNamesFilePath).subscribe(result =>{
+      this.iconsList = result.icon_names;
+    },error => {
+      console.log(error);
+    });
+  }
+
+  ngOnInit() {    
+    this.buttonActionType = true;    
+    this.getDashboardButtons(this.pagination);
+  }
+
+  getDashboardButtons(pagination: Pagination) {
+    if (this.authenticationService.vanityURLEnabled) {
+      this.referenceService.loading(this.httpRequestLoader, true);
+      pagination.userId = this.authenticationService.getUserId();
+      pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this.vanityURLService.getDashboardButtons(pagination).subscribe(result => {
+        const data = result.data;
+        if (result.statusCode === 200) {
+          pagination.totalRecords = data.totalRecords;
+          this.dashboardButtonList = data.dbButtons;
+          pagination = this.pagerService.getPagedItems(pagination, this.dashboardButtonList);
+        }
+        this.dashboardButton = new DashboardButton();
+        this.buttonActionType = true;
+        this.referenceService.loading(this.httpRequestLoader, false);
+      });
+    }
+  }
+
+  save() {    
+    this.dashboardButton.vendorId = this.authenticationService.getUserId();
+    this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;
+    this.vanityURLService.saveDashboardButton(this.dashboardButton).subscribe(result => {
+      if (result.statusCode === 200) {
+        console.log("Created");
+        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
+        this.getDashboardButtons(this.pagination);
+      }else if(result.statusCode === 100){
+        this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
+      }
+    }, error => {
+      this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true)
+    });
+  }
+
+  edit(id: number) {
+    this.buttonActionType = false;
+    const dbButtonObj = this.dashboardButtonList.filter(dbButton => dbButton.id === id)[0];
+    this.dashboardButton =  JSON.parse(JSON.stringify(dbButtonObj));
+  }
+
+  update(id: number) {
+    this.vanityURLService.updateDashboardButton(this.dashboardButton).subscribe(result => {
+      if (result.statusCode === 200) {
+        console.log("Updated");
+        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
+        this.getDashboardButtons(this.pagination);
+      }
+      else if(result.statusCode === 100){
+        this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
+      }
+    }, error => {
+      this.customResponse = new CustomResponse('ERROR', "Error while updating dashboard button", true)
+    });
+  }
+
+  delete(id: number) {
+    this.vanityURLService.deleteDashboardButton(id).subscribe(result => {
+      if (result.statusCode === 200) {
+        console.log("Deleted");
+        this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_DELETE_TEXT, true);
+        this.getDashboardButtons(this.pagination);
+      }
+    }, error => {
+      this.customResponse = new CustomResponse('ERROR', "Error while deleting dashboard button", true)
+    });
+  }
+
+  showAlert(dashboardButtonId: number) {
+    try {
+      let self = this;
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to undo this action!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#54a7e9',
+        cancelButtonColor: '#999',
+        confirmButtonText: 'Yes, delete it!'
+
+      }).then(function (myData: any) {
+        self.delete(dashboardButtonId);
+      }, function (dismiss: any) {
+        console.log('you clicked on option' + dismiss);
+      });
+    } catch (error) {
+      this.xtremandLogger.error(error, "DashboardButtonsComponent", "delete()");
+    }
+  }
+
+  /************Page************** */
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.getDashboardButtons(this.pagination);
+  }
+
+  selectedIconName()
+  {    
+  //alert(this.dashboardButton.buttonIcon);
+  }
+
+}

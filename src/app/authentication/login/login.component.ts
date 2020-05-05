@@ -34,9 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "twitter", "iconName": "twitter" },
   { "name": "google", "iconName": "googleplus" },
   { "name": "linkedin", "iconName": "linkedin" }];
-  
-  //backgroundImageUrl = "https://xamplify.io/assets/images/feature-1.png";
-  backgroundImageUrl = "assets/images/stratapps.jpeg";
+
 
   roles: Array<Role>;      
   constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
