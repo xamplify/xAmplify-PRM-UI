@@ -16,7 +16,6 @@ import { SortOption } from '../../core/models/sort-option';
 import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
-import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
 declare var swal: any, $: any;
 @Component({
@@ -54,7 +53,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public vanityUrlService: VanityURLService,public renderer:Renderer) {
+        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
@@ -67,7 +66,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
         this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-
+       
     }
 
     
@@ -82,6 +81,10 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     listLandingPages(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            this. pagination.vanityUrlFilter = true;
+        }
         this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
             (response: any) => {
                 const data = response.data;
