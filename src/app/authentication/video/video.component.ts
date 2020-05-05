@@ -11,14 +11,14 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 })
 export class VideoComponent implements OnInit {
 
-  constructor(public properties: Properties, private authService: AuthenticationService) { }
+  constructor(public properties: Properties, public authService: AuthenticationService) { }
 
   ngOnInit() {    
     if (this.authService.vanityURLEnabled && this.authService.v_companyLogoImagePath) {
       this.properties.COMPANY_LOGO = this.authService.v_companyLogoImagePath;
       this.properties.xamplify_router = this.authService.vanityURLink;
     }else{
-      this.authService.v_companyBgImagePath = "assets/js/indexjscss/login-background/login_background_big.jpg";
+      this.authService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
     }
   }
 }

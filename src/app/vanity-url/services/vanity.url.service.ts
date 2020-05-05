@@ -84,7 +84,7 @@ export class VanityURLService {
             if(result.companyBgImagePath){
               this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;           
             }else{
-              this.authenticationService.v_companyBgImagePath = "assets/js/indexjscss/login-background/login_background_big.jpg";
+              this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
           }, error => {
             console.log(error);
