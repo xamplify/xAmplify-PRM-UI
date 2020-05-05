@@ -81,6 +81,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
 
     listLandingPages(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
+        /**********Vanity Url Filter**************** */
         if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
             this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             this. pagination.vanityUrlFilter = true;

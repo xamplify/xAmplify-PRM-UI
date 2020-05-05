@@ -17,6 +17,7 @@ var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { Pagination } from '../../core/models/pagination';
 
 @Injectable()
 export class AuthenticationService {
@@ -73,6 +74,7 @@ export class AuthenticationService {
   dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
  vendorRoleHash = "";
  partnerRoleHash = ""; 
+ pagination:Pagination = new Pagination();
  constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -530,5 +532,11 @@ export class AuthenticationService {
 
   handleError(error: any) {
     return Observable.throw(error);
+  }
+  setVanityUrlFilter(pagination: Pagination) {
+    if (this.companyProfileName !== undefined && this.companyProfileName !== '') {
+      pagination.vendorCompanyProfileName = this.companyProfileName;
+      pagination.vanityUrlFilter = true;
+    }
   }
 }
