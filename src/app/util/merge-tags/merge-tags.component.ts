@@ -34,6 +34,7 @@ export class MergeTagsComponent implements OnInit {
       this.mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
       this.mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
       this.mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+      this.mergeTags.push( { name: 'Sender Occupation', value: this.senderMergeTag.senderOccupation } );
       this.mergeTags.push( { name: 'Sender Email Id', value: this.senderMergeTag.senderEmailId } );
       this.mergeTags.push( { name: 'Sender Contact Number', value: this.senderMergeTag.senderContactNumber } );
       this.mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
