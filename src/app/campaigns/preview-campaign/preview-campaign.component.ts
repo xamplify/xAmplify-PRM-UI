@@ -94,6 +94,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     previewContactListId : number;
     contactsUsersPagination:Pagination = new Pagination();
     previewText:string = "Select";
+    tableHeader = "";
     /************Add Reply/Add OnClick**************/
     emailNotOpenedReplyDaysSum:number = 0;
     emailOpenedReplyDaysSum:number = 0;
@@ -1213,21 +1214,26 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       if(isOrgAdmin){
           if(this.campaign.channelCampaign){
               this.contactType = "partner(s)";
+              this.tableHeader = "Partner Details";
               this.showContactType = false;
           }else{
               if(this.campaign.nurtureCampaign){
-                  this.contactType = " contact(s)";
+                  this.contactType = " recipient(s)";
+                  this.tableHeader = "Recipient Details";
               }else{
-                  this.contactType = " partner / recepient (s)";
+                  this.contactType = " partner / recipient (s)";
+                  this.tableHeader = "Partner/Recipient Details";
               }
               this.showContactType = true;
           }
 
       }else if(isVendor|| this.authenticationService.isAddedByVendor){
         if(this.campaign.nurtureCampaign){
-          this.contactType = " contact(s)";
+          this.contactType = " recipient(s)";
+          this.tableHeader = "Recipient Details";
         }else{
           this.contactType = "partner(s)";
+          this.tableHeader = "Partner Details";
           this.showContactType = false;
         }
          
@@ -1380,6 +1386,15 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
       () => this.xtremandLogger.info( "Finished listCampaignPartnersOrContacts()" ) );
      
    }
+
+   searchCampaignUsers(){
+    this.campaignPartnersOrContactsPagination.pageIndex = 1;
+    this.campaignPartnersOrContactsPagination.searchKey = this.contactSearchInput;
+    this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
+   }
+
+   eventHandlerForSearchUsers(keyCode: any) { if (keyCode === 13) { this.searchCampaignUsers(); } }
+
 
    changeCampaignUserStatus(campaignUser:any,status:string){
      console.log(campaignUser);

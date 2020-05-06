@@ -204,9 +204,23 @@
                     <fieldset>
                         <legend>Selected {{contactType}}:</legend>
                         <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
-                        <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
                         <div class="table-responsive">
+                             <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
+                                <div class="input-icon" style="position:relative;right: -11px;">
+                                    <input type="text" class="form-control" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandlerForSearchUsers($event.keyCode)" style="padding-left: 10px !important;">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchCampaignUsers();"></button>
+                                    <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            
                             <table class="table" [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader" id="campaign-preview-contact-list">
+                                <thead>
+                                    <tr>
+                                        <th>{{tableHeader}}</th>
+                                        <th class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">Action</th>
+                                    </tr>
+                                    
+                                </thead>
                                 <tbody>
                                     <ng-container *ngFor="let campaignUser of campaignPartnersOrContactsPagination.pagedItems; let i = index">
                                         <tr>
@@ -237,6 +251,7 @@
                                 <app-pagination  [pagination]="campaignPartnersOrContactsPagination" [type]="'contactsOrPartners'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
                             </div>
                         </div>
+                        <div class="alert alert-info alert-top-padding-xamplify" *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0">No {{contactType}} found</div>
                     </fieldset>
                     <!-- <fieldset> -->
                     <div id="campaign-options-div">
