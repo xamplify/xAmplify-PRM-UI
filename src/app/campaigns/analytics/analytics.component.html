@@ -49,7 +49,17 @@
     </ul>
     <button routerLink="/home/campaigns/{{campaign.campaignId}}/checkin"
       *ngIf="campaignType=='EVENT' && !campaign.nurtureCampaign && campaign.publicEventCampaign" class="btn btn-primary"
-      id="check-in-css"><b>Check In</b> <img src="assets/images/attendees.png" id="custom-width-button"></button>
+      id="check-in-css">
+      <b>Check In</b> 
+      <img src="assets/images/attendees.png" id="custom-width-button">
+    </button>
+
+    <a class="close-circle" *ngIf="campaignType!='EVENT' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
+      <i class="fa fa-download" aria-hidden="true"></i>
+    </a>
+
+
+
     <!--<app-analytics-loader [campaignType]="campaignType" *ngIf="loading"></app-analytics-loader>-->
   </div>
   <div class="portlet light clearfix" *ngIf="!isShowPartnerLeads">
@@ -513,7 +523,7 @@
                       CAMPAIGN {{isPartnerCampaign}}
                     </span>
                     <h4>{{campaign.campaignName}}</h4>
-                    <h5 class="text-info mb10">
+                    <h5 class="text-info mb10" id="campaign-launch-time">
                       <!-- {{campaign.launchTime | date: 'fullDate'}} -->
                       <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp>
                     </h5>

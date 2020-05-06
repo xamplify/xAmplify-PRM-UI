@@ -28,6 +28,7 @@
     "@syncfusion/ej2-angular-dropdowns": "^17.3.29",
     "@syncfusion/ej2-angular-inputs": "^17.3.29",
     "angular2-bootstrap-switch": "^0.2.3",
+    "angular2-csv": "^0.2.5",
     "angular2-highcharts": "^0.4.3",
     "angular2-uuid": "^1.1.1",
     "core-js": "^2.4.1",

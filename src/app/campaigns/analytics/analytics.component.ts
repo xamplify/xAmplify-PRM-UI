@@ -29,6 +29,7 @@ import { LandingPage } from '../../landing-pages/models/landing-page';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import { ClickedUrlsVendorAnalyticsComponent} from '../clicked-urls-vendor-analytics/clicked-urls-vendor-analytics.component';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
 
 declare var $, Highcharts, swal: any;
 
@@ -2612,5 +2613,30 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   showClickedUrlsForVendor(){
     this.clickedUrlsVendorAnalyticsComponent.showPopup(this.campaignId);
   }
+
+  downloadReport(){
+    var data = [
+      {
+        campaignName:  this.campaign.campaignName,
+        campaignType: this.campaignType +" CAMPAIGN",
+        campaignLaunchTime: $.trim($('#campaign-launch-time').text()),
+        contactListLength: this.campaign.userListIds.length,
+        recipientsCount: this.campaignReport.emailSentCount,
+        activeRecipientsCount: this.campaignReport.emailOpenCount,
+        clickedUrlsCount:this.campaignReport.emailClickedCount
+      }
+    ];
+
+    var options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      headers: ['Campaign Name', 'Campaign Type', 'Launched On', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients','Clicked Urls']
+    };
+    new Angular2Csv(data, this.campaign.campaignName, options);
+  }
+
+    
 
 }

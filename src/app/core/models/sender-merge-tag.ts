@@ -3,7 +3,7 @@ export class SenderMergeTag {
     senderFirstName = "{{senderFirstName}}";
     senderLastName = "{{senderLastName}}";
     senderFullName = "{{senderFullName}}";
-    senderOccupation = "{{senderOccupation}}";
+    senderTitle = "{{senderTitle}}";
     senderEmailId = "{{senderEmailId}}";
     senderContactNumber = "{{senderContactNumber}}";
     senderCompany = "{{senderCompany}}";
@@ -14,7 +14,7 @@ export class SenderMergeTag {
     senderFirstNameGlobal = /{{senderFirstName}}/g;
     senderLastNameGlobal = /{{senderLastName}}/g;
     senderFullNameGlobal = /{{senderFullName}}/g;
-    senderOccupationGlobal = /{{senderOccupation}}/g;
+    senderTitleGlobal = /{{senderTitle}}/g;
     senderEmailIdGlobal = /{{senderEmailId}}/g;
     senderContactNumberGlobal = /{{senderContactNumber}}/g;
     senderCompanyGlobal = /{{senderCompany}}/g;

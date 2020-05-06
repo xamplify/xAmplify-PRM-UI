@@ -312,7 +312,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         try {
-            if (this.referenceService.integrationCallBackStatus == true) {
+            if (this.referenceService.integrationCallBackStatus) {
                 this.activeTabName = 'integrations';
             } else {
                 this.activeTabName = 'personalInfo';
@@ -558,10 +558,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'pattern': 'Only Characters Allowed'
         },
         'occupation': {
-            'required': 'Occupation required.',
+            'required': 'Title required.',
             'whitespace': 'Invalid Data',
-            'minlength': 'occupation be at least 3 characters long.',
-            'maxlength': 'occupation cannot be more than 50 characters long.',
+            'minlength': 'Title be at least 3 characters long.',
+            'maxlength': 'Title cannot be more than 50 characters long.',
             'pattern': 'Only Characters Allowed'
         },
         'description': {
@@ -1412,6 +1412,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.categoryPagination = new Pagination();
             this.listCategories(this.categoryPagination);
         }
+        this.referenceService.goToTop();
     }
 
     ngOnDestroy() {
