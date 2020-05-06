@@ -284,7 +284,7 @@ export class HomeComponent implements OnInit {
             this.getTeamMembersDetails();
             this.getPartnerCampaignsNotifications();
           }
-          this.vanityURLService.checkVanityURLDetails();
+         this.vanityURLService.isVanityURLEnabled();      
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  

@@ -59,7 +59,9 @@ export class VanityURLService {
     return this.http.get(iconsFilePath).map(this.extractData).catch(this.handleError);
   }
 
-  checkVanityURLDetails() {
+
+
+  isVanityURLEnabled(){
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
@@ -68,7 +70,34 @@ export class VanityURLService {
     //let url = "analytify.xamplify.com";
     //let url = "tga.xamplify.com";
     let url =window.location.hostname;
+    
+    if (!url.includes("release")) {
+      let domainName = url.split('.');
+      if (domainName.length > 2) {
+        this.authenticationService.vanityURLEnabled = true;
+        this.authenticationService.companyProfileName = domainName[0];        
+        if (!this.authenticationService.vanityURLUserRoles) {
+          let currentUser = localStorage.getItem('currentUser');
+          if (currentUser) {
+            const parsedObject = JSON.parse(currentUser);
+            this.authenticationService.vanityURLUserRoles = parsedObject.roles;
+          }
+        }
+        return true;
+      }
+    }  
+  }
 
+  checkVanityURLDetails(){
+    //console.log("Router URL :" + window.location.href);
+    //console.log("Router URL :" + window.location.hostname);
+
+    let url = "key.xamplify.com";
+    //let url = "TGAInfoSolutions.xamplify.com";
+    //let url = "analytify.xamplify.com";
+    //let url = "tga.xamplify.com";
+    //let url =window.location.hostname;
+    let status = false;
     if (!url.includes("release")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
@@ -86,6 +115,7 @@ export class VanityURLService {
             }else{
               this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
             }
+            return true;            
           }, error => {
             console.log(error);
           });
@@ -98,7 +128,7 @@ export class VanityURLService {
           }
         }
       }
-    }
+    }    
   }
 
   addVanityUrlFilterDTO(dto: DashboardAnalyticsDto) {

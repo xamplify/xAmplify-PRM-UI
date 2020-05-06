@@ -5,6 +5,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { Router } from '@angular/router';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { UtilService } from 'app/core/services/util.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 
 declare var Highcharts: any;
 
@@ -26,20 +28,25 @@ export class CampaignStatisticsAnalyticsComponent implements OnInit {
   isFullscreenToggle=false;
   heatMapTooltip = 'Current Year';
   heatMapLoader: HttpRequestLoader = new HttpRequestLoader();
-  constructor(public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService,public utilService:UtilService) {
+  dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
+  constructor(public dashboardService: DashboardService, public xtremandLogger: XtremandLogger, public router: Router, public referenceService: ReferenceService,public utilService:UtilService,private vanityUrlService: VanityURLService) {
     this.sortDates = this.dashboardService.sortDates;
     this.sortHeatMapValues = this.sortDates.concat([{ 'name': 'Year', 'value': 'year' }]);
     this.heatMapSort = this.sortHeatMapValues[4];
   }
 
   ngOnInit() {
-    this.getCampaignsHeatMapData();
+    this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+    // if (this.dashboardAnalyticsDto.userId !== 0 && this.dashboardAnalyticsDto.vendorCompanyProfileName) {
+    //   this.getCampaignsHeatMapData();
+    // }
+    this.getCampaignsHeatMapData();    
   }
 
   getCampaignsHeatMapData() {
     try {
       this.referenceService.loading(this.heatMapLoader,true);
-      this.dashboardService.getCampaignsHeatMapDetails(this.heatMapSort.value).
+      this.dashboardService.getCampaignsHeatMapDetailsForVanityURL(this.heatMapSort.value,this.dashboardAnalyticsDto).
         subscribe(result => {
           this.xtremandLogger.log(result.heatMapData);
           if (result) {

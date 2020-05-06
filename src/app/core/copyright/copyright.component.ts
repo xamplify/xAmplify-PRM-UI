@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Properties } from "../../common/models/properties";
-import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 import { AuthenticationService } from "../services/authentication.service";
 
 @Component({

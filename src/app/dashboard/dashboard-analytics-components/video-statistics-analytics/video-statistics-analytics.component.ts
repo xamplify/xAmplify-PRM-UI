@@ -37,9 +37,10 @@ export class VideoStatisticsAnalyticsComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardAnalyticsDto = this.vanityURLService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
-    if (this.dashboardAnalyticsDto.userId !== 0 && this.dashboardAnalyticsDto.vendorCompanyProfileName) {
-      this.getVideoStatesSparklineChartsInfo(30);
-    }
+    this.getVideoStatesSparklineChartsInfo(30);
+    // if (this.dashboardAnalyticsDto.userId !== 0 && this.dashboardAnalyticsDto.vendorCompanyProfileName) {
+    //   this.getVideoStatesSparklineChartsInfo(30);
+    // }
   }
 
   selectedSortByValue(event: any) {

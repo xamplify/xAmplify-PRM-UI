@@ -37,6 +37,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   roles: Array<Role>;      
+  isNotVanityURL:boolean = false;
+  vanityURLEnabled:boolean = false;
   constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     /*if(this.router.url=="/logout"){
@@ -189,7 +191,24 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     try {
       this.mainLoader = true;
-      this.vanityURLService.checkVanityURLDetails();
+      if(this.vanityURLService.isVanityURLEnabled()){
+        this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
+          this.vanityURLEnabled = true;
+          this.authenticationService.v_companyName = result.companyName;
+          this.authenticationService.vanityURLink = result.vanityURLink;
+          this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
+          this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;           
+              if(result.companyBgImagePath){
+                this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;           
+              }else{
+                this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+              }
+        }, error => {
+          console.log(error);
+        });
+      }else{
+        this.isNotVanityURL = true;
+      }
       this.cleaningLeftSidebar();
       this.authenticationService.navigateToDashboardIfUserExists();
       setTimeout(() => { this.mainLoader = false; }, 900);

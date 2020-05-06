@@ -133,7 +133,7 @@ export class AddTeamMembersComponent implements OnInit {
 	hasContactAccess() {
 		let isOrgAdmin = this.authenticationService.isOrgAdmin();
 		let isVendorAndPartner = this.authenticationService.isVendorPartner();
-		this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
+		this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;		
 		this.userService.getRoles(this.authenticationService.getUserId())
 			.subscribe(
 				response => {
@@ -143,13 +143,13 @@ export class AddTeamMembersComponent implements OnInit {
 						//this.isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
 						this.authenticationService.hasOnlyPartnerRole = this.isOnlyPartner;
 						this.contactAccess = isOrgAdmin || (isVendorAndPartner) || this.isOnlyPartner;
-
 						this.isOnlyPartnerOrPartnerTeamMember = this.isOnlyPartner || this.authenticationService.isPartnerTeamMember;
 
 						if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && (this.authenticationService.loggedInUserRole === "Vendor & Partner" || this.authenticationService.loggedInUserRole === "OrgAdmin & Partner")){
 							this.contactAccess = true;
 							if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !== 0){
 								this.isOnlyPartner = true;
+								this.isOnlyPartnerOrPartnerTeamMember = true;
 							}
 						}
 

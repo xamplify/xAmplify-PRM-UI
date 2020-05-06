@@ -378,6 +378,13 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    getCampaignsHeatMapDetailsForVanityURL(limit: any, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/heatmap-data?access_token=' + this.authenticationService.access_token + '&limit=' + limit;
+            return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     private extractData(res: Response) {
         let body = res.json();
         // console.log("response.json(): "+body);
