@@ -118,6 +118,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hubSpotRibbonText: string;
     hubSpotRedirectURL: string;
     activeTabName: string = "";
+    activeTabHeader:string = "";
     sfRibbonText: string;
     sfRedirectURL: string;
     /*****************GDPR************************** */
@@ -314,8 +315,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         try {
             if (this.referenceService.integrationCallBackStatus) {
                 this.activeTabName = 'integrations';
+                this.activeTabHeader = this.properties.integrations;
             } else {
                 this.activeTabName = 'personalInfo';
+                this.activeTabHeader = this.properties.personalInfo;
             }
             this.customConstructorCall();
             console.log(this.authenticationService.user);
@@ -1406,9 +1409,25 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     activateTab(activeTabName: any) {
         this.activeTabName = activeTabName;
-        if (this.activeTabName == "gdpr") {
+        if(this.activeTabName=="personalInfo"){
+            this.activeTabHeader = this.properties.personalInfo;
+        }else if(this.activeTabName=="password"){
+            this.activeTabHeader = this.properties.changePassword;
+        }else if(this.activeTabName=="settings"){
+            this.activeTabHeader = this.properties.viewType;
+        }else if(this.activeTabName=="playerSettings"){
+            this.activeTabHeader = this.properties.defaultPlayerSettings;
+        }else if(this.activeTabName=="dealTypes"){
+            this.activeTabHeader = this.properties.dealRegistration;
+        }else if(this.activeTabName=="integrations"){
+            this.activeTabHeader = this.properties.integrations;
+        }else if(this.activeTabName=="samlSettings"){
+            this.activeTabHeader = this.properties.samlSettings;
+        }else if (this.activeTabName == "gdpr") {
+            this.activeTabHeader = this.properties.gdprSettings;
             this.getGdprSettings();
         } else if (this.activeTabName == "categories") {
+            this.activeTabHeader = this.properties.folders;
             this.categoryPagination = new Pagination();
             this.listCategories(this.categoryPagination);
         }

@@ -465,3 +465,15 @@ input:checked+.slider:before {
   #text-color-my-profile{
 	color: #847d7d;
   }
+
+  .active-tab-anchor-text{
+	position: relative;
+    display: block;
+    padding: 10px 15px;
+	font-size: 14px;
+    font-weight: 500;
+	color: #5b9bd1;
+    background-color: #80808047;
+    border-left: 2px solid #5b9bd1;
+    margin-left: -2px;
+  }

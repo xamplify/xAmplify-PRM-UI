@@ -138,4 +138,16 @@ export class Properties {
   UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
   UPLOAD_METADATA_TEXT2='Success! Processed the metadata and saved into the system.';
 
+  /*************My Profile Tab Names*******************************/
+  personalInfo = "Personal Info";
+  changePassword = "Change Password";
+  viewType = "View Type";
+  defaultPlayerSettings = "Default Player Settings";
+  dealRegistration = "Deal Registration";
+  integrations = "Integrations";
+  gdprSettings = "GDPR Settings";
+  folders = "Folders";
+  samlSettings = "SAML Settings";
+
+
 }
