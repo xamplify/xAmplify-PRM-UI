@@ -117,7 +117,7 @@ export class DashboardButtonsComponent implements OnInit {
     });
   }
 
-  clear(){
+  cancel(){
     this.dashboardButton = new DashboardButton();
     this.buttonActionType = true;
   }
