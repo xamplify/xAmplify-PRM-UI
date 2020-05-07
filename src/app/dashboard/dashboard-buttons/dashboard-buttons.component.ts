@@ -26,6 +26,7 @@ export class DashboardButtonsComponent implements OnInit {
   buttonActionType: boolean;
   iconNamesFilePath:string ;
   iconsList:any = [];
+  selectedProtocol:string;
   constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) { 
     this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';    
     this.vanityURLService.getDashboardButtonIcons(this.iconNamesFilePath).subscribe(result =>{
@@ -37,6 +38,7 @@ export class DashboardButtonsComponent implements OnInit {
 
   ngOnInit() {    
     this.buttonActionType = true;    
+    this.selectedProtocol = 'http';
     this.getDashboardButtons(this.pagination);
   }
 
@@ -70,15 +72,18 @@ export class DashboardButtonsComponent implements OnInit {
       }else if(result.statusCode === 100){
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }
+      this.referenceService.goToTop();
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while saving dashboard button", true)
+      this.referenceService.goToTop();
     });
   }
 
   edit(id: number) {
     this.buttonActionType = false;
+    this.referenceService.goToTop();
     const dbButtonObj = this.dashboardButtonList.filter(dbButton => dbButton.id === id)[0];
-    this.dashboardButton =  JSON.parse(JSON.stringify(dbButtonObj));
+    this.dashboardButton =  JSON.parse(JSON.stringify(dbButtonObj));    
   }
 
   update(id: number) {
@@ -91,8 +96,10 @@ export class DashboardButtonsComponent implements OnInit {
       else if(result.statusCode === 100){
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }
+      this.referenceService.goToTop();
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while updating dashboard button", true)
+      this.referenceService.goToTop();
     });
   }
 
@@ -101,11 +108,18 @@ export class DashboardButtonsComponent implements OnInit {
       if (result.statusCode === 200) {
         console.log("Deleted");
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_DELETE_TEXT, true);
-        this.getDashboardButtons(this.pagination);
+        this.getDashboardButtons(this.pagination);        
+        this.referenceService.goToTop();
       }
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while deleting dashboard button", true)
+      this.referenceService.goToTop();
     });
+  }
+
+  clear(){
+    this.dashboardButton = new DashboardButton();
+    this.buttonActionType = true;
   }
 
   showAlert(dashboardButtonId: number) {
@@ -141,4 +155,7 @@ export class DashboardButtonsComponent implements OnInit {
   //alert(this.dashboardButton.buttonIcon);
   }
 
+  selectedProtocolOption(selectedProtocolOption:string){
+    this.selectedProtocol = selectedProtocolOption;
+  }
 }

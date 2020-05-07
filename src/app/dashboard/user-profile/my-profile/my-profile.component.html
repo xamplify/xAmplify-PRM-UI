@@ -264,7 +264,7 @@
                                         <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
-                                        <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">Dashboard Settings</a>
+                                        <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">Dashboard Buttons</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
                                         <a (click)="activateTab('samlSettings');clearCustomResponse()">SAML Settings</a>

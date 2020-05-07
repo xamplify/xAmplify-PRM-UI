@@ -11,52 +11,60 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
+      <label>Title</label>
       <input type="text" class="form-control" name="buttonTitle" placeholder="Title"
-        [(ngModel)]="dashboardButton.buttonTitle" required>
+        [(ngModel)]="dashboardButton.buttonTitle" maxlength="20" required>
     </div>
     <div class="form-group col-md-6">
+      <label>Subtitle</label>
       <input type="text" class="form-control" name="buttonSubTitle" placeholder="Subtitle"
-        [(ngModel)]="dashboardButton.buttonSubTitle">
+        [(ngModel)]="dashboardButton.buttonSubTitle" maxlength="40">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
+      <label>Link</label>
       <input type="text" class="form-control" name="buttonLink" placeholder="Link"
-        [(ngModel)]="dashboardButton.buttonLink">
+        [(ngModel)]="dashboardButton.buttonLink" required>        
     </div>
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-6">      
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="newTab" [(ngModel)]="dashboardButton.openInNewTab">
-        <label class="form-check-label" for="gridCheck">
+        <label class="form-check-label" for="gridCheck" style="padding-top: 30px;">
           Open in new tab?
         </label>
       </div>
     </div>
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-8">
+  <div class="form-row">    
+    <div class="form-group col-md-6">      
+    </div>
+    <div class="form-group col-md-4">
+      <label>Icon</label>
       <select name="buttonIcon" class="form-control" [(ngModel)]="dashboardButton.buttonIcon"
         (change)="selectedIconName()">
         <option [ngValue]="undefined" disabled selected> Please select icon </option>
         <option [ngValue]="icon.id" *ngFor="let icon of iconsList">{{icon.name}}</option>
       </select>
     </div>
-    <div class="form-group col-md-4">
-      <span><i class="fa {{dashboardButton.buttonIcon}}"></i></span>
+    <div class="form-group col-md-2">
+      <span><i class="fa {{dashboardButton.buttonIcon}}" style="padding-top: 30px;"></i></span>
     </div>
-  </div>
+  </div>  
   <div class="form-row">
     <div class="form-group  col-md-12">
-      <textarea name="buttonDescription" rows="3" cols="3" class="form-control" placeholder="Description"
+      <label>Description</label>
+      <textarea name="buttonDescription" maxlength="120" class="form-control" placeholder="Description"
         maxlength="120" [(ngModel)]="dashboardButton.buttonDescription"></textarea>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-12">
-      <button *ngIf="buttonActionType" type="submit" class="btn btn-primary" [disabled]="!dashboardButton.buttonTitle"
+      <button *ngIf="buttonActionType" type="submit" class="btn btn-primary" [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink"
         (click)="save()">Save</button>
-      <button *ngIf="!buttonActionType" type="submit" class="btn btn-primary" [disabled]="!dashboardButton.buttonTitle"
+      <button *ngIf="!buttonActionType" type="submit" class="btn btn-primary" [disabled]="!dashboardButton.buttonTitle || !dashboardButton.buttonLink"
         (click)="update()">Update</button>
+        <button *ngIf="!buttonActionType" type="submit" class="btn btn-primary" (click)="clear()">Clear</button>
     </div>
   </div>
 </form>
@@ -71,17 +79,18 @@
       <tr>
         <th>Title</th>
         <th>Link</th>
-        <th>Icon</th>
+        <!-- <th>Icon</th> -->
         <th style="width:15%;" class="text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of pagination.pagedItems">
-        <td>{{item.buttonTitle}}</td>
+        <td><span><i class="fa {{item.buttonIcon}}"></i></span>
+          {{item.buttonTitle}}</td>
         <td>{{item.buttonLink}}</td>
-        <td>
+        <!-- <td>
           <span><i class="fa {{item.buttonIcon}}"></i></span>
-        </td>
+        </td> -->
         <td>
           <div class="actions-block override-actions">
             <a (click)="edit(item.id)" data-toggle="tooltip" data-placement="top" title="edit"> <i
