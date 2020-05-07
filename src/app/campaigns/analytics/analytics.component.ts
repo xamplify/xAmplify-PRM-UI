@@ -2615,6 +2615,15 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   downloadReport(){
+
+    let headers = [];
+
+    if(this.campaignType=="REGULAR"){
+      headers = ['Campaign Name', 'Campaign Type', 'Launched On', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients','Clicked Urls'];
+    }else{
+      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients','Clicked Urls','Views Count'];
+    }
+
     var data = [
       {
         campaignName:  this.campaign.campaignName,
@@ -2627,14 +2636,32 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       }
     ];
 
+    var videoCampaignData = [{
+      campaignName:  this.campaign.campaignName,
+      campaignType: this.campaignType +" CAMPAIGN",
+      contactListLength: this.campaign.userListIds.length,
+      recipientsCount: this.campaignReport.emailSentCount,
+      activeRecipientsCount: this.campaignReport.emailOpenCount,
+      clickedUrlsCount:this.campaignReport.emailClickedCount,
+      viewsCount:this.campaignReport.usersWatchCount
+    }
+      
+
+    ];
+
     var options = {
       fieldSeparator: ',',
       quoteStrings: '"',
       decimalseparator: '.',
       showLabels: true,
-      headers: ['Campaign Name', 'Campaign Type', 'Launched On', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients','Clicked Urls']
+      headers: headers
     };
-    new Angular2Csv(data, this.campaign.campaignName, options);
+    if(this.campaignType=="REGULAR"){
+      new Angular2Csv(data, this.campaign.campaignName, options);
+    }else{
+      new Angular2Csv(videoCampaignData, this.campaign.campaignName, options);
+    }
+    
   }
 
     
