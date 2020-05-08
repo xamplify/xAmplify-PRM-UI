@@ -63,7 +63,7 @@ export class DashboardButtonsComponent implements OnInit {
 
   save() {    
     this.dashboardButton.vendorId = this.authenticationService.getUserId();
-    this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;
+    this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;    
     this.vanityURLService.saveDashboardButton(this.dashboardButton).subscribe(result => {
       if (result.statusCode === 200) {
         console.log("Created");

@@ -29,7 +29,12 @@ export class DashboardButtonsCarouselComponent implements OnInit {
       this.vanityURLService.getDashboardButtonsForCarousel(this.authenticationService.companyProfileName).subscribe(result =>{
         const data = result.data;
         if (result.statusCode === 200) {
-          this.dashboardButtonList = data.dbButtons;         
+          this.dashboardButtonList = data.dbButtons;
+          for(let item of this.dashboardButtonList){           
+            if(!(item.buttonLink.includes("http" || "https"))){
+              item.buttonLink = "//" + item.buttonLink;
+            }            
+          }
         }        
       });
     }
