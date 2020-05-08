@@ -293,9 +293,10 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Mobile Number</label>
-                                                <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
+                                                <!-- <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                                                     <int-phone-prefix placeholder="Mobile Number" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                </fieldset>
+                                                </fieldset> -->
+                                                <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
                                                 <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
                                                     {{ formErrors.mobileNumber }}</div>
                                             </div>

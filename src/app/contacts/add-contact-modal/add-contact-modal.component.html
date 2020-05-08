@@ -188,7 +188,10 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         </label>
           <!-- <div class="row"> -->
             <div class="col-xs-10 col-sm-10 p0">
-              <int-phone-prefix [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}" placeholder="Enter your mobile no"></int-phone-prefix>
+              <!-- <int-phone-prefix [(ngModel)]="addContactuser.mobileNumber" [ngModelOptions]="{standalone: true}" placeholder="Enter your mobile no"></int-phone-prefix> -->
+            <input type="email" style="border: none" class="form-control padding-mobile" 
+              [(ngModel)]="addContactuser.mobileNumber"  [ngModelOptions]="{standalone: true}"
+              placeholder="Enter your mobile no" maxlength="20">
             <div class="textCss"></div>
             </div>
           <!-- </div> -->

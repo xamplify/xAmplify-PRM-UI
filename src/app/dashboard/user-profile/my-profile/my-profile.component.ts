@@ -602,14 +602,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updateUserProfileForm: FormGroup;
     validateUpdateUserProfileForm() {
         var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-        var mobileNumberPatternRegEx = /^[0-9]{10,10}$/;
+        var mobileNumberPatternRegEx = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
         // var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
         var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
         this.updateUserProfileForm = this.fb.group({
             'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'lastName': [this.userData.lastName],
             // 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-            // 'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+             //'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.pattern(mobileNumberPatternRegEx)])],
             'mobileNumber': [this.userData.mobileNumber],
             'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],

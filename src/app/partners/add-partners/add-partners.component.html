@@ -358,9 +358,10 @@
                                                         <tr>
                                                             <td class='pt10 pb10 bold'>Phone:</td>
                                                             <td class='pt10 pb10'>
-                                                                <div *ngIf="user?.mobilePhone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+                                                                <!-- <div *ngIf="user?.mobilePhone" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                                                                     <int-phone-prefix [(ngModel)]="user.mobilePhone" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                                </div>
+                                                                </div> -->
+                                                                {{user?.mobilePhone}}
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -480,13 +481,13 @@
                                                         <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [isPartnerInfo]="true" [userInfo]="newContact"> </app-user-info>
                                                     </td>
                                                     <td class="hidden-xs">
-                                                        <div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+                                                       <!--  <div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
                                                             <int-phone-prefix [(ngModel)]="newContact.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                        </div>
-                                                        <!-- <h5>
+                                                        </div> -->
+                                                       <h5>
 														<span *ngIf="newContact?.mobileNumber; else NA"
 															>{{newContact.mobileNumber}}</span>
-													</h5> -->
+													</h5>
                                                     </td>
                                                     <!-- <td>
 													<h5 class='mb0 ellipsis'>{{newContact.jobTitle | slice:0:25}}

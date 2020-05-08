@@ -78,7 +78,8 @@
               </div>
                <div class="form-group">
                   <label for="email">Mobile Number</label>
-                    <int-phone-prefix [defaultCountry]="'us'" [(ngModel)]="requestDemo.mobileNumber" [maxlength]=20  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
+                  <!--   <int-phone-prefix [defaultCountry]="'us'" [(ngModel)]="requestDemo.mobileNumber" [maxlength]=20  [ngModelOptions]="{standalone: true}"></int-phone-prefix> -->
+              		<input type="text" maxlength="20" class="form-control"  [(ngModel)]="requestDemo.mobileNumber" [ngModelOptions]="{standalone: true}">
               </div>
               <div class="form-group">
                   <label for="email">Company Name<font class="required">*</font></label>

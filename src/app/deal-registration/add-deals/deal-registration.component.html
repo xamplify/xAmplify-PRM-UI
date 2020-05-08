@@ -116,11 +116,12 @@
                   <b>*</b>
                 </font>
               </label>
-              <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
+            <!--   <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                 <int-phone-prefix [(ngModel)]="dealRegistration.phone" (input)="validateField('phone',false)" (blur)="validateField('phone',false)"
                   [ngModelOptions]="{standalone: true}" [disabled]="isVendor || isPreview"
                   class="phone-input"></int-phone-prefix>
-              </fieldset>
+              </fieldset> -->
+               <input type="text" maxlength="20" class="form-control"  [(ngModel)]=" dealRegistration.phone" [ngModelOptions]="{standalone: true}"/>
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
 
