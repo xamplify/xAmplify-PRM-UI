@@ -237,7 +237,7 @@
 					</div>
 					<div class="update-status-content col-xs-10 col-sm-11">
 						<textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-						 (keyup)="onKeyPress($event)" [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
+						 [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
 						<h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
 
 						<section class="" [hidden]="isSocialCampaign && alias">

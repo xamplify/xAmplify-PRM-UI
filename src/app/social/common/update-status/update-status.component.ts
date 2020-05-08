@@ -353,11 +353,12 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
             if (data.publishStatus !== 'FAILURE') {
               let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
               this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-
               this.isRedirectEnabled = true;
+              this.loading = true;
+              //this.referenceService.showSweetAlertProceesor('You will be redirecting to campaigns');
               setTimeout(() => {
                 this.redirect();
-              }, 10000);
+              }, 3000);
 
             }
             else if (data.publishStatus === 'FAILURE')
@@ -406,9 +407,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
               let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
               this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
               this.isRedirectEnabled = true;
+              this.loading = true;
+             // this.referenceService.showSweetAlertProceesor('You will be redirecting to campaigns');                 
               setTimeout(() => {
                 this.redirect();
-              }, 10000);
+              }, 3000);
 
             }
             else if (data.publishStatus === 'FAILURE')
@@ -552,10 +555,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         error => console.log(error),
         () => {
           this.initializeSocialStatus();
-          if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
-            this.populateRssFeed(this.referenceService.selectedFeed);
-            this.referenceService.selectedFeed = "";
-          }
+          // if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
+          //   this.populateRssFeed(this.referenceService.selectedFeed);
+          //   this.referenceService.selectedFeed = "";
+          // }
         });
   }
 

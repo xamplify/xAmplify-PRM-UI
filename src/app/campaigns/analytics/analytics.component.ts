@@ -2632,7 +2632,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         contactListLength: this.campaign.userListIds.length,
         recipientsCount: this.campaignReport.emailSentCount,
         activeRecipientsCount: this.campaignReport.emailOpenCount,
-        clickedUrlsCount:this.campaignReport.emailClickedCount
+        clickedUrlsCount:this.campaignReport.dataShareClickedUrlsCountForVendor
       }
     ];
 
