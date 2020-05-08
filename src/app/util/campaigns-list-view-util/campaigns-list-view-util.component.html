@@ -447,7 +447,7 @@
                 <div class="row">
                     <ng-container *ngIf="modulesDisplayType.isGridView && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="padding: 0px 3px 0px 3px;">
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let campaign of pagination.pagedItems; let i= index">
-                            <div class="grid-box" style="height:222px">
+                            <div class="grid-box" style="height:240px">
                                 <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
                                 <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                     {{campaign.campaignName | slice:0:22}}

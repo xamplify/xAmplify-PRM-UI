@@ -15,10 +15,11 @@ export class Reply{
     selectedEmailTemplateId:number = 0;
     selectedEmailTemplateIdForEdit:number = 0;
     selectedEmailTemplateTypeIndex:number = 0;
-    emailTemplateSearchInput:string = "";
+    emailTemplateSearchInput:string;
     emailTemplate:EmailTemplate = new EmailTemplate();
     showSelectedEmailTemplate:boolean  = false;
     defaultTemplate:boolean = false;
     replyTimeInHoursAndMinutes:string = "";
     statusInString = 'ACTIVE';
+    loader = false;
 }

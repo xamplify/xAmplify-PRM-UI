@@ -863,4 +863,23 @@ export class CampaignService {
         .catch(this.handleError);
     }
 
+    getCampaignContactsOrPartners(pagination:Pagination){
+        return this.http.post(this.URL + "campaign/getCampaignContactsOrPartners?access_token=" + this.authenticationService.access_token, pagination)
+        .map(this.extractData)
+            .catch(this.handleError);
+	}
+
+    changeUserWorkFlowStatus(campaignUser:any){
+        let url = this.URL+"campaign/";
+        if(campaignUser.status=="Resume"){
+            url+='resumeWorkFlowForCampaignUser';
+        }else if(campaignUser.status=="Pause"){
+            url+='pauseWorkFlowForCampaignUser';
+        }
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token, campaignUser)
+        .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+
 }

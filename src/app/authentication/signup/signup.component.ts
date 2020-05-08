@@ -118,7 +118,7 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
                         //data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')
                         if (data.statusCode==200) {
                             this.loading = false;
-                            this.referenceService.userProviderMessage = this.properties.SIGN_UP_SUCCESS;
+                            this.referenceService.userProviderMessage = data.message;
                             this.router.navigate(['/login']);
                         }else{
                            this.customResponse = new CustomResponse('ERROR',"Sign up is restricted.Please contact admin.",true);

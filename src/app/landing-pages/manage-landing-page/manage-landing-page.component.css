@@ -173,6 +173,7 @@ a.disabled {
     height: 80px;
     width: auto;
     margin: 0;
+    max-width: 70px;
 }
 
 td h6 {

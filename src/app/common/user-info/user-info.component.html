@@ -2,7 +2,9 @@
 	<span *ngIf="(userInfo.firstName |slice:0:1)!=null || (userInfo.emailId |slice:0:1)!=null" class='profile' [style.background-color]="backgroudColor">
 	<span class='uppercase' *ngIf="isPartnerInfo && userInfo.contactCompany |slice:0:1!=null">{{userInfo.contactCompany |slice:0:1}}
 	<span class='uppercase' *ngIf="(userInfo.contactCompany |slice:0:1)==null">{{userInfo.emailId |slice:0:1}}</span></span>
-	<span class='uppercase' *ngIf="!isPartnerInfo">{{userInfo.firstName |slice:0:1}}<span *ngIf="(userInfo.firstName |slice:0:1)==null">{{userInfo.emailId |slice:0:1}}</span> </span>
+	<span class='uppercase' *ngIf="!isPartnerInfo && userInfo.firstName?.length>0">
+	{{userInfo.firstName |slice:0:1}} </span>
+	<span class='uppercase' *ngIf="!isPartnerInfo && userInfo.firstName?.length==0">{{userInfo.emailId |slice:0:1}}</span>
 	</span>
 	<span class="ml10" *ngIf="(userInfo.firstName |slice:0:1)==null && (userInfo.emailId |slice:0:1)==null">-
 	</span>
@@ -31,9 +33,10 @@
       <p class="user-company" *ngIf="isPartnerEntityInfo" title="{{userInfo.jobTitle}}"><span>{{userInfo.jobTitle |slice:0:25}}</span><span *ngIf="userInfo.jobTitle?.length>25">..</span></p>
      <!--  <p class="user-company" title="{{userInfo.mobileNumber}}"><span>{{userInfo.mobileNumber |slice:0:14}}</span><span *ngIf="userInfo.mobileNumber?.length>14">..</span></p> -->
     <span *ngIf="userInfo.mobileNumber" [class.disabled]="true"
-		style="pointer-events: none !important; cursor: auto;position: relative !important;right: 24px !important;">
-		<int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
-		[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+		style="pointer-events: none !important; cursor: auto;position: relative !important;">
+		{{userInfo.mobileNumber}}
+		<!-- <int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
+		[ngModelOptions]="{standalone: true}"></int-phone-prefix> -->
 	</span>
     </h6>
 	</span>
@@ -68,9 +71,10 @@
 	  <p class="user-company" *ngIf="isPartnerEntityInfo" title="{{userInfo.jobTitle}}"><span>{{userInfo.jobTitle |slice:0:25}}</span><span *ngIf="userInfo.jobTitle?.length>25">..</span></p>
 	      <!-- <p class="user-company" *ngIf="isPartnerEntityInfo" title="{{userInfo.mobileNumber}}"><span>{{userInfo.mobileNumber |slice:0:14}}</span><span *ngIf="userInfo.mobileNumber?.length>14">..</span></p> -->
 	<span *ngIf="userInfo.mobileNumber" [class.disabled]="true"
-		style="pointer-events: none !important; cursor: auto;position: relative !important;right: 24px !important;">
-		<int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
-		[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+		style="pointer-events: none !important; cursor: auto;position: relative !important;">
+		<!-- <int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
+		[ngModelOptions]="{standalone: true}"></int-phone-prefix> -->
+		{{userInfo.mobileNumber}}
 	</span>
 	</span>
 	

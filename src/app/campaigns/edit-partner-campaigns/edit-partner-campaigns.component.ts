@@ -926,6 +926,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.url.divId = id;
         this.url.scheduled = false;
         this.url.actionId = 19;
+        this.url.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
         this.url.url = this.emailTemplateHrefLinks[0];
         this.urls.push(this.url);
         this.allItems.push(id);

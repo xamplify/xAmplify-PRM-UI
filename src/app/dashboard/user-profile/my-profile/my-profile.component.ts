@@ -118,6 +118,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     hubSpotRibbonText: string;
     hubSpotRedirectURL: string;
     activeTabName: string = "";
+    activeTabHeader:string = "";
     sfRibbonText: string;
     sfRedirectURL: string;
     /*****************GDPR************************** */
@@ -280,9 +281,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.getUserByUserName(this.currentUser.userName);
             this.cropperSettings();
-            //this.roleNames = this.authenticationService.showRoles();
             this.roleNames = this.authenticationService.loggedInUserRole;
-            // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
             console.log(this.videoUtilService.videoTempDefaultSettings);
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -314,10 +313,12 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit() {
         try {
-            if (this.referenceService.integrationCallBackStatus == true) {
+            if (this.referenceService.integrationCallBackStatus) {
                 this.activeTabName = 'integrations';
+                this.activeTabHeader = this.properties.integrations;
             } else {
                 this.activeTabName = 'personalInfo';
+                this.activeTabHeader = this.properties.personalInfo;
             }
             this.customConstructorCall();
             console.log(this.authenticationService.user);
@@ -560,10 +561,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'pattern': 'Only Characters Allowed'
         },
         'occupation': {
-            'required': 'Occupation required.',
+            'required': 'Title required.',
             'whitespace': 'Invalid Data',
-            'minlength': 'occupation be at least 3 characters long.',
-            'maxlength': 'occupation cannot be more than 50 characters long.',
+            'minlength': 'Title be at least 3 characters long.',
+            'maxlength': 'Title cannot be more than 50 characters long.',
             'pattern': 'Only Characters Allowed'
         },
         'description': {
@@ -601,14 +602,14 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     updateUserProfileForm: FormGroup;
     validateUpdateUserProfileForm() {
         var urlPatternRegEx = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
-        var mobileNumberPatternRegEx = /^[0-9]{10,10}$/;
+        var mobileNumberPatternRegEx = /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
         // var nameRegEx = /[a-zA-Z0-9]+[a-zA-Z0-9 ]+/;
         var charWithCommaRegEx = /^(?!.*?([A-D]).*?\1)[A-D](?:,[A-D])*$/;
         this.updateUserProfileForm = this.fb.group({
             'firstName': [this.userData.firstName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
             'lastName': [this.userData.lastName],
             // 'lastName': [this.userData.lastName, Validators.compose([Validators.required, noWhiteSpaceValidator, Validators.maxLength(50)])],//Validators.pattern(nameRegEx)
-            // 'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.minLength(10), Validators.maxLength(10), Validators.pattern(mobileNumberPatternRegEx)])],
+             //'mobileNumber': [this.userData.mobileNumber, Validators.compose([Validators.pattern(mobileNumberPatternRegEx)])],
             'mobileNumber': [this.userData.mobileNumber],
             'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
@@ -1408,12 +1409,29 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     activateTab(activeTabName: any) {
         this.activeTabName = activeTabName;
-        if (this.activeTabName == "gdpr") {
+        if(this.activeTabName=="personalInfo"){
+            this.activeTabHeader = this.properties.personalInfo;
+        }else if(this.activeTabName=="password"){
+            this.activeTabHeader = this.properties.changePassword;
+        }else if(this.activeTabName=="settings"){
+            this.activeTabHeader = this.properties.viewType;
+        }else if(this.activeTabName=="playerSettings"){
+            this.activeTabHeader = this.properties.defaultPlayerSettings;
+        }else if(this.activeTabName=="dealTypes"){
+            this.activeTabHeader = this.properties.dealRegistration;
+        }else if(this.activeTabName=="integrations"){
+            this.activeTabHeader = this.properties.integrations;
+        }else if(this.activeTabName=="samlSettings"){
+            this.activeTabHeader = this.properties.samlSettings;
+        }else if (this.activeTabName == "gdpr") {
+            this.activeTabHeader = this.properties.gdprSettings;
             this.getGdprSettings();
         } else if (this.activeTabName == "categories") {
+            this.activeTabHeader = this.properties.folders;
             this.categoryPagination = new Pagination();
             this.listCategories(this.categoryPagination);
         }
+        this.referenceService.goToTop();
     }
 
     ngOnDestroy() {

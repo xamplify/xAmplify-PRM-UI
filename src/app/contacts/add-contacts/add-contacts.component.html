@@ -520,10 +520,10 @@
 															<tr style="border-bottom: 1px solid #dcdcdc">
 																<td class='pt10 pb10'>Phone Number:</td>
 																<td class='pt10 pb10'>
-																	<div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+																	<!-- <div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 																		<int-phone-prefix [(ngModel)]="newContact.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																	</div>
-																	<!-- {{newContact.mobileNumber}} -->
+																	</div> -->
+																	{{newContact.mobileNumber}}
 																</td>
 															</tr>
 															<!-- <tr style="border-bottom: 1px solid #dcdcdc">
@@ -604,12 +604,13 @@
 															<tr>
 																<td class='pt10 pb10 bold'>Phone:</td>
 																<td class='pt10 pb10'>
-																	<div *ngIf="user?.mobilePhone"
+																	<!-- <div *ngIf="user?.mobilePhone"
 																		[class.disabled]="true"
 																		style="pointer-events: none !important; cursor: auto;">
 																		<int-phone-prefix [(ngModel)]="user.mobilePhone"
 																			[ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																	</div>
+																	</div> -->
+																	{{user?.mobilePhone}}
 																</td>
 															</tr>
 															<tr>
@@ -740,10 +741,10 @@
 																	<tr style="border-bottom: 1px solid #dcdcdc">
 																		<td class='pt10 pb10'>Phone Number:</td>
 																		<td class='pt10 pb10'>
-																			<div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
+																			<!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 																				<int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-																			</div>
-																			<!-- {{user.mobileNumber}} -->
+																			</div> -->
+																			{{user.mobileNumber}}
 																		</td>
 																	</tr>
 																	<!-- <tr style="border-bottom: 1px solid #dcdcdc">

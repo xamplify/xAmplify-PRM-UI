@@ -101,8 +101,9 @@
             <li *ngIf="hasCompany && !authenticationService.isSuperAdmin()">
                 <i class="fa fa-home"></i><a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
             </li>
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin
-                    Report</a><i class="fa fa-angle-right"></i>
+            <li *ngIf="authenticationService.isSuperAdmin()">
+                <i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">
+                    Admin  Report</a><i class="fa fa-angle-right"></i>
             </li>
             <li>
                 <a>User Account</a>
@@ -149,14 +150,41 @@
                     <div class="profile-usermenu">
                         <ul class="nav">
                             <!-- commented for future work -->
-                            <li [ngClass]="{'active': activeTabName == 'personalInfo'}">
-                                <a (click)="activateTab('personalInfo');clearCustomResponse()">
-                                    <i class="fa fa-user"></i> Personal Info </a>
+                            <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}" (click)="activateTab('personalInfo');clearCustomResponse()">
+                                 {{properties.personalInfo}}
+                                </a>
                             </li>
-                            <li [ngClass]="{'active': activeTabName == 'password'}">
-                                <a (click)="activateTab('password');clearCustomResponse()">
-                                    <i class="fa fa-key"></i> Change Password </a>
+                            <li [ngClass]="{'active-tab': activeTabName == 'password'}">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'password'}" (click)="activateTab('password');clearCustomResponse()">
+                                    {{properties.changePassword}}
+                                </a> 
                             </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType}}</a>
+                            </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
+                                (click)="videojsCall()">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"(click)="activateTab('playerSettings');">
+                                    <span>{{properties.defaultPlayerSettings}}</span>
+                                </a> 
+                            </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration}}</a>
+                            </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations}}</a>
+                            </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings}}</a>
+                            </li>
+                            <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders}}</a>
+                            </li>
+                            <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings}}</a>
+                            </li>
+
                            <!--  <li *ngIf="(authenticationService.isOrgAdmin())">
                                 <a [class.disabled]="authenticationService.isSuperAdmin()">
                                     <div class="col-xs-2 p0"><i class="icon-settings"></i></div>
@@ -239,31 +267,10 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide"></i>
-                                    <span class="caption-subject font-blue-madison bold uppercase">Account
-                                        Profile</span>
+                                    <span class="caption-subject font-blue-madison bold">{{activeTabHeader}}</span>
+                                        
                                 </div>
-                                <ul class="nav nav-tabs left-css" style="float: none !important;">
-                                    <li [ngClass]="{'active': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
-                                        <a (click)="activateTab('settings');clearCustomResponse()">Settings</a>
-                                    </li>
-                                    <li [ngClass]="{'active': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
-                                        (click)="videojsCall()">
-                                        <a (click)="activateTab('playerSettings');"><span
-                                                class="hidden-xs">Default</span> Player Settings</a>
-                                    </li>
-                                    <li [ngClass]="{'active': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
-                                        <a (click)="activateTab('dealTypes');clearCustomResponse()">Deal Registration</a>
-                                    </li>
-                                    <li [ngClass]="{'active': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
-                                        <a (click)="activateTab('integrations');clearCustomResponse()"> Integrations</a>
-                                    </li>
-                                    <li [ngClass]="{'active': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
-                                        <a (click)="activateTab('gdpr');clearCustomResponse()">GDPR Settings</a>
-                                    </li>
-                                    <li  [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
-                                        <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
-                                    </li>
-                                </ul>
+                                
                             </div>
                             <div class="portlet-body clearfix">
                                 <div class="tab-content">
@@ -286,9 +293,10 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Mobile Number</label>
-                                                <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
+                                                <!-- <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                                                     <int-phone-prefix placeholder="Mobile Number" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-                                                </fieldset>
+                                                </fieldset> -->
+                                                <input type="text" maxlength="20" class="form-control" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}">
                                                 <div *ngIf="formErrors.mobileNumber" class="alert alert-danger">
                                                     {{ formErrors.mobileNumber }}</div>
                                             </div>
@@ -299,8 +307,8 @@
                                                     {{ formErrors.interests }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Occupation</label>
-                                                <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Occupation" class="form-control" formControlName="occupation" />
+                                                <label class="control-label">Title</label>
+                                                <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Title" class="form-control" formControlName="occupation" />
                                                 <div *ngIf="formErrors.occupation" class="alert alert-danger">
                                                     {{ formErrors.occupation }}</div>
                                             </div>
@@ -579,24 +587,24 @@
                                             <div id="custom-response-div">
                                                 <app-response-message *ngIf="modulesDisplayViewcustomResponse.isVisible" [customResponse]="modulesDisplayViewcustomResponse"></app-response-message>
                                             </div>
-                                            <label class="container-checkbox-xamplify">List
+                                            <label class="container-checkbox-xamplify">List View
                                                 <input type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container-checkbox-xamplify">Grid
+                                              <label class="container-checkbox-xamplify">Grid View
                                                 <input type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]}}" 
                                                 [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container-checkbox-xamplify">Folder Grid
+                                              <label class="container-checkbox-xamplify">Folder Grid View
                                                 <input type="radio"  name="moduleDisplayType" 
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]}}" [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container-checkbox-xamplify">Folder List
+                                              <label class="container-checkbox-xamplify">Folder List View
                                                 <input type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]}}"
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]"> 
@@ -741,6 +749,12 @@
                                         </form>
                                     </div>
                                     <!-- END GDPR SETTINGS TAB -->
+
+                                    <!-- Saml SETTINGS TAB -->
+                                    <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
+                                        <app-samlsecurity> </app-samlsecurity>
+                                    </div>
+                                    
                                     <!-- Categories -->
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'categories'}">
                                        <ng-container *ngIf="!isFolderPreview">
@@ -821,7 +835,7 @@
                                                             <td>
                                                                 <div class="actions-block override-actions">
                                                                     <ng-container *ngIf="category.defaultCategory">
-                                                                        <a data-placement="top" class="disabled-event" title="Default Category Can't Be Edited">
+                                                                        <a data-placement="top" class="disabled-event" title="Default Folder Can't Be Edited">
                                                                             <i class="fa fa-pencil-square-o disabled-event"></i>
                                                                         </a>
                                                                         <a id="template-delete" class="disabled-event" data-placement="top" title="Default Category Can't Be Deleted">
@@ -1103,7 +1117,7 @@
                 <ng-container *ngIf="!addCategoryLoader.isLoading">
                     <div class="form-group" id="categoryNameDiv">
                         <label>Name <font class="required">*</font></label>
-                        <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="30" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
+                        <input type="text" class="form-control" [(ngModel)]="category.name" id="categoryName" placeholder="Enter Name" maxlength="55" (input)="validateCategoryNames(category.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!category.isValid" class="required">{{categoryNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
