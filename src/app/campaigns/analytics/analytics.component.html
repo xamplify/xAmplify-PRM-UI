@@ -54,7 +54,7 @@
       <img src="assets/images/attendees.png" id="custom-width-button">
     </button>
 
-    <a class="close-circle" *ngIf="campaignType!='EVENT' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
+    <a class="close-circle" *ngIf="campaignType!='EVENT' && campaignType!='SOCIAL' && !isDataShare && !mainLoader" id="check-in-css" (click)="downloadReport()">
       <i class="fa fa-download" aria-hidden="true"></i>
     </a>
 
@@ -756,9 +756,11 @@
                       <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
                         style="font-size:14px; float:right"></i>
                     </span>
-                    <ul class="dropdown-menu pull-right" style="right: 20px !important">
-                      <li><a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()">
-                          Export To Excel </a></li>
+                    <ul class="dropdown-menu pull-right" style="right: 20px !important" >
+                      <li>
+                        <a id="delete_button" (click)="downloadTypeName = 'campaignViews'; downloadFunctionality()">
+                          Export To Excel </a>
+                      </li>
                     </ul>
                   </div>
                 </div>

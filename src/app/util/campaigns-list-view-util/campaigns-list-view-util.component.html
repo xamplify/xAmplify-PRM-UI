@@ -224,7 +224,7 @@
                                                             <ng-container *ngIf="campaign.launched && !campaign.vendorCampaignDeleted">
                                                                 <li *ngIf="campaign.launched">
                                                                     <!---Copy Campaign List View-->
-                                                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)">
+                                                                    <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)">
                                                                         <i class="fa fa-files-o" style="width: 30px;"></i> Copy Campaign
                                                                     </a>
                                                                     <!---Add Workflows List View-->
@@ -379,7 +379,7 @@
                                                                 </a>
 
                                                                 <!---Copy Campaign List View-->
-                                                                <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)">
+                                                                <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" (click)="openSaveAsModal(campaign)">
                                                                     <i class="fa fa-files-o" style="width: 30px;"></i> Copy Campaign
                                                                 </a>
                                                                 <!---Add Workflows List View-->
@@ -570,7 +570,7 @@
                                         <a [class.disablednew]="!campaign.hasAccess" *ngIf="  hasAllAccess || (hasStatsRole || hasCampaignRole ) || (loggedInUserId==campaign.userId) || authenticationService.module.isVendor || isOnlyPartner" (click)="campaginRouter(campaign)" data-toggle="tooltip" data-placement="right" title="{{actionsDescription.campaign_report}}">
                                             <i class="fa fa-line-chart"></i>
                                         </a>
-                                        <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
+                                        <a *ngIf="( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor) && !campaign.nurtureCampaign && campaign.campaignType.indexOf('SOCIAL')<0" data-rel="fancybox-button" data-toggle="tooltip" data-placement="top" title="Copy campaign" (click)="openSaveAsModal(campaign)">
                                             <i class="fa fa-files-o"></i>
                                         </a>
                                         <a *ngIf=" (hasAllAccess ||  (hasCampaignRole && loggedInUserId==campaign.userId) || isOnlyPartner || authenticationService.module.isVendor) && campaign.channelCampaign" (click)="goToPreviewPartners(campaign)" data-toggle="tooltip" data-placement="top"

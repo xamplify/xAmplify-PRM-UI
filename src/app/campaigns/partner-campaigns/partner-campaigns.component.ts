@@ -376,11 +376,16 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             data => {
                 this.router.navigate(['/home/campaigns/social', data.socialStatusList[0].alias]);
             },
-            error => { this.xtremandLogger.errorPage(error) },
+            error => {
+                    this.customResponse = new CustomResponse("ERROR","This campaign cannot be redistributed.Please contact admin",true);
+                    
+                },
             () => console.log()
             );
     }
     reDistributeCampaign(campaign:any){
+        this.customResponse = new CustomResponse();
+        this.referenceService.goToTop();
         if(campaign.campaignType.indexOf('SOCIAL') > -1){
             this.navigateSocialCampaign(campaign);
         } else if(campaign.campaignType.indexOf('EVENT') > -1) {

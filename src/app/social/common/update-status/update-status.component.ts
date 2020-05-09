@@ -79,6 +79,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   events = [];
   selectedSocialProviderId: number;
   savedURL: string;
+  categoryNames: any;
 
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties: Properties,
@@ -407,11 +408,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
               let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
               this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
               this.isRedirectEnabled = true;
-              this.loading = true;
-             // this.referenceService.showSweetAlertProceesor('You will be redirecting to campaigns');                 
-              setTimeout(() => {
-                this.redirect();
-              }, 3000);
+              // this.loading = true;
+              // setTimeout(() => {
+              //   this.redirect();
+              // }, 3000);
 
             }
             else if (data.publishStatus === 'FAILURE')
@@ -442,6 +442,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     else {
       this.router.navigate(['/home/campaigns/manage']);
     }
+  }
+
+  goToManage(){
+    this.loading = true;
+    this.router.navigate(['home/campaigns/manage']);
   }
 
   updateStatus() {
@@ -887,6 +892,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       }
       this.loadContactLists(this.contactListsPagination);
       this.loadCampaignNames(this.userId);
+      this.listCategories();
     }
   }
 
@@ -1196,5 +1202,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatus.ogt = false;
     this.socialStatusList[0] = this.socialStatus;
     this.savedURL = '';
+  }
+
+  listCategories(){
+    this.loading = true;
+    this.authenticationService.getCategoryNamesByUserId(this.userId).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            this.socialCampaign.categoryId = categoryIds[0];
+          this.loading = false;
+        },
+        error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.userId + ")", error ); },
+        () => this.logger.info( "Finished listCategories()" ) );
   }
 }

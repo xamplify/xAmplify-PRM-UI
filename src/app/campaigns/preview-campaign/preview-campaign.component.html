@@ -51,16 +51,16 @@
 
                         <div class="media col-xs-12 col-sm-6">
                             <div class="media-left p10">
-                                <i class="fa fa-user-circle-o"></i>
+                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                             </div>
                             <div class="media-body">
                                 <h5>{{campaign.fromName}}</h5>
                                 <h6>{{campaign.email}}</h6>
                             </div>
                         </div>
-                        <div class="media col-xs-12 col-sm-6" *ngIf="campaignType!='SOCIAL'">
+                        <div class="media col-xs-12 col-sm-6">
                             <div class="media-left p10">
-                                <i class="fa fa-folder-open-o"></i>
+                                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                             </div>
                             <div class="media-body">
                                 <h5>{{campaign.categoryName}}</h5>
@@ -69,9 +69,18 @@
                     </fieldset>
                     <fieldset *ngIf="previewCampaignType === 'SOCIAL'">
                         <legend>Social Accounts</legend>
-                        <div class="col-md-6 col-sm-12 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
-                            <app-social-status [socialStatus]="socialStatus"></app-social-status>
-                        </div>
+                        <ng-container *ngIf="socialCampaign?.socialStatusList?.length==0">
+                            <div class="alert alert-info">
+                                <strong>No Social Accounts Found</strong>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="socialCampaign?.socialStatusList?.length>0">
+                            <div class="col-md-6 col-sm-12 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                                <app-social-status [socialStatus]="socialStatus"></app-social-status>
+                            </div>
+                        </ng-container>
+                        
+                        
                     </fieldset>
                     <fieldset [hidden]="previewCampaignType === 'SOCIAL'">
                         <legend>Selected:</legend>
@@ -85,9 +94,9 @@
                                         <div class="pricing hover-effect">
                                             <div class="pricing-head">
                                                 <h4>
-                                                    <img *ngIf="previewCampaignType==='REGULAR'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
-                                                    <img *ngIf="previewCampaignType==='LANDINGPAGE'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
-                                                    <img *ngIf="previewCampaignType==='EVENT'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png">
+                                                    <img alt="No Image Found" *ngIf="previewCampaignType==='REGULAR'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
+                                                    <img alt="No Image Found" *ngIf="previewCampaignType==='LANDINGPAGE'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
+                                                    <img alt="No Image Found" *ngIf="previewCampaignType==='EVENT'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png">
                                                 </h4>
                                             </div>
                                         </div>
@@ -515,7 +524,7 @@
             </div>
             <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
                 <div class="actions-block text-center m10" *ngIf="campaign">
-                	 <a *ngIf="campaignType!='SOCIAL'"  (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
+                	 <a (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
                             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                     </a>
                     <ng-container *ngIf="campaign.launched">
@@ -530,7 +539,7 @@
                             data-toggle="tooltip" data-placement="top" title="Analytics">
                             <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
+                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW')  && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign &&  previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
                             (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
                             <i class="fa fa-files-o"></i>
                         </a>
@@ -544,13 +553,13 @@
                             data-toggle="tooltip" data-placement="top" title="Analytics">
                             <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
+                        <a *ngIf="((campaign.campaignScheduleType === 'NOW') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
                             (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
                             <i class="fa fa-files-o"></i>
                         </a>
                     </ng-container>
                     <ng-container *ngIf="!campaign.launched && campaign.campaignScheduleType !== 'NOW'">
-                        <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
+                        <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId && previewCampaignType!='SOCIAL') || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
                             title="Edit">
                             <i class="fa fa-pencil-square-o"></i>
                         </a>
