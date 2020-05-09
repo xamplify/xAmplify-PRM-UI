@@ -23,4 +23,5 @@ export class SocialCampaign {
   scheduledTimeInString: string;
   timeZone: string;
   categoryId:number;
+  emailNotification = false;
 }

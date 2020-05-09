@@ -88,6 +88,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
     public referenceService: ReferenceService, public campaignService: CampaignService) {
     this.socialCampaign.channelCampaign = true;
+    this.socialCampaign.emailNotification = true;
     this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
