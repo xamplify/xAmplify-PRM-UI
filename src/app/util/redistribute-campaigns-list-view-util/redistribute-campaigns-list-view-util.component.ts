@@ -74,7 +74,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   exportObject:any = {};
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
-
+  socialAccountsLoader  =false;
+    socialCampaign: any;
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
@@ -388,6 +389,27 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       }
   }
 
+
+ showSocialCampaignPreview(campaign:any){
+        this.socialAccountsLoader = true;
+        this.campaignName = campaign.campaignName;
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#social-campaign-preview").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.socialService.getSocialCampaignByCampaignId(campaign.campaignId)
+        .subscribe(
+        data => {
+          this.socialCampaign = data;
+          this.socialAccountsLoader = false;
+        },
+        (error: any) => {
+            this.socialAccountsLoader = false;
+            swal("Please Contact Admin!", "Unable to show preview", "error"); 
+            this.loadingEmailTemplate = false;
+            this.xtremandLogger.log(error);
+            $("#email_template_preivew").modal('hide');
+        });
+    }
 
 
 
