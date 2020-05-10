@@ -350,22 +350,15 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
           data => {
+            this.isRedirectEnabled = true;
             this.socialCampaign.campaignName = null;
             this.socialStatusResponse = data.socialStatusList;
             if (data.publishStatus !== 'FAILURE') {
               let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
               this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-              this.isRedirectEnabled = true;
-              this.loading = true;
-              //this.referenceService.showSweetAlertProceesor('You will be redirecting to campaigns');
-              setTimeout(() => {
-                this.redirect();
-              }, 3000);
-
-            }
+              }
             else if (data.publishStatus === 'FAILURE')
               this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-
             $('input:checkbox').removeAttr('checked');
             $('#contact-list-table tr').removeClass("highlight");
           },
@@ -398,42 +391,49 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialStatusResponse = [];
       this.socialCampaign.userId = this.userId;
       this.socialCampaign.socialStatusList = this.socialStatusList;
-
       this.socialService.createSocialCampaign(this.socialCampaign)
         .subscribe(
           data => {
-            this.socialCampaign.campaignName = null;
+            this.isRedirectEnabled = true;
             this.socialStatusResponse = data.socialStatusList;
-
             if (data.publishStatus !== 'FAILURE') {
-              let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
-              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-              this.isRedirectEnabled = true;
-              // this.loading = true;
-              // setTimeout(() => {
-              //   this.redirect();
-              // }, 3000);
-
+              this.socialCampaign.socialStatusList = this.socialStatusResponse;
+              this.launchCampaign(this.socialCampaign,data);
             }
-            else if (data.publishStatus === 'FAILURE')
-              this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
-
-            $('input:checkbox').removeAttr('checked');
-            $('#contact-list-table tr').removeClass("highlight");
+            else if (data.publishStatus === 'FAILURE'){
+              this.setCustomResponse(ResponseType.Error, 'This status cannot be posted.Please try after sometime.');
+            }
           },
           error => {
-            this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+            this.setCustomResponse(ResponseType.Error, 'This status cannot be posted.Please try after sometime.');
             this.customResponse.statusArray = [];
             this.customResponse.statusArray.push(error);
             this.loading = false;
-          },
-          () => {
-            this.initializeSocialStatus();
-            this.socialCampaign.userListIds = [];
-            this.loading = false;
-          }
-        );
+          });
     }
+  }
+
+
+  launchCampaign(socialCampaign:SocialCampaign,response:any){
+    this.socialService.launchSocialCampaign(socialCampaign).subscribe(
+      data => {
+        this.isRedirectEnabled = true;
+        this.socialStatusResponse = response.socialStatusList;
+        this.setCustomResponse(ResponseType.Success, 'Campaign launched successfully.');
+        this.loading = false;
+      },
+      error => {
+        this.isRedirectEnabled = true;
+        this.setCustomResponse(ResponseType.Error, 'This status cannot be posted.Please try after sometime');
+        this.customResponse.statusArray = [];
+        this.customResponse.statusArray.push(error);
+        this.loading = false;
+      },
+      () => {
+        this.initializeSocialStatus();
+        this.socialCampaign.userListIds = [];
+        this.loading = false;
+      });
   }
 
   redirect() {

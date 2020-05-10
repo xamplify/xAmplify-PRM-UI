@@ -119,8 +119,20 @@ export class SocialService {
       .catch(this.handleError);
   }
 
+  launchSocialCampaign(socialCampaign: SocialCampaign) {
+    return this.http.post(this.URL + 'social/launchCampaign?access_token=' + this.authenticationService.access_token, socialCampaign)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
   redistributeSocialCampaign(socialCampaign: SocialCampaign) {
     return this.http.post(this.URL + 'social/redistribute?access_token=' + this.authenticationService.access_token, socialCampaign)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  launcRedistributedSocialCampaign(socialCampaign: SocialCampaign) {
+    return this.http.post(this.URL + 'social/launchRedistributeCampaign?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
   }
