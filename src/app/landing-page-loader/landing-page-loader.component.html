@@ -15,3 +15,13 @@
     </div>
 
 </ng-container>
+
+
+<ng-container *ngIf="maxBoxLength==2">
+    <div *ngFor="let number of [0,1]" class="col-md-6">
+        <div class="grid-box">
+            <div class="text-input__loading--line rect-box"></div>
+        </div>
+    </div>
+
+</ng-container>

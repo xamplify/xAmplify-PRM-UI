@@ -151,6 +151,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     folderPreviewLoader = true;
     campaignPartnersOrContactsPagination:Pagination = new Pagination();
     campaignPartnersOrContactsPreviewError = false;
+    socialAccountsLoader = false;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -459,14 +460,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       } catch (error) { console.error('error' + error); }
     }
     getSocialCampaignByCampaignId(campaignId: number) {
+      this.socialAccountsLoader = true;
       try {
         this.socialService.getSocialCampaignByCampaignId(campaignId)
           .subscribe(
           data => {
             this.socialCampaign = data;
+            this.socialAccountsLoader = false;
           },
           error => console.error(error),
-          () => { this.xtremandLogger.log('get Social campaign api finished');});
+          () => {this.socialAccountsLoader = false;this.xtremandLogger.log('get Social campaign api finished');});
       } catch (error) {
         console.error('error' + error)
       }
