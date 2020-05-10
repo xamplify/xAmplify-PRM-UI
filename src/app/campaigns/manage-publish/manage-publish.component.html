@@ -253,9 +253,9 @@
                                                             <ul class="dropdown-menu pull-right" [ngClass]="{'mobile-css': isLastElement}">
                                                                 <li *ngIf="!campaign.launched">
                                                                     <ng-container *ngIf="!campaign.launched">
-                                                                        <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-											      	|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)">
-                                                                            <i class="fa fa-pencil-square-o" style="width: 30px;"></i> Edit
+                                                                        <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+											      	                        || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)">
+                                                                            <i class="fa fa-pencil-square-o" style="width: 30px;" aria-hidden="true"></i> Edit
                                                                         </a>
                                                                     </ng-container>
                                                                 </li>
@@ -403,8 +403,8 @@
                                                             </li>
                                                             <li *ngIf="!campaign.launched">
                                                                 <ng-container *ngIf="!campaign.launched">
-                                                                    <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
-											      	|| (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)">
+                                                                    <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId)
+											      	                        || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)">
                                                                         <i class="fa fa-pencil-square-o" style="width: 30px;"></i> Edit
                                                                     </a>
                                                                 </ng-container>
@@ -583,8 +583,8 @@
                                                 <div class="bar">
                                                     <!--Buttons Start Here-->
                                                     <ng-container *ngIf="!campaign.launched">
-                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
-														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
+                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="(hasAllAccess || (campaign.launched==false && hasCampaignRole && loggedInUserId==campaign.userId)
+														|| (!campaign.launched&&isOnlyPartner) || authenticationService.module.isVendor) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Edit Campaign">
                                                             <i class="fa fa-pencil-square-o"></i>
                                                         </a>
                                                     </ng-container>

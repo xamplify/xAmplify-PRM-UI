@@ -560,7 +560,7 @@
                         </a>
                     </ng-container>
                     <ng-container *ngIf="!campaign.launched && campaign.campaignScheduleType !== 'NOW'">
-                        <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId && previewCampaignType!='SOCIAL') || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
+                        <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId && previewCampaignType!='SOCIAL') || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
                             title="Edit">
                             <i class="fa fa-pencil-square-o"></i>
                         </a>
