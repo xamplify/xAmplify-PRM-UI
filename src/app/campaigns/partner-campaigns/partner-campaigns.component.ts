@@ -72,6 +72,8 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     categoryId:number = 0;
     exportObject:any = {};
     modulesDisplayType = new ModulesDisplayType();
+    socialCampaign: any;
+    socialAccountsLoader: boolean;
 
     constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
         public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
@@ -255,7 +257,33 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
                 this.xtremandLogger.log(error);
                 $("#email_template_preivew").modal('hide');
             });
+
+       
     }
+
+    showSocialCampaignPreview(campaign:any){
+        this.socialAccountsLoader = true;
+        this.campaignName = campaign.campaignName;
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#social-campaign-preview").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.socialService.getSocialCampaignByCampaignId(campaign.campaignId)
+        .subscribe(
+        data => {
+          this.socialCampaign = data;
+          this.socialAccountsLoader = false;
+        },
+        (error: any) => {
+            this.socialAccountsLoader = false;
+            swal("Please Contact Admin!", "Unable to show preview", "error"); 
+            this.loadingEmailTemplate = false;
+            this.xtremandLogger.log(error);
+            $("#email_template_preivew").modal('hide');
+        });
+    }
+
+
+
     getCampaignById(campaignId) {
         //this.ngxloading = true;
         var obj = { 'campaignId': campaignId }
