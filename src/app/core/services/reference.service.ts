@@ -1743,7 +1743,7 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstNameGlobal, myMergeTags.myFirstName);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderLastNameGlobal, myMergeTags.myLastName);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderFullNameGlobal, myMergeTags.myFullName);
-			updatedBody = updatedBody.replace(this.senderMergeTag.senderTitle, myMergeTags.myTitle);
+			updatedBody = updatedBody.replace(this.senderMergeTag.senderTitleGlobal, myMergeTags.myTitle);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailIdGlobal, myMergeTags.myEmailId);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumberGlobal, myMergeTags.myContactNumber);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal, myMergeTags.senderCompany);
