@@ -2619,9 +2619,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     let headers = [];
 
     if(this.campaignType=="REGULAR"){
-      headers = ['Campaign Name', 'Campaign Type', 'Launched On', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients','Clicked Urls'];
+      headers = ['Campaign Name', 'Campaign Type', 'Launched On', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients',"URL's Clicked"];
     }else{
-      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients','Clicked Urls','Views Count'];
+      headers = ['Campaign Name', 'Campaign Type', 'No of Contact List(s) Used', 'Total Recipients','Active Recipients',"URL's Clicked",'Views'];
     }
 
     var data = [
@@ -2632,7 +2632,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         contactListLength: this.campaign.userListIds.length,
         recipientsCount: this.campaignReport.emailSentCount,
         activeRecipientsCount: this.campaignReport.emailOpenCount,
-        clickedUrlsCount:this.campaignReport.emailClickedCount
+        clickedUrlsCount:this.campaignReport.dataShareClickedUrlsCountForVendor
       }
     ];
 
@@ -2642,7 +2642,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       contactListLength: this.campaign.userListIds.length,
       recipientsCount: this.campaignReport.emailSentCount,
       activeRecipientsCount: this.campaignReport.emailOpenCount,
-      clickedUrlsCount:this.campaignReport.emailClickedCount,
+      clickedUrlsCount:this.campaignReport.dataShareClickedUrlsCountForVendor,
       viewsCount:this.campaignReport.usersWatchCount
     }
       

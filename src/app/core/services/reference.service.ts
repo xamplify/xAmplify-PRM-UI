@@ -2021,4 +2021,8 @@ export class ReferenceService {
 		}
 		return modulesDisplayType;
 	}
+
+	showSweetAlertProceesor(title:string){
+		swal({ title: title, text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+	}
 }
