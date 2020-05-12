@@ -37,6 +37,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     
     
     ngOnInit() {
+
+        window.addEventListener('storage', (event) => {
+            if (event.storageArea == localStorage) {
+                const currentUser = localStorage.getItem( 'currentUser' );
+              if(currentUser==undefined){
+                this.authenticationService.sessinExpriedMessage = "Your session has timed out. Please login again.";
+                this.authenticationService.logout();
+              }else{
+                this.authenticationService.sessinExpriedMessage = "";
+              }
+             
+            }
+          }, false);
+
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application

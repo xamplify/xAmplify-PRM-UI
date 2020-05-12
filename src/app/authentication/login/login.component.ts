@@ -42,6 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (this.referenceService.userProviderMessage !== "") {
             this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
         }
+        let sessionExpiredMessage = this.authenticationService.sessinExpriedMessage;
+        if(sessionExpiredMessage!=""){
+          this.setCustomeResponse("ERROR", sessionExpiredMessage);
+        }
     }
 
     public login() {
