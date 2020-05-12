@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (event.storageArea == localStorage) {
                 const currentUser = localStorage.getItem( 'currentUser' );
               if(currentUser==undefined){
-                this.authenticationService.sessinExpriedMessage = "Your session is expired.Please login again";
+                this.authenticationService.sessinExpriedMessage = "Your session has timed out. Please login again.";
                 this.authenticationService.logout();
               }else{
                 this.authenticationService.sessinExpriedMessage = "";
