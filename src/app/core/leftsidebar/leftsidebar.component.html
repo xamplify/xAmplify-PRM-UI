@@ -97,7 +97,7 @@
                     </li>
                 </ul>
             </li>
-            <li *ngIf="authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+            <li *ngIf="authService.module.hasPartnerLandingPageAccess && authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('landing-pages')}">
                 <a [routerLink]="['./pages/partner']">
                     <i class="fa fa-wpforms"></i>
                     <span class="title">Pages</span>

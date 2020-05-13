@@ -149,5 +149,7 @@ export class Properties {
   folders = "Folders";
   samlSettings = "SAML Settings";
 
+  /********Error Messages************* */
+  roleUpdatedMessage = "Your role has been changed.Please login again."
 
 }

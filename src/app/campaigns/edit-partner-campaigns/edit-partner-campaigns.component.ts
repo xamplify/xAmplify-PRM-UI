@@ -1292,19 +1292,23 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
               this.campaignService.saveCampaign( data )
               .subscribe(
               response => {
-                  if (response.statusCode == 2000) {
-                      this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
-                      this.referenceService.launchedCampaignType = this.campaignType;
-                      this.campaign = null;
-                      this.router.navigate(["/home/campaigns/manage"]);
-                  } else {
-                      this.invalidScheduleTime = true;
-                      this.invalidScheduleTimeError = response.message;
-                      if(response.statusCode==2016){
-                          this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
-                          this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
-                      }
-                  }
+                if(response.access){
+                    if (response.statusCode == 2000) {
+                        this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
+                        this.referenceService.launchedCampaignType = this.campaignType;
+                        this.campaign = null;
+                        this.router.navigate(["/home/campaigns/manage"]);
+                    } else {
+                        this.invalidScheduleTime = true;
+                        this.invalidScheduleTimeError = response.message;
+                        if(response.statusCode==2016){
+                            this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
+                            this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                        }
+                    }
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
                   this.referenceService.stopLoader(this.httpRequestLoader);
               },
               error => {

@@ -2400,14 +2400,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             .subscribe(
             data => {
                 console.log(data);
-                if(data.message=="success"){
-                    this.isLaunched = true;
-                    this.reInitialize();
-                    if("/home/campaigns/manage"==this.router.url){
-                      this.router.navigate(["/home/campaigns/manage"]);
+                if(data.access){
+                    if(data.message=="success"){
+                        this.isLaunched = true;
+                        this.reInitialize();
+                        if("/home/campaigns/manage"==this.router.url){
+                          this.router.navigate(["/home/campaigns/manage"]);
+                        }
                     }
-
+                }else{
+                    this.authenticationService.forceToLogout();
                 }
+
+              
             },
             error => {
                 this.logger.error("error in saveCampaignOnDestroy()", error);
@@ -2801,20 +2806,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.campaignService.saveCampaign( data )
              .subscribe(
              response => {
-                 if(response.statusCode==2000){
-                     this.refService.campaignSuccessMessage = data['scheduleCampaign'];
-                     this.refService.launchedCampaignType = this.campaignType;
-                     this.isLaunched = true;
-                     this.reInitialize();
-                     this.router.navigate(["/home/campaigns/manage"]);
+                 if(response.access){
+                    if(response.statusCode==2000){
+                        this.refService.campaignSuccessMessage = data['scheduleCampaign'];
+                        this.refService.launchedCampaignType = this.campaignType;
+                        this.isLaunched = true;
+                        this.reInitialize();
+                        this.router.navigate(["/home/campaigns/manage"]);
+                    }else{
+                        this.invalidScheduleTime = true;
+                        this.invalidScheduleTimeError = response.message;
+                        if(response.statusCode==2016){
+                            this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
+                            this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                        }
+                    }
                  }else{
-                     this.invalidScheduleTime = true;
-                     this.invalidScheduleTimeError = response.message;
-                     if(response.statusCode==2016){
-                         this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
-                         this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
-                     }
+                    this.authenticationService.forceToLogout();
                  }
+                
                  this.refService.stopLoader(this.httpRequestLoader);
              },
              error => {

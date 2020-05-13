@@ -65,7 +65,6 @@ export class AuthenticationService {
     vendorRoleHash = "";
     partnerRoleHash  = "";
     sessinExpriedMessage = "";
-
     private userLoggedIn = new Subject<boolean>();
 
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
@@ -495,6 +494,10 @@ export class AuthenticationService {
     }
   }
 
+  forceToLogout(){
+    this.sessinExpriedMessage = "Your role has been changed.Please login again.";
+    this.logout();
+  }
     extractData( res: Response ) {
         let body = res.json();
         console.log( body );

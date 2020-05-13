@@ -50,6 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     public login() {
         try{
+        this.authenticationService.sessinExpriedMessage  = "";
         this.loading = true;
         this.resendActiveMail = false;
         if (!this.model.username || !this.model.password) {
