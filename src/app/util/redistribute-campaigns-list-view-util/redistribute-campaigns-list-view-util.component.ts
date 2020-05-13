@@ -345,20 +345,20 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       } else if(campaign.campaignType.indexOf('EVENT') > -1) {
         this.campaignService.reDistributeEvent = true;
         this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-        /* if(campaign.redistributedCount != 0 && !campaign.eventStarted && campaign.showCancelButton){
-            this.inviteMore(campaign);
-        }else{
-          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-        } */
       }
       else {
       const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
       this.campaignService.getParnterCampaignById(data)
           .subscribe(
               data => {
-                  this.campaignService.reDistributeCampaign = data;
-                  this.campaignService.isExistingRedistributedCampaignName = false;
-                  this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                  if(data.access){
+                    this.campaignService.reDistributeCampaign = data;
+                    this.campaignService.isExistingRedistributedCampaignName = false;
+                    this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                  }else{
+                    this.authenticationService.forceToLogout();
+                  }
+                 
               },
               error => { this.xtremandLogger.errorPage(error) },
               () => console.log()
