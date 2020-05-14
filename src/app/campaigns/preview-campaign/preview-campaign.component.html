@@ -44,7 +44,9 @@
                                     {{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}
                                     </ng-container>
                                     </ng-template>
-                                    <span *ngIf="previewCampaignType ==='EVENT'">{{ campaign?.launchTimeInString}}</span>
+                                    <span *ngIf="previewCampaignType ==='EVENT' && campaign.campaignScheduleType=='SAVE' || campaign.campaignScheduleType=='NOW'">
+                                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString"></app-timestamp>                                                                       
+								</span>
                                 </h6>
                             </div>
                         </div>

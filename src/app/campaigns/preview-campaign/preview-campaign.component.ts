@@ -251,6 +251,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.campaign = result;
       console.log(this.campaign);
       this.campaign.emailTemplate = result.emailTemplateDTO;
+      this.campaign.launchTimeInString = new Date(result.launchTimeInString);
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
       else { this.selectedEmailTemplateId = this.campaign.emailTemplateDTO.id;}
       this.isChannelCampaign = this.campaign.channelCampaign;
