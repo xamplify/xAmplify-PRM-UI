@@ -22,22 +22,22 @@ export class DashboardButtonsComponent implements OnInit {
   customResponse: CustomResponse = new CustomResponse();
   dashboardButton: DashboardButton = new DashboardButton();
   pagination: Pagination = new Pagination();
-  dashboardButtonList: Array<DashboardButton> = new Array<DashboardButton>();  
+  dashboardButtonList: Array<DashboardButton> = new Array<DashboardButton>();
   buttonActionType: boolean;
-  iconNamesFilePath:string ;
-  iconsList:any = [];
-  selectedProtocol:string;
-  constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) { 
-    this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';    
-    this.vanityURLService.getDashboardButtonIcons(this.iconNamesFilePath).subscribe(result =>{
+  iconNamesFilePath: string;
+  iconsList: any = [];
+  selectedProtocol: string;
+  constructor(private vanityURLService: VanityURLService, private authenticationService: AuthenticationService, private xtremandLogger: XtremandLogger, private properties: Properties, private httpRequestLoader: HttpRequestLoader, private referenceService: ReferenceService, private pagerService: PagerService) {
+    this.iconNamesFilePath = 'assets/config-files/dashboard-button-icons.json';
+    this.vanityURLService.getDashboardButtonIcons(this.iconNamesFilePath).subscribe(result => {
       this.iconsList = result.icon_names;
-    },error => {
+    }, error => {
       console.log(error);
     });
   }
 
-  ngOnInit() {    
-    this.buttonActionType = true;    
+  ngOnInit() {
+    this.buttonActionType = true;
     this.selectedProtocol = 'http';
     this.getDashboardButtons(this.pagination);
   }
@@ -61,15 +61,15 @@ export class DashboardButtonsComponent implements OnInit {
     }
   }
 
-  save() {    
+  save() {
     this.dashboardButton.vendorId = this.authenticationService.getUserId();
-    this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;    
+    this.dashboardButton.companyProfileName = this.authenticationService.companyProfileName;
     this.vanityURLService.saveDashboardButton(this.dashboardButton).subscribe(result => {
       if (result.statusCode === 200) {
         console.log("Created");
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_SUCCESS_TEXT, true);
         this.getDashboardButtons(this.pagination);
-      }else if(result.statusCode === 100){
+      } else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }
       this.referenceService.goToTop();
@@ -83,7 +83,7 @@ export class DashboardButtonsComponent implements OnInit {
     this.buttonActionType = false;
     this.referenceService.goToTop();
     const dbButtonObj = this.dashboardButtonList.filter(dbButton => dbButton.id === id)[0];
-    this.dashboardButton =  JSON.parse(JSON.stringify(dbButtonObj));    
+    this.dashboardButton = JSON.parse(JSON.stringify(dbButtonObj));
   }
 
   update(id: number) {
@@ -93,7 +93,7 @@ export class DashboardButtonsComponent implements OnInit {
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_UPDATE_TEXT, true);
         this.getDashboardButtons(this.pagination);
       }
-      else if(result.statusCode === 100){
+      else if (result.statusCode === 100) {
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_DB_BUTTON_TITLE_ERROR_TEXT, true);
       }
       this.referenceService.goToTop();
@@ -106,9 +106,11 @@ export class DashboardButtonsComponent implements OnInit {
   delete(id: number) {
     this.vanityURLService.deleteDashboardButton(id).subscribe(result => {
       if (result.statusCode === 200) {
-        console.log("Deleted");
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_DB_BUTTON_DELETE_TEXT, true);
-        this.getDashboardButtons(this.pagination);        
+        if (this.pagination.pageIndex === this.pagination.pager.totalPages && this.pagination.pagedItems.length === 1) {
+          this.pagination.pageIndex = 1;
+        }
+        this.getDashboardButtons(this.pagination);
         this.referenceService.goToTop();
       }
     }, error => {
@@ -117,7 +119,7 @@ export class DashboardButtonsComponent implements OnInit {
     });
   }
 
-  cancel(){
+  cancel() {
     this.dashboardButton = new DashboardButton();
     this.buttonActionType = true;
   }
@@ -150,12 +152,11 @@ export class DashboardButtonsComponent implements OnInit {
     this.getDashboardButtons(this.pagination);
   }
 
-  selectedIconName()
-  {    
-  //alert(this.dashboardButton.buttonIcon);
+  selectedIconName() {
+    //alert(this.dashboardButton.buttonIcon);
   }
 
-  selectedProtocolOption(selectedProtocolOption:string){
+  selectedProtocolOption(selectedProtocolOption: string) {
     this.selectedProtocol = selectedProtocolOption;
   }
 }

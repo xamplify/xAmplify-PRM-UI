@@ -157,6 +157,10 @@
                                 <a (click)="activateTab('password');clearCustomResponse()">
                                     <i class="fa fa-key"></i> Change Password </a>
                             </li>
+                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
+                                <a (click)="activateTab('templates');clearCustomResponse()">
+                                    <i class="fa fa-list"></i> Your Templates </a>
+                            </li>
                            <!--  <li *ngIf="(authenticationService.isOrgAdmin())">
                                 <a [class.disabled]="authenticationService.isSuperAdmin()">
                                     <div class="col-xs-2 p0"><i class="icon-settings"></i></div>
@@ -263,7 +267,7 @@
                                     <li  [ngClass]="{'active': activeTabName == 'categories'}" class="hidden-xs">
                                         <a (click)="activateTab('categories');clearCustomResponse()">Folders</a>
                                     </li>
-                                    <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
+                                    <li [ngClass]="{'active': activeTabName == 'dbButtonSettings'}" class="hidden-xs" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
                                         <a (click)="activateTab('dbButtonSettings');clearCustomResponse()">Dashboard Buttons</a>
                                     </li>
                                     <li [ngClass]="{'active': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
@@ -755,6 +759,11 @@
                                     
                                     <!-- Saml SETTINGS TAB -->
                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'samlSettings'}">                                        
+                                        <app-samlsecurity> </app-samlsecurity>
+                                    </div>
+
+                                     <!-- Your Templates TAB -->
+                                     <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'templates'}">                                        
                                         <app-samlsecurity> </app-samlsecurity>
                                     </div>
                                     
