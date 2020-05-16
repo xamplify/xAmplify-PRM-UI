@@ -533,7 +533,7 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
     downloadFile(campaign:any,type:string){
         this.customResponse = new CustomResponse();
         this.ngxloading = true;
-        this.campaignService.checkRedistributeAccess(this.loggedInUserId)
+        this.authenticationService.checkPartnerAccess(this.loggedInUserId)
         .subscribe(
             data => {
                 let access = data.access;

@@ -498,9 +498,14 @@ export class AuthenticationService {
     this.sessinExpriedMessage = "Your role has been changed.Please login again.";
     this.logout();
   }
+
+  checkPartnerAccess(userId:number) {
+    return this.http.get(this.REST_URL + "admin/hasPartnerAccess/"+userId+"?access_token=" + this.access_token, "")
+        .map(this.extractData)
+        .catch(this.handleError);
+}
     extractData( res: Response ) {
         let body = res.json();
-        console.log( body );
         return body || {};
     }
 
