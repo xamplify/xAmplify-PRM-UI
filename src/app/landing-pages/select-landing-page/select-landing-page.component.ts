@@ -46,12 +46,17 @@ export class SelectLandingPageComponent implements OnInit,OnDestroy {
       this.referenceService.loading( this.httpRequestLoader, true );
       this.landingPageService.listDefault( pagination ).subscribe(
           ( response: any ) => {
-              let data = response.data;
-              if(response.statusCode==200){
-                  pagination.totalRecords = data.totalRecords;
-                  pagination = this.pagerService.getPagedItems( pagination, data.landingPages );
+              if(response.access){
+                let data = response.data;
+                if(response.statusCode==200){
+                    pagination.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems( pagination, data.landingPages );
+                }
+                this.referenceService.loading( this.httpRequestLoader, false );
+              }else{
+                    this.authenticationService.forceToLogout();
               }
-              this.referenceService.loading( this.httpRequestLoader, false );
+              
           },
           ( error: any ) => { this.logger.errorPage( error ); } );
   }
