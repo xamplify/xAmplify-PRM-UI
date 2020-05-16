@@ -391,13 +391,19 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       this.updateCompanyLogo(emailTemplate);
       emailTemplateService.save(emailTemplate) .subscribe(
           data => {
-              this.refService.stopLoader(this.httpRequestLoader);
-              if(!isOnDestroy){
-                  this.refService.isCreated = true;
-                  this.navigateToManageSection();
-              }else{
-                  this.emailTemplateService.goToManage();
-              }
+                if(data.access){
+                    this.refService.stopLoader(this.httpRequestLoader);
+                    if(!isOnDestroy){
+                        this.refService.isCreated = true;
+                        this.navigateToManageSection();
+                    }else{
+                        this.emailTemplateService.goToManage();
+                    }
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+
+             
           },
           error => {
               this.refService.stopLoader(this.httpRequestLoader);
@@ -421,14 +427,18 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
-              this.refService.stopLoader(this.httpRequestLoader);
-              if(!isOnDestroy){
-                  this.refService.isUpdated = true;
-                  this.navigateToManageSection();
-                 
-              }else{
-                  this.emailTemplateService.goToManage();
-              }
+                if(data.access){
+                    this.refService.stopLoader(this.httpRequestLoader);
+                    if(!isOnDestroy){
+                        this.refService.isUpdated = true;
+                        this.navigateToManageSection();
+                       
+                    }else{
+                        this.emailTemplateService.goToManage();
+                    }
+                }else{
+                   this.authenticationService.forceToLogout();
+                }
           },
           error => {
               this.refService.stopLoader(this.httpRequestLoader);
