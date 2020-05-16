@@ -495,7 +495,7 @@ export class AuthenticationService {
   }
 
   forceToLogout(){
-    this.sessinExpriedMessage = "Your role has been changed.Please login again.";
+    this.sessinExpriedMessage = "Your role has been changed. Please login again.";
     this.logout();
   }
 

@@ -143,16 +143,22 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
-                this.campaigns = data.campaigns;
-                $.each(this.campaigns, function (_index:number, campaign) {
-                    campaign.displayTime = new Date(campaign.utcTimeInString);
-                    campaign.createdDate = new Date(campaign.createdDate);
-                });
-                this.totalRecords = data.totalRecords;
-                pagination.totalRecords = data.totalRecords;
-                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                this.refService.loading(this.httpRequestLoader, false);
                 this.isloading = false;
+                if(data.access){
+                    this.campaigns = data.campaigns;
+                    $.each(this.campaigns, function (_index:number, campaign) {
+                        campaign.displayTime = new Date(campaign.utcTimeInString);
+                        campaign.createdDate = new Date(campaign.createdDate);
+                    });
+                    this.totalRecords = data.totalRecords;
+                    pagination.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                    this.refService.loading(this.httpRequestLoader, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                
+                
             },
             error => {
                 this.isloading = false;
