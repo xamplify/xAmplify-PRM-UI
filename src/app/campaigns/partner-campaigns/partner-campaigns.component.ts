@@ -529,5 +529,27 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
         }
         
     }
+
+    downloadFile(campaign:any,type:string){
+        this.customResponse = new CustomResponse();
+        this.ngxloading = true;
+        this.campaignService.checkRedistributeAccess(this.loggedInUserId)
+        .subscribe(
+            data => {
+                let access = data.access;
+                this.ngxloading = false;
+                if(access){
+                    window.open(this.authenticationService.REST_URL+"campaign/download/"+campaign.campaignId+"/"+this.loggedInUserId+"/"+type+"?access_token="+this.authenticationService.access_token,"_blank");
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            error => {
+                this.ngxloading = false;
+                this.customResponse = new CustomResponse('ERROR',"Unable to download.Please try after sometime",true);
+             },
+            () => console.log()
+        );
+    }
     
 }

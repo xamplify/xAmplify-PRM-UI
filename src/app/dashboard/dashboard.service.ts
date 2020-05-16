@@ -85,7 +85,7 @@ export class DashboardService {
     }
 
     loadVendorDetails(userId: number, pagination: Pagination) {
-        const url = this.authenticationService.REST_URL+ 'vendor/details?access_token=' + this.authenticationService.access_token + '&partnerId=' + userId;
+        const url = this.authenticationService.REST_URL+ 'vendor/details?partnerId='+userId+'&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);

@@ -109,7 +109,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                           this.xtremandLogger.error("error:" + error)
                       }
                     }catch(err){
-                      if( error.status===0 ) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+                      if( error.status===0 ) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check your internet connection'); }
                     }
                   });
               return false;
