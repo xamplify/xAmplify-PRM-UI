@@ -99,7 +99,7 @@ export class EmailTemplateService {
     }
 
     delete(id:number){
-        return this.http.get(this.URL+"admin/deleteEmailTemplate/"+id+"?access_token="+this.authenticationService.access_token,"")
+        return this.http.get(this.URL+"admin/deleteEmailTemplate/"+id+"/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
     }
