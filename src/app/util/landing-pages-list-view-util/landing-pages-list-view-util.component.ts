@@ -79,17 +79,22 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.referenceService.loading(this.httpRequestLoader, true);
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
-            const data = response.data;
-            this.statusCode = response.statusCode;
-            if (this.statusCode == 200) {
-                pagination.totalRecords = data.totalRecords;
-                this.sortOption.totalRecords = data.totalRecords;
-                $.each(data.landingPages, function (index, landingPage) {
-                    landingPage.displayTime = new Date(landingPage.createdDateInString);
-                });
-                pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+            if(response.access){
+                const data = response.data;
+                this.statusCode = response.statusCode;
+                if (this.statusCode == 200) {
+                    pagination.totalRecords = data.totalRecords;
+                    this.sortOption.totalRecords = data.totalRecords;
+                    $.each(data.landingPages, function (index, landingPage) {
+                        landingPage.displayTime = new Date(landingPage.createdDateInString);
+                    });
+                    pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            }else{
+                this.authenticationService.forceToLogout();
             }
-            this.referenceService.loading(this.httpRequestLoader, false);
+         
           },
           (error: any) => { this.logger.errorPage(error); });
   }

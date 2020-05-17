@@ -101,7 +101,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
     delete(id: number) {
-        return this.http.get(this.URL + "admin/deleteCampaign/" + id + "?access_token=" + this.authenticationService.access_token)
+        return this.http.get(this.URL + "admin/deleteCampaign/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }

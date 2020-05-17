@@ -357,19 +357,40 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
 
     confirmDeleteCampaign(campaign: number) {
-      this.deleteCampaignAlert = true;
+      let self = this;
+      this.ngxloading = true;
+      swal({
+          title: 'Are you sure?',
+          text: "You won't be able to undo this action",
+          type: 'warning',
+          showCancelButton: true,
+          swalConfirmButtonColor: '#54a7e9',
+          swalCancelButtonColor: '#999',
+          confirmButtonText: 'Yes, delete it!'
+
+      }).then(function () {
+          self.deleteCampaign(campaign);
+      }, function (dismiss: any) {
+        self.ngxloading = false;
+          console.log('you clicked on option' + dismiss);
+      });
     }
     deleteCampaign(campaign: any) {
-      // this.ngxloading = true;
       const campaignName = this.previewCampaignType ==='EVENT' ? campaign.campaign : campaign.campaignName;
       this.campaignService.delete(this.previewCampaignId)
         .subscribe(
         data => {
+          this.ngxloading = false;
           $('#myModal').modal('hide');
-          this.closeNotifyParent.emit({ 'delete': 'deleted campaign success', 'id': this.previewCampaignId,'campaignName': campaignName });
+          if(data.access){
+            this.closeNotifyParent.emit({ 'delete': 'deleted campaign success', 'id': this.previewCampaignId,'campaignName': campaignName });
+          }else{
+            this.authenticationService.forceToLogout();
+          }
        },
         error => { console.error(error);
           $('#myModal').modal('hide');
+          this.ngxloading = false;
           this.closeNotifyParent.emit({ 'delete': 'something went wrong in delete', 'id': this.previewCampaignId,'campaignName': campaignName });
         }, ()=>{
           // this.ngxloading = false;

@@ -350,14 +350,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignService.delete(id)
             .subscribe(
             data => {
-                this.refService.loading(this.httpRequestLoader, false);
-                this.isCampaignDeleted = true;
-                const deleteMessage = campaignName + ' deleted successfully';
-                this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
-                this.pagination.pagedItems.splice(position, 1);
-                this.pagination.pageIndex = 1;
-                this.listCampaign(this.pagination);
-                this.listNotifications();
+                if(data.access){
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.isCampaignDeleted = true;
+                    const deleteMessage = campaignName + ' deleted successfully';
+                    this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+                    this.pagination.pagedItems.splice(position, 1);
+                    this.pagination.pageIndex = 1;
+                    this.listCampaign(this.pagination);
+                    this.listNotifications();
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                
             },
             error => { this.logger.errorPage(error) },
             () => console.log("Campaign Deleted Successfully")
