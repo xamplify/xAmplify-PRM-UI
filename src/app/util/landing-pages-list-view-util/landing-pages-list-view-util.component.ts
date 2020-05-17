@@ -192,23 +192,28 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.landingPageService.deletebById(landingPage.id)
           .subscribe(
               (response: any) => {
-                  if (response.statusCode == 200) {
-                      let message = landingPage.name + " deleted successfully";
-                      this.customResponse = new CustomResponse('SUCCESS', message, true);
-                      this.pagination.pageIndex = 1;
-                      this.listLandingPages(this.pagination);
-                      this.exportObject['categoryId'] = this.categoryId;
-					  this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-                      this.updatedItemsCount.emit(this.exportObject);
-                  } else {
-                      let campaignNames = "";
-                      $.each(response.data, function (index, value) {
-                          campaignNames += (index + 1) + "." + value + "<br><br>";
-                      });
-                      let message = response.message + "<br><br>" + campaignNames;
-                      this.customResponse = new CustomResponse('ERROR', message, true);
-                      this.referenceService.loading(this.httpRequestLoader, false);
+                  if(response.access){
+                    if (response.statusCode == 200) {
+                        let message = landingPage.name + " deleted successfully";
+                        this.customResponse = new CustomResponse('SUCCESS', message, true);
+                        this.pagination.pageIndex = 1;
+                        this.listLandingPages(this.pagination);
+                        this.exportObject['categoryId'] = this.categoryId;
+                        this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+                        this.updatedItemsCount.emit(this.exportObject);
+                    } else {
+                        let campaignNames = "";
+                        $.each(response.data, function (index, value) {
+                            campaignNames += (index + 1) + "." + value + "<br><br>";
+                        });
+                        let message = response.message + "<br><br>" + campaignNames;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    }
+                  }else{
+                        this.authenticationService.forceToLogout();
                   }
+                 
 
               },
               (error: string) => {
