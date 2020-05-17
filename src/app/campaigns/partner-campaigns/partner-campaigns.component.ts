@@ -124,7 +124,6 @@ export class PartnerCampaignsComponent implements OnInit,OnDestroy {
             pagination.filterValue = null;
             pagination.filterKey = null;
         }
-        
         this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
           .subscribe(
             data => {

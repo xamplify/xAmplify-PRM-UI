@@ -110,6 +110,7 @@ export class TeamMemberService{
     
     
     delete(teamMember:TeamMember) {
+        teamMember.loggedInUserId = this.authenticationService.getUserId();
         return this.http.post(this.URL + "admin/deleteTeamMember?access_token=" + this.authenticationService.access_token,teamMember)
             .map(this.extractData)
             .catch(this.handleError);
