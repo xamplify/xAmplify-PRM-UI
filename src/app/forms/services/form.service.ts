@@ -50,7 +50,7 @@ export class FormService {
 
 
     delete( id: number ) {
-        return this.http.get( this.URL + "delete/" + id + "?access_token=" + this.authenticationService.access_token, "" )
+        return this.http.get( this.URL + "delete/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
