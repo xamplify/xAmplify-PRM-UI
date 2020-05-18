@@ -150,7 +150,7 @@ export class ManageDealsComponent implements OnInit
         this.startOrStopAllCountsLoader(true);
     }
     init(){
-        this.isListView = !this.referenceService.isGridView;
+        this.isListView = "LIST" ==localStorage.getItem('defaultDisplayType');
 
         const roles = this.authenticationService.getRoles();
         if(roles!==undefined){

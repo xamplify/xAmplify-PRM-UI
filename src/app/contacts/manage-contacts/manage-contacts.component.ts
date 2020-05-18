@@ -1728,8 +1728,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         try {
             this.pagination.maxResults = 12;
-            this.isListView = !this.referenceService.isGridView;
-
+            this.isListView = "LIST" ==localStorage.getItem('defaultDisplayType');
             if (this.isPartner) {
                 this.defaultPartnerList(this.authenticationService.getUserId());
             }

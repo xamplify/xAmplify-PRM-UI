@@ -297,8 +297,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             }
             let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
             if(showList){
-                this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
-                this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
                 if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                     this.modulesDisplayType.isListView = true;
                     this.modulesDisplayType.isGridView = false;
