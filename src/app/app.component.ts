@@ -64,6 +64,10 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
                 let currentUrl = evt.url;
                 console.log("current Url:-"+currentUrl);
                 let formUrl = currentUrl.indexOf('f/')>-1;
+                let signUpUrl = currentUrl.indexOf('signup/')>-1;
+                let forgotPasswordUrl = currentUrl.indexOf('forgot-password')>-1;
+                let userLockUrl = currentUrl.indexOf('userlock')>-1;
+                let registerUrl = currentUrl.indexOf('register')>-1;
                 let pageUrl = currentUrl.indexOf('l/')>-1;
                 let partnerLandingPageUrl = currentUrl.indexOf('pl/')>-1;
                 let termsAndConditionUrl = currentUrl.indexOf('terms-conditions')>-1;
@@ -89,7 +93,7 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
                 let activateAccountUrl = currentUrl.indexOf('axAa')>-1;
                 let downloadUrl = currentUrl.indexOf('download')>-1;
                 let samlSecurityUrl = currentUrl.indexOf('samlsecurity')>-1;
-                let exculdeUrls =  ( !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
+                let exculdeUrls =  ( !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
                                   !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl
