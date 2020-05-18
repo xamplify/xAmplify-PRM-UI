@@ -66,7 +66,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width" *ngIf="!campaign.publicEventCampaign">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('NO')"
 			 [disabled]="campaignReport.totalNoCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
@@ -79,7 +79,7 @@
 				</div>
 			</button>
 		</div>
-		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width">
+		<div class="col-xs-6 col-lg-2 rsvp_tile_padding eight-tile-width" *ngIf="!campaign.publicEventCampaign">
 			<button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'MAYBE'" (click)="analyticsComponent.resetRsvpPagination();analyticsComponent.getRsvpDetails('MAYBE')"
 			 [disabled]="campaignReport.totalMayBeCount < 1 || !analyticsComponent.isPartnerEnabledAnalyticsAccess">
 				<div class="portlet-body text-center">
