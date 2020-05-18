@@ -51,7 +51,7 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
     
     ngOnInit() {
       console.log("on inint");
-        this.logoutFromAllBrowsers();
+        
         //QuickSidebar.init();
        // this.getTeamMembersDetails();
         // reloading the same url with in the application
@@ -61,6 +61,47 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
         this.router.events.subscribe((evt) => {
             if (evt instanceof NavigationEnd) {
                 this.router.navigated = false;
+                let currentUrl = evt.url;
+                console.log("current Url:-"+currentUrl);
+                let formUrl = currentUrl.indexOf('f/')>-1;
+                let pageUrl = currentUrl.indexOf('l/')>-1;
+                let partnerLandingPageUrl = currentUrl.indexOf('pl/')>-1;
+                let termsAndConditionUrl = currentUrl.indexOf('terms-conditions')>-1;
+                let privacyPolicyUrl = currentUrl.indexOf('privacy-policy')>-1;
+                let callbackUrl = currentUrl.indexOf('callback')>-1;
+                let shareUrl = currentUrl.indexOf('embed')>-1;
+                let showCampaignVideoUrl = currentUrl.indexOf('showCampaignVideo')>-1;
+                let showCampaignEmail = currentUrl.indexOf('showCampaignEmail')>-1;
+                let companyPageUrl = currentUrl.indexOf('company-page')>-1;
+                let partnerPageUrl = currentUrl.indexOf('partner-page')>-1;
+                let logeUrl = currentUrl.indexOf('loge')>-1;
+                let unsubscribeUrl = currentUrl.indexOf('unsubscribe')>-1;
+                let serviceUnavailableUrl = currentUrl.indexOf('su')>-1;
+                let accessDeniedUrl = currentUrl.indexOf('access-denied')>-1;
+                let rsvpUrl = currentUrl.indexOf('rsvp')>-1;
+                let smsShowCampaignUrl = currentUrl.indexOf('smsShowCampaign')>-1;
+                let showEventCampaignUrl = currentUrl.indexOf('showEventCampaignSMS')>-1;
+                let logsUrl = currentUrl.indexOf('logs')>-1;
+                let campaignLandingPageUrl  = currentUrl.indexOf('showCampaignLandingPage')>-1;
+                let scpUrl = currentUrl.indexOf('scp/')>-1;
+                let clplUrl = currentUrl.indexOf('clpl/')>-1;
+                let requestdemoUrl = currentUrl.indexOf('requestdemo')>-1;
+                let activateAccountUrl = currentUrl.indexOf('axAa')>-1;
+                let downloadUrl = currentUrl.indexOf('download')>-1;
+                let samlSecurityUrl = currentUrl.indexOf('samlsecurity')>-1;
+                let exculdeUrls =  ( !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
+                                  !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
+                                  !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
+                                  !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl
+                                  );
+
+                 if(exculdeUrls || currentUrl=="-/"){
+                  this.logoutFromAllTabs();
+                 }else{
+                  console.log("Will not be logged out");
+                 }
+                 
+               
                 window.scrollTo(0, 0);
             }
             this.navigationInterceptor(evt);
@@ -78,7 +119,7 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
           $('body').popover({ selector: '[data-toggle="popover"]' }); 
     }
 
-    logoutFromAllBrowsers(){
+    logoutFromAllTabs(){
       window.addEventListener('storage', (event) => {
           if (event.storageArea == localStorage) {
               const currentUser = localStorage.getItem( 'currentUser' );

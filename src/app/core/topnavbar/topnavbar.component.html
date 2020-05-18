@@ -205,13 +205,13 @@
                                 <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
                             </li>
-                            <li id="lockscreen">
+                            <!-- <li id="lockscreen">
                                 <a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i class="icon-lock"></i> Lock Screen
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
-                                <a> <i class="icon-key"></i> Log Out
+                                <a> <i class="icon-key" aria-hidden="true"></i> Log Out
                                 </a>
                             </li>
                         </ul>
