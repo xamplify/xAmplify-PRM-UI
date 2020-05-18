@@ -63,6 +63,8 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
                 this.router.navigated = false;
                 let currentUrl = evt.url;
                 console.log("current Url:-"+currentUrl);
+                let loginUrl = currentUrl.indexOf('/login')>-1;
+                let emptyUrl = currentUrl.indexOf('-/')>-1;
                 let formUrl = currentUrl.indexOf('f/')>-1;
                 let signUpUrl = currentUrl.indexOf('signup/')>-1;
                 let forgotPasswordUrl = currentUrl.indexOf('forgot-password')>-1;
@@ -93,13 +95,13 @@ sessionExpireMessage = "Your session has timed out. Please login again.";
                 let activateAccountUrl = currentUrl.indexOf('axAa')>-1;
                 let downloadUrl = currentUrl.indexOf('download')>-1;
                 let samlSecurityUrl = currentUrl.indexOf('samlsecurity')>-1;
-                let exculdeUrls =  ( !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
+                let exculdeUrls =  ( !loginUrl && !emptyUrl && !signUpUrl && !forgotPasswordUrl && !userLockUrl && !registerUrl &&  !formUrl && !pageUrl && !partnerLandingPageUrl && !termsAndConditionUrl && !privacyPolicyUrl && !callbackUrl &&
                                   !shareUrl && !showCampaignVideoUrl &&  !showCampaignEmail &&  !companyPageUrl && !partnerPageUrl && !logeUrl &&
                                   !unsubscribeUrl && !serviceUnavailableUrl && !accessDeniedUrl &&   !rsvpUrl && !smsShowCampaignUrl && !showEventCampaignUrl &&
                                   !logsUrl && !campaignLandingPageUrl && !scpUrl && !clplUrl && !requestdemoUrl && !activateAccountUrl && !downloadUrl && !samlSecurityUrl
                                   );
 
-                 if(exculdeUrls || currentUrl=="-/"){
+                 if(exculdeUrls){
                   this.logoutFromAllTabs();
                  }else{
                   console.log("Will not be logged out");

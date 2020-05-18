@@ -403,23 +403,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 console.log(data);
                 this.authenticationService.user = data;
                 this.authenticationService.userProfile = data;
-                const currentUser = localStorage.getItem( 'currentUser' );
-                const userToken = {
-                        'userName': userName,
-                        'userId': data.id,
-                        'accessToken': JSON.parse( currentUser )['accessToken'],
-                        'refreshToken': JSON.parse( currentUser )['refreshToken'],
-                        'expiresIn':  JSON.parse( currentUser )['expiresIn'],
-                        'hasCompany': data.hasCompany,
-                        'roles': data.roles,
-                        'campaignAccessDto':data.campaignAccessDto,
-                        'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName'],
-						'source':data.source	                   
- 					};
-                    localStorage.clear();
-                    localStorage.setItem('currentUser', JSON.stringify(userToken));
-					localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
-                    console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
+                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                currentUser['userId'] = data.id;
+                currentUser['hasCompany'] = data.hasCompany;
+                currentUser['roles'] = data.roles;
+                currentUser['campaignAccessDto'] = data.campaignAccessDto;
+                currentUser['logedInCustomerCompanyNeme'] = this.companyProfile.companyName;
+                currentUser['source'] = data.source;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
+                console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 
               },
               error => {console.log( error ); this.router.navigate(['/su'])},
@@ -435,7 +428,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         $('#saveOrUpdateCompanyButton').prop('disabled', true);
         $('#module-access-button').prop('disabled', true);
         this.validateEmptySpace('companyProfileName');
-        this.validateNames(this.companyProfile.companyName)
+        this.validateNames(this.companyProfile.companyName);
         this.validateProfileNames(this.companyProfile.companyProfileName);
         this.checkValidations();
         if (!this.companyNameError && !this.companyProfileNameError && !this.emailIdError && !this.tagLineError && !this.phoneError && !this.websiteError
@@ -467,11 +460,14 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.hasCompany = true;
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
-                            let module = self.authenticationService.module;
                             self.router.navigate(["/home/dashboard/welcome"]);
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();
                             const currentUser = localStorage.getItem('currentUser');
+                            let companyName = JSON.parse(currentUser)['companyName'];
+                            if(companyName==undefined || companyName==""){
+                                companyName = self.companyProfile.companyName;
+                            }
                             const userToken = {
                                 'userName': JSON.parse(currentUser)['userName'],
                                 'userId': JSON.parse(currentUser)['userId'],
@@ -481,12 +477,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                                 'hasCompany': self.authenticationService.user.hasCompany,
                                 'roles': JSON.parse(currentUser)['roles'],
                                 'campaignAccessDto':JSON.parse(currentUser)['campaignAccessDto'],
-                                'logedInCustomerCompanyNeme':JSON.parse(currentUser)['companyName'],
+                                'logedInCustomerCompanyNeme':companyName,
 								'source':JSON.parse(currentUser)['source']                         
   							};
                             localStorage.setItem('currentUser', JSON.stringify(userToken));
                             self.homeComponent.getVideoDefaultSettings();
                             self.homeComponent.getTeamMembersDetails();
+                            console.log(JSON.parse(localStorage.getItem('currentUser')))
                         }, 3000);
                     },
                     error => { this.ngxloading = false;
@@ -553,6 +550,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         this.processor.remove(this.processor);
                         this.authenticationService.user.websiteUrl = this.companyProfile.website;
                         this.refService.companyProfileImage = this.companyProfile.companyLogoPath;
+                        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                        currentUser['logedInCustomerCompanyNeme'] = this.companyProfile.companyName;
+                        localStorage.setItem('currentUser',JSON.stringify(currentUser));
                         setTimeout(function () { $("#edit-sucess").slideUp(500); }, 5000);
                     },
                     error => { this.ngxloading = false;
