@@ -21,6 +21,7 @@ import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-ca
 import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
 import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
 import { DashboardButtonsComponent } from "./dashboard-buttons/dashboard-buttons.component";
+import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-templates/vanity-email-templates.component";
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -47,7 +48,8 @@ const routes: Routes = [
   { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
   { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
   {path:'sso-samlsecurity',component:SamlsecurityComponent},
-  {path:'buttons', component:DashboardButtonsComponent}
+  {path:'buttons', component:DashboardButtonsComponent},
+  {path:'v-templates', component:VanityEmailTemplatesComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

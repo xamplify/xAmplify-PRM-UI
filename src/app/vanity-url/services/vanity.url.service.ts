@@ -7,6 +7,7 @@ import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-
 import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
 import { Properties } from "app/common/models/properties";
+import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 
 
 @Injectable()
@@ -59,6 +60,24 @@ export class VanityURLService {
     return this.http.get(iconsFilePath).map(this.extractData).catch(this.handleError);
   }
 
+  getVanityEmailTemplates(pagination: Pagination){
+    const url = this.authenticationService.REST_URL + "v_url/getEmailTemplates" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  saveOrUpdateEmailTemplate(vanityEmailTemplate:VanityEmailTempalte){
+    const url = this.authenticationService.REST_URL + "v_url/saveOrUpdate/emailTemplate" + "?access_token=" + this.authenticationService.access_token;
+    return this.http.post(url, vanityEmailTemplate)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  deleteEmailTempalte(id: number) {
+    const url = this.authenticationService.REST_URL + "v_url/delete/emailTemplate/" + id + "?access_token=" + this.authenticationService.access_token;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
 
 
   isVanityURLEnabled(){
@@ -67,7 +86,7 @@ export class VanityURLService {
 
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
-    //let url = "analytify.xamplify.com";
+    //let url = "analytifyorg.xamplify.com";
     //let url = "tga.xamplify.com";
     let url =window.location.hostname;
     
