@@ -350,6 +350,13 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getPartnerRedistributedCampaignsRSVP(campaignId: number) {
+        const url = this.URL + 'campaign/' + campaignId + '/redistributed-campaigns-rsvp-count?access_token=' + this.authenticationService.access_token ;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 
     getEventCampaignDetailsByCampaignId(campaignId: number, isChannelCampaign: boolean) {

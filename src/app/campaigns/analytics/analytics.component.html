@@ -784,8 +784,8 @@
                               <div class="portlet-body text-center">
                                 <i class="fa fa-check-circle fs30"></i>
                                 <h1 class="fs14">
-                                  <b>0</b>
-                                  <span>Yes ( 0 )</span>
+                                  <b>{{this.campaignReport.totalYesCount}}</b>
+                                  <span>Yes ( {{this.campaignReport.totalAdditionalCount}} )</span>
                                 </h1>
 
                               </div>
@@ -797,7 +797,7 @@
                               <div class="portlet-body text-center">
                                 <i class="fa fa-times-circle fs30"></i>
                                 <h1 class="fs14">
-                                  <b>0</b>
+                                  <b>{{this.campaignReport.totalNoCount}}</b>
                                   <span>No</span>
                                 </h1>
 
@@ -810,7 +810,7 @@
                               <div class="portlet-body text-center">
                                 <i class="fa fa-question-circle fs30"></i>
                                 <h1 class="fs14">
-                                  <b>0</b>
+                                  <b>{{this.campaignReport.totalMayBeCount}}</b>
                                   <span>Maybe</span>
                                 </h1>
 

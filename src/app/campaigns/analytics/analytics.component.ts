@@ -1087,6 +1087,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
               this.exportingObject['totalAttendees'] = false;
               this.exportingObject['totalPartnerLeads'] = false;
             }
+            if (this.campaignType == 'EVENT' && this.isChannelCampaign) {
+            	this.getPartnerRedistributedCampaignsRSVP(this.campaignId);
+            }
             this.loading = false;
           }
         )
@@ -1112,6 +1115,30 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.xtremandLogger.error('error' + error)
     }
   }
+  
+	  getPartnerRedistributedCampaignsRSVP(campaignId: number) {
+	        try {
+	          this.loading = true;
+	          this.campaignService.getPartnerRedistributedCampaignsRSVP(campaignId)
+	            .subscribe(
+	              data => {
+	                console.log(data);
+	                this.campaignReport.totalYesCount = data.YES;
+	                this.campaignReport.totalMayBeCount = data.MAYBE;
+	                this.campaignReport.totalNoCount = data.NO;            
+	                this.campaignReport.totalAdditionalCount = data.additionalCount;               
+	                this.getPartnersResponeCount(campaignId);
+	                this.loading = false;
+	              },
+	              error => this.xtremandLogger.error(error),
+	              () => { }
+	            )
+	        } catch (error) {
+	          this.xtremandLogger.error('error' + error)
+	        }
+	      }
+	  
+
 
   getEventCampaignByCampaignId(campaignId: number) {
     try {
