@@ -1059,6 +1059,8 @@
                                         <th class="center-aligned">Reply Time</th>
                                         <th class="center-aligned">Sent Time</th>
                                         <th class="center-aligned">Opened Time</th>
+                                        <th class="center-aligned">URLS CLICKED COUNT</th>
+                                        <th class="center-aligned">CLICKED URLS</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -1090,6 +1092,8 @@
                                             *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
                                             -
                                           </td>
+                                          <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
+                                          <td class="center-aligned">{{autoResponseAnalytics.clickedUrls}}</td>
                                         </tr>
                                       </ng-container>
                                     </tbody>
