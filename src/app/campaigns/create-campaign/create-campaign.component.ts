@@ -2065,15 +2065,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         var length = 200;
                         var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
                         socialStatus.statusMessage = trimmedstatusMsg;
-                        debugger;
                     }else{
                         socialStatus.statusMessage = this.statusMessage;
                     }
                     this.socialStatusList.push(socialStatus);
                 }
             }
-        )
-
+        );
+        let vanityUrlDomainName = "";
+        let vanityUrlCampaign = false;    
+        /********Vanity Url Related Code******************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+            vanityUrlCampaign = true;
+        }
         var data = {
             'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -2111,9 +2116,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'pushToCRM':this.pushToCRM,
             'smsService':this.smsService,
             'smsText':this.smsText,
-            'landingPageId':this.selectedLandingPageRow
+            'landingPageId':this.selectedLandingPageRow,
+            'vanityUrlDomainName':vanityUrlDomainName,
+            'vanityUrlCampaign':vanityUrlCampaign
         };
-        console.log(data);
         return data;
     }
 
