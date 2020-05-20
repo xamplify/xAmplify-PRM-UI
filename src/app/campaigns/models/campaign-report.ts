@@ -77,5 +77,10 @@ export class CampaignReport {
     noPartnerLeadCount: number = 0;
     maybePartnerLeadCount: number = 0;
     totalPartnerLeadsCount:number = 0;
+    
+    allPartnersYesCount: number = 0;
+    allPartnersNoCount: number = 0;   
+    allPartnersMayBeCount: number = 0;
+    allPartnersAdditionalCount: number = 0;
 
 }

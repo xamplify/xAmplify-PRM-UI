@@ -1116,28 +1116,26 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
   }
   
-	  getPartnerRedistributedCampaignsRSVP(campaignId: number) {
-	        try {
-	          this.loading = true;
-	          this.campaignService.getPartnerRedistributedCampaignsRSVP(campaignId)
-	            .subscribe(
-	              data => {
-	                console.log(data);
-	                this.campaignReport.totalYesCount = data.YES;
-	                this.campaignReport.totalMayBeCount = data.MAYBE;
-	                this.campaignReport.totalNoCount = data.NO;            
-	                this.campaignReport.totalAdditionalCount = data.additionalCount;               
-	                this.getPartnersResponeCount(campaignId);
-	                this.loading = false;
-	              },
-	              error => this.xtremandLogger.error(error),
-	              () => { }
-	            )
-	        } catch (error) {
-	          this.xtremandLogger.error('error' + error)
-	        }
-	      }
-	  
+  getPartnerRedistributedCampaignsRSVP(campaignId: number) {
+      try {
+          this.loading = true;
+          this.campaignService.getPartnerRedistributedCampaignsRSVP(campaignId)
+              .subscribe(
+              data => {
+                  console.log(data);
+                  this.campaignReport.allPartnersYesCount = data.YES;
+                  this.campaignReport.allPartnersMayBeCount = data.MAYBE;
+                  this.campaignReport.allPartnersNoCount = data.NO;
+                  this.campaignReport.allPartnersAdditionalCount = data.additionalCount;
+                  this.loading = false;
+              },
+              error => this.xtremandLogger.error(error),
+              () => { }
+              )
+      } catch (error) {
+          this.xtremandLogger.error('error' + error)
+      }
+    }
 
 
   getEventCampaignByCampaignId(campaignId: number) {
