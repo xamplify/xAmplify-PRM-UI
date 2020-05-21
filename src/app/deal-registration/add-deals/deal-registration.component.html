@@ -121,7 +121,7 @@
                   [ngModelOptions]="{standalone: true}" [disabled]="isVendor || isPreview"
                   class="phone-input"></int-phone-prefix>
               </fieldset> -->
-               <input type="text" maxlength="20" class="form-control"  [(ngModel)]=" dealRegistration.phone" [ngModelOptions]="{standalone: true}"/>
+               <input type="text" maxlength="20" class="form-control"  [(ngModel)]=" dealRegistration.phone" [ngModelOptions]="{standalone: true}" (input)="validateField('phone',false)" (blur)="validateField('phone',false)" [disabled]="isVendor || isPreview"/>
               <span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
             </div>
 
