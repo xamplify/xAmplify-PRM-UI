@@ -75,7 +75,8 @@ export class LandingPageService {
     }
 
     getById( id: number ): Observable<any> {
-        return this.http.get( this.URL + "getById/" + id + "?access_token=" + this.authenticationService.access_token, "" )
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        return this.http.get( this.URL + "getById/" + id + "/"+vanityUrlFilter+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }

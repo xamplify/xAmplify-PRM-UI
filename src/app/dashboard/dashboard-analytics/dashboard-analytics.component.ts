@@ -158,6 +158,7 @@ getUserCampaignReport() {
             },
           () => {
               this.xtremandLogger.info('Finished getUserCampaignReport()');
+              this.topFourLoading = false;
               if (this.userCampaignReport == null) {
                   this.userCampaignReport = new CampaignReport();
                   this.userCampaignReport.userId = this.loggedInUserId;
