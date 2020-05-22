@@ -172,7 +172,7 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
-                            <li *ngIf="authenticationService.user.hasCompany || authenticationService.isOnlyUser()">
+                            <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                                 <a [routerLink]="['/home/dashboard/myprofile']"> <i class="icon-user"></i> My Profile
                                 </a>
                             </li>

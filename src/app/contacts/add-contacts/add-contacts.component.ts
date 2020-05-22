@@ -352,7 +352,25 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
     validateHeaders( headers ) {
-        return ( headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "ADDRESS" && headers[6].trim() == "CITY" && headers[7].trim() == "STATE" && headers[8].trim() == "ZIP CODE" && headers[9].trim() == "COUNTRY" && headers[10].trim() == "MOBILE NUMBER" );
+        return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
+        this.removeDoubleQuotes(headers[1])== "LASTNAME" && 
+        this.removeDoubleQuotes(headers[2]) == "COMPANY" && 
+        this.removeDoubleQuotes(headers[3]) == "JOBTITLE" && 
+        this.removeDoubleQuotes(headers[4])== "EMAILID" && 
+        this.removeDoubleQuotes(headers[5]) == "ADDRESS" &&
+        this.removeDoubleQuotes(headers[6]) == "CITY" && 
+        this.removeDoubleQuotes(headers[7]) == "STATE" && 
+        this.removeDoubleQuotes(headers[8]) == "ZIP CODE" && 
+        this.removeDoubleQuotes(headers[9]) == "COUNTRY" && 
+        this.removeDoubleQuotes(headers[10]) == "MOBILE NUMBER" );
+    }
+
+    removeDoubleQuotes(input:string){
+        if(input!=undefined){
+            return input.trim().replace('"','').replace('"','');
+        }else{
+            return "";
+        }
     }
 
     clipboardShowPreview() {

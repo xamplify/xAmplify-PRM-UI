@@ -155,6 +155,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     modulesDisplayTypeList = [];
     modulesDisplayViewcustomResponse: CustomResponse = new CustomResponse();
     updateDisplayViewError = false;
+    isUser = false;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -162,6 +163,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
             PagerService,private renderer:Renderer) {
                 this.referenceService.renderer = this.renderer;
+                this.isUser = this.authenticationService.isOnlyUser();
         //   this.customConstructorCall();
     }
     cropperSettings() {
@@ -355,6 +357,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         } catch (error) {
             this.hasClientErrors = true;
             this.logger.showClientErrors("my-profile.component.ts", "ngOninit()", error);
+            this.authenticationService.logout();
         }
     }
 
@@ -1701,10 +1704,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 (result: any) => {
                     this.closeCategoryModal();
-                    this.referenceService.stopLoader(this.addCategoryLoader);
-                    this.categoryResponse = new CustomResponse('SUCCESS', result.message, true);
-                    this.categoryPagination = new Pagination();
-                    this.listCategories(this.categoryPagination);
+                    if(result.access){
+                        this.referenceService.stopLoader(this.addCategoryLoader);
+                        this.categoryResponse = new CustomResponse('SUCCESS', result.message, true);
+                        this.categoryPagination = new Pagination();
+                        this.listCategories(this.categoryPagination);
+                    }else{
+                        this.authenticationService.forceToLogout();
+                    }
+                   
                 },
                 (error: string) => {
                     this.referenceService.stopLoader(this.addCategoryLoader);
@@ -1804,13 +1812,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.userService.deleteCategory(category)
             .subscribe(
                 (response: any) => {
-                    if (response.statusCode == 200) {
-                        this.closeDeleteCategoryModal();
-                        let message = category.name + " Deleted Successfully";
-                        this.categoryResponse = new CustomResponse('SUCCESS', message, true);
-                        this.categoryPagination.pageIndex = 1;
-                        this.listCategories(this.categoryPagination);
+                    this.closeDeleteCategoryModal();
+                    if(response.access){
+                        if (response.statusCode == 200) {
+                            let message = category.name + " Deleted Successfully";
+                            this.categoryResponse = new CustomResponse('SUCCESS', message, true);
+                            this.categoryPagination.pageIndex = 1;
+                            this.listCategories(this.categoryPagination);
+                        }
+                    }else{
+                        this.authenticationService.forceToLogout();
                     }
+                   
                 },
                 (error: string) => {
                     this.referenceService.showServerErrorMessage(this.httpRequestLoader);
