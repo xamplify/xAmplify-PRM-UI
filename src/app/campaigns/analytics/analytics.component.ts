@@ -1386,7 +1386,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     //this.setReDistributionDetails();
     this.getRsvpDetails(type);
   }
-  // starts from here 
+ 
   setCondition() {
       if (this.rsvpDetailType === 'allPartnerRedistributionRsvp') {
           this.resetRsvpPagination();
@@ -1407,10 +1407,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.rsvpDetailType = 'allPartnerRedistributionRsvp';
       this.getRsvpDetails(type);
 }
- 
-
-  
-  //end here
+   
 
   getRsvpDetails(responseType: any) {
     try {
@@ -1530,7 +1527,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
 
       // this.downloadTypeName = 'rsvp';
-      //starts here
+     
       this.campaignReport.redistributionTotalYesCount = campaignViews.rsvpMap.YES;
       this.campaignReport.redistributionTotalMayBeCount = campaignViews.rsvpMap.MAYBE;
       this.campaignReport.redistributionTotalNoCount = campaignViews.rsvpMap.NO;
@@ -1542,7 +1539,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.rsvpDetailType = 'reDistribution';
       this.getRsvpDetails('YES');
       this.loading = false;
-      //end here
+      
      /* this.campaignService.getRestributionEventCampaignAnalytics(this.campaign.campaignId, campaignViews.userId)
         .subscribe(
           data => {
