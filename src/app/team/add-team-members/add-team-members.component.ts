@@ -145,6 +145,7 @@ export class AddTeamMembersComponent implements OnInit {
 						this.isOnlyPartnerOrPartnerTeamMember = this.isOnlyPartner || this.authenticationService.isPartnerTeamMember;
 					} else {
 						this.authenticationService.loggedInUserRole = 'User';
+						this.authenticationService.forceToLogout();
 					}
 				},
 				error => this.logger.errorPage(error),
@@ -163,12 +164,17 @@ export class AddTeamMembersComponent implements OnInit {
 			this.teamMemberService.list(pagination, this.userId)
 				.subscribe(
 					data => {
-						this.teamMembersList = data.teamMembers;
-						this.secondOrgAdminId = data.secondOrgAdminId;
-						this.loginAsTeamMemberAccess = data.loginAsTeamMemberAccess;
-						pagination.totalRecords = data.totalRecords;
-						pagination = this.pagerService.getPagedItems(pagination, this.teamMembersList);
-						this.referenceService.loading(this.httpRequestLoader, false);
+						if(data.access){
+							this.teamMembersList = data.teamMembers;
+							this.secondOrgAdminId = data.secondOrgAdminId;
+							this.loginAsTeamMemberAccess = data.loginAsTeamMemberAccess;
+							pagination.totalRecords = data.totalRecords;
+							pagination = this.pagerService.getPagedItems(pagination, this.teamMembersList);
+							this.referenceService.loading(this.httpRequestLoader, false);
+						}else{
+							this.authenticationService.forceToLogout();
+						}
+						
 					},
 					error => {
 						this.logger.errorPage(error);
