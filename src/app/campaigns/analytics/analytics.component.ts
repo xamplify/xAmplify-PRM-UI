@@ -1377,14 +1377,40 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.campaignReport.redistributionTotalEmailOpenCount = this.campaignReport.partnersEmailOpenedCount;
     this.campaignReport.redistributionTotalInvitiesCount = this.campaignReport.partnersTotalInvitiesCount;
     this.campaignReport.redistributionTotalAdditionalCount = this.campaignReport.additionalCount;
+    this.campaignReport.redistributionTotalLeadsCount = this.campaignReport.totalPartnerLeadsCount;
     this.isTimeLineView = true;
     this.rsvpDetailType = 'partnerRsvp';
   }
 
   goToPartnerRsvpDetails(type) {
-    this.setReDistributionDetails();
+    //this.setReDistributionDetails();
     this.getRsvpDetails(type);
   }
+  // starts from here 
+  setCondition() {
+      if (this.rsvpDetailType === 'allPartnerRedistributionRsvp') {
+          this.resetRsvpPagination();
+          this.goToAllPartnerRsvpDetails('TOTAL_PARTNER_LEADS')
+      } else {
+          this.resetRsvpPagination();
+          this.goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS');
+      }
+  }
+  
+  goToAllPartnerRsvpDetails(type) {
+      this.campaignReport.redistributionTotalYesCount = this.campaignReport.allPartnersYesCount;
+      this.campaignReport.redistributionTotalMayBeCount = this.campaignReport.allPartnersMayBeCount;
+      this.campaignReport.redistributionTotalNoCount = this.campaignReport.allPartnersNoCount;
+      this.campaignReport.redistributionTotalAdditionalCount = this.campaignReport.allPartnersAdditionalCount;
+      this.campaignReport.redistributionTotalLeadsCount = this.campaignReport.totalPartnerLeadsCount; 
+      this.isTimeLineView = true;
+      this.rsvpDetailType = 'allPartnerRedistributionRsvp';
+      this.getRsvpDetails(type);
+}
+ 
+
+  
+  //end here
 
   getRsvpDetails(responseType: any) {
     try {
@@ -1393,7 +1419,22 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       this.downloadTypeName = 'rsvp';
       this.paginationType = responseType;
       this.rsvpResposeType = responseType;
-      if (this.rsvpDetailType === 'reDistribution') {
+      if (this.rsvpDetailType === 'allPartnerRedistributionRsvp' && responseType != 'TOTAL_PARTNER_LEADS' ) {
+          this.campaignService.getAllPartnerRestributionEventCampaignAnalytics(this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
+            .subscribe(
+              data => {
+                console.log(data);
+                this.loading = false;
+                this.referenceService.detailViewIsLoading = false;
+                this.rsvpDetailsList = data.data;
+                this.rsvpDetailAnalyticsPagination.totalRecords = data.totalRecords;
+                this.rsvpDetailAnalyticsPagination = this.pagerService.getPagedItems(this.rsvpDetailAnalyticsPagination, data.data);
+              },
+              error => this.xtremandLogger.error(error),
+              () => { }
+            )
+        }
+      else if (this.rsvpDetailType === 'reDistribution' && responseType != 'TOTAL_PARTNER_LEADS' ) {
         this.campaignService.getRedistributionEventCampaignDetailAnalytics(this.campaign.campaignId, responseType, this.selectedRsvpPartnerId, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
           .subscribe(
             data => {
@@ -1407,6 +1448,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             error => this.xtremandLogger.error(error),
             () => { }
           )
+      } else if (this.rsvpDetailType === 'reDistribution' && responseType === 'TOTAL_PARTNER_LEADS' ) {
+    	  this.exportingObject['totalPartnerLeads'] = false;
+          this.exportingObject['totalAttendees'] = false;
+          this.exportingObject['selectedPartnerLeads'] = true;
+          this.exportingObject['partnerId'] = this.selectedRsvpPartnerId;
       } else if (this.rsvpDetailType === 'partnerRsvp' && responseType != 'TOTAL_PARTNER_LEADS') {
         this.campaignService.getEventCampaignDetailAnalytics(this.campaign.campaignId, responseType, false, this.rsvpDetailAnalyticsPagination)
           .subscribe(
@@ -1425,16 +1471,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         if (responseType === 'TOTAL_LEADS') {
           this.exportingObject['totalAttendees'] = false;
           this.exportingObject['totalPartnerLeads'] = false;
+          this.exportingObject['selectedPartnerLeads'] = false;
+          this.exportingObject['partnerId'] = null;
           this.getEventTotalLeadsDetails();
         } else if (responseType === 'TOTAL_ATTENDEES') {
           this.getEventTotalLeadsDetails();
           this.exportingObject['totalAttendees'] = true;
           this.exportingObject['totalPartnerLeads'] = false;
+          this.exportingObject['selectedPartnerLeads'] = false;
+          this.exportingObject['partnerId'] = null;
         } else if (responseType === 'TOTAL_PARTNER_LEADS') {
           this.exportingObject['totalPartnerLeads'] = true;
           this.exportingObject['totalAttendees'] = false;
+          this.exportingObject['selectedPartnerLeads'] = false;
+          this.exportingObject['partnerId'] = null;
 
-        } else {
+        }   
+         else {
           this.showRsvpDetails = true;
           this.campaignService.getEventCampaignDetailAnalytics(this.campaign.campaignId, responseType, this.isChannelCampaign, this.rsvpDetailAnalyticsPagination)
             .subscribe(
@@ -1477,7 +1530,20 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
 
       // this.downloadTypeName = 'rsvp';
-      this.campaignService.getRestributionEventCampaignAnalytics(this.campaign.campaignId, campaignViews.userId)
+      //starts here
+      this.campaignReport.redistributionTotalYesCount = campaignViews.rsvpMap.YES;
+      this.campaignReport.redistributionTotalMayBeCount = campaignViews.rsvpMap.MAYBE;
+      this.campaignReport.redistributionTotalNoCount = campaignViews.rsvpMap.NO;
+      this.campaignReport.redistributionTotalNotYetRespondedCount = campaignViews.rsvpMap.notYetResponded;
+      this.campaignReport.redistributionTotalEmailOpenCount = campaignViews.rsvpMap.emailOpenedCount;
+      this.campaignReport.redistributionTotalInvitiesCount = campaignViews.rsvpMap.totalInvities;
+      this.campaignReport.redistributionTotalAdditionalCount = campaignViews.rsvpMap.additionalCount;
+      this.campaignReport.redistributionTotalLeadsCount = campaignViews.totalLeadsCount;
+      this.rsvpDetailType = 'reDistribution';
+      this.getRsvpDetails('YES');
+      this.loading = false;
+      //end here
+     /* this.campaignService.getRestributionEventCampaignAnalytics(this.campaign.campaignId, campaignViews.userId)
         .subscribe(
           data => {
             console.log(data);
@@ -1488,13 +1554,14 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             this.campaignReport.redistributionTotalEmailOpenCount = data.emailOpenedCount;
             this.campaignReport.redistributionTotalInvitiesCount = campaignViews.rsvpMap.totalInvities;
             this.campaignReport.redistributionTotalAdditionalCount = data.additionalCount;
+            this.campaignReport.redistributionTotalLeadsCount = data.totalLeadsCount;
             this.rsvpDetailType = 'reDistribution';
             this.getRsvpDetails('YES');
             this.loading = false;
           },
           error => this.xtremandLogger.error(error),
           () => { this.loading = false; }
-        )
+        )*/
     } catch (error) {
       this.xtremandLogger.error('error' + error)
     }

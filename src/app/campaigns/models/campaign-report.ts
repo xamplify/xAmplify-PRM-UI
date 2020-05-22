@@ -60,6 +60,7 @@ export class CampaignReport {
     redistributionTotalEmailOpenCount: number = 0;
     redistributionTotalInvitiesCount: number = 0;
     redistributionTotalAdditionalCount: number = 0;
+    redistributionTotalLeadsCount: number = 0;
 
     selectedPartnerFirstName: string;
     selectedPartnerLastName: string;

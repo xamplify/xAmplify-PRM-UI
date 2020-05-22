@@ -780,7 +780,7 @@
                           <div class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"></div>
                           <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
                             <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'"
-                              disabled="disabled">
+                              (click)="goToAllPartnerRsvpDetails('YES')" >
                               <div class="portlet-body text-center">
                                 <i class="fa fa-check-circle fs30"></i>
                                 <h1 class="fs14">
@@ -821,7 +821,7 @@
                             class="col-xs-6 col-lg-3 rsvp_tile_padding">
                             <button class="portlet light color1-invert crcb"
                               [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'"
-                              (click)="goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
+                              (click)="goToAllPartnerRsvpDetails('TOTAL_PARTNER_LEADS')" 
                               [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-user-secret fs30"></i>
@@ -1375,7 +1375,7 @@
       </div>
       <div class="col-xs-12 emails-info" id='values' [hidden]="mainLoader">
 
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpInvitiesDetails()"
             [class.selectedBox]="rsvpResposeType === 'invities'"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1391,7 +1391,7 @@
           </button>
         </div>
 
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()"
             [class.selectedBox]="rsvpResposeType === 'email open'"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1448,7 +1448,7 @@
             </div>
           </button>
         </div>
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'"
             (click)="resetRsvpPagination();getRsvpDetails('NOTYET')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1465,13 +1465,13 @@
         <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
           <button class="portlet light color1-invert crcb"
             [class.selectedBox]="rsvpResposeType === 'TOTAL_PARTNER_LEADS'"
-            (click)="resetRsvpPagination();goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
+            (click)="setCondition()"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
             [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
             <div class="portlet-body text-center">
               <i class="fa fa-user-secret"></i>
               <h1>
-                <b>{{campaignReport.totalPartnerLeadsCount}}</b>
+                <b>{{campaignReport.redistributionTotalLeadsCount}}</b>
               </h1>
               <h5>Total Leads</h5>
             </div>

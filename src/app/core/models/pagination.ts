@@ -61,4 +61,5 @@ export class Pagination {
 	partnerCompanyId:number = 0;
 	previewAccess = false;
 	partnerView = false;
+	selectedPartnerLeads = false;
 }

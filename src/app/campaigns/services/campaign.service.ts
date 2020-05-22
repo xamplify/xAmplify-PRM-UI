@@ -372,6 +372,16 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    //
+    getAllPartnerRestributionEventCampaignAnalytics(campaignId: number, resposeType: any, isChannelCampaign: boolean, pagination: Pagination) {
+        const url = this.URL + 'campaign/' + campaignId + '/redistributed-campaigns-rsvp-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+     
+    
+    //
 
     getRedistributionEventCampaignDetailAnalytics(campaignId: number, resposeType: any, userId: number, isChannelCampaign: boolean, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + '/' + userId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
