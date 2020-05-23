@@ -350,16 +350,21 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
           data => {
-            this.isRedirectEnabled = true;
-            this.socialStatusResponse = data.socialStatusList;
-            if (data.publishStatus !== 'FAILURE') {
-              let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
-              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+            if(data.access){
+              this.isRedirectEnabled = true;
+              this.socialStatusResponse = data.socialStatusList;
+              if (data.publishStatus !== 'FAILURE') {
+                let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
+                this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+              }
+              else if (data.publishStatus === 'FAILURE')
+                this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+              $('input:checkbox').removeAttr('checked');
+              $('#contact-list-table tr').removeClass("highlight");
+            }else{
+                this.authenticationService.forceToLogout();
             }
-            else if (data.publishStatus === 'FAILURE')
-              this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-            $('input:checkbox').removeAttr('checked');
-            $('#contact-list-table tr').removeClass("highlight");
+           
           },
           error => {
             this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
@@ -394,17 +399,21 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialService.createSocialCampaign(this.socialCampaign)
         .subscribe(
           data => {
-            this.isRedirectEnabled = true;
-            this.socialStatusResponse = data.socialStatusList;
-            if (data.publishStatus !== 'FAILURE') {
-              let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
-              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+            if(data.access){
+              this.isRedirectEnabled = true;
+              this.socialStatusResponse = data.socialStatusList;
+              if (data.publishStatus !== 'FAILURE') {
+                let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
+                this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+              }
+              else if (data.publishStatus === 'FAILURE')
+                this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+  
+              $('input:checkbox').removeAttr('checked');
+              $('#contact-list-table tr').removeClass("highlight");
+            }else{
+                this.authenticationService.forceToLogout();
             }
-            else if (data.publishStatus === 'FAILURE')
-              this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
-
-            $('input:checkbox').removeAttr('checked');
-            $('#contact-list-table tr').removeClass("highlight");
           },
           error => {
             this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
@@ -1142,7 +1151,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   onKeyPress(event: KeyboardEvent) {
     if (this.socialStatusList.length !== 0 && this.socialStatusList[0].statusMessage !== undefined) {
       let enteredURL = this.socialStatusList[0].statusMessage.toLowerCase();
-      if (enteredURL.length === 0 || enteredURL.length === 0) {
+      if (enteredURL.length === 0) {
         this.socialStatus.statusMessage = ""
         this.clearRssOgTagsFeed();
       } else {
