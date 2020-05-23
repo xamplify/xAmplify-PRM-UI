@@ -899,6 +899,13 @@ export class CampaignService {
 
     }
 
+    hasCampaignCreateAccess(){
+        return this.http.get(this.URL + "campaign/hasCreateCampaignAccess/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+            .catch(this.handleError);
+	}
+
+
   
 
 }

@@ -13,14 +13,14 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <i class="fa fa-home"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
                     <a [routerLink]="refService.homeRouter">Home</a>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li>
                     <a *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd" [routerLink]="['../../campaigns/manage']">Manage Campaigns</a>
                     <a *ngIf="refService.isCampaignFromVideoRouter==false && isAdd" [routerLink]="['../../campaigns/select']">Select Campaign</a>
-                    <i class="fa fa-angle-right"></i>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd">
                     <a>Edit Campaign</a>

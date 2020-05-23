@@ -482,7 +482,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }//End Of Edit
         if(this.refService.campaignVideoFile!=undefined){
             /****************Creating Campaign From Manage VIdeos*******************************/
-            var selectedVideoId  = this.refService.campaignVideoFile.id;
+            let selectedVideoId  = this.refService.campaignVideoFile.id;
             if(selectedVideoId>0){
                 this.campaign.createdFromVideos = true;
                 this.setActiveTabForVideo();
