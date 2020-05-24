@@ -158,6 +158,19 @@ export class SortOption {
         { 'name': 'Launched On (DESC)', 'value': 'launchedOn-DESC' }
     ];
 
+    activeUsersSortDropDownOptions = [
+      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+      { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+      { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+      { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+      { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+      { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+      { 'name': 'Created Time (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
+      ];
+
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
@@ -178,6 +191,7 @@ export class SortOption {
     public selectedDemoRequestSortOption:any = this.demoRequestSortOptions[7];
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
+    public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

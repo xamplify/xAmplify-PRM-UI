@@ -49,11 +49,13 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   private addFirstAttemptFailed = false;
   @Input() model = { 'displayName': '', 'profilePicutrePath': 'assets/images/icon-user-default.png' };
   sourceType = "";
+  isLoggedInFromAdminSection = false;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
     public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
     try{
-        this.currentUrl = this.router.url;
+    this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
+    this.currentUrl = this.router.url;
     const userName = this.authenticationService.user.emailId;
     if(userName!=undefined){
       this.sourceType = this.authenticationService.getSource();
@@ -306,6 +308,32 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       this.vendoorInvitation.emailIds = [];
       this.emailIds = [];
       this.isValidationMessage = false;
+  }
+
+  goBackToAdminPanel(){
+    this.loading = true;
+    let adminEmailId = JSON.parse(localStorage.getItem('loginAsUserEmailId'));
+    this.refService.loaderFromAdmin = true;
+    this.dashboardService.getVendorsMyProfile(adminEmailId)
+    .subscribe(
+      response => {
+        localStorage.removeItem('loginAsUserId');
+        localStorage.removeItem('loginAsUserEmailId');
+        this.utilService.setUserInfoIntoLocalStorage(adminEmailId, response);
+        let self = this;
+        setTimeout(function () {
+          self.router.navigate(['home/dashboard/admin-report'])
+            .then(() => {
+              window.location.reload();
+            })
+        }, 500);
+      },
+      (error: any) => {
+        this.refService.showSweetAlertErrorMessage("Unable to Go back to admin panel.Please try after sometime");
+        this.loading = false;
+      },
+      () => this.logger.info('Finished goBackToAdminPanel()')
+    );
   }
   
 }

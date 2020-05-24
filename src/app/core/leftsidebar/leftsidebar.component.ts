@@ -36,11 +36,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     landingPages:any;
     isLoggedInAsTeamMember = false;
     sourceType = "";
+    isLoggedInFromAdminPortal = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService ) {
         this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
         this.updateLeftSideBar( location );
         this.sourceType = this.authService.getSource();
+        this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal(); 
     }
 
     updateLeftSideBar( location: Location ) {

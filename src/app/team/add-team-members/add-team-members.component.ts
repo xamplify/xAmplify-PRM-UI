@@ -161,6 +161,7 @@ export class AddTeamMembersComponent implements OnInit {
 			this.httpRequestLoader.isHorizontalCss = true;
 			this.teamMemberUi = new TeamMemberUi();
 			this.clearRows();
+			this.pagination.loggedInAsTeamMember = this.isLoggedInAsTeamMember;
 			this.teamMemberService.list(pagination, this.userId)
 				.subscribe(
 					data => {

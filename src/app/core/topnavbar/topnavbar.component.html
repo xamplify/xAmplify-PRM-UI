@@ -1,3 +1,5 @@
+
+<ng-container *ngIf="!refService.loaderFromAdmin">
 <div class="page-header navbar navbar-fixed-top">
     <ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed; top: 0px;
     margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
@@ -34,7 +36,8 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search..." name="query">
                     <span class="input-group-btn">
-					<a href="javascript:;" class="btn submit"><i class="icon-magnifier" routerLink="./dashboard/extra_search"></i></a>
+					<a href="javascript:;" class="btn submit">
+                        <i class="icon-magnifier" routerLink="./dashboard/extra_search"></i></a>
 					</span>
                 </div>
             </form>
@@ -44,6 +47,13 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
+
+                    <li *ngIf="isLoggedInFromAdminSection" style="margin-top: 17px;margin-right: 5px;">
+						<button class="btn btn-primary" (click)="goBackToAdminPanel()">
+							<span class="hidden-xs">Go back to admin panel</span>
+							<i class="fa fa-power-off" aria-hidden="true"></i>
+						</button>
+					</li>
 
                     <!-- 	<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
 						<button class="btn btn-primary" [routerLink]="['/home/campaigns/select']">
@@ -299,3 +309,4 @@
         </div>
     </div>
 </div>
+</ng-container>

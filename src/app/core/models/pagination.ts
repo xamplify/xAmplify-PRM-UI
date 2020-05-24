@@ -62,4 +62,5 @@ export class Pagination {
 	previewAccess = false;
 	partnerView = false;
 	selectedPartnerLeads = false;
+	loggedInAsTeamMember = false;
 }

@@ -149,5 +149,10 @@ export class UtilService {
         let adminId = JSON.parse(localStorage.getItem('adminId'));
         return adminId!=null;
     }
+
+    isLoggedInFromAdminPortal(){
+        return JSON.parse(localStorage.getItem('loginAsUserId'))!=null;
+       
+    }
     
 }

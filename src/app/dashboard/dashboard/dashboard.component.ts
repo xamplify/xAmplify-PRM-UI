@@ -103,6 +103,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.heatMapSort = this.sortHeatMapValues[4];
         this.xtremandLogger.info('dashboard constructor');
         this.utilService.setRouterLocalStorage('dashboard');
+        if(this.authenticationService.getUserId()==1){
+            this.router.navigate(['/home/dashboard/admin-report']);
+        }
        // this.isOnlyPartner = this.authenticationService.isOnlyPartner();
         //.isOnlyPartner = this.authenticationService.hasOnlyPartnerRole;
     }
