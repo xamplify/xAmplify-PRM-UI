@@ -132,6 +132,7 @@ loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean,userId:number) {
       (error: any) => {
         this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
         this.loading = false;
+        this.referenceService.loaderFromAdmin = false;
       },
       () => this.logger.info('Finished loginAsTeamMember()')
     );

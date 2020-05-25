@@ -319,6 +319,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       response => {
         localStorage.removeItem('loginAsUserId');
         localStorage.removeItem('loginAsUserEmailId');
+        /***Removing Team Member Local Stoarage**********/
+        localStorage.removeItem('adminId');
+				localStorage.removeItem('adminEmailId');
         this.utilService.setUserInfoIntoLocalStorage(adminEmailId, response);
         let self = this;
         setTimeout(function () {
@@ -331,6 +334,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       (error: any) => {
         this.refService.showSweetAlertErrorMessage("Unable to Go back to admin panel.Please try after sometime");
         this.loading = false;
+        this.refService.loaderFromAdmin = false;
       },
       () => this.logger.info('Finished goBackToAdminPanel()')
     );
