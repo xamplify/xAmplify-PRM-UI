@@ -806,7 +806,8 @@
                           </div>
                           <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
                             <button class="portlet light color1-invert crcb"
-                              [class.selectedBox]="detailType === 'MAYBE'" disabled="disabled">
+                            (click)="goToAllPartnerRsvpDetails('MAYBE')"
+                              [class.selectedBox]="detailType === 'MAYBE'">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-question-circle fs30"></i>
                                 <h1 class="fs14">
@@ -1424,7 +1425,7 @@
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'"
             (click)="resetRsvpPagination();getRsvpDetails('NO')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-            [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess || rsvpDetailType === 'reDistribution'">
+            [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess || rsvpDetailType === 'reDistribution' || rsvpDetailType === 'allPartnerRedistributionRsvp'">
             <div class="portlet-body text-center">
               <i class="fa fa-times-circle"></i>
               <h1>
