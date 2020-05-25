@@ -6,5 +6,6 @@ export class LandingPageGetDto {
     partnerId:number;
     landingPageAlias:string;
     partnerLandingPage = false;
+    vanityUrlFilter = false;
 }
 

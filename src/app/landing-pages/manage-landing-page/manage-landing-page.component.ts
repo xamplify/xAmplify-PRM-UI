@@ -17,6 +17,7 @@ import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+
 declare var swal: any, $: any;
 @Component({
     selector: 'app-manage-landing-page',
@@ -53,7 +54,9 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer) {
+        public actionsDescription: ActionsDescription, public sortOption: SortOption,
+         private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer
+         ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
@@ -66,7 +69,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         }
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
         this.modulesDisplayType = this.referenceService.setDefaultDisplayType(this.modulesDisplayType);
-       
     }
 
     
@@ -144,7 +146,7 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.customResponse = new CustomResponse('SUCCESS', message, true);
     }
 
-    /***********Preview Email Template*********************/
+    /***********Preview Page*********************/
     showPreview(landingPage: LandingPage) {
         if (this.isPartnerLandingPage) {
             landingPage.showPartnerCompanyLogo = true;

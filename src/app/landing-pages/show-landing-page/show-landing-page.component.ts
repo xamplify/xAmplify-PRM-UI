@@ -6,12 +6,12 @@ import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { Processor } from '../../core/models/processor';
 import { CustomResponse } from '../../common/models/custom-response';
-import { filter, pairwise } from 'rxjs/operators';
 import { LandingPageService } from '../services/landing-page.service';
 import { UtilService } from '../../core/services/util.service';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 
 declare var $:any;
@@ -35,7 +35,9 @@ export class ShowLandingPageComponent implements OnInit {
     isPartnerLandingPage:boolean=false;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
           private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
-          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService) { }
+          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityUrlService:VanityURLService) {
+            this.vanityUrlService.isVanityURLEnabled();
+          }
 
   ngOnInit() {
       this.processor.set(this.processor);
@@ -140,7 +142,6 @@ export class ShowLandingPageComponent implements OnInit {
       this.landingPageService.saveAnalytics(geoLocationAnalytics)
       .subscribe(
         (data: any) => {
-            let response = data.data;
             if(data.statusCode==200){
                 this.logger.info("Location Details Saved Successfully");
             }else{
