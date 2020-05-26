@@ -1094,7 +1094,13 @@
                                             -
                                           </td>
                                           <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
-                                          <td class="center-aligned">{{autoResponseAnalytics.clickedUrls}}</td>
+                                          <td class="center-aligned">
+                                            <table>
+                                              <tr *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
+                                                <td style="padding:5px">{{clickedUrls}}</td>
+                                              </tr>
+                                            </table>
+                                          </td>
                                         </tr>
                                       </ng-container>
                                     </tbody>
