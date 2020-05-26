@@ -1636,8 +1636,10 @@
           <div data-animation="slideInUp">
             <div class="row mb10">
               <img src="/assets/images/user.png" width="48px" class="user-profile-image">
+             <ng-container *ngIf="!disabled">
               <span
-                *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
+                *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&
+                  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   [disabled]="userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00' "
                   title=" Please watch the video to {{dealButtonText}} " class="btn btn-success"
@@ -1645,11 +1647,16 @@
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   title=" {{dealButtonText}} " class="btn btn-success"
                   *ngIf="campaignType=='VIDEO' && !(userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00')">{{dealButtonText}}</button>
-
-
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   class="btn btn-success" *ngIf="campaignType!='VIDEO'">{{dealButtonText}}</button>
               </span>
+            </ng-container>
+            <ng-container *ngIf="disabled">
+              <button title="This campaign has been deleted by your vendor.You can't register a lead" 
+              style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
+               class="btn btn-success">{{dealButtonText}}</button>
+            </ng-container>
+
               <h5 class="f-w-600 mt10 mb0"><span
                   *ngIf="selectedRow?.firstName">{{selectedRow.firstName | slice:0:20}}</span>
                 <span *ngIf="selectedRow.firstName?.length>20">..</span>

@@ -185,6 +185,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   leadType: string;
   isLeadListDownloadProcessing = false;
   showTotalLeads = false;
+  disabled: boolean;
   constructor(private route: ActivatedRoute, private campaignService: CampaignService, private utilService: UtilService, private socialService: SocialService,
     public authenticationService: AuthenticationService, public pagerService: PagerService, public pagination: Pagination,
     public referenceService: ReferenceService, public contactService: ContactService, public videoUtilService: VideoUtilService,
@@ -839,13 +840,17 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         if (data.nurtureCampaign) {
           this.campaignService.getCampaignById({ "campaignId": data.parentCampaignId }).subscribe(parent_campaign => {
-            console.log(parent_campaign)
-            this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response => {
-              this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
-                this.enableLeads = data.enableLeads;
-                console.log(data)
-              });
-            })
+            if(parent_campaign.userId!=undefined){
+              this.referenceService.getCompanyIdByUserId(parent_campaign.userId).subscribe(response => {
+                this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+                  this.enableLeads = data.enableLeads;
+                  this.disabled = false;
+                });
+              })
+            }else{
+                this.disabled = true;
+            }
+            
           }, error => console.log(error))
         } else {
           if (this.authenticationService.loggedInUserRole != "Team Member") {
