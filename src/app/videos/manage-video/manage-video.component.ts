@@ -283,9 +283,10 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
         this.xtremandLogger.log('MangeVideoComponent deleteVideoFile alias # ' + alias + ', position # ' + position);
         this.videoFileService.deleteVideoFile(alias)
             .subscribe(
-            data => {
-                this.xtremandLogger.log(data);
-                this.xtremandLogger.log('MangeVideoComponent deleteVideoFile success : ' + data);
+            	(response: any) => {
+            	if(response.access){
+                this.xtremandLogger.log(response);
+                this.xtremandLogger.log('MangeVideoComponent deleteVideoFile success : ' + response);
                 this.pagination.pagedItems.splice(position, 1);
                 this.defaultBannerMessageValues();
                 this.showVideoFileName = videoName;
@@ -294,6 +295,9 @@ export class ManageVideoComponent implements OnInit, OnDestroy {
                 this.homeComponent.getVideoTitles();
                 $('html,body').animate({ scrollTop: 0 }, 'slow');
                 this.loadVideos(this.pagination);
+            	}else{
+            		this.authenticationService.forceToLogout();
+            	}
             },
             (error: any) => {
                 try{
