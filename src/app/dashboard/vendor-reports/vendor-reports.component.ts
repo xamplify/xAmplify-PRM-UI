@@ -8,6 +8,7 @@ import { PaginationComponent } from "../../common/pagination/pagination.componen
 import { Router } from "@angular/router";
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CustomResponse } from '../../common/models/custom-response';
+import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 declare var $: any;
 
 @Component({
@@ -28,7 +29,8 @@ export class VendorReportsComponent implements OnInit {
     public authenticationService: AuthenticationService,
     public pagerService: PagerService,
     public paginationComponent: PaginationComponent,
-    private router: Router
+    private router: Router,
+    private vanityURLService: VanityURLService
   ) {
 
   }
@@ -74,13 +76,21 @@ export class VendorReportsComponent implements OnInit {
     setTimeout(() => {
       this.loading = false;
     }, 3000);
-    this.router.navigateByUrl("/home/campaigns/vendor/all");
+    //this.router.navigateByUrl("/home/campaigns/vendor/all"); 
+
+    this.vanityURLService.getCompanyProfileNameByCompanyName(venderReport.companyName).subscribe(result => {
+      if (result.statusCode === 200) {
+        let vanityURL = result.data + "au/" + this.authenticationService.user.alias;
+        window.open(vanityURL);
+      }
+    });
+
   }
-  errorHandler(event){
-   event.target.src = 'assets/images/default-company.png';
+  errorHandler(event) {
+    event.target.src = 'assets/images/default-company.png';
   }
-  
-  
+
+
   ngOnInit() {
     this.vendorReports();
   }

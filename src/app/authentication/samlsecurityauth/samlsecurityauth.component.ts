@@ -6,6 +6,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { AuthenticationService } from 'app/core/services/authentication.service';
 import { Properties } from '../../common/models/properties';
 import { Processor } from '../../core/models/processor';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $: any;
 
 @Component({
@@ -19,7 +20,7 @@ export class SamlsecurityauthComponent implements OnInit {
   userName: string;
   constructor(public authenticationService: AuthenticationService, public processor: Processor,
     public activatedRoute: ActivatedRoute, public router: Router, public xtremandLogger: XtremandLogger,
-    public userService: UserService) { }
+    public userService: UserService, private vanityURLService: VanityURLService) { }
 
   ngOnInit() {
     try {
@@ -65,6 +66,31 @@ export class SamlsecurityauthComponent implements OnInit {
     this.authenticationService.access_token = result.access_token;
     this.authenticationService.refresh_token = result.refresh_token;
     this.authenticationService.expires_in = result.expires_in;
+
+    if (this.vanityURLService.isVanityURLEnabled()) {      
+      this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
+        this.authenticationService.v_companyName = result.companyName;
+        this.authenticationService.vanityURLink = result.vanityURLink;
+        this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
+        this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
+        if (result.companyBgImagePath) {
+          this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
+        } else {
+          this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+        }
+        this.authenticationService.getVanityURLUserRoles(this.userName, this.authenticationService.access_token).subscribe(result => {
+          this.authenticationService.vanityURLUserRoles = result.data;
+          this.getUserNameDetailsByUserName();
+        });
+      }, error => {
+        console.log(error);
+      });
+    }else{
+      this.getUserNameDetailsByUserName();
+    }    
+  }
+
+  getUserNameDetailsByUserName(){
     this.authenticationService.getUserByUserName(this.userName).subscribe((res: any) => {
       this.authenticationService.user.hasCompany = res.hasCompany;
       const userToken = {
@@ -77,16 +103,16 @@ export class SamlsecurityauthComponent implements OnInit {
         'roles': res.roles,
         'campaignAccessDto': res.campaignAccessDto,
         'logedInCustomerCompanyNeme': res.companyName,
-		'source':res.source
+        'source': res.source
       };
 
-      if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles){
+      if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
         userToken['roles'] = this.authenticationService.vanityURLUserRoles;
       }
 
       localStorage.setItem('currentUser', JSON.stringify(userToken));
-	  localStorage.setItem('defaultDisplayType',res.modulesDisplayType);
-   
+      localStorage.setItem('defaultDisplayType', res.modulesDisplayType);
+
       if (this.authenticationService.user.hasCompany) {
         this.router.navigateByUrl('/home/dashboard');
       } else {

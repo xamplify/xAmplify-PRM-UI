@@ -25,6 +25,11 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
+  getCompanyProfileNameByCompanyName(companyName:string){
+    const url = this.authenticationService.REST_URL + "v_url/getCompanyProfileName/" + companyName + '?access_token=' + this.authenticationService.access_token;
+    return this.http.get(url).map(this.extractData).catch(this.handleError);
+  }
+
   saveDashboardButton(dashboardButton: DashboardButton) {
     const url = this.authenticationService.REST_URL + "v_url/save/dashboardButton?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, dashboardButton)
@@ -89,7 +94,6 @@ export class VanityURLService {
     //let url = "analytifyorg.xamplify.com";
     //let url = "tga.xamplify.com";
     let url =window.location.hostname;
-    
     if (!url.includes("release")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {

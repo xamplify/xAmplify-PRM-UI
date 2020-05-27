@@ -39,7 +39,7 @@ import { PublicPageResponseComponent } from 'app/common/public-page-response/pub
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent },    
     { path: 'signup', component: SignupComponent },
     { path: 'signup/:alias', component: SignupComponent },
     { path: 'v-signup', component: SignupComponent },
@@ -103,6 +103,7 @@ export const routes: Routes = [
     { path: 'axAa/:alias', component: AccessAccountComponent },
     { path: 'download/:type', component: DownloadTemplateComponent },
     {path: 'samlsecurity/:alias', component:SamlsecurityauthComponent},
+    {path: 'au/:alias', component:SamlsecurityauthComponent},
     { path: '**', component: PageNotFoundComponent },
 ];
 
