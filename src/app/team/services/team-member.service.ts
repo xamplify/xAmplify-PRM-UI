@@ -120,10 +120,26 @@ export class TeamMemberService{
     }
     
     changeStatus(teamMember:TeamMember) {
-        console.log(teamMember.status);
         return this.http.post(this.URL + "admin/changeTeamMemberStatus?access_token=" + this.authenticationService.access_token,teamMember)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    listTeamMemberModules(input:any){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        input['vanityUrlFilter'] = vanityUrlFilter;
+        input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+        var url =this.URL+"teamMember/listTeamMemberModulesByUserId/?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, input)
+        .map(this.extractData)
+        .catch(this.handleError);   
+    }
+
+    listTeamMembers(pagination:Pagination){
+        var url =this.URL+"teamMember/listTeamMembers?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);   
     }
     
     private extractData(res: Response) {
