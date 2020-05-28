@@ -14,6 +14,7 @@ import { SocialConnection } from '../social/models/social-connection';
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
+    superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
@@ -85,7 +86,7 @@ export class DashboardService {
     }
 
     loadVendorDetails(userId: number, pagination: Pagination) {
-        const url = this.authenticationService.REST_URL+ 'vendor/details?access_token=' + this.authenticationService.access_token + '&partnerId=' + userId;
+        const url = this.authenticationService.REST_URL+ 'vendor/details?partnerId='+userId+'&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -264,8 +265,14 @@ export class DashboardService {
     
     
     listDemoRequests(pagination: Pagination) {
-        console.log(pagination);
         const url = this.demoUrl+ 'list?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listAllApprovedUsers(pagination: Pagination) {
+        const url = this.superAdminUrl+ 'listAllAccounts?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -273,7 +280,6 @@ export class DashboardService {
 
     private extractData(res: Response) {
         let body = res.json();
-        // console.log("response.json(): "+body);
         return body || {};
     }
 

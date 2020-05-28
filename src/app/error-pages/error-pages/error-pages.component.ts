@@ -30,7 +30,7 @@ export class ErrorPagesComponent implements OnInit, OnDestroy {
       this.errorCode = +params['errorStatusId']; // (+) converts string 'id' to a number
     });
 
-    if (this.errorCode === 503 || this.errorCode === 0) {
+    if (this.errorCode === 503 || this.errorCode === 0 || this.errorCode==401) {
       this.router.navigate(['/su']);
     }
   }

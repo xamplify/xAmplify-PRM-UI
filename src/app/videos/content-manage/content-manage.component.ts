@@ -54,7 +54,8 @@ export class ContentManageComponent implements OnInit {
       public authenticationService: AuthenticationService, private logger: XtremandLogger,
       private emailTemplateService: EmailTemplateService, private contentManagement: ContentManagement ) {
       this.loggedInUserId = this.authenticationService.getUserId();
-      this.isListView = !this.referenceService.isGridView;
+      this.isListView = "LIST" ==localStorage.getItem('defaultDisplayType');
+      
       if(this.referenceService.contentManagementLoader){
          this.customResponse = new CustomResponse( 'SUCCESS', 'File(s) processed successfully.', true );
          this.referenceService.contentManagementLoader = false;

@@ -332,7 +332,7 @@
                 </button>
               </div>
               <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
-                [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+                [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}" *ngIf="!campaign.publicEventCampaign">
                 <button class="portlet light color1-invert crcb" (click)="getRsvpDetails('NO');searchKey=''"
                   [disabled]="campaignReport.totalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
                   <div class="portlet-body text-center">
@@ -345,8 +345,8 @@
                   </div>
                 </button>
               </div>
-              <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding"
-                [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}">
+              <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"
+                [ngClass]="{'eight-tile-width': campaign.publicEventCampaign}" >
                 <button class="portlet light color1-invert crcb" (click)="getRsvpDetails('MAYBE');searchKey=''"
                   [disabled]="campaignReport.totalMayBeCount < 1 || !isPartnerEnabledAnalyticsAccess">
                   <div class="portlet-body text-center">
@@ -418,8 +418,8 @@
                           <th style="font-size: 12px; font-weight: 500;">INVITES</th>
                           <th style="font-size: 12px; font-weight: 500;">EMAIL OPENED</th>
                           <th style="font-size: 12px; font-weight: 500;">YES</th>
-                          <th style="font-size: 12px; font-weight: 500;">NO</th>
-                          <th style="font-size: 12px; font-weight: 500;">MAYBE</th>
+                          <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">NO</th>
+                          <th style="font-size: 12px; font-weight: 500;" *ngIf="!campaign.publicEventCampaign">MAYBE</th>
                           <th style="font-size: 12px; font-weight: 500;">NOT YET</th>
                           <th style="font-size: 12px; font-weight: 500;">ATTENDEES <br>
                             <h6 class="m0" style="font-size:9px"><b>(
@@ -441,10 +441,10 @@
                           <td>
                             <h6>{{campaignReport.partnersYesCount}}</h6>
                           </td>
-                          <td>
+                          <td *ngIf="!campaign.publicEventCampaign">
                             <h6>{{campaignReport.partnersNoCount}}</h6>
                           </td>
-                          <td>
+                          <td *ngIf="!campaign.publicEventCampaign">
                             <h6>{{campaignReport.partnersMayBeCount}}</h6>
                           </td>
                           <td class="center">
@@ -774,43 +774,44 @@
                   </div>
                   <div *ngIf="campaignViewsPagination.pagedItems?.length != 0">
                     <div class="table-responsive set-overflow-none">
-                      <div class="row">
+                      <div class="row" *ngIf="campaign.channelCampaign">
                         <div class="col-lg-6 p0"></div>
                         <div class="col-lg-6 p0" id="float-right" *ngIf="campaignType==='EVENT'">
                           <div class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign"></div>
                           <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
                             <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'YES'"
-                              disabled="disabled">
+                              (click)="goToAllPartnerRsvpDetails('YES')" >
                               <div class="portlet-body text-center">
                                 <i class="fa fa-check-circle fs30"></i>
                                 <h1 class="fs14">
-                                  <b>0</b>
-                                  <span>Yes ( 0 )</span>
+                                  <b>{{this.campaignReport.allPartnersYesCount}}</b>
+                                  <span>Yes ( {{this.campaignReport.allPartnersAdditionalCount}} )</span>
                                 </h1>
 
                               </div>
                             </button>
                           </div>
-                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
+                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
                             <button class="portlet light color1-invert crcb" [class.selectedBox]="detailType === 'NO'"
                               disabled="disabled">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-times-circle fs30"></i>
                                 <h1 class="fs14">
-                                  <b>0</b>
+                                  <b>{{this.campaignReport.allPartnersNoCount}}</b>
                                   <span>No</span>
                                 </h1>
 
                               </div>
                             </button>
                           </div>
-                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding">
+                          <div [hidden]="mainLoader" class="col-xs-6 col-lg-3 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
                             <button class="portlet light color1-invert crcb"
-                              [class.selectedBox]="detailType === 'MAYBE'" disabled="disabled">
+                            (click)="goToAllPartnerRsvpDetails('MAYBE')"
+                              [class.selectedBox]="detailType === 'MAYBE'">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-question-circle fs30"></i>
                                 <h1 class="fs14">
-                                  <b>0</b>
+                                  <b>{{this.campaignReport.allPartnersMayBeCount}}</b>
                                   <span>Maybe</span>
                                 </h1>
 
@@ -821,7 +822,7 @@
                             class="col-xs-6 col-lg-3 rsvp_tile_padding">
                             <button class="portlet light color1-invert crcb"
                               [class.selectedBox]="detailType === 'TOTAL_PARTNER_LEADS'"
-                              (click)="goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
+                              (click)="goToAllPartnerRsvpDetails('TOTAL_PARTNER_LEADS')" 
                               [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
                               <div class="portlet-body text-center">
                                 <i class="fa fa-user-secret fs30"></i>
@@ -849,8 +850,8 @@
                               
                               
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
-                              <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">No</th>
-                              <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">MayBe</th>
+                              <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign" >No</th>
+                              <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">MayBe</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Not Yet</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && !isChannelCampaign">Response
                                 Type</th>
@@ -904,9 +905,9 @@
                                   {{item.rsvpMap.emailOpenedCount}}</td>
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
                                   {{item.rsvpMap.YES}}</td>
-                                <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
+                                <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
                                   {{item.rsvpMap.NO}}</td>
-                                <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
+                                <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">
                                   {{item.rsvpMap.MAYBE}}</td>
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
                                   {{item.rsvpMap.notYetResponded}}</td>
@@ -1059,6 +1060,8 @@
                                         <th class="center-aligned">Reply Time</th>
                                         <th class="center-aligned">Sent Time</th>
                                         <th class="center-aligned">Opened Time</th>
+                                        <th class="center-aligned">URLS CLICKED COUNT</th>
+                                        <th class="center-aligned">CLICKED URLS</th>
                                       </tr>
                                     </thead>
                                     <tbody>
@@ -1089,6 +1092,14 @@
                                           <td class="center-aligned"
                                             *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
                                             -
+                                          </td>
+                                          <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
+                                          <td class="center-aligned">
+                                            <table>
+                                              <tr *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
+                                                <td style="padding:5px">{{clickedUrls}}</td>
+                                              </tr>
+                                            </table>
                                           </td>
                                         </tr>
                                       </ng-container>
@@ -1371,11 +1382,11 @@
       </div>
       <div class="col-xs-12 emails-info" id='values' [hidden]="mainLoader">
 
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpInvitiesDetails()"
             [class.selectedBox]="rsvpResposeType === 'invities'"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-            [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess">
+            [disabled]="campaignReport.redistributionTotalInvitiesCount < 1 || !isPartnerEnabledAnalyticsAccess || rsvpDetailType === 'reDistribution'">
             <div class="portlet-body text-center">
               <i class="fa fa-envelope"></i>
               <h1>
@@ -1387,11 +1398,11 @@
           </button>
         </div>
 
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" (click)="resetRsvpPagination();getRsvpEmailOpenDetails()"
             [class.selectedBox]="rsvpResposeType === 'email open'"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-            [disabled]="!isPartnerEnabledAnalyticsAccess">
+            [disabled]="!isPartnerEnabledAnalyticsAccess || rsvpDetailType === 'reDistribution'">
             <div class="portlet-body text-center">
               <i class="fa fa-envelope-open"></i>
               <h1>
@@ -1416,11 +1427,11 @@
             </div>
           </button>
         </div>
-        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NO'"
             (click)="resetRsvpPagination();getRsvpDetails('NO')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-            [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess">
+            [disabled]="campaignReport.redistributionTotalNoCount < 1 || !isPartnerEnabledAnalyticsAccess || rsvpDetailType === 'reDistribution' || rsvpDetailType === 'allPartnerRedistributionRsvp'">
             <div class="portlet-body text-center">
               <i class="fa fa-times-circle"></i>
               <h1>
@@ -1430,7 +1441,7 @@
             </div>
           </button>
         </div>
-        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div class="p-5x" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="!campaign.publicEventCampaign">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'MAYBE'"
             (click)="resetRsvpPagination();getRsvpDetails('MAYBE')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
@@ -1444,11 +1455,11 @@
             </div>
           </button>
         </div>
-        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
+        <div [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding" *ngIf="rsvpDetailType !== 'allPartnerRedistributionRsvp'">
           <button class="portlet light color1-invert crcb" [class.selectedBox]="rsvpResposeType === 'NOTYET'"
             (click)="resetRsvpPagination();getRsvpDetails('NOTYET')"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
-            [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess">
+            [disabled]="campaignReport.redistributionTotalNotYetRespondedCount < 1 || !isPartnerEnabledAnalyticsAccess || rsvpDetailType === 'reDistribution'">
             <div class="portlet-body text-center">
               <i class="fa fa-exclamation-circle"></i>
               <h1>
@@ -1461,13 +1472,13 @@
         <div *ngIf="campaign.publicEventCampaign" [hidden]="mainLoader" class="col-xs-6 col-lg-2 rsvp_tile_padding">
           <button class="portlet light color1-invert crcb"
             [class.selectedBox]="rsvpResposeType === 'TOTAL_PARTNER_LEADS'"
-            (click)="resetRsvpPagination();goToPartnerRsvpDetails('TOTAL_PARTNER_LEADS')"
+            (click)="setCondition()"
             [ngClass]="{'forbidden' :!isPartnerEnabledAnalyticsAccess ?true:null}"
             [disabled]="campaignReport.totalPartnerLeadsCount < 1 || !isPartnerEnabledAnalyticsAccess">
             <div class="portlet-body text-center">
               <i class="fa fa-user-secret"></i>
               <h1>
-                <b>{{campaignReport.totalPartnerLeadsCount}}</b>
+                <b>{{campaignReport.redistributionTotalLeadsCount}}</b>
               </h1>
               <h5>Total Leads</h5>
             </div>
@@ -1625,8 +1636,10 @@
           <div data-animation="slideInUp">
             <div class="row mb10">
               <img src="/assets/images/user.png" width="48px" class="user-profile-image">
+             <ng-container *ngIf="!disabled">
               <span
-                *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
+                *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&
+                  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   [disabled]="userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00' "
                   title=" Please watch the video to {{dealButtonText}} " class="btn btn-success"
@@ -1634,11 +1647,16 @@
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   title=" {{dealButtonText}} " class="btn btn-success"
                   *ngIf="campaignType=='VIDEO' && !(userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00')">{{dealButtonText}}</button>
-
-
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   class="btn btn-success" *ngIf="campaignType!='VIDEO'">{{dealButtonText}}</button>
               </span>
+            </ng-container>
+            <ng-container *ngIf="disabled">
+              <button title="This campaign has been deleted by your vendor.You can't register a lead" 
+              style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
+               class="btn btn-success">{{dealButtonText}}</button>
+            </ng-container>
+
               <h5 class="f-w-600 mt10 mb0"><span
                   *ngIf="selectedRow?.firstName">{{selectedRow.firstName | slice:0:20}}</span>
                 <span *ngIf="selectedRow.firstName?.length>20">..</span>

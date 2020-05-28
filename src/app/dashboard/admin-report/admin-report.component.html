@@ -1,18 +1,21 @@
+
+<ng-container *ngIf="!referenceService.loaderFromAdmin">
 <div class="page-content ml0">
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="page-bar">
     <ul class="page-breadcrumb">
       <li>
-        <i class="fa fa-home"></i>
+        <i class="fa fa-home" aria-hidden="true"></i>
         <a (click)="detailsTielsView = false">Admin Report</a>
       </li>
       <li *ngIf="detailsTielsView">
-        <i class="fa fa-angle-right"></i>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
         <a>Vendor Report</a>
       </li>
     </ul>
   </div>
   <div>
+   <app-list-all-users></app-list-all-users> 
   <app-demo-request *ngIf="!detailsTielsView"></app-demo-request>
 	  <section *ngIf="!detailsTielsView">
       <div class="col-sm-6 col-xs-12">
@@ -325,3 +328,6 @@
       </div>
     </div>
   </div>
+</ng-container>
+
+

@@ -331,9 +331,10 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
         this.isCampaignEmailTemplate = false;
         this.emailTemplateService.delete( id )
             .subscribe(
-            ( data: string ) => {
-                if(data=="Success"){
-                    //document.getElementById( 'emailTemplateListDiv_' + id ).remove();
+            ( data: any ) => {
+            if(data.access){
+                let message = data.message;
+                if(message=="Success"){
                     this.refService.showInfo( "Email Template Deleted Successfully", "" );
                     this.selectedEmailTemplateName =  name+ ' deleted successfully';
                     this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
@@ -344,16 +345,18 @@ export class ManageTemplateComponent implements OnInit,OnDestroy {
                 }else{
                     this.isEmailTemplateDeleted = false;
                     this.isCampaignEmailTemplate = true;
-                    let result = data.split(",");
+                    let result = message.split(",");
                     let campaignNames = "";
                     $.each(result,function(index,value){
                         campaignNames+= (index+1)+"."+value+"<br><br>";
                     });
-                   // let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
-                    let message = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>"+campaignNames;
-                    this.customResponse = new CustomResponse('ERROR',message,true );
+                    let updatedMessage = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>"+campaignNames;
+                    this.customResponse = new CustomResponse('ERROR',updatedMessage,true );
                     this.refService.loading(this.httpRequestLoader, false);
                 }
+            }else{
+                this.authenticationService.forceToLogout();
+            }
 
             },
             ( error: string ) => {

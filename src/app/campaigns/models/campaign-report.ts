@@ -60,6 +60,7 @@ export class CampaignReport {
     redistributionTotalEmailOpenCount: number = 0;
     redistributionTotalInvitiesCount: number = 0;
     redistributionTotalAdditionalCount: number = 0;
+    redistributionTotalLeadsCount: number = 0;
 
     selectedPartnerFirstName: string;
     selectedPartnerLastName: string;
@@ -77,5 +78,10 @@ export class CampaignReport {
     noPartnerLeadCount: number = 0;
     maybePartnerLeadCount: number = 0;
     totalPartnerLeadsCount:number = 0;
+    
+    allPartnersYesCount: number = 0;
+    allPartnersNoCount: number = 0;   
+    allPartnersMayBeCount: number = 0;
+    allPartnersAdditionalCount: number = 0;
 
 }

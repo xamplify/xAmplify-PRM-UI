@@ -79,18 +79,22 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.referenceService.loading(this.httpRequestLoader, true);
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
-              const data = response.data;
-              this.statusCode = response.statusCode;
-              if (this.statusCode == 200) {
-                  pagination.totalRecords = data.totalRecords;
-                  this.sortOption.totalRecords = data.totalRecords;
-                  $.each(data.landingPages, function (index, landingPage) {
-                      landingPage.displayTime = new Date(landingPage.createdDateInString);
-                  });
-                  pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
-              }
-              this.referenceService.loading(this.httpRequestLoader, false);
-
+            if(response.access){
+                const data = response.data;
+                this.statusCode = response.statusCode;
+                if (this.statusCode == 200) {
+                    pagination.totalRecords = data.totalRecords;
+                    this.sortOption.totalRecords = data.totalRecords;
+                    $.each(data.landingPages, function (index, landingPage) {
+                        landingPage.displayTime = new Date(landingPage.createdDateInString);
+                    });
+                    pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                }
+                this.referenceService.loading(this.httpRequestLoader, false);
+            }else{
+                this.authenticationService.forceToLogout();
+            }
+         
           },
           (error: any) => { this.logger.errorPage(error); });
   }
@@ -188,23 +192,28 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       this.landingPageService.deletebById(landingPage.id)
           .subscribe(
               (response: any) => {
-                  if (response.statusCode == 200) {
-                      let message = landingPage.name + " deleted successfully";
-                      this.customResponse = new CustomResponse('SUCCESS', message, true);
-                      this.pagination.pageIndex = 1;
-                      this.listLandingPages(this.pagination);
-                      this.exportObject['categoryId'] = this.categoryId;
-					  this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-                      this.updatedItemsCount.emit(this.exportObject);
-                  } else {
-                      let campaignNames = "";
-                      $.each(response.data, function (index, value) {
-                          campaignNames += (index + 1) + "." + value + "<br><br>";
-                      });
-                      let message = response.message + "<br><br>" + campaignNames;
-                      this.customResponse = new CustomResponse('ERROR', message, true);
-                      this.referenceService.loading(this.httpRequestLoader, false);
+                  if(response.access){
+                    if (response.statusCode == 200) {
+                        let message = landingPage.name + " deleted successfully";
+                        this.customResponse = new CustomResponse('SUCCESS', message, true);
+                        this.pagination.pageIndex = 1;
+                        this.listLandingPages(this.pagination);
+                        this.exportObject['categoryId'] = this.categoryId;
+                        this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+                        this.updatedItemsCount.emit(this.exportObject);
+                    } else {
+                        let campaignNames = "";
+                        $.each(response.data, function (index, value) {
+                            campaignNames += (index + 1) + "." + value + "<br><br>";
+                        });
+                        let message = response.message + "<br><br>" + campaignNames;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                        this.referenceService.loading(this.httpRequestLoader, false);
+                    }
+                  }else{
+                        this.authenticationService.forceToLogout();
                   }
+                 
 
               },
               (error: string) => {

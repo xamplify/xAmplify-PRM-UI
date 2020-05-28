@@ -143,16 +143,22 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignService.listCampaign(pagination, this.loggedInUserId)
             .subscribe(
             data => {
-                this.campaigns = data.campaigns;
-                $.each(this.campaigns, function (_index:number, campaign) {
-                    campaign.displayTime = new Date(campaign.utcTimeInString);
-                    campaign.createdDate = new Date(campaign.createdDate);
-                });
-                this.totalRecords = data.totalRecords;
-                pagination.totalRecords = data.totalRecords;
-                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                this.refService.loading(this.httpRequestLoader, false);
                 this.isloading = false;
+                if(data.access){
+                    this.campaigns = data.campaigns;
+                    $.each(this.campaigns, function (_index:number, campaign) {
+                        campaign.displayTime = new Date(campaign.utcTimeInString);
+                        campaign.createdDate = new Date(campaign.createdDate);
+                    });
+                    this.totalRecords = data.totalRecords;
+                    pagination.totalRecords = data.totalRecords;
+                    pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                    this.refService.loading(this.httpRequestLoader, false);
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                
+                
             },
             error => {
                 this.isloading = false;
@@ -344,14 +350,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.campaignService.delete(id)
             .subscribe(
             data => {
-                this.refService.loading(this.httpRequestLoader, false);
-                this.isCampaignDeleted = true;
-                const deleteMessage = campaignName + ' deleted successfully';
-                this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
-                this.pagination.pagedItems.splice(position, 1);
-                this.pagination.pageIndex = 1;
-                this.listCampaign(this.pagination);
-                this.listNotifications();
+                if(data.access){
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.isCampaignDeleted = true;
+                    const deleteMessage = campaignName + ' deleted successfully';
+                    this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+                    this.pagination.pagedItems.splice(position, 1);
+                    this.pagination.pageIndex = 1;
+                    this.listCampaign(this.pagination);
+                    this.listNotifications();
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+                
             },
             error => { this.logger.errorPage(error) },
             () => console.log("Campaign Deleted Successfully")
@@ -395,14 +406,19 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         $('#saveAsModal').modal('hide');
         this.refService.loading(this.httpRequestLoader, true);
         const campaignData = this.setCampaignData();
+        campaignData.userId = this.authenticationService.getUserId();
         this.campaignService.saveAsCampaign(campaignData)
             .subscribe(data => {
-                this.refService.loading(this.httpRequestLoader, false);
-                this.campaignSuccessMessage = "Campaign copied successfully";
-                $('#lanchSuccess').show(600);
-                this.showMessageOnTop();
-                this.listCampaign(this.pagination);
-                console.log("saveAsCampaign Successfully");
+                if(data.access){
+                    this.refService.loading(this.httpRequestLoader, false);
+                    this.campaignSuccessMessage = "Campaign copied successfully";
+                    $('#lanchSuccess').show(600);
+                    this.showMessageOnTop();
+                    this.listCampaign(this.pagination);
+                    console.log("saveAsCampaign Successfully");
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
             },
             error => {
                 $('#saveAsModal').modal('hide'); this.logger.errorPage(error)

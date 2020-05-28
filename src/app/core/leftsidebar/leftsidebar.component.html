@@ -1,4 +1,5 @@
 <!-- BEGIN SIDEBAR -->
+<ng-container *ngIf="!refService.loaderFromAdmin">
 <div class="page-sidebar-wrapper" *ngIf="(authService.user.hasCompany || authService.isOnlyUser()) && !(authService.isSuperAdmin())">
     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
     <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
@@ -97,7 +98,7 @@
                     </li>
                 </ul>
             </li>
-            <li *ngIf="authService.module.hasPartnerLandingPageAccess" [ngClass]="{'active': location.path().includes('landing-pages')}">
+            <li *ngIf="authService.module.hasPartnerLandingPageAccess && authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('landing-pages')}">
                 <a [routerLink]="['./pages/partner']">
                     <i class="fa fa-wpforms"></i>
                     <span class="title">Pages</span>
@@ -179,3 +180,5 @@
         <!-- END SIDEBAR MENU -->
     </div>
 </div>
+
+</ng-container>

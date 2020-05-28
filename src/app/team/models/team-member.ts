@@ -23,4 +23,5 @@ export class TeamMember{
     status:Status;
     enabled:boolean = true;
     orgAdminId:number;
+    loggedInUserId:number;
 }

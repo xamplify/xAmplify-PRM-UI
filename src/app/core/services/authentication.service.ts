@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
 import { EnvService } from 'app/env.service';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/map';
@@ -64,6 +65,8 @@ export class AuthenticationService {
     vendorRoleHash = "";
     partnerRoleHash  = "";
     sessinExpriedMessage = "";
+    private userLoggedIn = new Subject<boolean>();
+
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;
         this.APP_URL = this.envService.CLIENT_URL;
@@ -77,7 +80,18 @@ export class AuthenticationService {
         this.imagesHost = this.envService.imagesHost;
         this.vendorRoleHash = this.envService.vendorRoleHash;
         this.partnerRoleHash = this.envService.partnerRoleHash;
+        this.userLoggedIn.next(false);
     }
+
+
+    
+  setUserLoggedIn(userLoggedIn: boolean) {
+    this.userLoggedIn.next(userLoggedIn);
+  }
+
+  getUserLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn.asObservable();
+  }
 
     getOptions(): RequestOptions {
         let options: RequestOptions;
@@ -127,6 +141,7 @@ export class AuthenticationService {
                     this.user = res.json();
                     this.userProfile = res.json();
                     this.logedInCustomerCompanyNeme =res.json().companyName;
+                    this.setUserLoggedIn(true);
                 }));
     }
     getUserByUserName(userName: string) {
@@ -409,7 +424,12 @@ export class AuthenticationService {
         module.isReDistribution = false;
         this.isShowRedistribution = false;
         this.enableLeads = false;
-        swal.close();
+        try{
+          swal.close();
+        }catch(error){
+         console.log(error);
+        }
+        this.setUserLoggedIn(false);
         if ( !this.router.url.includes( '/userlock' ) ) {
             if ( this.envService.CLIENT_URL === 'https://xamplify.io/' ) {
                 window.location.href = 'https://www.xamplify.com/';
@@ -478,9 +498,18 @@ export class AuthenticationService {
     }
   }
 
+  forceToLogout(){
+    this.sessinExpriedMessage = "Your role has been changed. Please login again.";
+    this.logout();
+  }
+
+  checkPartnerAccess(userId:number) {
+    return this.http.get(this.REST_URL + "admin/hasPartnerAccess/"+userId+"?access_token=" + this.access_token, "")
+        .map(this.extractData)
+        .catch(this.handleError);
+}
     extractData( res: Response ) {
         let body = res.json();
-        console.log( body );
         return body || {};
     }
 

@@ -306,33 +306,32 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
       this.isCampaignEmailTemplate = false;
       this.emailTemplateService.delete( id )
           .subscribe(
-          ( data: string ) => {
-              if(data=="Success"){
-                  //document.getElementById( 'emailTemplateListDiv_' + id ).remove();
-                  this.refService.showInfo( "Email Template Deleted Successfully", "" );
-                  this.selectedEmailTemplateName =  name+ ' deleted successfully';
-                  this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
-                  this.isEmailTemplateDeleted = true;
-                  this.isCampaignEmailTemplate = false;
-                  this.pagination.pageIndex = 1;
-                  this.listEmailTemplates(this.pagination);
-                  this.exportObject['categoryId'] = this.categoryId;
-                  this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-                  this.updatedItemsCount.emit(this.exportObject);
-              }else{
-                  this.isEmailTemplateDeleted = false;
-                  this.isCampaignEmailTemplate = true;
-                  let result = data.split(",");
-                  let campaignNames = "";
-                  $.each(result,function(index,value){
-                      campaignNames+= (index+1)+"."+value+"<br><br>";
-                  });
-                 // let message = "Please delete associated campaign(s)<br><br>"+campaignNames;
-                  let message = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>"+campaignNames;
-                  this.customResponse = new CustomResponse('ERROR',message,true );
-                  this.refService.loading(this.httpRequestLoader, false);
-              }
-
+          ( data: any ) => {
+            if(data.access){
+                let message = data.message;
+                if(message=="Success"){
+                    this.refService.showInfo( "Email Template Deleted Successfully", "" );
+                    this.selectedEmailTemplateName =  name+ ' deleted successfully';
+                    this.customResponse = new CustomResponse('SUCCESS',this.selectedEmailTemplateName,true );
+                    this.isEmailTemplateDeleted = true;
+                    this.isCampaignEmailTemplate = false;
+                    this.pagination.pageIndex = 1;
+                    this.listEmailTemplates(this.pagination);
+                }else{
+                    this.isEmailTemplateDeleted = false;
+                    this.isCampaignEmailTemplate = true;
+                    let result = message.split(",");
+                    let campaignNames = "";
+                    $.each(result,function(index,value){
+                        campaignNames+= (index+1)+"."+value+"<br><br>";
+                    });
+                    let updatedMessage = "This template is being used in Campaign(s) / Auto Response(s) / Redistributed Campaign(s)<br><br>"+campaignNames;
+                    this.customResponse = new CustomResponse('ERROR',updatedMessage,true );
+                    this.refService.loading(this.httpRequestLoader, false);
+                }
+            }else{
+                this.authenticationService.forceToLogout();
+            }
           },
           ( error: string ) => {
               this.logger.errorPage(error);

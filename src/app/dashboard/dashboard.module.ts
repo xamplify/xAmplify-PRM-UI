@@ -36,6 +36,7 @@ import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import { DemoRequestComponent } from './demo-request/demo-request.component';
 import { DynamicEmailContentComponent } from './dynamic-email-content/dynamic-email-content.component';
 import { SamlsecurityComponent } from './samlsecurity/samlsecurity.component';
+import { ListAllUsersComponent } from './list-all-users/list-all-users.component';
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
@@ -46,7 +47,8 @@ import { SamlsecurityComponent } from './samlsecurity/samlsecurity.component';
         VendorRequestReportComponent,
         DemoRequestComponent,
         DynamicEmailContentComponent,
-        SamlsecurityComponent
+        SamlsecurityComponent,
+        ListAllUsersComponent
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]

@@ -71,9 +71,6 @@ export class VendorReportsComponent implements OnInit {
   navigateToVendorCampaigns(venderReport: any) {
     this.loading = true;
     this.referenseService.vendorDetails = venderReport;
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
     this.router.navigateByUrl("/home/campaigns/vendor/all");
   }
   errorHandler(event){

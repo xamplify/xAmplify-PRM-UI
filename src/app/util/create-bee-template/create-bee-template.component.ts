@@ -84,6 +84,7 @@ editPartnerTemplate() {
         mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
         mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
         mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+        mergeTags.push( { name: 'Sender Title', value: this.senderMergeTag.senderTitle } );
         mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
         mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
         mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
@@ -180,8 +181,12 @@ this.referenceService.showSweetAlert( "", "This template cannot be edited.", "er
     this.emailTemplateService.updatePartnerTemplate(emailTemplate).
     subscribe(
         data => {
-            this.loading = false;
+          this.loading = false;
+          if(data.access){
             this.customResponse = new CustomResponse('SUCCESS','Template updated successfully',true);
+          }else{  
+              this.authenticationService.forceToLogout();
+          }
         },
         error => {
             this.loading = false;

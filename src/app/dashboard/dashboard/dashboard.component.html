@@ -72,6 +72,8 @@
         margin: 2px;
     }
 </style>
+
+<ng-container *ngIf="!referenceService.loaderFromAdmin">
 <div class="page-content" *ngIf="authenticationService.isOnlyUser()">
     <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
         <div class="col-xs-12 col-sm-6 p0">
@@ -659,6 +661,7 @@
     </ng-container>
     <app-scroll-top></app-scroll-top>
 </div>
+</ng-container>
 <!-- Modals -->
 <div class="modal right fade" id="emailClickedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
     <!-- style="width: 80%; margin: 1em auto" -->

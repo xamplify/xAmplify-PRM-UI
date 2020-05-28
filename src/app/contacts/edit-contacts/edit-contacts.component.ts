@@ -1881,6 +1881,10 @@ goBackToManageList(){
 							} else {
 								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
 							}
+							
+						    this.selectedContactListIds = [];
+							this.isHeaderCheckBoxChecked = false;
+							
 							this.checkingLoadContactsCount = true
 							this.editContactListLoadAllUsers(this.contactListId, this.pagination);
 						}else{

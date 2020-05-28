@@ -62,6 +62,7 @@ import { CommonComponentModule } from 'app/common/common.module';
 import { HubSpotService } from './core/services/hubspot.service';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { IntegrationService } from './core/services/integration.service';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
 
 
 @NgModule({
@@ -73,7 +74,7 @@ import { IntegrationService } from './core/services/integration.service';
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot()],
     providers: [{
         provide: Http,
         useFactory: httpService,

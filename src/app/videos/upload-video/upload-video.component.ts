@@ -154,7 +154,13 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                     this.customResponse = new CustomResponse( 'ERROR', this.videoUtilService.noSpaceMesg, true );
                     this.setTimoutMethod();
                 } else {
-                     this.processVideo(JSON.parse(response).path);
+                	if(JSON.parse(response).access){
+                		this.processVideo(JSON.parse(response).data);
+                		}
+                		else{
+                		this.authenticationService.forceToLogout();
+                		}
+                	
                     }
               };
               $('head').append('<link href="assets/js/indexjscss/webcam-capture/nvideojs.record.css" rel="stylesheet"  class="r-video">');

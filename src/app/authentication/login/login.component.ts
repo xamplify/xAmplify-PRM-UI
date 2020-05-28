@@ -50,65 +50,72 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     public login() {
         try{
-        this.loading = true;
-        this.resendActiveMail = false;
-        if (!this.model.username || !this.model.password) {
-            this.loading = false;
-            this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
-        } else {
-          this.model.username = this.model.username.replace(/\s/g, '');
-          this.model.password = this.model.password.replace(/\s/g, '');
-          const userName = this.model.username.toLowerCase();
-          this.referenceService.userName = userName;
-          const authorization = 'Basic ' + btoa('my-trusted-client:');
-          const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-          this.authenticationService.login(authorization, body, userName).subscribe(result => {
-              if (localStorage.getItem('currentUser')) {
-                  // if user is coming from login
-                  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                  this.xtremandLogger.log(currentUser);
-                  this.xtremandLogger.log(currentUser.hasCompany);
-                  localStorage.removeItem('isLogout');
-                  this.redirectTo(currentUser);
-                  // if user is coming from any link
-                  // if (this.authenticationService.redirectUrl) {
-                  //     this.router.navigate([this.authenticationService.redirectUrl]);
-                  //     this.authenticationService.redirectUrl = null;
-                  // }
-              } else {
-                  this.loading = false;
-                  this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-               }
-             },
-              (error: any) => {
-                try{
+          const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+          if(currentUser!=undefined){
+            this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
+          }else{
+            this.authenticationService.sessinExpriedMessage  = "";
+            this.loading = true;
+            this.resendActiveMail = false;
+            if (!this.model.username || !this.model.password) {
                 this.loading = false;
-                  const body = error['_body'];
-                    if (body !== "") {
-                      const response = JSON.parse(body);
-                      if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
-                          this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                      } else if (response.error_description === "User is disabled") {
-                        //this.resendActiveMail = true;
-                       // this.customResponse =  new CustomResponse();
-                       this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
-                      }else if(response.error_description === this.properties.OTHER_EMAIL_ISSUE){
-                        this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                      }else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS){
-                    	  this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS );
+                this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
+            } else {
+              this.model.username = this.model.username.replace(/\s/g, '');
+              this.model.password = this.model.password.replace(/\s/g, '');
+              const userName = this.model.username.toLowerCase();
+              this.referenceService.userName = userName;
+              const authorization = 'Basic ' + btoa('my-trusted-client:');
+              const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
+              this.authenticationService.login(authorization, body, userName).subscribe(result => {
+                  if (localStorage.getItem('currentUser')) {
+                      // if user is coming from login
+                      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                      this.xtremandLogger.log(currentUser);
+                      this.xtremandLogger.log(currentUser.hasCompany);
+                      localStorage.removeItem('isLogout');
+                      this.redirectTo(currentUser);
+                      // if user is coming from any link
+                      // if (this.authenticationService.redirectUrl) {
+                      //     this.router.navigate([this.authenticationService.redirectUrl]);
+                      //     this.authenticationService.redirectUrl = null;
+                      // }
+                  } else {
+                      this.loading = false;
+                      this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                   }
+                 },
+                  (error: any) => {
+                    try{
+                    this.loading = false;
+                      const body = error['_body'];
+                        if (body !== "") {
+                          const response = JSON.parse(body);
+                          if (response.error_description === "Bad credentials" || response.error_description ==="Username/password are wrong") {
+                              this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                          } else if (response.error_description === "User is disabled") {
+                            //this.resendActiveMail = true;
+                           // this.customResponse =  new CustomResponse();
+                           this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
+                          }else if(response.error_description === this.properties.OTHER_EMAIL_ISSUE){
+                            this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+                          }else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS){
+                            this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS );
+                          }
                       }
-                  }
-                  else {
-                      this.resendActiveMail = false;
-                      this.setCustomeResponse("ERROR", error);
-                      this.xtremandLogger.error("error:" + error)
-                  }
-                }catch(err){
-                  if( error.status===0 ) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
-                }
-              });
-          return false;
-        }
+                      else {
+                          this.resendActiveMail = false;
+                          this.setCustomeResponse("ERROR", error);
+                          this.xtremandLogger.error("error:" + error)
+                      }
+                    }catch(err){
+                      if( error.status===0 ) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check your internet connection'); }
+                    }
+                  });
+              return false;
+            }
+          }
+        
       }catch(error){ console.log('error'+error);}
     }
 
@@ -180,5 +187,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.referenceService.userProviderMessage = '';
         this.resendActiveMail = false;
         $('#org-admin-deactivated').hide();
+    }
+
+    loginUsingSocialAccounts(socialProvider:any){
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if(currentUser!=undefined){
+        this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
+      }else{
+        let loginUrl = "/"+socialProvider.name+"/login";
+         this.router.navigate([loginUrl]);
+      }
+      
+     
     }
 }

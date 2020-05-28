@@ -706,6 +706,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         if (!event.isSelectedHubSpotTemplate) {
             this.selectAllTemplates = false;
         }
+        
         this.saveHubSpotTemplatesButtonState();
     }
 
@@ -721,6 +722,12 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
         else {
             this.isSaveHubSpotTemplatesButtonState = false;
         }
+        
+       if(count == this.filteredEmailTemplates.length){
+        this.selectAllTemplates = true;
+      }else {
+        this.selectAllTemplates = false;
+      }
     }
 
     importHubSpotTemplates() {

@@ -15,19 +15,12 @@ export class ServiceUnavailableComponent implements OnInit {
 
   ngOnInit() {
     console.log("service unavailable component");
-    // Observable.interval(1000 * 60).subscribe(x => {
-    //  this.getUserByUserName(this.authenticationService.user.username);
-    // });
+    this.authenticationService.logout();
+    
   }
 
-  getUserByUserName( userName: string ) {
-  try{
-     if(userName) {
-      this.authenticationService.getUserByUserName( userName ).subscribe(
-        data => { this.router.navigate(['/home/dashboard']); },
-        error => { console.log( error ); this.router.navigate(['/su'])});
-     }
-    }catch(error){ console.log('error'+error);
-     if(localStorage.getItem('currentUser')) { } else { this.router.navigate(['/login'])}
-  }}
+  logout(){
+    this.authenticationService.logout();
+  }
+
   }

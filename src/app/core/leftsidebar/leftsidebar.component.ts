@@ -36,11 +36,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     landingPages:any;
     isLoggedInAsTeamMember = false;
     sourceType = "";
+    isLoggedInFromAdminPortal = false;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService ) {
         this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
         this.updateLeftSideBar( location );
         this.sourceType = this.authService.getSource();
+        this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal(); 
     }
 
     updateLeftSideBar( location: Location ) {
@@ -121,13 +123,16 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.pagination.pageIndex = 1;
                     this.pagination.maxResults = 10000;
                     this.dashBoardService.loadVendorDetails( this.authService.getUserId(), this.pagination ).subscribe( response => {
-                        response.data.forEach( element => {
-                            this.refService.getOrgCampaignTypes( element.companyId ).subscribe( data => {
-                                if ( !this.enableLeadsByVendor ) {
-                                    this.enableLeadsByVendor = data.enableLeads;
-                                }
+                        if(response.data!=undefined){
+                            response.data.forEach( element => {
+                                this.refService.getOrgCampaignTypes( element.companyId ).subscribe( data => {
+                                    if ( !this.enableLeadsByVendor ) {
+                                        this.enableLeadsByVendor = data.enableLeads;
+                                    }
+                                } );
                             } );
-                        } );
+                        }
+                       
                     } )
                     this.authService.module.isCompanyPartner = true;
                 }

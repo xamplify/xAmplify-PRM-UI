@@ -193,25 +193,29 @@ export class FormsListViewUtilComponent implements OnInit {
         this.formService.delete(form.id)
             .subscribe(
                 (response: any) => {
-                    if (response.statusCode == 200) {
-                        //document.getElementById('formListDiv_' + form.id).remove();
-                        this.referenceService.showInfo("Form Deleted Successfully", "");
-                        const message = response.message;
-                        this.customResponse = new CustomResponse('SUCCESS', message, true);
-                        this.pagination.pageIndex = 1;
-                        this.listForms(this.pagination);
-						this.exportObject['categoryId'] = this.categoryId;
-						this.exportObject['itemsCount'] = this.pagination.totalRecords;	
-                        this.updatedItemsCount.emit(this.exportObject);
-                    } else {
-                        let emailTemplateNames = "";
-                        $.each(response.data, function (index, value) {
-                            emailTemplateNames += (index + 1) + "." + value + "<br><br>";
-                        });
-                        let message = response.message + "<br><br>" + emailTemplateNames;
-                        this.customResponse = new CustomResponse('ERROR', message, true);
-                        this.referenceService.loading(this.httpRequestLoader, false);
+                    if(response.access){
+                        if (response.statusCode == 200) {
+                            this.referenceService.showInfo("Form Deleted Successfully", "");
+                            const message = response.message;
+                            this.customResponse = new CustomResponse('SUCCESS', message, true);
+                            this.pagination.pageIndex = 1;
+                            this.listForms(this.pagination);
+                            this.exportObject['categoryId'] = this.categoryId;
+                            this.exportObject['itemsCount'] = this.pagination.totalRecords;	
+                            this.updatedItemsCount.emit(this.exportObject);
+                        } else {
+                            let emailTemplateNames = "";
+                            $.each(response.data, function (index, value) {
+                                emailTemplateNames += (index + 1) + "." + value + "<br><br>";
+                            });
+                            let message = response.message + "<br><br>" + emailTemplateNames;
+                            this.customResponse = new CustomResponse('ERROR', message, true);
+                            this.referenceService.loading(this.httpRequestLoader, false);
+                        }
+                    }else{
+                        this.authenticationService.forceToLogout();
                     }
+                    
 
                 },
                 (error: string) => {

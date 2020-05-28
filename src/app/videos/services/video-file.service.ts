@@ -162,7 +162,7 @@ export class VideoFileService {
     }
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
         console.log('deleted video alias is ' + alias);
-        const url = this.URL + 'video-status-change/' + alias + '?status=DELETE&access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'video-status-change/' + alias +"/"+ this.authenticationService.user.id +'?status=DELETE&access_token=' + this.authenticationService.access_token;
         console.log('delete url is ' + url);
         return this.http.get(url, '')
             .map(this.extractData)

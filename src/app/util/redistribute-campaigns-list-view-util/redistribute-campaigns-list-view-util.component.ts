@@ -115,14 +115,19 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
         .subscribe(
           data => {
-            this.campaigns = data.campaigns;
-            $.each(this.campaigns,function(index,campaign){
-                campaign.displayTime = new Date(campaign.utcTimeInString);
-            });
-            this.totalRecords = data.totalRecords;
-            pagination.totalRecords = data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-            this.referenceService.stopLoader(this.httpRequestLoader);
+              if(data.access){
+                this.campaigns = data.campaigns;
+                $.each(this.campaigns,function(index,campaign){
+                    campaign.displayTime = new Date(campaign.utcTimeInString);
+                });
+                this.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                this.referenceService.stopLoader(this.httpRequestLoader);
+              }else{
+                this.authenticationService.forceToLogout();
+              }
+           
           },
           error => {
               this.xtremandLogger.errorPage(error);
@@ -345,20 +350,20 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       } else if(campaign.campaignType.indexOf('EVENT') > -1) {
         this.campaignService.reDistributeEvent = true;
         this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-        /* if(campaign.redistributedCount != 0 && !campaign.eventStarted && campaign.showCancelButton){
-            this.inviteMore(campaign);
-        }else{
-          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-        } */
       }
       else {
       const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
       this.campaignService.getParnterCampaignById(data)
           .subscribe(
               data => {
-                  this.campaignService.reDistributeCampaign = data;
-                  this.campaignService.isExistingRedistributedCampaignName = false;
-                  this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                  if(data.access){
+                    this.campaignService.reDistributeCampaign = data;
+                    this.campaignService.isExistingRedistributedCampaignName = false;
+                    this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                  }else{
+                    this.authenticationService.forceToLogout();
+                  }
+                 
               },
               error => { this.xtremandLogger.errorPage(error) },
               () => console.log()
@@ -411,6 +416,28 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
         });
     }
 
+
+    downloadFile(campaign:any,type:string){
+        this.customResponse = new CustomResponse();
+        this.ngxloading = true;
+        this.authenticationService.checkPartnerAccess(this.loggedInUserId)
+        .subscribe(
+            data => {
+                let access = data.access;
+                this.ngxloading = false;
+                if(access){
+                    window.open(this.authenticationService.REST_URL+"campaign/download/"+campaign.campaignId+"/"+this.loggedInUserId+"/"+type+"?access_token="+this.authenticationService.access_token,"_blank");
+                }else{
+                   this.authenticationService.forceToLogout();
+                }
+            },
+            error => {
+                this.ngxloading = false;
+                this.customResponse = new CustomResponse('ERROR',"Unable to download.Please try after sometime",true);
+             },
+            () => console.log()
+        );
+    }
 
 
   

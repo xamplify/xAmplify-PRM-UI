@@ -576,12 +576,16 @@ export class AddFormComponent implements OnInit, OnDestroy {
          this.formService.saveForm(form)
          .subscribe(
          (result:any) => {
-            if(result.statusCode===100){
-             this.showSweetAlert(this.duplicateLabelMessage);
-            }else{
-             this.referenceService.isCreated = true;
-             this.router.navigate(["/home/forms/manage"]);
-            }
+             if(result.access){
+                if(result.statusCode===100){
+                    this.showSweetAlert(this.duplicateLabelMessage);
+                   }else{
+                    this.referenceService.isCreated = true;
+                    this.router.navigate(["/home/forms/manage"]);
+                   }
+             }else{
+                this.authenticationService.forceToLogout();
+             }
          },
          (error:string) => {
              this.ngxloading = false;
@@ -600,13 +604,16 @@ export class AddFormComponent implements OnInit, OnDestroy {
          this.formService.updateForm(form)
          .subscribe(
          (result:any) => {
-            if(result.statusCode===100){
-             this.showSweetAlert(this.duplicateLabelMessage);
-            }else{
-             this.referenceService.isUpdated = true;
-             this.navigateToManageSection();
-            }
-            
+             if(result.access){
+                if(result.statusCode===100){
+                    this.showSweetAlert(this.duplicateLabelMessage);
+                   }else{
+                    this.referenceService.isUpdated = true;
+                    this.navigateToManageSection();
+                   }
+             }else{
+                this.authenticationService.forceToLogout();
+             }
          },
          (error:string) => {
              this.ngxloading = false;

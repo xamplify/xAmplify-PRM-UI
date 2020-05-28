@@ -374,7 +374,8 @@
 											(blur)="validatePattern('phone')"
 											[ngModelOptions]="{standalone: true}"></int-phone-prefix>
 									</fieldset> -->
-									<input type="text" maxlength="20" class="form-control" [(ngModel)]="companyProfile.phone" [ngModelOptions]="{standalone: true}" >
+									<input type="text" maxlength="20" class="form-control" [(ngModel)]="companyProfile.phone" [ngModelOptions]="{standalone: true}" (input)="validatePattern('phone')"
+									(blur)="validatePattern('phone')" >
 									<span *ngIf="phoneError" style="color: #f55d7a">{{phoneErrorMessage}}</span>
 								</div>
 								</div>

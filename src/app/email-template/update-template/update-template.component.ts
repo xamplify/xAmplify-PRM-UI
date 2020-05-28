@@ -192,21 +192,24 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplateService.update(this.emailTemplate)
         .subscribe(
         (data: any) => {
-            this.refService.stopLoader(this.httpRequestLoader);
-            if(!isOnDestroy){
-                if(data.statusCode==703){
-                    this.refService.isUpdated = true;
-                    this.emailTemplateService.emailTemplate = new EmailTemplate();
-                    this.navigateToManageSection();
+            if(data.access){
+                this.refService.stopLoader(this.httpRequestLoader);
+                if(!isOnDestroy){
+                    if(data.statusCode==703){
+                        this.refService.isUpdated = true;
+                        this.emailTemplateService.emailTemplate = new EmailTemplate();
+                        this.navigateToManageSection();
+                    }else{
+                        this.clickedButtonName = "";
+                        this.isVideoTagError = true;
+                        this.videoTagsError = data.message;
+                    }
                 }else{
-                    this.clickedButtonName = "";
-                    this.isVideoTagError = true;
-                    this.videoTagsError = data.message;
+                    this.emailTemplateService.goToManage();
                 }
             }else{
-                this.emailTemplateService.goToManage();
+                this.authenticationService.forceToLogout();
             }
-
         },
         (error: string) => {
             this.refService.stopLoader(this.httpRequestLoader);
@@ -221,18 +224,23 @@ export class UpdateTemplateComponent implements OnInit, OnDestroy {
         this.emailTemplateService.updateMarketoEmailTemplate( this.emailTemplate )
             .subscribe(
             ( data: any ) => {
-                this.refService.stopLoader( this.httpRequestLoader );
-                if ( !isOnDestroy ) {
-                    if ( data.statusCode == 8013 ) {
-                        this.refService.isUpdated = true;
-                        this.emailTemplateService.emailTemplate = new EmailTemplate();
-                       this.navigateToManageSection();
-                    } else {
-                        this.clickedButtonName = "";
-                        this.isVideoTagError = true;
-                        this.videoTagsError = data.message;
+                if(data.access){
+                    this.refService.stopLoader( this.httpRequestLoader );
+                    if ( !isOnDestroy ) {
+                        if ( data.statusCode == 8013 ) {
+                            this.refService.isUpdated = true;
+                            this.emailTemplateService.emailTemplate = new EmailTemplate();
+                           this.navigateToManageSection();
+                        } else {
+                            this.clickedButtonName = "";
+                            this.isVideoTagError = true;
+                            this.videoTagsError = data.message;
+                        }
                     }
+                }else{
+                    this.authenticationService.forceToLogout();
                 }
+               
             },
             ( error: string ) => {
                 this.refService.stopLoader( this.httpRequestLoader );

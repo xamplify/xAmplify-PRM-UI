@@ -145,6 +145,7 @@ export class AddTeamMembersComponent implements OnInit {
 						this.isOnlyPartnerOrPartnerTeamMember = this.isOnlyPartner || this.authenticationService.isPartnerTeamMember;
 					} else {
 						this.authenticationService.loggedInUserRole = 'User';
+						this.authenticationService.forceToLogout();
 					}
 				},
 				error => this.logger.errorPage(error),
@@ -160,15 +161,21 @@ export class AddTeamMembersComponent implements OnInit {
 			this.httpRequestLoader.isHorizontalCss = true;
 			this.teamMemberUi = new TeamMemberUi();
 			this.clearRows();
+			this.pagination.loggedInAsTeamMember = this.isLoggedInAsTeamMember;
 			this.teamMemberService.list(pagination, this.userId)
 				.subscribe(
 					data => {
-						this.teamMembersList = data.teamMembers;
-						this.secondOrgAdminId = data.secondOrgAdminId;
-						this.loginAsTeamMemberAccess = data.loginAsTeamMemberAccess;
-						pagination.totalRecords = data.totalRecords;
-						pagination = this.pagerService.getPagedItems(pagination, this.teamMembersList);
-						this.referenceService.loading(this.httpRequestLoader, false);
+						if(data.access){
+							this.teamMembersList = data.teamMembers;
+							this.secondOrgAdminId = data.secondOrgAdminId;
+							this.loginAsTeamMemberAccess = data.loginAsTeamMemberAccess;
+							pagination.totalRecords = data.totalRecords;
+							pagination = this.pagerService.getPagedItems(pagination, this.teamMembersList);
+							this.referenceService.loading(this.httpRequestLoader, false);
+						}else{
+							this.authenticationService.forceToLogout();
+						}
+						
 					},
 					error => {
 						this.logger.errorPage(error);
@@ -258,19 +265,22 @@ export class AddTeamMembersComponent implements OnInit {
 				this.referenceService.startLoader(this.httpRequestLoader);
 				this.teamMemberService.save(this.teamMembers, this.userId)
 					.subscribe(
-						data => {
-							this.referenceService.stopLoader(this.httpRequestLoader);
-							if (data.statusCode == 3000) {
-								this.successMessage = "Team Member(s) added successfully.";
-								this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
-								this.pagination.pageIndex = 1;
-								this.listTeamMembers(this.pagination);
-								this.clearRows();
-								this.listDropDown();
-							} else {
-								this.showErrorMessageDiv(data.message);
+						data => {	
+							if(data.access){
+								this.referenceService.stopLoader(this.httpRequestLoader);
+								if (data.statusCode == 3000) {
+									this.successMessage = "Team Member(s) added successfully.";
+									this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+									this.pagination.pageIndex = 1;
+									this.listTeamMembers(this.pagination);
+									this.clearRows();
+									this.listDropDown();
+								} else {
+									this.showErrorMessageDiv(data.message);
+								}
+							}else{
+								this.authenticationService.forceToLogout();
 							}
-
 						},
 						error => {
 							this.referenceService.stopLoader(this.httpRequestLoader);
@@ -304,22 +314,26 @@ export class AddTeamMembersComponent implements OnInit {
 			this.teamMemberService.update(this.teamMembersList, this.userId)
 				.subscribe(
 					data => {
-						this.logger.log(data);
-						this.referenceService.stopLoader(this.httpRequestLoader);
-						if (data.statusCode == 3002) {
-							this.successMessage = "Team Member(s) updated successfully.";
-							this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
-							// $( "#team-member-success-div" ).show();
-							// setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
-							this.pagination.pageIndex = 1;
-							this.listTeamMembers(this.pagination);
-							this.listEmailIds();
-							this.listAllOrgAdminsEmailIds();
-							this.clearRows();
-							this.listDropDown();
-						} else {
-							this.showErrorMessageDiv(data.message);
+						if(data.access){
+							this.referenceService.stopLoader(this.httpRequestLoader);
+							if (data.statusCode == 3002) {
+								this.successMessage = "Team Member(s) updated successfully.";
+								this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+								// $( "#team-member-success-div" ).show();
+								// setTimeout( function() { $( "#team-member-success-div" ).slideUp( 500 ); }, 7000 );
+								this.pagination.pageIndex = 1;
+								this.listTeamMembers(this.pagination);
+								this.listEmailIds();
+								this.listAllOrgAdminsEmailIds();
+								this.clearRows();
+								this.listDropDown();
+							} else {
+								this.showErrorMessageDiv(data.message);
+							}
+						}else{
+							this.authenticationService.forceToLogout();
 						}
+						
 
 					},
 					error => {
@@ -942,20 +956,25 @@ export class AddTeamMembersComponent implements OnInit {
 				data => {
 					this.deletePopupLoader = false;
 					$('#delete-team-member-popup').modal('hide');
-					this.referenceService.goToTop();
-					if (teamMember.teamMemberId == 0) {
-						this.successMessage = "All Team Members deleted successfully.";
-						this.pagination.pageIndex = 0;
-					} else {
-						this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
-						this.pagination.pageIndex = this.pagination.pageIndex - 1;
+					if(data.access){
+						this.deletePopupLoader = false;
+						this.referenceService.goToTop();
+						if (teamMember.teamMemberId == 0) {
+							this.successMessage = "All Team Members deleted successfully.";
+							this.pagination.pageIndex = 0;
+						} else {
+							this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
+							this.pagination.pageIndex = this.pagination.pageIndex - 1;
+						}
+						this.teamMemberIdToDelete = 0;
+						this.selectedTeamMemberEmailId = "";
+						this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+						this.listTeamMembers(this.pagination);
+						this.listAllEmailIds();
+						this.clearRows();
+					}else{
+						this.authenticationService.forceToLogout();
 					}
-					this.teamMemberIdToDelete = 0;
-					this.selectedTeamMemberEmailId = "";
-					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
-					this.listTeamMembers(this.pagination);
-					this.listAllEmailIds();
-					this.clearRows();
 				},
 				error => { this.logger.errorPage(error) },
 				() => this.logger.log("Team member deleted successfully.")

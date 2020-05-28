@@ -1,3 +1,5 @@
+
+<ng-container *ngIf="!refService.loaderFromAdmin">
 <div class="page-header navbar navbar-fixed-top">
     <ng2-slim-loading-bar [color]="'#00a6e8'" [height]="'2px'" style="position: fixed; top: 0px;
     margin: 0px; padding: 0px; z-index: 10000; width: 100%;">
@@ -34,7 +36,8 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search..." name="query">
                     <span class="input-group-btn">
-					<a href="javascript:;" class="btn submit"><i class="icon-magnifier" routerLink="./dashboard/extra_search"></i></a>
+					<a href="javascript:;" class="btn submit">
+                        <i class="icon-magnifier" routerLink="./dashboard/extra_search"></i></a>
 					</span>
                 </div>
             </form>
@@ -44,6 +47,13 @@
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right" style="display: -webkit-inline-box;">
                     <!-- BEGIN NOTIFICATION DROPDOWN -->
+
+                    <li *ngIf="isLoggedInFromAdminSection" style="margin-top: 17px;margin-right: 5px;">
+						<button class="btn btn-primary" (click)="goBackToAdminPanel()">
+							<span class="hidden-xs">Go back to admin panel</span>
+							<i class="fa fa-power-off" aria-hidden="true"></i>
+						</button>
+					</li>
 
                     <!-- 	<li *ngIf="authenticationService.module.isCompanyPartner && !authenticationService.module.isOrgAdmin && authenticationService.user.hasCompany" style="margin-top: 17px;margin-right: 5px;">
 						<button class="btn btn-primary" [routerLink]="['/home/campaigns/select']">
@@ -172,7 +182,7 @@
 								{{model.displayName | slice:0:17}}<span *ngIf="model.displayName?.length>17">..</span></span> <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
-                            <li *ngIf="authenticationService.user.hasCompany || authenticationService.isOnlyUser()">
+                            <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
                                 <a [routerLink]="['/home/dashboard/myprofile']"> <i class="icon-user"></i> My Profile
                                 </a>
                             </li>
@@ -205,13 +215,13 @@
                                 <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
                             </li>
-                            <li id="lockscreen">
+                            <!-- <li id="lockscreen">
                                 <a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i class="icon-lock"></i> Lock Screen
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
-                                <a> <i class="icon-key"></i> Log Out
+                                <a> <i class="icon-key" aria-hidden="true"></i> Log Out
                                 </a>
                             </li>
                         </ul>
@@ -299,3 +309,4 @@
         </div>
     </div>
 </div>
+</ng-container>
