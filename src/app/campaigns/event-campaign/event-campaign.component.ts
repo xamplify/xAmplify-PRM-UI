@@ -2350,8 +2350,12 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
         this.selectedAccounts = socialStatusProvider.selected ? this.selectedAccounts + 1 : this.selectedAccounts - 1;
         if (this.selectedAccounts === 0)
             this.isAllSelected = false;
-        if (this.selectedAccounts === this.socialStatusProviders.length)
+        if (this.selectedAccounts === this.socialStatusProviders.length){
             this.isAllSelected = true;
+        }else{
+          this.isAllSelected = false;
+        }
+            
     }
     
     
