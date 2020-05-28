@@ -60,7 +60,7 @@ export class VideoBaseReportService {
     getUsersMinutesWatchedDetailReports(timePeriod: string, videoId: number, timePeriodValue: any, userId: number, pagination: Pagination) {
         if (timePeriodValue.includes('Q')) { timePeriodValue = timePeriodValue.substring(1, timePeriodValue.length); }
         try {
-            const url = this.authenticationService.REST_URL + 'videos/' + timePeriod + '/views-minuteswatched-detail-report?userId=' + userId + '&videoId='
+            const url = this.authenticationService.REST_URL + 'videos/' + this.authenticationService.user.id+"/"+ timePeriod + '/views-minuteswatched-detail-report?userId=' + userId + '&videoId='
                 + videoId + '&timePeriodValue=' + timePeriodValue + '&access_token=' + this.authenticationService.access_token;
             return this.http.post(url, pagination)
                 .map(this.extractData)
@@ -107,7 +107,7 @@ export class VideoBaseReportService {
     }
     watchedFullyReport(videoId: number, pagination: Pagination) {
         try {
-            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/watched-fully-report?access_token=' + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId + "/" + this.authenticationService.user.id+  '/watched-fully-report?access_token=' + this.authenticationService.access_token;
             return this.http.post(url, pagination)
                 .map(this.extractData)
                 .catch(this.handleError);
@@ -115,7 +115,7 @@ export class VideoBaseReportService {
     }
     totlaMinutesWatchedByMostUsers(videoId: number) {
         try {
-            const url = this.authenticationService.REST_URL + 'videos/' + videoId + '/total-minutes-watched-by-top-10-users-detailreport?access_token=' + this.authenticationService.access_token;
+            const url = this.authenticationService.REST_URL + 'videos/' + videoId +"/" + this.authenticationService.user.id+  '/total-minutes-watched-by-top-10-users-detailreport?access_token=' + this.authenticationService.access_token;
             return this.http.get(url)
                 .map(this.extractData)
                 .catch(this.handleError);

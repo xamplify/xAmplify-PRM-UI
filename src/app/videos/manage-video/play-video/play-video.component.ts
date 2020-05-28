@@ -133,6 +133,7 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.videoFileService.getVideo(videoFile.alias, videoFile.viewBy)
             .subscribe((saveVideoFile: SaveVideoFile) => {
+            	if(saveVideoFile.access){
                 this.selectedVideo = saveVideoFile;
                 this.xtremandLogDefaultActions();  // loggin info method
                 // new code format
@@ -158,6 +159,9 @@ export class PlayVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.transperancyControllBar(this.selectedVideo.transparency);
                 if (this.selectedVideo.enableVideoController === false) { this.defaultVideoControllers(); }
                 this.isVideoChanged = false;
+            	}else{
+            		this.authenticationService.forceToLogout();
+            	}
             },
             (error: any) => {
                 this.isVideoChanged = false;

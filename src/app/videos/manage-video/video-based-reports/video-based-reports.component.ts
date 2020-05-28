@@ -324,6 +324,7 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.downloadTypeName = 'watchedFully';
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.pagination).subscribe(
             (result: any) => {
+            	if(result.access){
                 console.log(result);
                 result.data.forEach((element, index) => {
                   if(element.time){ element.time = new Date(element.utcTimeString);}
@@ -335,18 +336,26 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
                 $('#watchedFullyModelPopup').modal('show');
                 //this.watchedFullyTotalReport(this.pagination.totalRecords);
                 // }
+            }else{
+            	this.authenticationService.forceToLogout();
+            }
             },
             (err: any) => { console.log(err); })
     }
     totalMinutesWatchedByMostUsers() {
         this.downloadTypeName = 'minetesWatched';
         this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
-            (result: any) => {
-                console.log(result);
-                result.forEach((element, index) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
-                this.totalUsersWatched = result;
-                if (this.totalUsersWatched.length > 0) {
-                    $('#totalwatchedUsersModelPopup').modal('show');
+            (response: any) => {
+                if (response.access) {
+                	let result =response.data;
+                    console.log(result);
+                    result.forEach((element, index) => { if (element.date) { element.date = new Date(element.utcTimeString); } });
+                    this.totalUsersWatched = result;
+                    if (this.totalUsersWatched.length > 0) {
+                        $('#totalwatchedUsersModelPopup').modal('show');
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
                 }
             },
             (err: any) => { console.log(err); })
@@ -399,14 +408,18 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.pagination).
             subscribe(
             data => {
-                console.log(data);
-                data.data.forEach((element) => { if(element.date){ element.date = new Date(element.utcTimeString);} });
-                this.userMinutesWatched = data.data;
-                this.pagination.totalRecords = data.totalRecords;
-                this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
-                console.log(this.pagination);
-                $('#usersMinutesModelPopup').modal('show');
-               // this.clickedMinutesWatchedTotalList(userId, this.pagination.totalRecords);
+                if (data.access) {
+                    console.log(data);
+                    data.data.forEach((element) => { if (element.date) { element.date = new Date(element.utcTimeString); } });
+                    this.userMinutesWatched = data.data;
+                    this.pagination.totalRecords = data.totalRecords;
+                    this.pagination = this.pagerService.getPagedItems(this.pagination, this.userMinutesWatched);
+                    console.log(this.pagination);
+                    $('#usersMinutesModelPopup').modal('show');
+                    // this.clickedMinutesWatchedTotalList(userId, this.pagination.totalRecords);
+                } else {
+                    this.authenticationService.forceToLogout();
+            }
             },
             error => {
                 this.xtremandLogger.error(error);
@@ -606,9 +619,28 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.downloadTypeName = 'watchedFully';
         this.videoBaseReportService.watchedFullyReport(this.selectedVideo.id, this.reportsPagination).subscribe(
             (result: any) => {
-                console.log(result);
-                this.watchedFullyTotalReportList = result.data;
-                this.downloadLogs();
+                if (result.access) {
+                    console.log(result);
+                    this.watchedFullyTotalReportList = result.data;
+                    this.downloadLogs();
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            },
+            (err: any) => { console.log(err); })
+    }
+    
+    totalMinutesWatchedByTopRecipients() {
+        this.downloadTypeName = 'minetesWatched';
+        this.videoBaseReportService.totlaMinutesWatchedByMostUsers(this.selectedVideo.id).subscribe(
+            (result: any) => {
+                if (result.access) {
+                    console.log(result);
+                    this.totalUsersWatched = result.data;
+                    this.downloadLogs();
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
             },
             (err: any) => { console.log(err); })
     }
@@ -619,9 +651,13 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
         this.videoBaseReportService.getUsersMinutesWatchedDetailReports(this.dropdownValue, this.selectedVideo.id, this.minutesinnerSort, userId, this.reportsPagination).
             subscribe(
             data => {
-                console.log(data);
-                this.userMinutesWatchedTotalList = data.data;
-                this.downloadLogs();
+                if (data.access) {
+                    console.log(data);
+                    this.userMinutesWatchedTotalList = data.data;
+                    this.downloadLogs();
+                } else {
+                    this.authenticationService.forceToLogout();
+            }
             },
             error => {
                 this.xtremandLogger.errorPage(error);
@@ -659,7 +695,8 @@ export class VideoBasedReportsComponent implements OnInit, OnDestroy, AfterViewI
     downloadFunctionality(){
         this.isLoadingDownloadList = true;
         if (this.downloadTypeName === 'minetesWatched') {
-            this.downloadLogs();
+        	this.totalMinutesWatchedByTopRecipients();
+           // this.downloadLogs();
         } else if (this.downloadTypeName === 'watchedFully') {
             this.watchedFullyTotalReport(this.pagination.totalRecords);
         } else if (this.downloadTypeName === 'worldMapData') {

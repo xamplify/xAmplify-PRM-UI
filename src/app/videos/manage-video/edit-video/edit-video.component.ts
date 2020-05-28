@@ -1335,6 +1335,7 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
           this.xtremandLogger.info(this.saveVideoFile);
           return this.videoFileService.saveVideo(this.saveVideoFile)
               .subscribe((result: any) => {
+            	  if(result.access){
                   if (this.saveVideoFile != null) {
                       this.saveVideoFile = result;
                       this.notifyParent.emit(this.saveVideoFile);
@@ -1346,6 +1347,9 @@ export class EditVideoComponent implements OnInit, AfterViewInit, OnDestroy {
                     //  this.saveButtonTitle = 'Save';
                       this.xtremandLogger.log('save video data object is null please try again:' + this.saveVideoFile);
                   }
+              }else{
+            	  this.authenticationService.forceToLogout();
+              }
               },
               (error: any) => {
                   this.isDisable = false;

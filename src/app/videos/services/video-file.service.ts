@@ -122,7 +122,7 @@ export class VideoFileService {
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
         console.log(alias);
-        const url = this.URL + 'video-by-alias/' + alias + '?viewBy=' + viewBy;
+        const url = this.URL + 'video-by-alias/' + alias +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy;
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleError);

@@ -364,7 +364,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         console.log(formData);
         return this.videoFileService.saveRecordedVideo(formData)
             .subscribe((result: any) => {
-                this.processVideo(result.path);
+                if (result.access) {
+                    this.processVideo(result.data);
+                } else {
+                    this.authenticationService.forceToLogout();
+            	}
              }, (error: any) => {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
@@ -686,10 +690,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         console.log('files ' + files);
         this.cloudUploadService.downloadFromDropbox(files[0].link, files[0].name)
             .subscribe((result: any) => {
+            	if(result.access){
                 swal.close();
                 console.log(result);
                 this.processing = true;
-                this.processVideo(result.path);
+                this.processVideo(result.data);
+            	}else{
+            		this.authenticationService.forceToLogout();
+            	}
             },
             (error: any) => {
                 this.errorIsThere = true;
@@ -722,10 +730,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 console.log(files);
                 self.cloudUploadService.downloadFromBox(files[0].url, files[0].name)
                     .subscribe((result: any) => {
+                    	if(result.access){
                         console.log(result);
                         swal.close();
                         self.processing = true;
-                        self.processVideo(result.path);
+                        self.processVideo(result.data);
+                    }else{
+                    	this.authenticationService.forceToLogout();
+                    }
                     }, (error: any) => {
                         self.errorIsThere = true;
                         self.xtremandLogger.errorPage(error);
@@ -815,6 +827,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
             self.cloudUploadService.downloadFromGDrive(downloadLink, name, this.tempr)
                 .subscribe((result: any) => {
+                	if(result.access){
                     console.log(result);
                     swal.close();
                     self.processing = true;
@@ -823,7 +836,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         self.picker.dispose();
                     }
                     if (!self.redirectPge) { self.cloudStorageDisabled(); }
-                    self.processVideo(result.path);
+                    self.processVideo(result.data);
+                	}else{
+                    	this.authenticationService.forceToLogout();
+                    	}
                 },
                 (error: any) => {
                     this.errorIsThere = true;
