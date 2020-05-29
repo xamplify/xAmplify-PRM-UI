@@ -1059,22 +1059,31 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.sweetAlertMesg === 'Box') { swal('Oops...', 'You minimized Box window!', 'error'); }
             if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
                 this.cloudDropbox === false) {
-                this.cloudBox = true;
-                this.isDisable = true;
-                this.isFileDrop = true;
-                this.isChecked = true;
-                this.sweetAlertDisabled = false;
-                this.sweetAlertMesg = 'Box';
-                this.fileDropDisabled();
-                this.downloadContentFrombox();
-                this.cloudOneDrive = true;
-                this.cloudDrive = true;
-                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-              //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
-                this.cloudContentArr=new Array<CloudContent>();
+                this.videoFileService.hasVideoAccess(this.loggedInUserId)
+                .subscribe(
+                        (result: any) =>  {
+                        if(result.access){
+                                            this.cloudBox = true;
+                 this.isDisable = true;
+                 this.isFileDrop = true;
+                 this.isChecked = true;
+                 this.sweetAlertDisabled = false;
+                 this.sweetAlertMesg = 'Box';
+                 this.fileDropDisabled();
+                 this.downloadContentFrombox();
+                 this.cloudOneDrive = true;
+                 this.cloudDrive = true;
+                 $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+               //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                 this.cloudContentArr=new Array<CloudContent>(); 
+                        }else{
+                            this.authenticationService.forceToLogout();
+                        }
+              }
+                        );
             }
           } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
         }
