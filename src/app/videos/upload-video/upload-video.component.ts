@@ -1148,11 +1148,20 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
 
         googleDriveContentChange() {
             try{
-            this.sweetAlertMesg = 'Drive';
-              if(this.uploader.queue.length === 0){
-              this.cloudContentArr = new Array<CloudContent>();
-              this.onApiLoadContent();    // google drive code
-              }
+            	 this.videoFileService.hasVideoAccess(this.loggedInUserId)
+                 .subscribe(
+                         (result: any) =>  {
+                         if(result.access){
+                                 this.sweetAlertMesg = 'Drive';
+                if(this.uploader.queue.length === 0){
+                this.cloudContentArr = new Array<CloudContent>();
+                this.onApiLoadContent();    // google drive code
+                } 
+                         }else{
+                             this.authenticationService.forceToLogout();
+                         }
+               }
+                         );
             } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
           }
 
