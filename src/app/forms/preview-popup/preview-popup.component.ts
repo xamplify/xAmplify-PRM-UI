@@ -63,7 +63,7 @@ export class PreviewPopupComponent implements OnInit {
           this.formAliasUrl = this.authenticationService.vanityURLink;
       }else{
         this.formAliasUrl = this.authenticationService.APP_URL;
-      }
+      } 
       this.pagination.userId = this.authenticationService.getUserId();;
       this.listForms(this.pagination);
   }
@@ -121,13 +121,18 @@ export class PreviewPopupComponent implements OnInit {
   
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
   
-  copyInputMessage(inputElement,index:number){
+  copyInputMessage(inputElement,type: string,index:number){
       $(".success").hide();
       $('#copied-message-'+index).hide();
+      $('#embed-copied-message-'+index).hide();
       inputElement.select();
       document.execCommand('copy');
       inputElement.setSelectionRange(0, 0);
-      $('#copied-message-'+index).show(500);
+      if (type === "Page Link") {
+        $('#copied-message-'+index).show(500);
+    } else {
+        $('#embed-copied-message-'+index).show(500);
+    }
     }
   
 

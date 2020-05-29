@@ -41,8 +41,9 @@
 						  <tr>
 						     <th *ngIf="authenticationService.isShowForms">Select</th>
 							 <th>Form Details</th>
-							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Link</th>
-							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Copy & Preview</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms">Link</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms">Embed Link</th>
+							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Preview</th>
 							 <th class="text-center" *ngIf="authenticationService.isShowForms">Preview</th>
 						  </tr>
 						</thead>
@@ -62,21 +63,29 @@
 									From <b>{{form.companyName}}</b>
 								 </h6>
 							  </td>
-							  <td [hidden]="authenticationService.isShowForms">
-							  	<input type="text" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput>
-							  	<font class="success" id="copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
+							  <td [hidden]="authenticationService.isShowForms" >
+                  <input type="text" id="copy-link" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput>
+                  <div class="actions-block override-actions">
+                  <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
+									  <i class="fa fa-copy"></i>
+                  </a>
+                </div>
+                  <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link Copied successfully<i class="fa fa-check"></i></b></font>
+                </td>
+                <td [hidden]="authenticationService.isShowForms">
+                  <textarea id="text-area" rows="2" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                  <div class="actions-block override-actions">
+                  <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
+									  <i class="fa fa-copy"></i>
+                  </a>
+                </div>
+							  	<font class="success" id="embed-copied-message-{{i}}" style="display:none;"><b>Embed Link Copied successfully<i class="fa fa-check"></i></b></font>
 							  </td>
 							  <td id="actions-row">
-								 <div class="actions-block override-actions">
-								 	<a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,i)">
-									  <i class="fa fa-copy"></i>
-									</a>
-									
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
 									  <i class="fa fa-eye"></i>
 									</a>
 									
-								 </div>
 							  </td>
 							</tr>
 						 </tbody>
