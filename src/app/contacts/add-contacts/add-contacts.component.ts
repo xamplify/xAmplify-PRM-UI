@@ -327,6 +327,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }
                         self.setPage( 1 );
                         self.isListLoader = false;
+                        
+                        if(self.contacts.length === 0){
+                        self.isValidLegalOptions = true;
+                        self.customResponse = new CustomResponse( 'ERROR', "No contacts found.", true );
+                        } 
+                        
 
 
                     } else {
