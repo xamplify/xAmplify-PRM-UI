@@ -631,10 +631,19 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
     }
     googleDriveChange() {
       try{
-      this.sweetAlertMesg = 'Drive';
-        if(this.uploader.queue.length === 0){
-        this.onApiLoad();    // google drive code
+    	  this.videoFileService.hasVideoAccess(this.loggedInUserId)
+          .subscribe(
+                  (result: any) =>  {
+                  if(result.access){
+                        this.sweetAlertMesg = 'Drive';
+   if(this.uploader.queue.length === 0){
+   this.onApiLoad();    // google drive code
+   }
+                  }else{
+                      this.authenticationService.forceToLogout();
+                  }
         }
+                  );
       } catch(error){this.xtremandLogger.error('Error in upload video googleDriveChange method'+error);}
     }
     defaultDesabled() {
