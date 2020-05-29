@@ -2743,7 +2743,7 @@
                 (click)="leadsSearchKey=''; leadDetailsSearch()">
                 <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
               </button>
-              <button type="submit" class="search-box-item-click" style="right: 1px" (click)="leadDetailsSearch()">
+              <button type="submit" class="search-box-item-click" style="right: 1px" (click)="leadType = 'partnerLeads' ;leadDetailsSearch()">
                 <i class="fa fa-search" style="padding: 4px; color: black !important"></i>
               </button>
             </div>
@@ -2801,7 +2801,7 @@
                         <th></th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="partnerLeadsFormDetails?.length !== 0">
                       <ng-container *ngFor="let formDataRow of partnerLeadsFormDetails;let rowIndex = index">
                         <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                           <ng-container *ngFor="let columnValue of partnerLeadsFormHeaders;let columnIndex = index">
