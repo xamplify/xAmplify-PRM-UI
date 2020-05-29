@@ -320,6 +320,16 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    hasVideoAccess(userId : number){
+        try {
+            const url = this.URL  + userId +  '/has-video-access?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+   }
+    
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

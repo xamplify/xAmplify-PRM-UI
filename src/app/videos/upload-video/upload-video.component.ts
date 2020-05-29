@@ -927,7 +927,18 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                this.contentProcessing = true;
                const formData: FormData = new FormData();
                $.each( files, function( index, file ) { formData.append( 'files', file, file.name ); });
-               this.uploadToServer( formData );
+               this.videoFileService.hasVideoAccess(this.loggedInUserId)
+               .subscribe(
+            		   (result: any) =>  {
+            		   if(result.access){
+            			   this.uploadToServer( formData ); 
+            		   }else{
+            			   this.authenticationService.forceToLogout();
+            		   }
+             }
+            		   );
+               
+               //this.uploadToServer( formData );
             }
             else { this.customResponse = new CustomResponse( 'ERROR', this.properties.CONTENT_UPLOAD_SIZE, true ); }
          } else { this.customResponse = new CustomResponse( 'ERROR', this.properties.CONTENT_UPLOAD_FILETYPE, true );
@@ -938,12 +949,16 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.contentProcessing = true;
         this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
             .subscribe( data => {
+            	if(data.access){
               if ( data.statusCode === 1020 ) {
                 this.refService.contentManagementLoader = true;
                 if(!this.redirectContent){
                   this.redirectContent = false;
                   setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content/manage']); }, 1200); }
               } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
+            }else{
+            	this.authenticationService.forceToLogout();
+            }
             },
             ( error: string ) => {
               this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
@@ -956,20 +971,30 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
             if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
                 this.cloudBox === false) {
-                this.cloudDropbox = true;
-                this.isDisable = true;
-                this.isFileDrop = true;
-                this.isChecked = true;
-                this.sweetAlertDisabled = false;
-                this.sweetAlertMesg = 'DropBox';
-                this.fileDropDisabled();
-                this.downloadFromDropboxContent();
-                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-               // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
-                this.cloudContentArr=new Array<CloudContent>();
+                this.videoFileService.hasVideoAccess(this.loggedInUserId)
+                .subscribe(
+                        (result: any) =>  {
+                        if(result.access){
+                                   this.cloudDropbox = true;
+                 this.isDisable = true;
+                 this.isFileDrop = true;
+                 this.isChecked = true;
+                 this.sweetAlertDisabled = false;
+                 this.sweetAlertMesg = 'DropBox';
+                 this.fileDropDisabled();
+                 this.downloadFromDropboxContent();
+                 $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                 this.cloudContentArr=new Array<CloudContent>();
+                        }else{
+                            this.authenticationService.forceToLogout();
+                        }
+              }
+                        );
+
               }
             } catch(error){this.xtremandLogger.error('Error in upload content dropBoxChange method'+error);}
         }
