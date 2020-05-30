@@ -136,10 +136,24 @@ export class TeamMemberService{
     }
 
     listTeamMembers(pagination:Pagination){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        pagination.vanityUrlFilter = vanityUrlFilter;
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
         var url =this.URL+"teamMember/listTeamMembers?access_token="+this.authenticationService.access_token;
         return this.http.post(url, pagination)
         .map(this.extractData)
         .catch(this.handleError);   
+    }
+
+    updateTeamMember(teamMember:TeamMember){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        teamMember.vanityUrlFilter = vanityUrlFilter;
+        teamMember.vanityUrlDomainName = this.authenticationService.companyProfileName;
+        teamMember.loggedInUserId =this.authenticationService.getUserId();
+        var url =this.URL+"teamMember/updateTeamMember?access_token="+this.authenticationService.access_token;
+        return this.http.post(url,teamMember)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
     
     private extractData(res: Response) {

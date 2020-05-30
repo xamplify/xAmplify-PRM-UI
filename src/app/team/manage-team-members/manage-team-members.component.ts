@@ -16,13 +16,14 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from "app/core/services/user.service";
 import { UtilService } from '../../core/services/util.service';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { Properties } from '../../common/models/properties';
 
 declare var $, swal: any;
 @Component({
 	selector: 'app-manage-team-members',
 	templateUrl: './manage-team-members.component.html',
 	styleUrls: ['./manage-team-members.component.css'],
-	providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch]
+	providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch,Properties]
 })
 export class ManageTeamMembersComponent implements OnInit {
 
@@ -57,10 +58,27 @@ export class ManageTeamMembersComponent implements OnInit {
 	loading = false;
 	selectedItem: any = '';
 	inputChanged: any = '';
+	isUploadCsv: boolean;
+	isAddTeamMember: boolean;
+	team: TeamMember;
+	@ViewChild('fileImportInput')
+	fileImportInput: any;
+	csvRecords = [];
+	/*****Form Related**************/
+	formGroupClass: string = "form-group";
+	emaillIdDivClass: string = this.formGroupClass;
+	errorClass: string = "form-group has-error has-feedback";
+	successClass: string = "form-group has-success has-feedback";
+	defaultClass: string = "form-group";
+	addTeamMemeberTableId = "add-team-member-table";
+	listTeamMemberTableId = "list-team-member-table";
+	customResponse: CustomResponse = new CustomResponse();
+	name = 'Angular 5';
+	successMessage: string;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
-		 public utilService: UtilService,private vanityUrlService:VanityURLService) {
+		 public utilService: UtilService,private vanityUrlService:VanityURLService,public properties: Properties) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.vanityUrlService.isVanityURLEnabled();
@@ -92,7 +110,7 @@ export class ManageTeamMembersComponent implements OnInit {
 							this.partnersAccess = this.moduleNames.indexOf('Partners')>-1;
 							this.contactsAccess = this.moduleNames.indexOf('Contacts')>-1;
 							this.superiorRole = response.superiorRole;
-							this.isOrgAdmin = this.superiorRole ==" Org Admin" || this.superiorRole =="Org Admin & Partner";
+							this.isOrgAdmin = this.superiorRole =="Org Admin" || this.superiorRole =="Org Admin & Partner";
 							this.isOnlyPartner = this.superiorRole == "Partner";
 						} else {
 							this.showUIError("Please pass the userId as input");
@@ -172,6 +190,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			team.socialShare = this.socialShareAccess;
 			team.partners = this.partnersAccess;
 			team.contact = this.contactsAccess;
+			team.campaign = this.campaignAccess;
 	}
 	removeAllRoles(team: TeamMember) {
 		team.video = false;
@@ -198,6 +217,7 @@ export class ManageTeamMembersComponent implements OnInit {
 				}else {
 					team.all =  false;
 					team.secondOrgAdmin = false;
+					console.log(team);
 					if(length==0){
 						this.removeAllRoles(team);
 					}
@@ -205,13 +225,17 @@ export class ManageTeamMembersComponent implements OnInit {
 
 			}else{
 			/**********Partner Team Members******/
-			if(length==2){
+			if(length==0){
+				team.all = false;
+				this.removeAllRoles(team);
+			}else if(length==2){
 				team.all = true;
 				this.setAllRoles(team);
 			}else{
 				team.all = false;
-				this.removeAllRoles(team);
+				console.log(team);
 			}
+			
 			}
 		} catch (error) {
 			this.showUIError(error);
@@ -248,6 +272,43 @@ export class ManageTeamMembersComponent implements OnInit {
 		}
 	}
 
+
+
+	setDropDownData(data: any) {
+		let self = this;
+		self.items2 = [];
+		$.each(data, function (index, value) {
+			let emailId = data[index].emailId;
+			let id = data[index].id;
+			let obj = { 'id': id, 'emailId': emailId };
+			self.items2.push(obj);
+		});
+	}
+
+
+
+
+	goToCampaignAnalytics(teamMemberId: number) {
+		this.loading = true;
+		this.router.navigate(['/home/campaigns/manage/tm/' + teamMemberId])
+	}
+
+	/**************Search TeamMembers***************/
+	searchTeamMembers() {
+		this.pagination.pageIndex = 1;
+		this.listAllTeamMembers(this.pagination);
+	}
+/**************Pagination TeamMembers***************/
+	setPage(event: any) {
+		this.pagination.pageIndex = event.page;
+		this.listAllTeamMembers(this.pagination);
+	}
+	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchTeamMembers(); } }
+
+
+
+
+	/*************************Delete Team Member************** */
 	showPopup(teamMember: TeamMember) {
 		this.selectedId = 0;
 		this.deletePopupLoader = true;
@@ -268,18 +329,38 @@ export class ManageTeamMembersComponent implements OnInit {
 				},
 				() => this.logger.log("showPopup() done")
 			);
-
 	}
 
-	setDropDownData(data: any) {
-		let self = this;
-		self.items2 = [];
-		$.each(data, function (index, value) {
-			let emailId = data[index].emailId;
-			let id = data[index].id;
-			let obj = { 'id': id, 'emailId': emailId };
-			self.items2.push(obj);
-		});
+	delete() {
+		this.deletePopupLoader = true;
+		let teamMember: TeamMember = new TeamMember();
+		teamMember.teamMemberId = this.teamMemberIdToDelete;
+		teamMember.orgAdminId = this.selectedId;
+		this.teamMemberService.delete(teamMember)
+			.subscribe(
+				data => {
+					this.deletePopupLoader = false;
+					$('#delete-team-member-popup').modal('hide');
+					this.referenceService.goToTop();
+					if (teamMember.teamMemberId == 0) {
+						this.successMessage = "All Team Members deleted successfully.";
+						this.pagination.pageIndex = 0;
+					} else {
+						this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
+						this.pagination.pageIndex = this.pagination.pageIndex - 1;
+					}
+					this.teamMemberIdToDelete = 0;
+					this.selectedTeamMemberEmailId = "";
+					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+					this.listAllTeamMembers(this.pagination);
+					this.clearRows();
+				},
+				error => { 
+					this.deletePopupLoader = false;
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
+				},
+				() => this.logger.log("Team member deleted successfully.")
+			);
 	}
 
 	hidePopup() {
@@ -290,20 +371,44 @@ export class ManageTeamMembersComponent implements OnInit {
 	}
 
 
-	goToCampaignAnalytics(teamMemberId: number) {
-		this.loading = true;
-		this.router.navigate(['/home/campaigns/manage/tm/' + teamMemberId])
+	clearRows() {
+		try {
+			$('#add-team-member-table tbody').remove();
+			this.teamMembers = [];
+			this.team = new TeamMember();
+			this.emaillIdDivClass = this.defaultClass;
+			$(".col-md-12 span").text('');
+			this.teamMemberUi = new TeamMemberUi();
+			this.isUploadCsv = false;
+			this.isAddTeamMember = false;
+		} catch (error) {
+			this.showUIError(error);
+		}
+
 	}
 
-	/**************Search TeamMembers***************/
-	searchTeamMembers() {
-		this.pagination.pageIndex = 1;
-		this.listAllTeamMembers(this.pagination);
+	/******************Update Team Member********************** */
+	updateTeamMember(teamMember:TeamMember){
+		this.customResponse = new CustomResponse();
+		this.referenceService.goToTop();
+		this.loading = true;
+		this.teamMemberService.updateTeamMember(teamMember)
+			.subscribe(
+				data => {
+					this.loading = false;
+					if(data.statusCode==200){
+						this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+					}else{
+						this.customResponse = new CustomResponse('ERROR',data.message,true);
+					}
+				},
+				error => { 	
+					this.loading = false;				
+					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
+				},
+				() => this.logger.log("Team member updated successfully.")
+			);
 	}
-/**************Pagination TeamMembers***************/
-	setPage(event: any) {
-		this.pagination.pageIndex = event.page;
-		this.listAllTeamMembers(this.pagination);
-	}
-	eventHandler(keyCode: any) { if (keyCode === 13) { this.searchTeamMembers(); } }
+
+
 }

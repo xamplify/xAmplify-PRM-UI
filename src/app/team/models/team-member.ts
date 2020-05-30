@@ -24,4 +24,7 @@ export class TeamMember{
     enabled:boolean = true;
     orgAdminId:number;
     secondOrgAdmin = false;
+    loggedInUserId:number;
+    vanityUrlFilter = false;
+	vanityUrlDomainName:string;
 }

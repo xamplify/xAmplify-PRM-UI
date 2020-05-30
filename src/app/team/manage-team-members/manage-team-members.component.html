@@ -16,9 +16,11 @@
         </li>
     </ul>
 </div>
+<div>
+  <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+</div>
 <div class="row">
 <div class="portlet light">
-
   <div class="portlet-title">
       <div class="caption">Team Members List</div>
       <div class="tools" style="padding: 0;margin: 0;">
@@ -59,12 +61,15 @@
                   <th class="rest-header" scope="">
                     <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
                   </th>
-                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
-                      <i class="fa fa-trash" aria-hidden="true"></i><br>Delete
-                  </th>
                   <th class="rest-header" scope="">
                       <i class="fa fa-line-chart" aria-hidden="true"></i><br>Analytics
                   </th>
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
+                    <i class="fa fa-save" aria-hidden="true"></i><br>Update
+                </th>
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
+                    <i class="fa fa-trash" aria-hidden="true"></i><br>Delete
+                </th>
               </tr>
           </thead>
           <ng-container *ngIf="pagination.totalRecords>0">
@@ -113,7 +118,7 @@
 
             <!-- -Design-- -->
             <td *ngIf="designAccess">
-              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.emailTemplate" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
             </td>
 
             <!-- -Social Share-- -->
@@ -144,18 +149,24 @@
                     [size]="callActionSwitch.bsize" (statusChange)="changeTeamMemberStatus(teamMember,$event)">
                 </switch>
           </td>
-          <!-- -Delete--- -->
-          <td>
-            <a class="btn-sm" (click)="showPopup(teamMember)">
-                <em class="fa fa-times red"></em>
-            </a>
-        </td>
         <!-- -Analytics--- -->
         <td>
             <a class="btn-btn-primay" (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
-                <em class="fa fa-line-chart"></em>
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
             </a>
         </td>
+        <!-- -Edit--- -->
+        <td>
+          <a class="btn-sm" (click)="updateTeamMember(teamMember)">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </a>
+      </td>
+         <!-- -Delete--- -->
+         <td>
+          <a class="btn-sm" (click)="showPopup(teamMember)">
+              <i class="fa fa-times red" aria-hidden="true"></i>
+          </a>
+      </td>
 
        </tr>
         </ng-container>
@@ -172,10 +183,6 @@
     <!-- -----------Pagination-------------- -->
     <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="pull-left">
         <app-pagination [pagination]="pagination" [type]="'teammember'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
-    </div>
-    <!-- -----------End Of Pagination-------------- -->
-    <div class="pull-right" style="margin-top: 9px;" *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
-        <button class="btn btn-primary" (click)="update()">Update</button>
     </div>
     </div>
 </div>

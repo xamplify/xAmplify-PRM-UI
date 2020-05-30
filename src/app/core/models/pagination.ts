@@ -64,6 +64,6 @@ export class Pagination {
 	partnerView = false;
 
 	vanityUrlFilter:boolean = false;
-	vendorCompanyProfileName:String;
+	vendorCompanyProfileName:string;
 
 }
