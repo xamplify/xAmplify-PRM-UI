@@ -203,6 +203,7 @@ export class ManageTeamMembersComponent implements OnInit {
 		team.contact = false;
 		team.socialShare = false;
 		team.partners = false;
+		team.secondOrgAdmin = false;
 	}
 
 	countCheckedCheckBoxesLength(team: TeamMember, index: number, tableId: string) {
@@ -217,7 +218,6 @@ export class ManageTeamMembersComponent implements OnInit {
 				}else {
 					team.all =  false;
 					team.secondOrgAdmin = false;
-					console.log(team);
 					if(length==0){
 						this.removeAllRoles(team);
 					}
@@ -233,7 +233,6 @@ export class ManageTeamMembersComponent implements OnInit {
 				this.setAllRoles(team);
 			}else{
 				team.all = false;
-				console.log(team);
 			}
 			
 			}
@@ -388,22 +387,28 @@ export class ManageTeamMembersComponent implements OnInit {
 	}
 
 	/******************Update Team Member********************** */
-	updateTeamMember(teamMember:TeamMember){
+	updateTeamMember(teamMember:TeamMember,index:number){
+		$('.list-team-member-class').css("background-color", "#fff");
 		this.customResponse = new CustomResponse();
 		this.referenceService.goToTop();
 		this.loading = true;
 		this.teamMemberService.updateTeamMember(teamMember)
 			.subscribe(
 				data => {
+					this.referenceService.goToTop();
 					this.loading = false;
 					if(data.statusCode==200){
 						this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+						this.pagination = new Pagination();
+						this.listAllTeamMembers(this.pagination);
 					}else{
 						this.customResponse = new CustomResponse('ERROR',data.message,true);
+						$('#list-team-member-'+index).css("background-color", "#E00000");
 					}
 				},
 				error => { 	
-					this.loading = false;				
+					this.loading = false;
+					this.referenceService.goToTop();				
 					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
 				},
 				() => this.logger.log("Team member updated successfully.")
