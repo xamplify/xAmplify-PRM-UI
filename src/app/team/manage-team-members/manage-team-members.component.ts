@@ -75,11 +75,13 @@ export class ManageTeamMembersComponent implements OnInit {
 	customResponse: CustomResponse = new CustomResponse();
 	name = 'Angular 5';
 	successMessage: string;
+	csvFilePath = "";
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
 		 public utilService: UtilService,private vanityUrlService:VanityURLService,public properties: Properties) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
+		this.team = new TeamMember();
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.vanityUrlService.isVanityURLEnabled();
 	}
@@ -110,6 +112,7 @@ export class ManageTeamMembersComponent implements OnInit {
 							this.superiorRole = response.superiorRole;
 							this.isOrgAdmin = this.superiorRole =="Org Admin" || this.superiorRole =="Org Admin & Partner";
 							this.isOnlyPartner = this.superiorRole == "Partner";
+							this.csvFilePath = response.csvFilePath;
 						} else {
 							this.showUIError("Please pass the userId as input");
 						}
@@ -130,6 +133,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			this.referenceService.loading(this.httpRequestLoader, true);
 			this.teamMemberModulesLoader.isHorizontalCss = true;
 			pagination.userId =this.loggedInUserId;
+			this.teamMemberUi = new TeamMemberUi();
 			this.teamMemberService.listTeamMembers(pagination)
 				.subscribe(
 					data => {
@@ -411,6 +415,17 @@ export class ManageTeamMembersComponent implements OnInit {
 				},
 				() => this.logger.log("Team member updated successfully.")
 			);
+	}
+
+	downloadEmptyCsv(){
+		window.location.href = this.csvFilePath;
+	}
+
+	/*******************Add Team Member************ */
+	showAddTeamMember() {
+		$("#csv-error-div").hide();
+		$('#addTeamMember').modal('show');
+
 	}
 
 
