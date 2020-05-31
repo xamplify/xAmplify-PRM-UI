@@ -40,9 +40,8 @@
   </div>
   <div class="portlet-body clearfix">
     <div class="table-responsive">
-      <app-loader [model]="teamMemberModulesLoader.isHorizontalCss" *ngIf="teamMemberModulesLoader.isLoading">
-      </app-loader>
-      <table class="table table-striped  table-hover" id="list-team-member-table" *ngIf="!teamMemberModulesLoader.isLoading" aria-describedby="TeamMemberList">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+      <table class="table table-striped  table-hover" id="list-team-member-table" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
           <thead>
               <tr>
                  <th class="table-checkbox" id="first-header">
@@ -73,18 +72,16 @@
               </tr>
           </thead>
           <ng-container *ngIf="pagination.totalRecords>0">
-            <app-list-loader  *ngIf="httpRequestLoader.isLoading">
-            </app-list-loader>
             <tbody *ngIf="!httpRequestLoader.isLoading">
               <ng-container *ngFor="let teamMember of teamMembers;let i=index">
                 <tr id="list-team-member-{{i}}" class="list-team-member-class">
                   <td>
                     <ng-container *ngIf="loginAsTeamMemberAccess">
-                        <button *ngIf="teamMember.status.toLocaleString()=='APPORVE' || teamMember.status==0" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
+                        <button *ngIf="teamMember.loginAsButtonEnabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                         </button>
 
-                        <button *ngIf="teamMember.status.toLocaleString()!='APPORVE' && teamMember.status!=0" class="btn btn-default btn-xs fif inactive" title="Can't login for inactive team member">
+                        <button *ngIf="!teamMember.loginAsButtonEnabled" class="btn btn-default btn-xs fif inactive" title="{{teamMember.loginAsButtonToolTipMessage}}">
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                         </button>
                     </ng-container>
@@ -181,7 +178,7 @@
     </div>
     <hr>
     <!-- -----------Pagination-------------- -->
-    <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="pull-left">
+    <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading.isLoading && !httpRequestLoader.isLoading.isServerError" class="pull-left">
         <app-pagination [pagination]="pagination" [type]="'teammember'" [isDropdown]="true" (notifyParent)="setPage($event)"></app-pagination>
     </div>
     </div>

@@ -91,8 +91,6 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	listTeamMemberModules() {
 		try {
-			this.referenceService.loading(this.teamMemberModulesLoader, true);
-			this.teamMemberModulesLoader.isHorizontalCss = true;
 			let input = {};
 			input['userId'] = this.authenticationService.getUserId();
 			this.teamMemberService.listTeamMemberModules(input)
@@ -115,7 +113,6 @@ export class ManageTeamMembersComponent implements OnInit {
 						} else {
 							this.showUIError("Please pass the userId as input");
 						}
-						this.referenceService.loading(this.teamMemberModulesLoader, false);
 					},
 					error => {
 						this.logger.errorPage(error);
@@ -131,6 +128,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	listAllTeamMembers(pagination: Pagination) {
 		try {
 			this.referenceService.loading(this.httpRequestLoader, true);
+			this.teamMemberModulesLoader.isHorizontalCss = true;
 			pagination.userId =this.loggedInUserId;
 			this.teamMemberService.listTeamMembers(pagination)
 				.subscribe(
