@@ -105,7 +105,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
                 }else{
                     this.authenticationService.forceToLogout();
                 }
-                console.log(data.landingPages);
                 this.referenceService.loading(this.httpRequestLoader, false);
             },
             (error: any) => { this.logger.errorPage(error); });

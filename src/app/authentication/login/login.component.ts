@@ -36,12 +36,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "linkedin", "iconName": "linkedin" }];
 
 
-    roles: Array<Role>;
+  roles: Array<Role>;
+  vanityURLEnabled: boolean;
+  isNotVanityURL: boolean;
     constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
-        /*if(this.router.url=="/logout"){
-            this.authenticationService.logout();
-        }*/
         if (this.referenceService.userProviderMessage !== "") {
             this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
         }
@@ -49,9 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if(sessionExpiredMessage!=""){
           this.setCustomeResponse("ERROR", sessionExpiredMessage);
         }
-
     }
-  }
 
   public login() {
     try {
@@ -87,7 +84,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginWithUser(userName:string){
     const authorization = 'Basic ' + btoa('my-trusted-client:');
           const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-                   
           this.authenticationService.login(authorization, body, userName).subscribe(result => {
             if (localStorage.getItem('currentUser')) {
               // if user is coming from login

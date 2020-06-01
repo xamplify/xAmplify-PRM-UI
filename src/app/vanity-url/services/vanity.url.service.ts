@@ -92,7 +92,7 @@ export class VanityURLService {
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytifyorg.xamplify.com";
-    //let url = "tga.xamplify.com";
+    //let url = "vendor.xamplify.com";
     let url =window.location.hostname;
     if (!url.includes("release")) {
       let domainName = url.split('.');

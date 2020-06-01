@@ -45,10 +45,108 @@
         </div>
     </section>
 </div>
+<!------Added Team Members--------------------------->
+<div class="portlet light" *ngIf="!teamMemberUi.emptyTable">
+  <div class="portlet-title">
+    <div class="caption">Added Team Members</div>
+  </div>
+  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+  <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
+    <div class="table-responsive" style="overflow-x:inherit">
+      <table class="table table-striped  table-hover" id="add-team-member-table" aria-describedby="TeamMemberList">
+        <thead>
+          <tr>
+            <th class="table-checkbox" id="first-header">
+              <h4 class="user-permission-min-width"> 
+                  <img src="assets/images/user-permission.png" alt="No image found" class="user-permission-img">User & Permissions
+              </h4>
+          </th>
+          <th *ngFor="let module of teamMemberModules" scope="">
+            <i class="{{module.moduleIcon}}" aria-hidden="true"></i><br>
+            {{module.moduleName}}
+           </th>
+            <th class="rest-header" scope="">
+              <i class="fa fa-trash red" aria-hidden="true"></i><br>Delete
+            </th>
+            </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let teamMember of newlyAddedTeamMembers;let i=index">
+                <tr id="team-member-{{i}}">
+                  <!---User Details-------->
+                  <td>
+                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
+                    </app-user-info>
+                </td>
+                <!-- -Enable As An Org Admin -->
+                <ng-container *ngIf="isOrgAdmin">
+                  <td>
+                    <switch  [status]="teamMember.secondOrgAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus($event,i,teamMember)">
+                    </switch>
+                </td>
+              </ng-container>
+                <!-- -All-- -->
+                <td>
+                <input  type="checkbox" (change)="addAllAuthorities($event,teamMember,'add-team-member-table',i)" class="check-all-{{i}}" [(ngModel)]="teamMember.all">
+                <br>
+              </td>
+              <!-- -Video-- -->
+              <td *ngIf="videoAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+            <!-- -Campaign-- -->
+              <td *ngIf="campaignAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Design-- -->
+              <td *ngIf="designAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Social Share-- -->
+              <td *ngIf="socialShareAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Stats-- -->
+              <td *ngIf="statsAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Partners-- -->
+              <td *ngIf="partnersAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Contacts-- -->
+              <td *ngIf="contactsAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+               <!-- -Delete Row-- -->
+              <td>
+                <a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)">
+                    <i class="fa fa-trash red" aria-hidden="true"></i>
+                </a>
+              </td>
+               
+                  </tr>
+                </ng-container>
+            </tbody>
+      </table>
+      </div>
+      <hr>
+      <div class="pull-right">
+          <button class="btn btn-primary" (click)="save()">Save</button>
+          <button class="btn btn-secondary" (click)="clearRows()">Cancel</button>
+      </div>
+  </div>
+  </div>
 
 
-<!-- BEGIN EXAMPLE TABLE PORTLET-->
-<div class="portlet light">
+<!-- Team Members List-->
+<div class="portlet light" *ngIf="teamMemberUi.emptyTable">
   <div class="portlet-title">
       <div class="caption">Team Members List</div>
       <div class="tools" style="padding: 0;margin: 0;">

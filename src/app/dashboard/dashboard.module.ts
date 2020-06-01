@@ -60,7 +60,7 @@ import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-t
         DemoRequestComponent,
         DynamicEmailContentComponent,
         SamlsecurityComponent,
-        ListAllUsersComponent
+        ListAllUsersComponent,
         DashboardAnalyticsComponent,
         ModuleAnalyticsComponent,
         VendorActivityAnalyticsComponent,

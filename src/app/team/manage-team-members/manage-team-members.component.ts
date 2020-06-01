@@ -377,13 +377,15 @@ export class ManageTeamMembersComponent implements OnInit {
 	clearRows() {
 		try {
 			$('#add-team-member-table tbody').remove();
-			this.teamMembers = [];
+			//this.teamMembers = [];
+			this.newlyAddedTeamMembers = [];
 			this.team = new TeamMember();
 			this.emaillIdDivClass = this.defaultClass;
 			$(".col-md-12 span").text('');
 			this.teamMemberUi = new TeamMemberUi();
 			this.isUploadCsv = false;
 			this.isAddTeamMember = false;
+			this.customResponse = new CustomResponse();
 		} catch (error) {
 			this.showUIError(error);
 		}
@@ -492,8 +494,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			.subscribe(
 				data => {
 					this.addTeamMemberLoader = false;
-					if(data.statusCode==200){
-						this.hideErrorMessage();
+					this.hideErrorMessage();
 						this.teamMemberUi.emptyTable = false;
 						this.newlyAddedTeamMembers.push(this.team);
 						this.team = new TeamMember();
@@ -501,10 +502,18 @@ export class ManageTeamMembersComponent implements OnInit {
 						this.emaillIdDivClass = this.defaultClass;
 						this.teamMemberUi.isValidForm = false;
 						this.closePopup();
-						console.log(this.newlyAddedTeamMembers);
-					}else{
-						this.showErrorMessage(data.message);
-					}
+					// if(data.statusCode==200){
+					// 	this.hideErrorMessage();
+					// 	this.teamMemberUi.emptyTable = false;
+					// 	this.newlyAddedTeamMembers.push(this.team);
+					// 	this.team = new TeamMember();
+					// 	this.teamMemberUi.validEmailId = false;
+					// 	this.emaillIdDivClass = this.defaultClass;
+					// 	this.teamMemberUi.isValidForm = false;
+					// 	this.closePopup();
+					// }else{
+					// 	this.showErrorMessage(data.message);
+					// }
 				},
 				error => { 	
 					this.addTeamMemberLoader = false;
@@ -520,6 +529,57 @@ export class ManageTeamMembersComponent implements OnInit {
 			this.showUIError(error);
 		}
 
+	}
+
+	deleteRow(index: number, emailId: string) {
+		try {
+			$('#team-member-' + index).remove();
+			emailId = emailId.toLowerCase();
+			this.newlyAddedTeamMembers = this.spliceArray(this.newlyAddedTeamMembers, emailId);
+			alert(this.newlyAddedTeamMembers.length);
+			let tableRows = $("#add-team-member-table > tbody > tr").length;
+			if (tableRows == 0 || this.newlyAddedTeamMembers.length == 0) {
+				this.clearRows();
+			}
+		} catch (error) {
+			this.showUIError(error);
+		}
+
+	}
+
+	spliceArray(arr: any, emailId: string) {
+		arr = $.grep(arr, function (data, index) {
+			return data.emailId != emailId
+		});
+		return arr;
+	}
+
+	save(){
+		this.loading = true;
+		this.customResponse = new CustomResponse();
+		console.log(this.newlyAddedTeamMembers);
+		this.teamMemberService.saveTeamMembers(this.newlyAddedTeamMembers)
+			.subscribe(
+				data => {
+					this.loading = false;
+					alert(data.statusCode);
+					if(data.statusCode==200){
+
+					}else{
+						let duplicateEmailIds = "";
+                        $.each(data.data, function (index, value) {
+                            duplicateEmailIds += (index + 1) + "." + value + "<br><br>";
+                        });
+                        let message =  data.message+" <br><br>" + duplicateEmailIds;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+					}
+				},
+				error => { 	
+					this.loading = false;
+					this.showErrorMessage(this.properties.serverErrorMessage);			
+				},
+				() => this.logger.log("Team member validated successfully.")
+			);
 	}
 
 }

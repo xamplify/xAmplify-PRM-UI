@@ -145,6 +145,16 @@ export class TeamMemberService{
         .map(this.extractData)
         .catch(this.handleError);   
     }
+    
+      saveTeamMembers(teams:Array<TeamMember>){
+        let teamMemberPostDto = {};
+        teamMemberPostDto['teamMemberDTOs'] = teams;
+        teamMemberPostDto['userId'] = this.authenticationService.getUserId();
+        var url =this.URL+"teamMember/saveTeamMembers?access_token="+this.authenticationService.access_token;
+        return this.http.post(url,teamMemberPostDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
 
     updateTeamMember(teamMember:TeamMember){
         let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
