@@ -188,7 +188,7 @@
 															Actions <i class="fa fa-angle-down"></i>
 														</button>
 														<ul class="dropdown-menu pull-right">
-															<li><a *ngIf="selectedAddContactsOption != 8" id="save_button" (click)="saveContacts()">Save
+															<li><a *ngIf="selectedAddContactsOption != 8 && !isSegmentation" id="save_button" (click)="saveContacts()">Save
 															</a></li>
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"

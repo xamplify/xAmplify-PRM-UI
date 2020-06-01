@@ -90,19 +90,23 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         }
         this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
             (response: any) => {
-                const data = response.data;
-                this.statusCode = response.statusCode;
-                if (this.statusCode == 200) {
-                    pagination.totalRecords = data.totalRecords;
-                    this.sortOption.totalRecords = data.totalRecords;
-                    $.each(data.landingPages, function (index, landingPage) {
-                        landingPage.displayTime = new Date(landingPage.createdDateInString);
-                    });
-                    pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                if(response.access){
+                    const data = response.data;
+                    this.statusCode = response.statusCode;
+                    if (this.statusCode == 200) {
+                        pagination.totalRecords = data.totalRecords;
+                        this.sortOption.totalRecords = data.totalRecords;
+                        $.each(data.landingPages, function (index, landingPage) {
+                            landingPage.displayTime = new Date(landingPage.createdDateInString);
+                        });
+                        pagination = this.pagerService.getPagedItems(pagination, data.landingPages);
+                    }
+                    this.referenceService.loading(this.httpRequestLoader, false);
+                }else{
+                    this.authenticationService.forceToLogout();
                 }
                 console.log(data.landingPages);
                 this.referenceService.loading(this.httpRequestLoader, false);
-
             },
             (error: any) => { this.logger.errorPage(error); });
     }
@@ -200,20 +204,25 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         this.landingPageService.deletebById(landingPage.id)
             .subscribe(
                 (response: any) => {
-                    if (response.statusCode == 200) {
-                        let message = landingPage.name + " deleted successfully";
-                        this.customResponse = new CustomResponse('SUCCESS', message, true);
-                        this.pagination.pageIndex = 1;
-                        this.listLandingPages(this.pagination);
-                    } else {
-                        let campaignNames = "";
-                        $.each(response.data, function (index, value) {
-                            campaignNames += (index + 1) + "." + value + "<br><br>";
-                        });
-                        let message = response.message + "<br><br>" + campaignNames;
-                        this.customResponse = new CustomResponse('ERROR', message, true);
-                        this.referenceService.loading(this.httpRequestLoader, false);
+                    if(response.access){
+                        if (response.statusCode == 200) {
+                            let message = landingPage.name + " deleted successfully";
+                            this.customResponse = new CustomResponse('SUCCESS', message, true);
+                            this.pagination.pageIndex = 1;
+                            this.listLandingPages(this.pagination);
+                        } else {
+                            let campaignNames = "";
+                            $.each(response.data, function (index, value) {
+                                campaignNames += (index + 1) + "." + value + "<br><br>";
+                            });
+                            let message = response.message + "<br><br>" + campaignNames;
+                            this.customResponse = new CustomResponse('ERROR', message, true);
+                            this.referenceService.loading(this.httpRequestLoader, false);
+                        }
+                    }else{
+                        this.authenticationService.forceToLogout();
                     }
+                   
 
                 },
                 (error: string) => {
@@ -304,8 +313,6 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             }
             let showList = this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView || this.categoryId!=undefined;
             if(showList){
-                // this.modulesDisplayType.isListView = this.modulesDisplayType.isListView;
-                // this.modulesDisplayType.isGridView = this.modulesDisplayType.isGridView;
                 if(!this.modulesDisplayType.isListView && !this.modulesDisplayType.isGridView){
                     this.modulesDisplayType.isListView = true;
                     this.modulesDisplayType.isGridView = false;

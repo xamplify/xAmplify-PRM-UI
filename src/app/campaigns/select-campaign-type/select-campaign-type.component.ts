@@ -95,31 +95,30 @@ export class SelectCampaignTypeComponent implements OnInit{
         }
     }
 
-     createRegularCampaign(){
-         this.refService.selectedCampaignType = "regular";
-         this.router.navigate(["/home/campaigns/create"]);
-     }
-     createVideoCampaign(){
-         this.refService.selectedCampaignType = "video";
-         this.router.navigate(["/home/campaigns/create"]);
-     }
-     createEventCampaign(){
-        this.refService.selectedCampaignType = "eventCampaign";
-        this.router.navigate(["/home/campaigns/event"]); 
-     }
-     socialMediaCampaign(){
-      //this.refService.selectedCampaignType = "socialCampaign";
-       this.router.navigate(["/home/campaigns/social"]); 
-     }
-     createSMS_Campaign(){
-      this.refService.selectedCampaignType = "sms";
-      this.router.navigate(["/home/campaigns/create"]);
-     }
+    goToCreateCampaignSection(type:string){
+      this.campaignService.hasCampaignCreateAccess()
+            .subscribe(
+                (data: any) => {
+                   if(data.access){
+                    this.refService.selectedCampaignType = type;
+                      if(type=="regular" || type=="video" || type=="landingPage"){
+                        this.router.navigate(["/home/campaigns/create"]);
+                      }else if(type=="eventCampaign"){
+                        this.router.navigate(["/home/campaigns/event"]); 
+                      }else if(type=="social"){
+                        this.router.navigate(["/home/campaigns/social"]); 
+                      }
+                   }else{
+                    this.authenticationService.forceToLogout();
+                   }
+                },
+                (error: string) => {
+                    this.authenticationService.forceToLogout();
+                }
+            );
+    }
+
      
-     createLandingPageCampaign(){
-         this.refService.selectedCampaignType = "landingPage";
-         this.router.navigate(["/home/campaigns/create"]);
-     }
 
      openCreateFolderPopup(){
       this.customResponse = new CustomResponse();

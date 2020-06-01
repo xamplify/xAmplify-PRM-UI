@@ -127,6 +127,7 @@ export class ReferenceService {
 	startX: any;
 	startWidth: any;
 	regularExpressions = new RegularExpressions();
+	loaderFromAdmin = false;
 	constructor(private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger,
 		private router: Router, public deviceService: Ng2DeviceService, private route: ActivatedRoute) {
 		console.log('reference service constructor');
@@ -1743,6 +1744,7 @@ export class ReferenceService {
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderFirstNameGlobal, myMergeTags.myFirstName);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderLastNameGlobal, myMergeTags.myLastName);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderFullNameGlobal, myMergeTags.myFullName);
+			updatedBody = updatedBody.replace(this.senderMergeTag.senderTitleGlobal, myMergeTags.myTitle);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderEmailIdGlobal, myMergeTags.myEmailId);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderContactNumberGlobal, myMergeTags.myContactNumber);
 			updatedBody = updatedBody.replace(this.senderMergeTag.senderCompanyGlobal, myMergeTags.senderCompany);
@@ -1764,7 +1766,7 @@ export class ReferenceService {
 
 	hasMyMergeTagsExits(body: string) {
 		return body.indexOf(this.senderMergeTag.senderFirstName) > -1 || body.indexOf(this.senderMergeTag.senderLastName) > -1 || body.indexOf(this.senderMergeTag.senderFullName) > -1 ||
-			body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
+		body.indexOf(this.senderMergeTag.senderTitle) > -1  || body.indexOf(this.senderMergeTag.senderEmailId) > -1 || body.indexOf(this.senderMergeTag.senderContactNumber) > -1 || body.indexOf(this.senderMergeTag.senderCompany) > -1
 			|| body.indexOf(this.senderMergeTag.senderCompanyUrl) > -1 || body.indexOf(this.senderMergeTag.senderCompanyContactNumber) > -1 || body.indexOf(this.senderMergeTag.aboutUs) > -1;
 	}
 
@@ -2019,5 +2021,9 @@ export class ReferenceService {
 			modulesDisplayType.isFolderListView = false;
 		}
 		return modulesDisplayType;
+	}
+
+	showSweetAlertProceesor(title:string){
+		swal({ title: title, text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 	}
 }

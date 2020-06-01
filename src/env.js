@@ -26,9 +26,9 @@
    window.__env.imagesHost = "https://aravindu.com/vod/images/";
 
 /*************************Release*******************************/	
- // window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server
- // window.__env.SERVER_URL =  "https://release.xamp.io/" // release xamplify backend production server
- //window.__env.imagesHost = "https://release.xamp.io/vod/images/";
+ //window.__env.CLIENT_URL ="https://release.xamplify.io/", // release xamplify client app server
+// window.__env.SERVER_URL =  "https://release.xamp.io/" // release xamplify backend production server
+// window.__env.imagesHost = "https://release.xamp.io/vod/images/";
 
   
   

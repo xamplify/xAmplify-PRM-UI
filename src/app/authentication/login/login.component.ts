@@ -36,16 +36,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   { "name": "linkedin", "iconName": "linkedin" }];
 
 
-  roles: Array<Role>;      
-  isNotVanityURL:boolean = false;
-  vanityURLEnabled:boolean = false;
-  constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
-    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
-    /*if(this.router.url=="/logout"){
-        this.authenticationService.logout();
-    }*/
-    if (this.referenceService.userProviderMessage !== "") {
-      this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
+    roles: Array<Role>;
+    constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
+        public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
+        /*if(this.router.url=="/logout"){
+            this.authenticationService.logout();
+        }*/
+        if (this.referenceService.userProviderMessage !== "") {
+            this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
+        }
+        let sessionExpiredMessage = this.authenticationService.sessinExpriedMessage;
+        if(sessionExpiredMessage!=""){
+          this.setCustomeResponse("ERROR", sessionExpiredMessage);
+        }
+
     }
   }
 
@@ -78,6 +82,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     } catch (error) { console.log('error' + error); }
   }
+
 
   loginWithUser(userName:string){
     const authorization = 'Basic ' + btoa('my-trusted-client:');
@@ -131,6 +136,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             });
           return false;
   }
+
 
   redirectTo(user: User) {
     this.loading = false;
@@ -219,4 +225,5 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.resendActiveMail = false;
     $('#org-admin-deactivated').hide();
   }
+
 }

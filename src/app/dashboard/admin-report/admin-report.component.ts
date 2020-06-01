@@ -63,7 +63,6 @@ export class AdminReportComponent implements OnInit {
 
   constructor( public properties: Properties,public dashboardService: DashboardService, public pagination: Pagination , public pagerService: PagerService, public referenceService: ReferenceService,
 public authenticationService: AuthenticationService, public router:Router) {
-
   }
   
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }

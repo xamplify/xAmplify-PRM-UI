@@ -354,8 +354,7 @@
                                             </td>
                                             <td *ngIf="!isOnlyPartnerOrPartnerTeamMember"><input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
                                             </td>
-                                            <!--                                     <td><input type="checkbox"  id="role-checkbox-{{i}}"[(ngModel)]="teamMember.opportunity" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')"></td>
- -->
+
                                         </ng-template>
                                         <td *ngIf="teamMember.teamMemberId==secondOrgAdminId">
                                             <switch [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"

@@ -34,8 +34,9 @@ export class DesignComponent implements OnInit {
                   this.emailTemplate = response.emailTemplate;
                   this.form = response.form;
                   this.landingPage = response.landingPage;
-              }else{
-                  
+                  if(!this.emailTemplate && !this.form && !this.landingPage){
+                      this.authenticationService.forceToLogout();
+                  }
               }
               this.isLoading = false;
           },

@@ -740,4 +740,8 @@ export class PartnerReportsComponent implements OnInit, OnDestroy {
       );
   }
 
+  downloadCsv(){
+      window.open(this.authenticationService.REST_URL+'partner/drpc/'+this.loggedInUserId+"?access_token="+this.authenticationService.access_token,"taget_blank");
+  }
+
 }

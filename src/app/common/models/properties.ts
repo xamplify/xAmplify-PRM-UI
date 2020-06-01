@@ -1,3 +1,4 @@
+
 export class Properties {
 
   /*App Info*/
@@ -138,6 +139,20 @@ export class Properties {
   UPLOAD_METADATA_TEXT1 = 'Upload the metadata which is downloaded from Allbound after the IDP configuration, we process the content and will save the same into the system.'
   UPLOAD_METADATA_TEXT2='Success! Processed the metadata and saved into the system.';
 
+  /*************My Profile Tab Names*******************************/
+  personalInfo = "Personal Info";
+  changePassword = "Change Password";
+  viewType = "View Type";
+  defaultPlayerSettings = "Default Player Settings";
+  dealRegistration = "Deal Registration";
+  integrations = "Integrations";
+  gdprSettings = "GDPR Settings";
+  folders = "Folders";
+  samlSettings = "SAML Settings";
+
+  /********Error Messages************* */
+  roleUpdatedMessage = "Your role has been changed.Please login again.";
+  
   /****************** Vanity Relates *********************/
   VANITY_URL_ERROR1 = "You are not associated to vendor company";
   VANITY_URL_DB_BUTTON_SUCCESS_TEXT = "Button added succesfully";
@@ -148,3 +163,4 @@ export class Properties {
   VANITY_URL_ET_DELETE_TEXT = "Email Template deleted succesfully";
   VANITY_URL_EMAIL_TEMPLATE_ERROR_TEXT="Error while Updating Email Template";
 }
+

@@ -36,6 +36,7 @@ import { SharedContactsModule } from 'app/shared/shared-contacts.module';
 import { DemoRequestComponent } from './demo-request/demo-request.component';
 import { DynamicEmailContentComponent } from './dynamic-email-content/dynamic-email-content.component';
 import { SamlsecurityComponent } from './samlsecurity/samlsecurity.component';
+import { ListAllUsersComponent } from './list-all-users/list-all-users.component';
 import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
 import { ModuleAnalyticsComponent } from './dashboard-analytics-components/module-analytics/module-analytics.component';
 import { VendorActivityAnalyticsComponent } from './dashboard-analytics-components/vendor-activity-analytics/vendor-activity-analytics.component';
@@ -59,6 +60,7 @@ import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-t
         DemoRequestComponent,
         DynamicEmailContentComponent,
         SamlsecurityComponent,
+        ListAllUsersComponent
         DashboardAnalyticsComponent,
         ModuleAnalyticsComponent,
         VendorActivityAnalyticsComponent,
@@ -70,6 +72,7 @@ import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-t
         DashboardButtonsComponent,        
         DashboardButtonsCarouselComponent, 
         VanityEmailTemplatesComponent       
+
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]

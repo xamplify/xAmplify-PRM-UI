@@ -44,23 +44,25 @@
                                     {{campaign.launchTime |date:'mediumDate'}}, {{campaign.launchTime | date:'shortTime'}}
                                     </ng-container>
                                     </ng-template>
-                                    <span *ngIf="previewCampaignType ==='EVENT'">{{ campaign?.launchTimeInString}}</span>
+                                    <span *ngIf="previewCampaignType ==='EVENT' && campaign.campaignScheduleType=='SAVE' || campaign.campaignScheduleType=='NOW'">
+                                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="campaign.launchTimeInString"></app-timestamp>                                                                       
+								</span>
                                 </h6>
                             </div>
                         </div>
 
                         <div class="media col-xs-12 col-sm-6">
                             <div class="media-left p10">
-                                <i class="fa fa-user-circle-o"></i>
+                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                             </div>
                             <div class="media-body">
                                 <h5>{{campaign.fromName}}</h5>
                                 <h6>{{campaign.email}}</h6>
                             </div>
                         </div>
-                        <div class="media col-xs-12 col-sm-6" *ngIf="campaignType!='SOCIAL'">
+                        <div class="media col-xs-12 col-sm-6">
                             <div class="media-left p10">
-                                <i class="fa fa-folder-open-o"></i>
+                                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                             </div>
                             <div class="media-body">
                                 <h5>{{campaign.categoryName}}</h5>
@@ -69,9 +71,19 @@
                     </fieldset>
                     <fieldset *ngIf="previewCampaignType === 'SOCIAL'">
                         <legend>Social Accounts</legend>
-                        <div class="col-md-6 col-sm-12 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
-                            <app-social-status [socialStatus]="socialStatus"></app-social-status>
-                        </div>
+                        <app-landing-page-loader *ngIf="socialAccountsLoader" [maxBoxLength]=2></app-landing-page-loader>
+                        <ng-container *ngIf="!socialAccountsLoader">
+                            <ng-container *ngIf="socialCampaign?.socialStatusList?.length==0">
+                                <div class="alert alert-info">
+                                    <strong>No Social Accounts Found</strong>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="socialCampaign?.socialStatusList?.length>0">
+                                <div class="col-md-6 col-sm-12 col-xs-12" *ngFor="let socialStatus of socialCampaign.socialStatusList">
+                                    <app-social-status [socialStatus]="socialStatus"></app-social-status>
+                                </div>
+                            </ng-container>
+                        </ng-container>
                     </fieldset>
                     <fieldset [hidden]="previewCampaignType === 'SOCIAL'">
                         <legend>Selected:</legend>
@@ -85,9 +97,9 @@
                                         <div class="pricing hover-effect">
                                             <div class="pricing-head">
                                                 <h4>
-                                                    <img *ngIf="previewCampaignType==='REGULAR'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
-                                                    <img *ngIf="previewCampaignType==='LANDINGPAGE'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
-                                                    <img *ngIf="previewCampaignType==='EVENT'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png">
+                                                    <img alt="No Image Found" *ngIf="previewCampaignType==='REGULAR'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/regular-email.png">
+                                                    <img alt="No Image Found" *ngIf="previewCampaignType==='LANDINGPAGE'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/landing-page.png">
+                                                    <img alt="No Image Found" *ngIf="previewCampaignType==='EVENT'" style="margin: 0 auto;height: 115px;" class="pricing-head-img img-responsive" src="assets/images/event-campaign.png">
                                                 </h4>
                                             </div>
                                         </div>
@@ -204,17 +216,34 @@
                     <fieldset>
                         <legend>Selected {{contactType}}:</legend>
                         <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
-                        <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
+                      <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
                         <div class="table-responsive">
+                             <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
+                                <div class="input-icon" style="position:relative;right: -11px;">
+                                    <input type="text" class="form-control" [(ngModel)]="contactSearchInput" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandlerForSearchUsers($event.keyCode)" style="padding-left: 10px !important;">
+                                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactSearchInput" (click)="contactSearchInput='';searchCampaignUsers();"></button>
+                                    <button type="submit" class="search-box-item-click" (click)="searchCampaignUsers()"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            
                             <table class="table" [hidden]="campaignPartnersOrContactsPagination.pagedItems.length==0 || isContactListLoader" id="campaign-preview-contact-list">
+                                <thead>
+                                    <tr>
+                                        <th>{{tableHeader}}</th>
+                                        <th class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">Action</th>
+                                    </tr>
+                                    
+                                </thead>
+
                                 <tbody>
                                     <ng-container *ngFor="let campaignUser of campaignPartnersOrContactsPagination.pagedItems; let i = index">
                                         <tr>
                                             <td>
                                                 <app-user-info [userInfo]="campaignUser"></app-user-info>
                                             </td>
-                                            <td style="display: none;" class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign">
-                                                <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
+
+                                            <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
+                            <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
                                                     <button class="btn btn-default workflow-style pause-style" (click)="changeCampaignUserStatus(campaignUser,'Pause')">
                                                         <span class="hidden-xs pause-text-style">Pause</span>
                                                         <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>
@@ -237,6 +266,7 @@
                                 <app-pagination  [pagination]="campaignPartnersOrContactsPagination" [type]="'contactsOrPartners'" (notifyParent)="setPage($event)" (notifyParentDropDown)="paginationDropdown($event)"></app-pagination>
                             </div>
                         </div>
+                        <div class="alert alert-info alert-top-padding-xamplify" *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0">No {{contactType}} found</div>
                     </fieldset>
                     <!-- <fieldset> -->
                     <div id="campaign-options-div">
@@ -295,7 +325,7 @@
                                                                             <h6 *ngIf="reply.actionId==23"> <input type="text" style="width:100%;height: 22px;" disabled value="Video is not redistributed"></h6>
                                                                         </ng-container>
                                                                     </div>
-                                                                    <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
+                                                                    <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18 && reply.actionId!=28">
                                                                         <div class="col-xs-3">
                                                                             <h5 for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In X Days
                                                                             </h5>
@@ -500,7 +530,7 @@
             </div>
             <div class="modal-footer p0" *ngIf="!deleteCampaignAlert">
                 <div class="actions-block text-center m10" *ngIf="campaign">
-                	 <a *ngIf="campaignType!='SOCIAL'"  (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
+                	 <a (click)="changeTheFolder()"   data-toggle="tooltip" data-placement="top" title="Change the folder">
                             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                     </a>
                     <ng-container *ngIf="campaign.launched">
@@ -515,7 +545,7 @@
                             data-toggle="tooltip" data-placement="top" title="Analytics">
                             <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
+                        <a *ngIf="(previewCampaignType!=='EVENT') && ((campaign.campaignScheduleType === 'NOW')  && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign &&  previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
                             (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
                             <i class="fa fa-files-o"></i>
                         </a>
@@ -529,13 +559,13 @@
                             data-toggle="tooltip" data-placement="top" title="Analytics">
                             <i class="fa fa-line-chart"></i>
                         </a>
-                        <a *ngIf="((campaign.campaignScheduleType === 'NOW') ||(previewCampaignType !== 'SOCIAL') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign" data-rel="fancybox-button"
+                        <a *ngIf="((campaign.campaignScheduleType === 'NOW') && ( hasAllAccess || (hasStatsRole || hasCampaignRole) || isOnlyPartner || authenticationService.module.isVendor)) && !campaign.nurtureCampaign && previewCampaignType!='SOCIAL'" data-rel="fancybox-button"
                             (click)="openSaveAsModal(campaign)" data-toggle="tooltip" data-placement="auto" title="Copy Campaign">
                             <i class="fa fa-files-o"></i>
                         </a>
                     </ng-container>
                     <ng-container *ngIf="!campaign.launched && campaign.campaignScheduleType !== 'NOW'">
-                        <a *ngIf="hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId) || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
+                        <a *ngIf="(hasAllAccess || (campaign.launched==false&&hasCampaignRole && loggedInUserId==campaign.userId && previewCampaignType!='SOCIAL') || (!campaign.launched&&isOnlyPartner)  || authenticationService.module.isVendor) && campaign.campaignType!='SOCIAL'" (click)="editCampaign(campaign)" data-toggle="tooltip" data-placement="auto"
                             title="Edit">
                             <i class="fa fa-pencil-square-o"></i>
                         </a>

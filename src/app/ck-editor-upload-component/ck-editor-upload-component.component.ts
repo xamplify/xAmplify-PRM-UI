@@ -309,17 +309,22 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
       this.emailTemplateService.save( this.emailTemplate )
           .subscribe(
           data => {
-              this.refService.stopLoader( this.httpRequestLoader );
-              if ( !isOnDestroy ) {
-                  if ( data.statusCode == 702 ) {
-                      this.refService.isCreated = true;
-                      this.router.navigate( ["/home/emailtemplates/manage"] );
-                  } else {
-                      this.customResponse = new CustomResponse( "ERROR", data.message, true );
-                  }
-              }else{
-                  this.emailTemplateService.goToManage();
-              }
+             if(data.access){
+                this.refService.stopLoader( this.httpRequestLoader );
+                if ( !isOnDestroy ) {
+                    if ( data.statusCode == 702 ) {
+                        this.refService.isCreated = true;
+                        this.router.navigate( ["/home/emailtemplates/manage"] );
+                    } else {
+                        this.customResponse = new CustomResponse( "ERROR", data.message, true );
+                    }
+                }else{
+                    this.emailTemplateService.goToManage();
+                }
+             }else{
+                this.authenticationService.forceToLogout();
+             }
+             
           },
           error => {
               this.refService.stopLoader( this.httpRequestLoader );
@@ -337,17 +342,22 @@ export class CkEditorUploadComponent implements OnInit,OnDestroy {
             this.emailTemplateService.saveMarketoEmailTemplate(this.emailTemplate)
               .subscribe(
                 data => {
-                  this.refService.stopLoader(this.httpRequestLoader);
-                  if (!isOnDestroy) {
-                    if (data.statusCode == 8012) {
-                      this.refService.isCreated = true;
-                      this.router.navigate(["/home/emailtemplates/manage"]);
-                    } else {
-                      this.customResponse = new CustomResponse("ERROR", data.message, true);
+                    if(data.access){
+                        this.refService.stopLoader(this.httpRequestLoader);
+                        if (!isOnDestroy) {
+                          if (data.statusCode == 8012) {
+                            this.refService.isCreated = true;
+                            this.router.navigate(["/home/emailtemplates/manage"]);
+                          } else {
+                            this.customResponse = new CustomResponse("ERROR", data.message, true);
+                          }
+                        }else{
+                            this.emailTemplateService.goToManage();
+                        }
+                    }else{
+                        this.authenticationService.forceToLogout();
                     }
-                  }else{
-                      this.emailTemplateService.goToManage();
-                  }
+                  
                 },
                 error => {
                   this.refService.stopLoader(this.httpRequestLoader);

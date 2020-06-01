@@ -51,4 +51,5 @@ export class SaveVideoFile {
     enableVideoCobrandingLogo:boolean;
     uploadedUserName:string = "";
     processed:boolean;
+    access:boolean;
  }

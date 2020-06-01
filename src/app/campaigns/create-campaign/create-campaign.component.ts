@@ -484,7 +484,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         }//End Of Edit
         if(this.refService.campaignVideoFile!=undefined){
             /****************Creating Campaign From Manage VIdeos*******************************/
-            var selectedVideoId  = this.refService.campaignVideoFile.id;
+            let selectedVideoId  = this.refService.campaignVideoFile.id;
             if(selectedVideoId>0){
                 this.campaign.createdFromVideos = true;
                 this.setActiveTabForVideo();
@@ -1633,9 +1633,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
      /**********************Email Templates For Add Reply**************************************************/
     loadEmailTemplatesForAddReply(reply:Reply){
-        this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
-        this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         reply.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+        reply.loader = true;
         if(reply.emailTemplatesPagination.searchKey==null || reply.emailTemplatesPagination.searchKey==""){
             reply.emailTemplatesPagination.campaignDefaultTemplate = true;
         }else{
@@ -1649,9 +1648,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 reply.emailTemplatesPagination.totalRecords = data.totalRecords;
                 reply.emailTemplatesPagination = this.pagerService.getPagedItems(reply.emailTemplatesPagination, data.emailTemplates);
                 this.filterReplyrEmailTemplateForEditCampaign(reply);
-                this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+                reply.loader = false;
             },
             (error:string) => {
+                reply.loader = false;
                this.logger.errorPage(error);
             },
             () => this.logger.info("Finished loadEmailTemplatesForAddReply()",reply.emailTemplatesPagination)
@@ -1659,9 +1659,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     loadEmailTemplatesForAddOnClick(url:Url){
-        this.campaignEmailTemplate.httpRequestLoader.isHorizontalCss=true;
-        this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, true);
         url.emailTemplatesPagination.filterBy = "CampaignRegularEmails";
+        url.loader = true;
         if(url.emailTemplatesPagination.searchKey==null || url.emailTemplatesPagination.searchKey==""){
             url.emailTemplatesPagination.campaignDefaultTemplate = true;
         }else{
@@ -1675,9 +1674,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 url.emailTemplatesPagination.totalRecords = data.totalRecords;
                 url.emailTemplatesPagination = this.pagerService.getPagedItems(url.emailTemplatesPagination, data.emailTemplates);
                 this.filterClickEmailTemplateForEditCampaign(url);
-                this.refService.loading(this.campaignEmailTemplate.httpRequestLoader, false);
+                url.loader = false;
             },
             (error:string) => {
+                url.loader = false;
                this.logger.errorPage(error);
             },
             () => this.logger.info("Finished loadEmailTemplatesForAddOnClick()",url.emailTemplatesPagination)
@@ -1694,7 +1694,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     filterEmailTemplateForEditCampaign(){
-        if(this.emailTemplatesPagination.emailTemplateType==0 && this.emailTemplatesPagination.searchKey==null){
+        if(this.emailTemplatesPagination.emailTemplateType==0 && (this.emailTemplatesPagination.searchKey==null || this.emailTemplatesPagination.searchKey=="")){
             if(this.emailTemplatesPagination.pageIndex==1){
                 this.showSelectedEmailTemplate=true;
             }else{
@@ -1711,7 +1711,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     filterReplyrEmailTemplateForEditCampaign(reply:Reply){
-        if(reply.emailTemplatesPagination.emailTemplateType==0 && reply.emailTemplatesPagination.searchKey==null){
+        if(reply.emailTemplatesPagination.emailTemplateType==0 && (reply.emailTemplatesPagination.searchKey==null ||reply.emailTemplatesPagination.searchKey=="")){
             if(reply.emailTemplatesPagination.pageIndex==1){
                 reply.showSelectedEmailTemplate=true;
             }else{
@@ -1728,7 +1728,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     }
 
     filterClickEmailTemplateForEditCampaign(url:Url){
-        if(url.emailTemplatesPagination.emailTemplateType==0 && url.emailTemplatesPagination.searchKey==null){
+        if(url.emailTemplatesPagination.emailTemplateType==0 && (url.emailTemplatesPagination.searchKey==null ||url.emailTemplatesPagination.searchKey=="")){
             if(url.emailTemplatesPagination.pageIndex==1){
                 url.showSelectedEmailTemplate=true;
             }else{
@@ -1917,6 +1917,23 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         reply.emailTemplatesPagination.searchKey = reply.emailTemplateSearchInput;
         this.loadEmailTemplatesForAddReply(reply);
     }
+
+    eventHandlerForReplyEmailTemplate(event: any,reply:Reply) { 
+        if (event.keyCode === 13) {
+             this.searchReplyEmailTemplate(reply);
+         } 
+    }
+    eventHandlerForUrlEmailTemplate(event: any,url:Url) { 
+        if (event.keyCode === 13) {
+             this.searchClickEmailTemplate(url);
+         } 
+    }
+
+    removeSearchInput(reply:Reply){
+        reply.emailTemplateSearchInput = "";
+        this.searchReplyEmailTemplate(reply);
+    }
+
 
 
 
@@ -2391,14 +2408,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             .subscribe(
             data => {
                 console.log(data);
-                if(data.message=="success"){
-                    this.isLaunched = true;
-                    this.reInitialize();
-                    if("/home/campaigns/manage"==this.router.url){
-                      this.router.navigate(["/home/campaigns/manage"]);
+                if(data.access){
+                    if(data.message=="success"){
+                        this.isLaunched = true;
+                        this.reInitialize();
+                        if("/home/campaigns/manage"==this.router.url){
+                          this.router.navigate(["/home/campaigns/manage"]);
+                        }
                     }
-
+                }else{
+                    this.authenticationService.forceToLogout();
                 }
+
+              
             },
             error => {
                 this.logger.error("error in saveCampaignOnDestroy()", error);
@@ -2792,20 +2814,25 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
              this.campaignService.saveCampaign( data )
              .subscribe(
              response => {
-                 if(response.statusCode==2000){
-                     this.refService.campaignSuccessMessage = data['scheduleCampaign'];
-                     this.refService.launchedCampaignType = this.campaignType;
-                     this.isLaunched = true;
-                     this.reInitialize();
-                     this.router.navigate(["/home/campaigns/manage"]);
+                 if(response.access){
+                    if(response.statusCode==2000){
+                        this.refService.campaignSuccessMessage = data['scheduleCampaign'];
+                        this.refService.launchedCampaignType = this.campaignType;
+                        this.isLaunched = true;
+                        this.reInitialize();
+                        this.router.navigate(["/home/campaigns/manage"]);
+                    }else{
+                        this.invalidScheduleTime = true;
+                        this.invalidScheduleTimeError = response.message;
+                        if(response.statusCode==2016){
+                            this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
+                            this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                        }
+                    }
                  }else{
-                     this.invalidScheduleTime = true;
-                     this.invalidScheduleTimeError = response.message;
-                     if(response.statusCode==2016){
-                         this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
-                         this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
-                     }
+                    this.authenticationService.forceToLogout();
                  }
+                
                  this.refService.stopLoader(this.httpRequestLoader);
              },
              error => {

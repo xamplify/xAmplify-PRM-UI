@@ -73,17 +73,19 @@ export class VendorReportsComponent implements OnInit {
   navigateToVendorCampaigns(venderReport: any) {
     this.loading = true;
     this.referenseService.vendorDetails = venderReport;
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
-    //this.router.navigateByUrl("/home/campaigns/vendor/all"); 
-
     this.vanityURLService.getCompanyProfileNameByCompanyName(venderReport.companyName).subscribe(result => {
       if (result.statusCode === 200) {
         let vanityURL = result.data + "au/" + this.authenticationService.user.alias;
         window.open(vanityURL);
       }
     });
+    
+    
+//     this.router.navigateByUrl("/home/campaigns/vendor/all");
+//     setTimeout(() => {
+//       this.loading = false;
+//     }, 3000);
+
 
   }
   errorHandler(event) {

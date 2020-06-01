@@ -79,6 +79,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   events = [];
   selectedSocialProviderId: number;
   savedURL: string;
+  categoryNames: any;
 
   constructor(private _location: Location, public socialService: SocialService,
     private videoFileService: VideoFileService, public properties: Properties,
@@ -87,6 +88,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
     public referenceService: ReferenceService, public campaignService: CampaignService) {
     this.socialCampaign.channelCampaign = true;
+    this.socialCampaign.emailNotification = true;
     this.location = this.router.url;
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
@@ -348,23 +350,21 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialService.redistributeSocialCampaign(this.socialCampaign)
         .subscribe(
           data => {
-            this.socialCampaign.campaignName = null;
-            this.socialStatusResponse = data.socialStatusList;
-            if (data.publishStatus !== 'FAILURE') {
-              let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
-              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
-
+            if(data.access){
               this.isRedirectEnabled = true;
-              setTimeout(() => {
-                this.redirect();
-              }, 10000);
-
+              this.socialStatusResponse = data.socialStatusList;
+              if (data.publishStatus !== 'FAILURE') {
+                let message = this.socialCampaign.shareNow ? 'redistributed' : 'scheduled';
+                this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+              }
+              else if (data.publishStatus === 'FAILURE')
+                this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
+              $('input:checkbox').removeAttr('checked');
+              $('#contact-list-table tr').removeClass("highlight");
+            }else{
+                this.authenticationService.forceToLogout();
             }
-            else if (data.publishStatus === 'FAILURE')
-              this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
-
-            $('input:checkbox').removeAttr('checked');
-            $('#contact-list-table tr').removeClass("highlight");
+           
           },
           error => {
             this.setCustomResponse(ResponseType.Error, 'An Error occurred while redistributing the social campaign.');
@@ -399,23 +399,21 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       this.socialService.createSocialCampaign(this.socialCampaign)
         .subscribe(
           data => {
-            this.socialCampaign.campaignName = null;
-            this.socialStatusResponse = data.socialStatusList;
-
-            if (data.publishStatus !== 'FAILURE') {
-              let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
-              this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+            if(data.access){
               this.isRedirectEnabled = true;
-              setTimeout(() => {
-                this.redirect();
-              }, 10000);
-
+              this.socialStatusResponse = data.socialStatusList;
+              if (data.publishStatus !== 'FAILURE') {
+                let message = this.socialCampaign.shareNow ? 'launched' : 'scheduled';
+                this.setCustomResponse(ResponseType.Success, 'Campaign ' + message + ' successfully.');
+              }
+              else if (data.publishStatus === 'FAILURE')
+                this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
+  
+              $('input:checkbox').removeAttr('checked');
+              $('#contact-list-table tr').removeClass("highlight");
+            }else{
+                this.authenticationService.forceToLogout();
             }
-            else if (data.publishStatus === 'FAILURE')
-              this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
-
-            $('input:checkbox').removeAttr('checked');
-            $('#contact-list-table tr').removeClass("highlight");
           },
           error => {
             this.setCustomResponse(ResponseType.Error, 'An Error occurred while creating the social campaign.');
@@ -432,6 +430,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     }
   }
 
+  
+
+ 
+
   redirect() {
     if (this.authenticationService.isOnlyPartner()) {
       this.router.navigate(['home/campaigns/partner/social']);
@@ -439,6 +441,11 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     else {
       this.router.navigate(['/home/campaigns/manage']);
     }
+  }
+
+  goToManage(){
+    this.loading = true;
+    this.router.navigate(['home/campaigns/manage']);
   }
 
   updateStatus() {
@@ -552,10 +559,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         error => console.log(error),
         () => {
           this.initializeSocialStatus();
-          if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
-            this.populateRssFeed(this.referenceService.selectedFeed);
-            this.referenceService.selectedFeed = "";
-          }
+          // if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
+          //   this.populateRssFeed(this.referenceService.selectedFeed);
+          //   this.referenceService.selectedFeed = "";
+          // }
         });
   }
 
@@ -884,6 +891,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
       }
       this.loadContactLists(this.contactListsPagination);
       this.loadCampaignNames(this.userId);
+      this.listCategories();
     }
   }
 
@@ -1143,7 +1151,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
   onKeyPress(event: KeyboardEvent) {
     if (this.socialStatusList.length !== 0 && this.socialStatusList[0].statusMessage !== undefined) {
       let enteredURL = this.socialStatusList[0].statusMessage.toLowerCase();
-      if (enteredURL.length === 0 || enteredURL.length === 0) {
+      if (enteredURL.length === 0) {
         this.socialStatus.statusMessage = ""
         this.clearRssOgTagsFeed();
       } else {
@@ -1193,5 +1201,18 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     this.socialStatus.ogt = false;
     this.socialStatusList[0] = this.socialStatus;
     this.savedURL = '';
+  }
+
+  listCategories(){
+    this.loading = true;
+    this.authenticationService.getCategoryNamesByUserId(this.userId).subscribe(
+        ( data: any ) => {
+            this.categoryNames = data.data;
+            let categoryIds = this.categoryNames.map(function (a:any) { return a.id; });
+            this.socialCampaign.categoryId = categoryIds[0];
+          this.loading = false;
+        },
+        error => { this.logger.error( "error in getCategoryNamesByUserId(" + this.userId + ")", error ); },
+        () => this.logger.info( "Finished listCategories()" ) );
   }
 }

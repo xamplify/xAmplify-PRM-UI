@@ -15,13 +15,14 @@ import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
-    dashboardAnalytics = this.authenticationService.REST_URL + "dashboard/views/"
+    superAdminUrl = this.authenticationService.REST_URL + "superadmin/";  
+ dashboardAnalytics = this.authenticationService.REST_URL + "dashboard/views/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
-    sortDates = [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
-    { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
-    
+    sortDates =  [{ 'name': '7 Days', 'value': 7 }, { 'name': '14 Days', 'value': 14 },
+      { 'name': '21 Days', 'value': 21 }, { 'name': 'Month', 'value': 30 }];
+
     constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
     getGenderDemographics(socialConnection: SocialConnection): Observable<Object> {
@@ -66,13 +67,13 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-    loadRequestedVendorsCount(userId: any) {
-        return this.http.get(this.authenticationService.REST_URL + "partnership/vendor-invitations/count/" + userId + "?&access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
+    
+    loadRequestedVendorsCount(userId:any) {
+        return this.http.get( this.authenticationService.REST_URL + "partnership/vendor-invitations/count/"+ userId + "?&access_token=" + this.authenticationService.access_token )
+            .map( this.extractData )
+            .catch( this.handleError );
     }
-
+    
     listOfVendorRequestLogs(pagination: Pagination) {
         const url = this.authenticationService.REST_URL + "partnership/vendor-invitation/analytics?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, pagination)
@@ -87,24 +88,24 @@ export class DashboardService {
     }
 
     loadVendorDetails(userId: number, pagination: Pagination) {
-        const url = this.authenticationService.REST_URL + 'vendor/details?access_token=' + this.authenticationService.access_token + '&partnerId=' + userId;
+        const url = this.authenticationService.REST_URL+ 'vendor/details?partnerId='+userId+'&access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
 
     }
-
+    
     sendVendorInvitation(userId: number, vendorInvitation: any) {
-        const url = this.authenticationService.REST_URL + 'partnership/vendor-invitation/' + userId + '?access_token=' + this.authenticationService.access_token;
+        const url = this.authenticationService.REST_URL+ 'partnership/vendor-invitation/'+ userId + '?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vendorInvitation)
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-    sendWelcomeEmail(vendorInvitation: any, alias: string) {
+    
+    sendWelcomeEmail(vendorInvitation: any,alias:string){
         vendorInvitation['alias'] = alias;
         console.log(vendorInvitation);
-        const url = this.authenticationService.REST_URL + 'superadmin/account/mail/welcome?access_token=' + this.authenticationService.access_token;
+        const url = this.authenticationService.REST_URL+ 'superadmin/account/mail/welcome?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, vendorInvitation)
             .map(this.extractData)
             .catch(this.handleError);
@@ -117,10 +118,10 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
+    
     getCampaignsHeatMapDetails(limit: any) {
         const url = this.authenticationService.REST_URL + 'dashboard/heatmap-data?userId=' + this.authenticationService.user.id +
-            '&access_token=' + this.authenticationService.access_token + '&limit=' + limit;
+            '&access_token=' + this.authenticationService.access_token+'&limit='+limit;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
@@ -176,9 +177,9 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    worldMapCampaignDetails(userId: number, countryCode: string, pagination: any) {
-        const url = this.authenticationService.REST_URL + 'dashboard/world-map-detail-report?access_token=' + this.authenticationService.access_token +
-            '&userId=' + userId + '&countryCode=' + countryCode;
+    worldMapCampaignDetails(userId: number, countryCode: string, pagination: any){
+        const url = this.authenticationService.REST_URL+ 'dashboard/world-map-detail-report?access_token='+this.authenticationService.access_token+
+        '&userId='+userId+'&countryCode='+countryCode;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
@@ -186,13 +187,13 @@ export class DashboardService {
 
 
     getVendorsList(pagination: Pagination) {
-        const url = this.authenticationService.REST_URL + 'superadmin/analytics?access_token=' + this.authenticationService.access_token;
+        const url = this.authenticationService.REST_URL+ 'superadmin/analytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    listTop10RecentUsers() {
+    listTop10RecentUsers(){
         const url = `${this.authenticationService.REST_URL}superadmin/top10?access_token=${this.authenticationService.access_token}`;
         return this.http.get(url)
             .map(this.extractData)
@@ -200,15 +201,15 @@ export class DashboardService {
     }
 
     getVendorsCompanyProfile(vendorId: any) {
-        const url = this.authenticationService.REST_URL + 'admin/company-profile/get/' + vendorId + '?access_token=' + this.authenticationService.access_token;
+        const url = this.authenticationService.REST_URL+ 'admin/company-profile/get/'+ vendorId + '?access_token=' + this.authenticationService.access_token;
         return this.http.get(url)
             .map(this.extractData)
             .catch(this.handleError);
     }
 
-    getVendorsMyProfile(vendorEmail: any) {        
-        const url = this.authenticationService.REST_URL + 'admin/getUserByUserName?access_token=' + this.authenticationService.access_token + '&userName=' + vendorEmail + '&isSuperAdmin=true';
-        return this.http.post(url, '')
+    getVendorsMyProfile(vendorEmail: any) {
+        const url = this.authenticationService.REST_URL+ 'admin/getUserByUserName?access_token=' + this.authenticationService.access_token + '&userName=' + vendorEmail + '&isSuperAdmin=true';
+        return this.http.post(url,"")
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -226,53 +227,60 @@ export class DashboardService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-    saveMarketoCredentials(formData: any) {
+    saveMarketoCredentials( formData: any) {
         return this.http.post(this.authenticationService.REST_URL + `/marketo/credentials?access_token=${this.authenticationService.access_token}`, formData)
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-    changeRole(userId: number) {
+    
+    changeRole(userId:number){
         return this.http.get(this.authenticationService.REST_URL + `admin/changeRole/${userId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        .map(this.extractData)
+        .catch(this.handleError);
     }
-
-    getAccess(companyId: number) {
+    
+    getAccess(companyId:number){
         return this.http.get(this.authenticationService.REST_URL + `admin/getAccess/${companyId}?access_token=${this.authenticationService.access_token}`)
-            .map(this.extractData)
-            .catch(this.handleError);
+        .map(this.extractData)
+        .catch(this.handleError);
     }
 
-
-    changeAccess(campaignAccess: any) {
-        return this.http.post(this.authenticationService.REST_URL + `admin/updateAccess?access_token=${this.authenticationService.access_token}`, campaignAccess)
-            .map(this.extractData)
-            .catch(this.handleError);
+    
+    changeAccess(campaignAccess:any){
+        return this.http.post(this.authenticationService.REST_URL + `admin/updateAccess?access_token=${this.authenticationService.access_token}`,campaignAccess)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
+    
 
-
-    activateOrDeactiveStatus(report: any) {
+    activateOrDeactiveStatus(report:any){
         let url = "";
-        if (report.userStatus == "APPROVED") {
-            url = this.authenticationService.REST_URL + "superadmin/account/deactivate?access_token=" + this.authenticationService.access_token;
-        } else if (report.userStatus == "UNAPPROVED" || report.userStatus == "SUSPEND") {
-            url = this.authenticationService.REST_URL + "superadmin/account/activate?access_token=" + this.authenticationService.access_token;
+        if(report.userStatus=="APPROVED"){
+            url  = this.authenticationService.REST_URL+"superadmin/account/deactivate?access_token="+this.authenticationService.access_token;
+        }else if(report.userStatus=="UNAPPROVED" || report.userStatus=="SUSPEND"){
+            url  = this.authenticationService.REST_URL+"superadmin/account/activate?access_token="+this.authenticationService.access_token;
         }
-        return this.http.post(url, report)
-            .map(this.extractData)
-            .catch(this.handleError);
+        return this.http.post(url,report)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
-
-
+    
+    
     listDemoRequests(pagination: Pagination) {
-        console.log(pagination);
-        const url = this.demoUrl + 'list?access_token=' + this.authenticationService.access_token;
+        const url = this.demoUrl+ 'list?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
     }
-    /******27/03/2020. To get all modules count in dashboard */
+
+    listAllApprovedUsers(pagination: Pagination) {
+        const url = this.superAdminUrl+ 'listAllAccounts?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }  
+
+ /******27/03/2020. To get all modules count in dashboard */
     getModuleAnalytics(dto: DashboardAnalyticsDto) {
         const url = this.dashboardAnalytics + 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
         return this.http.post(url, dto)
@@ -385,9 +393,9 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+
     private extractData(res: Response) {
         let body = res.json();
-        // console.log("response.json(): "+body);
         return body || {};
     }
 

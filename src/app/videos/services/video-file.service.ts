@@ -122,7 +122,7 @@ export class VideoFileService {
     getVideo(alias: string, viewBy: string): Observable<SaveVideoFile> {
         this.viewBytemp = viewBy;
         console.log(alias);
-        const url = this.URL + 'video-by-alias/' + alias + '?viewBy=' + viewBy;
+        const url = this.URL + 'video-by-alias/' + alias +"/" + this.authenticationService.user.id  +'?viewBy=' + viewBy;
         return this.http.get(url, '')
             .map(this.extractData)
             .catch(this.handleError);
@@ -162,7 +162,7 @@ export class VideoFileService {
     }
     deleteVideoFile(alias: string): Observable<SaveVideoFile> {
         console.log('deleted video alias is ' + alias);
-        const url = this.URL + 'video-status-change/' + alias + '?status=DELETE&access_token=' + this.authenticationService.access_token;
+        const url = this.URL + 'video-status-change/' + alias +"/"+ this.authenticationService.user.id +'?status=DELETE&access_token=' + this.authenticationService.access_token;
         console.log('delete url is ' + url);
         return this.http.get(url, '')
             .map(this.extractData)
@@ -320,6 +320,16 @@ export class VideoFileService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    hasVideoAccess(userId : number){
+        try {
+            const url = this.URL  + userId +  '/has-video-access?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url)
+                .map(this.extractData)
+                .catch(this.handleError);
+        } catch (error) { console.log(error); }
+   }
+    
     extractData(res: Response) {
         const body = res.json();
         console.log(body);

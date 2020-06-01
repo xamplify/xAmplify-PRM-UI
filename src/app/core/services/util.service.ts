@@ -151,4 +151,10 @@ export class UtilService {
     }
 
 
+    isLoggedInFromAdminPortal(){
+        return JSON.parse(localStorage.getItem('loginAsUserId'))!=null;
+       
+    }
+    
+
 }

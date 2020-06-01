@@ -168,10 +168,10 @@
                                         <td>
                                             <div class="actions-block override-actions" style="text-align: center !important;">
                                                 <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
-                                                    <i class="fa fa-eye mr5"></i>
+                                                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                                 </a>
-                                                <a *ngIf="campaign.campaignType === 'SOCIAL'" data-toggle="tooltip" data-placement="top" title="coming soon">
-                                                    <i class="fa fa-eye mr5"></i>
+                                                <a *ngIf="campaign.campaignType === 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+                                                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
                                                 </a>
                                                 <span>
 													<ng-container *ngIf="campaign.allowRedistribution">
@@ -210,18 +210,16 @@
 															*ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">
 															<span
 																class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu"
-																data-toggle="dropdown" id="download-drop"></span>
+																data-toggle="dropdown" id="download-drop" title="Download"></span>
                                                                  <span data-toggle="dropdown" title="Download"></span>
                                                                     <ul class="dropdown-menu pull-right">
                                                                     <li>
-                                                                        <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button"
-                                                                            target="_blank">
+                                                                        <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button">
                                                                             <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                                                         </a>
                                                                     </li>
                                                                     <li *ngIf="campaign.campaignType != 'EVENT'">
-                                                                        <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button"
-                                                                            target="_blank">
+                                                                        <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button">
                                                                             <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                                                                         </a>
                                                                     </li>
@@ -294,9 +292,12 @@
                                                 Cancelled</div>
                                         </div>
                                         <div class="bar">
-                                            <a (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="preview campaign">
+                                            <a *ngIf="campaign.campaignType !== 'SOCIAL'" (click)="showCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview campaign">
                                                 <i class="fa fa-eye mr4"></i>
                                             </a>
+                                            <a *ngIf="campaign.campaignType == 'SOCIAL'" (click)="showSocialCampaignPreview(campaign)" data-toggle="tooltip" data-placement="top" title="Preview Campaign">
+                                                    <i class="fa fa-eye mr5" aria-hidden="true"></i>
+                                                </a>
 
                                             <ng-container *ngIf="campaign.allowRedistribution">
                                                 <a *ngIf="campaign.campaignType != 'EVENT'" (click)="reDistributeCampaign(campaign)" data-toggle="tooltip" data-placement="top" title="Redistribute Campaign" data-rel="fancybox-button">
@@ -317,17 +318,17 @@
                                             </ng-container>
 
                                             <ng-container class="pull-right" *ngIf="campaign.campaignType === 'REGULAR' || campaign.campaignType === 'VIDEO' || (campaign.campaignType === 'EVENT' && campaign.publicEventCampaign && campaign.showCancelButton) || campaign.campaignType === 'LANDINGPAGE'">
-                                                <div class="btn-group" id="download-template-grid" *ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)">
-                                                    <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" style="color:white;"></span>
+                                                <div class="btn-group" id="download-template-grid" *ngIf="(campaign.allowDownload && campaign.campaignType !== 'EVENT') || (campaign.allowDownload && campaign.campaignType === 'EVENT' && !campaign.eventStarted)" title="Download">
+                                                    <span class="glyphicon glyphicon-download-alt dropdown-toggle gearDropdownMenu" data-toggle="dropdown" id="download-drop" title="Download" style="color:white;"></span>
                                                     <span data-toggle="dropdown" title="Download"></span>
                                                     <ul class="dropdown-menu pull-right">
                                                         <li>
-                                                            <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/html?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
+                                                            <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
                                                                 <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                                             </a>
                                                         </li>
                                                         <li *ngIf="campaign.campaignType != 'EVENT'">
-                                                            <a href="{{authenticationService.REST_URL}}campaign/download/{{campaign.campaignId}}/{{loggedInUserId}}/pdf?access_token={{authenticationService.access_token}}" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
+                                                            <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
                                                                 <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                                                             </a>
                                                         </li>
@@ -371,14 +372,45 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-						<i class="fa fa-times"></i>
+						<i class="fa fa-times" aria-hidden="true"></i>
 					</button>
                 <h4 class="modal-title">{{campaignName}}</h4>
             </div>
             <div class="modal-body">
-                <div id="email-template-content">
+                <div  id="email-template-content">
                 </div>
                 <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal right fade" id="social-campaign-preview" data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-template" style="right:0">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</button>
+                <h4 class="modal-title">{{campaignName}}</h4>
+            </div>
+            <div class="modal-body">
+                <ng-container *ngIf="!socialAccountsLoader">
+                    <ng-container  *ngIf="socialCampaign?.socialStatusList?.length>0">
+                        <div class="col-md-6 col-sm-12 col-xs-12" *ngFor="let socialStatus of socialCampaign?.socialStatusList">
+                            <app-social-status [socialStatus]="socialStatus"></app-social-status>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="socialCampaign?.socialStatusList?.length==0">
+                        <div class="alert alert-info">
+                            <strong>No Social Accounts Found</strong>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <app-landing-page-loader *ngIf="socialAccountsLoader" [maxBoxLength]=2></app-landing-page-loader>
             </div>
             <div class="modal-footer">
                 <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>

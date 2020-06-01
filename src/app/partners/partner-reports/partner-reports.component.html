@@ -332,15 +332,18 @@
               </div>
             </div>
             <div class="col-xs-6 col-sm-6 col-lg-6 col-sm-6 p0">
-              <div class="portlet-input input-inline" style="margin-right: 10px; width:170px">
+              <div class="portlet-input input-inline" style="margin-right: 12px; width:170px">
                 <div class="input-icon right" style="position: relative;right: -11px;">
                   <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
                     placeholder="Search" (keypress)="searchPartnerCampaignKeyPress($event.keyCode,'partner-campaign-details')">
                   <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="sortOption.searchKey" (click)="sortOption.searchKey=''"></button>
-                  <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('partner-campaign-details')"><i
-                      class="fa fa-search"></i></button>
+                  <button type="submit" class="search-box-item-click" (click)="searchPartnerCampaigns('partner-campaign-details')">
+                    <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
               </div>
+              <a *ngIf="sortOption.totalRecords>0 && !campaignUserInteractionHttpRequestLoader.isLoading" class="close-circle" (click)="downloadCsv()">
+                  <i  class="fa fa-download" aria-hidden="true"></i>
+              </a>
               </div>
             </div>
             </div>

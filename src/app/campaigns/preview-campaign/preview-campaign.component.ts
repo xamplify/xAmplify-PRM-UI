@@ -94,6 +94,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     previewContactListId : number;
     contactsUsersPagination:Pagination = new Pagination();
     previewText:string = "Select";
+    tableHeader = "";
     /************Add Reply/Add OnClick**************/
     emailNotOpenedReplyDaysSum:number = 0;
     emailOpenedReplyDaysSum:number = 0;
@@ -150,6 +151,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     folderPreviewLoader = true;
     campaignPartnersOrContactsPagination:Pagination = new Pagination();
     campaignPartnersOrContactsPreviewError = false;
+    socialAccountsLoader = false;
     constructor(
             private campaignService: CampaignService, private utilService:UtilService,
             public authenticationService: AuthenticationService,
@@ -249,6 +251,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       this.campaign = result;
       console.log(this.campaign);
       this.campaign.emailTemplate = result.emailTemplateDTO;
+      this.campaign.launchTimeInString = new Date(result.launchTimeInString);
       if(!this.campaign.emailTemplate) { this.campaign.emailTemplate = new EmailTemplate(); }
       else { this.selectedEmailTemplateId = this.campaign.emailTemplateDTO.id;}
       this.isChannelCampaign = this.campaign.channelCampaign;
@@ -354,19 +357,40 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
     }
 
     confirmDeleteCampaign(campaign: number) {
-      this.deleteCampaignAlert = true;
+      let self = this;
+      this.ngxloading = true;
+      swal({
+          title: 'Are you sure?',
+          text: "You won't be able to undo this action",
+          type: 'warning',
+          showCancelButton: true,
+          swalConfirmButtonColor: '#54a7e9',
+          swalCancelButtonColor: '#999',
+          confirmButtonText: 'Yes, delete it!'
+
+      }).then(function () {
+          self.deleteCampaign(campaign);
+      }, function (dismiss: any) {
+        self.ngxloading = false;
+          console.log('you clicked on option' + dismiss);
+      });
     }
     deleteCampaign(campaign: any) {
-      // this.ngxloading = true;
       const campaignName = this.previewCampaignType ==='EVENT' ? campaign.campaign : campaign.campaignName;
       this.campaignService.delete(this.previewCampaignId)
         .subscribe(
         data => {
+          this.ngxloading = false;
           $('#myModal').modal('hide');
-          this.closeNotifyParent.emit({ 'delete': 'deleted campaign success', 'id': this.previewCampaignId,'campaignName': campaignName });
+          if(data.access){
+            this.closeNotifyParent.emit({ 'delete': 'deleted campaign success', 'id': this.previewCampaignId,'campaignName': campaignName });
+          }else{
+            this.authenticationService.forceToLogout();
+          }
        },
         error => { console.error(error);
           $('#myModal').modal('hide');
+          this.ngxloading = false;
           this.closeNotifyParent.emit({ 'delete': 'something went wrong in delete', 'id': this.previewCampaignId,'campaignName': campaignName });
         }, ()=>{
           // this.ngxloading = false;
@@ -458,14 +482,16 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       } catch (error) { console.error('error' + error); }
     }
     getSocialCampaignByCampaignId(campaignId: number) {
+      this.socialAccountsLoader = true;
       try {
         this.socialService.getSocialCampaignByCampaignId(campaignId)
           .subscribe(
           data => {
             this.socialCampaign = data;
+            this.socialAccountsLoader = false;
           },
           error => console.error(error),
-          () => { this.xtremandLogger.log('get Social campaign api finished');});
+          () => {this.socialAccountsLoader = false;this.xtremandLogger.log('get Social campaign api finished');});
       } catch (error) {
         console.error('error' + error)
       }
@@ -1213,19 +1239,32 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       if(isOrgAdmin){
           if(this.campaign.channelCampaign){
               this.contactType = "partner(s)";
+
+              this.tableHeader = "Partner Details";
               this.showContactType = false;
           }else{
               if(this.campaign.nurtureCampaign){
-                  this.contactType = " contact(s)";
+                  this.contactType = " recipient(s)";
+                  this.tableHeader = "Recipient Details";
               }else{
-                  this.contactType = " partner / recepient (s)";
+                  this.contactType = " partner / recipient (s)";
+                  this.tableHeader = "Partner/Recipient Details";
+
               }
               this.showContactType = true;
           }
 
       }else if(isVendor|| this.authenticationService.isAddedByVendor){
+
+        if(this.campaign.nurtureCampaign){
+          this.contactType = " recipient(s)";
+          this.tableHeader = "Recipient Details";
+        }else{
           this.contactType = "partner(s)";
+          this.tableHeader = "Partner Details";
           this.showContactType = false;
+        }
+         
       }
   }
 
@@ -1311,6 +1350,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
   let self = this;
   swal({
       title: 'Are you sure to '+status+'?',
+      text:'This will '+status+' the workflow',
       type: 'warning',
       showCancelButton: true,
       swalConfirmButtonColor: '#54a7e9',
@@ -1374,7 +1414,54 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
      
    }
 
-   changeCampaignUserStatus(campaignUser:any,status:string){
-     campaignUser.status = status;
+
+   searchCampaignUsers(){
+    this.campaignPartnersOrContactsPagination.pageIndex = 1;
+    this.campaignPartnersOrContactsPagination.searchKey = this.contactSearchInput;
+    this.listCampaignPartnersOrContacts(this.campaignPartnersOrContactsPagination);
    }
+
+   eventHandlerForSearchUsers(keyCode: any) { if (keyCode === 13) { this.searchCampaignUsers(); } }
+
+
+   changeCampaignUserStatus(campaignUser:any,status:string){
+     console.log(campaignUser);
+     campaignUser.status = status;
+     campaignUser.loggedInUserId = this.loggedInUserId;
+     let self = this;
+     swal({
+         title: 'Are you sure to '+status+'?',
+         text:'This will '+status+' the workflow',
+         type: 'warning',
+         showCancelButton: true,
+         swalConfirmButtonColor: '#54a7e9',
+         swalCancelButtonColor: '#999',
+         confirmButtonText: 'Yes, '+status+' it!',
+         allowOutsideClick: false
+     }).then(function () {
+        self.changeUserWorkFlowStatus(campaignUser);
+       
+     }, function (dismiss: any) {
+         console.log('you clicked on option' + dismiss);
+     });
+   }
+
+   changeUserWorkFlowStatus(campaignUser:any){
+    this.ngxloading = true;
+    this.campaignService.changeUserWorkFlowStatus(campaignUser).subscribe(
+      ( data: any ) => {
+        if(campaignUser.status=="Pause"){
+          campaignUser.statusInString = "INACTIVE";
+        }else if(campaignUser.status=="Resume"){
+          campaignUser.statusInString = "ACTIVE";
+        }
+          this.referenceService.showSweetAlertSuccessMessage(data.message);
+          this.ngxloading = false;
+      },
+      error => {
+        this.ngxloading = false;
+        this.referenceService.showSweetAlertServerErrorMessage();
+        },
+      () => this.xtremandLogger.info( "Finished changeUserWorkFlowStatus()" ) );
+  }
 }

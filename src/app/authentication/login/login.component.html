@@ -59,8 +59,11 @@
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of socialProviders">
 					<li>
-						<a class="social-icon-color {{socialProvider.iconName}}" title="{{socialProvider.name}}"
-							routerLink="../{{socialProvider.name}}/login"></a>
+
+						<a class="social-icon-color {{socialProvider.iconName}}" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)"></a>
+
+				
+
 					</li>
 				</ng-container>
 			</ul>

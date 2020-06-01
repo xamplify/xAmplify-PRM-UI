@@ -10,7 +10,12 @@
 	</span>
 	<span class="margin-left" *ngIf="!isPartnerEntityInfo">
 		<!-- -Only First Name -->
-		<ng-container *ngIf="isFromAdminList">
+		<ng-container *ngIf="isFromAdminList"> 
+		
+		     <h5 *ngIf="userInfo.firstName && userInfo.lastName" class='ellipsis user-name' title="{{userInfo.firstName}} {{userInfo.lastName}}">{{userInfo.firstName | slice:0:15}}
+		       <span *ngIf="userInfo.firstName?.length>15">..</span>
+		       &nbsp;{{userInfo.lastName | slice:0:12}}<span *ngIf="userInfo.lastName?.length>12">..</span>
+		     </h5>
 			<h5 *ngIf="userInfo.firstName && !userInfo.lastName" class='ellipsis user-name' title="{{userInfo.firstName}}">{{userInfo.firstName | slice:0:15}}
 			<span *ngIf="userInfo.firstName?.length>15">..</span>
 			</h5>
@@ -21,7 +26,7 @@
 			</h5>
 		</ng-container>
 		
-		<h5 *ngIf="userInfo.lastName && userInfo.firstName" class='ellipsis user-name' title="{{userInfo.firstName}} {{userInfo.lastName}}">{{userInfo.firstName | slice:0:15}}
+		<h5 *ngIf="!isFromAdminList" class='ellipsis user-name' title="{{userInfo.firstName}} {{userInfo.lastName}}">{{userInfo.firstName | slice:0:15}}
 		<span *ngIf="userInfo.firstName?.length>15">..</span>
 		&nbsp;{{userInfo.lastName | slice:0:12}}<span *ngIf="userInfo.lastName?.length>12">..</span>
 		</h5>
@@ -33,9 +38,10 @@
       <p class="user-company" *ngIf="isPartnerEntityInfo" title="{{userInfo.jobTitle}}"><span>{{userInfo.jobTitle |slice:0:25}}</span><span *ngIf="userInfo.jobTitle?.length>25">..</span></p>
      <!--  <p class="user-company" title="{{userInfo.mobileNumber}}"><span>{{userInfo.mobileNumber |slice:0:14}}</span><span *ngIf="userInfo.mobileNumber?.length>14">..</span></p> -->
     <span *ngIf="userInfo.mobileNumber" [class.disabled]="true"
-		style="pointer-events: none !important; cursor: auto;position: relative !important;right: 24px !important;">
-		<int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
-		[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+		style="pointer-events: none !important; cursor: auto;position: relative !important;">
+		{{userInfo.mobileNumber}}
+		<!-- <int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
+		[ngModelOptions]="{standalone: true}"></int-phone-prefix> -->
 	</span>
     </h6>
 	</span>
@@ -70,9 +76,10 @@
 	  <p class="user-company" *ngIf="isPartnerEntityInfo" title="{{userInfo.jobTitle}}"><span>{{userInfo.jobTitle |slice:0:25}}</span><span *ngIf="userInfo.jobTitle?.length>25">..</span></p>
 	      <!-- <p class="user-company" *ngIf="isPartnerEntityInfo" title="{{userInfo.mobileNumber}}"><span>{{userInfo.mobileNumber |slice:0:14}}</span><span *ngIf="userInfo.mobileNumber?.length>14">..</span></p> -->
 	<span *ngIf="userInfo.mobileNumber" [class.disabled]="true"
-		style="pointer-events: none !important; cursor: auto;position: relative !important;right: 24px !important;">
-		<int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
-		[ngModelOptions]="{standalone: true}"></int-phone-prefix>
+		style="pointer-events: none !important; cursor: auto;position: relative !important;">
+		<!-- <int-phone-prefix [(ngModel)]="userInfo.mobileNumber"
+		[ngModelOptions]="{standalone: true}"></int-phone-prefix> -->
+		{{userInfo.mobileNumber}}
 	</span>
 	</span>
 	

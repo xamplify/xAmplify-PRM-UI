@@ -119,11 +119,15 @@ export class SocialService {
       .catch(this.handleError);
   }
 
+
+
   redistributeSocialCampaign(socialCampaign: SocialCampaign) {
     return this.http.post(this.URL + 'social/redistribute?access_token=' + this.authenticationService.access_token, socialCampaign)
       .map(this.extractData)
       .catch(this.handleError);
   }
+
+ 
 
 
   updateStatus(socialStatus: SocialStatus) {

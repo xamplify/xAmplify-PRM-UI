@@ -327,12 +327,16 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.save(this.landingPage).subscribe(
             data => {
-                this.referenceService.stopLoader(this.httpRequestLoader);
-                if (!isOnDestroy) {
-                    this.referenceService.isCreated = true;
-                    this.navigateToManageSection();
-                } else {
-                    this.landingPageService.goToManage();
+                if(data.access){
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                    if (!isOnDestroy) {
+                        this.referenceService.isCreated = true;
+                        this.navigateToManageSection();
+                    } else {
+                        this.landingPageService.goToManage();
+                    }
+                }else{
+                    this.authenticationService.forceToLogout();
                 }
             },
             error => {
@@ -364,13 +368,17 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
         this.updateCompanyLogo(this.landingPage);
         this.landingPageService.update(this.landingPage).subscribe(
             data => {
-                this.ngxloading = false;
-                this.referenceService.stopLoader(this.httpRequestLoader);
-                if (!isDestroy) {
-                    this.referenceService.isUpdated = true;
-                    this.navigateToManageSection();
-                } else {
-                    this.landingPageService.goToManage();
+                if(data.access){
+                    this.ngxloading = false;
+                    this.referenceService.stopLoader(this.httpRequestLoader);
+                    if (!isDestroy) {
+                        this.referenceService.isUpdated = true;
+                        this.navigateToManageSection();
+                    } else {
+                        this.landingPageService.goToManage();
+                    }
+                }else{
+                    this.authenticationService.forceToLogout();
                 }
             },
             error => {

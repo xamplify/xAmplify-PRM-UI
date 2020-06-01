@@ -309,10 +309,11 @@ export class UserService {
             .catch(this.handleServerError);
     }
 
-    deleteCategory(category: any) {
-        let url = this.CATEGORIES_URL + "deleteById/" + category.id;
-        if (category.isMoveAndDelete) {
-            url = this.CATEGORIES_URL + "moveAndDeleteCategory/" + category.id + "/" + category.idToMoveItems;
+    deleteCategory(category:any){
+        let userId = this.authenticationService.getUserId();
+        let url =  this.CATEGORIES_URL+"deleteById/"+category.id+"/"+userId;
+        if(category.isMoveAndDelete){
+            url =  this.CATEGORIES_URL+"moveAndDeleteCategory/"+category.id+"/"+category.idToMoveItems+"/"+userId;
         }
         return this.http.get(url + "?access_token=" + this.authenticationService.access_token, "")
             .map(this.extractData)

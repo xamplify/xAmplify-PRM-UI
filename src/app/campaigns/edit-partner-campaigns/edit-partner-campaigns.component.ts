@@ -926,6 +926,7 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         this.url.divId = id;
         this.url.scheduled = false;
         this.url.actionId = 19;
+        this.url.subject = this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.subjectLine);
         this.url.url = this.emailTemplateHrefLinks[0];
         this.urls.push(this.url);
         this.allItems.push(id);
@@ -1291,19 +1292,23 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
               this.campaignService.saveCampaign( data )
               .subscribe(
               response => {
-                  if (response.statusCode == 2000) {
-                      this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
-                      this.referenceService.launchedCampaignType = this.campaignType;
-                      this.campaign = null;
-                      this.router.navigate(["/home/campaigns/manage"]);
-                  } else {
-                      this.invalidScheduleTime = true;
-                      this.invalidScheduleTimeError = response.message;
-                      if(response.statusCode==2016){
-                          this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
-                          this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
-                      }
-                  }
+                if(response.access){
+                    if (response.statusCode == 2000) {
+                        this.referenceService.campaignSuccessMessage = data.scheduleCampaign;
+                        this.referenceService.launchedCampaignType = this.campaignType;
+                        this.campaign = null;
+                        this.router.navigate(["/home/campaigns/manage"]);
+                    } else {
+                        this.invalidScheduleTime = true;
+                        this.invalidScheduleTimeError = response.message;
+                        if(response.statusCode==2016){
+                            this.campaignService.addErrorClassToDiv(response.data.emailErrorDivs);
+                            this.campaignService.addErrorClassToDiv(response.data.websiteErrorDivs);
+                        }
+                    }
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
                   this.referenceService.stopLoader(this.httpRequestLoader);
               },
               error => {

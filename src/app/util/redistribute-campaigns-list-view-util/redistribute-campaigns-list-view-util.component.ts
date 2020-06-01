@@ -74,7 +74,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   exportObject:any = {};
   modulesDisplayType = new ModulesDisplayType();
   @Input() folderListViewInput:any;
-
+  socialAccountsLoader  =false;
+    socialCampaign: any;
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
@@ -114,14 +115,19 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
         .subscribe(
           data => {
-            this.campaigns = data.campaigns;
-            $.each(this.campaigns,function(index,campaign){
-                campaign.displayTime = new Date(campaign.utcTimeInString);
-            });
-            this.totalRecords = data.totalRecords;
-            pagination.totalRecords = data.totalRecords;
-            pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-            this.referenceService.stopLoader(this.httpRequestLoader);
+              if(data.access){
+                this.campaigns = data.campaigns;
+                $.each(this.campaigns,function(index,campaign){
+                    campaign.displayTime = new Date(campaign.utcTimeInString);
+                });
+                this.totalRecords = data.totalRecords;
+                pagination.totalRecords = data.totalRecords;
+                pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
+                this.referenceService.stopLoader(this.httpRequestLoader);
+              }else{
+                this.authenticationService.forceToLogout();
+              }
+           
           },
           error => {
               this.xtremandLogger.errorPage(error);
@@ -344,20 +350,20 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
       } else if(campaign.campaignType.indexOf('EVENT') > -1) {
         this.campaignService.reDistributeEvent = true;
         this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-        /* if(campaign.redistributedCount != 0 && !campaign.eventStarted && campaign.showCancelButton){
-            this.inviteMore(campaign);
-        }else{
-          this.router.navigate(['/home/campaigns/re-distribute-event/'+campaign.campaignId]);
-        } */
       }
       else {
       const data = { 'campaignId': campaign.campaignId,'userId':this.superiorId }
       this.campaignService.getParnterCampaignById(data)
           .subscribe(
               data => {
-                  this.campaignService.reDistributeCampaign = data;
-                  this.campaignService.isExistingRedistributedCampaignName = false;
-                  this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                  if(data.access){
+                    this.campaignService.reDistributeCampaign = data;
+                    this.campaignService.isExistingRedistributedCampaignName = false;
+                    this.router.navigate(['/home/campaigns/re-distribute-campaign']);
+                  }else{
+                    this.authenticationService.forceToLogout();
+                  }
+                 
               },
               error => { this.xtremandLogger.errorPage(error) },
               () => console.log()
@@ -389,6 +395,49 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   }
 
 
+ showSocialCampaignPreview(campaign:any){
+        this.socialAccountsLoader = true;
+        this.campaignName = campaign.campaignName;
+        $('.modal .modal-body').css('overflow-y', 'auto');
+        $("#social-campaign-preview").modal('show');
+        $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+        this.socialService.getSocialCampaignByCampaignId(campaign.campaignId)
+        .subscribe(
+        data => {
+          this.socialCampaign = data;
+          this.socialAccountsLoader = false;
+        },
+        (error: any) => {
+            this.socialAccountsLoader = false;
+            swal("Please Contact Admin!", "Unable to show preview", "error"); 
+            this.loadingEmailTemplate = false;
+            this.xtremandLogger.log(error);
+            $("#email_template_preivew").modal('hide');
+        });
+    }
+
+
+    downloadFile(campaign:any,type:string){
+        this.customResponse = new CustomResponse();
+        this.ngxloading = true;
+        this.authenticationService.checkPartnerAccess(this.loggedInUserId)
+        .subscribe(
+            data => {
+                let access = data.access;
+                this.ngxloading = false;
+                if(access){
+                    window.open(this.authenticationService.REST_URL+"campaign/download/"+campaign.campaignId+"/"+this.loggedInUserId+"/"+type+"?access_token="+this.authenticationService.access_token,"_blank");
+                }else{
+                   this.authenticationService.forceToLogout();
+                }
+            },
+            error => {
+                this.ngxloading = false;
+                this.customResponse = new CustomResponse('ERROR',"Unable to download.Please try after sometime",true);
+             },
+            () => console.log()
+        );
+    }
 
 
   

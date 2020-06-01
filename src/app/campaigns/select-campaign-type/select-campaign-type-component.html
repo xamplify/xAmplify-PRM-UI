@@ -81,34 +81,14 @@
         height: 195px;
         border-radius: 3px !important;
     }
-    /*     
-    .box_industries {
-        overflow: hidden;
-        text-align: center;
-        position: relative;
-    }
     
-    .box_industries .content {
-        background: #eaeaee;
-        bottom: -100%;
-        color: #fff;
-        height: 100%;
-        left: 0%;
-        text-align: center;
-        position: absolute;
-        transition: bottom 0.5s ease;
-        width: 100%;
-    }
-    
-    .box_industries:hover .content {
-        bottom: 0%;
-    } */
 </style>
 <div class="page-content">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
-            <!-- <li><a [routerLink]="['../../campaigns/manage']">Manage Publish</a> <i class="fa fa-angle-right"></i></li> -->
+            <li><i class="fa fa-home"></i>
+                 <a [routerLink]="refService.homeRouter">Home</a> 
+                 <i class="fa fa-angle-right"></i></li>
             <li><a>Select Campaign</a></li>
         </ul>
     </div>
@@ -132,7 +112,7 @@
                     <div class="row clearfix">
                         <!-- Pricing -->
                         <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.videoCampaign">
-                            <div class="pricing hover-effect  pointer camp-card" (click)="createVideoCampaign()">
+                            <div class="pricing hover-effect  pointer camp-card" (click)="goToCreateCampaignSection('video')">
                                 <div class="pricing-head ">
 
                                     <h4 class="camp-card-bg">
@@ -151,14 +131,12 @@
                                 </div>
 
                                 <div class="pricing-footer">
-                                    <!-- <p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p> -->
-                                    <!-- <a href="javascript:;" class="btn yellow-crusta" (click)="createVideoCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a> -->
-                                    <h4 style="     padding-top: 4px; font-size: 15px;  font-weight: 600;">Video</h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;">Video</h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.emailCampaign">
-                            <div class="pricing hover-effect pointer camp-card" (click)="createRegularCampaign()">
+                            <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('regular')">
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
@@ -175,15 +153,12 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <!-- <div class="col-xs-hidden"><br><br></div>
-                                    <p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-                                    <a href="javascript:;" class="btn yellow-crusta" (click)="createRegularCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a> -->
-                                    <h4 style="       padding-top: 4px; font-size: 15px;  font-weight: 600;">E-mail </h4>
+                                    <h4 style="padding-top: 4px; font-size: 15px;  font-weight: 600;">E-mail </h4>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.socialCampaign">
-                            <div class="pricing hover-effect pointer camp-card" (click)="socialMediaCampaign()">
+                            <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('social')">
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
@@ -199,20 +174,12 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <!-- <div class="col-xs-hidden"><br><br><br><br></div>
-                                    <p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-                                    <ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
-                                        <a class="btn yellow-crusta" [routerLink]="['/home/campaigns/social']">Select <i class="m-icon-swapright m-icon-white"></i></a>
-                                    </ng-container>
-                                    <ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
-                                        <a class="btn yellow-crusta" style="cursor: not-allowed" title="Please contact your account admin for access to this feature.">Select <i class="m-icon-swapright m-icon-white"></i></a>
-                                    </ng-container> -->
-                                    <h4 style="       padding-top: 4px;  font-size: 15px; font-weight: 600;">Social Media </h4>
+                                    <h4 style="padding-top: 4px;  font-size: 15px; font-weight: 600;">Social Media </h4>
                                 </div>
                             </div> 
                         </div>
                         <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.eventCampaign">
-                            <div class="pricing hover-effect pointer camp-card" (click)="createEventCampaign()">
+                            <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('eventCampaign')">
                                 <div class="pricing-head">
 
                                     <h4 class="camp-card-bg">
@@ -229,14 +196,6 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <!-- <div class="col-xs-hidden"><br><br></div>
-                                    <p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-                                    <ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
-                                        <a class="btn yellow-crusta" (click)="createEventCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
-                                    </ng-container>
-                                    <ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
-                                        <a class="btn yellow-crusta" style="cursor: not-allowed" title="Please contact your account admin for access to this feature.">Select <i class="m-icon-swapright m-icon-white"></i></a>
-                                    </ng-container> -->
                                     <h4 style="padding-top: 4px; font-size: 15px;    font-weight: 600;">Event</h4>
                                 </div>
                             </div>
@@ -244,7 +203,7 @@
                         
                         
                         <div class="col-md-4 col-lg-4 box-wrapper" *ngIf="campaignAccess.landingPageCampaign">
-                            <div class="pricing hover-effect pointer camp-card" (click)="createLandingPageCampaign()">
+                            <div class="pricing hover-effect pointer camp-card" (click)="goToCreateCampaignSection('landingPage')">
                                 <div class="pricing-head">
 
                                     <h4 style="background-color: #f2f4f9!important;border-bottom: solid 1px #71bade;height:195px">
@@ -261,15 +220,7 @@
                                     </ul>
                                 </div>
                                 <div class="pricing-footer" style="margin-bottom: -2px;">
-                                    <!-- <div class="col-xs-hidden"><br><br></div>
-                                    <p><span class="important">*</span> These items need to be uploaded and/or created before you can launch a campaign.</p>
-                                    <ng-container *ngIf="isOrgAdmin || hasSocialStatusRole ||isOnlyPartner || authenticationService.module.isVendor">
-                                        <a class="btn yellow-crusta" (click)="createEventCampaign()">Select <i class="m-icon-swapright m-icon-white"></i></a>
-                                    </ng-container>
-                                    <ng-container *ngIf="!isOrgAdmin && !hasSocialStatusRole && !isOnlyPartner && !authenticationService.module.isVendor">
-                                        <a class="btn yellow-crusta" style="cursor: not-allowed" title="Please contact your account admin for access to this feature.">Select <i class="m-icon-swapright m-icon-white"></i></a>
-                                    </ng-container> -->
-                                    <h4 style="     padding-top: 4px;     font-weight: 600;">Page</h4>
+                                    <h4 style="padding-top: 4px;font-weight: 600;">Page</h4>
                                 </div>
                             </div>
                         </div>

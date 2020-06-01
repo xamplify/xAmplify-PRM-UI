@@ -106,7 +106,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
     delete(id: number) {
-        return this.http.get(this.URL + "admin/deleteCampaign/" + id + "?access_token=" + this.authenticationService.access_token)
+        return this.http.get(this.URL + "admin/deleteCampaign/" + id + "/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -355,6 +355,13 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    getPartnerRedistributedCampaignsRSVP(campaignId: number) {
+        const url = this.URL + 'campaign/' + campaignId + '/redistributed-campaigns-rsvp-count?access_token=' + this.authenticationService.access_token ;
+        return this.http.get(url)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 
     getEventCampaignDetailsByCampaignId(campaignId: number, isChannelCampaign: boolean) {
@@ -370,6 +377,16 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    //
+    getAllPartnerRestributionEventCampaignAnalytics(campaignId: number, resposeType: any, isChannelCampaign: boolean, pagination: Pagination) {
+        const url = this.URL + 'campaign/' + campaignId + '/redistributed-campaigns-rsvp-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+     
+    
+    //
 
     getRedistributionEventCampaignDetailAnalytics(campaignId: number, resposeType: any, userId: number, isChannelCampaign: boolean, pagination: Pagination) {
         const url = this.URL + 'campaign/' + campaignId + '/' + userId + '/rsvp-user-details/'+ resposeType +'?access_token=' + this.authenticationService.access_token + '&channelCampaign=' + isChannelCampaign;
@@ -874,6 +891,30 @@ export class CampaignService {
         .map(this.extractData)
             .catch(this.handleError);
 	}
+
+
+    changeUserWorkFlowStatus(campaignUser:any){
+        let url = this.URL+"campaign/";
+        if(campaignUser.status=="Resume"){
+            url+='resumeWorkFlowForCampaignUser';
+        }else if(campaignUser.status=="Pause"){
+            url+='pauseWorkFlowForCampaignUser';
+        }
+        return this.http.post(url+"?access_token=" + this.authenticationService.access_token, campaignUser)
+        .map(this.extractData)
+            .catch(this.handleError);
+
+    }
+
+    hasCampaignCreateAccess(){
+        return this.http.get(this.URL + "campaign/hasCreateCampaignAccess/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+            .catch(this.handleError);
+	}
+
+
+  
+
     // Added by Vivek for Vanity URL
 
     getUserCampaignReportForVanityURL(dashboardAnalyticsDto:DashboardAnalyticsDto) {
@@ -904,5 +945,6 @@ export class CampaignService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
 
 }

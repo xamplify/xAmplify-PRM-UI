@@ -83,6 +83,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
                 this.pagination.totalAttendees = this.importedObject['totalAttendees'];
                 this.pagination.totalPartnerLeads = this.importedObject['totalPartnerLeads'];
                 this.pagination.checkInLeads = this.importedObject['checkInLeads'];
+                this.pagination.selectedPartnerLeads = this.importedObject['selectedPartnerLeads'];
+                this.pagination.partnerId = this.importedObject['partnerId'];
                 this.isEventCheckIn = this.pagination.checkInLeads;
                 this.publicEventAlias = this.importedObject['publicEventAlias'];
             }else if(this.partnerLandingPageAlias!=undefined){

@@ -265,6 +265,7 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
         mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
         mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
+        mergeTags.push( { name: 'Sender Title', value: this.senderMergeTag.senderTitle } );
         mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
         mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
         mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
@@ -390,13 +391,19 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       this.updateCompanyLogo(emailTemplate);
       emailTemplateService.save(emailTemplate) .subscribe(
           data => {
-              this.refService.stopLoader(this.httpRequestLoader);
-              if(!isOnDestroy){
-                  this.refService.isCreated = true;
-                  this.navigateToManageSection();
-              }else{
-                  this.emailTemplateService.goToManage();
-              }
+                if(data.access){
+                    this.refService.stopLoader(this.httpRequestLoader);
+                    if(!isOnDestroy){
+                        this.refService.isCreated = true;
+                        this.navigateToManageSection();
+                    }else{
+                        this.emailTemplateService.goToManage();
+                    }
+                }else{
+                    this.authenticationService.forceToLogout();
+                }
+
+             
           },
           error => {
               this.refService.stopLoader(this.httpRequestLoader);
@@ -420,14 +427,18 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
       emailTemplate.categoryId = $.trim($('#category-dropdown option:selected').val());
       emailTemplateService.update(emailTemplate) .subscribe(
           data => {
-              this.refService.stopLoader(this.httpRequestLoader);
-              if(!isOnDestroy){
-                  this.refService.isUpdated = true;
-                  this.navigateToManageSection();
-                 
-              }else{
-                  this.emailTemplateService.goToManage();
-              }
+                if(data.access){
+                    this.refService.stopLoader(this.httpRequestLoader);
+                    if(!isOnDestroy){
+                        this.refService.isUpdated = true;
+                        this.navigateToManageSection();
+                       
+                    }else{
+                        this.emailTemplateService.goToManage();
+                    }
+                }else{
+                   this.authenticationService.forceToLogout();
+                }
           },
           error => {
               this.refService.stopLoader(this.httpRequestLoader);
