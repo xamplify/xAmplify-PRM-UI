@@ -253,9 +253,10 @@
 </div>
 <!---Add Team Member Popup----->
 <div id="addTeamMember" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-css" role="document">
+    <div class="modal-dialog modal-css" role="document">
       <!-- Modal content-->
       <div class="modal-content">
+        <ngx-loading [show]="addTeamMemberLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
           <div class="modal-header">
               <a class="close-circle" (click)="clearForm()">
                 <i class="fa fa-times" aria-hidden="true"></i></a>
@@ -281,7 +282,7 @@
                           <span class="red"> *</span>
                       </label>
                       <div class="form-group col-xs-6 col-sm-10">
-                          <input type="email" style="border: none" class="form-control padding-mobile" id="emailId" placeholder="Email" [(ngModel)]="team.emailId" name="emailId"  placeholder="Email*" autocomplete="off" maxlength="250">
+                          <input type="email" style="border: none" class="form-control padding-mobile" id="emailId" (input)="validateEmailId(team.emailId)" placeholder="Email" [(ngModel)]="team.emailId" name="emailId"  placeholder="Email*" autocomplete="off" maxlength="250">
                           <div class="textCss"></div>
                           <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
                       </div>

@@ -32,6 +32,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	uiError: string;
 	teamMemberModules: Array<any>;
 	teamMembers: Array<any>;
+	newlyAddedTeamMembers: Array<any> =  new Array<any>();
 	teamMemberUi: TeamMemberUi;
 	isLoggedInAsTeamMember: boolean;
 	loggedInUserId:number = 0;
@@ -76,6 +77,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	name = 'Angular 5';
 	successMessage: string;
 	csvFilePath = "";
+	addTeamMemberLoader: boolean;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -428,5 +430,96 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	}
 
+	validateEmailId(emailId: string) {
+		try {
+			if ($.trim(emailId).length > 0) {
+				this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
+				if (!this.teamMemberUi.validEmailId) {
+					this.showErrorMessage("Please enter a valid email address");
+				}else{
+					this.hideErrorMessage();
+				}
+			} else {
+				this.teamMemberUi.errorMessage = '';
+				$(".col-md-12 span").text('');
+				this.removeErrorClass();
+			}
+
+		} catch (error) {
+			this.showUIError(error);
+		}
+	}
+
+	addErrorClass() {
+		return this.emaillIdDivClass = this.errorClass;
+	}
+	removeErrorClass() {
+		return this.emaillIdDivClass = this.successClass;
+	}
+
+	showErrorMessage(message: string) {
+		this.teamMemberUi.isValidForm = false;
+		this.teamMemberUi.errorMessage = message;
+		this.addErrorClass();
+	}
+	hideErrorMessage() {
+		this.teamMemberUi.isValidForm = true;
+		this.teamMemberUi.errorMessage = '';
+		$(".col-md-12 span").text('');
+		this.removeErrorClass();
+	}
+
+	clearForm() {
+		this.emaillIdDivClass = this.defaultClass;
+		this.isAddTeamMember = false;
+		this.teamMemberUi.isValidForm = false;
+		this.teamMemberUi.errorMessage = "";
+		this.closePopup();
+	}
+	closePopup() {
+		$('#addTeamMember').modal('hide');
+		$('#add-team-member-form')[0].reset();
+	}
+
+	addTeamMember() {
+		try {
+			let addedEmailIds = this.newlyAddedTeamMembers.map(function (a) { return a.emailId; });
+			if(addedEmailIds.indexOf(this.team.emailId)>-1){
+				this.showErrorMessage("Duplicate email address");
+			}else{
+			this.addTeamMemberLoader = true;
+			this.teamMemberService.validateTeamMemberEmailIds(this.team)
+			.subscribe(
+				data => {
+					this.addTeamMemberLoader = false;
+					if(data.statusCode==200){
+						this.hideErrorMessage();
+						this.teamMemberUi.emptyTable = false;
+						this.newlyAddedTeamMembers.push(this.team);
+						this.team = new TeamMember();
+						this.teamMemberUi.validEmailId = false;
+						this.emaillIdDivClass = this.defaultClass;
+						this.teamMemberUi.isValidForm = false;
+						this.closePopup();
+						console.log(this.newlyAddedTeamMembers);
+					}else{
+						this.showErrorMessage(data.message);
+					}
+				},
+				error => { 	
+					this.addTeamMemberLoader = false;
+					this.showErrorMessage(this.properties.serverErrorMessage);			
+				},
+				() => this.logger.log("Team member validated successfully.")
+			);
+
+				
+			}
+			
+		} catch (error) {
+			this.showUIError(error);
+		}
+
+	}
 
 }

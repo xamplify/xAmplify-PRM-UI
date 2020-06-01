@@ -155,6 +155,13 @@ export class TeamMemberService{
         .map(this.extractData)
         .catch(this.handleError);
     }
+
+    validateTeamMemberEmailIds(teamMember:TeamMember){
+        var url =this.URL+"teamMember/validateTeamMemberEmailIds?access_token="+this.authenticationService.access_token;
+        return this.http.post(url,teamMember)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
     
     private extractData(res: Response) {
         let body = res.json();
