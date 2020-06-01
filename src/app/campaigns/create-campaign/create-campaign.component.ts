@@ -43,6 +43,7 @@ import { CheckBoxSelectionService } from '@syncfusion/ej2-angular-dropdowns';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Category as folder } from 'app/dashboard/models/category';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 declare var swal, $, videojs , Metronic, Layout , Demo,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -288,9 +289,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 private emailTemplateService:EmailTemplateService,private router:Router, private socialService: SocialService,
                 public callActionSwitch: CallActionSwitch, public videoUtilService: VideoUtilService,public properties:Properties,
                 private landingPageService:LandingPageService, public hubSpotService: HubSpotService, public integrationService: IntegrationService,
-				private render:Renderer
+				private render:Renderer,private vanityUrlService:VanityURLService
             ){
-
+                
+                this.vanityUrlService.isVanityURLEnabled();
 				this.refService.renderer = this.render;
                 refService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
@@ -2082,15 +2084,20 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                         var length = 200;
                         var trimmedstatusMsg = statusMsg.length > length ? statusMsg.substring(0, length - 3) + "..." : statusMsg;
                         socialStatus.statusMessage = trimmedstatusMsg;
-                        debugger;
                     }else{
                         socialStatus.statusMessage = this.statusMessage;
                     }
                     this.socialStatusList.push(socialStatus);
                 }
             }
-        )
-
+        );
+        let vanityUrlDomainName = "";
+        let vanityUrlCampaign = false;    
+        /********Vanity Url Related Code******************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+            vanityUrlCampaign = true;
+        }
         var data = {
             'campaignName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.refService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -2128,9 +2135,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             'pushToCRM':this.pushToCRM,
             'smsService':this.smsService,
             'smsText':this.smsText,
-            'landingPageId':this.selectedLandingPageRow
+            'landingPageId':this.selectedLandingPageRow,
+            'vanityUrlDomainName':vanityUrlDomainName,
+            'vanityUrlCampaign':vanityUrlCampaign
         };
-        console.log(data);
         return data;
     }
 

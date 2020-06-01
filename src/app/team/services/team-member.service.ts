@@ -20,7 +20,7 @@ export class TeamMemberService{
     
     
     save(teams:Array<TeamMember>,userId:number){
-        var url =this.URL+"admin/saveTeamMembers?userId="+userId+"&access_token="+this.authenticationService.access_token;
+        var url =this.URL+"admin/saveTeamMembers?userId="+userId+ "&companyProfileName=" + this.authenticationService.companyProfileName + "&access_token="+this.authenticationService.access_token;
         return this.http.post(url,teams)
         .map(this.extractData)
         .catch(this.handleError);
@@ -39,6 +39,10 @@ export class TeamMemberService{
         
         userId = this.authenticationService.checkLoggedInUserId(userId);
         
+        if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName){
+            pagination.vanityUrlFilter = true;
+            pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        }
         var url =this.URL+"admin/listTeamMembers/"+userId+"?access_token="+this.authenticationService.access_token;
         return this.http.post(url, pagination)
         .map(this.extractData)
@@ -117,10 +121,47 @@ export class TeamMemberService{
     }
     
     changeStatus(teamMember:TeamMember) {
-        console.log(teamMember.status);
         return this.http.post(this.URL + "admin/changeTeamMemberStatus?access_token=" + this.authenticationService.access_token,teamMember)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    listTeamMemberModules(input:any){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        input['vanityUrlFilter'] = vanityUrlFilter;
+        input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+        var url =this.URL+"teamMember/listTeamMemberModulesByUserId/?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, input)
+        .map(this.extractData)
+        .catch(this.handleError);   
+    }
+
+    listTeamMembers(pagination:Pagination){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        pagination.vanityUrlFilter = vanityUrlFilter;
+        pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        var url =this.URL+"teamMember/listTeamMembers?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, pagination)
+        .map(this.extractData)
+        .catch(this.handleError);   
+    }
+
+    updateTeamMember(teamMember:TeamMember){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        teamMember.vanityUrlFilter = vanityUrlFilter;
+        teamMember.vanityUrlDomainName = this.authenticationService.companyProfileName;
+        teamMember.loggedInUserId =this.authenticationService.getUserId();
+        var url =this.URL+"teamMember/updateTeamMember?access_token="+this.authenticationService.access_token;
+        return this.http.post(url,teamMember)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    validateTeamMemberEmailIds(teamMember:TeamMember){
+        var url =this.URL+"teamMember/validateTeamMemberEmailIds?access_token="+this.authenticationService.access_token;
+        return this.http.post(url,teamMember)
+        .map(this.extractData)
+        .catch(this.handleError);
     }
     
     private extractData(res: Response) {

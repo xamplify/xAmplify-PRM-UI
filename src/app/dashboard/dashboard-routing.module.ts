@@ -19,9 +19,14 @@ import { AdminReportComponent } from './admin-report/admin-report.component';
 import { VendorRequestReportComponent } from './vendor-request-report/vendor-request-report.component';
 import { SocialContactsCallbackComponent } from "app/contacts/social-contacts-callback/social-contacts-callback.component";
 import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
+import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
+import { DashboardButtonsComponent } from "./dashboard-buttons/dashboard-buttons.component";
+import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-templates/vanity-email-templates.component";
 
 const routes: Routes = [
-  { path: "", component: DashboardComponent },
+ { path: "", component: DashboardAnalyticsComponent },
+  { path: "old", component: DashboardComponent },
+  { path: "vanity/:vendorCompanyProfileName", component: DashboardAnalyticsComponent },
   { path: "table_advance", component: TableAdvanceComponent },
   { path: "myprofile", component: MyProfileComponent },
   { path: "views_report", component: ViewsReportComponent },
@@ -42,7 +47,9 @@ const routes: Routes = [
   { path: 'vendor-request',component:VendorRequestReportComponent},
   { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
   { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
-  {path:'sso-samlsecurity',component:SamlsecurityComponent}
+  {path:'sso-samlsecurity',component:SamlsecurityComponent},
+  {path:'buttons', component:DashboardButtonsComponent},
+  {path:'v-templates', component:VanityEmailTemplatesComponent}
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

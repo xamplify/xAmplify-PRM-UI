@@ -45,4 +45,7 @@ export class User {
     campaignAccessDto:CampaignAccess = new CampaignAccess();
     legalBasis = [];
     legalBasisString = [];
+
+    companyProfileName: string;
+    preferredLanguage:string;
 }

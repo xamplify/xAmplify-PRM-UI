@@ -35,10 +35,16 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     forms: any;
     landingPages:any;
     isLoggedInAsTeamMember = false;
+
     sourceType = "";
+
     isLoggedInFromAdminPortal = false;
+
+    checkCreateCampaignOptionForVanityURL:boolean = true;
+
+
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService ) {
+        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService) {
         this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
         this.updateLeftSideBar( location );
         this.sourceType = this.authService.getSource();
@@ -137,7 +143,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isCompanyPartner = true;
                 }
                 
-                
                 this.refService.getCompanyIdByUserId( this.authService.getUserId() ).subscribe( response => {
                     this.refService.getOrgCampaignTypes( response ).subscribe( data => {
                         this.enableLeads = data.enableLeads;
@@ -155,6 +160,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPageCampaign ) {
                             this.authService.module.hasLandingPageCampaignAccess = true;
                         }
+
+                        if(this.authService.vanityURLEnabled && this.authService.vanityURLUserRoles && this.authService.loggedInUserRole === "Team Member" && (this.authService.superiorRole === "Vendor & Partner" || this.authService.superiorRole === "OrgAdmin & Partner")){                                        
+                            if(!this.authService.vanityURLUserRoles.find(role => role.roleId === 11 || role.roleId === 10 || role.roleId === 8 || role.roleId === 4 || role.roleId === 7)){
+                                this.checkCreateCampaignOptionForVanityURL = false;
+                            }
+                        }
                         
                     } );
                     /**********Landing Page************/    
@@ -163,8 +174,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         } catch ( error ) { console.log( error ); }
     }
     
-    ngOnInit() {
-        this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;
+    ngOnInit() {        
+        this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;        
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false,false,false ); }

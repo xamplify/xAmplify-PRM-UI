@@ -11,6 +11,7 @@ import { Pagination } from '../../core/models/pagination';
 import { DealRegistrationService } from "app/deal-registration/services/deal-registration.service";
 import { TeamMember } from "app/team/models/team-member";
 import { Title }     from '@angular/platform-browser';
+import { VanityURLService } from "app/vanity-url/services/vanity.url.service";
 
 
 declare var $: any;
@@ -35,7 +36,8 @@ export class HomeComponent implements OnInit {
     public xtremandLogger: XtremandLogger,
     private router: Router,
     public authenticationService: AuthenticationService,
-    public videoUtilService: VideoUtilService
+    public videoUtilService: VideoUtilService,
+    private vanityURLService:VanityURLService
   ) {
     this.isAuthorized();
   }
@@ -282,6 +284,7 @@ export class HomeComponent implements OnInit {
             this.getTeamMembersDetails();
             this.getPartnerCampaignsNotifications();
           }
+         this.vanityURLService.isVanityURLEnabled();      
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  

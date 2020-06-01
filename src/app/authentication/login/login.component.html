@@ -1,25 +1,26 @@
 <div class="loader-container" *ngIf="mainLoader">
-  <div class="loader"></div>
-  <img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
+	<div class="loader"></div>
+	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
 </div>
-<div *ngIf="!mainLoader">
-<app-video></app-video>
+<app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+<app-video *ngIf="vanityURLEnabled"></app-video>
 <div class="content">
 	<div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
 	<!-- BEGIN LOGIN FORM -->
 	<div class="row" *ngIf="model">
-	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
-  <div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert" >
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
-    <span aria-hidden="true">&times;</span>
-  </button>
-  <h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
-    <span style="position: relative;top: 4px;">Click to <a class="underlinetext" (click)="resendActivation()" style="color:blue">Resend Activation mail.</a></span></span>
-  </h4>
-</div>
-  <form class="login-form" (ngSubmit)="login()">
+		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+		<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 style="padding-top: 6px;"><span class="text">{{properties.USER_ACCOUNT_ACTIVATION_ERROR}}<br>
+					<span style="position: relative;top: 4px;">Click to <a class="underlinetext"
+							(click)="resendActivation()" style="color:blue">Resend Activation mail.</a></span></span>
+			</h4>
+		</div>
+		<form class="login-form" (ngSubmit)="login()">
 			<h3 class="form-title text-white">Sign In</h3>
 			<div class="alert alert-danger display-hide">
 				<button class="close" data-close="alert"></button>
@@ -28,31 +29,41 @@
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
-				<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag" name="username" [(ngModel)]="model.username" #username="ngModel"
-				 required type="text" autocomplete="off" placeholder="Email"  />
+				<input id="username" class="form-control form-control-solid placeholder-no-fix userNameTag"
+					name="username" [(ngModel)]="model.username" #username="ngModel" required type="text"
+					autocomplete="off" placeholder="Email" />
 			</div>
 			<div class="form-group has-feedback">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
-				<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag" [(ngModel)]="model.password" #password="ngModel"
-				 required type="password" autocomplete="off" placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)"
-				/>
-				 <span toggle="#password"  title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="!referenceService.showInputPassword && model.password"></span>
-				 <span toggle="#password"  title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')"  *ngIf="referenceService.showInputPassword && model.password"></span>
+				<input id="password" class="form-control form-control-solid placeholder-no-fix passwordTag"
+					[(ngModel)]="model.password" #password="ngModel" required type="password" autocomplete="off"
+					placeholder="Password" name="password" (keypress)="eventHandler($event.keyCode)" />
+				<span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password"
+					(click)="referenceService.showPassword('password')"
+					*ngIf="!referenceService.showInputPassword && model.password"></span>
+				<span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password"
+					(click)="referenceService.showPassword('password')"
+					*ngIf="referenceService.showInputPassword && model.password"></span>
 			</div>
 			<button id="submitBitton" type="submit" class="btn btn-primary pull-right signin">Sign In</button>
 		</form>
-		<div class="form-actions login-form">
+		<div class="form-actions login-form" style="border-bottom: 0!important">
 			<label class="rememberme check">
 				<span hidden><input type="checkbox" name="remember" value="1" />&nbsp;Remember</span>
 			</label>
 			<a id="forgetAnchor" routerLink="/forgot-password" class="forget-password text-white">Forgot Password?</a>
 		</div>
-		<div class="login-options login-form m5">
+		<div class="row" *ngIf="!authenticationService.vanityURLEnabled" style="border-top: 1px solid #eee;"></div>
+		<div class="login-options login-form m5" *ngIf="!authenticationService.vanityURLEnabled">
 			<h4>Or login with</h4>
 			<ul class="social-icons">
 				<ng-container *ngFor="let socialProvider of socialProviders">
 					<li>
+
 						<a class="social-icon-color {{socialProvider.iconName}}" title="{{socialProvider.name}}" (click)="loginUsingSocialAccounts(socialProvider)"></a>
+
+				
+
 					</li>
 				</ng-container>
 			</ul>
@@ -64,5 +75,5 @@
 		</div> -->
 	</div>
 </div>
-<app-copyright></app-copyright>
-</div>
+<app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>
+<app-copyright *ngIf="vanityURLEnabled"></app-copyright>

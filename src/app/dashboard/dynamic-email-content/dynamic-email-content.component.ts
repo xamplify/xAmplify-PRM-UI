@@ -47,10 +47,19 @@ export class DynamicEmailContentComponent implements OnInit {
     }
 
 
-    openModal(alias:string,emailId:string) {
-        this.emailId = emailId;
-        let accessUrl = this.authenticationService.APP_URL+"axAa/"+alias;
-        this.alias = alias;
+    openModal(response:any) {
+        this.emailId = response.emailId;  
+        let accessUrl;      
+        // if(this.authenticationService.vanityURLEnabled){            
+        //   accessUrl= window.location.protocol + "//" + response.companyProfileName +"." + window.location.hostname +"/axAa/"+response.alias ;
+        //   this.vendorInvitation.enableVanityURL = true;
+        //   this.vendorInvitation.vanityURL = accessUrl;
+        // }else{
+        //   accessUrl = this.authenticationService.APP_URL+"axAa/"+response.alias;
+        // }
+        accessUrl= window.location.protocol + "//" + response.companyProfileName +"." + window.location.hostname +"/axAa/"+response.alias ;
+        this.vendorInvitation.vanityURL = accessUrl;
+        this.alias = response.alias;
         this.isShowCKeditor = true;
         CKEDITOR.config.height = '300px';
         CKEDITOR.config.baseFloatZIndex = 1E5;

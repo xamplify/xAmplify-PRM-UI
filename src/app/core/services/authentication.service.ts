@@ -17,6 +17,8 @@ declare var swal,require: any;
 var SockJs = require("sockjs-client");
 var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
+import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
+import { Pagination } from '../../core/models/pagination';
 
 @Injectable()
 export class AuthenticationService {
@@ -62,11 +64,20 @@ export class AuthenticationService {
     formValues = [];
     isPartnerRsvp = false;
     logedInCustomerCompanyNeme: string;
+  v_companyName: string;
+  v_companyLogoImagePath: string;
+  v_companyBgImagePath: string;
+  v_showCompanyLogo: boolean = false;
+  vanityURLUserRoles:any;
+  companyProfileName: string = "";
+  vanityURLEnabled: boolean = false;
+  vanityURLink: string = "";
+  dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     vendorRoleHash = "";
     partnerRoleHash  = "";
     sessinExpriedMessage = "";
     private userLoggedIn = new Subject<boolean>();
-
+	pagination:Pagination = new Pagination();
     constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger:XtremandLogger) {
         this.SERVER_URL = this.envService.SERVER_URL;
         this.APP_URL = this.envService.CLIENT_URL;
@@ -117,7 +128,9 @@ export class AuthenticationService {
         return this.http.post(url, body, options).map((res: Response) => {
             this.map = res.json();
             return this.map;
-        })
+    }).flatMap((map) => this.getVanityURLUserRoles(userName,this.map.access_token).map((response: any) => {
+      this.vanityURLUserRoles = response.data;
+    }))
             .flatMap((map) => this.http.post(this.REST_URL + 'admin/getUserByUserName?userName=' + userName
                 + '&access_token=' + this.map.access_token, '')
                 .map((res: Response) => {
@@ -133,6 +146,11 @@ export class AuthenticationService {
                         'logedInCustomerCompanyNeme':res.json().companyName,
 						            'source':res.json().source
                     };
+          
+          if(this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles){
+            userToken['roles'] = this.vanityURLUserRoles;
+          }
+
                     localStorage.setItem('currentUser', JSON.stringify(userToken));
                     localStorage.setItem('defaultDisplayType',res.json().modulesDisplayType);
                     this.access_token = this.map.access_token;
@@ -167,7 +185,10 @@ export class AuthenticationService {
         let userId;
         if (!this.user.id) {
             const currentUser = localStorage.getItem('currentUser');
+        if(currentUser){
             userId = JSON.parse(currentUser)['userId'];
+        }
+        
         } else {
             userId = this.user.id;
         }
@@ -496,7 +517,7 @@ export class AuthenticationService {
         return true;
        }
     }
-  }
+  }		   
 
   forceToLogout(){
     this.sessinExpriedMessage = "Your role has been changed. Please login again.";
@@ -508,12 +529,42 @@ export class AuthenticationService {
         .map(this.extractData)
         .catch(this.handleError);
 }
+
+  addVanityUrlFilterDTO(dto: DashboardAnalyticsDto) {
+    if(this.getUserId()){
+      dto.userId = this.getUserId();
+    }    
+    let companyProfileName = this.companyProfileName;
+    if (companyProfileName != undefined && companyProfileName != "") {
+      dto.vanityUrlFilter = true;
+      dto.vendorCompanyProfileName = companyProfileName;
+    } else {
+      dto.vanityUrlFilter = false;
+    }
+    return dto;
+  }
+
+
+  getVanityURLUserRoles(userName:string, at:string){
+      this.dashboardAnalyticsDto = this.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+      return this.http.post(this.REST_URL + 'v_url/userRoles?userName=' + userName + '&access_token=' + at, this.dashboardAnalyticsDto)
+      .map((res: Response) => { return res.json(); })
+      .catch((error: any) => { return error; });
+  }
+
     extractData( res: Response ) {
         let body = res.json();
+    console.log(body);
         return body || {};
     }
 
     handleError( error: any ) {
         return Observable.throw( error );
+  }
+  setVanityUrlFilter(pagination: Pagination) {
+    if (this.companyProfileName !== undefined && this.companyProfileName !== '') {
+      pagination.vendorCompanyProfileName = this.companyProfileName;
+      pagination.vanityUrlFilter = true;
+    }
     }
 }

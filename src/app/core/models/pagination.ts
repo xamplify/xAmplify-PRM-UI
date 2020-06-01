@@ -54,6 +54,7 @@ export class Pagination {
 	partnerOrContactEmailId = "";
 	teamMemberAnalytics = false;
 	teamMemberId:number = 0;
+
     categoryType: string;
 	categoryId: number=0;
 	categoryIds:number[] = [];
@@ -63,4 +64,8 @@ export class Pagination {
 	partnerView = false;
 	selectedPartnerLeads = false;
 	loggedInAsTeamMember = false;
+	vanityUrlFilter:boolean = false;
+	vendorCompanyProfileName:string;
+
+
 }

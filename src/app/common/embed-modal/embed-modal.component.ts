@@ -65,9 +65,15 @@ export class EmbedModalComponent implements OnInit, OnDestroy {
   }
   shareClick(video:any, type:string) {
     this.videoFileService.getShortnerUrlAlias(video.viewBy, video.alias)
-      .subscribe((result: any) => {
-        this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
-        this.embedVideoSrcPath = this.authenticationService.APP_URL + 'embed/' + result.alias;
+      .subscribe((result: any) => {        
+        if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink){
+          this.embedSrcPath = this.authenticationService.vanityURLink + 'embed/' + result.alias;
+          this.embedVideoSrcPath = this.authenticationService.vanityURLink + 'embed/' + result.alias;
+        }else
+        {
+          this.embedSrcPath = this.authenticationService.SERVER_URL + 'embed/' + result.alias;
+          this.embedVideoSrcPath = this.authenticationService.APP_URL + 'embed/' + result.alias;
+        }
         this.shareMetaTags(this.embedSrcPath);
         if(type ==='modal'){
         if (this.embedSrcPath) { $('#myModal').show();} }

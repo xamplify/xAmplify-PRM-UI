@@ -1,0 +1,55 @@
+{
+	"icon_names": [{
+			"name": "users",
+			"id": "fa-users"
+		},
+		{
+			"name": "calendar",
+			"id": "fa-calendar-o"
+		},
+		{
+			"name": "bullhorn",
+			"id": "fa-bullhorn"
+		},
+		{
+			"name": "cogs",
+			"id": "fa-cogs"
+		},
+		{
+			"name": "cubes",
+			"id": "fa-cubes"
+		},
+		{
+			"name": "folder-open",
+			"id": "fa-folder-open"
+		},
+		{
+			"name": "university",
+			"id": "fa-university"
+		},
+		{
+			"name": "sitemap",
+			"id": "fa-sitemap"
+		},
+		{
+			"name": "exclamation-triangle",
+			"id": "fa-exclamation-triangle"
+		},
+		{
+			"name": "thumbs-o-up",
+			"id": "fa-thumbs-o-up"
+		},
+		{
+			"name": "bar-chart",
+			"id": "fa-bar-chart"
+		},
+		{
+			"name": "list",
+			"id": "fa-list"
+		},
+		{
+			"name": "large",
+			"id": "fa-th-large"
+		}
+	]
+}

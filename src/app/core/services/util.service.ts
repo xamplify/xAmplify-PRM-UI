@@ -150,9 +150,11 @@ export class UtilService {
         return adminId!=null;
     }
 
+
     isLoggedInFromAdminPortal(){
         return JSON.parse(localStorage.getItem('loginAsUserId'))!=null;
        
     }
     
+
 }

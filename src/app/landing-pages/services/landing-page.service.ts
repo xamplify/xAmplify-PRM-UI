@@ -20,7 +20,7 @@ export class LandingPageService {
     jsonBody: any = "";
     id: number = 0;
     URL = this.authenticationService.REST_URL + "landing-page/";
-    constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger, private router: Router ) { }
+    constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger, private router: Router) { }
 
     listDefault( pagination: Pagination ): Observable<any> {
         return this.http.post( this.URL + "default?access_token=" + this.authenticationService.access_token, pagination )
@@ -75,7 +75,8 @@ export class LandingPageService {
     }
 
     getById( id: number ): Observable<any> {
-        return this.http.get( this.URL + "getById/" + id + "?access_token=" + this.authenticationService.access_token, "" )
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        return this.http.get( this.URL + "getById/" + id + "/"+vanityUrlFilter+"?access_token=" + this.authenticationService.access_token, "" )
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -93,12 +94,13 @@ export class LandingPageService {
     }
     
     getHtmlContentByAlias( alias: string,isPartnerLandingPage:boolean) {
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         if(isPartnerLandingPage){
-            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias/" + alias,)
+            return this.http.get( this.authenticationService.REST_URL + "/getPartnerHtmlBodyByAlias/" + alias+"/"+vanityUrlFilter,"")
             .map( this.extractData )
             .catch( this.handleError );
         }else{
-            return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias, "" )
+            return this.http.get( this.authenticationService.REST_URL + "/getHtmlBodyByAlias/" + alias+"/"+vanityUrlFilter, "" )
             .map( this.extractData )
             .catch( this.handleError );
         }

@@ -32,6 +32,7 @@ export class PreviewPopupComponent implements OnInit {
     showButton = false;
     selectedFormData: Array<Form> = [];
     selectedFormId: number;
+    formAliasUrl:string = "";
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
    console.log("Is Show forms in preview popup: " + this.authenticationService.isShowForms);
@@ -57,7 +58,12 @@ export class PreviewPopupComponent implements OnInit {
   /************List Available Forms******************/
   showForms(){
       this.formsError = false;
-      this.customResponse = new CustomResponse();
+      this.customResponse = new CustomResponse();      
+      if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink){
+          this.formAliasUrl = this.authenticationService.vanityURLink;
+      }else{
+        this.formAliasUrl = this.authenticationService.APP_URL;
+      } 
       this.pagination.userId = this.authenticationService.getUserId();;
       this.listForms(this.pagination);
   }
@@ -115,13 +121,18 @@ export class PreviewPopupComponent implements OnInit {
   
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
   
-  copyInputMessage(inputElement,index:number){
+  copyInputMessage(inputElement,type: string,index:number){
       $(".success").hide();
       $('#copied-message-'+index).hide();
+      $('#embed-copied-message-'+index).hide();
       inputElement.select();
       document.execCommand('copy');
       inputElement.setSelectionRange(0, 0);
-      $('#copied-message-'+index).show(500);
+      if (type === "Page Link") {
+        $('#copied-message-'+index).show(500);
+    } else {
+        $('#embed-copied-message-'+index).show(500);
+    }
     }
   
 
