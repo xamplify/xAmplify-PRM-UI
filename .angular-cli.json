@@ -16,7 +16,8 @@
             "assets/admin/pages/media/works",
             "assets/global/img",
 			"assets/js/indexjscss",			
-			"assets/config-files"			
+			"assets/config-files",
+			"assets/i18n"			
 			  ],
 			"index": "index.html",
 			"main": "main.ts",

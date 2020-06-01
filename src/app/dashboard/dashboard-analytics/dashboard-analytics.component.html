@@ -1,7 +1,7 @@
 <div class="page-content" *ngIf="isOnlyUser">
   <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
       <div class="col-xs-12 col-sm-6 p0">
-          <h4 class="text-primary f-w-600 m10">Welcome {{logedInCustomerCompanyName}}</h4>
+          <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
       </div>
      
   </div>
@@ -34,7 +34,7 @@
 </div>
 <div class="page-bar" style="border-radius: 0;padding: 0.4em;margin-bottom: 10px;">
     <div class="col-xs-12 col-sm-6 p0">
-        <h4 class="text-primary f-w-600 m10">Welcome {{logedInCustomerCompanyName}}</h4>
+        <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
     </div>
     <!-- <div class="col-xs-12 col-sm-6 p0" *ngIf="vendorCompanies?.length>0">
         <select  class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendorCompanyProfileName" (change)="filterByCompanyProfileName()">
@@ -70,7 +70,7 @@
     <ngx-loading [show]="topFourLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="page-bar portlet light border-radius-0 shadow" style="margin: 14px;margin-top: 1px;">
        <div class="portlet-title">
-            <h4 class="pull-left m10 f-w-600 text-primary">Campaigns</h4>
+            <h4 class="pull-left m10 f-w-600 text-primary" translate>Campaigns</h4>
             <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
                 <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" data-toggle="tooltip" title="Customize campaign report"
                     data-placement="left" id="right"> 
@@ -140,7 +140,7 @@
                             <div class="portlet-title">
                                 <div class="caption">
                                     <i class="fa fa-bar-chart"></i>
-                                    <span class="caption-subject">Email Statistics</span>
+                                    <span class="caption-subject" translate>Email Statistics</span>
                                 </div>
                             </div>
                             <div class="portlet-body" style="min-height: 230px;  max-height: 100%; max-width: auto;">

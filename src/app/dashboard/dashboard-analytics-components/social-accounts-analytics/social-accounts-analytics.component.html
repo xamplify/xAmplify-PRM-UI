@@ -3,7 +3,7 @@ authenticationService.isVendor() || authenticationService.isVendorPartner() || a
 <div class="clearfix" *ngIf="socialConnections?.length > 0">
   <div class="portlet light shadow">
       <div class="portlet-title">
-          <h4 class="caption-subject font-red-sunglo f-w-600">Social Accounts</h4>
+          <h4 class="caption-subject font-red-sunglo f-w-600" translate>Social Accounts</h4>
       </div>
       <div class="portlet-body clearfix">
         <app-box-loader [countLoader]=4 *ngIf="socialAccountsLoader.isLoading"></app-box-loader>

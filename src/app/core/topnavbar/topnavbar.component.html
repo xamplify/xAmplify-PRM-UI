@@ -58,7 +58,7 @@
                         <!-- <button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
 						(click)="openRequestAsVendorModal()">Refer a vendor</button> -->
                         <div class="btn-group refer-vendor-button">
-                            <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;">Refer a vendor</button>
+                            <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
                             <button [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
                             <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title=""></i></button>
                         </div>
@@ -76,7 +76,7 @@
 										|| authenticationService.module.isVendor) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign && !authenticationService.isPartnerTeamMember">
                         <!-- *ngIf="refService.hasCompany" -->
                         <button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
-							<span class="hidden-xs">Update Status</span>
+							<span class="hidden-xs" translate>Update Status</span>
 							<i class="fa fa-share" data-toggle="tooltip"></i>
 						</button>
                     </li>
@@ -232,6 +232,11 @@
 	                    <i class="icon-logout"></i>
 	                </li>-->
                     <!-- END USER LOGIN DROPDOWN -->
+                    <li>
+                        <div>
+                            <span class="dropdown dropdown-user top-menu-bar">Hello</span>
+                        </div>                        
+                    </li>
                 </ul>
             </div>
             <!-- END TOP NAVIGATION MENU -->

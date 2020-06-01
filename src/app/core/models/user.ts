@@ -47,4 +47,5 @@ export class User {
     legalBasisString = [];
 
     companyProfileName: string;
+    preferredLanguage:string;
 }

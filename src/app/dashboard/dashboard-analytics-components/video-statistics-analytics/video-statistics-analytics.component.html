@@ -2,34 +2,31 @@
 	<div class="portlet light">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-bar-chart"></i> <span class="caption-subject">Video
-					Statistics</span>
+				<i class="fa fa-bar-chart"></i> <span class="caption-subject" translate>Video Statistics</span>
 			</div>
 			<div>
 				<div class="panel-title pull-right">
 					<span
 						[hidden]="referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[2].value || referenceService.daySortValue===sortHeatMapValues[3].value"
-						class="pointer" data-toggle="tooltip" data-placement="left"
-						title="7 Days"> <i class="fa fa-question-circle stats"></i>
+						class="pointer" data-toggle="tooltip" data-placement="left" title="7 Days"> <i
+							class="fa fa-question-circle stats"></i>
 					</span> <span
 						[hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[2].value || referenceService.daySortValue===sortHeatMapValues[3].value"
-						class="pointer" data-toggle="tooltip" data-placement="left"
-						title="14 Days"> <i class="fa fa-question-circle stats"></i>
+						class="pointer" data-toggle="tooltip" data-placement="left" title="14 Days"> <i
+							class="fa fa-question-circle stats"></i>
 					</span> <span
 						[hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[3].value"
-						class="pointer" data-toggle="tooltip" data-placement="left"
-						title="21 Days"> <i class="fa fa-question-circle stats"></i>
+						class="pointer" data-toggle="tooltip" data-placement="left" title="21 Days"> <i
+							class="fa fa-question-circle stats"></i>
 					</span> <span
 						[hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[2].value"
-						class="pointer" data-toggle="tooltip" data-placement="left"
-						title="Current Month"> <i
-						class="fa fa-question-circle stats"></i>
-					</span> <span style="float: right; font-size: 13px;"> <select
-						style="cursor: pointer" [(ngModel)]="daySort"
-						(ngModelChange)="selectedSortByValue($event.value)">
+						class="pointer" data-toggle="tooltip" data-placement="left" title="Current Month"> <i
+							class="fa fa-question-circle stats"></i>
+					</span> <span style="float: right; font-size: 13px;"> <select style="cursor: pointer"
+							[(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
 							<option *ngFor="let sort of sortDates" [ngValue]="sort">
 								{{sort.name}}</option>
-					</select>
+						</select>
 					</span>
 				</div>
 			</div>

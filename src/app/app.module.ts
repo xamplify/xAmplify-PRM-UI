@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -64,17 +64,27 @@ import { DownloadTemplateComponent } from './campaigns/download-template/downloa
 import { IntegrationService } from './core/services/integration.service';
 import { VanityURLService } from './vanity-url/services/vanity.url.service';
 
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { LocalizationComponent } from './localization/localization.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
                ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
-        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent
+        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent, LocalizationComponent
 
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule,
+        TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: HttpLoaderFactory,
+              deps: [HttpClient]
+            }
+          })],
     providers: [{
         provide: Http,
         useFactory: httpService,
@@ -91,4 +101,9 @@ export class AppModule { }
 
 export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService) {
     return new HttpService(backend, options, slimLoadingBarService);
+}
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
 }

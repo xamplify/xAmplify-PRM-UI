@@ -337,6 +337,10 @@ export class UserService {
             .catch( this.handleError );
     }
 
+    getAllPreferredLanguages(preferredLangFilePath:string) :Observable<any>{
+        return this.http.get(preferredLangFilePath).map(this.extractData).catch(this.handleError);
+    }
+
 
 
     

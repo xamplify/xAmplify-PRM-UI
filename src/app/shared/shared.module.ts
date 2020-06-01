@@ -33,6 +33,7 @@ import { NgxCurrencyModule } from "ngx-currency";
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { DragulaModule } from 'ng2-dragula';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
@@ -45,7 +46,7 @@ import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
-                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent],
+                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,TranslateModule],
         providers: [],
 })
 

@@ -40,10 +40,10 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     checkCreateCampaignOptionForVanityURL:boolean = true;
 
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService ) {
+        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService) {
         this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
         this.updateLeftSideBar( location );
-        this.sourceType = this.authService.getSource();
+        this.sourceType = this.authService.getSource();           
     }
 
     updateLeftSideBar( location: Location ) {
@@ -166,7 +166,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         } catch ( error ) { console.log( error ); }
     }
     
-    ngOnInit() {
+    ngOnInit() {        
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;        
     }
     ngDoCheck() {

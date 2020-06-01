@@ -18,6 +18,7 @@ var Stomp = require("stompjs");
 import { XtremandLogger } from 'app/error-pages/xtremand-logger.service';
 import { DashboardAnalyticsDto } from 'app/dashboard/models/dashboard-analytics-dto';
 import { Pagination } from '../../core/models/pagination';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class AuthenticationService {
@@ -75,7 +76,7 @@ export class AuthenticationService {
  vendorRoleHash = "";
  partnerRoleHash = ""; 
  pagination:Pagination = new Pagination();
- constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger) {
+ constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
@@ -88,6 +89,8 @@ export class AuthenticationService {
     this.imagesHost = this.envService.imagesHost; 
     this.vendorRoleHash = this.envService.vendorRoleHash;
     this.partnerRoleHash = this.envService.partnerRoleHash;
+
+    //this.translateService.use('fr');
   }
 
   getOptions(): RequestOptions {
@@ -136,6 +139,8 @@ export class AuthenticationService {
           if(this.vanityURLEnabled && this.companyProfileName && this.vanityURLUserRoles){
             userToken['roles'] = this.vanityURLUserRoles;
           }
+
+          this.translateService.use(res.json().preferredLanguage);
 
           localStorage.setItem('currentUser', JSON.stringify(userToken));
           localStorage.setItem('defaultDisplayType',res.json().modulesDisplayType);
