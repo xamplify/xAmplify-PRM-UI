@@ -24,3 +24,15 @@
 .success{
 	color: green;
 }
+.modal-icon{
+	border: 1px solid #5bb2f5;
+    color: #5bb2f5;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    vertical-align: middle;
+    margin-right: 7px;
+    font-size: 13px;
+}

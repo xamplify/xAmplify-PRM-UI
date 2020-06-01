@@ -4,7 +4,7 @@
    </button>
       <!-- ----------------------List Available Forms------------------- -->
     <div class="modal right " id="forms-list" data-backdrop="static">
-      <div class="modal-dialog modal-lg" style="width: 75%;right:0">
+      <div class="modal-lg" style="width: 100%;">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal">
@@ -64,29 +64,29 @@
 								 </h6>
 							  </td>
 							  <td [hidden]="authenticationService.isShowForms" >
-                  <input type="text" id="copy-link" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput>
-                  <div class="actions-block override-actions">
+                  <input type="text" id="copy-link" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput><br>
+                  <div class="override-actions modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
 									  <i class="fa fa-copy"></i>
                   </a>
                 </div>
-                  <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link Copied successfully<i class="fa fa-check"></i></b></font>
+                  <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link copied successfully<i class="fa fa-check"></i></b></font>
                 </td>
                 <td [hidden]="authenticationService.isShowForms">
-                  <textarea id="text-area" rows="2" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
-                  <div class="actions-block override-actions">
+                  <textarea id="text-area" rows="3" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                  <div class="override-actions modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
 									  <i class="fa fa-copy"></i>
                   </a>
                 </div>
-							  	<font class="success" id="embed-copied-message-{{i}}" style="display:none;"><b>Embed Link Copied successfully<i class="fa fa-check"></i></b></font>
-							  </td>
-							  <td id="actions-row">
+							  	<font class="success" id="embed-copied-message-{{i}}" style="display:none;"><b>Embed link copied successfully<i class="fa fa-check"></i></b></font>
+                </td>
+							  <td id="actions-row" style="text-align: center;  vertical-align: middle;">
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
 									  <i class="fa fa-eye"></i>
 									</a>
 									
-							  </td>
+                </td>
 							</tr>
 						 </tbody>
 					</table>
