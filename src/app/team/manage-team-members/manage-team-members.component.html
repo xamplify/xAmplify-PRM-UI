@@ -387,7 +387,7 @@
                   </div>
               </form>
           </div>
-          <div class="modal-footer" style="border:none;" *ngIf="!addModalPopUpLoader">
+          <div class="modal-footer" style="border:none;">
               <button class="btn btn-info" type="reset" (click)="clearForm();">Cancel</button>
               <button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
               <button class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>

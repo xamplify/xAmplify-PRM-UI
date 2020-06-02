@@ -494,7 +494,8 @@ export class ManageTeamMembersComponent implements OnInit {
 			.subscribe(
 				data => {
 					this.addTeamMemberLoader = false;
-					this.hideErrorMessage();
+					if(data.statusCode==200){
+						this.hideErrorMessage();
 						this.teamMemberUi.emptyTable = false;
 						this.newlyAddedTeamMembers.push(this.team);
 						this.team = new TeamMember();
@@ -502,18 +503,9 @@ export class ManageTeamMembersComponent implements OnInit {
 						this.emaillIdDivClass = this.defaultClass;
 						this.teamMemberUi.isValidForm = false;
 						this.closePopup();
-					// if(data.statusCode==200){
-					// 	this.hideErrorMessage();
-					// 	this.teamMemberUi.emptyTable = false;
-					// 	this.newlyAddedTeamMembers.push(this.team);
-					// 	this.team = new TeamMember();
-					// 	this.teamMemberUi.validEmailId = false;
-					// 	this.emaillIdDivClass = this.defaultClass;
-					// 	this.teamMemberUi.isValidForm = false;
-					// 	this.closePopup();
-					// }else{
-					// 	this.showErrorMessage(data.message);
-					// }
+					}else{
+						this.showErrorMessage(data.message);
+					}
 				},
 				error => { 	
 					this.addTeamMemberLoader = false;
