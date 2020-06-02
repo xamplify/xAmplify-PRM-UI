@@ -409,7 +409,7 @@ export class ManageTeamMembersComponent implements OnInit {
 						this.listAllTeamMembers(this.pagination);
 					}else{
 						this.customResponse = new CustomResponse('ERROR',data.message,true);
-						$('#list-team-member-'+index).css("background-color", "#E00000");
+						$('#list-team-member-'+index).css("background-color", "#ec6262");
 					}
 				},
 				error => { 	
@@ -536,7 +536,6 @@ export class ManageTeamMembersComponent implements OnInit {
 			$('#team-member-' + index).remove();
 			emailId = emailId.toLowerCase();
 			this.newlyAddedTeamMembers = this.spliceArray(this.newlyAddedTeamMembers, emailId);
-			alert(this.newlyAddedTeamMembers.length);
 			let tableRows = $("#add-team-member-table > tbody > tr").length;
 			if (tableRows == 0 || this.newlyAddedTeamMembers.length == 0) {
 				this.clearRows();
@@ -556,29 +555,34 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	save(){
 		this.loading = true;
+		$('.add-tm-tr').css("background-color", "#fff");
 		this.customResponse = new CustomResponse();
 		console.log(this.newlyAddedTeamMembers);
 		this.teamMemberService.saveTeamMembers(this.newlyAddedTeamMembers)
 			.subscribe(
 				data => {
 					this.loading = false;
-					alert(data.statusCode);
 					if(data.statusCode==200){
 
-					}else{
+					}else if(data.statusCode==413){
 						let duplicateEmailIds = "";
-                        $.each(data.data, function (index, value) {
+                        $.each(data.data, function (index:number, value:string) {
                             duplicateEmailIds += (index + 1) + "." + value + "<br><br>";
                         });
                         let message =  data.message+" <br><br>" + duplicateEmailIds;
                         this.customResponse = new CustomResponse('ERROR', message, true);
+					}else if(data.statusCode==400){
+						$.each(data.data,function(_index:number,value){
+							$('#team-member-'+value).css("background-color", "#ec6262");
+						});
+						this.customResponse = new CustomResponse('ERROR', data.message, true);
 					}
 				},
 				error => { 	
 					this.loading = false;
 					this.showErrorMessage(this.properties.serverErrorMessage);			
 				},
-				() => this.logger.log("Team member validated successfully.")
+				() => this.logger.log("Team member saved successfully.")
 			);
 	}
 

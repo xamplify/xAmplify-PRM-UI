@@ -150,6 +150,8 @@ export class TeamMemberService{
         let teamMemberPostDto = {};
         teamMemberPostDto['teamMemberDTOs'] = teams;
         teamMemberPostDto['userId'] = this.authenticationService.getUserId();
+        teamMemberPostDto['vanityUrlFilter'] = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        teamMemberPostDto['vanityUrlDomainName'] =this.authenticationService.companyProfileName;
         var url =this.URL+"teamMember/saveTeamMembers?access_token="+this.authenticationService.access_token;
         return this.http.post(url,teamMemberPostDto)
         .map(this.extractData)

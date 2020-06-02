@@ -72,7 +72,7 @@
             </thead>
             <tbody>
               <ng-container *ngFor="let teamMember of newlyAddedTeamMembers;let i=index">
-                <tr id="team-member-{{i}}">
+                <tr id="team-member-{{i}}" class="add-tm-tr">
                   <!---User Details-------->
                   <td>
                     <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
