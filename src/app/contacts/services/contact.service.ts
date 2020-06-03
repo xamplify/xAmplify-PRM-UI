@@ -167,7 +167,7 @@ export class ContactService {
             .catch( this.handleErrorDelete );
     }
 
-    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean,isPublic:boolean ): Observable<User[]> {
+    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean,isPublic:boolean ): Observable<any> {
         if(isPartner == false){
             this.successMessage = true;
         }
@@ -301,7 +301,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    saveSocialContactList( socialContact: SocialContact ): Observable<Response> {
+    saveSocialContactList( socialContact: SocialContact ): Observable<any> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,
@@ -473,7 +473,7 @@ export class ContactService {
 
     /**MARKETO */
 
-    saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
+    saveMarketoContactList( socialContact: SocialContact ): Observable<any> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,

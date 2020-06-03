@@ -53,7 +53,7 @@ export class HubSpotService {
             .catch(this.handleError);
     }
 
-    saveHubSpotContacts(hubSpotContacts: SocialContact): Observable<Response> {
+    saveHubSpotContacts(hubSpotContacts: SocialContact): Observable<any> {
         this.logger.info(this.authenticationService.REST_URL + "external/saveContacts?access_token=" + this.authenticationService.access_token);
         var requestoptions = new RequestOptions({
             body: hubSpotContacts,
