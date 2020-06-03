@@ -170,15 +170,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
             PagerService,private renderer:Renderer, private translateService: TranslateService) {
                 this.referenceService.renderer = this.renderer;
-                this.isUser = this.authenticationService.isOnlyUser();
-        this.preferredLangFilePath = 'assets/config-files/preferred-languages.json';
-        this.userService.getAllPreferredLanguages(this.preferredLangFilePath).subscribe(result => {
-        this.languagesList = result.languages;
-        }, error => {
-        console.log(error);
-        });   
-        //this.translateService.use('en');
-
+                this.isUser = this.authenticationService.isOnlyUser();        
     }
     cropperSettings() {
         this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
@@ -711,6 +703,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                         this.ngxloading = false;
                                         this.authenticationService.userProfile = res;
                                         this.translateService.use(res.preferredLanguage);
+                                        this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).name;
                                     },
                                     error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")

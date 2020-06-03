@@ -555,7 +555,8 @@ export class ManageTeamMembersComponent implements OnInit {
 				data => {
 					this.loading = false;
 					if(data.statusCode==200){
-
+						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+						this.refreshList();
 					}else if(data.statusCode==413){
 						let duplicateEmailIds = "";
                         $.each(data.data, function (index:number, value:string) {
@@ -567,6 +568,8 @@ export class ManageTeamMembersComponent implements OnInit {
 						$.each(data.data,function(_index:number,value){
 							$('#team-member-'+value).css("background-color", "#ec6262");
 						});
+						this.customResponse = new CustomResponse('ERROR', data.message, true);
+					}else if(data.statusCode==3008){
 						this.customResponse = new CustomResponse('ERROR', data.message, true);
 					}
 				},
