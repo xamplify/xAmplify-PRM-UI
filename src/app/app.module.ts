@@ -66,7 +66,6 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the
 import { VanityURLService } from './vanity-url/services/vanity.url.service';
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-//import { LocalizationComponent } from './localization/localization.component';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,

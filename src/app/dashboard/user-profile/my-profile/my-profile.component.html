@@ -326,6 +326,15 @@
                                                     {{ formErrors.description }}</div>
                                             </div>
                                             <div class="form-group">
+                                                <label class="control-label">Select Preferred Language</label>                                                
+                                                <select formControlName="preferredLanguage" class="form-control">
+                                                <option [ngValue]="undefined" disabled selected> Select Preferred Language </option>                                                
+                                                <option [ngValue]="language.id" *ngFor="let language of authenticationService.allLanguagesList">{{language.name}}</option>
+                                                </select>
+                                                <div *ngIf="formErrors.preferredLanguage" class="alert alert-danger">
+                                                    {{ formErrors.preferredLanguage }}</div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="control-label">Website Url</label>
                                                 <input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
                                                 <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">

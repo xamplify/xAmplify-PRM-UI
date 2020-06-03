@@ -18,6 +18,7 @@ import { TagInputComponent as SourceTagInput } from 'ngx-chips';
 import "rxjs/add/observable/of";
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-topnavbar',
@@ -52,7 +53,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isLoggedInFromAdminSection = false;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
-    public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties) {
+    public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService) {
     try{
     this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
     this.currentUrl = this.router.url;
@@ -65,6 +66,8 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
             this.userService.getUserByUserName(userName).
               subscribe(
               data => {
+                this.translateService.use(data.preferredLanguage);
+                this.getAllPreferredLanguages(data.preferredLanguage);
                 console.log(data);
                 refService.userDefaultPage = data.userDefaultPage;
                 const loggedInUser = data;
@@ -340,4 +343,14 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     );
   }
   
+  getAllPreferredLanguages(userPreferredLangId: string) {    
+    let preferredLangFilePath = 'assets/config-files/preferred-languages.json';
+    this.userService.getAllPreferredLanguages(preferredLangFilePath).subscribe(result => {
+      this.authenticationService.allLanguagesList = result.languages;
+      this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).name;
+    }, error => {
+      console.log(error);
+    });
+  }
+
 }
