@@ -16,6 +16,22 @@
         </li>
     </ul>
 </div>
+<div class="alert alert-danger" *ngIf="uiError?.length>0" id="ui-error-div">
+  <strong>{{uiError}}</strong>
+</div>{{csvErrors}}
+<div class="alert alert-danger" id="csv-error-div" style="display: none;">
+  <a (click)="referenceService.hideDiv('csv-error-div')" class="close" aria-label="close">x</a>
+  <div class="container">
+      <table class="table" aria-describedby="csv-error-messages-table">
+          <ng-container *ngFor="let error of csvErrors">
+              <tr>
+                  <th style="text-align: center;font-weight:bold" id="csverror-th">{{error}}</th>
+              </tr>
+              <hr>
+          </ng-container>
+      </table>
+  </div>
+</div>
 <div>
   <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
@@ -287,7 +303,7 @@
          <!-- -Delete--- -->
          <td>
           <a class="btn-sm" (click)="showPopup(teamMember)">
-              <i class="fa fa-times red" aria-hidden="true"></i>
+              <i class="fa fa-trash red" aria-hidden="true"></i>
           </a>
       </td>
 

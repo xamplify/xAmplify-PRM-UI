@@ -77,7 +77,9 @@ export class ManageTeamMembersComponent implements OnInit {
 	name = 'Angular 5';
 	successMessage: string;
 	csvFilePath = "";
+	csvErrors: string[] = [];
 	addTeamMemberLoader: boolean;
+	errorMessage: string;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -377,7 +379,6 @@ export class ManageTeamMembersComponent implements OnInit {
 	clearRows() {
 		try {
 			$('#add-team-member-table tbody').remove();
-			//this.teamMembers = [];
 			this.newlyAddedTeamMembers = [];
 			this.team = new TeamMember();
 			this.emaillIdDivClass = this.defaultClass;
@@ -549,7 +550,6 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.loading = true;
 		$('.add-tm-tr').css("background-color", "#fff");
 		this.customResponse = new CustomResponse();
-		console.log(this.newlyAddedTeamMembers);
 		this.teamMemberService.saveTeamMembers(this.newlyAddedTeamMembers)
 			.subscribe(
 				data => {
@@ -557,6 +557,8 @@ export class ManageTeamMembersComponent implements OnInit {
 					if(data.statusCode==200){
 						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
 						this.refreshList();
+						this.isUploadCsv = false;
+				        this.isAddTeamMember = false;
 					}else if(data.statusCode==413){
 						let duplicateEmailIds = "";
                         $.each(data.data, function (index:number, value:string) {
@@ -580,5 +582,167 @@ export class ManageTeamMembersComponent implements OnInit {
 				() => this.logger.log("Team member saved successfully.")
 			);
 	}
+
+
+	/*********************Upload Csv Functionality*****************************/
+	fileChangeListener($event): void {
+		this.hideErrorMessageDiv();
+		this.csvErrors = [];
+		var text = [];
+		var files = $event.srcElement.files;
+		if (this.fileUtil.isCSVFile(files[0])) {
+			$("#empty-roles-div").hide();
+			$("#csv-error-div").hide();
+			var input = $event.target;
+			var reader = new FileReader();
+			reader.readAsText(input.files[0]);
+			reader.onload = (data) => {
+				this.isUploadCsv = true;
+				let csvData = reader.result;
+				let csvRecordsArray = csvData.split(/\r\n|\n/);
+				let headersRow = this.fileUtil
+					.getHeaderArray(csvRecordsArray);
+				let headers = headersRow[0].split(',');
+
+				let partnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==4;
+				let vendorCsvHeadersMatched = this.superiorRole== "Vendor" && headers.length==8;
+				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin") &&  headers.length==9);
+				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched){
+					if (this.validateHeaders(headers)) {
+						this.readCsvData(csvRecordsArray, headersRow.length);
+					} else {
+						this.showCsvFileError('Invalid CSV');
+					}
+				}else{
+					this.showCsvFileError('Invalid CSV');
+				}
+				
+			}
+			let self = this;
+			reader.onerror = function () {
+				self.showErrorMessageDiv('Unable to read the file');
+				self.isUploadCsv = false;
+				self.isAddTeamMember = false;
+			};
+
+		} else {
+			this.showErrorMessageDiv('Please Import csv file only');
+			this.fileReset();
+		}
+	};
+
+	validateHeaders(headers:any){
+        if(this.superiorRole=="Partner"){
+	        return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "CAMPAIGN" && headers[3] == "CONTACTS");
+		 }else if(this.superiorRole=="Vendor"){
+			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS");
+         }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin")){
+			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS" && headers[8] == "CONTACTS");
+		 }
+	}
+
+	readCsvData(csvRecordsArray, rowLength) {
+		this.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, rowLength);
+		if (this.csvRecords.length > 1) {
+			this.processCSVData();
+		} else {
+			this.showCsvFileError('You Cannot Upload Empty File');
+		}
+	}
+
+	
+	processCSVData() {
+		this.validateCsvData();
+		if (this.csvErrors.length > 0) {
+			$("#csv-error-div").show();
+			this.fileReset();
+			this.isUploadCsv = false;
+			this.isAddTeamMember = false;
+		} else {
+			this.appendCsvDataToTable();
+			this.fileReset();
+		}
+	}
+
+	validateCsvData() {
+		let names = this.csvRecords.map(function (a) { return a[0].split(',')[0] });
+		let duplicateEmailIds = this.referenceService.returnDuplicates(names);
+		this.newlyAddedTeamMembers = [];
+		if (duplicateEmailIds.length == 0) {
+			for (var i = 1; i < this.csvRecords.length; i++) {
+				let rows = this.csvRecords[i];
+				let row = rows[0].split(',');
+				let emailId = row[0];
+				this.emaillIdDivClass = this.defaultClass;
+				if (!this.referenceService.validateEmailId(emailId)) {
+					this.csvErrors.push(emailId + " is invalid email address.");
+				} 
+			}
+		} else {
+			for (let d = 0; d < duplicateEmailIds.length; d++) {
+				this.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
+				this.isUploadCsv = false;
+				this.isAddTeamMember = false;
+			}
+
+		}
+	}
+	
+
+	appendCsvDataToTable() {
+		for (var i = 1; i < this.csvRecords.length; i++) {
+			let rows = this.csvRecords[i];
+			let row = rows[0].split(',');
+			this.teamMemberUi.emptyTable = false;
+			let teamMember = new TeamMember();
+			teamMember.emailId = row[0];
+			teamMember.all = this.setDefaultValue(row[1]);
+			if (teamMember.all) {
+				this.setAllRoles(teamMember);
+			} else {
+				if (this.isOnlyPartner) {
+					teamMember.campaign = this.setDefaultValue(row[2]);
+					teamMember.contact = this.setDefaultValue(row[3]);
+				} else {
+					teamMember.video = this.setDefaultValue(row[2]);
+					teamMember.campaign = this.setDefaultValue(row[3]);
+					teamMember.design = this.setDefaultValue(row[4]);
+					teamMember.socialShare = this.setDefaultValue(row[5]);
+					teamMember.stats = this.setDefaultValue(row[6]);
+					teamMember.partners = this.setDefaultValue(row[7]);
+					if (this.contactsAccess) {
+						teamMember.contact = this.setDefaultValue(row[8]);
+					}
+				}
+			}
+			this.newlyAddedTeamMembers.push(teamMember);
+		}
+	}
+
+	setDefaultValue(value: any) {
+		return value == 1;
+	}
+	
+	showErrorMessageDiv(message: string) {
+		this.errorMessage = message;
+		this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
+	}
+
+	hideErrorMessageDiv() {
+		this.errorMessage = "";
+		this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
+	}
+
+	showCsvFileError(message: string) {
+		this.showErrorMessageDiv(message);
+		this.fileReset();
+		this.isUploadCsv = false;
+		this.isAddTeamMember = false;
+	}
+	fileReset() {
+		this.fileImportInput.nativeElement.value = "";
+		this.csvRecords = [];
+	}
+
 
 }
