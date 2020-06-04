@@ -309,7 +309,7 @@
 								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
 								<div class="col-md-6 col-lg-6">
 								<div class="form-group" [attr.class]="companyNameDivClass">
-									<label class="control-label">Company Name <font
+									<label class="control-label" translate>Company Name <font
 										style="color: #f55d7a"><b>*</b></font></label> <input type="text"
 										id="companyName" name="companyName" placeholder="Company Name"
 										maxlength="240" class="form-control"
@@ -322,7 +322,7 @@
                                 <div class="col-md-6 col-lg-6" style="padding-left: 0px;">
 								<div class="form-group"
 									[attr.class]="companyProfileNameDivClass">
-									<label class="control-label">Company Profile Name <font
+									<label class="control-label" translate>Company Profile Name <font
 										style="color: #f55d7a"><b>*</b></font></label>
 									<ng-container *ngIf="companyProfile.isAdd"> <input
 										type="text" id="companyProfileName"
@@ -344,7 +344,7 @@
 								<div class="col-xs-12 col-md-12 col-lg-12" style="padding: 0px;">
 								<div class="col-md-6 col-lg-6">	
 									<div class="form-group" [attr.class]="emailIdDivClass">
-										<label class="control-label"> Company Email</label> <input
+										<label class="control-label" translate> Company Email</label> <input
 											type="email" id="emailId" name="emailId"
 											placeholder="Email Id" class="form-control" maxlength="240"
 											[(ngModel)]="companyProfile.emailId"
@@ -355,7 +355,7 @@
 								</div>
 								<div class="col-md-6 col-lg-6"style="padding-left: 0px;">
 								<div class="form-group" [attr.class]="tagLineDivClass">
-									<label class="control-label">Tag Line</label> <input
+									<label class="control-label" translate>Tag Line</label> <input
 										type="text" id="tagLine" name="tagLine" placeholder="Tag Line"
 										class="form-control" maxlength="240"
 										[(ngModel)]="companyProfile.tagLine" /> <span
@@ -365,7 +365,7 @@
 								</div>
 								<div class="col-md-6 col-lg-6">
 								<div class="form-group" [attr.class]="phoneDivClass">
-									<label class="control-label">Phone Number <font
+									<label class="control-label" translate>Phone Number <font
 										style="color: #f55d7a"><b>*</b></font></label>
 									<!-- <fieldset
 										style="padding: 0 !important; border: 1px solid #ece2e2 !important">
@@ -381,7 +381,7 @@
 								</div>
 								<div class="col-md-6 col-lg-6"style="padding-left: 0px;">
 								<div class="form-group" [attr.class]="websiteDivClass">
-									<label class="control-label">Company Url <font
+									<label class="control-label" translate>Company Url <font
 										style="color: #f55d7a"><b>*</b></font></label> <input type="text"
 										id="website" name="website" placeholder="WebSite"
 										maxlength="240" class="form-control"
@@ -405,7 +405,7 @@
 								</div>
 								<div class="col-md-12 col-lg-12">
 								<div class="form-group" [attr.class]="aboutUsDivClass">
-									<label class="control-label">About Us <font
+									<label class="control-label" translate>About Us <font
 										style="color: #f55d7a"><b>*</b></font></label>
 									<textarea class="form-control" rows="3" cols="5"
 										maxlength="1000" placeholder="About Us" name="aboutUs"
@@ -418,7 +418,7 @@
 								</div>
 								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<div class="form-group">
-										<label class="control-label">Display My Logo <font
+										<label class="control-label" translate>Display My Logo <font
 											style="color: #f55d7a"><b>*</b></font></label>
 									   <div>
 										<switch [status]="companyProfile.showVendorCompanyLogo"  [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
@@ -442,19 +442,19 @@
 									<div class="panel panel-default">
 										<div class="panel-heading" data-toggle="collapse"
 											href="#collapse1" (click)="refService.scrollSmoothToBottom()">
-											<h4 class="panel-title f-w-500">
+											<h4 class="panel-title f-w-500" translate>
 												Company Address <i class="fa fa-caret-down pull-right"></i>
 											</h4>
 										</div>
 										<div id="collapse1" class="panel-collapse collapse">
 											<div class="form-group">
-												<label class="control-label">Street</label> <input
+												<label class="control-label" translate>Street</label> <input
 													type="text" id="street" [(ngModel)]="companyProfile.street"
 													name="street" placeholder="Street" maxlength="240"
 													class="form-control" />
 											</div>
 											<div class="form-group" [attr.class]="cityDivClass">
-												<label class="control-label">City</label> <input type="text"
+												<label class="control-label" translate>City</label> <input type="text"
 													id="city" name="city" placeholder="City"
 													class="form-control" maxlength="240"
 													[(ngModel)]="companyProfile.city"
@@ -463,7 +463,7 @@
 													*ngIf="cityError" style="color: #f55d7a">{{cityErrorMessage}}</span>
 											</div>
 											<div class="form-group" [attr.class]="stateDivClass">
-												<label class="control-label">State</label> <input
+												<label class="control-label" translate>State</label> <input
 													type="text" id="state" name="state" placeholder="State"
 													class="form-control" maxlength="240"
 													[(ngModel)]="companyProfile.state"
@@ -472,14 +472,14 @@
 													*ngIf="stateError" style="color: #f55d7a">{{stateErrorMessage}}</span>
 											</div>
 											<div class="form-group" [attr.class]="zipDivClass">
-												<label class="control-label">Zip</label> <input type="text"
+												<label class="control-label" translate>Zip</label> <input type="text"
 													id="zip" name="zip" maxlength="10" placeholder="Zip"
 													onkeypress="return event.charCode >= 48 && event.charCode <= 57"
 													class="form-control" [(ngModel)]="companyProfile.zip" />
 												<span *ngIf="zipError" style="color: #f55d7a">{{zipErrorMessage}}</span>
 											</div>
 											<div class="form-group" [attr.class]="countryDivClass">
-												<label class="control-label">Country</label> <select
+												<label class="control-label" translate>Country</label> <select
 													class="form-control" name="companyProfile.country"
 													[(ngModel)]="companyProfile.country" style="width: 100%">
 													<option *ngFor="let country of countryNames.countries"
@@ -493,13 +493,13 @@
 									<div class="panel panel-default">
 										<div class="panel-heading" data-toggle="collapse"
 											href="#collapse2" (click)="refService.scrollSmoothToBottom()">
-											<h4 class="panel-title f-w-500">
+											<h4 class="panel-title f-w-500" translate>
 												Social Accounts <i class="fa fa-caret-down pull-right"></i>
 											</h4>
 										</div>
 										<div id="collapse2" class="panel-collapse collapse">
 											<div class="form-group" [attr.class]="facebookDivClass">
-												<label class="control-label">Facebook</label> <input
+												<label class="control-label" translate>Facebook</label> <input
 													type="text" id="facebook" name="facebook"
 													placeholder="Facebook" class="form-control"
 													[(ngModel)]="companyProfile.facebookLink"
@@ -508,7 +508,7 @@
 													*ngIf="facebookLinkError" style="color: #f55d7a">{{facebookLinkErrorMessage}}</span>
 											</div>
 											<div class="form-group" [attr.class]="googlePlusDivClass">
-												<label class="control-label">Google</label> <input
+												<label class="control-label" translate>Google</label> <input
 													type="text" id="googlePlusLink" name="googlePlusLink"
 													placeholder="Google" class="form-control"
 													[(ngModel)]="companyProfile.googlePlusLink"
@@ -517,7 +517,7 @@
 													*ngIf="googlePlusLinkError" style="color: #f55d7a">{{googlePlusLinkErrorMessage}}</span>
 											</div>
 											<div class="form-group" [attr.class]="linkedInDivClass">
-												<label class="control-label">LinkedIn</label> <input
+												<label class="control-label" translate>LinkedIn</label> <input
 													type="text" id="linkedInLink" name="linkedInLink"
 													placeholder="LinkedIn" class="form-control"
 													[(ngModel)]="companyProfile.linkedInLink"
@@ -526,7 +526,7 @@
 													*ngIf="linkedinLinkError" style="color: #f55d7a">{{linkedinLinkErrorMessage}}</span>
 											</div>
 											<div class="form-group" [attr.class]="twitterDivClass">
-												<label class="control-label">Twitter</label> <input
+												<label class="control-label" translate>Twitter</label> <input
 													type="text" id="twitter" name="twitter"
 													placeholder="Twitter" class="form-control"
 													[(ngModel)]="companyProfile.twitterLink"
