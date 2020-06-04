@@ -80,6 +80,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	csvErrors: string[] = [];
 	addTeamMemberLoader: boolean;
 	errorMessage: string;
+	isLoggedInThroughVanityUrl = false;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -87,16 +88,17 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.team = new TeamMember();
 		this.loggedInUserId = this.authenticationService.getUserId();
-		this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.teamMemberUi = new TeamMemberUi();
 	}
 
 	ngOnInit() {
 		this.listTeamMemberModules();
-		this.listAllTeamMembers(this.pagination);
 	}
 
 	listTeamMemberModules() {
 		try {
+			this.referenceService.loading(this.httpRequestLoader, true);
 			let input = {};
 			input['userId'] = this.authenticationService.getUserId();
 			this.teamMemberService.listTeamMemberModules(input)
@@ -124,10 +126,13 @@ export class ManageTeamMembersComponent implements OnInit {
 					error => {
 						this.logger.errorPage(error);
 					},
-					() => this.logger.info("Finished listTeamMembers()")
+					() =>{
+						this.listAllTeamMembers(this.pagination);
+					} 
 				);
 		} catch (error) {
 			this.showUIError(error);
+			this.referenceService.loading(this.httpRequestLoader, false);
 		}
 	}
 
@@ -155,6 +160,7 @@ export class ManageTeamMembersComponent implements OnInit {
 				);
 		} catch (error) {
 			this.showUIError(error);
+			this.referenceService.loading(this.httpRequestLoader, false);
 		}
 	}
 
@@ -315,25 +321,28 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	/*************************Delete Team Member************** */
 	showPopup(teamMember: TeamMember) {
-		this.selectedId = 0;
-		this.deletePopupLoader = true;
-		$('#delete-team-member-popup').modal('show');
-		this.teamMemberService.listEmailIdsForTransferData(this.loggedInUserId, this.isOnlyPartner)
-			.subscribe(
-				data => {
-					this.setDropDownData(data);
-					this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
-					this.teamMemberIdToDelete = teamMember.teamMemberId;
-					this.selectedTeamMemberEmailId = teamMember.emailId;
-					this.deletePopupLoader = false;
-				},
-				error => {
-					$('#delete-team-member-popup').modal('hide');
-					this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
-
-				},
-				() => this.logger.log("showPopup() done")
-			);
+		if(!this.isLoggedInAsTeamMember){
+			this.selectedId = 0;
+			this.deletePopupLoader = true;
+			$('#delete-team-member-popup').modal('show');
+			this.teamMemberService.listEmailIdsForTransferData(this.loggedInUserId, this.isOnlyPartner)
+				.subscribe(
+					data => {
+						this.setDropDownData(data);
+						this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
+						this.teamMemberIdToDelete = teamMember.teamMemberId;
+						this.selectedTeamMemberEmailId = teamMember.emailId;
+						this.deletePopupLoader = false;
+					},
+					error => {
+						$('#delete-team-member-popup').modal('hide');
+						this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
+	
+					},
+					() => this.logger.log("showPopup() done")
+				);
+		}
+		
 	}
 
 	delete() {
@@ -395,31 +404,34 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	/******************Update Team Member********************** */
 	updateTeamMember(teamMember:TeamMember,index:number){
-		$('.list-team-member-class').css("background-color", "#fff");
-		this.customResponse = new CustomResponse();
-		this.referenceService.goToTop();
-		this.loading = true;
-		this.teamMemberService.updateTeamMember(teamMember)
-			.subscribe(
-				data => {
-					this.referenceService.goToTop();
-					this.loading = false;
-					if(data.statusCode==200){
-						this.customResponse = new CustomResponse('SUCCESS',data.message,true);
-						this.pagination = new Pagination();
-						this.listAllTeamMembers(this.pagination);
-					}else{
-						this.customResponse = new CustomResponse('ERROR',data.message,true);
-						$('#list-team-member-'+index).css("background-color", "#ec6262");
-					}
-				},
-				error => { 	
-					this.loading = false;
-					this.referenceService.goToTop();				
-					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
-				},
-				() => this.logger.log("Team member updated successfully.")
-			);
+		if(!this.isLoggedInAsTeamMember){
+			$('.list-team-member-class').css("background-color", "#fff");
+			this.customResponse = new CustomResponse();
+			this.referenceService.goToTop();
+			this.loading = true;
+			this.teamMemberService.updateTeamMember(teamMember)
+				.subscribe(
+					data => {
+						this.referenceService.goToTop();
+						this.loading = false;
+						if(data.statusCode==200){
+							this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+							this.pagination = new Pagination();
+							this.listAllTeamMembers(this.pagination);
+						}else{
+							this.customResponse = new CustomResponse('ERROR',data.message,true);
+							$('#list-team-member-'+index).css("background-color", "#ec6262");
+						}
+					},
+					error => { 	
+						this.loading = false;
+						this.referenceService.goToTop();				
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
+					},
+					() => this.logger.log("Team member updated successfully.")
+				);
+		}
+		
 	}
 
 	downloadEmptyCsv(){
@@ -743,6 +755,72 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.fileImportInput.nativeElement.value = "";
 		this.csvRecords = [];
 	}
+
+	loginAs(teamMember: TeamMember) {
+		this.loginAsTeamMember(teamMember.emailId, false);
+
+	}
+
+	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+		this.loading = true;
+		if(this.authenticationService.vanityURLEnabled){
+			this.referenceService.showSweetAlertErrorMessage('Work in progress');
+		}else{
+			this.getUserData(emailId,isLoggedInAsAdmin);
+		}
+	}
+
+	getUserData(emailId:string,isLoggedInAsAdmin:boolean){
+		this.authenticationService.getUserByUserName(emailId)
+			.subscribe(
+				response => {
+					if (isLoggedInAsAdmin) {
+						localStorage.removeItem('adminId');
+						localStorage.removeItem('adminEmailId');
+						this.isLoggedInAsTeamMember = false;
+					} else {
+						let adminId = JSON.parse(localStorage.getItem('adminId'));
+						if (adminId == null) {
+							localStorage.adminId = JSON.stringify(this.loggedInUserId);
+							localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
+						}
+					}
+					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+
+					if(this.authenticationService.vanityURLEnabled){						
+						  let currentUser = localStorage.getItem('currentUser');
+						  if(currentUser && this.authenticationService.vanityURLUserRoles){
+							const parsedObject = JSON.parse(currentUser);
+							parsedObject.roles = this.authenticationService.vanityURLUserRoles;
+							localStorage.setItem("currentUser", JSON.stringify(parsedObject));
+						  }
+					}
+
+					let self = this;
+					setTimeout(function () {
+						self.router.navigate(['home/dashboard/'])
+							.then(() => {
+								window.location.reload();
+							})
+					}, 500);
+				},
+				(error: any) => {
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+				},
+				() => this.logger.info('Finished getRolesByTeamMemberId()')
+			);
+	}
+
+	getVanityRolesByEmailId(emailId:string){
+
+	}
+
+	logoutAsTeamMember() {
+		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+		this.loginAsTeamMember(adminEmailId, true);
+	}
+
 
 
 }

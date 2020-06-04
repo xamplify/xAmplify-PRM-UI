@@ -36,8 +36,9 @@
   <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 </div>
 <div class="row">
-  <div class="clearfix" [class.disabled]="authenticationService.isSuperAdmin()">
+  <div class="clearfix">
     <section class="clearfix">
+      <ng-container *ngIf="!isLoggedInAsTeamMember">
         <div class="col-xs-6 col-sm-2 hidden-xs">
             <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;" *ngIf="!isAddTeamMember && !isUploadCsv">
                 <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
@@ -54,8 +55,8 @@
             <button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed">
                 <h6 style="font-size:14px">Add Team Member</h6>
             </button>
-
         </div>
+      </ng-container>
         <div *ngIf="csvFilePath?.length>0" class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
             <a class="btn btn-success" (click)="downloadEmptyCsv()" download>Download CSV Template</a>
         </div>
@@ -146,7 +147,6 @@
                     <i class="fa fa-trash red" aria-hidden="true"></i>
                 </a>
               </td>
-               
                   </tr>
                 </ng-container>
             </tbody>
@@ -187,7 +187,7 @@
           <thead>
               <tr>
                  <th class="table-checkbox" id="first-header">
-                  <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif">
+                  <button *ngIf="isLoggedInAsTeamMember && !isLoggedInThroughVanityUrl" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif">
                     <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
                 </button>
                 <h4 class="user-permission-min-width">
@@ -218,7 +218,7 @@
               <ng-container *ngFor="let teamMember of teamMembers;let i=index">
                 <tr id="list-team-member-{{i}}" class="list-team-member-class">
                   <td>
-                    <ng-container *ngIf="loginAsTeamMemberAccess">
+                    <ng-container *ngIf="loginAsTeamMemberAccess && !isLoggedInThroughVanityUrl">
                         <button *ngIf="teamMember.loginAsButtonEnabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                         </button>
@@ -296,13 +296,13 @@
         </td>
         <!-- -Edit--- -->
         <td>
-          <a class="btn-sm" (click)="updateTeamMember(teamMember,i)">
+          <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'" (click)="updateTeamMember(teamMember,i)">
             <i class="fa fa-save" aria-hidden="true"></i>
           </a>
       </td>
          <!-- -Delete--- -->
          <td>
-          <a class="btn-sm" (click)="showPopup(teamMember)">
+          <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'"  (click)="showPopup(teamMember)">
               <i class="fa fa-trash red" aria-hidden="true"></i>
           </a>
       </td>
