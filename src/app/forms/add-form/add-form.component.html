@@ -94,7 +94,7 @@
                                         <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
                                         <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
                                     </div>
-                                    <div class="portlet-body clearfix" id="create-from-div">
+                                    <div class="portlet-body clearfix" id="create-from-div" [style.backgroundColor]="form.backgroundColor">
                                         <div class="tab-content">
                                             <!-- <div class="profile-image-wrapper" style="cursor:pointer">
                           <span></span>
@@ -320,6 +320,11 @@
                     <div class="form-group">
                         <label>Description</label>
                         <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Background Color:</label>
+                            <input class="form-control" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" [(ngModel)]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form)"
+                                [value]="compControllerColor" [cpPosition]="'bottom'" />
                     </div>
                 </div>
                 <div class="modal-footer">

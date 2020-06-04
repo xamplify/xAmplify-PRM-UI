@@ -260,8 +260,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
         inputElement.select();
         document.execCommand('copy');
         inputElement.setSelectionRange(0, 0);
-        let message = type + ' Copied to clipboard successfully.';
-        if (type === "Page Link") {
+        let message = type + ' copied to clipboard successfully.';
+        if (type === "Page link") {
             $("#copy-link").select();
         } else {
             $("#text-area").select();

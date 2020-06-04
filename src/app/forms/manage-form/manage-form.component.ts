@@ -293,7 +293,7 @@ export class ManageFormComponent implements OnInit, OnDestroy {
         document.execCommand('copy');
         inputElement.setSelectionRange(0, 0);
         let message = type + ' copied to clipboard successfully.';
-        if (type === "Page link") {
+        if (type === "Form link") {
             $("#copy-link").select();
         } else {
             $("#text-area").select();

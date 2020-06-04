@@ -41,8 +41,8 @@
 						  <tr>
 						     <th *ngIf="authenticationService.isShowForms">Select</th>
 							 <th>Form Details</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms">Link</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms">Embed Link</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2">Link</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
 							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Preview</th>
 							 <th class="text-center" *ngIf="authenticationService.isShowForms">Preview</th>
 						  </tr>
@@ -63,20 +63,27 @@
 									From <b>{{form.companyName}}</b>
 								 </h6>
 							  </td>
-							  <td [hidden]="authenticationService.isShowForms" >
+							  <td [hidden]="authenticationService.isShowForms">
                   <input type="text" id="copy-link" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput><br>
-                  <div class="override-actions modal-icon">
+                  <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link copied successfully<i class="fa fa-check"></i></b></font>
+                </td>
+                  <td>
+                    <div class="modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
 									  <i class="fa fa-copy"></i>
                   </a>
                 </div>
-                  <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link copied successfully<i class="fa fa-check"></i></b></font>
                 </td>
                 <td [hidden]="authenticationService.isShowForms">
-                  <textarea id="text-area" rows="3" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
-                  <div class="override-actions modal-icon">
+                  <textarea id="text-area" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                  <tr>
+                  <font class="success" id="embed-copied-message-{{i}}" style="display:none;"><b>Embed link copied successfully<i class="fa fa-check"></i></b></font>
+                </tr>
+                  </td>
+                  <td>
+                  <div class="modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
-									  <i class="fa fa-copy"></i>
+									  <i class="fa fa-copy" ></i>
                   </a>
                 </div>
 							  	<font class="success" id="embed-copied-message-{{i}}" style="display:none;"><b>Embed link copied successfully<i class="fa fa-check"></i></b></font>
@@ -131,7 +138,7 @@
               <div class="panel-heading">
                 <div class="panel-title">{{form.name}}</div>
               </div>
-              <div class="panel-body" *ngIf="!formError">
+              <div class="panel-body" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor">
               <h5>{{form.description}}</h5>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                   <div class="form-group">

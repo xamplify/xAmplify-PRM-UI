@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {PreviewPopupComponent} from '../preview-popup/preview-popup.component';
+import {VideoUtilService } from '../../videos/services/video-util.service';
 
 declare var $:any,swal:any ;
 
@@ -71,7 +72,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
     categoryNames: any;
     routerLink: string="/home/forms/manage";
-    constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
+    compControllerColor: string;
+    valueRange: number;
+    constructor(public logger: XtremandLogger,public referenceService:ReferenceService,public videoUtilService: VideoUtilService,
         public authenticationService:AuthenticationService,public formService:FormService,
         private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch,public route:ActivatedRoute) {
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -684,5 +687,14 @@ export class AddFormComponent implements OnInit, OnDestroy {
           this.router.navigate(["/home/forms/manage"]);
         }
       }
+
+      changeControllerColor(event: any, form:Form) {
+        try {
+            this.compControllerColor = event;
+                const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+               form.backgroundColor=event;
+        } catch (error) { console.log(error); }
+    }
 
 }

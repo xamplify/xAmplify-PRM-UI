@@ -1,6 +1,6 @@
 <div [hidden]="processor.isProcessing" class="mobile-camp">
 <div class="" *ngIf="hasFormExists">
-	<div class="col-xs-12 col-sm-12 p0">
+	<div class="col-xs-12 col-sm-12 p0" [style.backgroundColor]="form.backgroundColor">
 			<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="panel panel-info" style=" border-radius: 0px!important;">
 		
