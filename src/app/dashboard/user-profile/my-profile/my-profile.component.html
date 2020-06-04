@@ -186,8 +186,8 @@
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>		 
                             <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
-                                <a (click)="activateTab('templates');clearCustomResponse()">
-                                    <i class="fa fa-list" translate></i> Your Templates </a>
+                                <a (click)="activateTab('templates');clearCustomResponse()" translate>
+                                    <i class="fa fa-list"></i> Your Templates </a>
                             </li>
 
                         </ng-container>
@@ -441,7 +441,7 @@
                                                                     <form id="form-{{dealType.divId}}">
                                                                         <div class="col-xs-10" style="padding:0">
                                                                             <div class="form-group" [attr.class]="dealType.class">
-                                                                                <label class="control-label">DealType
+                                                                                <label class="control-label" translate>DealType
                                                                                     <font style="color: #f55d7a">
                                                                                         <b>*</b>
                                                                                     </font>
@@ -646,22 +646,19 @@
                                                             <!--style="border: 1px solid #ddd;"-->
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" id="text-color-my-profile">
-                                                                        Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes:
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes:
                                                                     </h5>
                                                                         <ul>
-                                                                            <li id="text-color-my-profile">The ability to designate a legal basis for contacting each person added to a mailing list</li>
-                                                                            <li id="text-color-my-profile" style="margin-top: 5px">Automatic inclusion of an unsubscribe link in every campaign email</li>
+                                                                            <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>
+                                                                            <li id="text-color-my-profile" style="margin-top: 5px" translate>Automatic inclusion of an unsubscribe link in every campaign email</li>
                                                                         </ul>
                                                                   
                                                                     <h5 id="text-color-my-profile">
-                                                                        <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank">Privacy & consent</a>&nbsp; |
-                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank">Cookies & tracking</a> &nbsp;
+                                                                        <a class="link" href="https://www.xamplify.com/privacy-policy/" taget="_blank" translate>Privacy & consent</a>&nbsp; |
+                                                                        <a class="link" href="https://www.xamplify.com/terms-conditions/" target="_blank" translate>Cookies & tracking</a> &nbsp;
                                                                     </h5>
-                                                                    <h5 id="text-color-my-profile">
-                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; 
-                                                                        Only allows marketing
-                                                                        emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
+                                                                    <h5 id="text-color-my-profile" translate>
+                                                                        <input type="checkbox" [(ngModel)]="gdprSetting.allowMarketingEmails" [ngModelOptions]="{standalone: true}" [disabled]="!gdprSetting.gdprStatus" value="">&nbsp; Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM
                                                                     </h5>
                                                                 </div>
                                                                 <div class="col-md-3 col-lg-3 text-right" style="padding-top:10px">
@@ -830,10 +827,10 @@
                                                         <tr>
                                                             <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
                                                                 <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'category-list',2)"> </span>
-                                                                <span class="gridHeader">Folder</span>
+                                                                <span class="gridHeader" translate>Folder</span>
                                                             </th>
-                                                            <th class="text-center" id="border-bottom">Created On</th>
-                                                            <th class="text-center" id="border-bottom">Items Count</th>
+                                                            <th class="text-center" id="border-bottom" translate>Created On</th>
+                                                            <th class="text-center" id="border-bottom" translate>Items Count</th>
                                                             <th class="text-center float-right" id="border-bottom">Actions</th>
                                                         </tr>
                                                     </thead>
@@ -847,7 +844,7 @@
                                                                     <span>{{category.name}}</span>
                                                                 </h4>
                                                                 <h6 class="moreipsis">
-                                                                    <span> Created By <b>{{category.createdBy}}</b></span>
+                                                                    <span translate> Created By <b>{{category.createdBy}}</b></span>
                                                                 </h6>
                                                             </td>
                                                             <td class="text-center">
@@ -896,7 +893,7 @@
                                         </div>
                                         <!-- End of 24 -->
                                         <div *ngIf="categoryPagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                                            <strong>No Folders Found.</strong>
+                                            <strong translate>No Folders Found.</strong>
                                         </div>
                                     </ng-container>
                                     <!--------------Preview Items------------------>
@@ -1009,15 +1006,13 @@
                                                             <legend translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Allow Sharing:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Allow Fullscreen:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
@@ -1025,15 +1020,13 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 38px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Allow Likes:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Allow Embed:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
@@ -1044,15 +1037,13 @@
 
                                                             <div class="col-xs-12" style="margin-top: 4px;">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Enable Settings:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Allow Comments:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
@@ -1060,15 +1051,13 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 37px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        Enable Casting:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
-                                                                        360 video:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">

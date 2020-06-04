@@ -100,7 +100,21 @@
 	"Enable Settings":"Enable Settings",
 	"Allow Comments":"Allow Comments",
 	"Enable Casting":"Enable Casting",
-	"360 video":"360 video"
+	"360 video":"360 video",
+	"DealType":"DealType",
+	"Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes":"Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes",
+	"The ability to designate a legal basis for contacting each person added to a mailing list":"The ability to designate a legal basis for contacting each person added to a mailing list",
+	"Automatic inclusion of an unsubscribe link in every campaign email":"Automatic inclusion of an unsubscribe link in every campaign email",
+	"Privacy & consent":"Privacy & consent",
+	"Cookies & tracking":"Cookies & tracking",
+	"Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM":"Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM",
+	"Folder":"Folder",
+	"Created On":"Created On",
+	"Items Count":"Items Count",
+	"Created By":"Created By",
+	"No Folders Found":"No Folders Found"
+	
+
 
 	
 
