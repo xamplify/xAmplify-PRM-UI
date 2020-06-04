@@ -347,11 +347,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.showCropper = false;
     }
     uploadLogo(){
-      this.loadingcrop = true;
-      let fileObj:any;
-      fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
-      fileObj = this.utilService.blobToFile(fileObj);
-      this.fileUploadCode(fileObj);
+      if(this.croppedImage!=""){
+        this.loadingcrop = true;
+        let fileObj:any;
+        fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+        fileObj = this.utilService.blobToFile(fileObj);
+        this.fileUploadCode(fileObj);
+      }else{
+          this.refService.showSweetAlertErrorMessage("Please upload an image");
+      }
+      
     }
 
     fileUploadCode(fileObj:File){
