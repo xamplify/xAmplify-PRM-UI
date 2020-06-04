@@ -2548,15 +2548,19 @@ goBackToManageList(){
 			this.addContactModalClose();
 			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
 				.subscribe(
-					(data: any) => {
-						console.log(data);
-						if (!this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
-						}
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-					},
+                (data: any) => {
+                    if (data.access) {
+                        console.log(data);
+                        if (!this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+                        }
+                        this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					error => this.xtremandLogger.error(error),
 					() => this.xtremandLogger.info("EditContactsComponent updateContactListUser() finished")
 				)
