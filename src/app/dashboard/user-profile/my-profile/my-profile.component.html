@@ -152,42 +152,42 @@
                             <!-- commented for future work -->
                             <li [ngClass]="{'active-tab': activeTabName == 'personalInfo'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'personalInfo'}" (click)="activateTab('personalInfo');clearCustomResponse()">
-                                 {{properties.personalInfo}}
+                                 {{properties.personalInfo | translate}}
                                 </a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'password'}">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'password'}" (click)="activateTab('password');clearCustomResponse()">
-                                    {{properties.changePassword}}
+                                    {{properties.changePassword | translate}}
                                 </a> 
                             </li>
                             <ng-container *ngIf="!isUser">
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
                                 (click)="videojsCall()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"(click)="activateTab('playerSettings');">
-                                    <span>{{properties.defaultPlayerSettings}}</span>
+                                    <span>{{properties.defaultPlayerSettings | translate}}</span>
                                 </a> 
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration}}</a>
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration | translate}}</a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations}}</a>
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
-                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings}}</a>
+                                <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
                             <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'categories'}" (click)="activateTab('categories');clearCustomResponse()">{{properties.folders | translate}}</a>
                             </li>
                             <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
-                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings}}</a>
+                                <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>		 
- <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
+                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
                                 <a (click)="activateTab('templates');clearCustomResponse()">
-                                    <i class="fa fa-list"></i> Your Templates </a>
+                                    <i class="fa fa-list" translate></i> Your Templates </a>
                             </li>
 
                         </ng-container>
@@ -274,7 +274,7 @@
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
                                     <i class="icon-globe theme-font hide"></i>
-                                    <span class="caption-subject font-blue-madison bold">{{activeTabHeader}}</span>
+                                    <span class="caption-subject font-blue-madison bold">{{activeTabHeader | translate}}</span>
                                         
                                 </div>
                                 
@@ -285,21 +285,21 @@
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'personalInfo'}">
                                         <form role="form" [formGroup]="updateUserProfileForm" (ngSubmit)="updateUserProfile()">
                                             <div class="form-group">
-                                                <label class="control-label">First Name</label>
+                                                <label class="control-label" translate>First Name</label>
                                                 <span class="star"> *</span>
                                                 <input type="text" #first (keyup)="firstNameValue(first.value)" placeholder="First Name" class="form-control" formControlName="firstName" required />
                                                 <div *ngIf="formErrors.firstName" class="alert alert-danger">
                                                     {{ formErrors.firstName }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Last Name</label>
+                                                <label class="control-label" translate>Last Name</label>
                                                 <!-- <span class="star"> *</span> -->
                                                 <input type="text" placeholder="Last Name" class="form-control" formControlName="lastName" maxlength="50">
                                                 <div *ngIf="formErrors.lastName" class="alert alert-danger">
                                                     {{ formErrors.lastName }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Mobile Number</label>
+                                                <label class="control-label" translate>Mobile Number</label>
                                                 <!-- <fieldset style="padding:0 !important;border: 1px solid #ece2e2 !important">
                                                     <int-phone-prefix placeholder="Mobile Number" [(ngModel)]="userData.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
                                                 </fieldset> -->
@@ -308,25 +308,25 @@
                                                     {{ formErrors.mobileNumber }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Interests</label>
+                                                <label class="control-label" translate>Interests</label>
                                                 <input type="text" placeholder="Interests" class="form-control" formControlName="interests" />
                                                 <div *ngIf="formErrors.interests" class="alert alert-danger">
                                                     {{ formErrors.interests }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Title</label>
+                                                <label class="control-label" translate>Title</label>
                                                 <input type="text" #occ (keyup)="occupationValue(occ.value)" placeholder="Title" class="form-control" formControlName="occupation" />
                                                 <div *ngIf="formErrors.occupation" class="alert alert-danger">
                                                     {{ formErrors.occupation }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">About</label>
+                                                <label class="control-label" translate>About</label>
                                                 <textarea class="form-control" rows="3" placeholder="About You" formControlName="description" style="resize: none;"></textarea>
                                                 <div *ngIf="formErrors.description" class="alert alert-danger">
                                                     {{ formErrors.description }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Select Preferred Language</label>                                                
+                                                <label class="control-label" translate>Select Preferred Language</label>                                                
                                                 <select formControlName="preferredLanguage" class="form-control">
                                                 <option [ngValue]="undefined" disabled selected> Select Preferred Language </option>                                                
                                                 <option [ngValue]="language.id" *ngFor="let language of authenticationService.allLanguagesList">{{language.name}}</option>
@@ -335,13 +335,13 @@
                                                     {{ formErrors.preferredLanguage }}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Website Url</label>
+                                                <label class="control-label" translate>Website Url</label>
                                                 <input type="url" placeholder="WebSite Url" class="form-control" formControlName="websiteUrl" />
                                                 <div *ngIf="formErrors.websiteUrl" class="alert alert-danger">
                                                     {{ formErrors.websiteUrl }}</div>
                                             </div>
-                                            <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn green-haze">Save
-                                                Changes</button>
+                                            <button type="submit" [disabled]="!updateUserProfileForm.valid || authenticationService.isSuperAdmin()" class="btn green-haze">
+                                                Save Changes</button>
                                         </form>
                                     </div>
 
@@ -560,7 +560,7 @@
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">
                                         <form [formGroup]="updatePasswordForm" (ngSubmit)="updatePassword()" autocomplete="off">
                                             <div class="form-group" *ngIf="userData.hasPassword">
-                                                <label class="control-label">Current Password</label>
+                                                <label class="control-label" translate>Current Password</label>
                                                 <input id="oldPassword" type="password" [class]="className" formControlName="oldPassword" required="required" />
                                                 <span toggle="#oldPassword" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')" *ngIf="!referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value" style="left:-30px !important"></span>
                                                 <span toggle="#oldPassword" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('oldPassword')" *ngIf="referenceService.showInputOldPassword && updatePasswordForm.get('oldPassword').value"
@@ -570,7 +570,7 @@
                                                     {{formErrors.oldPassword}}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">New Password</label>
+                                                <label class="control-label" translate>New Password</label>
                                                 <input id="password" type="password" class="form-control" formControlName="newPassword" required="required" />
                                                 <span toggle="#password" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="!referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
                                                 <span toggle="#password" title="Hide Password" class="fa fa-fw fa-eye-slash field-icon toggle-password" (click)="referenceService.showPassword('password')" *ngIf="referenceService.showInputPassword && updatePasswordForm.get('newPassword').value" style="left:-30px !important"></span>
@@ -579,7 +579,7 @@
                                                     {{formErrors.newPassword}}</div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Re-type New Password</label>
+                                                <label class="control-label" translate>Re-type New Password</label>
                                                 <input id="comfirmPassword" type="password" class="form-control" formControlName="confirmNewPassword" required="required" />
                                                 <span toggle="#comfirmPassword" title="Show Password" class="fa fa-fw fa-eye field-icon toggle-password" (click)="referenceService.showPassword('comfirmPassword')" *ngIf="!referenceService.showInputConfirmPassword && updatePasswordForm.get('confirmNewPassword').value"
                                                     style="left:-30px !important"></span>
@@ -588,11 +588,11 @@
 
                                                 <div *ngIf="formErrors.confirmNewPassword" class="alert alert-danger">
                                                     {{formErrors.confirmNewPassword}}</div>
-                                                <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger">Passwords do not match.</div>
+                                                <div *ngIf="updatePasswordForm.hasError('mismatchedPasswords')" class="alert alert-danger">Password do not match.</div>
                                             </div>
                                             <div class="margin-top-10">
-                                                <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn green-haze">Change
-                                                    Password</button>
+                                                <button type="submit" id="register-submit-btn" [disabled]="!updatePasswordForm.valid" class="btn green-haze" translate>
+                                                    Change Password</button>
                                                 <input type="reset" class="btn default" value="Cancel">
                                             </div>
                                         </form>
@@ -603,24 +603,24 @@
                                             <div id="custom-response-div">
                                                 <app-response-message *ngIf="modulesDisplayViewcustomResponse.isVisible" [customResponse]="modulesDisplayViewcustomResponse"></app-response-message>
                                             </div>
-                                            <label class="container-checkbox-xamplify">List View
+                                            <label class="container-checkbox-xamplify" translate>List View
                                                 <input type="radio"  name="moduleDisplayType"  
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]}}" 
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.LIST]">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container-checkbox-xamplify">Grid View
+                                              <label class="container-checkbox-xamplify" translate>Grid View
                                                 <input type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]}}" 
                                                 [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container-checkbox-xamplify">Folder Grid View
+                                              <label class="container-checkbox-xamplify" translate>Folder Grid View
                                                 <input type="radio"  name="moduleDisplayType" 
                                                  value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]}}" [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_GRID]">
                                                 <span class="checkmark"></span>
                                               </label>
-                                              <label class="container-checkbox-xamplify">Folder List View
+                                              <label class="container-checkbox-xamplify" translate>Folder List View
                                                 <input type="radio"  name="moduleDisplayType" 
                                                 value="{{ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]}}"
                                                  [checked]="modulesDisplayTypeString == ModuleDisplayTypeEnum[ModuleDisplayTypeEnum.FOLDER_LIST]"> 
@@ -628,7 +628,7 @@
                                               </label>
                                           </div>
                                           <div class="margin-top-10">
-                                            <button type="submit" class="btn green-haze" (click)="setDefaultView()">Save   Changes</button>
+                                            <button type="submit" class="btn green-haze" (click)="setDefaultView()">Save Changes</button>
                                         </div>
                                     </div>
                                     <!-- END PRIVACY SETTINGS TAB -->
@@ -951,11 +951,11 @@
                                                 <form role="form" [formGroup]="defaultPlayerForm" *ngIf="active" (ngSubmit)="UpdatePlayerSettingsValues()">
                                                     <div class="col-xs-12" style="padding:0">
                                                         <fieldset>
-                                                            <legend>Video Player Apperance</legend>
+                                                            <legend translate>Video Player Apperance</legend>
                                                             <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">Player
-                                                                        Color:</label>
+                                                                    <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label" translate>
+                                                                        Player Color:</label>
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
                                                                             [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
@@ -964,8 +964,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">Enable
-                                                                        Video Controller:</label>
+                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label" translate>
+                                                                    Enable Video Controller:</label>
                                                                     <div class="col-xs-9 col-sm-6 col-md-6">
                                                                         <switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
@@ -973,8 +973,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">Controller
-                                                                        Color:</label>
+                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label" translate>
+                                                                        Controller Color:</label>
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
                                                                             [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
@@ -983,7 +983,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-5 col-sm-6 col-md-6 control-label">Transparency:</label>
+                                                                    <label class="col-xs-5 col-sm-6 col-md-6 control-label" translate>Transparency:</label>
                                                                     <div class="col-xs-6 col-sm-5 col-md-5">
                                                                         <input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
                                                                     </div>
@@ -1006,18 +1006,18 @@
                                                     </div>
                                                     <div class="col-xs-12" style="background: white; box-shadow: 0px 4px 5px rgba(251, 251, 251, 0.4);padding:0;">
                                                         <fieldset>
-                                                            <legend>Controls of the player</legend>
+                                                            <legend translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow
-                                                                        Sharing:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Allow Sharing:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow
-                                                                        Fullscreen:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Allow Fullscreen:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
@@ -1025,15 +1025,15 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 38px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow
-                                                                        Likes:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Allow Likes:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow
-                                                                        Embed:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Allow Embed:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
@@ -1044,15 +1044,15 @@
 
                                                             <div class="col-xs-12" style="margin-top: 4px;">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable
-                                                                        Settings:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Enable Settings:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow
-                                                                        Comments:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Allow Comments:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
@@ -1060,15 +1060,15 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 37px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable
-                                                                        Casting:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        Enable Casting:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">360
-                                                                        video:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>
+                                                                        360 video:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
