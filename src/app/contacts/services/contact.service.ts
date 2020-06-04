@@ -162,7 +162,7 @@ export class ContactService {
     }
 
     deleteContactList( contactListId: number ) {
-        return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
+        return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token+ '&userId='+ this.authenticationService.getUserId(), +"" )
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }

@@ -357,21 +357,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactService.deleteContactList(contactListId)
                 .subscribe(
                 data => {
-                    this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
-                    this.contactsCount();
-                    $('#contactListDiv_' + contactListId).remove();
-                    this.loadContactLists(this.pagination);
-                    //this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
-                    // this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-                    if (this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
-                    } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
-                    }
-                    if (this.pagination.pagedItems.length === 1) {
-                        this.pagination.pageIndex = 1;
+                    if (data.access) {
+                        this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
+                        this.contactsCount();
+                        $('#contactListDiv_' + contactListId).remove();
                         this.loadContactLists(this.pagination);
+                        //this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
+                        // this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
+                        if (this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+                        }
+                        if (this.pagination.pagedItems.length === 1) {
+                            this.pagination.pageIndex = 1;
+                            this.loadContactLists(this.pagination);
 
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
                     }
                 },
                 (error: any) => {
