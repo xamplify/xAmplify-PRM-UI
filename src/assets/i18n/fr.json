@@ -100,6 +100,18 @@
 	"Enable Settings":"Activer les paramètres",
 	"Allow Comments":"Autoriser les commentaires",
 	"Enable Casting":"Activer la diffusion",
-	"360 video":"Vidéo 360"
+	"360 video":"Vidéo 360",
+	"DealType":"Type de transaction",
+	"Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes":"Nos paramètres RGPD sont conçus pour vous aider à vous conformer aux réglementations générales de l'UE sur la protection des données. Ceci comprend",
+	"The ability to designate a legal basis for contacting each person added to a mailing list":"La possibilité de désigner une base légale pour contacter chaque personne ajoutée à une liste de diffusion",
+	"Automatic inclusion of an unsubscribe link in every campaign email":"Inclusion automatique d'un lien de désabonnement dans chaque e-mail de campagne",
+	"Privacy & consent":"Intimité et consentement",
+	"Cookies & tracking":"Cookies et suivi",
+	"Only allows marketing emails to be sent to contacts who have legal basis to communicate. This setting doesn't apply to emails sent by the CRM":"Autorise uniquement l'envoi d'e-mails marketing à des contacts ayant une base légale pour communiquer. Ce paramètre ne s'applique pas aux e-mails envoyés par le CRM",
+	"Folder":"Dossier",
+	"Created On":"Créé sur",
+	"Items Count":"Nombre d'articles",
+	"Created By":"Créé par",
+	"No Folders Found":"Aucun dossier trouvé"
 	
 }
