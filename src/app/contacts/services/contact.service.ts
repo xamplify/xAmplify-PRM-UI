@@ -241,7 +241,7 @@ export class ContactService {
 
     removeInvalidContactListUsers( removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( removeUserIds );
-        var newUrl = this.contactsUrl + "removeInvalidUsers?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + this.authenticationService.getUserId() +"/removeInvalidUsers?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }
