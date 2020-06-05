@@ -14,6 +14,8 @@ import { UtilService } from '../../core/services/util.service';
 import { SortOption } from '../../core/models/sort-option';
 import { FormService } from '../../forms/services/form.service';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $: any;
 
 @Component({
@@ -55,8 +57,10 @@ export class FormsListViewUtilComponent implements OnInit {
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public formService: FormService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
+        public actionsDescription: ActionsDescription, public sortOption: SortOption, 
+        private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer,private vanityUrlService:VanityURLService) {
         this.referenceService.renderer = this.renderer;
+        this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
@@ -276,11 +280,7 @@ export class FormsListViewUtilComponent implements OnInit {
     showFormUrl(form:Form){
         this.form = form;         
         this.copiedLinkCustomResponse = new CustomResponse();
-        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
-          this.formAliasUrl = this.authenticationService.vanityURLink + "f/" + this.form.alias;
-        }else{              
-          this.formAliasUrl = this.authenticationService.APP_URL + "f/" + this.form.alias;
-        }       
+        this.formAliasUrl = form.ailasUrl;
         this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.formAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';   
         $('#form-url-modal').modal('show');
     }

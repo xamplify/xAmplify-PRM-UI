@@ -17,5 +17,6 @@ export class Form {
     campaignId:number;
     partnerCompanyId:number;   
     categoryId:number = 0; 
+    ailasUrl = "";
     //backgroundColor = ""; 
 }

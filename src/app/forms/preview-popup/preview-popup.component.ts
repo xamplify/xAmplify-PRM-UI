@@ -13,6 +13,8 @@ import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
 import { environment } from 'environments/environment';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $: any;
 @Component({
   selector: 'app-preview-popup',
@@ -34,8 +36,10 @@ export class PreviewPopupComponent implements OnInit {
     selectedFormId: number;
     formAliasUrl:string = "";
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
-           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
-   console.log("Is Show forms in preview popup: " + this.authenticationService.isShowForms);
+           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,
+           public router: Router,private vanityUrlService:VanityURLService) {
+        this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
+
    }
 
   ngOnInit() {
@@ -59,11 +63,6 @@ export class PreviewPopupComponent implements OnInit {
   showForms(){
       this.formsError = false;
       this.customResponse = new CustomResponse();      
-      if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink){
-          this.formAliasUrl = this.authenticationService.vanityURLink;
-      }else{
-        this.formAliasUrl = this.authenticationService.APP_URL;
-      } 
       this.pagination.userId = this.authenticationService.getUserId();;
       this.listForms(this.pagination);
   }
