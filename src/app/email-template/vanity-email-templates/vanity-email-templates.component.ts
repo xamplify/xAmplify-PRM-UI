@@ -9,6 +9,7 @@ import { VanityEmailTempalte } from '../models/vanity-email-template';
 import { Properties } from 'app/common/models/properties';
 import { CustomResponse } from 'app/common/models/custom-response';
 
+
 @Component({
   selector: 'app-vanity-email-templates',
   templateUrl: './vanity-email-templates.component.html',
@@ -20,6 +21,8 @@ export class VanityEmailTemplatesComponent implements OnInit {
   pagination: Pagination = new Pagination();
   customResponse: CustomResponse = new CustomResponse();
   vanityEmailTemplate:VanityEmailTempalte = new VanityEmailTempalte();
+  ngxloading = false;
+  searchKey = "";
   constructor(private vanityURLService: VanityURLService, private httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties) { }
 
   ngOnInit() {
@@ -46,7 +49,6 @@ export class VanityEmailTemplatesComponent implements OnInit {
     this.vanityEmailTemplate.companyProfileName = this.authenticationService.companyProfileName;
     this.vanityURLService.saveOrUpdateEmailTemplate(this.vanityEmailTemplate).subscribe(result => {
       if(result.statusCode === 200){
-        console.log("success");
         this.customResponse = new CustomResponse('ERROR', this.properties.VANITY_URL_ET_SUCCESS_TEXT, true);
         this.getVanityEmailTemplates(this.pagination);
       }

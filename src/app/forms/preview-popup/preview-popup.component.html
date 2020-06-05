@@ -43,13 +43,13 @@
 							 <th>Form Details</th>
                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" >Link</th>
                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
-							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Preview</th>
-							 <th class="text-center" *ngIf="authenticationService.isShowForms">Preview</th>
+							 <th class="text-center">Preview</th>
 						  </tr>
 						</thead>
 						<tbody>
 							<tr *ngFor="let form of pagination.pagedItems ;let i =index">
-							 <td *ngIf="authenticationService.isShowForms" align="center"><input type="checkbox"
+							 <td *ngIf="authenticationService.isShowForms">
+                 <input type="checkbox"
 							 [checked]="selectedFormId === form.id"
 								(click)="selectedForm(form, $event)"></td>
 							  <td>
@@ -70,7 +70,7 @@
                     <b>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
                 </tr>
                 </td>
-                  <td>
+                  <td [hidden]="authenticationService.isShowForms">
                     <div class="modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
 									  <i class="fa fa-copy" aria-hidden="true"></i>
@@ -84,7 +84,7 @@
                     <b>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
                 </tr>
                   </td>
-                  <td>
+                  <td [hidden]="authenticationService.isShowForms">
                   <div class="modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
 									  <i class="fa fa-copy" aria-hidden="true" ></i>
@@ -133,7 +133,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close-circle" data-dismiss="modal">
-            <i class="fa fa-times"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
           </button>
           <h4 class="modal-title text-center">Form Preview</h4>
         </div>
@@ -143,7 +143,6 @@
               <div class="panel-heading">
                 <div class="panel-title">{{form.name}}</div>
               </div>
-              <!-- <div class="panel-body" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"> -->
                 <div class="panel-body" *ngIf="!formError">
               <h5>{{form.description}}</h5>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">

@@ -17,6 +17,7 @@ import { LandingPageService } from '../services/landing-page.service';
 import { PreviewLandingPageComponent } from '../preview-landing-page/preview-landing-page.component';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 declare var swal: any, $: any;
 @Component({
@@ -55,8 +56,10 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
         public actionsDescription: ActionsDescription, public sortOption: SortOption,
-         private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer
+         private utilService: UtilService, private route: ActivatedRoute,public renderer:Renderer,
+         private vanityUrlService:VanityURLService
          ) {
+        this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.referenceService.renderer = this.renderer;
         this.pagination.userId = this.loggedInUserId;
@@ -235,21 +238,8 @@ export class ManageLandingPageComponent implements OnInit, OnDestroy {
     showPageLinkPopup(landingPage: LandingPage) {
         this.landingPage = landingPage;
         this.copiedLinkCustomResponse = new CustomResponse();
-        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
-            if (this.isPartnerLandingPage) {
-                this.landingPageAliasUrl = this.authenticationService.vanityURLink + "pl/" + this.landingPage.alias;
-            } else {
-                this.landingPageAliasUrl = this.authenticationService.vanityURLink + "l/" + this.landingPage.alias;
-            }
-        } else {
-            if (this.isPartnerLandingPage) {
-                this.landingPageAliasUrl = this.authenticationService.APP_URL + "pl/" + this.landingPage.alias;
-            } else {
-                this.landingPageAliasUrl = this.authenticationService.APP_URL + "l/" + this.landingPage.alias;
-            }
-        }
+        this.landingPageAliasUrl = landingPage.aliasUrl;
         this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.landingPageAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';
-
         $('#landing-page-url-modal').modal('show');
     }
 
