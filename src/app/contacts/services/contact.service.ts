@@ -267,6 +267,12 @@ export class ContactService {
         return this._http.get( this.contactsUrl +  contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
     }
+    
+    hasAccess(isPartner: boolean): Observable<any> {
+        this.logger.info(isPartner);
+        return this._http.get(this.contactsUrl + this.authenticationService.getUserId() + "/" + isPartner + "/has-access?access_token=" + this.authenticationService.access_token)
+            .map((response: any) => response);
+    }
 
     socialContactImages() {
         this.logger.info(this.authenticationService.REST_URL + "checkauthentication?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId());

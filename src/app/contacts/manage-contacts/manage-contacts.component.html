@@ -350,7 +350,7 @@
 																(click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
 																<i class="fa fa-files-o"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0"
-																(click)="downloadContactList(contactList.id, contactList.name)"
+																(click)="hasDownLoadAccess(contactList.id, contactList.name)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_download}}"
 																data-rel="fancybox-button"> <i
@@ -474,7 +474,7 @@
 													class="fa fa-files-o" aria-hidden="true"
 													style="color: white;"></i>
 												</a> <a [class.disabled]="!contactList.emailValidationInd || contactList.noOfContacts == 0"
-													(click)="downloadContactList(contactList.id, contactList.name)"
+													(click)="hasDownLoadAccess(contactList.id, contactList.name)"
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_download}}"
 													data-rel="fancybox-button"> <i
@@ -1013,7 +1013,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-primary"
-					(click)="saveAsInputChecking()">Save changes</button>
+					(click)="hasSaveAsAccess()">Save changes</button>
 			</div>
 		</div>
 	</div>

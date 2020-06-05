@@ -417,18 +417,39 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.error(error, "ManageContactsComponent", "deleteContactListAlert()");
         }
     }
-
+    
+    hasDownLoadAccess(contactListId: number, contactListName: any) {
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                	const body = data['_body'];
+                	 const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                    	this.downloadContactList(contactListId, contactListName);
+                    }else{
+                    	 this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
+    }
+    
     downloadContactList(contactListId: number, contactListName: any) {
         try {
-            this.contactService.downloadContactList(contactListId)
-                .subscribe(
-                data => this.downloadFile(data, contactListName),
-                (error: any) => {
-                    this.xtremandLogger.error(error);
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => this.xtremandLogger.info("download completed")
-                );
+                this.contactService.downloadContactList(contactListId)
+                    .subscribe(
+                    data => this.downloadFile(data, contactListName),
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info("download completed")
+                    );
+           
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
         }
@@ -1464,6 +1485,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
         }
     }
+    
     saveAsNewList(contactSelectedListId: number, contactListName: string, isPublic:boolean) {
         try {
             this.saveAsTypeList = 'manage-contacts';
@@ -1485,6 +1507,27 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.isValidLegalOptions = true;
         }
     }
+    
+    hasSaveAsAccess(contactSelectedListId: number, contactListName: string, isPublic:boolean) {
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        this. saveAsInputChecking();
+                    }else{
+                         this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsNewList()");
+        }
+    }
+
 
     saveAsInputChecking() {
         try {
