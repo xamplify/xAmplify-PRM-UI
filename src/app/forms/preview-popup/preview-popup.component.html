@@ -41,7 +41,7 @@
 						  <tr>
 						     <th *ngIf="authenticationService.isShowForms">Select</th>
 							 <th>Form Details</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2">Link</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" >Link</th>
                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
 							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Preview</th>
 							 <th class="text-center" *ngIf="authenticationService.isShowForms">Preview</th>
@@ -64,8 +64,10 @@
 								 </h6>
 							  </td>
 							  <td [hidden]="authenticationService.isShowForms">
-                  <input type="text" id="copy-link" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput><br>
+                  <input type="text" id="copy-link" readonly="readonly" style="width: 250px; height: 35px;cursor:not-allowed;background-color: #eae9e9;" value="{{formAliasUrl}}f/{{form.alias}}" #userinput><br>
+                  <tr>
                   <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link copied successfully<i class="fa fa-check"></i></b></font>
+                </tr>
                 </td>
                   <td>
                     <div class="modal-icon">
@@ -138,7 +140,8 @@
               <div class="panel-heading">
                 <div class="panel-title">{{form.name}}</div>
               </div>
-              <div class="panel-body" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor">
+              <!-- <div class="panel-body" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"> -->
+                <div class="panel-body" *ngIf="!formError">
               <h5>{{form.description}}</h5>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                   <div class="form-group">

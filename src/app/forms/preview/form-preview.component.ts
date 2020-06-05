@@ -52,7 +52,7 @@ export class FormPreviewComponent implements OnInit {
 
   ngOnInit() {
      $('.mobile-camp').removeClass('mobile-camp');
-    // $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
+     $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
       this.processor.set(this.processor);
       if(this.authenticationService.formAlias){
           this.alias = this.authenticationService.formAlias;
@@ -79,7 +79,7 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
-            $("body").css("background-color","this.form.backgroundColor");
+            //$("body").css("background-color","this.form.backgroundColor");
             if(!this.isSubmittedAgain){
                 this.saveLocationDetails(this.form);
             }
