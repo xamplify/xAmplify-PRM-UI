@@ -951,8 +951,8 @@
                                                             <legend translate>Video Player Apperance</legend>
                                                             <div class="col-xs-12 col-sm-6 col-md-8" style="padding:0">
                                                                 <div class="col-xs-12 col-sm-12 col-md-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label" translate>
-                                                                        Player Color:</label>
+                                                                    <label class="form-group col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                        {{'Player Color' | translate}}:</label>
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" [value]="compPlayerColor" formControlName="playerColor" (colorPickerChange)="changePlayerColor($event)"
                                                                             [cpWidth]="'200px'" [cpHeight]="'265px'" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
@@ -961,8 +961,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label" translate>
-                                                                    Enable Video Controller:</label>
+                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                        {{'Enable Video Controller' | translate}}:</label>
                                                                     <div class="col-xs-9 col-sm-6 col-md-6">
                                                                         <switch [(status)]="defaultVideoPlayer.enableVideoController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableVideoController($event)" [disabled]="hasVideoRole">
@@ -970,8 +970,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label" translate>
-                                                                        Controller Color:</label>
+                                                                    <label class="col-xs-3 col-sm-6 col-md-6 control-label">
+                                                                        {{'Controller Color' | translate}}:</label>
                                                                     <div class="col-xs-9 colsm-6 col-md-6">
                                                                         <input [hidden]="hasVideoRole || !defaultVideoPlayer.enableVideoController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" formControlName="controllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event, defaultVideoPlayer.enableVideoController)"
                                                                             [value]="compControllerColor" [cpPosition]="'bottom'" [class.disablePlayerValues]="hasVideoRole" />
@@ -980,7 +980,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 form-group" style="margin-bottom: 10px;">
-                                                                    <label class="col-xs-5 col-sm-6 col-md-6 control-label" translate>Transparency:</label>
+                                                                    <label class="col-xs-5 col-sm-6 col-md-6 control-label">{{'Transparency' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-5 col-md-5">
                                                                         <input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 100%;" (input)="transperancyControllBar(Transvalue.value)" [class.disablePlayerValues]="hasVideoRole || !defaultVideoPlayer.enableVideoController" #Transvalue>
                                                                     </div>
@@ -1006,13 +1006,13 @@
                                                             <legend translate>Controls of the player</legend>
                                                             <div class="col-xs-12">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Sharing' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowSharing($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Fullscreen' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowFullscreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="changeFullscreen($event)" [disabled]="hasVideoRole">
@@ -1020,13 +1020,13 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 38px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Likes' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowLikes($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Embed' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableEmbed($event)" [disabled]="hasVideoRole">
@@ -1037,13 +1037,13 @@
 
                                                             <div class="col-xs-12" style="margin-top: 4px;">
                                                                 <div class="form-group">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Enable Settings' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableSettings" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableSettings($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Allow Comments' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.allowComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="allowComments($event)" [disabled]="hasVideoRole">
@@ -1051,13 +1051,13 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group" style="margin-top: 37px;">
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'Enable Casting' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.enableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enableCasting($event)" [disabled]="hasVideoRole">
                                                                         </switch>
                                                                     </div>
-                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
+                                                                    <label class="col-xs-6 col-sm-3 col-md-3 control-label">{{'360 video' | translate}}:</label>
                                                                     <div class="col-xs-6 col-sm-3 col-md-3">
                                                                         <switch [(status)]="defaultVideoPlayer.is360video" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch" [offColor]="callActionSwitch.offDefaultColor" [size]="callActionSwitch.size"
                                                                             (statusChange)="enable360Video($event)" [disabled]="hasVideoRole">
@@ -1067,7 +1067,7 @@
                                                             </div>
                                                             <div class="col-xs-12" style="float:left; padding:0;margin-top: 17px;margin-bottom: 7px;">
                                                                 <button type="submit" class="btn green-haze" [disabled]="hasVideoRole" translate>Save Changes</button>
-                                                                <button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole">Cancel</button>
+                                                                <button type="button" class="btn default" (click)="resetForm()" [disabled]="hasVideoRole" translate>Cancel</button>
                                                             </div>
                                                         </fieldset>
                                                     </div>
