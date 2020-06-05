@@ -1508,7 +1508,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
     
-    hasSaveAsAccess(contactSelectedListId: number, contactListName: string, isPublic:boolean) {
+    hasSaveAsAccess() {
         try {
             this.contactService.hasAccess(this.isPartner)
                 .subscribe(
