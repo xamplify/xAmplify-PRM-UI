@@ -249,7 +249,7 @@
 										<!-- *ngIf="this.userEmailIdErrorMessage.length==0 && customResponse.responseType!='ERROR'" -->
 										<button type="button" id="module-access-button"
 											(click)="updateAccess()" disabled="disabled"
-											class="btn green-haze">Save</button>
+											class="btn green-haze" translate>Save</button>
 									</div>
 								</div>
 							</div>
@@ -541,11 +541,11 @@
 						<button type="submit"
 							[disabled]="authenticationService.isSuperAdmin()"
 							*ngIf="companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-							(click)="save()" class="btn green-haze" disabled="disabled">Save</button>
+							(click)="save()" class="btn green-haze" disabled="disabled" translate>Save</button>
 						<button type="submit"
 							[disabled]="authenticationService.isSuperAdmin()"
 							*ngIf="!companyProfile.isAdd" id="saveOrUpdateCompanyButton"
-							(click)="update()" class="btn green-haze">Update</button>
+							(click)="update()" class="btn green-haze" translate>Update</button>
 					</div>
 							</div>
 							<!-- -End Of Panel -->

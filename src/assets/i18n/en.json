@@ -112,10 +112,23 @@
 	"Created On":"Created On",
 	"Items Count":"Items Count",
 	"Created By":"Created By",
-	"No Folders Found":"No Folders Found"
-	
+	"No Folders Found":"No Folders Found",
+	"Analytics": "Analytics",
+	"Add partners": "Add partners",
+	"Tell me how": "Tell me how",	
+	"Videos": "Videos",
+	"View videos": "View videos",
+	"View Content": "View Content",
+	"Templates": "Templates",
+	"View templates": "View templates",
+	"Create campaigns": "Create campaigns",
+	"Team members": "Team members",
+	"Add team member": "Add team member",
+	"Connect":"Connect",
+	"Create templates": "Create templates",
+	"Update": "Update",
+	"Save": "Save",
+	"Cancel":"Cancel"
 
-
-	
 
 }

@@ -112,6 +112,21 @@
 	"Created On":"Créé sur",
 	"Items Count":"Nombre d'articles",
 	"Created By":"Créé par",
-	"No Folders Found":"Aucun dossier trouvé"
-	
+	"No Folders Found":"Aucun dossier trouvé",
+	"Analytics": "Analytique",
+	"Add partners": "Ajouter des partenaires",
+	"Tell me how": "Dis-moi comment",	
+	"Videos": "Vidéos",
+	"View videos": "Visionnez les vidéos",
+	"View Content": "Afficher le contenu",
+	"Templates": "Modèles",
+	"View templates": "Afficher les modèles",
+	"Create campaigns": "Créer des campagnes",
+	"Team members": "Membres de l'équipe",
+	"Add team member": "Ajouter un membre d'équipe",
+	"Connect":"Relier",
+	"Create templates": "Créer des modèles",
+	"Update": "Mise à jour",
+	"Save": "sauver",
+	"Cancel":"Annuler"
 }
