@@ -43,6 +43,8 @@ export class FormsListViewUtilComponent implements OnInit {
     deleteAndEditAccess = false;
     categoryId: number = 0;
     showFolderView = true;
+    formAliasUrl:string="";
+    iframeEmbedUrl: string = "";
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     exportObject:any = {};
     isListView = false;
@@ -256,18 +258,30 @@ export class FormsListViewUtilComponent implements OnInit {
     }
 
     /*********Copy The Link */
-    copyInputMessage(inputElement) {
+    copyInputMessage(inputElement: any, type: string) {
+        this.referenceService.goToTop();
         this.copiedLinkCustomResponse = new CustomResponse();
         inputElement.select();
         document.execCommand('copy');
         inputElement.setSelectionRange(0, 0);
-        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', 'Copied to clipboard successfully.', true);
-
+        let message = type + ' copied to clipboard successfully.';
+        if (type === "Form link") {
+            $("#copy-link").select();
+        } else {
+            $("#text-area").select();
+        }
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', message, true);
     }
 
-    showFormUrl(form: Form) {
-        this.form = form;
+    showFormUrl(form:Form){
+        this.form = form;         
         this.copiedLinkCustomResponse = new CustomResponse();
+        if (this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLink) {
+          this.formAliasUrl = this.authenticationService.vanityURLink + "f/" + this.form.alias;
+        }else{              
+          this.formAliasUrl = this.authenticationService.APP_URL + "f/" + this.form.alias;
+        }       
+        this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.formAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';   
         $('#form-url-modal').modal('show');
     }
 
