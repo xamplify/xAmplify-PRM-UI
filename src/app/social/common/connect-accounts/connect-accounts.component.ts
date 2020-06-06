@@ -15,7 +15,9 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
         
                     $( '#connectAccountsModal' ).modal( 'toggle' );
                     //this.router.navigate( [providerName + '/login'] );
-                     window.open(" " + providerName + '/login', "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=600,width=600,height=600");
+                    var x = screen.width/2 - 700/2;
+                    var y = screen.height/2 - 450/2;
+                     window.open(" " + providerName + '/login', "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
                     // this.router.navigate( ['/home/social/manage/all'] );
                     // window.location.reload();
 
@@ -26,7 +28,6 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy(){
       $('#connectAccountsModal').modal('hide');
-        window.location.reload();
     }
 
     
