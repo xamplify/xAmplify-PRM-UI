@@ -13,6 +13,7 @@ import { VanityEmailTempalte } from "app/email-template/models/vanity-email-temp
 @Injectable()
 export class VanityURLService {
 
+
   constructor(private http: Http, private authenticationService: AuthenticationService) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
@@ -93,7 +94,8 @@ export class VanityURLService {
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytifyorg.xamplify.com";
     //let url = "vendor.xamplify.com";
-    let url =window.location.hostname;
+    //let url =window.location.hostname;
+	 let url = "fawifidac@it-simple.net";
     if (!url.includes("release")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
