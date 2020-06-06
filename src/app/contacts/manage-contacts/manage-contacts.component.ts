@@ -1414,6 +1414,26 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.criterias.splice(rowId, 1);
         }
     }
+    
+    hasAccessForDownloadUndeliverableContacts(){
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        this.downloadContactTypeList();
+                    }else{
+                         this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
+    }
 
     downloadContactTypeList() {
         try {
