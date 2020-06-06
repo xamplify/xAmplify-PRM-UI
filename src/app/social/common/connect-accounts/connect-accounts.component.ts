@@ -16,8 +16,8 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
                     $( '#connectAccountsModal' ).modal( 'toggle' );
                     //this.router.navigate( [providerName + '/login'] );
                      window.open(" " + providerName + '/login', "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=600,width=600,height=600");
-                     this.router.navigate( ['/home/social/manage/all'] );
-                     window.location.reload();
+                    // this.router.navigate( ['/home/social/manage/all'] );
+                    // window.location.reload();
 
                    
     }
