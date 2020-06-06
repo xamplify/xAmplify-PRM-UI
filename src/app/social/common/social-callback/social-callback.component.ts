@@ -29,6 +29,7 @@ export class SocialCallbackComponent implements OnInit {
                 this.socialConnection = result;
                 if(localStorage.getItem( 'currentUser' )){
                     this.redirect();
+                    window.close();
                 }else{
                     this.refService.userName = result["emailId"];
 
@@ -61,18 +62,23 @@ export class SocialCallbackComponent implements OnInit {
                                let roleNames = roles.map(function (a) { return a.roleName; });
                                if(currentUser.hasCompany){
                                    this.redirect();
+                                   window.close();
                                }else{
                                    this.router.navigate(['/home/dashboard/add-company-profile']);
+                                   window.close();
                                }
                             } else {
                                 this.router.navigate( ['/logout'] );
+                                window.close();
                             }
                         },
                         error => {
                             this.error = error;
+                            window.close();
                         },
                         () => console.log( 'login() Complete' ) );
                     return false;
+                    
                 }
             },
             error => {
@@ -80,6 +86,7 @@ export class SocialCallbackComponent implements OnInit {
             },
             () => console.log( 'login() Complete' ) );
         return false;
+
     }
 
     redirect() {
