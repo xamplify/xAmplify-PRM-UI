@@ -52,31 +52,39 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   public login() {
     try {
-      this.loading = true;
-      this.resendActiveMail = false;
-      if (!this.model.username || !this.model.password) {
-        this.loading = false;
-        this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
-      } else {
-        this.model.username = this.model.username.replace(/\s/g, '');
-        this.model.password = this.model.password.replace(/\s/g, '');
-        const userName = this.model.username.toLowerCase();
-        this.referenceService.userName = userName;
-
-        if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined){
-          this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName , userName).subscribe(result => {
-            if(result.message === "success"){
-              this.loginWithUser(userName);
-            }else{
-              this.loading = false;
-              this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
-            }
-        });
-        }        
-        else{
-          this.loginWithUser(userName);
-        }      
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if(currentUser!=undefined){
+        this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
+      }else{
+        this.authenticationService.sessinExpriedMessage  = "";
+        this.loading = true;
+        this.resendActiveMail = false;
+        if (!this.model.username || !this.model.password) {
+          this.loading = false;
+          this.setCustomeResponse("ERROR", this.properties.EMPTY_CREDENTIAL_ERROR);
+        } else {
+          this.model.username = this.model.username.replace(/\s/g, '');
+          this.model.password = this.model.password.replace(/\s/g, '');
+          const userName = this.model.username.toLowerCase();
+          this.referenceService.userName = userName;
+          if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined){
+            this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName , userName).subscribe(result => {
+              if(result.message === "success"){
+                this.loginWithUser(userName);
+              }else{
+                this.loading = false;
+                this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
+              }
+          });
+          }        
+          else{
+            this.loginWithUser(userName);
+          }      
+        }
       }
+
+
+     
     } catch (error) { console.log('error' + error); }
   }
 
@@ -220,6 +228,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.referenceService.userProviderMessage = '';
     this.resendActiveMail = false;
     $('#org-admin-deactivated').hide();
+  }
+
+  loginUsingSocialAccounts(socialProvider:any){
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if(currentUser!=undefined){
+      this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
+    }else{
+      let loginUrl = "/"+socialProvider.name+"/login";
+       this.router.navigate([loginUrl]);
+    }
   }
 
 }

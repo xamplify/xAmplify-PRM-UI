@@ -39,6 +39,7 @@ import { IntegrationService } from 'app/core/services/integration.service';
 import { Category as folder } from 'app/dashboard/models/category';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
 import { Form } from 'app/forms/models/form';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 declare var $,swal, flatpickr, CKEDITOR,require;
 var moment = require('moment-timezone');
@@ -218,8 +219,9 @@ completeLoader = false;
     public hubSpotService: HubSpotService,
     private router: Router, public activatedRoute:ActivatedRoute,
     public properties: Properties, public eventError:EventError, public countryNames: CountryNames,
-    public formService: FormService, private changeDetectorRef: ChangeDetectorRef,private render:Renderer) {
-	this.referenceService.renderer = this.render;
+    public formService: FormService, private changeDetectorRef: ChangeDetectorRef,private render:Renderer,private vanityUrlService:VanityURLService) {
+    this.referenceService.renderer = this.render;
+    this.vanityUrlService.isVanityURLEnabled();
     this.countries = this.referenceService.getCountries();
     this.eventCampaign.campaignLocation.country = ( this.countryNames.countries[0] );
     //this.listEmailTemplates();
@@ -1161,6 +1163,14 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
    )
 
    if(eventCampaign.id){
+    let vanityUrlDomainName = "";
+    let vanityUrlCampaign = false;    
+    /********Vanity Url Related Code******************** */
+    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        vanityUrlDomainName = this.authenticationService.companyProfileName;
+        vanityUrlCampaign = true;
+    }
+
     const customEventCampaign = {
       'id':eventCampaign.id,
       'campaign': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.eventCampaign.campaign),
@@ -1200,7 +1210,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       'smsText':this.smsText,
       'socialStatusList': this.socialStatusList,
       'forms': this.selectedFormData,
-      'pushToCRM':eventCampaign.pushToCRM
+      'pushToCRM':eventCampaign.pushToCRM,
+      'vanityUrlDomainName':vanityUrlDomainName,
+      'vanityUrlCampaign':vanityUrlCampaign
     }
     eventCampaign = customEventCampaign;
    }

@@ -357,21 +357,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactService.deleteContactList(contactListId)
                 .subscribe(
                 data => {
-                    this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
-                    this.contactsCount();
-                    $('#contactListDiv_' + contactListId).remove();
-                    this.loadContactLists(this.pagination);
-                    //this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
-                    // this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
-                    if (this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
-                    } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
-                    }
-                    if (this.pagination.pagedItems.length === 1) {
-                        this.pagination.pageIndex = 1;
+                    if (data.access) {
+                        this.xtremandLogger.info("MangeContacts deleteContactList success : " + data);
+                        this.contactsCount();
+                        $('#contactListDiv_' + contactListId).remove();
                         this.loadContactLists(this.pagination);
+                        //this.responseMessage = ['SUCCESS', 'your contact List has been deleted successfully.','show'];
+                        // this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true );
+                        if (this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_LIST_DELETE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+                        }
+                        if (this.pagination.pagedItems.length === 1) {
+                            this.pagination.pageIndex = 1;
+                            this.loadContactLists(this.pagination);
 
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
                     }
                 },
                 (error: any) => {
@@ -413,18 +417,39 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.error(error, "ManageContactsComponent", "deleteContactListAlert()");
         }
     }
-
+    
+    hasDownLoadAccess(contactListId: number, contactListName: any) {
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                	const body = data['_body'];
+                	 const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                    	this.downloadContactList(contactListId, contactListName);
+                    }else{
+                    	 this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
+    }
+    
     downloadContactList(contactListId: number, contactListName: any) {
         try {
-            this.contactService.downloadContactList(contactListId)
-                .subscribe(
-                data => this.downloadFile(data, contactListName),
-                (error: any) => {
-                    this.xtremandLogger.error(error);
-                    this.xtremandLogger.errorPage(error);
-                },
-                () => this.xtremandLogger.info("download completed")
-                );
+                this.contactService.downloadContactList(contactListId)
+                    .subscribe(
+                    data => this.downloadFile(data, contactListName),
+                    (error: any) => {
+                        this.xtremandLogger.error(error);
+                        this.xtremandLogger.errorPage(error);
+                    },
+                    () => this.xtremandLogger.info("download completed")
+                    );
+           
         } catch (error) {
             this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
         }
@@ -1034,17 +1059,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactService.validateUndelivarableEmailsAddress(this.selectedInvalidContactIds)
                 .subscribe(
                 data => {
-                    data = data;
-                    this.loading = false;
-                    this.xtremandLogger.log(data);
-                    console.log("update Contacts ListUsers:" + data);
-                    this.contactsCount();
-                    this.contactCountLoad = true;
-                    this.listContactsByType(this.contactsByType.selectedCategory);
-                    if (this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.xtremandLogger.log(data);
+                        console.log("update Contacts ListUsers:" + data);
+                        this.contactsCount();
+                        this.contactCountLoad = true;
+                        this.listContactsByType(this.contactsByType.selectedCategory);
+                        if (this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                        }
                     } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                    	this.authenticationService.forceToLogout();
                     }
                 },
                 (error: any) => {
@@ -1385,6 +1414,26 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.criterias.splice(rowId, 1);
         }
     }
+    
+    hasAccessForDownloadUndeliverableContacts(){
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        this.downloadContactTypeList();
+                    }else{
+                         this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
+    }
 
     downloadContactTypeList() {
         try {
@@ -1460,6 +1509,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsAlert()");
         }
     }
+    
     saveAsNewList(contactSelectedListId: number, contactListName: string, isPublic:boolean) {
         try {
             this.saveAsTypeList = 'manage-contacts';
@@ -1481,6 +1531,27 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.isValidLegalOptions = true;
         }
     }
+    
+    hasSaveAsAccess() {
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        this. saveAsInputChecking();
+                    }else{
+                         this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "saveAsNewList()");
+        }
+    }
+
 
     saveAsInputChecking() {
         try {

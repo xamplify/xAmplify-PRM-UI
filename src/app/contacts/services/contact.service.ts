@@ -162,12 +162,12 @@ export class ContactService {
     }
 
     deleteContactList( contactListId: number ) {
-        return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token, +"" )
+        return this._http.post( this.contactsUrl + contactListId + "/remove?access_token=" + this.authenticationService.access_token+ '&userId='+ this.authenticationService.getUserId(), +"" )
             .map( this.extractData )
             .catch( this.handleErrorDelete );
     }
 
-    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean,isPublic:boolean ): Observable<User[]> {
+    saveContactList( users: Array<User>, contactListName: string, isPartner: boolean,isPublic:boolean ): Observable<any> {
         if(isPartner == false){
             this.successMessage = true;
         }
@@ -241,13 +241,13 @@ export class ContactService {
 
     removeInvalidContactListUsers( removeUserIds: Array<number> ): Observable<Object> {
         this.logger.info( removeUserIds );
-        var newUrl = this.contactsUrl + "removeInvalidUsers?access_token=" + this.authenticationService.access_token;
+        var newUrl = this.contactsUrl + this.authenticationService.getUserId() +"/removeInvalidUsers?access_token=" + this.authenticationService.access_token;
         return this._http.post( newUrl, removeUserIds )
             .map(( response: any ) => response.json() );
     }
     
     
-    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<Object> {
+    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<any> {
         this.logger.info( validateUserIds );
         var newUrl = this.contactsUrl + "makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         return this._http.post( newUrl, validateUserIds )
@@ -266,6 +266,12 @@ export class ContactService {
         this.logger.info( contactListId );
         return this._http.get( this.contactsUrl +  contactListId + "/download?access_token=" + this.authenticationService.access_token)
             .map(( response: any ) => response );
+    }
+    
+    hasAccess(isPartner: boolean): Observable<any> {
+        this.logger.info(isPartner);
+        return this._http.get(this.contactsUrl + this.authenticationService.getUserId() + "/" + isPartner + "/has-access?access_token=" + this.authenticationService.access_token)
+            .map((response: any) => response);
     }
 
     socialContactImages() {
@@ -301,7 +307,7 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    saveSocialContactList( socialContact: SocialContact ): Observable<Response> {
+    saveSocialContactList( socialContact: SocialContact ): Observable<any> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,
@@ -473,7 +479,7 @@ export class ContactService {
 
     /**MARKETO */
 
-    saveMarketoContactList( socialContact: SocialContact ): Observable<Response> {
+    saveMarketoContactList( socialContact: SocialContact ): Observable<any> {
         this.successMessage = true;
         var requestoptions = new RequestOptions( {
             body: socialContact,

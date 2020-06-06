@@ -195,7 +195,7 @@
 																(click)="saveAs(true)">Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
-																(click)="downloadList()">Export To Excel</a></li>
+																(click)="hasAccess()">Export To Excel</a></li>
 															<li><a id="download_empy_csv"
 																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8">Download CSV Template</a></li>
 															<li><a id="delete_button"
@@ -837,7 +837,7 @@
 													id="validate_email_button" (click)="validateUndeliverableContacts()">
 													Mark as valid email(s) </a></li>
 										<li><a id="export_button"
-										(click) = "downloadContactTypeList()"> Export To Excel </a></li>
+										(click) = "hasAccessForDownloadUndeliverableContacts()"> Export To Excel </a></li>
 									</ul>
 								</div>
 							</div>

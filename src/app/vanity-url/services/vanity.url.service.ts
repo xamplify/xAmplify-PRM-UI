@@ -93,9 +93,14 @@ export class VanityURLService {
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytifyorg.xamplify.com";
+<<<<<<< HEAD
     //let url = "vendor.xamplify.com";
     //let url =window.location.hostname;
 	 let url = "fawifidac@it-simple.net";
+=======
+   //let url = "vendor.xamplify.com";
+     let url =window.location.hostname;
+>>>>>>> branch 'vanity-url' of https://github.com/sarvind012/xtremand-web-cli.git
     if (!url.includes("release")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
@@ -117,11 +122,11 @@ export class VanityURLService {
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
-    let url = "key.xamplify.com";
+    //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytify.xamplify.com";
     //let url = "tga.xamplify.com";
-    //let url =window.location.hostname;
+    let url =window.location.hostname;
     let status = false;
     if (!url.includes("release")) {
       let domainName = url.split('.');

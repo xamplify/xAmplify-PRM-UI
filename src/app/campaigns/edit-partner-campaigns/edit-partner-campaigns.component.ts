@@ -28,6 +28,7 @@ import {PreviewLandingPageComponent} from '../../landing-pages/preview-landing-p
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddFolderModalPopupComponent} from 'app/util/add-folder-modal-popup/add-folder-modal-popup.component';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 declare var  $,flatpickr,CKEDITOR,require:any;
 var moment = require('moment-timezone');
@@ -190,7 +191,8 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             public callActionSwitch: CallActionSwitch,
             private formBuilder: FormBuilder,
             public properties:Properties,
-            private xtremandLogger: XtremandLogger) {
+            private xtremandLogger: XtremandLogger,private vanityUrlService:VanityURLService) {
+            this.vanityUrlService.isVanityURLEnabled();                
 			this.referenceService.renderer = this.renderer;
             this.countries = this.referenceService.getCountries();
             this.contactListPagination = new Pagination();
@@ -611,6 +613,14 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
         }else{
             campaignId = 0;
         }
+        let vanityUrlDomainName = "";
+        let vanityUrlCampaign = false;    
+        /********Vanity Url Related Code******************** */
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            vanityUrlDomainName = this.authenticationService.companyProfileName;
+            vanityUrlCampaign = true;
+        }
+
         const data = {
             'campaignName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.campaignName),
             'fromName': this.referenceService.replaceMultipleSpacesWithSingleSpace(this.campaign.fromName),
@@ -647,7 +657,9 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
             'dataShare':this.campaign.dataShare,
             'detailedAnalyticsShared':this.campaign.detailedAnalyticsShared,
             'parentCampaignId':this.campaign.parentCampaignId,
-            'landingPageId':this.selectedLandingPageId
+            'landingPageId':this.selectedLandingPageId,
+            'vanityUrlDomainName':vanityUrlDomainName,
+            'vanityUrlCampaign':vanityUrlCampaign
         };
         return data;
     }
@@ -1343,7 +1355,6 @@ export class EditPartnerCampaignsComponent implements OnInit,OnDestroy {
           this.contactService.getValidUsersCount( this.selectedUserlistIds )
               .subscribe(
               data => {
-                  data = data;
                   this.validUsersCount = data['validContactsCount'];
                   this.allUsersCount = data['allContactsCount'];
                   console.log( "valid contacts Data:" + data['validContactsCount'] );

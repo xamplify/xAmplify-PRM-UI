@@ -808,6 +808,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.newUsers, this.model.contactListName, this.isPartner,this.model.isPublic )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -819,6 +820,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
         ( error: any ) => {
             this.loading = false;
@@ -920,6 +924,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.clipboardUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
             .subscribe(
             data => {
+            	if(data.access){
                 data = data;
                 this.loading = false;
                 this.selectedAddContactsOption = 8;
@@ -931,6 +936,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 } else {
                     this.router.navigateByUrl( 'home/partners/manage' )
                 }
+            }else{
+            	this.authenticationService.forceToLogout();
+            }
             },
             ( error: any ) => {
                 this.loading = false;
@@ -1031,6 +1039,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.contacts, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -1042,6 +1051,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
         ( error: any ) => {
             if ( error._body.includes( "email addresses in your contact list that aren't formatted properly" ) ) {
@@ -1463,6 +1475,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.selectedAddContactsOption = 8;
             this.loading = false;
@@ -1473,6 +1486,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
         ( error: any ) => {
             this.loading = false;
@@ -1517,6 +1533,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -1528,6 +1545,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
             this.contactService.successMessage = true;
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
         ( error: any ) => {
             this.loading = false;
@@ -1896,6 +1916,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
+        if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -1906,6 +1927,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
 
         ( error: any ) => {
@@ -1951,6 +1975,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -1962,6 +1987,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
             this.contactService.successMessage = true;
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
 
         ( error: any ) => {
@@ -2276,6 +2304,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
+        if(data.access){
             this.loading = false;
             data = data;
             this.selectedAddContactsOption = 8;
@@ -2287,6 +2316,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
             this.contactService.successMessage = true;
+        }else{
+        	this.authenticationService.forceToLogout();
+        }            
         },
         ( error: any ) => {
             this.loading = false;
@@ -2335,6 +2367,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -2346,6 +2379,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
             this.contactService.successMessage = true;
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
         ( error: any ) => {
             this.loading = false;
@@ -2764,6 +2800,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveMarketoContactList( this.socialContact )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -2774,6 +2811,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
 
         ( error: any ) => {
@@ -2812,6 +2852,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
@@ -2823,6 +2864,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
             }
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
 
         ( error: any ) => {
@@ -3279,12 +3323,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.hubSpotService.saveHubSpotContacts(this.socialContact)
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
             this.xtremandLogger.info( "Save Contacts ListUsers:" + data );
             this.router.navigateByUrl( '/home/contacts/manage' );
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
 
         ( error: any ) => {
@@ -3302,12 +3350,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.contactService.saveContactList( this.allselectedUsers, this.model.contactListName, this.isPartner, this.model.isPublic )
         .subscribe(
         data => {
+        	if(data.access){
             data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
             this.router.navigateByUrl( '/home/contacts/manage')
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
         },
 
         ( error: any ) => {

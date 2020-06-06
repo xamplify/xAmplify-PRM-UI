@@ -21,5 +21,6 @@ export class LandingPage {
     type:LandingPageType;
     categoryId:number = 0;
     companyProfileName: string="";
+    aliasUrl = "";
 
 }

@@ -8,7 +8,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal">
-              <i class="fa fa-times"></i>
+              <i class="fa fa-times" aria-hidden="true"></i>
             </button>
             <h4 class="modal-title text-center">Forms</h4>
           </div>
@@ -41,15 +41,15 @@
 						  <tr>
 						     <th *ngIf="authenticationService.isShowForms">Select</th>
 							 <th>Form Details</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms">Link</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms">Embed Link</th>
-							 <th class="text-center" *ngIf="!authenticationService.isShowForms">Preview</th>
-							 <th class="text-center" *ngIf="authenticationService.isShowForms">Preview</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" >Link</th>
+               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
+							 <th class="text-center">Preview</th>
 						  </tr>
 						</thead>
 						<tbody>
 							<tr *ngFor="let form of pagination.pagedItems ;let i =index">
-							 <td *ngIf="authenticationService.isShowForms" align="center"><input type="checkbox"
+							 <td *ngIf="authenticationService.isShowForms">
+                 <input type="checkbox"
 							 [checked]="selectedFormId === form.id"
 								(click)="selectedForm(form, $event)"></td>
 							  <td>
@@ -63,27 +63,39 @@
 									From <b>{{form.companyName}}</b>
 								 </h6>
 							  </td>
-							  <td [hidden]="authenticationService.isShowForms" >
-                  <input type="text" id="copy-link" class="form-control" readonly="readonly" value="{{formAliasUrl}}f/{{form.alias}}" #userinput><br>
-                  <div class="override-actions modal-icon">
+							  <td [hidden]="authenticationService.isShowForms">
+                  <input type="text" id="copy-link" readonly="readonly" style="width: 250px; height: 35px;cursor:not-allowed;background-color: #eae9e9;" value="{{form.ailasUrl}}" #userinput><br>
+                  <tr>
+                  <font class="success" id="copied-message-{{i}}" style="display:none;">
+                    <b>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
+                </tr>
+                </td>
+                  <td [hidden]="authenticationService.isShowForms">
+                    <div class="modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
-									  <i class="fa fa-copy"></i>
+									  <i class="fa fa-copy" aria-hidden="true"></i>
                   </a>
                 </div>
-                  <font class="success" id="copied-message-{{i}}" style="display:none;"><b>Link copied successfully<i class="fa fa-check"></i></b></font>
                 </td>
                 <td [hidden]="authenticationService.isShowForms">
-                  <textarea id="text-area" rows="3" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
-                  <div class="override-actions modal-icon">
+                  <textarea id="text-area" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
+                  <tr>
+                  <font class="success" id="embed-copied-message-{{i}}" style="display:none;">
+                    <b>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
+                </tr>
+                  </td>
+                  <td [hidden]="authenticationService.isShowForms">
+                  <div class="modal-icon">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
-									  <i class="fa fa-copy"></i>
+									  <i class="fa fa-copy" aria-hidden="true" ></i>
                   </a>
                 </div>
-							  	<font class="success" id="embed-copied-message-{{i}}" style="display:none;"><b>Embed link copied successfully<i class="fa fa-check"></i></b></font>
+                  <font class="success" id="embed-copied-message-{{i}}" style="display:none;">
+                    <b>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
                 </td>
 							  <td id="actions-row" style="text-align: center;  vertical-align: middle;">
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">
-									  <i class="fa fa-eye"></i>
+									  <i class="fa fa-eye" aria-hidden="true"></i>
 									</a>
 									
                 </td>
@@ -121,7 +133,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close-circle" data-dismiss="modal">
-            <i class="fa fa-times"></i>
+            <i class="fa fa-times" aria-hidden="true"></i>
           </button>
           <h4 class="modal-title text-center">Form Preview</h4>
         </div>
@@ -131,7 +143,7 @@
               <div class="panel-heading">
                 <div class="panel-title">{{form.name}}</div>
               </div>
-              <div class="panel-body" *ngIf="!formError">
+                <div class="panel-body" *ngIf="!formError">
               <h5>{{form.description}}</h5>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                   <div class="form-group">

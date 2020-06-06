@@ -77,7 +77,10 @@ export class ManageTeamMembersComponent implements OnInit {
 	name = 'Angular 5';
 	successMessage: string;
 	csvFilePath = "";
+	csvErrors: string[] = [];
 	addTeamMemberLoader: boolean;
+	errorMessage: string;
+	isLoggedInThroughVanityUrl = false;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -85,16 +88,17 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.team = new TeamMember();
 		this.loggedInUserId = this.authenticationService.getUserId();
-		this.vanityUrlService.isVanityURLEnabled();
+		this.isLoggedInThroughVanityUrl = this.vanityUrlService.isVanityURLEnabled();
+		this.teamMemberUi = new TeamMemberUi();
 	}
 
 	ngOnInit() {
 		this.listTeamMemberModules();
-		this.listAllTeamMembers(this.pagination);
 	}
 
 	listTeamMemberModules() {
 		try {
+			this.referenceService.loading(this.httpRequestLoader, true);
 			let input = {};
 			input['userId'] = this.authenticationService.getUserId();
 			this.teamMemberService.listTeamMemberModules(input)
@@ -122,10 +126,13 @@ export class ManageTeamMembersComponent implements OnInit {
 					error => {
 						this.logger.errorPage(error);
 					},
-					() => this.logger.info("Finished listTeamMembers()")
+					() =>{
+						this.listAllTeamMembers(this.pagination);
+					} 
 				);
 		} catch (error) {
 			this.showUIError(error);
+			this.referenceService.loading(this.httpRequestLoader, false);
 		}
 	}
 
@@ -153,6 +160,7 @@ export class ManageTeamMembersComponent implements OnInit {
 				);
 		} catch (error) {
 			this.showUIError(error);
+			this.referenceService.loading(this.httpRequestLoader, false);
 		}
 	}
 
@@ -313,25 +321,28 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	/*************************Delete Team Member************** */
 	showPopup(teamMember: TeamMember) {
-		this.selectedId = 0;
-		this.deletePopupLoader = true;
-		$('#delete-team-member-popup').modal('show');
-		this.teamMemberService.listEmailIdsForTransferData(this.loggedInUserId, this.isOnlyPartner)
-			.subscribe(
-				data => {
-					this.setDropDownData(data);
-					this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
-					this.teamMemberIdToDelete = teamMember.teamMemberId;
-					this.selectedTeamMemberEmailId = teamMember.emailId;
-					this.deletePopupLoader = false;
-				},
-				error => {
-					$('#delete-team-member-popup').modal('hide');
-					this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
-
-				},
-				() => this.logger.log("showPopup() done")
-			);
+		if(!this.isLoggedInAsTeamMember){
+			this.selectedId = 0;
+			this.deletePopupLoader = true;
+			$('#delete-team-member-popup').modal('show');
+			this.teamMemberService.listEmailIdsForTransferData(this.loggedInUserId, this.isOnlyPartner)
+				.subscribe(
+					data => {
+						this.setDropDownData(data);
+						this.emailIds = this.items2.filter((item) => item.id !== teamMember.teamMemberId);
+						this.teamMemberIdToDelete = teamMember.teamMemberId;
+						this.selectedTeamMemberEmailId = teamMember.emailId;
+						this.deletePopupLoader = false;
+					},
+					error => {
+						$('#delete-team-member-popup').modal('hide');
+						this.referenceService.showSweetAlertErrorMessage('Something went wrong.Please try after sometime');
+	
+					},
+					() => this.logger.log("showPopup() done")
+				);
+		}
+		
 	}
 
 	delete() {
@@ -377,7 +388,6 @@ export class ManageTeamMembersComponent implements OnInit {
 	clearRows() {
 		try {
 			$('#add-team-member-table tbody').remove();
-			//this.teamMembers = [];
 			this.newlyAddedTeamMembers = [];
 			this.team = new TeamMember();
 			this.emaillIdDivClass = this.defaultClass;
@@ -394,31 +404,34 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	/******************Update Team Member********************** */
 	updateTeamMember(teamMember:TeamMember,index:number){
-		$('.list-team-member-class').css("background-color", "#fff");
-		this.customResponse = new CustomResponse();
-		this.referenceService.goToTop();
-		this.loading = true;
-		this.teamMemberService.updateTeamMember(teamMember)
-			.subscribe(
-				data => {
-					this.referenceService.goToTop();
-					this.loading = false;
-					if(data.statusCode==200){
-						this.customResponse = new CustomResponse('SUCCESS',data.message,true);
-						this.pagination = new Pagination();
-						this.listAllTeamMembers(this.pagination);
-					}else{
-						this.customResponse = new CustomResponse('ERROR',data.message,true);
-						$('#list-team-member-'+index).css("background-color", "#ec6262");
-					}
-				},
-				error => { 	
-					this.loading = false;
-					this.referenceService.goToTop();				
-					this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
-				},
-				() => this.logger.log("Team member updated successfully.")
-			);
+		if(!this.isLoggedInAsTeamMember){
+			$('.list-team-member-class').css("background-color", "#fff");
+			this.customResponse = new CustomResponse();
+			this.referenceService.goToTop();
+			this.loading = true;
+			this.teamMemberService.updateTeamMember(teamMember)
+				.subscribe(
+					data => {
+						this.referenceService.goToTop();
+						this.loading = false;
+						if(data.statusCode==200){
+							this.customResponse = new CustomResponse('SUCCESS',data.message,true);
+							this.pagination = new Pagination();
+							this.listAllTeamMembers(this.pagination);
+						}else{
+							this.customResponse = new CustomResponse('ERROR',data.message,true);
+							$('#list-team-member-'+index).css("background-color", "#ec6262");
+						}
+					},
+					error => { 	
+						this.loading = false;
+						this.referenceService.goToTop();				
+						this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true); 
+					},
+					() => this.logger.log("Team member updated successfully.")
+				);
+		}
+		
 	}
 
 	downloadEmptyCsv(){
@@ -549,13 +562,15 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.loading = true;
 		$('.add-tm-tr').css("background-color", "#fff");
 		this.customResponse = new CustomResponse();
-		console.log(this.newlyAddedTeamMembers);
 		this.teamMemberService.saveTeamMembers(this.newlyAddedTeamMembers)
 			.subscribe(
 				data => {
 					this.loading = false;
 					if(data.statusCode==200){
-
+						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+						this.refreshList();
+						this.isUploadCsv = false;
+				        this.isAddTeamMember = false;
 					}else if(data.statusCode==413){
 						let duplicateEmailIds = "";
                         $.each(data.data, function (index:number, value:string) {
@@ -568,6 +583,8 @@ export class ManageTeamMembersComponent implements OnInit {
 							$('#team-member-'+value).css("background-color", "#ec6262");
 						});
 						this.customResponse = new CustomResponse('ERROR', data.message, true);
+					}else if(data.statusCode==3008){
+						this.customResponse = new CustomResponse('ERROR', data.message, true);
 					}
 				},
 				error => { 	
@@ -577,5 +594,233 @@ export class ManageTeamMembersComponent implements OnInit {
 				() => this.logger.log("Team member saved successfully.")
 			);
 	}
+
+
+	/*********************Upload Csv Functionality*****************************/
+	fileChangeListener($event): void {
+		this.hideErrorMessageDiv();
+		this.csvErrors = [];
+		var text = [];
+		var files = $event.srcElement.files;
+		if (this.fileUtil.isCSVFile(files[0])) {
+			$("#empty-roles-div").hide();
+			$("#csv-error-div").hide();
+			var input = $event.target;
+			var reader = new FileReader();
+			reader.readAsText(input.files[0]);
+			reader.onload = (data) => {
+				this.isUploadCsv = true;
+				let csvData = reader.result;
+				let csvRecordsArray = csvData.split(/\r\n|\n/);
+				let headersRow = this.fileUtil
+					.getHeaderArray(csvRecordsArray);
+				let headers = headersRow[0].split(',');
+
+				let partnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==4;
+				let vendorCsvHeadersMatched = this.superiorRole== "Vendor" && headers.length==8;
+				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin") &&  headers.length==9);
+				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched){
+					if (this.validateHeaders(headers)) {
+						this.readCsvData(csvRecordsArray, headersRow.length);
+					} else {
+						this.showCsvFileError('Invalid CSV');
+					}
+				}else{
+					this.showCsvFileError('Invalid CSV');
+				}
+				
+			}
+			let self = this;
+			reader.onerror = function () {
+				self.showErrorMessageDiv('Unable to read the file');
+				self.isUploadCsv = false;
+				self.isAddTeamMember = false;
+			};
+
+		} else {
+			this.showErrorMessageDiv('Please Import csv file only');
+			this.fileReset();
+		}
+	};
+
+	validateHeaders(headers:any){
+        if(this.superiorRole=="Partner"){
+	        return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "CAMPAIGN" && headers[3] == "CONTACTS");
+		 }else if(this.superiorRole=="Vendor"){
+			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS");
+         }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin")){
+			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS" && headers[8] == "CONTACTS");
+		 }
+	}
+
+	readCsvData(csvRecordsArray, rowLength) {
+		this.csvRecords = this.fileUtil.getDataRecordsArrayFromCSVFile(csvRecordsArray, rowLength);
+		if (this.csvRecords.length > 1) {
+			this.processCSVData();
+		} else {
+			this.showCsvFileError('You Cannot Upload Empty File');
+		}
+	}
+
+	
+	processCSVData() {
+		this.validateCsvData();
+		if (this.csvErrors.length > 0) {
+			$("#csv-error-div").show();
+			this.fileReset();
+			this.isUploadCsv = false;
+			this.isAddTeamMember = false;
+		} else {
+			this.appendCsvDataToTable();
+			this.fileReset();
+		}
+	}
+
+	validateCsvData() {
+		let names = this.csvRecords.map(function (a) { return a[0].split(',')[0] });
+		let duplicateEmailIds = this.referenceService.returnDuplicates(names);
+		this.newlyAddedTeamMembers = [];
+		if (duplicateEmailIds.length == 0) {
+			for (var i = 1; i < this.csvRecords.length; i++) {
+				let rows = this.csvRecords[i];
+				let row = rows[0].split(',');
+				let emailId = row[0];
+				this.emaillIdDivClass = this.defaultClass;
+				if (!this.referenceService.validateEmailId(emailId)) {
+					this.csvErrors.push(emailId + " is invalid email address.");
+				} 
+			}
+		} else {
+			for (let d = 0; d < duplicateEmailIds.length; d++) {
+				this.csvErrors.push(duplicateEmailIds[d] + " is duplicate email address.");
+				this.isUploadCsv = false;
+				this.isAddTeamMember = false;
+			}
+
+		}
+	}
+	
+
+	appendCsvDataToTable() {
+		for (var i = 1; i < this.csvRecords.length; i++) {
+			let rows = this.csvRecords[i];
+			let row = rows[0].split(',');
+			this.teamMemberUi.emptyTable = false;
+			let teamMember = new TeamMember();
+			teamMember.emailId = row[0];
+			teamMember.all = this.setDefaultValue(row[1]);
+			if (teamMember.all) {
+				this.setAllRoles(teamMember);
+			} else {
+				if (this.isOnlyPartner) {
+					teamMember.campaign = this.setDefaultValue(row[2]);
+					teamMember.contact = this.setDefaultValue(row[3]);
+				} else {
+					teamMember.video = this.setDefaultValue(row[2]);
+					teamMember.campaign = this.setDefaultValue(row[3]);
+					teamMember.design = this.setDefaultValue(row[4]);
+					teamMember.socialShare = this.setDefaultValue(row[5]);
+					teamMember.stats = this.setDefaultValue(row[6]);
+					teamMember.partners = this.setDefaultValue(row[7]);
+					if (this.contactsAccess) {
+						teamMember.contact = this.setDefaultValue(row[8]);
+					}
+				}
+			}
+			this.newlyAddedTeamMembers.push(teamMember);
+		}
+	}
+
+	setDefaultValue(value: any) {
+		return value == 1;
+	}
+	
+	showErrorMessageDiv(message: string) {
+		this.errorMessage = message;
+		this.customResponse = new CustomResponse('ERROR', this.errorMessage, true);
+	}
+
+	hideErrorMessageDiv() {
+		this.errorMessage = "";
+		this.customResponse = new CustomResponse('ERROR', this.errorMessage, false);
+	}
+
+	showCsvFileError(message: string) {
+		this.showErrorMessageDiv(message);
+		this.fileReset();
+		this.isUploadCsv = false;
+		this.isAddTeamMember = false;
+	}
+	fileReset() {
+		this.fileImportInput.nativeElement.value = "";
+		this.csvRecords = [];
+	}
+
+	loginAs(teamMember: TeamMember) {
+		this.loginAsTeamMember(teamMember.emailId, false);
+
+	}
+
+	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
+		this.loading = true;
+		if(this.authenticationService.vanityURLEnabled){
+			this.referenceService.showSweetAlertErrorMessage('Work in progress');
+		}else{
+			this.getUserData(emailId,isLoggedInAsAdmin);
+		}
+	}
+
+	getUserData(emailId:string,isLoggedInAsAdmin:boolean){
+		this.authenticationService.getUserByUserName(emailId)
+			.subscribe(
+				response => {
+					if (isLoggedInAsAdmin) {
+						localStorage.removeItem('adminId');
+						localStorage.removeItem('adminEmailId');
+						this.isLoggedInAsTeamMember = false;
+					} else {
+						let adminId = JSON.parse(localStorage.getItem('adminId'));
+						if (adminId == null) {
+							localStorage.adminId = JSON.stringify(this.loggedInUserId);
+							localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
+						}
+					}
+					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+
+					if(this.authenticationService.vanityURLEnabled){						
+						  let currentUser = localStorage.getItem('currentUser');
+						  if(currentUser && this.authenticationService.vanityURLUserRoles){
+							const parsedObject = JSON.parse(currentUser);
+							parsedObject.roles = this.authenticationService.vanityURLUserRoles;
+							localStorage.setItem("currentUser", JSON.stringify(parsedObject));
+						  }
+					}
+
+					let self = this;
+					setTimeout(function () {
+						self.router.navigate(['home/dashboard/'])
+							.then(() => {
+								window.location.reload();
+							})
+					}, 500);
+				},
+				(error: any) => {
+					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+					this.loading = false;
+				},
+				() => this.logger.info('Finished getRolesByTeamMemberId()')
+			);
+	}
+
+	getVanityRolesByEmailId(emailId:string){
+
+	}
+
+	logoutAsTeamMember() {
+		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
+		this.loginAsTeamMember(adminEmailId, true);
+	}
+
+
 
 }

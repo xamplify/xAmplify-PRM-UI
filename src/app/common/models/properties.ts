@@ -148,6 +148,7 @@ export class Properties {
   integrations = "Integrations";
   gdprSettings = "GDPR Settings";
   folders = "Folders";
+  dashboardButtons = "Dashboard Buttons";
   samlSettings = "SAML Settings";
 
   /********Error Messages************* */

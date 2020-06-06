@@ -79,6 +79,7 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
+            //$("body").css("background-color","this.form.backgroundColor");
             if(!this.isSubmittedAgain){
                 this.saveLocationDetails(this.form);
             }
