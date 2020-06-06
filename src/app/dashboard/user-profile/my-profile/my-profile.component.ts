@@ -1455,6 +1455,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.activeTabHeader = this.properties.folders;
             this.categoryPagination = new Pagination();
             this.listCategories(this.categoryPagination);
+        }else if(this.activeTabName=="dbButtonSettings"){
+            this.activeTabHeader = 'Dashboard Buttons';
+        }else if(this.activeTabName=="templates"){
+            this.activeTabHeader = 'Your Templates';
         }
         this.referenceService.goToTop();
     }
