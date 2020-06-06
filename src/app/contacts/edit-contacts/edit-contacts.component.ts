@@ -1793,21 +1793,25 @@ goBackToManageList(){
 			this.xtremandLogger.info(this.selectedInvalidContactIds);
 			this.contactService.validateUndelivarableEmailsAddress(this.selectedInvalidContactIds)
 				.subscribe(
-					data => {
-						data = data;
-						this.loading = false;
-						this.xtremandLogger.log(data);
-						console.log("update Contacts ListUsers:" + data);
-						this.checkingLoadContactsCount = true;
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-						this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-						this.selectedInvalidContactIds.length = 0;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
-						}
-					},
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.xtremandLogger.log(data);
+                        console.log("update Contacts ListUsers:" + data);
+                        this.checkingLoadContactsCount = true;
+                        this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                        this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+                        this.selectedInvalidContactIds.length = 0;
+                        if (this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					(error: any) => {
 						console.log(error);
 						this.loading = false;

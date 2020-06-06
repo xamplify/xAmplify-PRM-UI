@@ -1059,17 +1059,21 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactService.validateUndelivarableEmailsAddress(this.selectedInvalidContactIds)
                 .subscribe(
                 data => {
-                    data = data;
-                    this.loading = false;
-                    this.xtremandLogger.log(data);
-                    console.log("update Contacts ListUsers:" + data);
-                    this.contactsCount();
-                    this.contactCountLoad = true;
-                    this.listContactsByType(this.contactsByType.selectedCategory);
-                    if (this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.xtremandLogger.log(data);
+                        console.log("update Contacts ListUsers:" + data);
+                        this.contactsCount();
+                        this.contactCountLoad = true;
+                        this.listContactsByType(this.contactsByType.selectedCategory);
+                        if (this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                        }
                     } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                    	this.authenticationService.forceToLogout();
                     }
                 },
                 (error: any) => {

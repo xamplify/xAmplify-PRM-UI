@@ -247,7 +247,7 @@ export class ContactService {
     }
     
     
-    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<Object> {
+    validateUndelivarableEmailsAddress( validateUserIds: Array<number> ): Observable<any> {
         this.logger.info( validateUserIds );
         var newUrl = this.contactsUrl + "makeContactsValid?access_token=" + this.authenticationService.access_token + "&userId=" + this.authenticationService.getUserId();
         return this._http.post( newUrl, validateUserIds )
