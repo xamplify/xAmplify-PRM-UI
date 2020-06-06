@@ -545,39 +545,43 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
         this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
             .subscribe(
-            ( data: any ) => {
-                data = data;
-                this.loading = false;
-                this.selectedAddPartnerOption = 5;
-                this.xtremandLogger.info( "update partner ListUsers:" + data );
-                $( "tr.new_row" ).each( function() {
-                    $( this ).remove();
-                });
-
-                this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true );
-
-                this.newPartnerUser.length = 0;
-                this.allselectedUsers.length = 0;
-                this.loadPartnerList( this.pagination );
-                this.clipBoard = false;
-                this.cancelPartners();
-                if(data.statusCode == 200){
-                  this.getContactsAssocialteCampaigns();
-                }
-                this.disableOtherFuctionality = false;
-                
-                if(data.statusCode == 409){
-                    let emailIds = data.emailAddresses;
-                    let allEmailIds = "";
-                    $.each(emailIds,function(index,emailId){
-                    allEmailIds+= (index+1)+"."+emailId+"<br><br>";
+            (data: any) => {
+                if (data.access) {
+                    data = data;
+                    this.loading = false;
+                    this.selectedAddPartnerOption = 5;
+                    this.xtremandLogger.info("update partner ListUsers:" + data);
+                    $("tr.new_row").each(function() {
+                        $(this).remove();
                     });
-                    let message = data.errorMessage+"<br><br>"+allEmailIds;
-                    this.customResponse = new CustomResponse( 'ERROR', message, true );
-                }
-                
-                if(data.statusCode == 417){
-                    this.customResponse = new CustomResponse( 'ERROR', data.detailedResponse[0].message, true );
+
+                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+
+                    this.newPartnerUser.length = 0;
+                    this.allselectedUsers.length = 0;
+                    this.loadPartnerList(this.pagination);
+                    this.clipBoard = false;
+                    this.cancelPartners();
+                    if (data.statusCode == 200) {
+                        this.getContactsAssocialteCampaigns();
+                    }
+                    this.disableOtherFuctionality = false;
+
+                    if (data.statusCode == 409) {
+                        let emailIds = data.emailAddresses;
+                        let allEmailIds = "";
+                        $.each(emailIds, function(index, emailId) {
+                            allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                        });
+                        let message = data.errorMessage + "<br><br>" + allEmailIds;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                    }
+
+                    if (data.statusCode == 417) {
+                        this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
                 }
             },
             ( error: any ) => {
