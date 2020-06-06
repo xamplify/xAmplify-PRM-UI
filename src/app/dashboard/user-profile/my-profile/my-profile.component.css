@@ -477,3 +477,94 @@ input:checked+.slider:before {
     border-left: 2px solid #5b9bd1;
     margin-left: -2px;
   }
+
+  .profile-usermenu {
+	padding-bottom: 10px;
+}
+
+.page-bar {
+	border-radius: 0;
+}
+
+.portlet.light {
+	padding: 20px;
+}
+
+.disablePlayerValues {
+	pointer-events: none;
+	opacity: 0.6;
+}
+/* .switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+} */
+
+.switch input {
+	display: none;
+}
+
+.slider-new {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider-new:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.logo-video {
+	position: absolute;
+	top: 42px;
+	right: 23px;
+	width: 40px;
+	border: 2px solid red;
+	z-index: 999999999999999999;
+}
+
+input:checked+.slider-new {
+	background-color: #5cb85c;
+}
+
+input:focus+.slider-new {
+	box-shadow: 0 0 1px #5cb85c;
+}
+
+input:checked+.slider-new:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+
+.disabled {
+	pointer-events: none;
+}
+/* Rounded sliders */
+
+.slider-new.round {
+	border-radius: 34px;
+}
+
+.slider-new.round:before {
+	border-radius: 50%;
+}
+
+.profile-usertitle-name {
+	font-size: 14px;
+}

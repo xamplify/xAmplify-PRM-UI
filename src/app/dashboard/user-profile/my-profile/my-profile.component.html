@@ -1,95 +1,3 @@
-<style type="text/css">
-    .profile-usermenu {
-        padding-bottom: 10px;
-    }
-    
-    .page-bar {
-        border-radius: 0;
-    }
-    
-    .portlet.light {
-        padding: 20px;
-    }
-    
-    .disablePlayerValues {
-        pointer-events: none;
-        opacity: 0.6;
-    }
-    /* .switch {
-		position: relative;
-		display: inline-block;
-		width: 60px;
-		height: 34px;
-	} */
-    
-    .switch input {
-        display: none;
-    }
-    
-    .slider-new {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-    
-    .slider-new:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-    }
-    
-    .logo-video {
-        position: absolute;
-        top: 42px;
-        right: 23px;
-        width: 40px;
-        border: 2px solid red;
-        z-index: 999999999999999999;
-    }
-    
-    input:checked+.slider-new {
-        background-color: #5cb85c;
-    }
-    
-    input:focus+.slider-new {
-        box-shadow: 0 0 1px #5cb85c;
-    }
-    
-    input:checked+.slider-new:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-    }
-    
-    .disabled {
-        pointer-events: none;
-    }
-    /* Rounded sliders */
-    
-    .slider-new.round {
-        border-radius: 34px;
-    }
-    
-    .slider-new.round:before {
-        border-radius: 50%;
-    }
-    
-    .profile-usertitle-name {
-        font-size: 14px;
-    }
-</style>
 <div class="page-content" *ngIf="!hasClientErrors" [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -99,24 +7,28 @@
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li *ngIf="hasCompany && !authenticationService.isSuperAdmin()">
-                <i class="fa fa-home"></i><a [routerLink]="referenceService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li *ngIf="authenticationService.isSuperAdmin()">
-                <i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">
-                    Admin  Report</a><i class="fa fa-angle-right"></i>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                <a [routerLink]="['/home/dashboard/admin-report']"> Admin  Report</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
                 <a>User Account</a>
             </li>
         </ul>
     </div>
+    <div>
     <div id="org-admin-info" class="alert alert-info" style="display: none;">
         <a (click)="hideDiv('org-admin-info')" class="close" aria-label="close">x</a>
         <strong>{{infoMessage}} <a routerLink="../../team/add-team" style="color: green;">Click Here</a></strong>
     </div>
     <!-- END PAGE HEADER-->
     <!-- BEGIN PAGE CONTENT-->
-    <div class="row">
+    <div class="row" *ngIf="!editXamplifyDefaultTemplate">
         <div class="col-md-12">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
@@ -132,7 +44,7 @@
                         </ng-container>
                         <ng-template #showImage><img alt="" [src]="userProfileImage" class="profile-image" [width]="circleCropperSettings.croppedWidth" [height]="circleCropperSettings.croppedHeight" (error)="errorHandler($event)" (click)="imageUpload('imageSelect')"></ng-template>
                         <div id="imageSelect" class="upload-btn-wrapper" (click)="fileChangeEvent()">
-                            <i class="fa fa-camera"></i>
+                            <i class="fa fa-camera" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="profile-usertitle">
@@ -188,10 +100,10 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'samlSettings'}" class="hidden-xs" *ngIf="authenticationService.checkSamlSettingsUserRoles()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'samlSettings'}" (click)="activateTab('samlSettings');clearCustomResponse()">{{properties.samlSettings | translate}}</a>
                             </li>		 
-                            <!-- <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
+                            <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
                                     <i class="fa fa-list" aria-hidden="true"></i> Your Templates </a>
-                            </li> -->
+                            </li>
 
                         </ng-container>
 
@@ -276,11 +188,9 @@
                         <div class="portlet light">
                             <div class="portlet-title tabbable-line">
                                 <div class="caption caption-md col-xs-12">
-                                    <i class="icon-globe theme-font hide"></i>
+                                    <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                     <span class="caption-subject font-blue-madison bold">{{activeTabHeader | translate}}</span>
-                                        
                                 </div>
-                                
                             </div>
                             <div class="portlet-body clearfix">
                                 <div class="tab-content">
@@ -649,7 +559,7 @@
                                                             <!--style="border: 1px solid #ddd;"-->
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EUâ€™s General Data Protection Regulations. This includes:
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes:
                                                                     </h5>
                                                                         <ul>
                                                                             <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>
@@ -778,7 +688,7 @@
                                     
                                      <!-- Your Templates TAB -->
                                      <div class="tab-pane hidden-xs" [ngClass]="{'active': activeTabName == 'templates'}">                                        
-                                        <app-vanity-email-templates></app-vanity-email-templates>
+                                        <app-vanity-email-templates (editTemplate)="openBeeEditor($event)"></app-vanity-email-templates>
                                     </div>
                                     
                                     <!-- Categories -->
@@ -1086,14 +996,42 @@
                 <!-- END PROFILE CONTENT -->
             </div>
         </div>
-        <!-- END PAGE CONTENT-->
     </div>
+<!------Template Editor------------->
+<div *ngIf="editXamplifyDefaultTemplate">
+    <div class="profile-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet light">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption caption-md col-xs-12">
+                            <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                            <span class="caption-subject font-blue-madison bold">{{xamplifyDefaultTemplate?.name}}</span>
+                            <a class="close-circle pull-right" (click)="goBackToMyProfile()">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet-body clearfix">
+                     	  <app-xamplify-default-templates [xamplifyDefaultTemplate]="xamplifyDefaultTemplate"></app-xamplify-default-templates>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
     <app-scroll-top></app-scroll-top>
 </div>
 <div class="page-content" *ngIf="hasClientErrors">
     <h5 style="color: red">Something went wrong.please contact admin</h5>
 </div>
 
+
+
+
+
+<!--Modal Popup Starts Here------------>
 <div class="modal right fade" id="cropProfileImage" tabindex="-1" role="dialog" aria-labelledby="cropProfileImage" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog imgCrop-modal" role="document">
         <div class="modal-content rounded-0">

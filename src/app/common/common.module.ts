@@ -63,6 +63,7 @@ import { PublicEventEmailPopupComponent } from 'app/campaigns/public-event-email
 import { TagInputModule } from 'ngx-chips'
 import { LoaderComponent } from '../loader/loader.component';
 import { RedistributeCampaignsListViewUtilComponent } from 'app/util/redistribute-campaigns-list-view-util/redistribute-campaigns-list-view-util.component';
+import { XamplifyDefaultTemplatesComponent } from 'app/util/xamplify-default-templates/xamplify-default-templates.component';
 
 
 @NgModule({
@@ -76,7 +77,7 @@ import { RedistributeCampaignsListViewUtilComponent } from 'app/util/redistribut
 		 LandingPageLoaderComponent, DashboardLoaderComponent,ModalPopupLoaderComponent, FormAnalyticsUtilComponent, PublicPageResponseComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, 
 		SendCampaignsComponent, CategoryFolderViewUtilComponent, AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,
 		CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,
-		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent],
+		AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent],
 
 
     exports: [InternationalPhoneModule, DonutChartComponent, PaginationComponent, WorldmapComponent, ContactsCampaignsMailsComponent,TagInputModule,
@@ -87,7 +88,8 @@ import { RedistributeCampaignsListViewUtilComponent } from 'app/util/redistribut
 		PreviewPopupComponent,PreviewLandingPageComponent, FormPreviewComponent, LandingPageLoaderComponent, DashboardLoaderComponent, ModalPopupLoaderComponent, 
 		FormAnalyticsUtilComponent, MergeTagsComponent, FlatpickrComponent, SaveGeoLocationAnalyticsComponent, SendCampaignsComponent, CategoryFolderViewUtilComponent, 
 		AddFolderModalPopupComponent, CreateBeeTemplateComponent,FormsListViewUtilComponent,CampaignsListViewUtilComponent,EmailTemplatesListViewUtilComponent,
-		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,RedistributeCampaignsListViewUtilComponent]
+		LandingPagesListViewUtilComponent,PreviewCampaignComponent,SocialStatusComponent,AddMoreReceiversComponent,PublicEventEmailPopupComponent,LoaderComponent,
+		RedistributeCampaignsListViewUtilComponent,XamplifyDefaultTemplatesComponent]
 
 })
 export class CommonComponentModule { }

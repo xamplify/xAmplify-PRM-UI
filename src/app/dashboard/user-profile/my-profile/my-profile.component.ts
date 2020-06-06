@@ -36,6 +36,7 @@ import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
 import {ModulesDispalyType} from "app/dashboard/models/modules-dispaly-type.enum";
 import { TranslateService } from '@ngx-translate/core';
+import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 
 declare var swal, $, videojs: any;
 
@@ -162,7 +163,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     preferredLangFilePath: string;
     languagesList: any = [];
     selectedLanguageCode:string;
-
+    editXamplifyDefaultTemplate = false;
+    xamplifyDefaultTemplate:VanityEmailTempalte;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -1948,5 +1950,16 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectedLanguage(){
         this.translateService.use(this.selectedLanguageCode);
+    }
+
+    openBeeEditor(event:any){
+        this.xamplifyDefaultTemplate = event;
+        this.editXamplifyDefaultTemplate = true;
+    }
+
+    goBackToMyProfile(){
+        this.editXamplifyDefaultTemplate = false;
+        this.xamplifyDefaultTemplate = new VanityEmailTempalte();
+        this.referenceService.goToTop();
     }
 }
