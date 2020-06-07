@@ -74,20 +74,20 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
           return false;
       }
-      if(jsonContent.indexOf("<<LoginLink>>")<0 && emailTemplate.id==1){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error" );
-        return false;
-      }
+      // if(jsonContent.indexOf("<<LoginLink>>")<0 && emailTemplate.id==1){
+      //   swal( "", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error" );
+      //   return false;
+      // }
 
-      if(jsonContent.indexOf("<login_url>")<0 && emailTemplate.id!=1){
-        swal( "", "Whoops! We are unable to save this template because you deleted 'login_url' tag.", "error" );
-        return false;
-      }
+      // if(jsonContent.indexOf("<login_url>")<0 && emailTemplate.id!=1){
+      //   swal( "", "Whoops! We are unable to save this template because you deleted 'login_url' tag.", "error" );
+      //   return false;
+      // }
 
-      if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0 && emailTemplate.id==3){
-        swal( "", "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.", "error" );
-        return false;
-      }
+      // if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0 && emailTemplate.id==3){
+      //   swal( "", "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.", "error" );
+      //   return false;
+      // }
 
         self.updateTemplate(emailTemplate);
       };
@@ -181,7 +181,6 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     this.loading = true;
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
-    console.log(emailTemplate);
     this.vanityUrlService.saveOrUpdateEmailTemplate(emailTemplate).subscribe(result => {
       this.loading = false;
       if(result.statusCode === 200){
@@ -201,9 +200,9 @@ replaceToDefaultLogos(emailTemplate:VanityEmailTempalte){
   if(emailTemplate.jsonBody!=undefined){
     emailTemplate.jsonBody = emailTemplate.jsonBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
   }
-      if(emailTemplate.htmlBody!=undefined){
-          emailTemplate.htmlBody = emailTemplate.htmlBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage,"https://xamp.io/vod/replace-company-logo.png");
-      }
+  if (emailTemplate.htmlBody != undefined) {
+    emailTemplate.htmlBody = emailTemplate.htmlBody.replace(this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage, "https://xamp.io/vod/replace-company-logo.png");
+  }
  
 }
 

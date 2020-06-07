@@ -1,4 +1,4 @@
-import { Component, OnInit,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit,Output,EventEmitter,ViewChild } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Pagination } from 'app/core/models/pagination';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -8,7 +8,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { VanityEmailTempalte } from '../models/vanity-email-template';
 import { Properties } from 'app/common/models/properties';
 import { CustomResponse } from 'app/common/models/custom-response';
-
+import {EmailTemplatePreviewUtilComponent} from 'app/util/email-template-preview-util/email-template-preview-util.component';
 
 @Component({
   selector: 'app-vanity-email-templates',
@@ -24,6 +24,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   ngxloading = false;
   searchKey = "";
   @Output() editTemplate = new EventEmitter();
+  @ViewChild("emailTemplatePreviewPopupComponent") emailTemplatePreviewUtilComponent:EmailTemplatePreviewUtilComponent;
   constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties) { }
 
   ngOnInit() {
@@ -73,5 +74,9 @@ export class VanityEmailTemplatesComponent implements OnInit {
   }
   designTemplate(emailTemplate:VanityEmailTempalte){
     this.editTemplate.emit(emailTemplate);
+  }
+
+  previewTemplate(emailTemplate:VanityEmailTempalte){
+    this.emailTemplatePreviewUtilComponent.previewEmailTemplate(emailTemplate);
   }
 }

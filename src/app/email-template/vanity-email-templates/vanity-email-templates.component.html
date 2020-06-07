@@ -8,10 +8,14 @@
               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
           </h4>
           <div class="bar">
-            <a data-toggle="tooltip" data-placement="top" title="Design Template" (click)="designTemplate(emailTemplate)">
+            <a data-toggle="tooltip" data-placement="top" title="Edit" (click)="designTemplate(emailTemplate)">
                 <i class="fa fa-edit" aria-hidden="true"></i>
             </a>
+            <a data-toggle="tooltip" data-placement="top" title="Template" (click)="previewTemplate(emailTemplate)">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+          </a>
         </div>
       </div>
   </div>
 </div>
+<app-email-template-preview-util #emailTemplatePreviewPopupComponent></app-email-template-preview-util>

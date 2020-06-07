@@ -459,12 +459,19 @@ export class AuthenticationService {
     }
     this.setUserLoggedIn(false);
     if (!this.router.url.includes('/userlock')) {
-      if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
-        window.location.href = 'https://www.xamplify.com/';
-      } else {
-        this.router.navigate(['/'])
+      if(this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("localhost")<0){
+        let url = window.location.hostname;
+        console.log("Logging out to:-"+url);
+        let logOutUrl = url+"/login";
+        window.location.href = logOutUrl;
+      }else{
+        if (this.envService.CLIENT_URL === 'https://xamplify.io/') {
+          window.location.href = 'https://www.xamplify.com/';
+        } else {
+          this.router.navigate(['/'])
+        }
       }
-    };
+    }
   }
 
   navigateToDashboardIfUserExists() {
