@@ -88,7 +88,7 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner()">
+                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || roleNames=='Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
                             <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
@@ -559,7 +559,7 @@
                                                             <!--style="border: 1px solid #ddd;"-->
                                                             <div class="flex row">
                                                                 <div class="col-md-9 col-lg-9">
-                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EU’s General Data Protection Regulations. This includes:
+                                                                    <h5 class="f-w-600" id="text-color-my-profile" translate>Our GDPR settings are designed to assist you in complying with the EUï¿½s General Data Protection Regulations. This includes:
                                                                     </h5>
                                                                         <ul>
                                                                             <li id="text-color-my-profile" translate>The ability to designate a legal basis for contacting each person added to a mailing list</li>

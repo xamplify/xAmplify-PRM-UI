@@ -74,7 +74,7 @@
             <ng-container *ngIf="!topFourCampaignsLoader.isLoading">
                 <a *ngIf="hasCampaignRole || authenticationService.isCompanyPartner || authenticationService.isOrgAdmin()|| authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()" data-toggle="tooltip" title="Customize campaign report"
                     data-placement="left" id="right"> 
-                    <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal"></i>
+                    <i id="customize-campaign-setting" class="fa fa-cog pull-right" data-toggle="modal" data-target="#customizeCampaignModal" aria-hidden="true"></i>
                 </a> 
                 <a *ngIf="campaigns?.length == 0 && ((hasCampaignRole && !authenticationService.isPartnerTeamMember && !authenticationService.hasOnlyPartnerRole)  && authenticationService.user.hasCompany)" [routerLink]="['/home/campaigns/select']"
                     class="btn btn-sm btn-primary pull-right" id="campaign-creation-dashboard">
@@ -92,7 +92,6 @@
     <section *ngFor="let campaign of campaigns; let i=index">
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngIf="i<4">
             <div class="portlet light border-radius-0 campaign-box" (click)="showCampaignDetails(campaign)" style="cursor: pointer">
-                <!--[class.disabled]="!hasStatsRole ? true : null" @date 13/04/218 @added Manas Sahoo // [routerLink]="['/home/campaigns/', campaign[0], 'details']"-->
                 <div class="bookmark-ribbon">
                     <span style="margin: 0px -7px; font-size: 17px; color: white;">
 				        <i *ngIf="campaign[7] ==='VIDEO'" data-toggle="tooltip" data-placement="top" title="Video" class="fa fa-video-camera" aria-hidden="true"></i>
@@ -139,7 +138,7 @@
                         <div class="portlet light">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-bar-chart"></i>
+                                    <i class="fa fa-bar-chart" aria-hidden="true"></i>
                                     <span class="caption-subject" translate>Email Statistics</span>
                                 </div>
                             </div>
