@@ -1,18 +1,13 @@
 <div class="row">
   <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
       <div class="grid-box">
-          <span class="ribbon1">
-              <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'">Email
-                  Co-Branding</span>
-          <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'">{{emailTemplate.emailTemplateType}}</span>
-          </span>
           <img class="email-template-preview" *ngIf="emailTemplate.imagePath" src="{{emailTemplate.imagePath}}" alt="Image Not Found">
           <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
               {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
           </h4>
           <div class="bar">
             <a data-toggle="tooltip" data-placement="top" title="Design Template" (click)="designTemplate(emailTemplate)">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <i class="fa fa-edit" aria-hidden="true"></i>
             </a>
         </div>
       </div>

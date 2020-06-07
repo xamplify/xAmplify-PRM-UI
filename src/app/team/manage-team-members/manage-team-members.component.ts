@@ -356,16 +356,11 @@ export class ManageTeamMembersComponent implements OnInit {
 					this.deletePopupLoader = false;
 					$('#delete-team-member-popup').modal('hide');
 					this.referenceService.goToTop();
-					if (teamMember.teamMemberId == 0) {
-						this.successMessage = "All Team Members deleted successfully.";
-						this.pagination.pageIndex = 0;
-					} else {
-						this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
-						this.pagination.pageIndex = this.pagination.pageIndex - 1;
-					}
+					this.successMessage = this.selectedTeamMemberEmailId + " deleted successfully.";
+					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
+					this.pagination.pageIndex = this.pagination.pageIndex - 1;
 					this.teamMemberIdToDelete = 0;
 					this.selectedTeamMemberEmailId = "";
-					this.customResponse = new CustomResponse('SUCCESS', this.successMessage, true);
 					this.listAllTeamMembers(this.pagination);
 					this.clearRows();
 				},
@@ -395,7 +390,7 @@ export class ManageTeamMembersComponent implements OnInit {
 			this.teamMemberUi = new TeamMemberUi();
 			this.isUploadCsv = false;
 			this.isAddTeamMember = false;
-			this.customResponse = new CustomResponse();
+			//this.customResponse = new CustomResponse();
 		} catch (error) {
 			this.showUIError(error);
 		}

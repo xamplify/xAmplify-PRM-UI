@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Output,EventEmitter } from '@angular/core';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { Pagination } from 'app/core/models/pagination';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
@@ -23,6 +23,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   vanityEmailTemplate:VanityEmailTempalte = new VanityEmailTempalte();
   ngxloading = false;
   searchKey = "";
+  @Output() editTemplate = new EventEmitter();
   constructor(private vanityURLService: VanityURLService, private httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties) { }
 
   ngOnInit() {
@@ -69,5 +70,8 @@ export class VanityEmailTemplatesComponent implements OnInit {
     }, error => {
       this.customResponse = new CustomResponse('ERROR', "Error while deleting Email Template", true);
     })
+  }
+  designTemplate(emailTemplate:VanityEmailTempalte){
+    this.editTemplate.emit(emailTemplate);
   }
 }
