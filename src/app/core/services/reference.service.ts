@@ -1943,6 +1943,10 @@ export class ReferenceService {
 		swal(errorMessage, "", "error");
 	}
 
+	showSweetAlertInfoMessage(errorMessage: string) {
+		swal(errorMessage, "", "info");
+	}
+
 	showSweetAlertServerErrorMessage() {
 		swal(this.properties.serverErrorMessage, "", "error");
 	}

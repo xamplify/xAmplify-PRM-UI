@@ -58,8 +58,6 @@ export class SocialCallbackComponent implements OnInit {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {
                                const currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
-                               let roles = currentUser.roles;
-                               let roleNames = roles.map(function (a) { return a.roleName; });
                                if(currentUser.hasCompany){
                                    this.redirect();
                                    window.close();
