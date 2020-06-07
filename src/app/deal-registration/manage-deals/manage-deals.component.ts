@@ -123,12 +123,10 @@ export class ManageDealsComponent implements OnInit
       .subscribe(
       response => {
            if(response.statusCode==200){
-             console.log(response)
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
               this.authenticationService.superiorRole = response.data.superiorRole;
               if(this.authenticationService.loggedInUserRole == "Team Member"){
-
                 dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
                     console.log(response)
                     this.superiorId = response;
@@ -137,7 +135,7 @@ export class ManageDealsComponent implements OnInit
             }else{
                 this.superiorId = this.authenticationService.getUserId();
                 this.init();
-            };
+            }
            }
         })
 
@@ -1239,22 +1237,10 @@ export class ManageDealsComponent implements OnInit
     resetCounters(event:number)
     {
         if(event==0){
-            if (!this.isPartner)
-            {
-                this.getTotalDeals();
-                this.getOpenedDeals();
-                //this.getClosedDeals();
-                this.getDealsOnHold();
-                this.getApprovedDeals();
-                this.getRejectedDeals();
-            } else
-            {
-                this.getTotalDealsByPartner();
-                this.getOpenedDealsByPartner();
-                //this.getClosedDealsByPartner();
-                this.getDealsOnHoldByPartner();
-                this.getApprovedDealsByPartner();
-                this.getRejectedDealsByPartner();
+            if (!this.isPartner){
+                this.getOpportunitesAnalyticsForVendor();
+            } else {
+                this.getOpportunitesAnalyticsForPartner();
             }
         }else{
             this.disableDealPushRegistrationForm();
