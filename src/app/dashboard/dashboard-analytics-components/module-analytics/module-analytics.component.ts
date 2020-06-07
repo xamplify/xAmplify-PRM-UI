@@ -35,7 +35,6 @@ export class ModuleAnalyticsComponent implements OnInit {
       response => {
         this.dashboardModuleAnalyticsViewDtos = response.data;
         this.loader = false;
-         
       },
       error => this.xtremandLogger.log(error),
       () => { }

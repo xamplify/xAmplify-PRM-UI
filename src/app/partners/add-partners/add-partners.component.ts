@@ -28,6 +28,8 @@ import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import { UserService } from '../../core/services/user.service';
 import {SendCampaignsComponent} from '../../common/send-campaigns/send-campaigns.component';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var $, Papa, swal, Swal: any;
 
 @Component( {
@@ -187,12 +189,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     @ViewChild('sendCampaignComponent') sendCampaignComponent: SendCampaignsComponent;
    cloudPartnersModalCheckBox = false;
    sourceType = "";
+   loggedInThroughVanityUrl = false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService,
-        public callActionSwitch: CallActionSwitch) {
+        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService) {
+        this.loggedInThroughVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
         this.sourceType = this.authenticationService.getSource();
         if(this.sourceType=="ALLBOUND"){
             this.router.navigate( ['/access-denied'] );
@@ -1263,47 +1267,54 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     googleContacts() {
         try {
-            if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-                this.fileTypeError = false;
-                this.socialPartners.firstName = '';
-                this.socialPartners.lastName = '';
-                this.socialPartners.emailId = '';
-                this.socialPartners.contactName = '';
-                this.socialPartners.showLogin = true;
-                this.socialPartners.statusCode = 0;
-                this.socialPartners.contactType = '';
-                this.socialPartners.alias = '';
-                this.socialPartners.socialNetwork = "GOOGLE";
-                this.contactService.socialProviderName = 'google';
-                this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
-                this.contactService.googleLogin( this.isPartner )
-                    .subscribe(
-                    data => {
-                        this.storeLogin = data;
-                        console.log( data );
-                        if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                            console.log( "AddContactComponent googleContacts() Authentication Success" );
-                            this.getGoogleContactsUsers();
-                            this.xtremandLogger.info( "called getGoogle contacts method:" );
-                        } else {
-                            this.referenceService.callBackURLCondition = 'partners';
-                            localStorage.setItem( "userAlias", data.userAlias )
-                            localStorage.setItem( "isPartner", data.isPartner )
-                            console.log( data.redirectUrl );
-                            console.log( data.userAlias );
-                            window.location.href = "" + data.redirectUrl;
-                        }
-                    },
-                    ( error: any ) => {
-                        this.xtremandLogger.error( error );
-                        if ( error._body.includes( "JSONObject" ) && error._body.includes( "access_token" ) && error._body.includes( "not found." ) ) {
-                            this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
-                        }
-                        this.xtremandLogger.errorPage( error );
-                    },
-                    () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
-                    );
+
+            if(this.loggedInThroughVanityUrl){
+                this.referenceService.showSweetAlertInfoMessage();
+            }else{
+                if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
+                    this.fileTypeError = false;
+                    this.socialPartners.firstName = '';
+                    this.socialPartners.lastName = '';
+                    this.socialPartners.emailId = '';
+                    this.socialPartners.contactName = '';
+                    this.socialPartners.showLogin = true;
+                    this.socialPartners.statusCode = 0;
+                    this.socialPartners.contactType = '';
+                    this.socialPartners.alias = '';
+                    this.socialPartners.socialNetwork = "GOOGLE";
+                    this.contactService.socialProviderName = 'google';
+                    this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
+                    this.contactService.googleLogin( this.isPartner )
+                        .subscribe(
+                        data => {
+                            this.storeLogin = data;
+                            console.log( data );
+                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                                console.log( "AddContactComponent googleContacts() Authentication Success" );
+                                this.getGoogleContactsUsers();
+                                this.xtremandLogger.info( "called getGoogle contacts method:" );
+                            } else {
+                                this.referenceService.callBackURLCondition = 'partners';
+                                localStorage.setItem( "userAlias", data.userAlias )
+                                localStorage.setItem( "isPartner", data.isPartner )
+                                console.log( data.redirectUrl );
+                                console.log( data.userAlias );
+                                window.location.href = "" + data.redirectUrl;
+                            }
+                        },
+                        ( error: any ) => {
+                            this.xtremandLogger.error( error );
+                            if ( error._body.includes( "JSONObject" ) && error._body.includes( "access_token" ) && error._body.includes( "not found." ) ) {
+                                this.xtremandLogger.errorMessage = 'authentication was not successful, you might have changed the password of social account or other reasons, please unlink your account and reconnect it.';
+                            }
+                            this.xtremandLogger.errorPage( error );
+                        },
+                        () => this.xtremandLogger.log( "AddContactsComponent googleContacts() finished." )
+                        );
+                }
             }
+
+            
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "google partners" );
         }
@@ -1425,39 +1436,46 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     checkingZohoContactsAuthentication() {
         try {
-            if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-                this.contactService.checkingZohoAuthentication()
-                    .subscribe(
-                    ( data: any ) => {
-                        this.xtremandLogger.info( data );
-                        if ( data.showLogin == true ) {
-                            $( "#zohoShowLoginPopup" ).show();
-                        }
-                        if ( data.authSuccess == true ) {
-                            $( "#zohoShowAuthorisedPopup" ).show();
-                        }
-                    },
-                    ( error: any ) => {
-                        var body = error['_body'];
-                        if ( body != "" ) {
-                            var response = JSON.parse( body );
-                            if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                                this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
-                                setTimeout(() => {
-                                    this.zohoAuthStorageError = '';
-                                }, 5000 )
+
+            if(this.loggedInThroughVanityUrl){
+                this.referenceService.showSweetAlertInfoMessage();
+            }else{
+                if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
+                    this.contactService.checkingZohoAuthentication()
+                        .subscribe(
+                        ( data: any ) => {
+                            this.xtremandLogger.info( data );
+                            if ( data.showLogin == true ) {
+                                $( "#zohoShowLoginPopup" ).show();
+                            }
+                            if ( data.authSuccess == true ) {
+                                $( "#zohoShowAuthorisedPopup" ).show();
+                            }
+                        },
+                        ( error: any ) => {
+                            var body = error['_body'];
+                            if ( body != "" ) {
+                                var response = JSON.parse( body );
+                                if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
+                                    this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
+                                    setTimeout(() => {
+                                        this.zohoAuthStorageError = '';
+                                    }, 5000 )
+                                } else {
+                                    this.xtremandLogger.errorPage( error );
+                                }
                             } else {
                                 this.xtremandLogger.errorPage( error );
                             }
-                        } else {
-                            this.xtremandLogger.errorPage( error );
-                        }
-                        console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
-
-                    },
-                    () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
-                    )
+                            console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
+    
+                        },
+                        () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
+                        )
+                }
             }
+
+            
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
         }
@@ -1706,36 +1724,41 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     salesforceContacts() {
         try {
-            if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-                this.contactType = "";
-                this.fileTypeError = false;
-                this.socialPartners.socialNetwork = "salesforce";
-                this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
-                this.contactService.salesforceLogin( this.isPartner )
-                    .subscribe(
-                    data => {
-                        this.storeLogin = data;
-                        console.log( data );
-                        if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                           // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
-                            /*$( '#salesforceModal' ).modal( 'show' );*/
-                            this.showModal();
-                            console.log( "AddContactComponent salesforce() Authentication Success" );
-                            this.checkingPopupValues();
-                        } else {
-                            localStorage.setItem( "userAlias", data.userAlias )
-                            localStorage.setItem( "isPartner", data.isPartner )
-                            console.log( data.redirectUrl );
-                            console.log( data.userAlias );
-                            window.location.href = "" + data.redirectUrl;
-                        }
-                    },
-                    ( error: any ) => {
-                        this.xtremandLogger.error( error );
-                    },
-                    () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
-                    );
+            if(this.loggedInThroughVanityUrl){
+                this.referenceService.showSweetAlertInfoMessage();
+            }else{
+                if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
+                    this.contactType = "";
+                    this.fileTypeError = false;
+                    this.socialPartners.socialNetwork = "salesforce";
+                    this.xtremandLogger.info( "socialContacts" + this.socialPartners.socialNetwork );
+                    this.contactService.salesforceLogin( this.isPartner )
+                        .subscribe(
+                        data => {
+                            this.storeLogin = data;
+                            console.log( data );
+                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                               // $( '#salesforceModal' ).appendTo( "body" ).modal( 'show' );
+                                /*$( '#salesforceModal' ).modal( 'show' );*/
+                                this.showModal();
+                                console.log( "AddContactComponent salesforce() Authentication Success" );
+                                this.checkingPopupValues();
+                            } else {
+                                localStorage.setItem( "userAlias", data.userAlias )
+                                localStorage.setItem( "isPartner", data.isPartner )
+                                console.log( data.redirectUrl );
+                                console.log( data.userAlias );
+                                window.location.href = "" + data.redirectUrl;
+                            }
+                        },
+                        ( error: any ) => {
+                            this.xtremandLogger.error( error );
+                        },
+                        () => this.xtremandLogger.log( "addContactComponent salesforceContacts() login finished." )
+                        );
+                }
             }
+            
         } catch ( error ) {
             this.xtremandLogger.error( error, "addPartnerComponent", "salesforce Partners" );
         }
@@ -2463,63 +2486,69 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
     checkingMarketoContactsAuthentication()
     {
-        this.selectedAddPartnerOption = 8;
-        try
-        {
-            if (this.selectedAddPartnerOption == 8 && !this.disableOtherFuctionality)
+        if(this.loggedInThroughVanityUrl){
+            this.referenceService.showSweetAlertInfoMessage();
+        }else{
+            this.selectedAddPartnerOption = 8;
+            try
             {
-                this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
-                    .subscribe(
-                        (data: any) =>
-                        {
-
-                            if (data.statusCode == 8000)
+                if (this.selectedAddPartnerOption == 8 && !this.disableOtherFuctionality)
+                {
+                    this.contactService.checkMarketoCredentials(this.authenticationService.getUserId())
+                        .subscribe(
+                            (data: any) =>
                             {
-                                this.showMarketoForm = false;
-
-                                this.marketoAuthError = false;
-                                this.loading = false;
-                                this.retriveMarketoContacts();
-                            }
-                            else
-                            {
-
-
-                                $("#marketoShowLoginPopup").modal('show');
-                                this.marketoAuthError = false;
-                                this.loading = false;
-
-                            }
-                            this.xtremandLogger.info(data);
-
-                        },
-                        (error: any) =>
-                        {
-                            var body = error['_body'];
-                            if (body != "")
-                            {
-                                var response = JSON.parse(body);
-                                if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!")
+    
+                                if (data.statusCode == 8000)
                                 {
-                                    this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
+                                    this.showMarketoForm = false;
+    
+                                    this.marketoAuthError = false;
+                                    this.loading = false;
+                                    this.retriveMarketoContacts();
+                                }
+                                else
+                                {
+    
+    
+                                    $("#marketoShowLoginPopup").modal('show');
+                                    this.marketoAuthError = false;
+                                    this.loading = false;
+    
+                                }
+                                this.xtremandLogger.info(data);
+    
+                            },
+                            (error: any) =>
+                            {
+                                var body = error['_body'];
+                                if (body != "")
+                                {
+                                    var response = JSON.parse(body);
+                                    if (response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!")
+                                    {
+                                        this.customResponse = new CustomResponse('ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true);
+                                    } else
+                                    {
+                                        this.xtremandLogger.errorPage(error);
+                                    }
                                 } else
                                 {
                                     this.xtremandLogger.errorPage(error);
                                 }
-                            } else
-                            {
-                                this.xtremandLogger.errorPage(error);
-                            }
-                            console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
-
-                        },
-                        () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
-                    )
+                                console.log("errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error)
+    
+                            },
+                            () => this.xtremandLogger.info("Add contact component loadContactListsName() finished")
+                        )
+                }
+            } catch (error)
+            {
+                this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
             }
-        } catch (error)
-        {
-            this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
         }
+
+       
     }
     
     saveMarketoContacts()
@@ -2872,22 +2901,28 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     // HubSpot Implementation 
     
     checkingHubSpotContactsAuthentication(){
-      if(this.selectedAddPartnerOption == 5){
-        this.hubSpotService.configHubSpot().subscribe(data => {
-            let response = data;
-            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-                this.xtremandLogger.info("isAuthorize true");
-                this.showHubSpotModal();               
-            }
-            else{
-                if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
-                    window.location.href = response.data.redirectUrl;
-                }                
-            }            
-        }, (error: any) => {
-            this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
-        }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
-      }
+        if(this.loggedInThroughVanityUrl){
+            this.referenceService.showSweetAlertInfoMessage();
+        }else{
+            if(this.selectedAddPartnerOption == 5){
+                this.hubSpotService.configHubSpot().subscribe(data => {
+                    let response = data;
+                    if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+                        this.xtremandLogger.info("isAuthorize true");
+                        this.showHubSpotModal();               
+                    }
+                    else{
+                        if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                            window.location.href = response.data.redirectUrl;
+                        }                
+                    }            
+                }, (error: any) => {
+                    this.xtremandLogger.error(error, "Error in HubSpot checkIntegrations()");
+                }, () => this.xtremandLogger.log("HubSpot Configuration Checking done"));
+              }
+        }
+
+      
     }
 
     showHubSpotModal() {

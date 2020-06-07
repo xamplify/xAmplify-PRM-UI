@@ -1943,8 +1943,8 @@ export class ReferenceService {
 		swal(errorMessage, "", "error");
 	}
 
-	showSweetAlertInfoMessage(errorMessage: string) {
-		swal(errorMessage, "", "info");
+	showSweetAlertInfoMessage() {
+		swal("Work In Progress", "", "info");
 	}
 
 	showSweetAlertServerErrorMessage() {

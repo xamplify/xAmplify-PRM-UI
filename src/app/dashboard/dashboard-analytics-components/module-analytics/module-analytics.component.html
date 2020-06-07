@@ -7,15 +7,16 @@
  [className]="dto.hasAccess? 'col-sm-4 col-xs-6 col-lg-3 col-md-3' : 'col-sm-4 col-xs-6 col-lg-3 col-md-3 dashboard-access-denied'" (click)="goToManage(dto)">
 <a  class="{{dto.color}}">
   <div class="visual">
-    <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}}"></i>
-    <img *ngIf="dto.moduleId==3"  class="img-dash" src="assets/images/white15.png">
+    <i *ngIf="dto.moduleId!=3" class="{{dto.faIcon}}" aria-hidden="true"></i>
+    <img *ngIf="dto.moduleId==3"  class="img-dash" src="assets/images/white15.png" alt="No Image Found">
   </div>
   <div class="details">
     <div class="number">{{dto.count}}</div>
     <div class="desc">{{dto.moduleName | translate}}</div>
   </div>
   <span class="morePadding">
-    <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+    <a [className]="dto.hasAccess? 'more':'more dashboard-access-denied'" translate> Detailed view 
+      <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i></a>
   </span>
 </a>
 </div>
