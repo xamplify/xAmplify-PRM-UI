@@ -24,7 +24,7 @@ export class VanityEmailTemplatesComponent implements OnInit {
   ngxloading = false;
   searchKey = "";
   @Output() editTemplate = new EventEmitter();
-  constructor(private vanityURLService: VanityURLService, private httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties) { }
+  constructor(private vanityURLService: VanityURLService, public httpRequestLoader: HttpRequestLoader, private authenticationService: AuthenticationService, private referenceService: ReferenceService, private pagerService: PagerService, private properties: Properties) { }
 
   ngOnInit() {
     this.getVanityEmailTemplates(this.pagination);
