@@ -3,8 +3,8 @@
                   		Show Forms 
    </button>
       <!-- ----------------------List Available Forms------------------- -->
-    <div class="modal right " id="forms-list" data-backdrop="static">
-      <div class="modal-lg" style="width: 100%;">
+    <div class="modal right" id="forms-list" data-backdrop="static">
+      <div class="modal-lg full">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close-circle" data-dismiss="modal">
@@ -36,14 +36,14 @@
 				</div>
 				<app-list-loader *ngIf="formsLoader.isLoading"></app-list-loader>
 				<div class="table-responsive" *ngIf="!formsLoader.isLoading">
-					<table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0">
+					<table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" aria-describedby="describe">
 						<thead>
 						  <tr>
-						     <th *ngIf="authenticationService.isShowForms">Select</th>
-							 <th>Form Details</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" >Link</th>
-               <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
-							 <th class="text-center">Preview</th>
+						    <th *ngIf="authenticationService.isShowForms">Select</th>
+							  <th>Form Details</th>
+                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" >Link</th>
+                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
+							  <th class="text-center">Preview</th>
 						  </tr>
 						</thead>
 						<tbody>
@@ -57,41 +57,44 @@
 									{{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
 								 </h4>
 								 <h6>
-									Created By <b>{{form.createdName}}</b>
+									Created By <strong>{{form.createdName}}</strong>
 								 </h6>
 								 <h6>
-									From <b>{{form.companyName}}</b>
+									From <strong>{{form.companyName}}</strong>
 								 </h6>
 							  </td>
 							  <td [hidden]="authenticationService.isShowForms">
-                  <input type="text" id="copy-link" readonly="readonly" style="width: 250px; height: 35px;cursor:not-allowed;background-color: #eae9e9;" value="{{form.ailasUrl}}" #userinput><br>
+                  <input type="text" id="copy-link" readonly="readonly" value="{{form.ailasUrl}}" #userinput><br>
                   <tr>
-                  <font class="success" id="copied-message-{{i}}" style="display:none;">
-                    <b>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
+                  <p class="success" id="copied-message-{{i}}" style="display: none;">
+                    <strong>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                  </p>
                 </tr>
                 </td>
                   <td [hidden]="authenticationService.isShowForms">
-                    <div class="modal-icon">
-                  <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
-									  <i class="fa fa-copy" aria-hidden="true"></i>
-                  </a>
-                </div>
+                    <div class="modal-icon ml " id="custom-margin-{{i}}">
+                      <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(userinput,'Page Link',i)">
+                        <i class="fa fa-copy" aria-hidden="true"></i>
+                      </a>
+                  </div>
                 </td>
                 <td [hidden]="authenticationService.isShowForms">
                   <textarea id="text-area" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
                   <tr>
-                  <font class="success" id="embed-copied-message-{{i}}" style="display:none;">
-                    <b>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
+                  <p class="success" id="embed-copied-message-{{i}}" style="display:none;">
+                    <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                  </p>
                 </tr>
                   </td>
                   <td [hidden]="authenticationService.isShowForms">
-                  <div class="modal-icon">
+                  <div class="modal-icon cmif" id="cmif-{{i}}">
                   <a [hidden]="authenticationService.isShowForms" data-toggle="tooltip" data-placement="top" title="Copy" (click)="copyInputMessage(iframeUrlInput,'Embed Link',i)">
 									  <i class="fa fa-copy" aria-hidden="true" ></i>
                   </a>
                 </div>
-                  <font class="success" id="embed-copied-message-{{i}}" style="display:none;">
-                    <b>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></b></font>
+                  <p class="success" id="embed-copied-message-{{i}}" style="display:none;">
+                    <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                  </p>
                 </td>
 							  <td id="actions-row" style="text-align: center;  vertical-align: middle;">
 									<a data-toggle="tooltip" data-placement="top" title="Preview" (click)="previewForm(form.id)">

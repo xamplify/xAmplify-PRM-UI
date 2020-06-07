@@ -71,21 +71,21 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.htmlBody = htmlContent;
         emailTemplate.userId = self.loggedInUserId;
         if (jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0 ) {
-          swal( "", "Whoops! We’re unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
+          swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
           return false;
       }
       if(jsonContent.indexOf("<<LoginLink>>")<0 && emailTemplate.id==1){
-        swal( "", "Whoops! We’re unable to save this template because you deleted 'LoginLink' tag.", "error" );
+        swal( "", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error" );
         return false;
       }
 
       if(jsonContent.indexOf("<login_url>")<0 && emailTemplate.id!=1){
-        swal( "", "Whoops! We’re unable to save this template because you deleted 'login_url' tag.", "error" );
+        swal( "", "Whoops! We are unable to save this template because you deleted 'login_url' tag.", "error" );
         return false;
       }
 
       if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0 && emailTemplate.id==3){
-        swal( "", "Whoops! We’re unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.", "error" );
+        swal( "", "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.", "error" );
         return false;
       }
 

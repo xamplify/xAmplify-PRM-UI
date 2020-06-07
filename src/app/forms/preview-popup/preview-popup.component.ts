@@ -121,6 +121,8 @@ export class PreviewPopupComponent implements OnInit {
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
   
   copyInputMessage(inputElement,type: string,index:number){
+      $('.ml').css({'margin-bottom':'0px'});
+      $('.cmif').css({'margin-bottom':'0px'});
       $(".success").hide();
       $('#copied-message-'+index).hide();
       $('#embed-copied-message-'+index).hide();
@@ -129,8 +131,10 @@ export class PreviewPopupComponent implements OnInit {
       inputElement.setSelectionRange(0, 0);
       if (type === "Page Link") {
         $('#copied-message-'+index).show(500);
+        $('#custom-margin-'+index).css({'margin-bottom':'32px'});
     } else {
         $('#embed-copied-message-'+index).show(500);
+        $('#cmif-'+index).css({'margin-bottom':'13px'});
     }
     }
   
