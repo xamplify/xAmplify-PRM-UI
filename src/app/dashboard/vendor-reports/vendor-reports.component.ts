@@ -77,6 +77,7 @@ export class VendorReportsComponent implements OnInit {
       if (result.statusCode === 200) {
         let vanityURL = result.data + "au/" + this.authenticationService.user.alias;
         window.open(vanityURL);
+        this.loading = false;
       }
     });
     
