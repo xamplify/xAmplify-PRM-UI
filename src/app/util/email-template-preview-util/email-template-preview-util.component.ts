@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReferenceService } from '../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 declare var $,swal:any;
 @Component({
@@ -12,7 +13,7 @@ export class EmailTemplatePreviewUtilComponent implements OnInit {
   emailTemplateName: any;
   htmlContent = "#modal-body-content";
   modalId = "#emailTemplatePreview";
-  constructor(public referenceService: ReferenceService) { }
+  constructor(public referenceService: ReferenceService,public authenticationService:AuthenticationService) { }
 
   ngOnInit() {
   }
@@ -25,6 +26,7 @@ export class EmailTemplatePreviewUtilComponent implements OnInit {
     $('.modal .modal-body').css('overflow-y', 'auto');
     $(this.modalId).modal('show');
     $('.modal .modal-body').css('max-height', $(window).height() * 0.75);
+    htmlBody = htmlBody.replace( "https://xamp.io/vod/replace-company-logo.png", this.authenticationService.MEDIA_URL + this.referenceService.companyProfileImage );
     if(this.referenceService.hasMyMergeTagsExits(htmlBody)){
       this.referenceService.getSenderMergeTagsData().subscribe(
               response => {
