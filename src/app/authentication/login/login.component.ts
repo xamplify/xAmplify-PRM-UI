@@ -39,9 +39,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   roles: Array<Role>;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
+  isLoggedInVanityUrl = false;
+
     constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
         public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
-        if (this.referenceService.userProviderMessage !== "") {
+          this.isLoggedInVanityUrl =  this.vanityURLService.isVanityURLEnabled();
+          if (this.referenceService.userProviderMessage !== "") {
             this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
         }
         let sessionExpiredMessage = this.authenticationService.sessinExpriedMessage;
@@ -236,7 +239,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
     }else{
       let loginUrl = "/"+socialProvider.name+"/login";
-       this.router.navigate([loginUrl]);
+      if(this.isLoggedInVanityUrl){
+        let x = screen.width/2 - 700/2;
+        let y = screen.height/2 - 450/2;
+        window.open(loginUrl,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+      }else{
+          this.router.navigate([loginUrl]);
+      }
+      
+
     }
   }
 

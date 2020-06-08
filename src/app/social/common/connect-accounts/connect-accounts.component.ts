@@ -21,7 +21,7 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
                     if(this.isLoggedInVanityUrl){
                      var x = screen.width/2 - 700/2;
                      var y = screen.height/2 - 450/2;
-                     window.open(" " + providerName + '/login', "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                     window.open(providerName+"/login","Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485")
                     }else{
                     this.router.navigate( [providerName + '/login'] );
                     }
@@ -32,6 +32,7 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
     ngOnDestroy(){
       $('#connectAccountsModal').modal('hide');
     }
+
 
     
 }

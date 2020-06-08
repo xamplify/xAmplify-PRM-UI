@@ -29,7 +29,6 @@ export class SocialCallbackComponent implements OnInit {
                 this.socialConnection = result;
                 if(localStorage.getItem( 'currentUser' )){
                     this.redirect();
-                    window.close();
                 }else{
                     this.refService.userName = result["emailId"];
 
@@ -60,19 +59,15 @@ export class SocialCallbackComponent implements OnInit {
                                const currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
                                if(currentUser.hasCompany){
                                    this.redirect();
-                                   window.close();
                                }else{
-                                   this.router.navigate(['/home/dashboard/add-company-profile']);
-                                   window.close();
+                                this.reloadParentWindow('/home/dashboard/add-company-profile');
                                }
                             } else {
-                                this.router.navigate( ['/logout'] );
-                                window.close();
+                                this.reloadParentWindow('/logout');
                             }
                         },
                         error => {
                             this.error = error;
-                            window.close();
                         },
                         () => console.log( 'login() Complete' ) );
                     return false;
@@ -89,10 +84,12 @@ export class SocialCallbackComponent implements OnInit {
 
     redirect() {
         if ( !this.socialConnection.existingUser && this.socialConnection.source !== 'GOOGLE' ){
-            this.router.navigate( ['/home/social/manage/' + this.providerName] );
+            let url = "/home/social/manage/"+this.providerName;
+            this.reloadParentWindow(url);
         }
         else{
-            this.router.navigate( ['/home/dashboard/default'] );
+            let url = "/home/dashboard/default";
+            this.reloadParentWindow(url);
         }
     }
 
@@ -107,4 +104,14 @@ export class SocialCallbackComponent implements OnInit {
         }
     }
 
+
+    reloadParentWindow(url:string){
+        window.opener.location.href=url;
+        self.close();
+    }
+
+    closeWindow(){
+        window.opener.postMessage('Something went wrong', '*');
+        self.close();
+    }
 }
