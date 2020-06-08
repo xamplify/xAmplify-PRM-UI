@@ -246,15 +246,19 @@ export class SendCampaignsComponent implements OnInit {
     this.contactService.sendCampaignEmails(campaignDetails)
       .subscribe(
         data => {
-          this.sendSuccess = true;
-          this.statusCode = data.statusCode;
-          if(data.statusCode==200){
-            this.responseMessage = "Campaign(s) Shared Successfully";
-          }else{
-            this.responseMessage = data.message;
-          }
-          this.ngxLoading = false;
-          this.resetFields();
+            if (data.access) {
+                this.sendSuccess = true;
+                this.statusCode = data.statusCode;
+                if (data.statusCode == 200) {
+                    this.responseMessage = "Campaign(s) Shared Successfully";
+                } else {
+                    this.responseMessage = data.message;
+                }
+                this.ngxLoading = false;
+                this.resetFields();
+            } else {
+                this.authenticationService.forceToLogout();
+            }
         },
         error => {
           this.ngxLoading = false;

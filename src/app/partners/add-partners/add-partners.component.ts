@@ -1122,11 +1122,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.partnerId[0] = contactId;
             this.contactService.removeContactListUsers( this.partnerListId, this.partnerId )
                 .subscribe(
-                ( data: any ) => {
-                    data = data;
-                    console.log( "update Contacts ListUsers:" + data );
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
-                    this.loadPartnerList( this.pagination );
+                (data: any) => {
+                    if (data.access) {
+                        data = data;
+                        console.log("update Contacts ListUsers:" + data);
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+                        this.loadPartnerList(this.pagination);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
                 },
                 ( error: any ) => {
                     let body: string = error['_body'];
@@ -1171,11 +1175,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.addPartnerModalClose();
             this.contactService.updateContactListUser( this.partnerListId, this.editUser )
                 .subscribe(
-                ( data: any ) => {
-                    console.log( data );
-                    //this.setResponseDetails( 'SUCCESS', 'your Partner has been updated successfully' );
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true );
-                    this.loadPartnerList( this.pagination );
+                (data: any) => {
+                    if (data.access) {
+                        console.log(data);
+                        //this.setResponseDetails( 'SUCCESS', 'your Partner has been updated successfully' );
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+                        this.loadPartnerList(this.pagination);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
                 },
                 error => this.xtremandLogger.error( error ),
                 () => this.xtremandLogger.info( "EditPartnerComponent updateContactListUser() finished" )
@@ -2214,10 +2222,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.contactService.mailSend( partnerId, this.partnerListId )
                 .subscribe(
                 data => {
-                    console.log( data );
-                    this.loading = false;
-                    if ( data.message == "success" ) {
-                        this.customResponse = new CustomResponse( 'SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true );
+                    if (data.access) {
+                        console.log(data);
+                        this.loading = false;
+                        if (data.message == "success") {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.EMAIL_SENT_SUCCESS, true);
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
                     }
                 },
                 ( error: any ) => {
@@ -3146,12 +3158,16 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.info( this.editContactComponent.selectedContactListIds );
             this.contactService.removeContactListUsers( this.partnerListId, this.editContactComponent.selectedContactListIds )
                 .subscribe(
-                ( data: any ) => {
-                    data = data;
-                    console.log( "update Partner ListUsers:" + data );
-                    this.customResponse = new CustomResponse( 'SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true );
-                    this.loadPartnerList(this.pagination);
-                    this.editContactComponent.selectedContactListIds.length = 0;
+                (data: any) => {
+                    if (data.access) {
+                        data = data;
+                        console.log("update Partner ListUsers:" + data);
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+                        this.loadPartnerList(this.pagination);
+                        this.editContactComponent.selectedContactListIds.length = 0;
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
                 },
                 ( error: any ) => {
                     if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {

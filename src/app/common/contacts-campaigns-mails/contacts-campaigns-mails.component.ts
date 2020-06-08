@@ -4,6 +4,7 @@ import { ContactsByType } from '../../contacts/models/contacts-by-type';
 import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { ReferenceService } from '../../core/services/reference.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 declare var $: any;
 
 
@@ -27,7 +28,8 @@ export class ContactsCampaignsMailsComponent implements OnInit {
     loading = false;
     isHeaderCheckBoxChecked: boolean = false;
 
-    constructor(public referenceService: ReferenceService, public pagerService: PagerService, public pagination: Pagination, public contactService: ContactService ) {
+    constructor(public referenceService: ReferenceService, public pagerService: PagerService, public pagination: Pagination, public contactService: ContactService,
+    		public authenticationService: AuthenticationService) {
         this.notifyParent = new EventEmitter();
     }
     
@@ -98,20 +100,24 @@ export class ContactsCampaignsMailsComponent implements OnInit {
             this.contactService.sendCampaignEmails( campaignDetails )
                 .subscribe(
                 data => {
-                    console.log( data );
-                    $( '#sendMailsModal' ).modal( 'hide' );
-                    $( 'body' ).removeClass( 'modal-open' );
-                    $( '.modal-backdrop fade in' ).remove();
-                    this.selectedCampaignIds.length = 0;
-                    this.userEmails.length = 0;
-                    if(data.statusCode === 2001){
-                        this.notifyParent.emit( "users are unSubscribed for emails" );
-                    }else if(data.statusCode === 2002){
-                        this.notifyParent.emit( "user has unSubscribed for emails" );
-                    }else{
-                        this.notifyParent.emit( "Emails Send Successfully" );
+                    if (data.access) {
+                        console.log(data);
+                        $('#sendMailsModal').modal('hide');
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop fade in').remove();
+                        this.selectedCampaignIds.length = 0;
+                        this.userEmails.length = 0;
+                        if (data.statusCode === 2001) {
+                            this.notifyParent.emit("users are unSubscribed for emails");
+                        } else if (data.statusCode === 2002) {
+                            this.notifyParent.emit("user has unSubscribed for emails");
+                        } else {
+                            this.notifyParent.emit("Emails Send Successfully");
+                        }
+                        this.loading = false;
+                    } else {
+                        this.authenticationService.forceToLogout();
                     }
-                    this.loading = false;
                 },
                 error => {
                     console.log( error )
