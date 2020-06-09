@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from "@angular/router";
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 
 declare var $: any;
@@ -13,7 +14,7 @@ declare var $: any;
 export class ConnectAccountsComponent implements OnInit, OnDestroy {
     isLoggedInVanityUrl = false;
     loggedInUserId = 0;
-    constructor( private router: Router,private vanityUrlService:VanityURLService,private authenticationService: AuthenticationService) { 
+    constructor( private router: Router,private vanityUrlService:VanityURLService,private authenticationService: AuthenticationService,private refernceService:ReferenceService) { 
      this.isLoggedInVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
      this.loggedInUserId = this.authenticationService.getUserId();
     }
@@ -21,9 +22,10 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
     socialLogin( providerName: string ) {
                     $( '#connectAccountsModal' ).modal( 'toggle' );
                     if(this.isLoggedInVanityUrl){
-                     var x = screen.width/2 - 700/2;
-                     var y = screen.height/2 - 450/2;
-                     window.open(providerName+"/login/"+this.loggedInUserId,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                      this.refernceService.showSweetAlertInfoMessage();
+                    //  var x = screen.width/2 - 700/2;
+                    //  var y = screen.height/2 - 450/2;
+                    //  window.open(providerName+"/login/"+this.loggedInUserId,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
                   }else{
                     this.router.navigate( [providerName + '/login'] );
                     }

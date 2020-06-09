@@ -5,7 +5,6 @@ import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
-import { VanityURL } from 'app/vanity-url/models/vanity.url';
 declare var $:any;
 @Component( {
     selector: 'app-social-callback',

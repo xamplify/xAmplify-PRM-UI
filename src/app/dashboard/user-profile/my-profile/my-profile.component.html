@@ -102,7 +102,7 @@
                             </li>		 
                             <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
-                                    <i class="fa fa-list" aria-hidden="true"></i> Your Templates </a>
+                                 Your Templates </a>
                             </li>
 
                         </ng-container>

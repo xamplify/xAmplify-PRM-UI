@@ -9,4 +9,5 @@ export class VanityEmailTempalte{
     defaultEmailTemplateId:number;
     companyId:number;
     imagePath:string;
+    typeInString:string;
 }
