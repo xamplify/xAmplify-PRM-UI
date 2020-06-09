@@ -7,8 +7,8 @@
         <!-- BEGIN SIDEBAR MENU -->
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li [ngClass]="{'active': location.path().includes('dashboard')}">
-                <a [routerLink]="['/home/dashboard/default']">
-                    <!-- [class.disabled]="!authService.user.hasCompany ?true:null" -->
+                <a [routerLink]="['/home/dashboard/default']"  [class.disabled]="!authService.user.hasCompany ?true:null">
+                   
                     <i class="icon-home"></i>
                     <span class="title" translate>Account Dashboard</span>                    
                     <span class="selected"></span>

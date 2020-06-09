@@ -73,6 +73,7 @@ export const routes: Routes = [
     { path: 'userlock', component: ProfileLockComponent },
     { path: 'logout', component: LoginComponent },
     { path: ':social/login', component: SocialLoginComponent },
+    { path: ':social/login/:userId', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'share/:alias', component: ShareVideoComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },

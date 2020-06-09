@@ -4,7 +4,9 @@ import { SocialConnection } from '../../../social/models/social-connection';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
-
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { VanityURL } from 'app/vanity-url/models/vanity.url';
+declare var $:any;
 @Component( {
     selector: 'app-social-callback',
     templateUrl: './social-callback.component.html',
@@ -14,16 +16,18 @@ export class SocialCallbackComponent implements OnInit {
     providerName: string;
     socialConnection: SocialConnection = new SocialConnection();
     error: string;
-    
+    isLoggedInVanityUrl = false;
+    loggedInUserIdFromParentWindow = 0;
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService,
-        private refService: ReferenceService) { }
+        private refService: ReferenceService,private vanityUrlService:VanityURLService) {
+            this.isLoggedInVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
+         }
 
     callback( providerName: string ) {
         let client_id: string;
         let client_secret: string;
-
-        this.socialService.callback( providerName )
+        this.socialService.callback(providerName)
             .subscribe(
             result => {
                 this.socialConnection = result;
@@ -31,7 +35,6 @@ export class SocialCallbackComponent implements OnInit {
                     this.redirect();
                 }else{
                     this.refService.userName = result["emailId"];
-
                     if ( providerName === "salesforce" ) {
                         client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
                         client_secret = "8542957351694434668";
@@ -106,12 +109,20 @@ export class SocialCallbackComponent implements OnInit {
 
 
     reloadParentWindow(url:string){
-        window.opener.location.href=url;
-        self.close();
+        if(this.isLoggedInVanityUrl){
+            this.refService.closeChildWindowAndRefreshParentWindow(url);
+        }else{
+            this.router.navigate([url]);
+        }
+        
     }
 
     closeWindow(){
-        window.opener.postMessage('Something went wrong', '*');
-        self.close();
+        if(this.isLoggedInVanityUrl){
+           this.refService.closeChildWindowOnError();
+        }else{
+            this.router.navigate(['/']);
+        }
+       
     }
 }

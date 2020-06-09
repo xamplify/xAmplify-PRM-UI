@@ -9,7 +9,10 @@ import { SocialService } from '../../services/social.service';
 })
 export class SocialLoginComponent implements OnInit {
     error: string;
-    constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService) { }
+    parentWindowUserId:number;
+    constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService) {
+
+     }
 
     login(providerName: string) {
         this.socialService.login(providerName)
@@ -29,9 +32,7 @@ export class SocialLoginComponent implements OnInit {
             () => console.log('login() Complete'));
     }
     
-    reload(){
-        window.location.reload();
-    }
+
 
     ngOnInit() {
         try {
@@ -43,4 +44,5 @@ export class SocialLoginComponent implements OnInit {
         }
     }
 
+  
 }

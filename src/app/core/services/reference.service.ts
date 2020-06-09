@@ -2036,4 +2036,20 @@ export class ReferenceService {
 			.map(this.extractData)
 			.catch(this.handleError);
 	}
+
+	openChildWindow(url:string){
+		var x = screen.width/2 - 700/2;
+		var y = screen.height/2 - 450/2;
+		window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+	}
+
+	closeChildWindowAndRefreshParentWindow(url:string){
+		window.opener.location.href=url;
+       // self.close();
+	}
+
+	closeChildWindowOnError(){
+        window.opener.postMessage('Something went wrong', '*');
+        self.close();
+    }
 }
