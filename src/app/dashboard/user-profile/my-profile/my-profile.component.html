@@ -8,16 +8,16 @@
         <ul class="page-breadcrumb">
             <li *ngIf="hasCompany && !authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
-                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li *ngIf="authenticationService.isSuperAdmin()">
                 <i class="fa fa-home" aria-hidden="true"></i>
-                <a [routerLink]="['/home/dashboard/admin-report']"> Admin  Report</a>
+                <a [routerLink]="['/home/dashboard/admin-report']" translate> Admin  Report</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
-                <a>User Account</a>
+                <a translate>User Account</a>
             </li>
         </ul>
     </div>
@@ -102,7 +102,7 @@
                             </li>		 
                             <li *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()" [ngClass]="{'active': activeTabName == 'templates'}">
                                 <a (click)="activateTab('templates');clearCustomResponse()" translate>
-                                 Your Templates </a>
+                                     Your Templates </a>
                             </li>
 
                         </ng-container>

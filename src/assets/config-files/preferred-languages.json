@@ -6,6 +6,14 @@
 		{
 			"name": "French",
 			"id": "fr"
+		},
+		{
+			"name": "Spanish",
+			"id": "es"
+		},
+		{
+			"name": "Japanese",
+			"id": "ja"
 		}
 	]
 }
