@@ -59,7 +59,6 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
       public router: Router, public landingPageService: LandingPageService, public logger: XtremandLogger,
       public actionsDescription: ActionsDescription, public sortOption: SortOption, 
       private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer, private vanityUrlService:VanityURLService) {
-      this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
       this.loggedInUserId = this.authenticationService.getUserId();
       this.referenceService.renderer = this.renderer;
       this.pagination.userId = this.loggedInUserId;
@@ -79,6 +78,10 @@ export class LandingPagesListViewUtilComponent implements OnInit, OnDestroy {
 
   listLandingPages(pagination: Pagination) {
       this.referenceService.loading(this.httpRequestLoader, true);
+      if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this. pagination.vanityUrlFilter = true;
+        }
       this.landingPageService.list(pagination, this.isPartnerLandingPage).subscribe(
           (response: any) => {
             if(response.access){

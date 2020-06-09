@@ -18,6 +18,8 @@ import { LandingPageService } from '../../landing-pages/services/landing-page.se
 import { SenderMergeTag } from '../../core/models/sender-merge-tag';
 import {AddMoreReceiversComponent} from 'app/campaigns/add-more-receivers/add-more-receivers.component';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { VanityURL } from 'app/vanity-url/models/vanity.url';
 
 declare var $,swal: any;
 
@@ -79,7 +81,8 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService:UtilService,
       public referenceService: ReferenceService, private socialService: SocialService,
-      public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService,public renderer:Renderer) {
+      public authenticationService: AuthenticationService,private route: ActivatedRoute,private emailTemplateService:EmailTemplateService,
+      public renderer:Renderer,private vanityUrlService:VanityURLService) {
       this.referenceService.renderer = this.renderer;
       let superiorId = parseInt(localStorage.getItem('superiorId'));
       if(isNaN(superiorId)){
@@ -111,7 +114,10 @@ export class RedistributeCampaignsListViewUtilComponent implements OnInit,OnDest
           pagination.filterValue = null;
           pagination.filterKey = null;
       }
-      
+      if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this. pagination.vanityUrlFilter = true;
+    }
       this.campaignService.listPartnerCampaigns(this.pagination,this.superiorId)
         .subscribe(
           data => {

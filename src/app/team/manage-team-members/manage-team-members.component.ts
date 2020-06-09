@@ -17,13 +17,14 @@ import { UserService } from "app/core/services/user.service";
 import { UtilService } from '../../core/services/util.service';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import { Properties } from '../../common/models/properties';
+import { RegularExpressions } from '../../common/models/regular-expressions';
 
 declare var $, swal: any;
 @Component({
 	selector: 'app-manage-team-members',
 	templateUrl: './manage-team-members.component.html',
 	styleUrls: ['./manage-team-members.component.css'],
-	providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch,Properties]
+	providers: [Pagination, HttpRequestLoader, FileUtil, CallActionSwitch,Properties,RegularExpressions]
 })
 export class ManageTeamMembersComponent implements OnInit {
 
@@ -84,7 +85,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
-		 public utilService: UtilService,private vanityUrlService:VanityURLService,public properties: Properties) {
+		 public utilService: UtilService,private vanityUrlService:VanityURLService,public properties: Properties,public regularExpressions: RegularExpressions) {
 		this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
 		this.team = new TeamMember();
 		this.loggedInUserId = this.authenticationService.getUserId();
@@ -443,7 +444,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	validateEmailId(emailId: string) {
 		try {
 			if ($.trim(emailId).length > 0) {
-				this.teamMemberUi.validEmailId = this.referenceService.validateEmailId(emailId);
+				this.teamMemberUi.validEmailId = this.validateEmailAddress(emailId);
 				if (!this.teamMemberUi.validEmailId) {
 					this.showErrorMessage("Please enter a valid email address");
 				}else{
@@ -681,7 +682,7 @@ export class ManageTeamMembersComponent implements OnInit {
 				let row = rows[0].split(',');
 				let emailId = row[0];
 				this.emaillIdDivClass = this.defaultClass;
-				if (!this.referenceService.validateEmailId(emailId)) {
+				if (!this.validateEmailAddress(emailId)) {
 					this.csvErrors.push(emailId + " is invalid email address.");
 				} 
 			}
@@ -816,6 +817,9 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.loginAsTeamMember(adminEmailId, true);
 	}
 
-
+	validateEmailAddress( emailId: string ) {
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
+        return EMAIL_ID_PATTERN.test( emailId );
+    }
 
 }
