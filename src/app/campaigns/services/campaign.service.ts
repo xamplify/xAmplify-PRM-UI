@@ -766,6 +766,10 @@ export class CampaignService {
   }
 
   getCampaignCalendarView(request: any){
+    if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        request.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        request.vanityUrlFilter = true;
+    }
       return this.http.post(this.URL + `campaign/calendar?access_token=${this.authenticationService.access_token}`, request )
           .map(this.extractData)
           .catch(this.handleError);
