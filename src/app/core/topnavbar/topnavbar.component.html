@@ -236,10 +236,17 @@
 	                    <i class="icon-logout"></i>
 	                </li>-->
                     <!-- END USER LOGIN DROPDOWN -->
-                    <li style="margin-top: 24px;margin-right: 5px;">
-                        <div>
-                            <span>{{authenticationService.userPreferredLanguage}}</span>
-                        </div>                        
+                    <li class="dropdown dropdown-user top-menu-bar">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">                            
+                            <span style="text-transform: uppercase;">{{authenticationService.userPreferredLanguage}}</span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-default">
+                            <li *ngFor="let language of authenticationService.allLanguagesList">
+                                <a (click)="selectedLanguage(language.id)">  {{language.name}}
+                                </a>
+                            </li>
+                        </ul>                
                     </li>
                 </ul>
             </div>

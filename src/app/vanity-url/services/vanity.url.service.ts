@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { Http, Response, RequestOptions, Headers } from "@angular/http";
+import { Injectable,Inject  } from "@angular/core";
+import { Http, Response, RequestOptions, Headers, ResponseContentType } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
 import { VanityURL } from "../models/vanity.url";
@@ -8,13 +8,13 @@ import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
 import { Properties } from "app/common/models/properties";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
-
+import { Title, DOCUMENT  } from "@angular/platform-browser";
 
 @Injectable()
 export class VanityURLService {
 
 
-  constructor(private http: Http, private authenticationService: AuthenticationService) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService,private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
     const url = this.authenticationService.REST_URL + "v_url/companyDetails/" + companyProfileName;
@@ -92,9 +92,9 @@ export class VanityURLService {
 
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
-    //let url = "analytifyorg.xamplify.com";
+    //let url = "analytify.xamplify.com";
     //let url = "vendor.xamplify.com";
-     let url =window.location.hostname;
+    let url =window.location.hostname;
 
     if (!url.includes("release")) {
       let domainName = url.split('.');
@@ -169,6 +169,13 @@ export class VanityURLService {
       dto.vanityUrlFilter = false;
     }
     return dto;
+  }
+
+  public setVanityURLTitleAndFavIcon() {
+    this.titleService.setTitle(this.authenticationService.v_companyName);    
+    if(this.authenticationService.v_companyFavIconPath){
+      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.v_companyFavIconPath);
+    }
   }
 
   extractData(res: Response) {

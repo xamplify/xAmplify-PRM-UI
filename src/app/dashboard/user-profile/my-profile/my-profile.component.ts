@@ -161,8 +161,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     isUser = false;
 
     preferredLangFilePath: string;
-    languagesList: any = [];
-    selectedLanguageCode:string;
+    languagesList: any = [];    
+    preferredLanguage:string;    
     editXamplifyDefaultTemplate = false;
     xamplifyDefaultTemplate:VanityEmailTempalte;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
@@ -705,7 +705,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                         this.ngxloading = false;
                                         this.authenticationService.userProfile = res;
                                         this.translateService.use(res.preferredLanguage);
-                                        this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).name;
+                                        this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).id;
                                     },
                                     error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")
@@ -1948,8 +1948,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-    selectedLanguage(){
-        this.translateService.use(this.selectedLanguageCode);
+    selectedLanguage(event:any){
+        //this.translateService.use(this.selectedLanguageCode);        
     }
 
     openBeeEditor(event:any){

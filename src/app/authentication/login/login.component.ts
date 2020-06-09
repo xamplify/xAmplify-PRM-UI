@@ -41,25 +41,25 @@ export class LoginComponent implements OnInit, OnDestroy {
   isNotVanityURL: boolean;
   isLoggedInVanityUrl = false;
 
-    constructor(private router: Router, private authenticationService: AuthenticationService,public userService: UserService,
-        public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
-          this.isLoggedInVanityUrl =  this.vanityURLService.isVanityURLEnabled();
-          if (this.referenceService.userProviderMessage !== "") {
-            this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
-        }
-        let sessionExpiredMessage = this.authenticationService.sessinExpriedMessage;
-        if(sessionExpiredMessage!=""){
-          this.setCustomeResponse("ERROR", sessionExpiredMessage);
-        }
+  constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
+    public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
+    this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
+    if (this.referenceService.userProviderMessage !== "") {
+      this.setCustomeResponse("SUCCESS", this.referenceService.userProviderMessage);
     }
+    let sessionExpiredMessage = this.authenticationService.sessinExpriedMessage;
+    if (sessionExpiredMessage != "") {
+      this.setCustomeResponse("ERROR", sessionExpiredMessage);
+    }
+  }
 
   public login() {
     try {
       const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if(currentUser!=undefined){
+      if (currentUser != undefined) {
         this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
-      }else{
-        this.authenticationService.sessinExpriedMessage  = "";
+      } else {
+        this.authenticationService.sessinExpriedMessage = "";
         this.loading = true;
         this.resendActiveMail = false;
         if (!this.model.username || !this.model.password) {
@@ -70,78 +70,78 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.model.password = this.model.password.replace(/\s/g, '');
           const userName = this.model.username.toLowerCase();
           this.referenceService.userName = userName;
-          if(this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined){
-            this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName , userName).subscribe(result => {
-              if(result.message === "success"){
+          if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName != undefined) {
+            this.vanityURLService.checkUserWithCompanyProfile(this.authenticationService.companyProfileName, userName).subscribe(result => {
+              if (result.message === "success") {
                 this.loginWithUser(userName);
-              }else{
+              } else {
                 this.loading = false;
                 this.setCustomeResponse("ERROR", this.properties.VANITY_URL_ERROR1);
               }
-          });
-          }        
-          else{
+            });
+          }
+          else {
             this.loginWithUser(userName);
-          }      
+          }
         }
       }
 
 
-     
+
     } catch (error) { console.log('error' + error); }
   }
 
 
-  loginWithUser(userName:string){
+  loginWithUser(userName: string) {
     const authorization = 'Basic ' + btoa('my-trusted-client:');
-          const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
-          this.authenticationService.login(authorization, body, userName).subscribe(result => {
-            if (localStorage.getItem('currentUser')) {
-              // if user is coming from login
-              const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-              this.xtremandLogger.log(currentUser);
-              this.xtremandLogger.log(currentUser.hasCompany);
-              localStorage.removeItem('isLogout');
-              this.redirectTo(currentUser);
-              // if user is coming from any link
-              // if (this.authenticationService.redirectUrl) {
-              //     this.router.navigate([this.authenticationService.redirectUrl]);
-              //     this.authenticationService.redirectUrl = null;
-              // }          
+    const body = 'username=' + userName + '&password=' + this.model.password + '&grant_type=password';
+    this.authenticationService.login(authorization, body, userName).subscribe(result => {
+      if (localStorage.getItem('currentUser')) {
+        // if user is coming from login
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.xtremandLogger.log(currentUser);
+        this.xtremandLogger.log(currentUser.hasCompany);
+        localStorage.removeItem('isLogout');
+        this.redirectTo(currentUser);
+        // if user is coming from any link
+        // if (this.authenticationService.redirectUrl) {
+        //     this.router.navigate([this.authenticationService.redirectUrl]);
+        //     this.authenticationService.redirectUrl = null;
+        // }          
 
-            } else {
-              this.loading = false;
+      } else {
+        this.loading = false;
+        this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+      }
+    },
+      (error: any) => {
+        try {
+          this.loading = false;
+          const body = error['_body'];
+          if (body !== "") {
+            const response = JSON.parse(body);
+            if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
               this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+            } else if (response.error_description === "User is disabled") {
+              //this.resendActiveMail = true;
+              // this.customResponse =  new CustomResponse();
+              this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
+            } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
+              this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
+            } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
+              this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
             }
-          },
-            (error: any) => {
-              try {
-                this.loading = false;
-                const body = error['_body'];
-                if (body !== "") {
-                  const response = JSON.parse(body);
-                  if (response.error_description === "Bad credentials" || response.error_description === "Username/password are wrong") {
-                    this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                  } else if (response.error_description === "User is disabled") {
-                    //this.resendActiveMail = true;
-                    // this.customResponse =  new CustomResponse();
-                    this.setCustomeResponse("ERROR", this.properties.USER_ACCOUNT_ACTIVATION_ERROR_NEW);
-                  } else if (response.error_description === this.properties.OTHER_EMAIL_ISSUE) {
-                    this.setCustomeResponse("ERROR", this.properties.BAD_CREDENTIAL_ERROR);
-                  } else if (response.error_description === this.properties.ERROR_EMAIL_ADDRESS) {
-                    this.setCustomeResponse("ERROR", this.properties.WRONG_EMAIL_ADDRESS);
-                  }
-                }
-                else {
-                  this.resendActiveMail = false;
-                  this.setCustomeResponse("ERROR", error);
-                  this.xtremandLogger.error("error:" + error)
-                }
-              } catch (err) {
-                if (error.status === 0) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
-              }
-            });
-          return false;
+          }
+          else {
+            this.resendActiveMail = false;
+            this.setCustomeResponse("ERROR", error);
+            this.xtremandLogger.error("error:" + error)
+          }
+        } catch (err) {
+          if (error.status === 0) { this.setCustomeResponse("ERROR", 'Error Disconnected! Service unavailable, Please check you internet connection'); }
+        }
+      });
+    return false;
   }
 
 
@@ -204,22 +204,24 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     try {
       this.mainLoader = true;
-      if(this.vanityURLService.isVanityURLEnabled()){
+      if (this.vanityURLService.isVanityURLEnabled()) {
         this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
           this.vanityURLEnabled = true;
           this.authenticationService.v_companyName = result.companyName;
           this.authenticationService.vanityURLink = result.vanityURLink;
           this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
-          this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;           
-              if(result.companyBgImagePath){
-                this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;           
-              }else{
-                this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-              }
+          this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
+          if (result.companyBgImagePath) {
+            this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
+          } else {
+            this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+          }
+          this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
+          this.vanityURLService.setVanityURLTitleAndFavIcon();
         }, error => {
           console.log(error);
         });
-      }else{
+      } else {
         this.isNotVanityURL = true;
       }
       this.cleaningLeftSidebar();
@@ -233,22 +235,21 @@ export class LoginComponent implements OnInit, OnDestroy {
     $('#org-admin-deactivated').hide();
   }
 
-  loginUsingSocialAccounts(socialProvider:any){
+  loginUsingSocialAccounts(socialProvider: any) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if(currentUser!=undefined){
+    if (currentUser != undefined) {
       this.setCustomeResponse("ERROR", "Another user is already logged in on this browser.");
-    }else{
-      let loginUrl = "/"+socialProvider.name+"/login";
-      if(this.isLoggedInVanityUrl){
-        let x = screen.width/2 - 700/2;
-        let y = screen.height/2 - 450/2;
-        window.open(loginUrl,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
-      }else{
-          this.router.navigate([loginUrl]);
+    } else {
+      let loginUrl = "/" + socialProvider.name + "/login";
+      if (this.isLoggedInVanityUrl) {
+        let x = screen.width / 2 - 700 / 2;
+        let y = screen.height / 2 - 450 / 2;
+        window.open(loginUrl, "Social Login", "toolbar=yes,scrollbars=yes,resizable=yes,top=" + y + ",left=" + x + ",width=700,height=485");
+      } else {
+        this.router.navigate([loginUrl]);
       }
-      
+
 
     }
   }
-
 }

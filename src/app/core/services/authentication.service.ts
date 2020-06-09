@@ -68,6 +68,7 @@ export class AuthenticationService {
   v_companyName: string;
   v_companyLogoImagePath: string;
   v_companyBgImagePath: string;
+  v_companyFavIconPath: string;
   v_showCompanyLogo: boolean = false;
   vanityURLUserRoles: any;
   companyProfileName: string = "";
