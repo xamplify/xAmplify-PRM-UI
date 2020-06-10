@@ -4,7 +4,8 @@ import { SocialConnection } from '../../../social/models/social-connection';
 import { SocialService } from '../../services/social.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { ReferenceService } from '../../../core/services/reference.service';
-
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+declare var $:any;
 @Component( {
     selector: 'app-social-callback',
     templateUrl: './social-callback.component.html',
@@ -14,15 +15,18 @@ export class SocialCallbackComponent implements OnInit {
     providerName: string;
     socialConnection: SocialConnection = new SocialConnection();
     error: string;
+    isLoggedInVanityUrl = false;
+    loggedInUserIdFromParentWindow = 0;
     constructor( private router: Router, private route: ActivatedRoute, private socialService: SocialService,
         private authenticationService: AuthenticationService,
-        private refService: ReferenceService ) { }
+        private refService: ReferenceService,private vanityUrlService:VanityURLService) {
+            this.isLoggedInVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
+         }
 
     callback( providerName: string ) {
         let client_id: string;
         let client_secret: string;
-
-        this.socialService.callback( providerName )
+        this.socialService.callback(providerName)
             .subscribe(
             result => {
                 this.socialConnection = result;
@@ -30,7 +34,6 @@ export class SocialCallbackComponent implements OnInit {
                     this.redirect();
                 }else{
                     this.refService.userName = result["emailId"];
-
                     if ( providerName === "salesforce" ) {
                         client_id = "3MVG9ZL0ppGP5UrD8Ne7RAUL7u6QpApHOZv3EY_qRFttg9c1L2GtSyEqiM8yU8tT3kolxyXZ7FOZfp1V_xQ4l";
                         client_secret = "8542957351694434668";
@@ -51,20 +54,18 @@ export class SocialCallbackComponent implements OnInit {
                     const authorization = 'Basic' + btoa( client_id + ':' );
                     const body = 'client_id=' + client_id + '&client_secret=' + client_secret + '&grant_type=client_credentials';
 
-                    this.authenticationService.login( authorization, body, this.refService.userName )
+                    this.authenticationService.login( authorization, body, this.refService.userName)
                         .subscribe( result => {
                             console.log( "result: " + this.authenticationService.user );
                             if ( this.authenticationService.user ) {
                                const currentUser = JSON.parse(localStorage.getItem( 'currentUser' ));
-                               let roles = currentUser.roles;
-                               let roleNames = roles.map(function (a) { return a.roleName; });
                                if(currentUser.hasCompany){
                                    this.redirect();
                                }else{
-                                   this.router.navigate(['/home/dashboard/add-company-profile']);
+                                this.reloadParentWindow('/home/dashboard/add-company-profile');
                                }
                             } else {
-                                this.router.navigate( ['/logout'] );
+                                this.reloadParentWindow('/logout');
                             }
                         },
                         error => {
@@ -72,6 +73,7 @@ export class SocialCallbackComponent implements OnInit {
                         },
                         () => console.log( 'login() Complete' ) );
                     return false;
+                    
                 }
             },
             error => {
@@ -79,14 +81,17 @@ export class SocialCallbackComponent implements OnInit {
             },
             () => console.log( 'login() Complete' ) );
         return false;
+
     }
 
     redirect() {
         if ( !this.socialConnection.existingUser && this.socialConnection.source !== 'GOOGLE' ){
-            this.router.navigate( ['/home/social/manage/' + this.providerName] );
+            let url = "/home/social/manage/"+this.providerName;
+            this.reloadParentWindow(url);
         }
         else{
-            this.router.navigate( ['/home/dashboard/default'] );
+            let url = "/home/dashboard/default";
+            this.reloadParentWindow(url);
         }
     }
 
@@ -101,4 +106,22 @@ export class SocialCallbackComponent implements OnInit {
         }
     }
 
+
+    reloadParentWindow(url:string){
+        if(this.isLoggedInVanityUrl){
+            this.refService.closeChildWindowAndRefreshParentWindow(url);
+        }else{
+            this.router.navigate([url]);
+        }
+        
+    }
+
+    closeWindow(){
+        if(this.isLoggedInVanityUrl){
+           this.refService.closeChildWindowOnError();
+        }else{
+            this.router.navigate(['/']);
+        }
+       
+    }
 }

@@ -114,17 +114,20 @@
                                 </th>
                                 <th class="rest-header">
                                     <i class="fa fa-check-circle" aria-hidden="true"></i><br>All
-                                </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
-                                    <i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
-                                </th>
+                                </th>                                
+
                                 <th class="rest-header" *ngIf="contactAccess">
                                     <i class="fa fa-users" aria-hidden="true"></i><br>Contacts
                                 </th>
                                 <th class="rest-header">
                                     <i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
+
+                               <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
+                                    <i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
+                                </th>
+                                <th class="rest-header" *ngIf="!isOnlyPartner">
+
                                     <i class="fa fa-line-chart" aria-hidden="true"></i><br>Stats
                                 </th>
                                 <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
@@ -237,16 +240,19 @@
                                 <th class="rest-header">
                                     <i class="fa fa-check-circle" aria-hidden="true"></i><br>All
                                 </th>
-                                <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
-                                    <i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
-                                </th>
+
                                 <th class="rest-header" *ngIf="contactAccess">
                                     <i class="fa fa-users" aria-hidden="true"></i><br>Contacts
                                 </th>
                                 <th class="rest-header">
                                     <i class="fa fa-bullhorn" aria-hidden="true"></i><br>Campaign
                                 </th>
+
                                 <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">
+                                    <i class="fa fa-file-video-o" aria-hidden="true"></i><br>Video
+                                </th>
+                                <th class="rest-header" *ngIf="!isOnlyPartner">
+
                                     <i class="fa fa-line-chart" aria-hidden="true"></i><br>Stats
                                 </th>
                                 <th class="rest-header" *ngIf="!isOnlyPartnerOrPartnerTeamMember">

@@ -364,7 +364,11 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         console.log(formData);
         return this.videoFileService.saveRecordedVideo(formData)
             .subscribe((result: any) => {
-                this.processVideo(result.path);
+                if (result.access) {
+                    this.processVideo(result.data);
+                } else {
+                    this.authenticationService.forceToLogout();
+            	}
              }, (error: any) => {
                 this.errorIsThere = true;
                 this.xtremandLogger.errorPage(error);
@@ -567,19 +571,28 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
         if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
             this.cloudBox === false) {
-            this.cloudDropbox = true;
-            this.isDisable = true;
-            this.isFileDrop = true;
-            this.isChecked = true;
-            this.sweetAlertDisabled = false;
-            this.sweetAlertMesg = 'DropBox';
-            this.fileDropDisabled();
-            this.downloadFromDropbox();
-            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-           // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+        	 this.videoFileService.hasVideoAccess(this.loggedInUserId)
+             .subscribe(
+                     (result: any) =>  {
+                     if(result.access){
+                           this.cloudDropbox = true;
+          this.isDisable = true;
+          this.isFileDrop = true;
+          this.isChecked = true;
+          this.sweetAlertDisabled = false;
+          this.sweetAlertMesg = 'DropBox';
+          this.fileDropDisabled();
+          this.downloadFromDropbox();
+          $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+          $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+          $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+          $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+         // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6'); 
+                     }else{
+                         this.authenticationService.forceToLogout();
+                     }
+           }
+                     );
           }
         } catch(error){this.xtremandLogger.error('Error in upload video dropBoxChange method'+error);}
     }
@@ -589,30 +602,48 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             this.sweetAlertMesg === 'Box') { swal('Oops...', 'You minimized Box window!', 'error'); }
         if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
             this.cloudDropbox === false) {
-            this.cloudBox = true;
-            this.isDisable = true;
-            this.isFileDrop = true;
-            this.isChecked = true;
-            this.sweetAlertDisabled = false;
-            this.sweetAlertMesg = 'Box';
-            this.fileDropDisabled();
-            this.downloadFrombox();
-            this.cloudOneDrive = true;
-            this.cloudDrive = true;
-            $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
-            $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-          //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+        	 this.videoFileService.hasVideoAccess(this.loggedInUserId)
+             .subscribe(
+                     (result: any) =>  {
+                     if(result.access){
+                                 this.cloudBox = true;
+          this.isDisable = true;
+          this.isFileDrop = true;
+          this.isChecked = true;
+          this.sweetAlertDisabled = false;
+          this.sweetAlertMesg = 'Box';
+          this.fileDropDisabled();
+          this.downloadFrombox();
+          this.cloudOneDrive = true;
+          this.cloudDrive = true;
+          $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+          $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+          $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+          $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+        //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                     }else{
+                         this.authenticationService.forceToLogout();
+                     }
+           }
+                     );
         }
       } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
     }
     googleDriveChange() {
       try{
-      this.sweetAlertMesg = 'Drive';
-        if(this.uploader.queue.length === 0){
-        this.onApiLoad();    // google drive code
+    	  this.videoFileService.hasVideoAccess(this.loggedInUserId)
+          .subscribe(
+                  (result: any) =>  {
+                  if(result.access){
+                        this.sweetAlertMesg = 'Drive';
+   if(this.uploader.queue.length === 0){
+   this.onApiLoad();    // google drive code
+   }
+                  }else{
+                      this.authenticationService.forceToLogout();
+                  }
         }
+                  );
       } catch(error){this.xtremandLogger.error('Error in upload video googleDriveChange method'+error);}
     }
     defaultDesabled() {
@@ -686,10 +717,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         console.log('files ' + files);
         this.cloudUploadService.downloadFromDropbox(files[0].link, files[0].name)
             .subscribe((result: any) => {
+            	if(result.access){
                 swal.close();
                 console.log(result);
                 this.processing = true;
-                this.processVideo(result.path);
+                this.processVideo(result.data);
+            	}else{
+            		this.authenticationService.forceToLogout();
+            	}
             },
             (error: any) => {
                 this.errorIsThere = true;
@@ -722,10 +757,14 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 console.log(files);
                 self.cloudUploadService.downloadFromBox(files[0].url, files[0].name)
                     .subscribe((result: any) => {
+                    	if(result.access){
                         console.log(result);
                         swal.close();
                         self.processing = true;
-                        self.processVideo(result.path);
+                        self.processVideo(result.data);
+                    }else{
+                    	this.authenticationService.forceToLogout();
+                    }
                     }, (error: any) => {
                         self.errorIsThere = true;
                         self.xtremandLogger.errorPage(error);
@@ -815,6 +854,7 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             const downloadLink = 'https://www.googleapis.com/drive/v3/files/' + fileId + '?alt=media';
             self.cloudUploadService.downloadFromGDrive(downloadLink, name, this.tempr)
                 .subscribe((result: any) => {
+                	if(result.access){
                     console.log(result);
                     swal.close();
                     self.processing = true;
@@ -823,7 +863,10 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                         self.picker.dispose();
                     }
                     if (!self.redirectPge) { self.cloudStorageDisabled(); }
-                    self.processVideo(result.path);
+                    self.processVideo(result.data);
+                	}else{
+                    	this.authenticationService.forceToLogout();
+                    	}
                 },
                 (error: any) => {
                     this.errorIsThere = true;
@@ -911,7 +954,18 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                this.contentProcessing = true;
                const formData: FormData = new FormData();
                $.each( files, function( index, file ) { formData.append( 'files', file, file.name ); });
-               this.uploadToServer( formData );
+               this.videoFileService.hasVideoAccess(this.loggedInUserId)
+               .subscribe(
+            		   (result: any) =>  {
+            		   if(result.access){
+            			   this.uploadToServer( formData ); 
+            		   }else{
+            			   this.authenticationService.forceToLogout();
+            		   }
+             }
+            		   );
+               
+               //this.uploadToServer( formData );
             }
             else { this.customResponse = new CustomResponse( 'ERROR', this.properties.CONTENT_UPLOAD_SIZE, true ); }
          } else { this.customResponse = new CustomResponse( 'ERROR', this.properties.CONTENT_UPLOAD_FILETYPE, true );
@@ -922,12 +976,16 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
         this.contentProcessing = true;
         this.emailTemplateService.uploadFile( this.loggedInUserId, formData )
             .subscribe( data => {
+            	if(data.access){
               if ( data.statusCode === 1020 ) {
                 this.refService.contentManagementLoader = true;
                 if(!this.redirectContent){
                   this.redirectContent = false;
                   setTimeout(() => { this.contentProcessing = false; this.router.navigate(['/home/content/manage']); }, 1200); }
               } else { this.contentProcessing = false; this.customResponse = new CustomResponse( 'ERROR', data.message, true );  }
+            }else{
+            	this.authenticationService.forceToLogout();
+            }
             },
             ( error: string ) => {
               this.customResponse = new CustomResponse('ERROR', this.properties.SOMTHING_WENT_WRONG, true);
@@ -935,27 +993,36 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
               this.contentProcessing = false; });
       }
       dropBoxContentChange() {
-          try{
-          if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
-                this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
-            if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
-                this.cloudBox === false) {
-                this.cloudDropbox = true;
-                this.isDisable = true;
-                this.isFileDrop = true;
-                this.isChecked = true;
-                this.sweetAlertDisabled = false;
-                this.sweetAlertMesg = 'DropBox';
-                this.fileDropDisabled();
-                this.downloadFromDropboxContent();
-                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-               // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
-                this.cloudContentArr=new Array<CloudContent>();
-              }
-            } catch(error){this.xtremandLogger.error('Error in upload content dropBoxChange method'+error);}
+          try {
+              if (this.isChecked === true && this.processing !== true && this.sweetAlertDisabled === false &&
+                  this.sweetAlertMesg === 'DropBox') { swal('Oops...', 'You minimized DropBox window!', 'error'); }
+              if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
+                  this.cloudBox === false) {
+                  this.videoFileService.hasVideoAccess(this.loggedInUserId)
+                      .subscribe(
+                      (result: any) => {
+                          if (result.access) {
+                              this.cloudDropbox = true;
+                              this.isDisable = true;
+                              this.isFileDrop = true;
+                              this.isChecked = true;
+                              this.sweetAlertDisabled = false;
+                              this.sweetAlertMesg = 'DropBox';
+                              this.fileDropDisabled();
+                              this.downloadFromDropboxContent();
+                              $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                              $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                              $('.box').attr('style', 'cursor:not-allowed; opacity:0.5');
+                              $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                              // $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                              this.cloudContentArr = new Array<CloudContent>();
+                          } else {
+                              this.authenticationService.forceToLogout();
+                          }
+                      }
+                      );
+                }
+                } catch(error){this.xtremandLogger.error('Error in upload content dropB o xChange  method'+error);}
         }
       downloadFromDropboxContent() {
           try{
@@ -1019,22 +1086,31 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
                 this.sweetAlertMesg === 'Box') { swal('Oops...', 'You minimized Box window!', 'error'); }
             if (this.isChecked !== true && this.cloudDrive === false && this.camera === false && this.cloudOneDrive === false &&
                 this.cloudDropbox === false) {
-                this.cloudBox = true;
-                this.isDisable = true;
-                this.isFileDrop = true;
-                this.isChecked = true;
-                this.sweetAlertDisabled = false;
-                this.sweetAlertMesg = 'Box';
-                this.fileDropDisabled();
-                this.downloadContentFrombox();
-                this.cloudOneDrive = true;
-                this.cloudDrive = true;
-                $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
-                $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
-              //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
-                this.cloudContentArr=new Array<CloudContent>();
+                this.videoFileService.hasVideoAccess(this.loggedInUserId)
+                .subscribe(
+                        (result: any) =>  {
+                        if(result.access){
+                                            this.cloudBox = true;
+                 this.isDisable = true;
+                 this.isFileDrop = true;
+                 this.isChecked = true;
+                 this.sweetAlertDisabled = false;
+                 this.sweetAlertMesg = 'Box';
+                 this.fileDropDisabled();
+                 this.downloadContentFrombox();
+                 this.cloudOneDrive = true;
+                 this.cloudDrive = true;
+                 $('.googleDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.dropBox').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.camera').attr('style', 'cursor:not-allowed; opacity:0.5');
+                 $('.oneDrive').attr('style', 'cursor:not-allowed; opacity:0.5');
+               //  $('.addfiles').attr('style', 'float: left; margin-right: 9px;cursor:not-allowed; opacity:0.6');
+                 this.cloudContentArr=new Array<CloudContent>(); 
+                        }else{
+                            this.authenticationService.forceToLogout();
+                        }
+              }
+                        );
             }
           } catch(error){this.xtremandLogger.error('Error in upload video box method'+error);}
         }
@@ -1099,11 +1175,20 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
 
         googleDriveContentChange() {
             try{
-            this.sweetAlertMesg = 'Drive';
-              if(this.uploader.queue.length === 0){
-              this.cloudContentArr = new Array<CloudContent>();
-              this.onApiLoadContent();    // google drive code
-              }
+            	 this.videoFileService.hasVideoAccess(this.loggedInUserId)
+                 .subscribe(
+                         (result: any) =>  {
+                         if(result.access){
+                                 this.sweetAlertMesg = 'Drive';
+                if(this.uploader.queue.length === 0){
+                this.cloudContentArr = new Array<CloudContent>();
+                this.onApiLoadContent();    // google drive code
+                } 
+                         }else{
+                             this.authenticationService.forceToLogout();
+                         }
+               }
+                         );
             } catch(error){this.xtremandLogger.error('Error in upload content googleDriveChange method'+error);}
           }
 

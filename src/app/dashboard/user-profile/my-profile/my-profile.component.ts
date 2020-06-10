@@ -35,6 +35,8 @@ import { Pagination } from 'app/core/models/pagination';
 import { SortOption } from '../../../core/models/sort-option';
 import { PagerService } from '../../../core/services/pager.service';
 import {ModulesDispalyType} from "app/dashboard/models/modules-dispaly-type.enum";
+import { TranslateService } from '@ngx-translate/core';
+import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 
 declare var swal, $, videojs: any;
 
@@ -155,16 +157,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     modulesDisplayTypeList = [];
     modulesDisplayViewcustomResponse: CustomResponse = new CustomResponse();
     updateDisplayViewError = false;
+
     isUser = false;
+
+    preferredLangFilePath: string;
+    languagesList: any = [];    
+    preferredLanguage:string;    
+    editXamplifyDefaultTemplate = false;
+    xamplifyDefaultTemplate:VanityEmailTempalte;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
         private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
-            PagerService,private renderer:Renderer) {
+            PagerService,private renderer:Renderer, private translateService: TranslateService) {
                 this.referenceService.renderer = this.renderer;
-                this.isUser = this.authenticationService.isOnlyUser();
-        //   this.customConstructorCall();
+                this.isUser = this.authenticationService.isOnlyUser();        
     }
     cropperSettings() {
         this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
@@ -284,6 +292,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.getUserByUserName(this.currentUser.userName);
             this.cropperSettings();
             this.roleNames = this.authenticationService.loggedInUserRole;
+
+            if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member"){                
+                if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0){
+                    this.roleNames = "Vendor";
+                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !==0){
+                    this.roleNames = "Partner";
+                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0){
+                    this.roleNames ="OrgAdmin";
+                }
+            }
+            // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
             this.videoUtilService.videoTempDefaultSettings = this.referenceService.defaultPlayerSettings;
             console.log(this.videoUtilService.videoTempDefaultSettings);
             this.loggedInUserId = this.authenticationService.getUserId();
@@ -386,7 +406,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 .subscribe(
                     data => {
                         this.userData = data;
-                        this.authenticationService.userProfile = data;
+                        this.authenticationService.userProfile = data;                        
                     },
                     error => { console.log(error); this.router.navigate(['/su']) },
                     () => { }
@@ -520,7 +540,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         'occupation': '',
         'description': '',
         'websiteUrl': '',
-        'companyName': ''
+        'companyName': '',
+        'preferredLanguage': ''
     };
 
     validationMessages = {
@@ -617,7 +638,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             'interests': [this.userData.interests, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'occupation': [this.userData.occupation, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(50)])],
             'description': [this.userData.description, Validators.compose([noWhiteSpaceValidator, Validators.maxLength(250)])],
-            'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]]
+            'websiteUrl': [this.userData.websiteUrl, [Validators.pattern(urlPatternRegEx)]],
+            'preferredLanguage':[this.userData.preferredLanguage],
         });
 
         this.updateUserProfileForm.valueChanges
@@ -682,6 +704,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                     res => {
                                         this.ngxloading = false;
                                         this.authenticationService.userProfile = res;
+                                        this.translateService.use(res.preferredLanguage);
+                                        this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).id;
                                     },
                                     error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")
@@ -1433,6 +1457,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.activeTabHeader = this.properties.folders;
             this.categoryPagination = new Pagination();
             this.listCategories(this.categoryPagination);
+        }else if(this.activeTabName=="dbButtonSettings"){
+            this.activeTabHeader = 'Dashboard Buttons';
+        }else if(this.activeTabName=="templates"){
+            this.activeTabHeader = 'Your Templates';
         }
         this.referenceService.goToTop();
     }
@@ -1920,4 +1948,18 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
+    selectedLanguage(event:any){
+        //this.translateService.use(this.selectedLanguageCode);        
+    }
+
+    openBeeEditor(event:any){
+        this.xamplifyDefaultTemplate = event;
+        this.editXamplifyDefaultTemplate = true;
+    }
+
+    goBackToMyProfile(){
+        this.editXamplifyDefaultTemplate = false;
+        this.xamplifyDefaultTemplate = new VanityEmailTempalte();
+        this.referenceService.goToTop();
+    }
 }

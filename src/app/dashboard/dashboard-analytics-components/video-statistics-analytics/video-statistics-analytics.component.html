@@ -1,0 +1,66 @@
+<div class="col-sm-6">
+	<div class="portlet light">
+		<div class="portlet-title">
+			<div class="caption">
+				<i class="fa fa-bar-chart"></i> <span class="caption-subject" translate>Video Statistics</span>
+			</div>
+			<div>
+				<div class="panel-title pull-right">
+					<span
+						[hidden]="referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[2].value || referenceService.daySortValue===sortHeatMapValues[3].value"
+						class="pointer" data-toggle="tooltip" data-placement="left" title="7 Days"> <i
+							class="fa fa-question-circle stats"></i>
+					</span> <span
+						[hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[2].value || referenceService.daySortValue===sortHeatMapValues[3].value"
+						class="pointer" data-toggle="tooltip" data-placement="left" title="14 Days"> <i
+							class="fa fa-question-circle stats"></i>
+					</span> <span
+						[hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[3].value"
+						class="pointer" data-toggle="tooltip" data-placement="left" title="21 Days"> <i
+							class="fa fa-question-circle stats"></i>
+					</span> <span
+						[hidden]="referenceService.daySortValue===sortHeatMapValues[0].value || referenceService.daySortValue===sortHeatMapValues[1].value || referenceService.daySortValue===sortHeatMapValues[2].value"
+						class="pointer" data-toggle="tooltip" data-placement="left" title="Current Month"> <i
+							class="fa fa-question-circle stats"></i>
+					</span> <span style="float: right; font-size: 13px;"> <select style="cursor: pointer"
+							[(ngModel)]="daySort" (ngModelChange)="selectedSortByValue($event.value)">
+							<option *ngFor="let sort of sortDates" [ngValue]="sort">
+								{{sort.name}}</option>
+						</select>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="portlet-body">
+			<div class="clearfix">
+				<div class="col-xs-12 col-sm-4">
+					<div class="sparkline-chart">
+						<div class="number" id="sparkline_bar" style="cursor: pointer">
+							<canvas width="100" height="55"
+								style="display: inline-block; width: 100%; height: 55px; vertical-align: top;"></canvas>
+						</div>
+						<a class="title chart-css"> Views </a>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<div class="sparkline-chart">
+						<div class="number" id="sparkline_bar2" style="cursor: pointer">
+							<canvas width="100" height="55"
+								style="display: inline-block; width: 100%; height: 55px; vertical-align: top;"></canvas>
+						</div>
+						<a class="title chart-css"> Minutes Watched </a>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<div class="sparkline-chart">
+						<div class="number" id="sparkline_line">
+							<canvas width="100" height="55"
+								style="display: inline-block; width: 100%; height: 55px; vertical-align: top;"></canvas>
+						</div>
+						<a class="title chart-css"> Average Duration </a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

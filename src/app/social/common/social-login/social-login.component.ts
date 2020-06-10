@@ -9,7 +9,10 @@ import { SocialService } from '../../services/social.service';
 })
 export class SocialLoginComponent implements OnInit {
     error: string;
-    constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService) { }
+    parentWindowUserId:number;
+    constructor(private router: Router, private route: ActivatedRoute, private socialService: SocialService) {
+
+     }
 
     login(providerName: string) {
         this.socialService.login(providerName)
@@ -17,6 +20,10 @@ export class SocialLoginComponent implements OnInit {
             result => {
                 console.log('redirect url: ' + result);
                 window.location.href = '' + result;
+               // window.open('redirect url: ');
+               // window.open("'redirect url: '" + result);
+               // window.open(" " + result, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=600,width=600,height=600");
+       
             },
             error => {
                 console.log(error);
@@ -25,9 +32,7 @@ export class SocialLoginComponent implements OnInit {
             () => console.log('login() Complete'));
     }
     
-    reload(){
-        window.location.reload();
-    }
+
 
     ngOnInit() {
         try {
@@ -39,4 +44,5 @@ export class SocialLoginComponent implements OnInit {
         }
     }
 
+  
 }

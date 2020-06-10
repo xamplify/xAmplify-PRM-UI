@@ -14,6 +14,8 @@ import { UtilService } from '../../core/services/util.service';
 import { SortOption } from '../../core/models/sort-option';
 import { FormService } from '../../forms/services/form.service';
 import { PreviewPopupComponent } from 'app/forms/preview-popup/preview-popup.component';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $: any;
 
 @Component({
@@ -43,6 +45,8 @@ export class FormsListViewUtilComponent implements OnInit {
     deleteAndEditAccess = false;
     categoryId: number = 0;
     showFolderView = true;
+    formAliasUrl:string="";
+    iframeEmbedUrl: string = "";
     @ViewChild('previewPopUpComponent') previewPopUpComponent: PreviewPopupComponent;
     exportObject:any = {};
     isListView = false;
@@ -53,8 +57,10 @@ export class FormsListViewUtilComponent implements OnInit {
         public httpRequestLoader: HttpRequestLoader, public pagerService:
             PagerService, public authenticationService: AuthenticationService,
         public router: Router, public formService: FormService, public logger: XtremandLogger,
-        public actionsDescription: ActionsDescription, public sortOption: SortOption, private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer) {
+        public actionsDescription: ActionsDescription, public sortOption: SortOption, 
+        private utilService: UtilService, private route: ActivatedRoute, public renderer: Renderer,private vanityUrlService:VanityURLService) {
         this.referenceService.renderer = this.renderer;
+        this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
         this.deleteAndEditAccess = this.referenceService.deleteAndEditAccess();
@@ -256,18 +262,26 @@ export class FormsListViewUtilComponent implements OnInit {
     }
 
     /*********Copy The Link */
-    copyInputMessage(inputElement) {
+    copyInputMessage(inputElement: any, type: string) {
+        this.referenceService.goToTop();
         this.copiedLinkCustomResponse = new CustomResponse();
         inputElement.select();
         document.execCommand('copy');
         inputElement.setSelectionRange(0, 0);
-        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', 'Copied to clipboard successfully.', true);
-
+        let message = type + ' copied to clipboard successfully.';
+        if (type === "Form link") {
+            $("#copy-link").select();
+        } else {
+            $("#text-area").select();
+        }
+        this.copiedLinkCustomResponse = new CustomResponse('SUCCESS', message, true);
     }
 
-    showFormUrl(form: Form) {
-        this.form = form;
+    showFormUrl(form:Form){
+        this.form = form;         
         this.copiedLinkCustomResponse = new CustomResponse();
+        this.formAliasUrl = form.ailasUrl;
+        this.iframeEmbedUrl = '<iframe width="1000" height="720" src="' + this.formAliasUrl + '"  frameborder="0" allowfullscreen ></iframe>';   
         $('#form-url-modal').modal('show');
     }
 

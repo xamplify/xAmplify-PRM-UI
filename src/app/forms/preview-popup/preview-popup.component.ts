@@ -13,6 +13,8 @@ import { PagerService } from '../../core/services/pager.service';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
 import { environment } from 'environments/environment';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $: any;
 @Component({
   selector: 'app-preview-popup',
@@ -32,9 +34,12 @@ export class PreviewPopupComponent implements OnInit {
     showButton = false;
     selectedFormData: Array<Form> = [];
     selectedFormId: number;
+    formAliasUrl:string = "";
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
-           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,public router: Router) {
-   console.log("Is Show forms in preview popup: " + this.authenticationService.isShowForms);
+           public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,
+           public router: Router,private vanityUrlService:VanityURLService) {
+        this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
+
    }
 
   ngOnInit() {
@@ -57,7 +62,7 @@ export class PreviewPopupComponent implements OnInit {
   /************List Available Forms******************/
   showForms(){
       this.formsError = false;
-      this.customResponse = new CustomResponse();
+      this.customResponse = new CustomResponse();      
       this.pagination.userId = this.authenticationService.getUserId();;
       this.listForms(this.pagination);
   }
@@ -115,13 +120,22 @@ export class PreviewPopupComponent implements OnInit {
   
   eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.searchForms(); } }
   
-  copyInputMessage(inputElement,index:number){
+  copyInputMessage(inputElement,type: string,index:number){
+      $('.ml').css({'margin-bottom':'0px'});
+      $('.cmif').css({'margin-bottom':'0px'});
       $(".success").hide();
       $('#copied-message-'+index).hide();
+      $('#embed-copied-message-'+index).hide();
       inputElement.select();
       document.execCommand('copy');
       inputElement.setSelectionRange(0, 0);
-      $('#copied-message-'+index).show(500);
+      if (type === "Page Link") {
+        $('#copied-message-'+index).show(500);
+        $('#custom-margin-'+index).css({'margin-bottom':'32px'});
+    } else {
+        $('#embed-copied-message-'+index).show(500);
+        $('#cmif-'+index).css({'margin-bottom':'13px'});
+    }
     }
   
 

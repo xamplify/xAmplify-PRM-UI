@@ -6,6 +6,7 @@ import { VideoUtilService } from '../../../services/video-util.service';
 import { Pagination } from '../../../../core/models/pagination';
 import { PagerService } from '../../../../core/services/pager.service';
 import { ReferenceService } from '../../../../core/services/reference.service';
+import { AuthenticationService } from '../../../../core/services/authentication.service';
 
 declare var Highcharts: any;
 
@@ -33,7 +34,8 @@ export class ChartReportComponent implements OnInit, OnDestroy {
   viewsBarData: any;
   loading = false;
   constructor(public referenceService: ReferenceService, public videoBaseReportService: VideoBaseReportService, public xtremandLogger: XtremandLogger,
-    public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService) {
+    public videoUtilService: VideoUtilService, public router: Router, public pagination: Pagination, public pagerService: PagerService,
+    public authenticationService: AuthenticationService) {
     try{
       this.selectedVideoId = this.videoUtilService.selectedVideoId;
     this.videoViewsData = this.videoUtilService.videoViewsData;
@@ -77,12 +79,16 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     if(this.selectedVideoId && this.timePeriodValue){
     this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.pagination)
      .subscribe(
-       (result:any)=>  {
-       console.log(result);
-       this.videoViewsLevelTwo = result.data;
-       this.pagination.totalRecords = result.totalRecords;
-       this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelTwo);
-      },
+        (result: any) => {
+            if (result.access) {
+                console.log(result);
+                this.videoViewsLevelTwo = result.data;
+                this.pagination.totalRecords = result.totalRecords;
+                this.pagination = this.pagerService.getPagedItems(this.pagination, this.videoViewsLevelTwo);
+            } else {
+                this.authenticationService.forceToLogout();
+            }
+        },
     (error:any)=>{this.xtremandLogger.error('Error in chartreport page, videoviewsbarchartlevelTwo'+error);}
       );}
     }catch(error){
@@ -159,35 +165,40 @@ export class ChartReportComponent implements OnInit, OnDestroy {
     this.reportPagination.maxResults = 5000000;
     if(this.selectedVideoId && this.timePeriodValue){
     this.videoBaseReportService.getVideoViewsInnerDetails(this.timePeriod,this.selectedVideoId,this.timePeriodValue, this.reportPagination)
-     .subscribe(
-       (result:any)=>  {
-       console.log(result);
-       this.downloadCsvList = result.data;
-      });
+        .subscribe(
+        (result: any) => {
+            if (result.access) {
+                console.log(result);
+                this.downloadCsvList = result.data;
+            } else {
+                this.authenticationService.forceToLogout();
+            }
+        }
+        );
     }
   }
+  
+  downloadLogs() {
+      this.videoViewsBarChartLevelTwoTotalList();
+      this.downloadDataList.length = 0;
+      for (let i = 0; i < this.downloadCsvList.length; i++) {
+          let date = new Date(this.downloadCsvList[i].date);
 
-    downloadLogs() {
-        this.downloadDataList.length = 0;
-        for ( let i = 0; i < this.downloadCsvList.length; i++ ) {
-            let date = new Date( this.downloadCsvList[i].date );
-
-            var object = {
-                    'First Name': this.downloadCsvList[i].firstName,
-                    'Last Name': this.downloadCsvList[i].lastName,
-                    'Email Id': this.downloadCsvList[i].emailId,
-                    'Views': this.downloadCsvList[i].views,
-                    'Year': this.downloadCsvList[i].date,
-                    'Device': this.downloadCsvList[i].device,
-                    'City': this.downloadCsvList[i].city,
-                    'State': this.downloadCsvList[i].state,
-                    'Country': this.downloadCsvList[i].country,
-            }
-            this.downloadDataList.push( object );
-        }
-        this.referenceService.isDownloadCsvFile = true;
-    }
-
+          var object = {
+              'First Name': this.downloadCsvList[i].firstName,
+              'Last Name': this.downloadCsvList[i].lastName,
+              'Email Id': this.downloadCsvList[i].emailId,
+              'Views': this.downloadCsvList[i].views,
+              'Year': this.downloadCsvList[i].date,
+              'Device': this.downloadCsvList[i].device,
+              'City': this.downloadCsvList[i].city,
+              'State': this.downloadCsvList[i].state,
+              'Country': this.downloadCsvList[i].country,
+          }
+          this.downloadDataList.push(object);
+      }
+      this.referenceService.isDownloadCsvFile = true;
+  }
 
   ngOnInit() {
     try{

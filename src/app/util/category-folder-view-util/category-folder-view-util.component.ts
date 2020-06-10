@@ -83,6 +83,7 @@ export class CategoryFolderViewUtilComponent implements OnInit {
             pagination.partnerCompanyId = partnerCompanyId;
         }
         this.referenceService.startLoader(this.httpRequestLoader);
+        this.authenticationService.setVanityUrlFilter(this.pagination);
         this.userService.getCategories(this.pagination)
             .subscribe(
                 response => {

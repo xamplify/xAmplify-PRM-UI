@@ -55,7 +55,7 @@
                                     <span *ngIf="pagination.categoryId>0" class="btn btn-xs hidden-xs l-g-view margin-space" data-toggle="tooltip" data-placement="bottom" title="Go back" (click)="setViewType('Folder-Grid')">
                                         <i class="fa fa-arrow-up p10" aria-hidden="true"></i></span>
                                 </ng-container>
-                                <div class="inputs" align="right" style="float: right">
+                                <div class="inputs" style="float: right">
                                     <div style="float: left;">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
                                         <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
@@ -84,9 +84,6 @@
                             <table class='table tgrid table-hover table-sm' id="manage-form-list-table" *ngIf="pagination.pagedItems?.length>0">
                                 <thead>
                                     <tr>
-                                        <!-- <th class="visible-xs" colspan="1" style="width: 45%">Form</th>
-                                        <th class="visible-sm visible-md visible-lg" colspan="2" style="width: 35%">Form</th> -->
-
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',2)">
                                             </span>
@@ -97,7 +94,6 @@
                                             </span>
                                             <span class="gridHeader">Form</span>
                                         </th>
-
 
                                         <th class="hidden-xs text-center">Created On</th>
                                         <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width">Actions</th>
@@ -134,7 +130,7 @@
                                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
-                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
+                                                <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                                     <i class="fa fa-clipboard"></i>
                                                 </a>
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
@@ -207,7 +203,7 @@
                                 <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="preview(form.id)">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy Link" (click)="showFormUrl(form)">
+                                <a *ngIf="!pagination.campaignForm  && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm" data-toggle="tooltip" data-placement="top" title="Copy / Embed Link" (click)="showFormUrl(form)">
                                     <i class="fa fa-clipboard"></i>
                                 </a>
                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
@@ -262,19 +258,31 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close-circle" data-dismiss="modal">
-            <i class="fa fa-times"></i>
-          </button>
-                    <h4 class="modal-title text-center">DIRECT LINK FOR YOUR FORM</h4>
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                    <h4 class="modal-title text-center">COPY LINK / EMBED LINK</h4>
                 </div>
                 <div class="modal-body">
                     <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
                     </app-response-message>
-                    <input type="text" class="form-control" readonly="readonly" value="{{authenticationService.APP_URL}}f/{{form?.alias}}" #userinput>
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label">Copy Link</label>
+                        <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
+                        <br>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')">Copy
+                            Link</a>
+                        <br>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Copy Embed Link</label>
+                        <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')">Copy Embed
+                            Link</a>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <!-- <a class="btn btn-info" href="{{authenticationService.APP_URL}}f/{{form.alias}}" target="blank">Open in new tab</a> -->
-                    <a class="btn btn-primary" (click)="copyInputMessage(userinput)">Copy Link</a>
-                    <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                    <a data-dismiss="modal" class="btn btn-default" id="right">Close</a>
                 </div>
             </div>
         </div>

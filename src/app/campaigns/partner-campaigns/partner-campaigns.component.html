@@ -374,7 +374,10 @@
                 <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
 						<i class="fa fa-times" aria-hidden="true"></i>
 					</button>
-                <h4 class="modal-title">{{campaignName}}</h4>
+                <h4 class="modal-title" title="{{campaignName}}">
+                      {{campaignName | slice:0:25}}
+                    <span *ngIf="campaignName?.length>25">...</span>
+                  </h4>
             </div>
             <div class="modal-body">
                 <div  id="email-template-content">
@@ -395,7 +398,10 @@
                 <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
 						<i class="fa fa-times" aria-hidden="true"></i>
 					</button>
-                <h4 class="modal-title">{{campaignName}}</h4>
+                <h4 class="modal-title" title="{{campaignName}}">
+                      {{campaignName | slice:0:25}}
+                    <span *ngIf="campaignName?.length>25">...</span>
+                  </h4>
             </div>
             <div class="modal-body">
                 <ng-container *ngIf="!socialAccountsLoader">

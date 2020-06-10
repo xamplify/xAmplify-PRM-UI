@@ -2,7 +2,7 @@
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     </div>
-    <app-grid-loader *ngIf="httpRequestLoader.isLoading"></app-grid-loader>
+    <app-landing-page-loader [maxBoxLength]=4 *ngIf="httpRequestLoader.isLoading"></app-landing-page-loader>
     <ng-container *ngIf="!httpRequestLoader.isLoading">
         <div class="row">
             <div class="col-xs-12">
@@ -10,17 +10,17 @@
                     <div class="page-bar">
                         <ul class="page-breadcrumb" *ngIf="loadLandingPage">
                             <li>
-                                <i class="fa fa-home"></i>
+                                <i class="fa fa-home" aria-hidden="true"></i>
                                 <a [routerLink]="referenceService.homeRouter">Home</a>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </li>
                             <li *ngIf="defaultLandingPage">
                                 <a [routerLink]="['/home/pages/select']">Select  Page</a>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </li>
                             <li *ngIf="!defaultLandingPage">
                                 <a routerLink="{{routerLink}}">Manage Pages</a>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </li>
                             <li>
                                 <a *ngIf="defaultLandingPage">Create Page</a>

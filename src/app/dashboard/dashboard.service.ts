@@ -9,12 +9,14 @@ import 'rxjs/add/observable/throw';
 
 import { AuthenticationService } from '../core/services/authentication.service';
 import { SocialConnection } from '../social/models/social-connection';
+import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 
 @Injectable()
 export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
-    superAdminUrl = this.authenticationService.REST_URL + "superadmin/";
+    superAdminUrl = this.authenticationService.REST_URL + "superadmin/";  
+ dashboardAnalytics = this.authenticationService.REST_URL + "dashboard/views/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
@@ -276,7 +278,121 @@ export class DashboardService {
         return this.http.post(url, pagination)
             .map(this.extractData)
             .catch(this.handleError);
+    }  
+
+ /******27/03/2020. To get all modules count in dashboard */
+    getModuleAnalytics(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics + 'modulesAnalytics?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
+
+    getVendorActivityAnalytics(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics + 'vendorActivityAnalytics?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listVendorsByLoggedInUserId(userId: number) {
+        const url = this.dashboardAnalytics + 'getVendorCompanyDetails/' + userId + '?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getEmailStats(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics + 'emailStats/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getRegionalStatistics(dto: DashboardAnalyticsDto) {
+        const url = this.dashboardAnalytics + 'regionalStatistics/?access_token=' + this.authenticationService.access_token;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listEmailOpenLogsForVanityURL(actionId: number, pagination: Pagination, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + "dashboard/views/email-logs-by-user-and-action" + "?access_token=" + this.authenticationService.access_token + "&actionId=" + actionId + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listOfWatchedLogsForVanityURL(pagination: Pagination, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + "dashboard/views/watched-users" + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    listEmailClickedLogsForVanityURL(pagination: Pagination, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + "dashboard/views/email-click-logs-by-user" + "?access_token=" + this.authenticationService.access_token + "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    worldMapCampaignDetailsForVanityURL(countryCode: string, pagination: Pagination, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + "dashboard/views/world-map-detail-report?access_token=" + this.authenticationService.access_token +
+            "&pageSize=" + pagination.maxResults + "&pageNumber=" + pagination.pageIndex + "&countryCode=" + countryCode;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+    //Video Stats analytics for VanityURL
+    getVideoStatsInformationForVanityURL(daysCount, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats-data?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysCount;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getVideoViewsLevelOneReportsForVanityURL(daysInterval: number, dateValue: any, dto: DashboardAnalyticsDto) {
+        console.log("date value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level1?access_token=' + this.authenticationService.access_token +
+            '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getVideoViewsLevelTwoReportsForVanityURL(daysInterval: number, dateValue: any, videoId: number, pagination: Pagination) {
+        console.log("data value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/views/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getVideoMinutesWatchedLevelOneReportsForVanityURL(daysInterval: any, dateValue: number, dto: DashboardAnalyticsDto) {
+        console.log("date value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level1?access_token=' + this.authenticationService.access_token + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
+        return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    getVideoMinutesWatchedLevelTwoReportsForVanityURL(daysInterval: any, dateValue: number, videoId: number, pagination: Pagination) {
+        console.log("date value is " + dateValue);
+        const url = this.authenticationService.REST_URL + 'dashboard/views/videostats/minuteswatched/level2?access_token=' + this.authenticationService.access_token + '&videoId=' + videoId + '&daysInterval=' + daysInterval + '&selectedDate=' + dateValue;
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getCampaignsHeatMapDetailsForVanityURL(limit: any, dto: DashboardAnalyticsDto) {
+        const url = this.authenticationService.REST_URL + 'dashboard/views/heatmap-data?access_token=' + this.authenticationService.access_token + '&limit=' + limit;
+            return this.http.post(url, dto)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     private extractData(res: Response) {
         let body = res.json();

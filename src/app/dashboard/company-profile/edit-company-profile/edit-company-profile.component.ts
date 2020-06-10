@@ -166,6 +166,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     serverErrorMessage = "Oops!Something went wrong.Please try after sometime";
     userId = 0;
     countryFromBrowser:string = "";
+    showVendorLogo: boolean = true;
+    vendorLogoTooltipText: string;
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -243,6 +245,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             if (this.authenticationService.user.hasCompany) {
                 this.companyProfile.isAdd = false;
                 this.profileCompleted = 100;
+            }
+            if (this.authenticationService.vanityURLEnabled && this.authenticationService.checkSamlSettingsUserRoles()) {
+                this.setVendorLogoTooltipText();
             }
         }
         this.getAllCompanyNames();
@@ -342,11 +347,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.showCropper = false;
     }
     uploadLogo(){
-      this.loadingcrop = true;
-      let fileObj:any;
-      fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
-      fileObj = this.utilService.blobToFile(fileObj);
-      this.fileUploadCode(fileObj);
+      if(this.croppedImage!=""){
+        this.loadingcrop = true;
+        let fileObj:any;
+        fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+        fileObj = this.utilService.blobToFile(fileObj);
+        this.fileUploadCode(fileObj);
+      }else{
+          this.refService.showSweetAlertErrorMessage("Please upload an image");
+      }
+      
     }
 
     fileUploadCode(fileObj:File){
@@ -403,14 +413,24 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 console.log(data);
                 this.authenticationService.user = data;
                 this.authenticationService.userProfile = data;
-                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                currentUser['userId'] = data.id;
-                currentUser['hasCompany'] = data.hasCompany;
-                currentUser['roles'] = data.roles;
-                currentUser['campaignAccessDto'] = data.campaignAccessDto;
-                currentUser['logedInCustomerCompanyNeme'] = this.companyProfile.companyName;
-                currentUser['source'] = data.source;
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        const currentUser = localStorage.getItem('currentUser');
+                        const userToken = {
+                            'userName': userName,
+                            'userId': data.id,
+                            'accessToken': JSON.parse(currentUser)['accessToken'],
+                            'refreshToken': JSON.parse(currentUser)['refreshToken'],
+                            'expiresIn': JSON.parse(currentUser)['expiresIn'],
+                            'hasCompany': data.hasCompany,
+                            'roles': data.roles,
+                            'campaignAccessDto': data.campaignAccessDto,
+                            'logedInCustomerCompanyNeme': JSON.parse(currentUser)['companyName'],
+							'source':data.source	
+                        };
+                        localStorage.clear();
+                        if (this.authenticationService.vanityURLEnabled && this.authenticationService.companyProfileName && this.authenticationService.vanityURLUserRoles) {
+                            userToken['roles'] = this.authenticationService.vanityURLUserRoles;
+                        }
+                        localStorage.setItem('currentUser', JSON.stringify(userToken));
                 localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
                 console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 
@@ -460,6 +480,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.hasCompany = true;
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
+                            let module = self.authenticationService.module;
                             self.router.navigate(["/home/dashboard/welcome"]);
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();
@@ -755,8 +776,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         if ($.trim(value).length > 0) {
             let valueWithSpace = $.trim(value).toLowerCase();
             let valueWithOutSpaces = $.trim(value).toLowerCase().replace(/\s/g, '');
-            if (/\s/.test(value)) {
-                this.setCompanyProfileNameError("Spaces are not allowed");
+            if (!this.regularExpressions.ALPHA_NUMERIC.test(value)) {
+                this.setCompanyProfileNameError("Please enter alpha numerics & lower case letters only");
             } else if (valueWithOutSpaces.length < 3) {
                 this.setCompanyProfileNameError("Minimum 3 letters required");
             }
@@ -1408,4 +1429,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
        //this.campaignAccess.vendorTier1 = event;
    }
 
+    setVendorLogoEnabled(event: any) {
+        this.companyProfile.showVendorCompanyLogo = event;
+    }
+
+    setVendorLogoTooltipText() {
+        this.vendorLogoTooltipText = "<b> On </b> - Your company logo will be displayed throughout the platform when your partners log into their accounts. <br/>"
+            + "<b> Off </b> - Each partner’s logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>"
+    }
 }

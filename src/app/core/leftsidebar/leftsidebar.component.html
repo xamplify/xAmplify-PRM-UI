@@ -7,10 +7,10 @@
         <!-- BEGIN SIDEBAR MENU -->
         <ul class="page-sidebar-menu page-sidebar-menu-hover-submenu" [ngClass]="{'page-sidebar-menu-closed':refService.isSidebarClosed}" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
             <li [ngClass]="{'active': location.path().includes('dashboard')}">
-                <a [routerLink]="['/home/dashboard/default']">
-                    <!-- [class.disabled]="!authService.user.hasCompany ?true:null" -->
+                <a [routerLink]="['/home/dashboard/default']"  [class.disabled]="!authService.user.hasCompany ?true:null">
+                   
                     <i class="icon-home"></i>
-                    <span class="title">Account Dashboard</span>
+                    <span class="title" translate>Account Dashboard</span>                    
                     <span class="selected"></span>
                 </a>
             </li>
@@ -18,7 +18,7 @@
             <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType!='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('partners')">
                     <i class="fa fa-handshake-o"></i>
-                    <span class="title">Partners</span>
+                    <span class="title" translate>Partners</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -26,13 +26,13 @@
                     <li>
                         <a [routerLink]="['./partners/add']">
                             <i class="fa fa-users"></i>
-                            <span class="title">Onboarding Partners</span>
+                            <span class="title" translate>Onboarding Partners</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['./partners/manage']">
                             <i class="fa fa-list"></i>
-                            <span class="title">Manage Partners</span>
+                            <span class="title" translate>Manage Partners</span>
                         </a>
                     </li>
                 </ul>
@@ -41,7 +41,7 @@
             <li *ngIf="authService.user.hasCompany && authService.module.isPartner && sourceType=='ALLBOUND'" [ngClass]="{'active': location.path().includes('partners')}">
                 <a [routerLink]="['./partners/manage']">
                     <i class="fa fa-handshake-o"></i>
-                    <span class="title">Manage Partners</span>
+                    <span class="title" translate>Manage Partners</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -50,7 +50,7 @@
             <li *ngIf="authService.user.hasCompany && authService.module.isVideo" [ngClass]="{'active': location.path().includes('content') || location.path().includes('content')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('content')">
                     <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                    <span class="title">Content</span>
+                    <span class="title" translate>Content</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -58,19 +58,19 @@
                     <li>
                         <a [routerLink]="['/home/content/upload']">
                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                            <span class="title">Upload Content</span>
+                            <span class="title" translate>Upload Content</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['./content/videos']">
                             <i class="fa fa-file-video-o"></i>
-                            <span class="title">Manage Videos</span>
+                            <span class="title" translate>Manage Videos</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['./content/manage']">
                             <i class="fa fa-list"></i>
-                            <span class="title">Manage Content</span>
+                            <span class="title" translate>Manage Content</span>
                         </a>
                     </li>
                 </ul>
@@ -79,7 +79,7 @@
             <li *ngIf="authService.user.hasCompany && (authService.module.isContact || authService.isShowContact)" [ngClass]="{'active': location.path().includes('contacts')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
                     <i class="fa fa-list-ul"></i>
-                    <span class="title">Contacts</span>
+                    <span class="title" translate>Contacts</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -87,13 +87,13 @@
                     <li>
                         <a [routerLink]="['./contacts/add']">
                             <i class="fa fa-users"></i>
-                            <span class="title">Add Contacts</span>
+                            <span class="title" translate>Add Contacts</span>
                         </a>
                     </li>
                     <li>
                         <a [routerLink]="['./contacts/manage']">
                             <i class="fa fa-list"></i>
-                            <span class="title">Manage Contacts</span>
+                            <span class="title" translate>Manage Contacts</span>
                         </a>
                     </li>
                 </ul>
@@ -101,7 +101,7 @@
             <li *ngIf="authService.module.hasPartnerLandingPageAccess && authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('landing-pages')}">
                 <a [routerLink]="['./pages/partner']">
                     <i class="fa fa-wpforms"></i>
-                    <span class="title">Pages</span>
+                    <span class="title" translate>Pages</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -111,7 +111,7 @@
 	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
                 <a [routerLink]="['./design/add']">
                     <i class="fa fa-paint-brush"></i>
-                    <span class="title">Design</span>
+                    <span class="title" translate>Design</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -121,7 +121,7 @@
             <li *ngIf="authService.user.hasCompany && authService.module.isCampaign" [ngClass]="{'active': location.path().includes('campaigns')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('campaigns')">
                     <i class="fa fa-bullhorn"></i>
-                    <span class="title">Campaign </span>
+                    <span class="title" translate>Campaign </span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
@@ -129,20 +129,20 @@
                     <li>
                         <a *ngIf="authService.module.isReDistribution || authService.isShowRedistribution" [routerLink]="['./campaigns/partner/all']">
                             <i class="fa fa-bullhorn"></i>
-                            <span class="title">Redistribute Campaign</span>
+                            <span class="title" translate>Redistribute Campaign</span>
                         </a>
                         <li>
                             <li>
-                                <a *ngIf="authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember)" [routerLink]="['./campaigns/select']">
+                                <a *ngIf="checkCreateCampaignOptionForVanityURL && (authService.superiorRole === 'OrgAdmin & Partner' || authService.superiorRole === 'Vendor & Partner' || (!authService.module.isOnlyPartner && !authService.isPartnerTeamMember))" [routerLink]="['./campaigns/select']">
                                     <i class="fa fa-bullhorn"></i>
-                                    <span class="title">Create Campaign</span>
+                                    <span class="title" translate>Create Campaign</span>
                                 </a>
 
                             </li>
                             <li>
                                 <a [routerLink]="['./campaigns/manage']">
                                     <i class="fa fa-list"></i>
-                                    <span class="title">Manage Campaigns</span>
+                                    <span class="title" translate>Manage Campaigns</span>
                                 </a>
                             </li>
                 </ul>
@@ -151,7 +151,7 @@
                 <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || authService.module.isCompanyPartner || isLoggedInAsTeamMember)" [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
                         <i class="fa fa-users"></i>
-                        <span class="title">Team</span>
+                        <span class="title" translate>Team</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>
@@ -162,7 +162,7 @@
                 <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
                     <a [routerLink]="['./deals/manage']">
                         <i class="fa fa-tags"></i>
-                        <span class="title">Opportunities</span>
+                        <span class="title" translate>Opportunities</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>

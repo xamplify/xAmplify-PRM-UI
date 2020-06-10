@@ -6,6 +6,11 @@
 <div *ngIf="error" class="error redirect">
     <div>
     	<h1><i class="fa fa-exclamation" aria-hidden="true"></i> {{error}}</h1>
-    	<a [routerLink]="['/']" class="btn retry btn-danger uppercase">Retry</a>
-    </div>
+    	<a (click)="closeWindow()" class="btn retry btn-danger uppercase">Close</a>
+	</div>
+	
+
+<br><br>
+
 </div>
+

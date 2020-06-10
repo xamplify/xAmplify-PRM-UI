@@ -11,7 +11,8 @@
         <div class="page-logo">
             <!--  -->
             <a [routerLink]="refService.homeRouter">
-                <img [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />
+                <img *ngIf= "!authenticationService.vanityURLEnabled || !authenticationService.v_showCompanyLogo" [src]="authenticationService.MEDIA_URL + refService.companyProfileImage" (error)="errorImage($event)" alt="logo" class="logo-default" />
+                <img *ngIf= "authenticationService.vanityURLEnabled && authenticationService.v_showCompanyLogo" [src]="authenticationService.v_companyLogoImagePath" (error)="errorImage($event)" alt="logo" class="logo-default" />
             </a>
             <!-- <div class="menu-toggler sidebar-toggler" *ngIf="authenticationService.user.hasCompany"> -->
             <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -61,12 +62,15 @@
 							<i class="fa fa-bullhorn" data-toggle="tooltip"></i>
 						</button>
 					</li> -->
-                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'">
+
+                    <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && sourceType!='ALLBOUND'&& !authenticationService.vanityURLEnabled">
+
                         <!-- <button class="btn btn-primary pull-right" style="margin-top: 17px; margin-right: 5px;"
 						(click)="openRequestAsVendorModal()">Refer a vendor</button> -->
                         <div class="btn-group refer-vendor-button">
-                            <button (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;">Refer a vendor</button>
-                            <button [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;"><i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title=""></i></button>
+                            <button  (click)="openRequestAsVendorModal()" style="border-radius: 3px 0px 0px 3px;" translate>Refer a vendor</button>
+                            <button [routerLink]="['/home/dashboard/vendor-request']" style="border-radius: 0px 3px 3px 0px;">
+                            <i class="fa fa-line-chart" data-toggle="tooltip" data-original-title="" title=""></i></button>
                         </div>
                     </li>
                     <!-- 	<li *ngIf="(authenticationService.module.hasVideoRole || authenticationService.module.isOrgAdmin || authenticationService.module.isVendor)&&authenticationService.user.hasCompany && !authenticationService.isPartnerTeamMember" style="margin-top: 17px;margin-right: 5px;">
@@ -82,7 +86,7 @@
 										|| authenticationService.module.isVendor) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign && !authenticationService.isPartnerTeamMember">
                         <!-- *ngIf="refService.hasCompany" -->
                         <button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
-							<span class="hidden-xs">Update Status</span>
+							<span class="hidden-xs" translate>Update Status</span>
 							<i class="fa fa-share" data-toggle="tooltip"></i>
 						</button>
                     </li>
@@ -183,12 +187,12 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li *ngIf="authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
-                                <a [routerLink]="['/home/dashboard/myprofile']"> <i class="icon-user"></i> My Profile
+                                <a [routerLink]="['/home/dashboard/myprofile']" translate> <i class="icon-user"></i> My Profile
                                 </a>
                             </li>
                             <li *ngIf="!authenticationService.isOnlyUser() && !authenticationService.isSuperAdmin() && authenticationService.superiorRole != 'Partner'">
                                 <!-- *ngIf="(authenticationService.module.isOrgAdmin || isUser)" -->
-                                <a [routerLink]="['/home/dashboard/edit-company-profile']"> <i class="fa fa-building-o"></i> Company Profile
+                                <a [routerLink]="['/home/dashboard/edit-company-profile']" translate> <i class="fa fa-building-o"></i> Company Profile
                                 </a>
                             </li>
                             <li *ngIf="(refService.hasAllAccess()
@@ -196,32 +200,30 @@
 										|| authenticationService.module.isOrgAdmin
 										|| authenticationService.module.isVendor
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
-                                <a [routerLink]="['/home/social/manage/all']"> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
+                                <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>
 
 
                             <li *ngIf="currentUrl.endsWith('welcome') && authenticationService.user.hasCompany">
-                                <a [routerLink]="['/home/dashboard']">
+                                <a [routerLink]="['/home/dashboard']" translate>
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
                             </li>
                             <li *ngIf="currentUrl.endsWith('dashboard') && authenticationService.user.hasCompany && !authenticationService.isOnlyUser()">
-                                <a [routerLink]="['/home/dashboard/welcome']">
-                                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
+                                <a [routerLink]="['/home/dashboard/welcome']" translate>
+                                    <i class="fa fa-paper-plane-o" aria-hidden="true" ></i> Welcome</a>
                             </li>
 
                             <li *ngIf="(!currentUrl.endsWith('dashboard')) && (!currentUrl.endsWith('welcome')) && authenticationService.user.hasCompany">
-                                <a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]">
+                                <a *ngIf="refService.userDefaultPage==='WELCOME'" [routerLink]="['/home/dashboard/'+refService.userDefaultPage.toLowerCase()]" translate>
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Welcome</a>
-                                <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]">
+                                <a *ngIf="refService.userDefaultPage==='DASHBOARD'" [routerLink]="['/home/'+refService.userDefaultPage.toLowerCase()]" translate>
                                     <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Dashboard</a>
                             </li>
-                            <!-- <li id="lockscreen">
-                                <a (click)="lockScreen()" (contextmenu)="onRightClick($event)"> <i class="icon-lock"></i> Lock Screen
-                                </a>
-                            </li> -->
+   
+                           
                             <li class="divider"></li>
                             <li id="logoutButton" (click)="logout()">
-                                <a> <i class="icon-key" aria-hidden="true"></i> Log Out
+                                <a translate> <i class="icon-key" aria-hidden="true"></i> Log Out
                                 </a>
                             </li>
                         </ul>
@@ -234,6 +236,18 @@
 	                    <i class="icon-logout"></i>
 	                </li>-->
                     <!-- END USER LOGIN DROPDOWN -->
+                    <li class="dropdown dropdown-user top-menu-bar">
+                        <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">                            
+                            <span style="text-transform: uppercase;">{{authenticationService.userPreferredLanguage}}</span>
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-default">
+                            <li *ngFor="let language of authenticationService.allLanguagesList">
+                                <a (click)="selectedLanguage(language.id)">  {{language.name}}
+                                </a>
+                            </li>
+                        </ul>                
+                    </li>
                 </ul>
             </div>
             <!-- END TOP NAVIGATION MENU -->

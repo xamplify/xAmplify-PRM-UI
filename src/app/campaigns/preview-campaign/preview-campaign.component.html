@@ -216,6 +216,7 @@
                     <fieldset>
                         <legend>Selected {{contactType}}:</legend>
                         <app-list-loader style="background: white" [rowsCount]="3" *ngIf="isContactListLoader"></app-list-loader>
+                      <p *ngIf="campaignPartnersOrContactsPagination.pagedItems.length==0" style="color: #ff3a3a;">No {{contactType}} found</p>
                         <div class="table-responsive">
                              <div class="portlet-input input-inline input pull-right" *ngIf="!isContactListLoader">
                                 <div class="input-icon" style="position:relative;right: -11px;">
@@ -233,14 +234,16 @@
                                     </tr>
                                     
                                 </thead>
+
                                 <tbody>
                                     <ng-container *ngFor="let campaignUser of campaignPartnersOrContactsPagination.pagedItems; let i = index">
                                         <tr>
                                             <td>
                                                 <app-user-info [userInfo]="campaignUser"></app-user-info>
                                             </td>
+
                                             <td class="text-center" *ngIf="campaign.launched && !campaign.channelCampaign && (replies?.length>0 || urls?.length>0)">
-                                                <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
+                            <ng-container *ngIf="campaignUser.statusInString=='ACTIVE'">
                                                     <button class="btn btn-default workflow-style pause-style" (click)="changeCampaignUserStatus(campaignUser,'Pause')">
                                                         <span class="hidden-xs pause-text-style">Pause</span>
                                                         <i class="fa fa-pause" aria-hidden="true" data-toggle="tooltip"></i>

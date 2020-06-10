@@ -19,6 +19,8 @@ import {AddMoreReceiversComponent} from 'app/campaigns/add-more-receivers/add-mo
 import {PublicEventEmailPopupComponent} from 'app/campaigns/public-event-email-popup/public-event-email-popup.component';
 import { UserService } from '../../core/services/user.service';
 import {ModulesDisplayType } from 'app/util/models/modules-display-type';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $: any;
 
 @Component({
@@ -91,8 +93,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
   @Output() updatedItemsCount = new EventEmitter();
   constructor(public userService: UserService, public callActionSwitch: CallActionSwitch, private campaignService: CampaignService, private router: Router, private logger: XtremandLogger,
       public pagination: Pagination, private pagerService: PagerService, public utilService: UtilService, public actionsDescription: ActionsDescription,
-      public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer) {
-	 this.refService.renderer = this.renderer;    
+      public refService: ReferenceService, public campaignAccess: CampaignAccess, public authenticationService: AuthenticationService,private route: ActivatedRoute,public renderer:Renderer,
+      private vanityUrlService:VanityURLService) {
+      this.refService.renderer = this.renderer;    
       this.loggedInUserId = this.authenticationService.getUserId();
       this.utilService.setRouterLocalStorage('managecampaigns');
       this.itemsSize = this.numberOfItemsPerPage[0];
@@ -124,6 +127,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       if(this.pagination.teamMemberAnalytics){
           this.pagination.teamMemberId = this.teamMemberId;
       }
+       //Added by Vivek for Vanity URL
+       if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+        this. pagination.vanityUrlFilter = true;
+    }
       this.campaignService.listCampaign(pagination, this.loggedInUserId)
           .subscribe(
           data => {

@@ -8,6 +8,8 @@ import {ReferenceService} from '../../core/services/reference.service';
 import { SaveGeoLocationAnalyticsComponent } from '../../util/save-geo-location-analytics/save-geo-location-analytics.component';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { GeoLocationAnalyticsType } from '../../util/geo-location-analytics-type.enum';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+
 declare var swal, $: any;
 
 @Component({
@@ -20,7 +22,10 @@ declare var swal, $: any;
 export class PreviewLandingPageComponent implements OnInit {
     currentUrl: string = "";
     @ViewChild('saveGeoLocationAnalyticsComponent') saveGeoLocationAnalyticsComponent: SaveGeoLocationAnalyticsComponent;
-    constructor( public landingPageService: LandingPageService, public authenticationService: AuthenticationService, public referenceService: ReferenceService ) { }
+    constructor( public landingPageService: LandingPageService, public authenticationService: AuthenticationService,
+         public referenceService: ReferenceService,private vanityUrlService:VanityURLService ) {
+            this.vanityUrlService.isVanityURLEnabled();
+          }
     loading = false;
     ngOnInit() {
     }
@@ -36,6 +41,7 @@ export class PreviewLandingPageComponent implements OnInit {
         landingPageDto.showYourPartnersLogo = landingPage.showYourPartnersLogo;
         landingPageDto.partnerLandingPage = landingPage.partnerLandingPage;
         landingPageDto.landingPageAlias = landingPage.alias;
+        landingPageDto.vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         let htmlContent = "#landingPage-html-content";
         $( htmlContent ).empty();
         let title = "#landing-page-preview-title";

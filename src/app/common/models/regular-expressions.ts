@@ -5,4 +5,6 @@ export class RegularExpressions {
     ADDRESS_PATTERN = /^[a-zA-Z0-9-\/] ?([a-zA-Z0-9-\/]|[a-zA-Z0-9-\/] )*[a-zA-Z0-9-\/]$/;
     PHONE_NUMBER_PATTERN = /^[0-9-+]+$/;
     URL_PATTERN = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
+    ALPHA_NUMERIC =/^[a-z0-9]+$/;
+
 }

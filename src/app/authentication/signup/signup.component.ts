@@ -14,6 +14,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $: any;
 
@@ -85,9 +86,12 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         }
     };
 
+    isNotVanityURL:boolean = false;
+    vanityURLEnabled:boolean = false;
+
     constructor(private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User,public route:ActivatedRoute,
-        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService) {
+        private userService: UserService, public referenceService: ReferenceService,private xtremandLogger: XtremandLogger,public authenticationService:AuthenticationService, private vanityURLService: VanityURLService) {
           if(this.router.url.includes('/signup/')) {  localStorage.removeItem('currentUser');}
           if(this.router.url.includes('/v-signup')){ this.vendorSignup = true; } else { this.vendorSignup = false;}
           this.signUpForm = new FormGroup({
@@ -109,13 +113,13 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
         this.signUpUser.emailId = this.signUpUser.emailId.toLowerCase();
         this.loading = true;
         this.signUpUser.vendorSignUp = this.vendorSignup;
+        this.signUpUser.companyProfileName = this.authenticationService.companyProfileName;
         this.userService.signUp(this.signUpUser)
             .subscribe(
                 data => {
                     this.loading = false;
                     console.log(data);
                     if (data !== undefined) {
-                        //data.message === 'USER CREATED SUCCESSFULLY' || data.message.includes('USER CREATED')
                         if (data.statusCode==200) {
                             this.loading = false;
                             this.referenceService.userProviderMessage = data.message;
@@ -230,6 +234,24 @@ export class SignupComponent implements OnInit,AfterViewInit, OnDestroy {
       try{
          this.customResponse = new CustomResponse();
         this.mainLoader = true;
+        if(this.vanityURLService.isVanityURLEnabled()){
+            this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
+              this.vanityURLEnabled = true;
+              this.authenticationService.v_companyName = result.companyName;
+              this.authenticationService.vanityURLink = result.vanityURLink;
+              this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
+              this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;           
+                  if(result.companyBgImagePath){
+                    this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;           
+                  }else{
+                    this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
+                  }
+            }, error => {
+              console.log(error);
+            });
+          }else{
+            this.isNotVanityURL = true;
+          }
         this.authenticationService.navigateToDashboardIfUserExists();
         setTimeout(()=>{  this.mainLoader = false;},900);
         if(this.router.url.includes('/signup/')){

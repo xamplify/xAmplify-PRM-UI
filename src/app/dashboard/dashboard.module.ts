@@ -37,6 +37,18 @@ import { DemoRequestComponent } from './demo-request/demo-request.component';
 import { DynamicEmailContentComponent } from './dynamic-email-content/dynamic-email-content.component';
 import { SamlsecurityComponent } from './samlsecurity/samlsecurity.component';
 import { ListAllUsersComponent } from './list-all-users/list-all-users.component';
+import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
+import { ModuleAnalyticsComponent } from './dashboard-analytics-components/module-analytics/module-analytics.component';
+import { VendorActivityAnalyticsComponent } from './dashboard-analytics-components/vendor-activity-analytics/vendor-activity-analytics.component';
+import { CampaignStatisticsAnalyticsComponent } from './dashboard-analytics-components/campaign-statistics-analytics/campaign-statistics-analytics.component';
+import { RegionalStatisticsAnalyticsComponent } from './dashboard-analytics-components/regional-statistics-analytics/regional-statistics-analytics.component';
+import { VideoStatisticsAnalyticsComponent } from './dashboard-analytics-components/video-statistics-analytics/video-statistics-analytics.component';
+import { EmailStatsAnalyticsComponent } from './dashboard-analytics-components/email-stats-analytics/email-stats-analytics.component';
+import { SocialAccountsAnalyticsComponent } from './dashboard-analytics-components/social-accounts-analytics/social-accounts-analytics.component';
+import { DashboardButtonsComponent } from './dashboard-buttons/dashboard-buttons.component';
+import { DashboardButtonsCarouselComponent } from './dashboard-buttons-carousel/dashboard-buttons-carousel.component';
+import { VanityEmailTemplatesComponent } from 'app/email-template/vanity-email-templates/vanity-email-templates.component';
+
 @NgModule({
     imports: [DasboardRoutingModule, CKEditorModule, SharedModule, CoreModule, CommonModule, DragulaModule, CommonComponentModule, InternationalPhoneModule, SharedContactsModule],
     declarations: [DashboardComponent, TableAdvanceComponent, ViewsReportComponent, ExtraFaqComponent,
@@ -48,7 +60,19 @@ import { ListAllUsersComponent } from './list-all-users/list-all-users.component
         DemoRequestComponent,
         DynamicEmailContentComponent,
         SamlsecurityComponent,
-        ListAllUsersComponent
+        ListAllUsersComponent,
+        DashboardAnalyticsComponent,
+        ModuleAnalyticsComponent,
+        VendorActivityAnalyticsComponent,
+        CampaignStatisticsAnalyticsComponent,
+        RegionalStatisticsAnalyticsComponent,
+        VideoStatisticsAnalyticsComponent,
+        EmailStatsAnalyticsComponent,
+        SocialAccountsAnalyticsComponent,
+        DashboardButtonsComponent,        
+        DashboardButtonsCarouselComponent, 
+        VanityEmailTemplatesComponent       
+
     ],
     exports: [InternationalPhoneModule,MarketoAuthenticationComponent],
     providers: [DashboardService,CompanyProfileService,DealRegistrationService]

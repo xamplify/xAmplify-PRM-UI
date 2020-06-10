@@ -1239,6 +1239,7 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       if(isOrgAdmin){
           if(this.campaign.channelCampaign){
               this.contactType = "partner(s)";
+
               this.tableHeader = "Partner Details";
               this.showContactType = false;
           }else{
@@ -1248,11 +1249,13 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
               }else{
                   this.contactType = " partner / recipient (s)";
                   this.tableHeader = "Partner/Recipient Details";
+
               }
               this.showContactType = true;
           }
 
       }else if(isVendor|| this.authenticationService.isAddedByVendor){
+
         if(this.campaign.nurtureCampaign){
           this.contactType = " recipient(s)";
           this.tableHeader = "Recipient Details";
@@ -1389,12 +1392,11 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
      this.isContactListLoader = true;
      this.paginationType = 'contactsOrPartners';
      this.campaignPartnersOrContactsPreviewError = false;
-     if(this.campaign.campaignId!=undefined){
+     if(this.campaign.campaignId!=undefined && this.campaign.campaignId>0){
       campaignPartnersOrContactsPagination.campaignId = this.campaign.campaignId;
      }else{
       campaignPartnersOrContactsPagination.campaignId = this.campaign.id;
      }
-     
      this.campaignService.getCampaignContactsOrPartners(campaignPartnersOrContactsPagination).
      subscribe(
       ( data: any ) => {
@@ -1411,6 +1413,7 @@ pauseOrResume(status:string,type:number,reply:Reply,url:Url){
       () => this.xtremandLogger.info( "Finished listCampaignPartnersOrContacts()" ) );
      
    }
+
 
    searchCampaignUsers(){
     this.campaignPartnersOrContactsPagination.pageIndex = 1;

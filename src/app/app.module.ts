@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Http, HttpModule, RequestOptions, XHRBackend } from '@angular/http';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientJsonpModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -63,7 +63,9 @@ import { HubSpotService } from './core/services/hubspot.service';
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { IntegrationService } from './core/services/integration.service';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
-
+import { VanityURLService } from './vanity-url/services/vanity.url.service';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -74,7 +76,15 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the
                ],
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
-        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot()],
+        Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot(),
+        TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: HttpLoaderFactory,
+              deps: [HttpClient]
+            }
+          })],
+
     providers: [{
         provide: Http,
         useFactory: httpService,
@@ -82,7 +92,8 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
-        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService],
+        VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,
+        VanityURLService],
     bootstrap: [AppComponent]
 
 })
@@ -90,4 +101,9 @@ export class AppModule { }
 
 export function httpService(backend: XHRBackend, options: RequestOptions, slimLoadingBarService: SlimLoadingBarService) {
     return new HttpService(backend, options, slimLoadingBarService);
+}
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+    return new TranslateHttpLoader(http);
 }

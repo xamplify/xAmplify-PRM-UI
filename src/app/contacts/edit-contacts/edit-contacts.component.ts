@@ -623,43 +623,47 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
 		this.contactService.updateContactList(this.contactListId, this.users)
 			.subscribe(
-				(data: any) => {
-					data = data;
-					this.loading = false;
-					this.allUsers = this.contactsByType.allContactsCount;
-					this.xtremandLogger.info("update Contacts ListUsers:" + data);
-					this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
-					$("tr.new_row").each(function() {
-						$(this).remove();
-					});
-					if (!this.isPartner) {
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-					} else {
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-					}
+            (data: any) => {
+                if (data.access) {
+                    data = data;
+                    this.loading = false;
+                    this.allUsers = this.contactsByType.allContactsCount;
+                    this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                    this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+                    $("tr.new_row").each(function() {
+                        $(this).remove();
+                    });
+                    if (!this.isPartner) {
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                    } else {
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+                    }
 
-					if (data.statusCode == 409) {
-						let emailIds = data.emailAddresses;
-						let allEmailIds = "";
-						$.each(emailIds, function(index, emailId) {
-							allEmailIds += (index + 1) + "." + emailId + "<br><br>";
-						});
-						let message = data.errorMessage + "<br><br>" + allEmailIds;
-						this.customResponse = new CustomResponse('ERROR', message, true);
-					}
+                    if (data.statusCode == 409) {
+                        let emailIds = data.emailAddresses;
+                        let allEmailIds = "";
+                        $.each(emailIds, function(index, emailId) {
+                            allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                        });
+                        let message = data.errorMessage + "<br><br>" + allEmailIds;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                    }
 
-					if (data.statusCode == 417) {
-						this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
-					}
+                    if (data.statusCode == 417) {
+                        this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+                    }
 
-					this.checkingLoadContactsCount = true;
-					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-					this.cancelContacts();
-					if (data.statusCode == 200) {
-						this.getContactsAssocialteCampaigns();
-					}
+                    this.checkingLoadContactsCount = true;
+                    this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                    this.cancelContacts();
+                    if (data.statusCode == 200) {
+                        this.getContactsAssocialteCampaigns();
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
 
-				},
+            },
 				(error: any) => {
 					this.loading = false;
 					let body: string = error['_body'];
@@ -810,52 +814,55 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
 		this.contactService.updateContactList(this.contactListId, this.users)
 			.subscribe(
-				data => {
-					data = data;
-					this.loading = false;
-					this.selectedAddContactsOption = 8;
-					this.xtremandLogger.info("update Contacts ListUsers:" + data);
-					this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
-					$("tr.new_row").each(function() {
-						$(this).remove();
-					});
+            data => {
+                if (data.access) {
+                    data = data;
+                    this.loading = false;
+                    this.selectedAddContactsOption = 8;
+                    this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                    this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+                    $("tr.new_row").each(function() {
+                        $(this).remove();
+                    });
 
-					if (!this.isPartner) {
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-					} else {
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-					}
+                    if (!this.isPartner) {
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                    } else {
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+                    }
 
-					this.users = [];
-					this.selectedAddContactsOption = 8;
-					this.uploadCsvUsingFile = false;
-					this.uploader.queue.length = 0;
-					this.filePrevew = false;
-					this.isShowUsers = true;
-					this.removeCsv();
-					if (data.statusCode == 409) {
-						let emailIds = data.emailAddresses;
-						let allEmailIds = "";
-						$.each(emailIds, function(index, emailId) {
-							allEmailIds += (index + 1) + "." + emailId + "<br><br>";
-						});
-						let message = data.errorMessage + "<br><br>" + allEmailIds;
-						this.customResponse = new CustomResponse('ERROR', message, true);
-					}
+                    this.users = [];
+                    this.selectedAddContactsOption = 8;
+                    this.uploadCsvUsingFile = false;
+                    this.uploader.queue.length = 0;
+                    this.filePrevew = false;
+                    this.isShowUsers = true;
+                    this.removeCsv();
+                    if (data.statusCode == 409) {
+                        let emailIds = data.emailAddresses;
+                        let allEmailIds = "";
+                        $.each(emailIds, function(index, emailId) {
+                            allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                        });
+                        let message = data.errorMessage + "<br><br>" + allEmailIds;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                    }
 
-					if (data.statusCode == 417) {
-						this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
-					}
+                    if (data.statusCode == 417) {
+                        this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+                    }
 
-					this.checkingLoadContactsCount = true;
-					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                    this.checkingLoadContactsCount = true;
+                    this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
 
 
-					if (data.statusCode == 200) {
-						this.getContactsAssocialteCampaigns();
-					}
-
-				},
+                    if (data.statusCode == 200) {
+                        this.getContactsAssocialteCampaigns();
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            },
 				(error: any) => {
 					this.loading = false;
 					let body: string = error['_body'];
@@ -881,31 +888,34 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.xtremandLogger.info(this.selectedContactListIds);
 			this.contactService.removeContactListUsers(contactListId, this.selectedContactListIds)
 				.subscribe(
-					(data: any) => {
-						data = data;
-						if(data.statusCode==200){
-							$('#contactListDiv_' + contactListId).remove();
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
-							this.contactService.deleteUserSucessMessage = true;
-							this.goBackToManageList();
-						}else if(data.statusCode==201){
-							this.allUsers = this.contactsByType.allContactsCount;
-							console.log("update Contacts ListUsers:" + data);
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
-							}
-							$.each(this.selectedContactListIds, function(index: number, value: any) {
-								$('#row_' + value).remove();
-								console.log(index + "value" + value);
-							});
-							this.checkingLoadContactsCount = true;
-							this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-							this.selectedContactListIds.length = 0;
-						}
-						
-					},
+                (data: any) => {
+                    if (data.access) {
+                        data = data;
+                        if (data.statusCode == 200) {
+                            $('#contactListDiv_' + contactListId).remove();
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+                            this.contactService.deleteUserSucessMessage = true;
+                            this.goBackToManageList();
+                        } else if (data.statusCode == 201) {
+                            this.allUsers = this.contactsByType.allContactsCount;
+                            console.log("update Contacts ListUsers:" + data);
+                            if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+                            }
+                            $.each(this.selectedContactListIds, function(index: number, value: any) {
+                                $('#row_' + value).remove();
+                                console.log(index + "value" + value);
+                            });
+                            this.checkingLoadContactsCount = true;
+                            this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                            this.selectedContactListIds.length = 0;
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					(error: any) => {
 						//let body: string = error['_body'];
 						//body = body.substring(1, body.length-1);
@@ -1462,48 +1472,52 @@ goBackToManageList(){
 		this.setLegalBasisOptions(this.users);
 		this.contactService.updateContactList(this.contactListId, this.users)
 			.subscribe(
-				data => {
-					data = data;
-					this.loading = false;
-					this.selectedAddContactsOption = 8;
-					this.xtremandLogger.info("update Contacts ListUsers:" + data);
-					this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
-					$("tr.new_row").each(function() {
-						$(this).remove();
+            data => {
+                if (data.access) {
+                    data = data;
+                    this.loading = false;
+                    this.selectedAddContactsOption = 8;
+                    this.xtremandLogger.info("update Contacts ListUsers:" + data);
+                    this.manageContact.editContactList(this.contactListId, this.contactListName, this.uploadedUserId, this.isDefaultPartnerList, this.isSynchronizationList);
+                    $("tr.new_row").each(function() {
+                        $(this).remove();
 
-					});
-					this.clickBoard = false;
-					if (!this.isPartner) {
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-					} else {
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-					}
+                    });
+                    this.clickBoard = false;
+                    if (!this.isPartner) {
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+                    } else {
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+                    }
 
-					$("button#add_contact").prop('disabled', false);
-					$("button#upload_csv").prop('disabled', false);
-					this.users.length = 0;
-					this.cancelContacts();
+                    $("button#add_contact").prop('disabled', false);
+                    $("button#upload_csv").prop('disabled', false);
+                    this.users.length = 0;
+                    this.cancelContacts();
 
-					if (data.statusCode == 409) {
-						let emailIds = data.emailAddresses;
-						let allEmailIds = "";
-						$.each(emailIds, function(index, emailId) {
-							allEmailIds += (index + 1) + "." + emailId + "<br><br>";
-						});
-						let message = data.errorMessage + "<br><br>" + allEmailIds;
-						this.customResponse = new CustomResponse('ERROR', message, true);
-					}
+                    if (data.statusCode == 409) {
+                        let emailIds = data.emailAddresses;
+                        let allEmailIds = "";
+                        $.each(emailIds, function(index, emailId) {
+                            allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                        });
+                        let message = data.errorMessage + "<br><br>" + allEmailIds;
+                        this.customResponse = new CustomResponse('ERROR', message, true);
+                    }
 
-					if (data.statusCode == 417) {
-						this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
-					}
+                    if (data.statusCode == 417) {
+                        this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+                    }
 
-					this.checkingLoadContactsCount = true;
-					this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-					if (data.statusCode == 200) {
-						this.getContactsAssocialteCampaigns();
-					}
-				},
+                    this.checkingLoadContactsCount = true;
+                    this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                    if (data.statusCode == 200) {
+                        this.getContactsAssocialteCampaigns();
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            },
 				(error: any) => {
 					this.loading = false;
 					let body: string = error['_body'];
@@ -1779,21 +1793,25 @@ goBackToManageList(){
 			this.xtremandLogger.info(this.selectedInvalidContactIds);
 			this.contactService.validateUndelivarableEmailsAddress(this.selectedInvalidContactIds)
 				.subscribe(
-					data => {
-						data = data;
-						this.loading = false;
-						this.xtremandLogger.log(data);
-						console.log("update Contacts ListUsers:" + data);
-						this.checkingLoadContactsCount = true;
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-						this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-						this.selectedInvalidContactIds.length = 0;
-						if (this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
-						}
-					},
+                data => {
+                    if (data.access) {
+                        data = data;
+                        this.loading = false;
+                        this.xtremandLogger.log(data);
+                        console.log("update Contacts ListUsers:" + data);
+                        this.checkingLoadContactsCount = true;
+                        this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                        this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+                        this.selectedInvalidContactIds.length = 0;
+                        if (this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_EMAIL_VALIDATE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_EMAIL_VALIDATE_SUCCESS, true);
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					(error: any) => {
 						console.log(error);
 						this.loading = false;
@@ -1810,20 +1828,24 @@ goBackToManageList(){
 			this.xtremandLogger.info(this.selectedInvalidContactIds);
 			this.contactService.removeContactListUsers(this.contactListId, this.selectedInvalidContactIds)
 				.subscribe(
-					(data: any) => {
-						data = data;
-						console.log("update invalidContacts ListUsers:" + data);
-						$.each(this.selectedInvalidContactIds, function(index: number, value: any) {
-							$('#row_' + value).remove();
-							console.log(index + "value" + value);
-						});
-						//this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
-						this.invalidDeleteSuccessMessage = true;
-						//this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
-						this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
-						this.contactsByType.invalidContactsCount = data.invalidUsers;
-						this.selectedInvalidContactIds.length = 0;
-					},
+                (data: any) => {
+                    if (data.access) {
+                        data = data;
+                        console.log("update invalidContacts ListUsers:" + data);
+                        $.each(this.selectedInvalidContactIds, function(index: number, value: any) {
+                            $('#row_' + value).remove();
+                            console.log(index + "value" + value);
+                        });
+                        //this.setResponseDetails('SUCCESS', 'your contacts has been deleted successfully');
+                        this.invalidDeleteSuccessMessage = true;
+                        //this.customResponse = new CustomResponse( 'SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true );
+                        this.listOfSelectedContactListByType(this.contactsByType.selectedCategory);
+                        this.contactsByType.invalidContactsCount = data.invalidUsers;
+                        this.selectedInvalidContactIds.length = 0;
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					(error: any) => {
 						//let body: string = error['_body'];
 						// body = body.substring(1, body.length-1);
@@ -1866,35 +1888,39 @@ goBackToManageList(){
 			this.contactIds[0] = this.contactUsersId;
 			this.contactService.removeContactListUsers(this.contactListId, this.contactIds)
 				.subscribe(
-					(data: any) => {
-						data = data;
-						if(data.statusCode==201){
-							this.contactsByType.allContactsCount = data.allcontacts;
-							this.contactsByType.invalidContactsCount = data.invalidUsers;
-							this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
-							this.contactsByType.activeContactsCount = data.activecontacts;
-							this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
-							this.allUsers = this.contactsByType.allContactsCount;
-							console.log("update Contacts ListUsers:" + data);
-							if (!this.isPartner) {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
-							} else {
-								this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
-							}
-							
-						    this.selectedContactListIds = [];
-							this.isHeaderCheckBoxChecked = false;
-							
-							this.checkingLoadContactsCount = true
-							this.editContactListLoadAllUsers(this.contactListId, this.pagination);
-						}else{
-						$('#contactListDiv_' + this.contactListId).remove();
-						this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
-						this.contactService.deleteUserSucessMessage = true;
-						this.goBackToManageList();
-						}
-						this.contactIds = [];
-					},
+                (data: any) => {
+                    if (data.access) {
+                        data = data;
+                        if (data.statusCode == 201) {
+                            this.contactsByType.allContactsCount = data.allcontacts;
+                            this.contactsByType.invalidContactsCount = data.invalidUsers;
+                            this.contactsByType.unsubscribedContactsCount = data.unsubscribedUsers;
+                            this.contactsByType.activeContactsCount = data.activecontacts;
+                            this.contactsByType.inactiveContactsCount = data.nonactiveUsers;
+                            this.allUsers = this.contactsByType.allContactsCount;
+                            console.log("update Contacts ListUsers:" + data);
+                            if (!this.isPartner) {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_DELETE_SUCCESS, true);
+                            } else {
+                                this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
+                            }
+
+                            this.selectedContactListIds = [];
+                            this.isHeaderCheckBoxChecked = false;
+
+                            this.checkingLoadContactsCount = true
+                            this.editContactListLoadAllUsers(this.contactListId, this.pagination);
+                        } else {
+                            $('#contactListDiv_' + this.contactListId).remove();
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_DELETE_SUCCESS, true);
+                            this.contactService.deleteUserSucessMessage = true;
+                            this.goBackToManageList();
+                        }
+                        this.contactIds = [];
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					(error: any) => {
 						// let body: string = error['_body'];
 						//body = body.substring(1, body.length-1);
@@ -2257,15 +2283,19 @@ goBackToManageList(){
 					console.log(listUsers);
 					this.contactService.saveContactList(listUsers, name, this.isPartner, isPublic)
 						.subscribe(
-							data => {
-								$('#saveAsEditModal').modal('hide');
-								this.saveAsError = '';
-								this.saveAsListName = '';
-								this.saveAsListName = undefined;
-								this.goToContactOrPartnerUrl();
-								this.contactService.saveAsSuccessMessage = "SUCCESS";
-								this.contactService.isLoadingList = false;
-							},
+                        data => {
+                            if (data.access) {
+                                $('#saveAsEditModal').modal('hide');
+                                this.saveAsError = '';
+                                this.saveAsListName = '';
+                                this.saveAsListName = undefined;
+                                this.goToContactOrPartnerUrl();
+                                this.contactService.saveAsSuccessMessage = "SUCCESS";
+                                this.contactService.isLoadingList = false;
+                            } else {
+                                this.authenticationService.forceToLogout();
+                            }
+                        },
 							(error: any) => {
 								this.xtremandLogger.error(error);
 								if (JSON.parse(error._body).message.includes('email addresses in your contact list')) {
@@ -2548,15 +2578,19 @@ goBackToManageList(){
 			this.addContactModalClose();
 			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
 				.subscribe(
-					(data: any) => {
-						console.log(data);
-						if (!this.isPartner) {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
-						} else {
-							this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
-						}
-						this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
-					},
+                (data: any) => {
+                    if (data.access) {
+                        console.log(data);
+                        if (!this.isPartner) {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
+                        } else {
+                            this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_UPDATE_SUCCESS, true);
+                        }
+                        this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
 					error => this.xtremandLogger.error(error),
 					() => this.xtremandLogger.info("EditContactsComponent updateContactListUser() finished")
 				)
@@ -2703,6 +2737,26 @@ goBackToManageList(){
 		}
 		window.URL.revokeObjectURL(url);
 	}
+	
+    hasAccess() {
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        this.downloadList();
+                    }else{
+                         this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
+    }
 
 	downloadList() {
 		try {
@@ -2721,6 +2775,26 @@ goBackToManageList(){
 			this.xtremandLogger.error(error, "editContactComponent", "downloading list()");
 		}
 	}
+	
+	hasAccessForDownloadUndeliverableContacts(){
+        try {
+            this.contactService.hasAccess(this.isPartner)
+                .subscribe(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        this.downloadContactTypeList();
+                    }else{
+                         this.authenticationService.forceToLogout();
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+        }
+    }
 
 	downloadContactTypeList() {
 		if (this.contactsByType.selectedCategory === 'active') {

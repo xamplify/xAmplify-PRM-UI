@@ -1,0 +1,414 @@
+ <div class="page-content" [style.background-color]="referenceService.pageContnetBgColor" [class.ml0]="authenticationService.isSuperAdmin()">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li *ngIf="!authenticationService.isSuperAdmin()">
+          <i class="fa fa-home" aria-hidden="true"></i> 
+            <a [routerLink]="referenceService.homeRouter">Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li *ngIf="authenticationService.isSuperAdmin()">
+          <i class="fa fa-home" aria-hidden="true"></i>
+          <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </li>
+        <li>
+            <a>Add/Manage Team Members</a>
+        </li>
+    </ul>
+</div>
+<div class="alert alert-danger" *ngIf="uiError?.length>0" id="ui-error-div">
+  <strong>{{uiError}}</strong>
+</div>{{csvErrors}}
+<div class="alert alert-danger" id="csv-error-div" style="display: none;">
+  <a (click)="referenceService.hideDiv('csv-error-div')" class="close" aria-label="close">x</a>
+  <div class="container">
+      <table class="table" aria-describedby="csv-error-messages-table">
+          <ng-container *ngFor="let error of csvErrors">
+              <tr>
+                  <th style="text-align: center;font-weight:bold" id="csverror-th">{{error}}</th>
+              </tr>
+              <hr>
+          </ng-container>
+      </table>
+  </div>
+</div>
+<div>
+  <app-response-message style="position: relative; bottom: 9px;" [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+</div>
+<div class="row">
+  <div class="clearfix">
+    <section class="clearfix">
+      <ng-container *ngIf="!isLoggedInAsTeamMember">
+        <div class="col-xs-6 col-sm-2 hidden-xs">
+            <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;" *ngIf="!isAddTeamMember && !isUploadCsv">
+                <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
+                <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
+            </div>
+            <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;cursor: not-allowed;" disabled="disabled" *ngIf="isAddTeamMember  || isUploadCsv">
+                <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-2">
+            <button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
+                <h6 style="font-size:14px">Add Team Member</h6>
+            </button>
+            <button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed">
+                <h6 style="font-size:14px">Add Team Member</h6>
+            </button>
+        </div>
+      </ng-container>
+        <div *ngIf="csvFilePath?.length>0" class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
+            <a class="btn btn-success" (click)="downloadEmptyCsv()" download>Download CSV Template</a>
+        </div>
+    </section>
+</div>
+<!------Added Team Members--------------------------->
+<div class="portlet light" *ngIf="!teamMemberUi.emptyTable">
+  <div class="portlet-title">
+    <div class="caption">Added Team Members</div>
+  </div>
+  <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+  <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
+    <div class="table-responsive" style="overflow-x:inherit">
+      <table class="table table-striped  table-hover" id="add-team-member-table" aria-describedby="TeamMemberList">
+        <thead>
+          <tr>
+            <th class="table-checkbox" id="first-header">
+              <h4 class="user-permission-min-width"> 
+                  <img src="assets/images/user-permission.png" alt="No image found" class="user-permission-img">User & Permissions
+              </h4>
+          </th>
+          <th *ngFor="let module of teamMemberModules" scope="">
+            <i class="{{module.moduleIcon}}" aria-hidden="true"></i><br>
+            {{module.moduleName}}
+           </th>
+            <th class="rest-header" scope="">
+              <i class="fa fa-trash red" aria-hidden="true"></i><br>Delete
+            </th>
+            </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let teamMember of newlyAddedTeamMembers;let i=index">
+                <tr id="team-member-{{i}}" class="add-tm-tr">
+                  <!---User Details-------->
+                  <td>
+                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember">
+                    </app-user-info>
+                </td>
+                <!-- -Enable As An Org Admin -->
+                <ng-container *ngIf="isOrgAdmin">
+                  <td>
+                    <switch  [status]="teamMember.secondOrgAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" 
+                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus($event,i,teamMember)">
+                    </switch>
+                </td>
+              </ng-container>
+                <!-- -All-- -->
+                <td>
+                <input  type="checkbox" (change)="addAllAuthorities($event,teamMember,'add-team-member-table',i)" class="check-all-{{i}}" [(ngModel)]="teamMember.all">
+                <br>
+              </td>
+              <!-- -Video-- -->
+              <td *ngIf="videoAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+            <!-- -Campaign-- -->
+              <td *ngIf="campaignAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Design-- -->
+              <td *ngIf="designAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Social Share-- -->
+              <td *ngIf="socialShareAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Stats-- -->
+              <td *ngIf="statsAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Partners-- -->
+              <td *ngIf="partnersAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+
+              <!-- -Contacts-- -->
+              <td *ngIf="contactsAccess">
+                <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'add-team-member-table')">
+              </td>
+               <!-- -Delete Row-- -->
+              <td>
+                <a class="btn-sm" (click)="deleteRow(i,teamMember.emailId)">
+                    <i class="fa fa-trash red" aria-hidden="true"></i>
+                </a>
+              </td>
+                  </tr>
+                </ng-container>
+            </tbody>
+      </table>
+      </div>
+      <hr>
+      <div class="pull-right">
+          <button class="btn btn-primary" (click)="save()">Save</button>
+          <button class="btn btn-secondary" (click)="clearRows()">Cancel</button>
+      </div>
+  </div>
+  </div>
+
+
+<!-- Team Members List-->
+<div class="portlet light" *ngIf="teamMemberUi.emptyTable">
+  <div class="portlet-title">
+      <div class="caption">Team Members List</div>
+      <div class="tools" style="padding: 0;margin: 0;">
+          <div class="inputs" style="padding:0;display: inline;">
+              <div class="portlet-input input-inline input-small" style="width: 236px !important;">
+                  <div class="input-icon right">
+                      <input type="text" class="form-control" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a team member" (keypress)="eventHandler($event.keyCode)">
+                      <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="pagination.searchKey" (click)="pagination.searchKey='';searchTeamMembers()"></button>
+                      <button type="submit" class="search-box-item-click" (click)="searchTeamMembers()">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                      </button>
+                  </div>
+              </div>
+          </div>
+          <a class="reload" data-toggle="tooltip" data-placement="top" title="Refresh" (click)="refreshList()" style="margin: -5px 15px;"></a>
+      </div>
+  </div>
+  <div class="portlet-body clearfix">
+    <div class="table-responsive">
+      <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+      <table class="table table-striped  table-hover" id="list-team-member-table" *ngIf="!httpRequestLoader.isLoading" aria-describedby="TeamMemberList">
+          <thead>
+              <tr>
+                 <th class="table-checkbox" id="first-header">
+                  <button *ngIf="isLoggedInAsTeamMember && !isLoggedInThroughVanityUrl" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
+                </button>
+                <h4 class="user-permission-min-width">
+                    <img src="assets/images/user-permission.png" alt="No Image Found" class="user-permission-img">
+                    User & Permissions
+                </h4>
+                 </th>
+                 <th *ngFor="let module of teamMemberModules" scope="">
+                  <i class="{{module.moduleIcon}}" aria-hidden="true"></i><br>
+                  {{module.moduleName}}
+                 </th>
+                  <th class="rest-header" scope="">
+                    <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
+                  </th>
+                  <th class="rest-header" scope="">
+                      <i class="fa fa-line-chart" aria-hidden="true"></i><br>Analytics
+                  </th>
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
+                    <i class="fa fa-save" aria-hidden="true"></i><br>Update
+                </th>
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
+                    <i class="fa fa-trash" aria-hidden="true"></i><br>Delete
+                </th>
+              </tr>
+          </thead>
+          <ng-container *ngIf="pagination.totalRecords>0">
+            <tbody *ngIf="!httpRequestLoader.isLoading">
+              <ng-container *ngFor="let teamMember of teamMembers;let i=index">
+                <tr id="list-team-member-{{i}}" class="list-team-member-class">
+                  <td>
+                    <ng-container *ngIf="loginAsTeamMemberAccess && !isLoggedInThroughVanityUrl">
+                        <button *ngIf="teamMember.loginAsButtonEnabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
+                        </button>
+
+                        <button *ngIf="!teamMember.loginAsButtonEnabled" class="btn btn-default btn-xs fif inactive" title="{{teamMember.loginAsButtonToolTipMessage}}">
+                            <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
+                        </button>
+                    </ng-container>
+                    <app-user-info [isPartnerEntityInfo]="true" [userInfo]="teamMember"></app-user-info>
+                </td>
+                <!-- -Enable As An Org Admin -->
+                <ng-container *ngIf="isOrgAdmin">
+                  <td  [title]="teamMember.status.toLocaleString()=='UNAPPROVED' || teamMember.status.toLocaleString()=='DECLINE' || teamMember.status==1 ? 'Status cannot be changed for inactive team member':'Change The Status'">
+                      <switch *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED' && teamMember.status.toLocaleString()!='DECLINE' && teamMember.status!=1 " [status]="teamMember.secondOrgAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.bsize" (statusChange)="changeOrgAdminStatus($event,i,teamMember)">
+                      </switch>
+                      <switch   *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED' || teamMember.status.toLocaleString()=='DECLINE' || teamMember.status==1" [status]="teamMember.secondOrgAdmin" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                          [size]="callActionSwitch.bsize" [disabled]="callActionSwitch.disabled" >
+                      </switch>
+                  </td>
+              </ng-container>
+            <!-- -All-- -->
+              <td>
+                <input  type="checkbox" (change)="addAllAuthorities($event,teamMember,'list-team-member-table',i)" class="check-all-{{i}}" [(ngModel)]="teamMember.all">
+                <br>
+            </td>
+
+            <!-- -Video-- -->
+            <td *ngIf="videoAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.video" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+          <!-- -Campaign-- -->
+            <td *ngIf="campaignAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.campaign" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+
+            <!-- -Design-- -->
+            <td *ngIf="designAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.design" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+
+            <!-- -Social Share-- -->
+            <td *ngIf="socialShareAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.socialShare" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+
+            <!-- -Stats-- -->
+            <td *ngIf="statsAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.stats" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+
+            <!-- -Partners-- -->
+            <td *ngIf="partnersAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.partners" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+
+             <!-- -Contacts-- -->
+             <td *ngIf="contactsAccess">
+              <input type="checkbox" id="role-checkbox-{{i}}" [(ngModel)]="teamMember.contact" class="module-checkbox-{{i}}" (change)="countCheckedCheckBoxesLength(teamMember,i,'list-team-member-table')">
+            </td>
+             <!-- Enabled  -->
+             <td [title]="teamMember.status.toLocaleString()=='UNAPPROVED'? 'This team member account is not activated yet':'Enable/Disable team member'">
+                <switch *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                    [size]="callActionSwitch.bsize" [disabled]="callActionSwitch.disabled">
+                </switch>
+                <switch *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED'" [status]="teamMember.enabled" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                    [size]="callActionSwitch.bsize" (statusChange)="changeTeamMemberStatus(teamMember,$event)">
+                </switch>
+          </td>
+        <!-- -Analytics--- -->
+        <td>
+            <a class="btn-btn-primay" (click)="goToCampaignAnalytics(teamMember.teamMemberId)">
+                <i class="fa fa-line-chart" aria-hidden="true"></i>
+            </a>
+        </td>
+        <!-- -Edit--- -->
+        <td>
+          <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'" (click)="updateTeamMember(teamMember,i)">
+            <i class="fa fa-save" aria-hidden="true"></i>
+          </a>
+      </td>
+         <!-- -Delete--- -->
+         <td>
+          <a [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'"  (click)="showPopup(teamMember)">
+              <i class="fa fa-trash red" aria-hidden="true"></i>
+          </a>
+      </td>
+
+       </tr>
+        </ng-container>
+              </tbody>
+            </ng-container>
+            <tr>
+              <td colspan="14">
+                  <div *ngIf="pagination.totalRecords==0" class="alert alert-info" style="text-align: center;"><strong>No Team Members Found</strong></div>
+              </td>
+          </tr>
+     </table>
+    </div>
+    <hr>
+    <!-- -----------Pagination-------------- -->
+    <div *ngIf="pagination.totalRecords > 0 && !httpRequestLoader.isLoading.isLoading && !httpRequestLoader.isLoading.isServerError">
+        <app-pagination [pagination]="pagination" (notifyParentDropDown)="listTeamMembers($event)" (notifyParent)="setPage($event)"></app-pagination>
+      </div>
+    </div>
+</div>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  </div>
+</div>
+
+
+<!-- Delete Team Member Modal Popup -->
+  <div class="modal fade right" id="delete-team-member-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="close-circle" data-dismiss="modal">
+                   <i class="fa fa-times" aria-hidden="true"></i></a>
+                <h4 class="modal-title" id="myModalLabel">Please select the email Id to transfer your data</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content">
+                    <app-modal-popup-loader *ngIf="deletePopupLoader"></app-modal-popup-loader>
+                    <form class="form-horizontal" id="delete-team-member-form" *ngIf="!deletePopupLoader">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="email" style="color:#8512b7;left: 12px">
+                                    <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                </label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="org-id" [(ngModel)]="selectedId" name="name">
+                                        <option value="0">Please select emailId</option>
+                                        <option *ngFor="let data of emailIds" [ngValue]="data.id">{{data.emailId}}</option>
+                                    </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" *ngIf="!deletePopupLoader">
+                    <button type="button" class="btn btn-default" (click)="hidePopup()">Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0">Go</button>
+                    <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!---Add Team Member Popup----->
+<div id="addTeamMember" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-css" role="document">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <ngx-loading [show]="addTeamMemberLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+          <div class="modal-header">
+              <a class="close-circle" (click)="clearForm()">
+                <i class="fa fa-times" aria-hidden="true"></i></a>
+              <h4 class="modal-title" style="font-weight: 600;">Add Team Member</h4>
+          </div>
+          <div class="modal-body">
+              <form  class="form-horizontal" id="add-team-member-form">
+                  <div class="form-group">
+                      <label class="control-label col-sm-2" for="firstName" style="color:blue">
+                      </label>
+                      <div class="form-group col-sm-5">
+                          <input type="text" style="border:none" id="firstName" placeholder="First Name" class="form-control" [(ngModel)]="team.firstName" name="firstName">
+                          <div class="textCss"></div>
+                      </div>
+                      <div class="form-group col-sm-5">
+                          <input type="text" style="border:none" id="lastName" placeholder="Last Name" class="form-control" [(ngModel)]="team.lastName" name="lastName">
+                          <div class="textCss"></div>
+                      </div>
+                  </div>
+
+                  <div class="form-group">
+                      <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: -15px !important">
+                          <span class="red"> *</span>
+                      </label>
+                      <div class="form-group col-xs-6 col-sm-10">
+                          <input type="email" style="border: none" class="form-control padding-mobile" id="emailId" (input)="validateEmailId(team.emailId)" placeholder="Email" [(ngModel)]="team.emailId" name="emailId"  placeholder="Email*" autocomplete="off" maxlength="250">
+                          <div class="textCss"></div>
+                          <span class="text-danger" *ngIf="!teamMemberUi.isValidForm">{{teamMemberUi.errorMessage}}</span>
+                      </div>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer" style="border:none;">
+              <button class="btn btn-info" type="reset" (click)="clearForm();">Cancel</button>
+              <button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
+              <button class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
+          </div>
+      </div>
+  </div>
+</div>
+<app-scroll-top></app-scroll-top> 

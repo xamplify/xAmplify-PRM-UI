@@ -19,6 +19,8 @@ import { isNumber } from 'util';
 import { Roles } from '../../core/models/roles';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from 'app/core/services/user.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
 
 declare var  $:any;
 
@@ -107,14 +109,13 @@ export class ManageDealsComponent implements OnInit
     {
         this.selectedLeadId = partner;
     };
-
-
-
-
+    opportunitiesAnalyticsLoader = false;
+    opportunitiesAnalytics: any;
+    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
-        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService,userService:UserService)
+        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService,userService:UserService,public vanityUrlService:VanityURLService)
     {
         this.loggedInUserId = this.authenticationService.getUserId();
         const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
@@ -122,12 +123,10 @@ export class ManageDealsComponent implements OnInit
       .subscribe(
       response => {
            if(response.statusCode==200){
-             console.log(response)
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
               this.authenticationService.superiorRole = response.data.superiorRole;
               if(this.authenticationService.loggedInUserRole == "Team Member"){
-
                 dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
                     console.log(response)
                     this.superiorId = response;
@@ -136,7 +135,7 @@ export class ManageDealsComponent implements OnInit
             }else{
                 this.superiorId = this.authenticationService.getUserId();
                 this.init();
-            };
+            }
            }
         })
 
@@ -146,7 +145,8 @@ export class ManageDealsComponent implements OnInit
 
     ngOnInit()
     {
-
+        this.opportunitiesAnalyticsLoader = true;
+        this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.startOrStopAllCountsLoader(true);
     }
     init(){
@@ -184,7 +184,16 @@ export class ManageDealsComponent implements OnInit
                     this.enableLeads = data.enableLeads;
                     console.log(data)
                     if(!this.isOnlyPartner){
-                        this.showVendor();
+                        if(this.authenticationService.vanityURLEnabled){
+                            if(this.authenticationService.isPartnerTeamMember){
+                                this.showPartner();
+                            }else{
+                                this.isCompanyPartner = false;
+                                this.showVendor();
+                            }
+                        }else{
+                            this.showVendor();
+                        }                        
                     }else{
                         this.showPartner();
                     }
@@ -206,13 +215,7 @@ export class ManageDealsComponent implements OnInit
                 this.campaingnList = true;
                 this.isCampaignByLeads = true;
                 this.isCampaignByDeals = false;
-                this.getTotalLeads();
-                this.getTotalDeals();
-                this.getApprovedDeals();
-                this.getRejectedDeals();
-                this.getOpenedDeals();
-               // this.getClosedDeals();
-                this.getDealsOnHold();
+                this.getOpportunitesAnalyticsForVendor();
                 this.showCampaigns();
                 // if(this.isCampaignByLeads)
                 //     this.listCampaigns(this.campaignsPagination);
@@ -232,13 +235,7 @@ export class ManageDealsComponent implements OnInit
             this.isCampaignByLeads = true;
             this.isCampaignByDeals = false;
             this.campaingnList = true;
-            this.getTotalLeadsByPartner();
-            this.getTotalDealsByPartner();
-            this.getApprovedDealsByPartner();
-            this.getRejectedDealsByPartner();
-            this.getOpenedDealsByPartner();
-            //this.getClosedDealsByPartner();
-            this.getDealsOnHoldByPartner();
+            this.getOpportunitesAnalyticsForPartner();
             this.showCampaigns();
             // if(this.isCampaignByLeads)
             //     this.listCampaignsByPartner(this.campaignsPagination);
@@ -247,6 +244,35 @@ export class ManageDealsComponent implements OnInit
             this.parent = "manage-leads-by-partner";
         }
     }
+
+
+    getOpportunitesAnalyticsForVendor(){
+        this.opportunitiesAnalyticsLoader = true;
+        this.dealRegistrationService.getOpportunitesAnalyticsForVendor(this.loggedInUserId).
+        subscribe(result => {
+            this.opportunitiesAnalytics = result.data;
+            this.opportunitiesAnalyticsLoader = false;
+        },
+        (error: any) => {
+            this.xtremandLogger.error(error);
+            //this.opportunitiesAnalyticsLoader = false;
+        });
+      }
+
+      getOpportunitesAnalyticsForPartner(){
+        this.opportunitiesAnalyticsLoader = true;
+        this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
+        this.dealRegistrationService.getOpportunitesAnalyticsForPartner(this.dashboardAnalyticsDto).
+        subscribe(result => {
+            this.opportunitiesAnalytics = result.data;
+            this.opportunitiesAnalyticsLoader = false;
+        },
+        (error: any) => {
+            this.xtremandLogger.error(error);
+            //this.opportunitiesAnalyticsLoader = false;
+        });
+      }
+    
 
     showCampaigns()
     {
@@ -737,7 +763,10 @@ export class ManageDealsComponent implements OnInit
     {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            pagination.vanityUrlFilter = true;
+        }        
         this.dealRegistrationService.listCampaignsByPartner(pagination)
             .subscribe(
                 data =>
@@ -765,7 +794,10 @@ export class ManageDealsComponent implements OnInit
     {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-
+        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+            pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+            pagination.vanityUrlFilter = true;
+        }
         this.dealRegistrationService.listCampaignsDealsByPartner(pagination)
             .subscribe(
                 data =>
@@ -1205,22 +1237,10 @@ export class ManageDealsComponent implements OnInit
     resetCounters(event:number)
     {
         if(event==0){
-            if (!this.isPartner)
-            {
-                this.getTotalDeals();
-                this.getOpenedDeals();
-                //this.getClosedDeals();
-                this.getDealsOnHold();
-                this.getApprovedDeals();
-                this.getRejectedDeals();
-            } else
-            {
-                this.getTotalDealsByPartner();
-                this.getOpenedDealsByPartner();
-                //this.getClosedDealsByPartner();
-                this.getDealsOnHoldByPartner();
-                this.getApprovedDealsByPartner();
-                this.getRejectedDealsByPartner();
+            if (!this.isPartner){
+                this.getOpportunitesAnalyticsForVendor();
+            } else {
+                this.getOpportunitesAnalyticsForPartner();
             }
         }else{
             this.disableDealPushRegistrationForm();

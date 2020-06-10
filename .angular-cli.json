@@ -15,7 +15,9 @@
             "assets/admin/layout2/img",
             "assets/admin/pages/media/works",
             "assets/global/img",
-            "assets/js/indexjscss"
+			"assets/js/indexjscss",			
+			"assets/config-files",
+			"assets/i18n"			
 			  ],
 			"index": "index.html",
 			"main": "main.ts",
@@ -49,7 +51,8 @@
 				"./assets/css/google-fonts.css",
 				"./assets/global/plugins/select2/select2.css",
 				"./assets/css/material_green.css",
-				"./assets/css/circle.css"
+				"./assets/css/circle.css",
+				"./assets/js/indexjscss/slider-theme.css"
 			],
 			"scripts": [
 				"./assets/js/indexjscss/jquery.js",
@@ -129,7 +132,8 @@
 				"./assets/js/fileSaver.js",
 				"./assets/js/shim.min.js",
 				"./assets/js/reflect-metadata@0.1.3.js",
-				"./assets/js/system.src.js"
+				"./assets/js/system.src.js",
+				"./assets/js/indexjscss/slider.js"				
 			],
 			"environmentSource": "environments/environment.ts",
 			"environments": {

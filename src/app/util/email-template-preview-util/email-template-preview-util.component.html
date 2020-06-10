@@ -1,0 +1,24 @@
+<div id="emailTemplatePreview" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-css" role="document">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+						<i class="fa fa-times" aria-hidden="true"></i>
+					</button>
+            <h4 class="modal-title" title="{{emailTemplateName}}" style="font-weight: 600;">
+              {{emailTemplateName | slice:0:25}}
+            <span *ngIf="emailTemplateName?.length>25">...</span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div id="modal-body-content">
+          </div>
+          <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+      </div>
+    </div>
+</div>
+</div>

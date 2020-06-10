@@ -1943,6 +1943,10 @@ export class ReferenceService {
 		swal(errorMessage, "", "error");
 	}
 
+	showSweetAlertInfoMessage() {
+		swal("Work In Progress", "", "info");
+	}
+
 	showSweetAlertServerErrorMessage() {
 		swal(this.properties.serverErrorMessage, "", "error");
 	}
@@ -2026,4 +2030,26 @@ export class ReferenceService {
 	showSweetAlertProceesor(title:string){
 		swal({ title: title, text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
 	}
+
+	getSenderMergeTagsData() {
+		return this.http.get(this.authenticationService.REST_URL + "admin/getSenderMergeTagsData/" + this.authenticationService.getUserId() + "?access_token=" + this.authenticationService.access_token, "")
+			.map(this.extractData)
+			.catch(this.handleError);
+	}
+
+	openChildWindow(url:string){
+		var x = screen.width/2 - 700/2;
+		var y = screen.height/2 - 450/2;
+		window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+	}
+
+	closeChildWindowAndRefreshParentWindow(url:string){
+		window.opener.location.href=url;
+       // self.close();
+	}
+
+	closeChildWindowOnError(){
+        window.opener.postMessage('Something went wrong', '*');
+        self.close();
+    }
 }
