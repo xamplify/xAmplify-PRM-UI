@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   public currentUser = JSON.parse(localStorage.getItem("currentUser"));
   userId: any;
   token: any;
+  loggedInThroughVanityUrl = false;
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -39,6 +40,7 @@ export class HomeComponent implements OnInit {
     public videoUtilService: VideoUtilService,
     private vanityURLService:VanityURLService
   ) {
+    this.loggedInThroughVanityUrl =  this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
   }
 
@@ -176,9 +178,8 @@ export class HomeComponent implements OnInit {
                       if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
                               roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                               roles.indexOf( this.roleName.companyPartnerRole ) > -1 ||
-                              (roles.indexOf( this.roleName.allRole ) > -1 && 
-                               (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || this.authenticationService.superiorRole === 'Vendor & Partner') 
-                              ))
+                              (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || (this.authenticationService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
+                              )
                           {
                               this.authenticationService.isShowContact = true;
                           }

@@ -765,8 +765,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
 		this.loading = true;
 		if(this.isLoggedInThroughVanityUrl){
-			this.referenceService.showSweetAlertErrorMessage("Work In Progress");
-			//this.getVanityUrlRoles(emailId,isLoggedInAsAdmin);
+			this.getVanityUrlRoles(emailId,isLoggedInAsAdmin);
 		}else{
 			this.getUserData(emailId,isLoggedInAsAdmin);
 		}
