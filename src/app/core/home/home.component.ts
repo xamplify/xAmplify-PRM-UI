@@ -177,8 +177,8 @@ export class HomeComponent implements OnInit {
                       
                       if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
                               roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                              roles.indexOf( this.roleName.companyPartnerRole ) > -1 ||
-                              (this.authenticationService.superiorRole === 'OrgAdmin & Partner' || (this.authenticationService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
+                              roles.indexOf( this.roleName.companyPartnerRole ) > -1 
+                              //||(this.authenticationService.superiorRole === 'OrgAdmin & Partner' || (this.authenticationService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
                               )
                           {
                               this.authenticationService.isShowContact = true;

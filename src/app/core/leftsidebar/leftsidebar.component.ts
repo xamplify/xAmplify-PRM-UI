@@ -9,6 +9,7 @@ import { Pagination } from '../models/pagination';
 import { UserService } from '../services/user.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import {UtilService} from '../../core/services/util.service';
+
 declare var window: any;
 
 @Component( {
@@ -39,16 +40,19 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     sourceType = "";
 
     isLoggedInFromAdminPortal = false;
+    loggedInThroughVanityUrl:boolean = false;
 
     checkCreateCampaignOptionForVanityURL:boolean = true;
 
 
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
-        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService) {
+        , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
+        ) {
         this.isLoggedInAsTeamMember = this.utilService.isLoggedAsTeamMember();
         this.updateLeftSideBar( location );
         this.sourceType = this.authService.getSource();
         this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal(); 
+        
     }
 
     updateLeftSideBar( location: Location ) {
@@ -77,8 +81,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 }
                 if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.companyPartnerRole ) > -1 ||
-                     (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner') 
+                    roles.indexOf( this.roleName.companyPartnerRole ) > -1 
+                    // || (this.authService.superiorRole === 'OrgAdmin & Partner' || (this.authService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
                     )
                 {
                     this.authService.module.isContact = true;
