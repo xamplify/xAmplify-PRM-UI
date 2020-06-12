@@ -97,10 +97,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.emailTemplateBaseUrl)>-1){
             return this.authorizeUrl(roles, url, this.emailTemplateBaseUrl);
         }
-        if(url.indexOf(this.contactBaseUrl)>-1){
+        if(url.indexOf("/home/contacts/")>-1){
             return this.authorizeUrl(roles, url, this.contactBaseUrl);
         }
-        if(url.indexOf(this.partnerBaseUrl)>-1){
+        if(url.indexOf("/home/partners/")>-1){
             return this.authorizeUrl(roles, url, this.partnerBaseUrl);
         }
         if(url.indexOf(this.videoBaseUrl)>-1){
