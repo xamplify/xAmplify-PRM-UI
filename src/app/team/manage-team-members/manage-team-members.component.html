@@ -187,7 +187,7 @@
           <thead>
               <tr>
                  <th class="table-checkbox" id="first-header">
-                  <button *ngIf="isLoggedInAsTeamMember && !isLoggedInThroughVanityUrl" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif">
+                  <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif">
                     <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
                 </button>
                 <h4 class="user-permission-min-width">
@@ -218,7 +218,7 @@
               <ng-container *ngFor="let teamMember of teamMembers;let i=index">
                 <tr id="list-team-member-{{i}}" class="list-team-member-class">
                   <td>
-                    <ng-container *ngIf="loginAsTeamMemberAccess && !isLoggedInThroughVanityUrl">
+                    <ng-container *ngIf="loginAsTeamMemberAccess">
                         <button *ngIf="teamMember.loginAsButtonEnabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                         </button>

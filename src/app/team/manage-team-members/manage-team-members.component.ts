@@ -752,6 +752,11 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.csvRecords = [];
 	}
 
+	validateEmailAddress( emailId: string ) {
+        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
+        return EMAIL_ID_PATTERN.test( emailId );
+	}
+	
 	loginAs(teamMember: TeamMember) {
 		this.loginAsTeamMember(teamMember.emailId, false);
 
@@ -759,46 +764,30 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	loginAsTeamMember(emailId: string, isLoggedInAsAdmin: boolean) {
 		this.loading = true;
-		if(this.authenticationService.vanityURLEnabled){
-			this.referenceService.showSweetAlertErrorMessage('Work in progress');
+		if(this.isLoggedInThroughVanityUrl){
+			this.getVanityUrlRoles(emailId,isLoggedInAsAdmin);
 		}else{
 			this.getUserData(emailId,isLoggedInAsAdmin);
 		}
+	}
+
+	getVanityUrlRoles(emailId:string,isLoggedInAsAdmin:boolean){
+		this.teamMemberService.getVanityUrlRoles(emailId)
+		.subscribe(response=>{
+			this.setLoggedInTeamMemberData(isLoggedInAsAdmin,emailId,response.data);
+		},
+		(error:any) =>{
+			this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
+			this.loading = false;
+		}
+		);
 	}
 
 	getUserData(emailId:string,isLoggedInAsAdmin:boolean){
 		this.authenticationService.getUserByUserName(emailId)
 			.subscribe(
 				response => {
-					if (isLoggedInAsAdmin) {
-						localStorage.removeItem('adminId');
-						localStorage.removeItem('adminEmailId');
-						this.isLoggedInAsTeamMember = false;
-					} else {
-						let adminId = JSON.parse(localStorage.getItem('adminId'));
-						if (adminId == null) {
-							localStorage.adminId = JSON.stringify(this.loggedInUserId);
-							localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
-						}
-					}
-					this.utilService.setUserInfoIntoLocalStorage(emailId, response);
-
-					if(this.authenticationService.vanityURLEnabled){						
-						  let currentUser = localStorage.getItem('currentUser');
-						  if(currentUser && this.authenticationService.vanityURLUserRoles){
-							const parsedObject = JSON.parse(currentUser);
-							parsedObject.roles = this.authenticationService.vanityURLUserRoles;
-							localStorage.setItem("currentUser", JSON.stringify(parsedObject));
-						  }
-					}
-
-					let self = this;
-					setTimeout(function () {
-						self.router.navigate(['home/dashboard/'])
-							.then(() => {
-								window.location.reload();
-							})
-					}, 500);
+					this.setLoggedInTeamMemberData(isLoggedInAsAdmin,emailId,response);
 				},
 				(error: any) => {
 					this.referenceService.showSweetAlertErrorMessage("Unable to Login as.Please try after sometime");
@@ -808,18 +797,32 @@ export class ManageTeamMembersComponent implements OnInit {
 			);
 	}
 
-	getVanityRolesByEmailId(emailId:string){
-
+	setLoggedInTeamMemberData(isLoggedInAsAdmin:boolean,emailId:string,response:any){
+		if (isLoggedInAsAdmin) {
+			localStorage.removeItem('adminId');
+			localStorage.removeItem('adminEmailId');
+			this.isLoggedInAsTeamMember = false;
+		} else {
+			let adminId = JSON.parse(localStorage.getItem('adminId'));
+			if (adminId == null) {
+				localStorage.adminId = JSON.stringify(this.loggedInUserId);
+				localStorage.adminEmailId = JSON.stringify(this.authenticationService.user.emailId);
+			}
+		}
+		this.utilService.setUserInfoIntoLocalStorage(emailId, response);
+		let self = this;
+			setTimeout(function () {
+				self.router.navigate(['home/dashboard/'])
+					.then(() => {
+						window.location.reload();
+					})
+			}, 500);
+		
 	}
 
 	logoutAsTeamMember() {
 		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
 		this.loginAsTeamMember(adminEmailId, true);
 	}
-
-	validateEmailAddress( emailId: string ) {
-        var EMAIL_ID_PATTERN = this.regularExpressions.EMAIL_ID_PATTERN;
-        return EMAIL_ID_PATTERN.test( emailId );
-    }
 
 }

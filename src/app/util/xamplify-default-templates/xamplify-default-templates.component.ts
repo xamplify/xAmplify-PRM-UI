@@ -74,22 +74,30 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
           swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
           return false;
       }
+      if(jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error" );
+          return false;
+      }
+
       let emailTemplateType = emailTemplate.typeInString;
       if(jsonContent.indexOf("<<LoginLink>>")<0 && "JOIN_MY_TEAM"==emailTemplateType){
         swal( "", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error" );
         return false;
       }
 
-      if(jsonContent.indexOf("<login_url>")<0 && "JOIN_MY_TEAM"!=emailTemplateType){
+      if(jsonContent.indexOf("<login_url>")<0 && "JOIN_VENDOR_COMPANY"==emailTemplateType){
         swal( "", "Whoops! We are unable to save this template because you deleted 'login_url' tag.", "error" );
         return false;
       }
 
-      if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0 && "FORGOT_PASSWORD"==emailTemplateType){
+      if("FORGOT_PASSWORD"==emailTemplateType && jsonContent.indexOf('_TEMPORARY_PASSWORD')<0){
         swal( "", "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.", "error" );
         return false;
       }
-
+      if("ACCOUNT_ACTIVATION"==emailTemplateType && jsonContent.indexOf('<VerifyEmailLink>')<0){
+        swal( "", "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag.", "error" );
+        return false;
+      }
         self.updateTemplate(emailTemplate);
       };
 
