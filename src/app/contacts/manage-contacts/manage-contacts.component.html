@@ -5,28 +5,28 @@
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()"><i
 				class="fa fa-home"></i> <a
-				[routerLink]="referenceService.homeRouter">Home</a> <i
+				[routerLink]="referenceService.homeRouter" translate>Home</a> <i
 				class="fa fa-angle-right"></i></li>
 			<li *ngIf="authenticationService.isSuperAdmin()"><i
 				class="fa fa-home"></i><a
-				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i
+				[routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i
 				class="fa fa-angle-right"></i></li>
-			<li><a (click)="navigateToManageContacts()">Manage
-					{{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
+			<li><a (click)="navigateToManageContacts()" translate>
+				Manage {{checkingContactTypeName}}s</a> <i class="fa fa-angle-right"
 				*ngIf="! showListOfContactList"></i></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'invalid' && contactsByType.selectedCategory != 'unsubscribe'"><span
-				class="capitalize">Registered<!-- {{contactsByType.selectedCategory}} -->
-					{{checkingContactTypeName}}s</span></li>
+				class="capitalize" translate><!-- {{contactsByType.selectedCategory}} -->
+				Registered {{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'non-active'"><span
-				class="capitalize">Unregistered {{checkingContactTypeName}}s</span></li>
+				class="capitalize" translate>Unregistered {{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'unsubscribe'"><span
-				class="capitalize">Unsubscribed {{checkingContactTypeName}}s</span></li>
+				class="capitalize" translate>Unsubscribed {{checkingContactTypeName}}s</span></li>
 			<li
 				*ngIf="! showListOfContactList && contactsByType.selectedCategory == 'invalid'"><span
-				class="capitalize">Undeliverable {{checkingContactTypeName}}s</span></li>
+				class="capitalize" translate>Undeliverable {{checkingContactTypeName}}s</span></li>
 		</ul>
 	</div>
 <ngx-loading [show]="loading"
@@ -64,13 +64,13 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important; color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
-													<div class="desc" style="font-size: 20px; color: #FFFFFF;">
+													<div class="desc" style="font-size: 20px; color: #FFFFFF;" translate>
 														All
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left; background: #3480b5; color: white"> Detailed view <i
+													style="text-align: left; background: #3480b5; color: white" translate> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -88,13 +88,13 @@
 												<div class="details">
 													<div class="number numberCss"
 														style="font-weight: 300 !important; color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
-													<div class="desc" style="font-size: 20px; color: #FFFFFF;">
+													<div class="desc" style="font-size: 20px; color: #FFFFFF;" translate>
 														Registered
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;background: #268c83; color:white"> Detailed view <i
+													style="text-align: left;background: #268c83; color:white" translate> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -111,13 +111,13 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.inactiveContactsCount}}</div>
-													<div class="desc" style="font-size: 20px">
+													<div class="desc" style="font-size: 20px" translate>
 														Unregistered
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left;" translate> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -134,7 +134,7 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.invalidContactsCount}}</div>
-													<div class="desc" style="font-size: 20px">
+													<div class="desc" style="font-size: 20px" translate>
 														Undeliverable
 														<!-- {{checkingContactTypeName}}s -->
 														<i class="fa fa-check-circle" style="margin-left: 0px;font-size: 40px;line-height: 60px;opacity: 1"  [ngStyle]="{'color': 1===selectedTabIndex ? '#white' : '#ccc' }"
@@ -142,7 +142,7 @@
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left;" translate> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -159,13 +159,13 @@
 												</div>
 												<div class="details">
 													<div class="number" style="font-weight: 300 !important;">{{contactsByType.unsubscribedContactsCount}}</div>
-													<div class="desc" style="font-size: 20px">
+													<div class="desc" style="font-size: 20px" translate>
 														Unsubscribed
 														<!-- {{checkingContactTypeName}}s -->
 													</div>
 												</div>
 												<span class="morePadding"> <a class="more"
-													style="text-align: left;"> Detailed view <i
+													style="text-align: left;" translate> Detailed view <i
 														class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -174,8 +174,8 @@
 									</div>
 									<div class="page-bar m0" *ngIf="showListOfContactList">
 										<ul class="page-breadcrumb">
-											<li style="font-size: 16px; color: #888888">Your
-												{{checkingContactTypeName}} Lists</li>
+											<li style="font-size: 16px; color: #888888" translate>
+												Your {{checkingContactTypeName}} Lists</li>
 
 										</ul>
 									<div class="col-xs-12 col-sm-6 col-lg-6 p0 pull-right">
@@ -251,17 +251,17 @@
 												<tr>
 													<th class="hidden-xs" colspan="2" style="width: 50%">
 														<span class="ui-column-resizer"	(mousedown)="referenceService.onMouseDown($event,'partner_contact_list',2)"> </span>
-														<span class="gridHeader">List Name</span>
+														<span class="gridHeader" translate>List Name</span>
 													</th>
-													<th class="visible-xs" colspan="1" style="width: 50%">List
-														Info</th>
+													<th class="visible-xs" colspan="1" style="width: 50%" translate>
+														List Info</th>
 														
-													<th class="hidden-xs" ><span [hidden]="isPartner">Type</span></th> 
-													<th class="hidden-xs">Created On</th>
-													<th class="text-center hidden-xs">Total
-														{{checkingContactTypeName}}s</th>
+													<th class="hidden-xs" ><span [hidden]="isPartner" translate>Type</span></th> 
+													<th class="hidden-xs" translate>Created On</th>
+													<th class="text-center hidden-xs" translate>
+														Total {{checkingContactTypeName}}s</th>
 													<th class="text-center" style="width:23%"
-														*ngIf="!authenticationService.isSuperAdmin()">Actions</th>
+														*ngIf="!authenticationService.isSuperAdmin()" translate>Actions</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -304,12 +304,11 @@
 															<b>{{contactList.companyName | slice:0:50}}</b> <span
 																*ngIf="contactList.companyName?.length>50">...</span>
 															<h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
-																<span class="mb0" *ngIf="contactList.emailValidationInd">Total
-																	{{checkingContactTypeName}}s:
-																	{{contactList.noOfContacts}}</span>
+																<span class="mb0" *ngIf="contactList.emailValidationInd" translate>
+																	Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}</span>
 																	<span *ngIf="!contactList.emailValidationInd"><b>-</b></span>
-																	<br> <span class="mb0">Created
-																	On:<app-timestamp [isOnlyDate]="true"
+																	<br> <span class="mb0" translate>
+																		Created On:<app-timestamp [isOnlyDate]="true"
 																		[dateAndTime]="contactList.createdDate">
 																	</app-timestamp>
 																</span>
@@ -319,9 +318,9 @@
 													<td class="hidden-xs">
 													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
 													 <span *ngIf="contactList.publicList" data-toggle="tooltip" data-placement="top"
-																title="{{actionsDescription.contact_list_public}}">Public</span>
+																title="{{actionsDescription.contact_list_public}}" translate>Public</span>
 													<span *ngIf="!contactList.publicList" data-toggle="tooltip" data-placement="top"
-																title="{{actionsDescription.contact_list_private}}">Private</span> 
+																title="{{actionsDescription.contact_list_private}}" translate>Private</span> 
 													</h5>
 														</td>
 													<td class="hidden-xs"><app-timestamp
@@ -408,7 +407,7 @@
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
 
 											<div id="container" *ngIf="!contactList.emailValidationInd">
-												<h3>
+												<h3 translate>
 													processing<span class="arrow"> <img
 														src="assets/images/Spinner.gif" class="loaderGif"
 														style="margin-top: 77px;">
@@ -428,10 +427,10 @@
 												<b>{{contactList.companyName | slice:0:30}}</b> <span
 													*ngIf="contactList.companyName?.length>30">...</span>
 											</h6>
-											<h6 class="mt10 mb0" *ngIf="contactList.emailValidationInd">Total {{checkingContactTypeName}}s
-												{{contactList.noOfContacts}}</h6>
-											<h6 *ngIf="!contactList.emailValidationInd"> Total {{checkingContactTypeName}}s <b>-</b></h6>
-											<h6 class="mt10 mb0">
+											<h6 class="mt10 mb0" *ngIf="contactList.emailValidationInd" translate>Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}
+												</h6>
+											<h6 *ngIf="!contactList.emailValidationInd" translate> Total {{checkingContactTypeName}}s <b>-</b></h6>
+											<h6 class="mt10 mb0" translate>
 												Created date
 												<app-timestamp [isOnlyDate]="true"
 													[dateAndTime]="contactList.createdDate"> </app-timestamp>
@@ -439,14 +438,14 @@
 											<!--  -->
 												<td class="hidden-xs">
 													<h6 class="mt10 mb0 ellipsis"
-														*ngIf="!contactList?.partnerUserList">
+														*ngIf="!contactList?.partnerUserList" translate>
 														Type
 														<span *ngIf="contactList.publicList" data-toggle="tooltip"
 															data-placement="top"
-															title="{{actionsDescription.contact_list_public}}"><b>Public</b></span>
+															title="{{actionsDescription.contact_list_public}}"><b translate>Public</b></span>
 														<span *ngIf="!contactList.publicList"
 															data-toggle="tooltip" data-placement="top"
-															title="{{actionsDescription.contact_list_private}}"><b>Private</b></span>
+															title="{{actionsDescription.contact_list_private}}"><b translate>Private</b></span>
 													</h6>
 												</td>
 												<!--  -->
@@ -616,13 +615,13 @@
 								<div *ngIf="contactsByType.isLoading"
 									class="alert alert-info flex">
 									<div class="loader"></div>
-									<h4>please wait while we process your request</h4>
+									<h4 translate>please wait while we process your request</h4>
 								</div>
 								<div
 									*ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 									class="alert alert-info">
 									<!-- <h4>No {{checkingContactTypeName}}s found..!</h4> -->
-									<h4>No results found</h4>
+									<h4 translate>No results found</h4>
 								</div>
 								<div class="portlet box blue"
 									*ngIf="contactsByType.contacts?.length > 0">
@@ -630,15 +629,15 @@
 										<div class="caption">
 											<i class="fa fa-edit" style="font-size: 18px"></i> <span
 												class="capitalize"
-												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
-												{{checkingContactTypeName}}s List</span> <span class="capitalize"
-												*ngIf="contactsByType.selectedCategory =='non-active'">Unregistered
-												{{checkingContactTypeName}}s List</span>
+												*ngIf="contactsByType.selectedCategory !='non-active' && contactsByType.selectedCategory !='active' && contactsByType.selectedCategory !='invalid'" translate>
+												{{contactsByType.selectedCategory}} {{checkingContactTypeName}}s List</span> <span class="capitalize"
+												*ngIf="contactsByType.selectedCategory =='non-active'" translate>
+												Unregistered {{checkingContactTypeName}}s List</span>
 												<span class="capitalize"
-												*ngIf="contactsByType.selectedCategory =='active'">Registered
-												{{checkingContactTypeName}}s List</span> <span class="capitalize"
-												*ngIf="contactsByType.selectedCategory =='invalid'">Undeliverable
-												{{checkingContactTypeName}}s List</span>
+												*ngIf="contactsByType.selectedCategory =='active'" translate>
+												Registered {{checkingContactTypeName}}s List</span> <span class="capitalize"
+												*ngIf="contactsByType.selectedCategory =='invalid'" translate>
+												Undeliverable {{checkingContactTypeName}}s List</span>
 										</div>
 										<div class="btn-group pull-right"
 											style="margin-top: 4px; color: #000000;"
@@ -652,15 +651,15 @@
 											</span>
 											<ul class="dropdown-menu pull-right">
 												<li *ngIf="contactsByType.selectedCategory == 'all'"><a
-													(click)="saveAs()"> Save As </a></li>
+													(click)="saveAs()" translate> Save As </a></li>
 												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
-													id="delete_button" (click)="invalidContactsShowAlert()">
+													id="delete_button" (click)="invalidContactsShowAlert()" translate>
 														Delete </a></li>
 												<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
-													id="validate_email_button" (click)="validateUndeliverableContacts()">
+													id="validate_email_button" (click)="validateUndeliverableContacts()" translate>
 													Mark as valid email(s) </a></li>
 												<li><a id="delete_button"
-													(click)="hasAccessForDownloadUndeliverableContacts()"> Export To Excel </a></li>
+													(click)="hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
 											</ul>
 										</div>
 									</div>
@@ -684,19 +683,19 @@
 															(change)="checkAllInvalidContacts($event)"
 															id="checkAllExistingInvalidContacts" />
 														</td>
-														<th style="width: 25%" *ngIf="!isPartner">NAME</th>
-														<th *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs">EMAIL CATEGORY</th>
-														<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-														<th *ngIf="isPartner" class="hidden-xs">VERTICAL</th>
-														<th *ngIf="isPartner" class="hidden-xs">REGION</th>
-														<th *ngIf="isPartner" class="hidden-xs">TYPE</th>
-														<th *ngIf="isPartner" class="hidden-xs">CATEGORY</th>
+														<th style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
+														<th *ngIf="contactsByType.selectedCategory =='invalid' && !isPartner" class="hidden-xs" translate>EMAIL CATEGORY</th>
+														<th style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
+														<th *ngIf="isPartner" class="hidden-xs" translate>VERTICAL</th>
+														<th *ngIf="isPartner" class="hidden-xs" translate>REGION</th>
+														<th *ngIf="isPartner" class="hidden-xs" translate>TYPE</th>
+														<th *ngIf="isPartner" class="hidden-xs" translate>CATEGORY</th>
 														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
-														<th class="text-center hidden-xs" *ngIf="!isPartner">Job Title</th>
-														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
+														<th class="text-center hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner"></th>
-														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs">Reason</th>
-														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">ACTIONS</th>
+														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
+														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -782,8 +781,8 @@
 														<td  align="center" *ngIf="isPartner">
 															<button id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
-																<span *ngIf="!contact.isShowDetails">More</span> <span
-																	*ngIf="contact.isShowDetails">Less</span>
+																<span *ngIf="!contact.isShowDetails" translate>More</span> <span
+																	*ngIf="contact.isShowDetails" translate>Less</span>
 														</button>
 													</td>
 														<td  align="center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
@@ -794,7 +793,7 @@
 															</button> -->
 
 															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || referenceService.roles.contactsRole || referenceService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
-																(click)="activateUnsubscribedUser(contact.id)">
+																(click)="activateUnsubscribedUser(contact.id)" translate>
 																Subscribe
 															</button>
 
@@ -835,7 +834,7 @@
 																</td>
 															</tr> -->
 															<tr>
-																<td class='pt10 pb10 bold'>Address: </td>
+																<td class='pt10 pb10 bold' translate>Address: </td>
 																<td align="center" class="hidden-xs">
 																	<h5 *ngIf="contact?.address" class='mb0'>{{contact.address}}</h5>
 																	<h5 class='m0'>
@@ -890,7 +889,7 @@
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal"
 					(click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
-				<h4 class="modal-title">Filter</h4>
+				<h4 class="modal-title" translate>Filter</h4>
 			</div>
 			<div class="modal-body" style="padding: 28px;">
 				<div class="row">
@@ -945,9 +944,9 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn green" [disabled]="criterias.length === 0" (click)="contactFilter()">Submit</button>
+				<button type="button" class="btn green" [disabled]="criterias.length === 0" (click)="contactFilter()" translate>Submit</button>
 				<button type="button" class="btn green"
-					(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
+					(click)="cancelSegmentation()" data-dismiss="modal" translate>Cancel</button>
 			</div>
 		</div>
 	</div>
@@ -968,7 +967,7 @@
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label for="campaignName">Name</label> <input class="form-control"
+					<label for="campaignName" translate>Name</label> <input class="form-control"
 						type="text" id="campaignName" [(ngModel)]="saveAsListName" placeholder="Name">
 					<span style="color: red">{{saveAsError}}</span>
 				</div>
@@ -977,13 +976,13 @@
 			 
          <!-- ------------Legal Basis------------ -->
         <div class="form-group" *ngIf="gdprStatus && saveAsTypeList === 'manage-all-contacts'">
-        <label for="campaignName">Legal Basis Options <span class="danger">*</span></label>
+        <label for="campaignName" translate>Legal Basis Options <span class="danger">*</span></label>
 	    <div id="multiselect-sample" class="control-section">
 	    <div class="col-lg-14">
 	        <div class="control-styles">
 	        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
 	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder'></ejs-multiselect>
-	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+	        	  <span class="danger" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
 	        </div>
 	    </div>
 	    </div>
@@ -992,7 +991,7 @@
 	<!-- start   -->
 				<div class="form-group" class="col-xs-12"
 					*ngIf="saveAsTypeList === 'manage-all-contacts' && !isPartner" >
-					<label class="col-xs-4" for="campaignName">Contact List Type <span class="danger">*</span></label>
+					<label class="col-xs-4" for="campaignName" translate>Contact List Type <span class="danger">*</span></label>
 					<div class="col-xs-8">
 						
 							<switch [status]="model.isPublic" 
@@ -1011,9 +1010,9 @@
 	</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" translate>Close</button>
 				<button type="button" class="btn btn-primary"
-					(click)="hasSaveAsAccess()">Save changes</button>
+					(click)="hasSaveAsAccess()" translate>Save changes</button>
 			</div>
 		</div>
 	</div>
