@@ -37,6 +37,7 @@ import { AccessAccountComponent } from './authentication/access-account/access-a
 import { DownloadTemplateComponent } from './campaigns/download-template/download-template.component';
 import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
+import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },    
@@ -73,8 +74,8 @@ export const routes: Routes = [
     { path: 'userlock', component: ProfileLockComponent },
     { path: 'logout', component: LoginComponent },
     { path: ':social/login', component: SocialLoginComponent },
-    { path: ':social/login/:userId', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
+    { path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
     { path: 'share/:alias', component: ShareVideoComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },

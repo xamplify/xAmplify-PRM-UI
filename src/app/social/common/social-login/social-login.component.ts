@@ -20,10 +20,6 @@ export class SocialLoginComponent implements OnInit {
             result => {
                 console.log('redirect url: ' + result);
                 window.location.href = '' + result;
-               // window.open('redirect url: ');
-               // window.open("'redirect url: '" + result);
-               // window.open(" " + result, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=600,left=600,width=600,height=600");
-       
             },
             error => {
                 console.log(error);
