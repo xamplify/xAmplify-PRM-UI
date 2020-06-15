@@ -270,7 +270,33 @@
 	"all Contacts List":"All Contacts List",
 	"Registered Contacts List":"Registered Contacts List",
 	"Unregistered Contacts List":"Unregistered Contacts List",
-	"Undeliverable Contacts List":"Undeliverable Contacts List"
+	"Undeliverable Contacts List":"Undeliverable Contacts List",
+	"Download Contact CSV Template":"Download Contact CSV Template",
+	"How would you like to add your Contacts?":"How would you like to add your Contacts?",
+	"Contact List Name*":"Contact List Name*",
+	"Contact List name already exists":"Contact List name already exists",
+	"Please enter the Contact list name.":"Please enter the Contact list name.",
+	"Public vs Private":"Public vs Private",
+	"Legal Basis Options*":"Legal Basis Options*",
+	"EMAILID":"EMAILID",
+	"MORE":"MORE",
+	"CANCEL":"CANCEL",
+	"Legal Basis:":"Legal Basis:",
+	"City:":"City:",
+	"State:":"State:",
+	"Country:":"Country:",
+	"Zip Code:":"Zip Code:",
+	"Phone Number:":"Phone Number:",
+	"**Notes":"**Notes",
+	"The maximum number of contacts per upload is determined by your account type.":"The maximum number of contacts per upload is determined by your account type.",
+	"You can only upload (.csv) extension files":"You can only upload (.csv) extension files",
+	"Select contacts import from:":"Select contacts import from:",
+	"Select Import from":"Select Import from",
+	"Import contacts from the cloud:":"Import contacts from the cloud:",
+	"Salesforce Account Settings":"Salesforce Account Settings",
+	"You are about to unlink your Salesforce account from xAmplify.":"You are about to unlink your Salesforce account from xAmplify."
+
+	
 
 
 }
