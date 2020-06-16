@@ -3133,7 +3133,7 @@ goBackToManageList(){
 		}
 	}
 
-	addCampaigns(emailId:string,partnerId:number){
-        this.sendCampaignComponent.openPopUp(this.selectedContactListId,emailId,partnerId,this.checkingContactTypeName);
+	addCampaigns(contact:any){
+        this.sendCampaignComponent.openPopUp(this.selectedContactListId,contact,this.checkingContactTypeName);
     }
 }

@@ -758,7 +758,7 @@
 																  	<i class="fa fa-pencil-square-o"></i>
 																 </a>
 																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
- 																<a *ngIf="checkingContactTypeName=='Partner'" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.send_campaigns}}" (click)="addCampaigns(contact.emailId,contact.id)">
+ 																<a *ngIf="checkingContactTypeName=='Partner'" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.send_campaigns}}" (click)="addCampaigns(contact)">
                                                                 <i class="fa fa-bullhorn"></i></a>
                                                             </div>
 															</td>

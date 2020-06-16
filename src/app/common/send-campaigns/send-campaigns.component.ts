@@ -36,6 +36,11 @@ export class SendCampaignsComponent implements OnInit {
   responseImage = "";
   responseClass = "event-success";
   statusCode = 0;
+  firstName = "";
+  lastName = "";
+  companyName = "";
+  /******When a new partner is added in list******* */
+  newlyAddedPartners:any[] = [];
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
     public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService) {
     this.loggedInUserId = this.authenticationService.getUserId();
@@ -43,15 +48,25 @@ export class SendCampaignsComponent implements OnInit {
 
 
   ngOnInit() {
-
-
   }
 
-  openPopUp(partnerListId: number, emailId: string,partnerId:number,type:string) {
+
+  openPopUp(partnerListId: number, contact:any,type:string) {
     $('#sendCampaignsPopup').modal('show');
-    this.pagination.partnerOrContactEmailId = emailId;
-    this.pagination.partnerId = partnerId;
+    this.pagination.partnerOrContactEmailId = contact.emailId;
+    this.pagination.partnerId = contact.id;
+    this.firstName = contact.firstName;
+    this.lastName = contact.lastName;
+    this.companyName = contact.contactCompany;
     this.pagination.userListId = partnerListId;
+    this.listCampaigns(this.pagination);
+  }
+
+  openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number,users:any,type:string){
+    $('#sendCampaignsPopup').modal('show');
+    this.pagination.partnerId = 0;
+    this.newlyAddedPartners = users;
+    this.pagination.userListId = partnerOrContactListId;
     this.listCampaigns(this.pagination);
 
   }
@@ -103,6 +118,9 @@ export class SendCampaignsComponent implements OnInit {
     this.pagination = new Pagination();
     this.sortOption = new SortOption();
     this.isHeaderCheckBoxChecked = false;
+    this.firstName = "";
+    this.lastName = "";
+    this.companyName = "";
     this.selectedCampaignIds = [];
   }
 
@@ -150,13 +168,10 @@ export class SendCampaignsComponent implements OnInit {
       $('[name="campaignCheckBoxName[]"]:checked').each(function (index: number) {
         var id = $(this).val();
         self.selectedCampaignIds.push(parseInt(id));
-        // self.userListDTOObj.push(self.contactsPagination.pagedItems[index]);
-        console.log(self.selectedCampaignIds);
         $('#campaignTr_' + id).addClass('row-selected');
       });
       this.selectedCampaignIds = this.referenceService.removeDuplicates(this.selectedCampaignIds);
       if (this.selectedCampaignIds.length == 0) { this.isCampaignSelected = false; }
-      // this.userListDTOObj = this.referenceService.removeDuplicates( this.userListDTOObj );
     } else {
       $('[name="campaignCheckBoxName[]"]').prop('checked', false);
       $('#campaign-list-table tr').removeClass("row-selected");
@@ -167,10 +182,8 @@ export class SendCampaignsComponent implements OnInit {
         this.selectedCampaignIds = this.referenceService.removeDuplicates(this.selectedCampaignIds);
         let currentPageSelectedIds = this.pagination.pagedItems.map(function (a) { return a.id; });
         this.selectedCampaignIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedCampaignIds, currentPageSelectedIds);
-        //  this.userListDTOObj =  this.referenceService.removeDuplicatesFromTwoArrays(this.userListDTOObj, this.pagination.pagedItems);
         if (this.selectedCampaignIds.length == 0) {
           this.isCampaignSelected = false;
-          // this.userListDTOObj = [];
         }
       }
 
@@ -184,11 +197,9 @@ export class SendCampaignsComponent implements OnInit {
     if (isChecked) {
       $('#campaignTr_' + campaignId).addClass('row-selected');
       this.selectedCampaignIds.push(campaignId);
-      // this.userListDTOObj.push(contactList);
     } else {
       $('#campaignTr_' + campaignId).removeClass('row-selected');
       this.selectedCampaignIds.splice($.inArray(campaignId, this.selectedCampaignIds), 1);
-      // this.userListDTOObj = this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
     }
     this.utility();
     event.stopPropagation();
@@ -217,15 +228,12 @@ export class SendCampaignsComponent implements OnInit {
       $('#' + campaignId).prop("checked", false);
       $('#campaignTr_' + campaignId).removeClass('row-selected');
       this.selectedCampaignIds.splice($.inArray(campaignId, this.selectedCampaignIds), 1);
-      //this.userListDTOObj= this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
     } else {
       //Highlighting Row
       $('#' + campaignId).prop("checked", true);
       $('#campaignTr_' + campaignId).addClass('row-selected');
       this.selectedCampaignIds.push(campaignId);
-      //  this.userListDTOObj.push(contactList);
     }
-    //this.userListDTOObj= this.referenceService.removeSelectedObjectFromList(this.userListDTOObj, contactId);
     this.utility();
     event.stopPropagation();
   }
@@ -236,16 +244,27 @@ export class SendCampaignsComponent implements OnInit {
     if(this.selectedCampaignIds.length>0){
     this.ngxLoading = true;
     let users = [];
-    let user = { 'emailId': this.pagination.partnerOrContactEmailId };
-    users.push(user);
+    if(this.pagination.partnerId>0){
+      let user = { 
+        'emailId': this.pagination.partnerOrContactEmailId,
+        'firstName':this.firstName,
+        'lastName':this.lastName,
+        'companyName':this.companyName 
+      };
+      users.push(user);
+    }else{
+      users = this.newlyAddedPartners;
+    }
     let campaignDetails = {
       "campaignIds": this.selectedCampaignIds,
-      "users": users,
-      "contactListId": this.pagination.userListId
+      "partnersOrContactDtos": users,
+      "userListId": this.pagination.userListId,
+      "loggedInUserId":this.loggedInUserId,
     }
-    this.contactService.sendCampaignEmails(campaignDetails)
+    this.campaignService.shareOrSendCampaigns(campaignDetails)
       .subscribe(
         data => {
+          this.ngxLoading = false;
             if (data.access) {
                 this.sendSuccess = true;
                 this.statusCode = data.statusCode;
@@ -254,7 +273,6 @@ export class SendCampaignsComponent implements OnInit {
                 } else {
                     this.responseMessage = data.message;
                 }
-                this.ngxLoading = false;
                 this.resetFields();
             } else {
                 this.authenticationService.forceToLogout();

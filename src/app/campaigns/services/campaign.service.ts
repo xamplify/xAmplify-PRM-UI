@@ -533,15 +533,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    private extractData(res: Response) {
-        let body = res.json();
-        return body || {};
-    }
-
-
-    private handleError(error: any) {
-        return Observable.throw(error);
-    }
+  
 
     /*********Common Methods***********/
     setLaunchTime() {
@@ -948,6 +940,22 @@ export class CampaignService {
         return this.http.post(url, dashboardAnalyticsDto)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+    shareOrSendCampaigns(campaigDetails:any){
+        return this.http.post(this.URL + "campaign/shareCampaignsToPartners?access_token=" + this.authenticationService.access_token, campaigDetails)
+        .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    private extractData(res: Response) {
+        let body = res.json();
+        return body || {};
+    }
+
+
+    private handleError(error: any) {
+        return Observable.throw(error);
     }
 
 
