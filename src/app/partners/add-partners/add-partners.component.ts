@@ -470,7 +470,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
                 let userDetails = {
                         "firstName": this.newPartnerUser[i].firstName,
-                        "lastName": this.newPartnerUser[i].lastName
+                        "lastName": this.newPartnerUser[i].lastName,
+                        "companyName": this.newPartnerUser[i].contactCompany
                     }
                 
                  if(this.newPartnerUser[i].emailId){
@@ -567,11 +568,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.clipBoard = false;
                     this.cancelPartners();
                     if (data.statusCode == 200) {
-                        this.getContactsAssocialteCampaigns();
-                    }
-                    this.disableOtherFuctionality = false;
+                        //this.getContactsAssocialteCampaigns();
+                        this.disableOtherFuctionality = false;
+                        this.openCampaignsPopupForNewlyAddedPartners();
 
-                    if (data.statusCode == 409) {
+                    }else if (data.statusCode == 409) {
                         let emailIds = data.emailAddresses;
                         let allEmailIds = "";
                         $.each(emailIds, function(index, emailId) {
@@ -579,9 +580,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         });
                         let message = data.errorMessage + "<br><br>" + allEmailIds;
                         this.customResponse = new CustomResponse('ERROR', message, true);
-                    }
-
-                    if (data.statusCode == 417) {
+                    }else if (data.statusCode == 417) {
                         this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
                     }
                 } else {
@@ -3257,8 +3256,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     /************Add Campaigns Pop up****************************** */
-    addCampaigns(emailId:string,partnerId:number){
-        this.sendCampaignComponent.openPopUp(this.partnerListId,emailId,partnerId,"Partner");
+    addCampaigns(contact:any){
+        this.sendCampaignComponent.openPopUp(this.partnerListId,contact,"Partner");
+    }
+
+
+    openCampaignsPopupForNewlyAddedPartners(){
+        this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.partnerListId,this.newUserDetails,"Partner");
     }
     
 }
