@@ -2199,21 +2199,49 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "addPartnerComponent", "download list of Partners" );
         }
     }
+    
+    hasAccess() {
+        try {
+        	return  this.contactService.hasAccess(this.isPartner)
+                .map(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        return true;
+                    }else{
+                         return false;
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "AddPartnersComponent", "hasAccess()");
+        }
+    }
 
     downloadPartnerList() {
-        try {
-            this.contactService.downloadContactList( this.partnerListId )
-                .subscribe(
-                data => this.downloadFile( data ),
-                ( error: any ) => {
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.info( "download partner List completed" )
-                );
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "addPartnerComponent", "download Partner list" );
-        }
+        this.hasAccess().subscribe(
+            data => {
+                if (data) {
+                    try {
+                        this.contactService.downloadContactList(this.partnerListId)
+                            .subscribe(
+                            data => this.downloadFile(data),
+                            (error: any) => {
+                                this.xtremandLogger.error(error);
+                                this.xtremandLogger.errorPage(error);
+                            },
+                            () => this.xtremandLogger.info("download partner List completed")
+                            );
+                    } catch (error) {
+                        this.xtremandLogger.error(error, "addPartnerComponent", "download Partner list");
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            }
+        );
     }
 
     sendMail( partnerId: number ) {
@@ -2341,14 +2369,22 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
    
    saveAsChange(showGDPR: boolean){
-    try {
-    	this.showGDPR = showGDPR;
-        this.isSaveAsList = true;
-        this.saveAsListName = this.editContactComponent.addCopyToField();
+       this.hasAccess().subscribe(
+               data => {
+                   if (data) {
+                	    try {
+                	        this.showGDPR = showGDPR;
+                	        this.isSaveAsList = true;
+                	        this.saveAsListName = this.editContactComponent.addCopyToField();
 
-    }catch(error){
-       this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
-      }
+                	    }catch(error){
+                	       this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
+                	      }
+                   } else {
+                       this.authenticationService.forceToLogout();
+                   }
+               }
+           );
    }
    saveAsInputChecking(){
     try{
