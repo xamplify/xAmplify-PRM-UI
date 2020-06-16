@@ -5,4 +5,5 @@ export class VanityURL{
     vanityURLink:string;
     showVendorCompanyLogo:boolean;
     companyFavIconPath:string;
+    loginScreenDirection:string;
 }

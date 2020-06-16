@@ -82,7 +82,7 @@
 					<div class="row">
 						<div class="col-sm-3 col-xs-12" style="paddin-right: 0px">
 							<div class="image blur-content" id="image-blur-content-div">
-								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;;height: 533px;    border-radius: 4px!important;">
+								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;;height: 790px;    border-radius: 4px!important;">
 									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
 										<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
 											(click)="imageClick()">
@@ -163,6 +163,53 @@
 										<!-- <hr class="divider"/>
 										<h4><span class="f-w-600">Plan Type:</span>&nbsp;BASIC</h4>
 										<button class="btn btn-warning" disabled="disabled" [routerLink]="['/home/upgrade']">UPGRADE &nbsp;&nbsp;<i class="fa fa-caret-right"></i></button> -->
+
+										
+									<!-- Fav Icon -->									
+									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+									<hr class="divider" />
+									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="openFavIconFileId()">
+									<input id="favIconId" style="display: none;" type="file" accept="image/x-icon" (change)="processFavIconFile($event)">										
+									<span *ngIf="!companyFavIconPath; else showFavIconImage"> 
+										<img
+										*ngIf="!companyFavIconPath"
+										src="assets/images/company-profile-logo.png"
+										class="profile-image img-grid"></span>											
+
+									<ng-template #showFavIconImage> <img class="img-grid"
+										*ngIf="companyFavIconPath"
+										[src]="authenticationService.MEDIA_URL + companyFavIconPath"
+										(error)="errorHandler($event)"> </ng-template>
+										<a class="btn btn-primary1 profile-pic" (click)="openFavIconFileId()"
+										data-toggle="tooltip" data-placement="top">
+										&nbsp;&nbsp;<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"></i></a>										
+									</div>
+								</div>
+										<!-- Bg Image -->									
+									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+									<hr class="divider" />
+									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+											(click)="bgImageClick()">
+												<span
+												*ngIf="(squareDataForBgImage | json) == '{}'"> <img
+												*ngIf="!companyBgImagePath"
+												src="assets/images/company-profile-logo.png"
+												class="profile-image img-grid"></span>
+												
+												 <span
+												*ngIf="croppedImageForBgImage; else showBgImage"> <img class="img-grid"
+												[src]="croppedImageForBgImage">
+											</span>
+											<ng-template #showBgImage> <img class="img-grid"
+												*ngIf="companyBgImagePath"
+												[src]="authenticationService.MEDIA_URL + companyBgImagePath"
+												(error)="errorHandler($event)"> </ng-template>
+												 <a class="btn btn-primary1 profile-pic" (click)="bgImageClick()"
+												  data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
+												   &nbsp;&nbsp;<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"></i></a>											
+										</div>
+									</div>
+
 									</div>
 								</div>
 							</div>
@@ -416,7 +463,17 @@
 									<span *ngIf="aboutUsError" style="color: #f55d7a">{{aboutUsErrorMessage}}</span>
 								</div>
 								</div>
-								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+								<div class="col-md-6 col-lg-6" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
+									<div class="form-group">
+										<label class="control-label" translate>Select Login Screen Direction <font
+											style="color: #f55d7a"><b>*</b></font></label>
+											<select  [ngModelOptions]="{standalone: true}" [(ngModel)]="companyProfile.loginScreenDirection" class="form-control">
+                                                <option [ngValue]="undefined" disabled selected> Select Login Screen Direction </option>                                                
+                                                <option *ngFor="let direction of allLoginScreenDirectionsList">{{direction}}</option>
+                                                </select>																				
+									</div>
+								</div>
+								<div class="col-md-6 col-lg-6" *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<div class="form-group">
 										<label class="control-label" translate>Display My Logo <font
 											style="color: #f55d7a"><b>*</b></font></label>
@@ -432,7 +489,33 @@
 										</div>																					
 									</div>
 								</div>
+
 								
+
+								<!-- <div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled">
+									<div class="form-group">
+										<label class="control-label" translate>Upload Favicon Logo</label>
+											<input #imageInput type="file" accept="image/ico" (change)="processFavIconFile($event)">
+											<img class="img-grid"
+												*ngIf="companyFavIconPath"
+												[src]="authenticationService.MEDIA_URL + companyFavIconPath"
+												(error)="errorHandler($event)">
+									</div>
+								</div>
+								
+								<div class="col-md-12 col-lg-12" *ngIf="authenticationService.vanityURLEnabled">
+									<div class="form-group">
+										<label class="control-label" translate>Upload Background Image</label>
+											<input #imageInput type="file" accept="image/png" (change)="processBgImageFile($event)">
+											<img class="img-grid"
+												*ngIf="companyBgImagePath"
+												[src]="authenticationService.MEDIA_URL + companyBgImagePath"
+												(error)="errorHandler($event)">
+									</div>
+								</div> -->
+								
+								
+
 								<!-- <div class="form-group">
 								<label class="control-label">About Us</label>
 								<textarea class="form-control" rows="3" cols="5" maxlength="1000" placeholder="About Us" name="aboutUs" id="aboutUs" style="resize: none" [(ngModel)]="companyProfile.aboutUs"></textarea>
@@ -569,8 +652,7 @@
 			<div class="modal-header">
 				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i
 					class="fa fa-times"></i></a>
-				<h4 class="modal-title" id="cropLogoImage">Choose the image to
-					be used as your company logo</h4>
+				<h4 class="modal-title" id="cropLogoImage">{{cropLogoImageText}}</h4>
 			</div>
 			<div class="modal-body" style="overflow-y: unset !important;">
 				<div style="position: relative; top: -5px; width: 118px;"
@@ -606,6 +688,70 @@
 				<div>
 					<button class="btn btn-primary" [disabled]="!showCropper"
 						(click)="uploadLogo()">Save Changes</button>
+				</div>
+				<div>
+					<ul style="padding: 0 15px;">
+						<li>For optimal results, your logo should fit within the
+							white rectangle.</li>
+						<li>If you would like to use a different logo in an email
+							template, you can change it during the template design process.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<svg id="svg-filter">
+        <filter id="svg-blur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+        </filter>
+    </svg>
+</div>
+
+<!-- Bg Image Modal -->
+<div class="modal right fade" id="cropBgImage" tabindex="-1"
+	role="dialog" aria-labelledby="cropBgImage" data-keyboard="false"
+	data-backdrop="static">
+	<div class="modal-dialog imgCrop-modal" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i
+					class="fa fa-times"></i></a>
+				<h4 class="modal-title" id="cropBgImage">{{cropLogoImageText}}</h4>
+			</div>
+			<div class="modal-body" style="overflow-y: unset !important;">
+				<div style="position: relative; top: -5px; width: 118px;"
+					class="btn green fileinput-button-css" *ngIf="!bgImageChangedEvent">
+					<span>Select image</span> <input style="height: 36px;" title=" "
+						id="custom-input" type="file"
+						(change)="fileBgImageChangeEvent($event)">
+				</div>
+				<div style="position: relative; top: -5px;"
+					*ngIf="errorUploadCropper" style="color:red">*Please Upload
+					only images</div>
+				<div>
+					<ngx-loading [show]="loadingcrop"
+						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
+					<!-- <img-cropper #cropper *ngIf="!cropRounded" [image]="squareData" [settings]="squareCropperSettings"></img-cropper> -->
+					<div [hidden]="!bgImageChangedEvent">
+						<image-cropper [imageChangedEvent]="bgImageChangedEvent"
+							[maintainAspectRatio]="false" [onlyScaleDown]="true"
+							[roundCropper]="false" format="jpg" outputType="base64"
+							(imageCropped)="bgImageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+							(imageQuality)=0 (loadImageFailed)="loadImageFailed()"
+							[style.display]="showCropper ? null : 'none'"></image-cropper>
+					</div>
+					<div *ngIf="!bgImageChangedEvent">
+						<fieldset
+							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+						</fieldset>
+					</div>
+					<!-- <div *ngIf="showCropper"> <span>Aspect Ratio:</span> <button type="button" (click)="setValue('None')">None</button><button type="button" (click)="setValue('15/8')">15:8</button><button type="button" (click)="setValue('8/4')">8:4</button><button type="button" (click)="setValue('10/5')">10:5</button></div> -->
+
+				</div>
+				<div>
+					<button class="btn btn-primary" [disabled]="!showCropper"
+						(click)="uploadBgImage()">Save Changes</button>
 				</div>
 				<div>
 					<ul style="padding: 0 15px;">

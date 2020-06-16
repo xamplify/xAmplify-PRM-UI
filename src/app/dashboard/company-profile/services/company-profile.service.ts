@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response,RequestOptions,Headers } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { CompanyProfile } from '../models/company-profile';
@@ -18,8 +18,8 @@ export class CompanyProfileService {
         .map(this.extractData)
         .catch(this.handleError);
    }
-    
-    save(companyProfile:CompanyProfile,userId:number){
+   
+    save(companyProfile:CompanyProfile,userId:number){        
         return this.http.post(this.URL+"company-profile/save/"+userId+"?access_token="+this.authenticationService.access_token,companyProfile)
         .map(this.extractData)
         .catch(this.handleError);
@@ -82,6 +82,37 @@ export class CompanyProfileService {
         .catch(this.handleError);
    }
 
+   uploadFavIconFile(event: any) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+        let file: File = fileList[0];
+        let formData: FormData = new FormData();        
+        formData.append('favIconFile', file, file.name);
+        let headers = new Headers();
+        //headers.append('Accept', 'multipart/form-data');
+        let options = new RequestOptions({ headers: headers });
+        const url = this.URL+"company-profile/saveFavIcon/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, formData, options)
+            .map(this.extractData)
+            .catch(this.handleError);                
+    }
+}
+
+uploadBgImageFile(file: any) {
+    //let fileList: FileList = event.target.files;
+    //if (fileList.length > 0) {
+       // let file: File = event;
+        let formData: FormData = new FormData();        
+        formData.append('bgImageFile', file, file.name);
+        let headers = new Headers();
+        //headers.append('Accept', 'multipart/form-data');
+        let options = new RequestOptions({ headers: headers });
+        const url = this.URL+"company-profile/saveBgImage/"+this.authenticationService.getUserId()+"?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, formData, options)
+            .map(this.extractData)
+            .catch(this.handleError);                
+ //   }
+}
   
     private extractData( res: Response ) {
         let body = res.json();

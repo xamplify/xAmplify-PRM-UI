@@ -31,4 +31,6 @@ export class CompanyProfile {
     campaignAccessDto:CampaignAccess;
 
     showVendorCompanyLogo:boolean = true;
+    favIconLogoPath:string;
+    loginScreenDirection:string;
 }

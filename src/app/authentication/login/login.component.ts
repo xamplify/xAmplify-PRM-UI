@@ -217,6 +217,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
           }
           this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
+          this.authenticationService.loginScreenDirection = result.loginScreenDirection;
           this.vanityURLService.setVanityURLTitleAndFavIcon();
         }, error => {
           console.log(error);

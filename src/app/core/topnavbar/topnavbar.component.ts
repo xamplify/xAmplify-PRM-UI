@@ -347,7 +347,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     let preferredLangFilePath = 'assets/config-files/preferred-languages.json';
     this.userService.getAllPreferredLanguages(preferredLangFilePath).subscribe(result => {
       this.authenticationService.allLanguagesList = result.languages;
-      this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).id;
+      if(userPreferredLangId){
+        this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).id;
+      }      
     }, error => {
       console.log(error);
     });

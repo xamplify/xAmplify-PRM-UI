@@ -4,7 +4,7 @@
 </div>
 <app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
 <app-video *ngIf="vanityURLEnabled"></app-video>
-<div class="content">
+<div class="content" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
 	<div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	</div>
