@@ -842,12 +842,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaignsByUserListIdAndUserId(pagination: Pagination) {
-        let url = this.URL + "campaign/listLaunchedCampaignsByUserListId?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, pagination)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
+  
 
 
     listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
@@ -942,8 +937,21 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    shareOrSendCampaigns(campaigDetails:any){
-        return this.http.post(this.URL + "campaign/shareCampaignsToPartners?access_token=" + this.authenticationService.access_token, campaigDetails)
+ 	 listCampaignsByUserListIdAndUserId(pagination: Pagination,type:string) {
+        let url = "";
+        if("Partner"==type){
+            url = this.URL + "campaign/listLaunchedCampaignsByUserListIdForPartners?access_token=" + this.authenticationService.access_token;
+        }else{
+            url = this.URL + "campaign/listLaunchedCampaignsByUserListIdForContacts?access_token=" + this.authenticationService.access_token;
+        }
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+	
+	
+	  shareOrSendCampaigns(campaigDetails:any){
+        return this.http.post(this.URL + "campaign/shareCampaignsOrSendEmailsToUserListUsers?access_token=" + this.authenticationService.access_token, campaigDetails)
         .map(this.extractData)
             .catch(this.handleError);
     }

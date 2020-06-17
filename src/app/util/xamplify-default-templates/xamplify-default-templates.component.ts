@@ -76,9 +76,8 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
       }
       if(jsonContent.indexOf("<Vanity_Company_Logo_Href>") < 0){
         swal( "", "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.", "error" );
-          return false;
+        return false;
       }
-
       let emailTemplateType = emailTemplate.typeInString;
       if(jsonContent.indexOf("<<LoginLink>>")<0 && "JOIN_MY_TEAM"==emailTemplateType){
         swal( "", "Whoops! We are unable to save this template because you deleted 'LoginLink' tag.", "error" );
@@ -90,8 +89,15 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         return false;
       }
 
-      if("FORGOT_PASSWORD"==emailTemplateType && jsonContent.indexOf('_TEMPORARY_PASSWORD')<0){
-        swal( "", "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.", "error" );
+      if("FORGOT_PASSWORD"==emailTemplateType){
+        var count = (jsonContent.match(/<Vanity_Company_Logo_Href>/g) || []).length;
+        let errorMessage = "";
+        if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0){
+          errorMessage=  "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.";
+        }else if(count<2){
+          errorMessage = "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.";
+        }
+        swal( "", errorMessage, "error" );
         return false;
       }
       if("ACCOUNT_ACTIVATION"==emailTemplateType && jsonContent.indexOf('<VerifyEmailLink>')<0){

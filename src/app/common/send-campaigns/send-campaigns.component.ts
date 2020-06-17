@@ -39,6 +39,8 @@ export class SendCampaignsComponent implements OnInit {
   firstName = "";
   lastName = "";
   companyName = "";
+  type = "";
+  newEmailIdsAreAdded = false;
   /******When a new partner is added in list******* */
   newlyAddedPartners:any[] = [];
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
@@ -59,6 +61,8 @@ export class SendCampaignsComponent implements OnInit {
     this.lastName = contact.lastName;
     this.companyName = contact.contactCompany;
     this.pagination.userListId = partnerListId;
+    this.type = type;
+    this.newEmailIdsAreAdded = false;
     this.listCampaigns(this.pagination);
   }
 
@@ -67,6 +71,8 @@ export class SendCampaignsComponent implements OnInit {
     this.pagination.partnerId = 0;
     this.newlyAddedPartners = users;
     this.pagination.userListId = partnerOrContactListId;
+    this.type = type;
+    this.newEmailIdsAreAdded = true;
     this.listCampaigns(this.pagination);
 
   }
@@ -75,26 +81,30 @@ export class SendCampaignsComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.referenceService.startLoader(this.httpRequestLoader);
     pagination.userId = this.loggedInUserId;
-    this.campaignService.listCampaignsByUserListIdAndUserId(pagination)
+    this.campaignService.listCampaignsByUserListIdAndUserId(pagination,this.type)
       .subscribe(
         response => {
           const data = response.data;
-          pagination.totalRecords = data.totalRecords;
-          this.sortOption.totalRecords = data.totalRecords;
-          let campaigns = data.campaigns;
-          $.each(campaigns, function (_index: number, campaign: any) {
-            campaign.displayTime = new Date(campaign.launchTimeInString);
-          });
-          pagination = this.pagerService.getPagedItems(pagination, campaigns);
-          /*******Header checkbox will be chcked when navigating through page numbers*****/
-          var campaignIds = this.pagination.pagedItems.map(function (a) { return a.id; });
-          var items = $.grep(this.selectedCampaignIds, function (element) {
-            return $.inArray(element, campaignIds) !== -1;
-          });
-          if (items.length == campaignIds.length) {
-            this.isHeaderCheckBoxChecked = true;
-          } else {
-            this.isHeaderCheckBoxChecked = false;
+          if(this.newEmailIdsAreAdded && data.totalRecords==0){
+            $('#sendCampaignsPopup').modal('hide');
+          }else{
+            pagination.totalRecords = data.totalRecords;
+            this.sortOption.totalRecords = data.totalRecords;
+            let campaigns = data.campaigns;
+            $.each(campaigns, function (_index: number, campaign: any) {
+              campaign.displayTime = new Date(campaign.launchTimeInString);
+            });
+            pagination = this.pagerService.getPagedItems(pagination, campaigns);
+            /*******Header checkbox will be chcked when navigating through page numbers*****/
+            var campaignIds = this.pagination.pagedItems.map(function (a) { return a.id; });
+            var items = $.grep(this.selectedCampaignIds, function (element) {
+              return $.inArray(element, campaignIds) !== -1;
+            });
+            if (items.length == campaignIds.length) {
+              this.isHeaderCheckBoxChecked = true;
+            } else {
+              this.isHeaderCheckBoxChecked = false;
+            }
           }
           this.referenceService.stopLoader(this.httpRequestLoader);
         },
@@ -260,6 +270,7 @@ export class SendCampaignsComponent implements OnInit {
       "partnersOrContactDtos": users,
       "userListId": this.pagination.userListId,
       "loggedInUserId":this.loggedInUserId,
+      "type":this.type
     }
     this.campaignService.shareOrSendCampaigns(campaignDetails)
       .subscribe(
@@ -269,7 +280,12 @@ export class SendCampaignsComponent implements OnInit {
                 this.sendSuccess = true;
                 this.statusCode = data.statusCode;
                 if (data.statusCode == 200) {
-                    this.responseMessage = "Campaign(s) Shared Successfully";
+                    if("Contact"==this.type){
+                      this.responseMessage = "Email(s) sent successfully";
+                    }else{
+                      this.responseMessage = "Campaign(s) shared successfully";
+                    }
+                    
                 } else {
                     this.responseMessage = data.message;
                 }

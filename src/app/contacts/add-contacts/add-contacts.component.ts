@@ -3381,7 +3381,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         .subscribe(
         data => {
         	if(data.access){
-            data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
