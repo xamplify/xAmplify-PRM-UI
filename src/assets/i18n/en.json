@@ -295,8 +295,31 @@
 	"Import contacts from the cloud:":"Import contacts from the cloud:",
 	"Salesforce Account Settings":"Salesforce Account Settings",
 	"You are about to unlink your Salesforce account from xAmplify.":"You are about to unlink your Salesforce account from xAmplify.",
-	"Select Login Screen Direction": "Select Login Screen Direction"
-	
-
+	"Record Video from WebCam":"Record Video from WebCam",
+	"Scroll Speed: 1":"Scroll Speed: 1",
+	"[fast]":"[fast]",
+	"[slow]":"[slow]",
+	"Test Scroll Speed":"Test Scroll Speed",
+	"Stop":"Stop",
+	"Upload":"Upload",
+	"Discard":"Discard",
+	"Add A Video":"Add A Video",
+	"Upload all":"Upload all",
+	"Remove all":"Remove all",
+	"Remove":"Remove",
+	"Upload a video":"Upload a video",
+	"Drag and drop a video file here or click to select a Video file.":"Drag and drop a video file here or click to select a Video file.",
+	"Drag and drop files here or click to select files.":"Drag and drop files here or click to select files.",
+	"Browse":"Browse",
+	"WebCam":"WebCam",
+	"DropBox":"DropBox",
+	"Box":"Box",
+	"GoogleDrive":"GoogleDrive",
+	"Maximum video file size is 800 MB. For larger files please":"Maximum video file size is 800 MB. For larger files please",
+	"contact us":"contact us",
+	"Supported video file types are":"Supported video file types are",
+	"Maximum file size is 12 MB. For larger files please":"Maximum file size is 12 MB. For larger files please",
+	"Supported file types are":"Supported file types are",
+	"These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10.":"These plugins only work with the latest versions of Chrome, Firefox, Safari, Opera, Microsoft Edge & Internet Explorer 10."
 
 }
