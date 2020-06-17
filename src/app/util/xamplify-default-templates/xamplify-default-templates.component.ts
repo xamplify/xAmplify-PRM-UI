@@ -94,11 +94,14 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         let errorMessage = "";
         if(jsonContent.indexOf('_TEMPORARY_PASSWORD')<0){
           errorMessage=  "Whoops! We are unable to save this template because you deleted '_TEMPORARY_PASSWORD' tag.";
+          swal( "", errorMessage, "error" );
+          return false;
         }else if(count<2){
           errorMessage = "Whoops! We are unable to save this template because you deleted 'Vanity_Company_Logo_Href' tag.";
+          swal( "", errorMessage, "error" );
+          return false;
         }
-        swal( "", errorMessage, "error" );
-        return false;
+       
       }
       if("ACCOUNT_ACTIVATION"==emailTemplateType && jsonContent.indexOf('<VerifyEmailLink>')<0){
         swal( "", "Whoops! We are unable to save this template because you deleted 'VerifyEmailLink' tag.", "error" );
