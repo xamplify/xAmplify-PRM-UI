@@ -295,6 +295,6 @@
 	"Select Import from":"Seleccione Importar desde",
 	"Import contacts from the cloud:":"Importar contactos desde la nube:",
 	"Salesforce Account Settings":"Configuración de cuenta de Salesforce",
-	"You are about to unlink your Salesforce account from xAmplify.":"Está a punto de desvincular su cuenta de Salesforce de xAmplify."
-	
+	"You are about to unlink your Salesforce account from xAmplify.":"Está a punto de desvincular su cuenta de Salesforce de xAmplify.",
+	"Select Login Screen Direction": "Seleccionar dirección de pantalla de inicio de sesión"
 }

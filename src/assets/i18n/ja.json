@@ -295,5 +295,6 @@
 	"Select Import from":"インポートを選択",
 	"Import contacts from the cloud:":"クラウドから連絡先をインポート：",
 	"Salesforce Account Settings":"Salesforceアカウント設定",
-	"You are about to unlink your Salesforce account from xAmplify.":"xAmplifyからSalesforceアカウントのリンクを解除しようとしています。"
+	"You are about to unlink your Salesforce account from xAmplify.":"xAmplifyからSalesforceアカウントのリンクを解除しようとしています。",
+	"Select Login Screen Direction":"ログイン画面の方向を選択"
 }

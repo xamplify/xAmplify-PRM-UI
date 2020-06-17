@@ -82,8 +82,9 @@
 					<div class="row">
 						<div class="col-sm-3 col-xs-12" style="paddin-right: 0px">
 							<div class="image blur-content" id="image-blur-content-div">
-								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;;height: 790px;    border-radius: 4px!important;">
+								<div class="portlet light border-radius-0 shadow" style="padding: 0px 0px 10px 0px!important; border:1px solid #eaeaea!important;border-radius: 4px!important;">
 									<div class="portlet-body clearfix" style="text-align: center;padding:12px 12px!important">
+										<label class="control-label">Upload Logo</label>
 										<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
 											(click)="imageClick()">
 											<span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
@@ -168,6 +169,7 @@
 									<!-- Fav Icon -->									
 									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
+									<label class="control-label">Upload Fav Icon</label>
 									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="openFavIconFileId()">
 									<input id="favIconId" style="display: none;" type="file" accept="image/x-icon" (change)="processFavIconFile($event)">										
 									<span *ngIf="!companyFavIconPath; else showFavIconImage"> 
@@ -188,6 +190,7 @@
 										<!-- Bg Image -->									
 									<div *ngIf="authenticationService.vanityURLEnabled && authenticationService.checkSamlSettingsUserRoles()">
 									<hr class="divider" />
+									<label class="control-label">Upload Background Image</label>
 									<div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
 											(click)="bgImageClick()">
 												<span
