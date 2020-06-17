@@ -1291,6 +1291,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
       this.campaignService.createEventCampaign(eventCampaign, this.isEventUpdate)
       .subscribe(
       response => {
+          if (!response.access) {
+              this.authenticationService.forceToLogout();
+    	  }
         if (response.statusCode === 2000) {
           this.isLaunched = true;
           this.referenceService.stopLoader(this.httpRequestLoader);

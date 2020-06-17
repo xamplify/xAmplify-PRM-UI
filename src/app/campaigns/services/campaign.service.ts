@@ -272,14 +272,14 @@ export class CampaignService {
 
     saveAsCampaign(campaign:any) {
       let campaignURL:any;
-      if(campaign.campaignType==='EVENT') { campaignURL = this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`;
+      if(campaign.campaignType==='EVENT') { campaignURL = this.URL + "campaign/save-as-event-campaign?access_token="+this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId();
       } else { campaignURL = this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`; }
       return this.http.post(campaignURL, campaign)
             .map(this.extractData)
             .catch(this.handleError);
     }
     saveAsEventCampaign(campaign:any) {
-      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+      return this.http.post(this.URL +  "campaign/save-as-event-campaign?access_token="+this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId(), campaign)
           .map(this.extractData)
           .catch(this.handleError);
    }
@@ -713,9 +713,9 @@ export class CampaignService {
     createEventCampaign(eventCampaign: any, eventUpdate: boolean) {
         let eventUrl;
         if(eventUpdate){
-            eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token;
+            eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId();
         }else{
-            eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
+            eventUrl = this.URL + "campaign/save-event-campaign?access_token="+this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId();
         }
         return this.http.post(eventUrl, eventCampaign)
             .map(this.extractData)
