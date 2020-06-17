@@ -13,6 +13,7 @@ import { Properties } from '../../common/models/properties';
 import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from 'app/core/services/util.service';
 import { ContactService } from '../../contacts/services/contact.service';
+import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 
 declare var  $: any;
 @Component({
@@ -41,11 +42,16 @@ export class SendCampaignsComponent implements OnInit {
   companyName = "";
   type = "";
   newEmailIdsAreAdded = false;
+  isLoggedInThroughVanityUrl = false;
   /******When a new partner is added in list******* */
   newlyAddedPartners:any[] = [];
   constructor(private campaignService: CampaignService, private router: Router, private xtremandLogger: XtremandLogger,
-    public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService) {
+    public pagination: Pagination, private pagerService: PagerService, public authenticationService: AuthenticationService, 
+    public referenceService: ReferenceService, public properties: Properties, public utilService: UtilService, public contactService: ContactService,
+    private vanityUrlService:VanityURLService
+    ) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    this.isLoggedInThroughVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
   }
 
 
@@ -54,27 +60,37 @@ export class SendCampaignsComponent implements OnInit {
 
 
   openPopUp(partnerListId: number, contact:any,type:string) {
-    $('#sendCampaignsPopup').modal('show');
-    this.pagination.partnerOrContactEmailId = contact.emailId;
-    this.pagination.partnerId = contact.id;
-    this.firstName = contact.firstName;
-    this.lastName = contact.lastName;
-    this.companyName = contact.contactCompany;
-    this.pagination.userListId = partnerListId;
-    this.type = type;
-    this.newEmailIdsAreAdded = false;
-    this.listCampaigns(this.pagination);
+    if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
+      this.referenceService.showSweetAlertInfoMessage();
+    }else{
+      $('#sendCampaignsPopup').modal('show');
+      this.pagination.partnerOrContactEmailId = contact.emailId;
+      this.pagination.partnerId = contact.id;
+      this.firstName = contact.firstName;
+      this.lastName = contact.lastName;
+      this.companyName = contact.contactCompany;
+      this.pagination.userListId = partnerListId;
+      this.type = type;
+      this.newEmailIdsAreAdded = false;
+      this.listCampaigns(this.pagination);
+    }
+
+    
   }
 
   openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number,users:any,type:string){
-    $('#sendCampaignsPopup').modal('show');
-    this.pagination.partnerId = 0;
-    this.newlyAddedPartners = users;
-    this.pagination.userListId = partnerOrContactListId;
-    this.type = type;
-    this.newEmailIdsAreAdded = true;
-    this.listCampaigns(this.pagination);
-
+    if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
+      console.log("do nothing");
+    }else{
+      $('#sendCampaignsPopup').modal('show');
+      this.pagination.partnerId = 0;
+      this.newlyAddedPartners = users;
+      this.pagination.userListId = partnerOrContactListId;
+      this.type = type;
+      this.newEmailIdsAreAdded = true;
+      this.listCampaigns(this.pagination);
+    }
+    
   }
 
   listCampaigns(pagination: Pagination) {

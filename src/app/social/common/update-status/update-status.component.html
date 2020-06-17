@@ -448,16 +448,15 @@
                           <input type="text" [(ngModel)]="contactListsPagination.searchKey" [ngModelOptions]="{standalone: true}" class="form-control"
                           placeholder="Search for a list">
                           <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="contactListsPagination.searchKey" (click)="resetSearchContactList()"></button>
-                          <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search"></i></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchContactList()"><i class="fa fa-search" aria-hidden="true"></i></button>
                         </div>
 						</div>
 					</div>
 
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0 && !contactListsPagination.isLoading">
 						<div class='alert alert-info' role='alert'>
-							<h4 class='m0'>You have not added any contact lists yet. Please add at least one list to your account</h4>
+							<h4 class='m0'>No data found.</h4>
 						</div>
-						<a class='btn btn-info' style="color: #fff;" [routerLink]="['/home/contacts/add']">Add Contacts</a>
 					</section>
 					<section *ngIf="contactListsPagination.pagedItems?.length === 0 &&contactListsPagination.isLoading">
 						<app-list-loader></app-list-loader>
