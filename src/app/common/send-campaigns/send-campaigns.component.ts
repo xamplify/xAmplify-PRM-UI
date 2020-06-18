@@ -286,6 +286,7 @@ export class SendCampaignsComponent implements OnInit {
       "loggedInUserId":this.loggedInUserId,
       "type":this.type
     }
+    console.log(campaignDetails);
     this.campaignService.shareOrSendCampaigns(campaignDetails)
       .subscribe(
         data => {
@@ -294,12 +295,7 @@ export class SendCampaignsComponent implements OnInit {
                 this.sendSuccess = true;
                 this.statusCode = data.statusCode;
                 if (data.statusCode == 200) {
-                    if("Contact"==this.type){
-                      this.responseMessage = "Email(s) sent successfully";
-                    }else{
-                      this.responseMessage = "Campaign(s) shared successfully";
-                    }
-                    
+                  this.responseMessage = "Campaign(s) sent successfully";
                 } else {
                     this.responseMessage = data.message;
                 }

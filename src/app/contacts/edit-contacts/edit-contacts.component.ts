@@ -555,6 +555,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					"emailId": this.users[i].emailId,
 					"firstName": this.users[i].firstName,
 					"lastName": this.users[i].lastName,
+					"companyName":this.users[i]['contactCompany']
 				}
 
 				this.newUserDetails.push(userDetails);
@@ -717,6 +718,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						"emailId": this.users[i].emailId,
 						"firstName": this.users[i].firstName,
 						"lastName": this.users[i].lastName,
+						"companyName": this.users[i]['contactCompany']
 					}
 
 					this.newUserDetails.push(userDetails);
@@ -1402,6 +1404,7 @@ goBackToManageList(){
 					"emailId": this.users[i].emailId,
 					"firstName": this.users[i].firstName,
 					"lastName": this.users[i].lastName,
+					"companyName":this.users[i]['contactCompany'],
 					"legalBasis": this.selectedLegalBasisOptions
 				}
 				this.newUserDetails.push(userDetails);
