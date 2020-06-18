@@ -340,10 +340,14 @@ export class PreviewCampaignComponent implements OnInit,OnDestroy {
       const campaignData = this.setSaveCampaignData();
       this.campaignService.saveAsCampaign(campaignData)
         .subscribe(data => {
-          $(window).scrollTop(0);
-          this.customResponse =  new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
-          $('#myModal').modal('hide');
-          this.closeNotifyParent.emit('copy campaign success');
+        	if(data.access){
+              $(window).scrollTop(0);
+              this.customResponse =  new CustomResponse('SUCCESS', 'Copy campaign saved successfully', true);
+             $('#myModal').modal('hide');
+             this.closeNotifyParent.emit('copy campaign success');
+        }else{
+        	this.authenticationService.forceToLogout();
+        }
           },
           error => { $('#saveAsModalcalendar').modal('hide'); $('#myModal').modal('hide');
           this.customResponse =  new CustomResponse('ERROR', 'something went wrong in saving copy campaign', true);
