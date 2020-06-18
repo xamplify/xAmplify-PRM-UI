@@ -38,7 +38,7 @@
 </style>
 <div class="portlet light">
 	<div class="portlet-body">
-    <div *ngIf="clientError" style="color:red">Something went wrong, Please refresh the page</div>
+    <div *ngIf="clientError" style="color:red" translate>Something went wrong, Please refresh the page</div>
 		<div class="row margin-bottom-30" [hidden]="clientError">
 			<!-- video started -->
 			<div class="col-xs-12 col-sm-12 col-md-6" style="padding-top: 28px">
@@ -88,7 +88,7 @@
 						</div>
 						<div *ngIf="callAction.isSkipChecked" id="skipOverlay" style="cursor: pointer" (click)="skipOverplay()">
 							<i class="fa fa-forward" aria-hidden="true"></i>
-							<b style="font-size: 13px; color:white;">skip</b>
+							<b style="font-size: 13px; color:white;" translate>skip</b>
 						</div>
 					</div>
         </div>
@@ -103,11 +103,11 @@
 				<!--  overlay modal ending -->
 
 				<div class="col-xs-12 col-sm-7 col-md-8" style="padding: 0;margin-top: 10px;">
-					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo">
+					<button *ngIf="shareValues" class="btn btn-primary shareVideoButton" (click)="shareClick()" [disabled]="isThisDraftVideo" translate>
 						<i class="fa fa-share-alt" aria-hidden="true"></i> Share
 					</button>
 					<button *ngIf="embedVideo" class="btn btn-primary embedVideoButton" data-dismiss="modal" data-toggle="modal" data-target="#myModal"
-					 [disabled]="isThisDraftVideo" (click)="embedModal()">
+					 [disabled]="isThisDraftVideo" (click)="embedModal()" translate>
 						<i class="fa fa-external-link" aria-hidden="true"></i> Embed
 					</button>
 				</div>
@@ -144,8 +144,8 @@
 							<div class="col-md-offset-7 col-md-6" style="margin-left: auto; float: right; top:6px">
 								<div style="float: right">
 									<button type="button" class="btn green" [disabled]="!videoForm.valid || upperTextValid==false
-									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle}}</button>
-									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable">Cancel</button>
+									|| lowerTextValid==false || isValidTitle == true || emptyTitle == true || emptyDescription || isDisable || ownThumbnail" (click)="saveVideoObject()">{{saveButtonTitle | translate}}</button>
+									<button type="button" class="btn default" style="margin-left:2px;" (click)="cancelVideo()" [disabled]="isDisable" translate>Cancel</button>
 								</div>
 							</div>
 						</div>
@@ -156,7 +156,7 @@
 									<!-- <i class="fa fa-info-circle"></i> -->
 									<div class="col-xs-11 p01">
 										<!-- <h4 class="p01">{{videoFileService.actionValue}} Video Info</h4> -->
-										<h4 class="p01">Video Info</h4>
+										<h4 class="p01" translate>Video Info</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
@@ -168,18 +168,18 @@
 							<div class="portlet-body form" *ngIf="titleDiv" [@fadeInOut]>
 								<div class="form-body" style="padding:9px">
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Title:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Title:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<input type="text" minlength="1" maxlength="255" (input)="validVideoTitle(videotitle.value)" class="form-control" placeholder="Enter Title here"
 											 formControlName="title" required #videotitle>
 											<div *ngIf="formErrors.title"  style="color: red; padding: 2px" >{{formErrors.title}}</div>
-											<div *ngIf="isValidTitle" style="color: red; padding: 2px">This title already exists.</div>
+											<div *ngIf="isValidTitle" style="color: red; padding: 2px" translate>This title already exists.</div>
 											<div *ngIf="emptyTitle ==true && formErrors.title==false"  style="color: red; padding: 2px">Title name shouldn't be empty</div>
 										</div>
 									</div>
 									<input type="hidden" class="form-control" formControlName="id">
 									<div class="form-group" *ngIf="false">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Publish to:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Publish to:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<select class="form-control" (ngModelChange)="selectedPublishToName($event)" formControlName="viewBy" required title="select a video type">
 												<option *ngFor="let publishName of publish" [value]="publishName.name">{{publishName.name}}
@@ -192,7 +192,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Category:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Category:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<select class="form-control" title="select a category" formControlName="categoryId" required>
 												<option *ngFor="let cate of categories" [value]="cate.id">{{cate.name}}</option>
@@ -202,7 +202,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Tags:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Tags:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<span class="pull-left" style="margin-top: 13px;margin-left: -21px;cursor: pointer;color: #54a7e9;" data-toggle="tooltip" data-placement="bottom" title="Add a tag to your video and press Enter">
 												<i class="fa fa-question-circle" style="font-size: 20px"></i>
@@ -212,11 +212,11 @@
 
 											<tag-input [(ngModel)]="itemOfTags"  [ngModelOptions]="{standalone: true}" [theme]="'foundation-theme'" [placeholder]="'Add a tag & press Enter'" [secondaryPlaceholder]="'Add a tag & press Enter'"
 											 [validators]="validatorsTag" required></tag-input>
-											<div *ngIf="itemOfTags?.length===0 || itemOfTags===null" style="color:red">Please add a tag and press enter for your video.</div>
+											<div *ngIf="itemOfTags?.length===0 || itemOfTags===null" style="color:red" translate>Please add a tag and press enter for your video.</div>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer">Thumbnail :
+										<label class="col-xs-12 col-sm-3 col-md-3 control-label" style="margin-left: -4px;cursor:pointer" translate>Thumbnail :
 											<input name="options" type="radio" (click)="changeImageThumbnailOption();uploader.clearQueue();"
 											 [checked]="thumbnailRadioOpen">
 										</label>
@@ -244,19 +244,19 @@
 											<div class="col-xs-10 col-sm-10 col-md-10" style="position: relative; left:-11px;">
 												<label class="radio-inline" style="cursor:pointer">
 													<input name="options" (click)="selectedOwnThumnailOption()" type="radio" [value]="2"  [checked]="!thumbnailRadioOpen" style="cursor:pointer">
-													<strong>Or: Upload your own Thumbnail</strong>
+													<strong translate>Or: Upload your own Thumbnail</strong>
 												</label>
 											</div>
 										</div>
 										<div class="col-xs-9 col-sm-9 col-md-9" style="top: 7px; position: relative;float:right">
 											<div *ngIf="openOwnThumbnail" >
-												<span class="btn btn-css btn-file" *ngIf="ownThumbnail">Choose Image
+												<span class="btn btn-css btn-file" *ngIf="ownThumbnail" translate>Choose Image
 												<input id="ownFileuplad" type="file" ng2FileSelect [uploader]="uploader" accept=".jpg,.jpeg,.png" *ngIf="uploader.queue.length==0"
 												 class="btn btn-primary" style="background: #00a6e8;width: 100%;cursor: pointer;" title=" " (change)="isFileCheck($event)">
                         </span>
-												 <p *ngIf="ownThumbnail" class="help-block">If you want to upload your own thumbnail, please choose a file from your system.
-                            <span style="color:blue">Note: Max image size 10 MB</span><br/>
-                          <span style="color:red">*Please upload your thumbnail.</span>
+												 <p *ngIf="ownThumbnail" class="help-block" translate>If you want to upload your own thumbnail, please choose a file from your system.
+                            <span style="color:blue" translate>Note: Max image size 10 MB</span><br/>
+                          <span style="color:red" translate>*Please upload your thumbnail.</span>
 												</p>
 												   <div *ngIf="imageUrlPath" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0" style="margin: 0px -4px;">
 														<span (click)="uploader.clearQueue();clearOwnThumbnail()">
@@ -268,7 +268,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-12 col-sm-3 col-md-3 control-label">Gif:</label>
+										<label class="col-xs-12 col-sm-3 col-md-3 control-label" translate>Gif:</label>
 										<div class="col-xs-12 col-sm-9 col-md-12 col-lg-9" style="padding:0;">
 											<div>
 												<div class="col-xs-4 col-sm-4 col-md-4" (click)="selectedGifFirst()">
@@ -287,12 +287,12 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-xs-3 col-sm-3 col-md-3 control-label">Description:</label>
+										<label class="col-xs-3 col-sm-3 col-md-3 control-label" translate>Description:</label>
 										<div class="col-xs-9 col-sm-9 col-md-9">
 											<textarea (input)="descriptionInput(descriptionValue.value)" class="form-control" rows="3" style="min-height: 70px; max-height:110px;"
 											 formControlName="description" required #descriptionValue></textarea>
-											<div *ngIf="formErrors.description || saveVideoFile.description==null" style="color:red">Please enter a video description.</div>
-											<div *ngIf="emptyDescription && formErrors.description==false" style="color:red">description shouldn't be empty</div>
+											<div *ngIf="formErrors.description || saveVideoFile.description==null" style="color:red" translate>Please enter a video description.</div>
+											<div *ngIf="emptyDescription && formErrors.description==false" style="color:red" translate>description shouldn't be empty</div>
 										</div>
 									</div>
 								</div>
@@ -305,7 +305,7 @@
 							<div class="portlet-title" [ngClass]="{'activeDiv':!colorControl , 'inactiveDiv' :colorControl}" (click)="colorControlChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
-										<h4 class="p01">Video Player Appearance </h4>
+										<h4 class="p01" translate>Video Player Appearance </h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
@@ -318,7 +318,7 @@
 								<div class="portlet-body form" data-initialized="1" style="width: auto; height: auto">
 									<div class="form-body">
 										<div class="form-group">
-											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Default Settings:</label>
+											<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Default Settings:</label>
 											<div class="col-xs-7 col-sm-7 col-md-7">
 												<switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 												 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -328,7 +328,7 @@
 										</div>
 										<div>
 											<div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Player Color:</label>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Player Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compPlayerColor" [style.background]="compPlayerColor" formControlName="playerColor" [value]="compPlayerColor"
 													 (colorPickerChange)="changePlayerColor($event)" [class.disablePlayerValues]="disablePlayerSettingnew" [cpPosition]="'bottom'"
@@ -339,7 +339,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Controller:</label>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px" translate>Enable Video Controller:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7">
 													<switch [status]="newEnableController" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 													 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -348,7 +348,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px">Controller Color:</label>
+												<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-6px" translate>Controller Color:</label>
 												<div class="col-xs-7 col-sm-7 col-md-7"  [class.disablePlayerValues]="disablePlayerSettingnew">
 													<input [hidden]="disablePlayerSettingnew || !newEnableController" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" (colorPickerChange)="changeControllerColor($event, newEnableController)"
 													 formControlName="controllerColor" [value]="compControllerColor" [class.disablePlayerValues]="disablePlayerSettingnew"
@@ -359,7 +359,7 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-xs-5 control-label" style="font-size:14px;position: relative;top: -6px;">Transparency:</div>
+												<div class="col-xs-5 control-label" style="font-size:14px;position: relative;top: -6px;" translate>Transparency:</div>
 												<div class="col-xs-7 p0">
 													<div class="col-xs-10 col-sm-6 col-md-6">
 														<input type="range" id="rangeValue" min="0" max="100" value="{{valueRange}}" style="width: 104%;" [class.disablePlayerValues]="disablePlayerSettingnew || !newEnableController"
@@ -370,7 +370,7 @@
 											</div>
 											<!-- co branding video logo -->
 											<div class="form-group">
-													<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px">Enable Video Logo & Url:</label>
+													<label class="col-xs-5 col-sm-5 col-md-5 control-label" style="margin-top:-5px" translate>Enable Video Logo & Url:</label>
 													<div class="col-xs-7 col-sm-7 col-md-7">
 														<switch [status]="enableVideoLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 														 [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -379,7 +379,7 @@
 													</div>
 												</div>
 												<div [hidden]="!enableVideoLogo" id="fileLogoSelectedid" *ngIf="!disablePlayerSettingnew" class="form-group" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label">Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
+												<label class="col-xs-5 control-label" translate>Video Logo:<font *ngIf="!brandLogoUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
                             <!-- <input type="file" *ngIf="!brandLogoUrl" (change)="fileChangeEvent($event)" />
                             <image-cropper *ngIf="!brandLogoUrl" [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true"
@@ -389,7 +389,7 @@
                             (loadImageFailed)="loadImageFailed()"></image-cropper>
                            <img  [src]="croppedImage" />
                            <button *ngIf="!brandLogoUrl" class="btn btn-primary" (click)="saveThumbnail()">submit</button> -->
-													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl">Select Logo
+													 <span class="btn btn-css btn-file" *ngIf="!brandLogoUrl" translate>Select Logo
 													  <input type="file" ng2FileSelect [uploader]="videoLogoUploader" accept=".jpg,.jpeg,.png" class="btn btn-primary"
 													   style="background: #00a6e8;width: 100%;" title=" " (change)="isFileCheck($event)">
                            </span>
@@ -398,21 +398,21 @@
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl"  (error)="errorHandler($event)">
                           </div>
 													<div *ngIf="!brandLogoUrl" style="height: 11px;">
-                              <span style="color:red">Please upload a logo</span>
-                              <p style="color: blue;">Note:Max image size 10 MB</p>
+                              <span style="color:red" translate>Please upload a logo</span>
+                              <p style="color: blue;" translate>Note:Max image size 10 MB</p>
 													</div>
 												</div>
 											</div>
 											<div [hidden]="!enableVideoLogo" *ngIf="!disablePlayerSettingnew" class="form-group" style="position: relative;top:11px;" [class.disabledCss]="!enableVideoLogo">
-												<label class="col-xs-5 control-label" style="position: relative;top:-7px;">Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
+												<label class="col-xs-5 control-label" style="position: relative;top:-7px;" translate>Video Logo URL:<font *ngIf="!logoDescriptionUrl" style="color: red"><b>*</b></font></label>
 												<div class="col-xs-7">
 													<input type="text" style="width: 90%;" [(ngModel)]="logoDescriptionUrl" [ngModelOptions]="{standalone: true}" placeholder="URL for Video logo link" #val
                            (input)="logoDescription(val.value)">
-                           <span *ngIf="!logoDescriptionUrl" style="color:red">please add the video logo url</span>
+                           <span *ngIf="!logoDescriptionUrl" style="color:red" translate>please add the video logo url</span>
 												</div>
 											</div>
 											<div  [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && brandLogoUrl" class="form-group">
-												<label class="col-xs-5 control-label">Video Logo:</label>
+												<label class="col-xs-5 control-label" translate>Video Logo:</label>
 												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
 													<div *ngIf="brandLogoUrl" class="thumbnail-wrapper img-wrap img-responsive img-thumbnail rounded-0">
 														<img [src]="authenticationService.MEDIA_URL + brandLogoUrl" style="opacity: 0.5;">
@@ -420,21 +420,21 @@
 												</div>
 											</div>
 											<div [hidden]="!enableVideoLogo" *ngIf="disablePlayerSettingnew && logoDescriptionUrl" class="form-group" >
-												<label class="col-xs-5 control-label">Video Logo URL:</label>
+												<label class="col-xs-5 control-label" translate>Video Logo URL:</label>
 												<div class="col-xs-7" [class.disabledCss]="enableVideoLogo">
 													<p style="position: relative;top: 8px;opacity: 0.5;">{{logoDescriptionUrl}}</p>
 												</div>
                       </div>
-                      <div class="lineplayercontrol"><span>Video Player Controls</span></div>
+                      <div class="lineplayercontrol"><span translate>Video Player Controls</span></div>
                       <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
                            (statusChange)="allowSharing($event)">
                           </switch>
                         </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -443,14 +443,14 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
                            (statusChange)="changeFullscreen($event)">
                           </switch>
                         </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -459,14 +459,14 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
                            (statusChange)="allowLikes($event)">
                           </switch>
                         </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -476,14 +476,14 @@
 
                       </div>
                       <div class="form-group">
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
                            (statusChange)="allowEmbedVideo($event)">
                           </switch>
                         </div>
-                        <label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
+                        <label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
                         <div class="col-xs-6 col-sm-3 col-md-3">
                           <switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
                            [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -500,7 +500,7 @@
 							<div class="portlet-title" [ngClass]="{'activeDiv':!controlPlayers , 'inactiveDiv' :controlPlayers}" (click)="controlPlayerChange();">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
-										<h4 class="p01">Video Player Controls</h4>
+										<h4 class="p01" translate>Video Player Controls</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
@@ -513,7 +513,7 @@
 								<div class="portlet-body form" data-initialized="1" style="overflow: hidden; width: auto; height: auto">
 									<div class="form-body">
                     	<div class="form-group">
-                          <label class="col-xs-6 control-label" style="margin-top:-6px">Default Settings:</label>
+                          <label class="col-xs-6 control-label" style="margin-top:-6px" translate>Default Settings:</label>
                           <div class="col-xs-6">
                             <switch [status]="defaultSettingValue" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
                              [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
@@ -522,14 +522,14 @@
                           </div>
                         </div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Sharing:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Sharing:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowSharing" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												 (statusChange)="allowSharing($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Settings:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Settings:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newEnableSetting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -538,14 +538,14 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Fullscreen:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Fullscreen:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newFullScreen" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												 (statusChange)="changeFullscreen($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Comments:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Comments:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newComments" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -554,14 +554,14 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Likes:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Likes:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowLikes" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onSkyBlueColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												 (statusChange)="allowLikes($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Enable Casting:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Enable Casting:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newEnableCasting" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onYellowColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -571,14 +571,14 @@
 
 										</div>
 										<div class="form-group">
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">Allow Embed:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>Allow Embed:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newAllowEmbed" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onRedColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
 												 (statusChange)="allowEmbedVideo($event)">
 												</switch>
 											</div>
-											<label class="col-xs-6 col-sm-3 col-md-3 control-label">360 video:</label>
+											<label class="col-xs-6 col-sm-3 col-md-3 control-label" translate>360 video:</label>
 											<div class="col-xs-6 col-sm-3 col-md-3">
 												<switch [status]="newValue360" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onBlueColorSwitch"
 												 [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" [disabled]="disablePlayerSettingnew"
@@ -594,7 +594,7 @@
 							<div class="portlet-title" (click)="callToActionChange();" [ngClass]="{'activeDiv':!callaction , 'inactiveDiv' :callaction}">
 								<div class="col-xs-12 caption p01">
 									<div class="col-xs-11 p01">
-										<h4 class="p01">Call to Action</h4>
+										<h4 class="p01" translate>Call to Action</h4>
 									</div>
 									<div class="col-xs-1 text-right p01">
 										<a>
@@ -605,7 +605,7 @@
 							</div>
 							<div class="portlet-body form" *ngIf="callaction" [@fadeInOut] style="padding: 12px !important;">
 								<div class="form-group">
-									<label class="col-xs-6 control-label">Enable Call To Action:</label>
+									<label class="col-xs-6 control-label" translate>Enable Call To Action:</label>
 									<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
 										<div>
 											<switch [status]="enableCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -618,20 +618,20 @@
 									<hr style="margin: 0px 2px;">
 								</div>
 								<div class="form-group" style="padding: 1em">
-									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label">Call To Action At:</label>
+									<label class="col-xs-12 col-sm-3 col-md-3 col-lg-3 control-label" translate>Call To Action At:</label>
 									<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4">
 										<div>
-											<label> Start of the video</label>
+											<label translate> Start of the video</label>
 											<switch [status]="callAction.startCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											 [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
 											 [size]="callActionSwitch.bsize" (statusChange)="startCallToactionOverlay($event)">
 											</switch>
 										</div>
 									</div>
-									<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="padding: 1em; left: -21px;">(Or)</div>
+									<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1" style="padding: 1em; left: -21px;" translate>(Or)</div>
 									<div class="col-xs-5 col-sm-4 col-md-4 col-lg-4">
 										<div>
-											<label> End of the video</label>
+											<label translate>End of the video</label>
 											<switch [status]="callAction.endCalltoAction" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
 											 [onColor]="callActionSwitch.onBlueColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [disabled]="!enableCalltoAction"
 											 [size]="callActionSwitch.bsize" (statusChange)="endCallToactionOverlay($event)">
@@ -640,10 +640,10 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Options:</label>
+									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px" translate>Options:</label>
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
-											<label>
+											<label translate>
 												<div style="float: left;margin-right: 10px;cursor:pointer">
 													<span>
 														<input id="names" type="checkbox" formControlName="name" (change)="callToActionNames()">
@@ -657,7 +657,7 @@
 									<label class="col-xs-5 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px"></label>
 									<div class="col-xs-7 col-sm-9 col-md-9 col-lg-9">
 										<div class="checkbox-list">
-											<label>
+											<label translate>
 												<div style="float: left;margin-right: 10px; cursor:pointer">
 													<span>
 														<input id="isSkiped" type="checkbox" formControlName="skip" (change)="allowViewersToSkipped()" #isSkip>
@@ -668,7 +668,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Upper Text:
+									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px" translate>Upper Text:
 										<font *ngIf="upperTextValid == false" style="color: red; font-size: 19px;position: absolute;">
 											<b>*</b>
 										</font>
@@ -677,12 +677,12 @@
 										<textarea id="upperValue" formControlName="upperText" (input)="changeUpperText(uppertext.value)" style="width: 100%; height: 52px; min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="75" #uppertext></textarea>
 										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color: #7b8894;">{{characterleft}} characters left</label>
-                    <span *ngIf="!upperTextValid" style="color: red;">Please fill the upper text.</span>
+                    <span *ngIf="!upperTextValid" style="color: red;" translate>Please fill the upper text.</span>
                   </div>
 
 								</div>
 								<div class="form-group">
-									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px">Lower Text:
+									<label class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label" style="margin-top:-6px" translate>Lower Text:
 										<font *ngIf="lowerTextValid == false" style="color: red; font-size: 19px;position: absolute;">
 											<b>*</b>
 										</font>
@@ -691,7 +691,7 @@
 										<textarea id="lowerValue" type="text" formControlName="lowerText" (input)="changeLowerText(lowertext.value)" style="width: 100%; height: 52px;min-height: 52px; max-height:70px;"
 										 placeholder="Hey I am here!" maxlength="50" #lowertext></textarea>
 										<label style="float:right; font-size: 11px;position: absolute;right: 21px;bottom: 2px;color:#7b8894">{{lowerCharacterleft}} characters left</label>
-                    <span *ngIf="!lowerTextValid" style="color: red;">Please fill the lower text.</span>
+                    <span *ngIf="!lowerTextValid" style="color: red;" translate>Please fill the lower text.</span>
                   </div>
 
 								</div>
@@ -709,13 +709,13 @@
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-helper"></span> &nbsp;
-					<span class="caption-subject font-green-sharp bold uppercase">Lets Tune the Video</span>
+					<span class="caption-subject font-green-sharp bold uppercase" translate>Lets Tune the Video</span>
 				</div>
 			</div>
 			<!-- end PROJECT HEAD -->
 			<div *ngIf="!comments">
 				<h2>
-					<pre style="border-radius: 0;color:#3e2525;">Comments are disabled for this video.!! please select allow comments to enable comments !!!</pre>
+					<pre style="border-radius: 0;color:#3e2525;" translate>Comments are disabled for this video.!! please select allow comments to enable comments !!!</pre>
 				</h2>
 			</div>
 			<div class="portlet-body" *ngIf="comments">
