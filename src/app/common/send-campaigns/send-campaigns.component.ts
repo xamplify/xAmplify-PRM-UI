@@ -61,8 +61,9 @@ export class SendCampaignsComponent implements OnInit {
 
   openPopUp(partnerListId: number, contact:any,type:string) {
     if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
-      this.referenceService.showSweetAlertInfoMessage();
-    }else{
+      this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this. pagination.vanityUrlFilter = true;
+    }
       $('#sendCampaignsPopup').modal('show');
       this.pagination.partnerOrContactEmailId = contact.emailId;
       this.pagination.partnerId = contact.id;
@@ -73,23 +74,20 @@ export class SendCampaignsComponent implements OnInit {
       this.type = type;
       this.newEmailIdsAreAdded = false;
       this.listCampaigns(this.pagination);
-    }
-
-    
   }
 
   openPopUpForNewlyAddedPartnersOrContacts(partnerOrContactListId:number,users:any,type:string){
-    if(type=="Contact" &&this.isLoggedInThroughVanityUrl){
-      console.log("do nothing");
-    }else{
-      $('#sendCampaignsPopup').modal('show');
+    if(type=="Contact" && this.isLoggedInThroughVanityUrl){
+      this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+      this. pagination.vanityUrlFilter = true;
+    }
+    $('#sendCampaignsPopup').modal('show');
       this.pagination.partnerId = 0;
       this.newlyAddedPartners = users;
       this.pagination.userListId = partnerOrContactListId;
       this.type = type;
       this.newEmailIdsAreAdded = true;
       this.listCampaigns(this.pagination);
-    }
     
   }
 
