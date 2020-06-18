@@ -12,16 +12,16 @@
     transition: opacity 1s;
 }
 
-.logo-css-left{
-  margin: 60px auto 20px auto;
+/* .logo-css-left{
+  margin: 0 auto;
+  margin-top: 60px;
   padding: 15px;
-  text-align: left;
-  margin-left: 160px;
+  text-align: center;
 }
 
 .logo-css-right{
-    margin: 60px auto 20px auto;
+    margin: 0 auto;
+    margin-top: 60px;
     padding: 15px;
-    text-align: right;
-    margin-right: 160px;
-  }
+    text-align: center;    
+  } */
