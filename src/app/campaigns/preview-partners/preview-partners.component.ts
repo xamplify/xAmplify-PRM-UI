@@ -79,10 +79,13 @@ export class PreviewPartnersComponent implements OnInit {
         partner['loggedInUserId'] = this.loggedInUserId;
         this.campaignService.deletePartner(partner)
             .subscribe(
-            data => {
-                const deleteMessage = partner.emailId + '  deleted successfully';
-                this.partnerActionResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
-                this.listPartners(this.partnersPagination);
+          data => {
+            	if(data.access){
+            		  const deleteMessage = partner.emailId + '  deleted successfully';
+                      this.partnerActionResponse = new CustomResponse( 'SUCCESS', deleteMessage, true );
+                      this.listPartners(this.partnersPagination);
+            }else{
+            	 this.authenticationService.forceToLogout();           }
             },
             error => { 
                 this.refService.loading( this.campaignPartnerLoader, false );
