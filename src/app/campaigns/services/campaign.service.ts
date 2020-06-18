@@ -801,7 +801,7 @@ export class CampaignService {
     }
     
     sendPublicEventEmail(data: any) {
-        return this.http.post(this.URL + "campaign/sendPublicEventEmail?access_token=" + this.authenticationService.access_token, data)
+        return this.http.post(this.URL + "campaign/sendPublicEventEmail?access_token=" + this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId(), data)
             .map(this.extractData)
             .catch(this.handleError);
     }

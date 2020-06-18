@@ -12,6 +12,7 @@ import { CampaignService } from '../services/campaign.service';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 declare var swal, $: any;
 @Component( {
@@ -37,7 +38,8 @@ export class PublicEventEmailPopupComponent implements OnInit {
     processing = false;
     customResponse: CustomResponse = new CustomResponse();
     success = true;
-    constructor( public referenceService: ReferenceService, private campaignService: CampaignService, public properties: Properties, private logger: XtremandLogger ) { }
+    constructor( public referenceService: ReferenceService, private campaignService: CampaignService, public properties: Properties, private logger: XtremandLogger,
+    		public authenticationService: AuthenticationService) { }
 
     ngOnInit() {
     }
@@ -110,18 +112,21 @@ export class PublicEventEmailPopupComponent implements OnInit {
         eventCampaign.id = this.selectedCampaign.campaignId;
         this.campaignService.sendPublicEventEmail( eventCampaign ).subscribe(
             ( response: any ) => {
-                if ( response.statusCode == 200 ) {
-                    this.sent = true;
-                    this.processing = false;
-                    this.success = true;
-                    this.customResponse = new CustomResponse( 'SUCCESS', 'Email sent successfully', true );
+                if (response.access) {
+                    if (response.statusCode == 200) {
+                        this.sent = true;
+                        this.processing = false;
+                        this.success = true;
+                        this.customResponse = new CustomResponse('SUCCESS', 'Email sent successfully', true);
+                    } else {
+                        this.sent = true;
+                        this.processing = false;
+                        this.success = false;
+                        this.customResponse = new CustomResponse('ERROR', response.message, true);
+                    }
                 } else {
-                    this.sent = true;
-                    this.processing = false;
-                    this.success = false;
-                    this.customResponse = new CustomResponse( 'ERROR', response.message, true );
-                }
-
+                    this.authenticationService.forceToLogout();
+            }
             },
             ( error: any ) => {
                 this.logger.error( "Error in send()" );
