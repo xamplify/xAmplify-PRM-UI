@@ -70,7 +70,7 @@
               <div *ngIf="callAction.isSkipChecked==true" id="skipOverlay"
                 style="cursor: pointer">
                 <i class="fa fa-forward" aria-hidden="true"></i> <b
-                  style="font-size: 13px; color: white;">skip</b>
+                  style="font-size: 13px; color: white;" translate>skip</b>
               </div>
             </div>
           </div>
@@ -91,13 +91,13 @@
               *ngIf="hasAllAccess || (hasVideoRole && loggedInUserId == selectedVideo.uploadedUserId ) || authenticationService.isOnlyPartner">
               <button *ngIf="shareVideo==true"
                 class="btn btn-primary shareVideoButton" (click)="shareClick()"
-                [disabled]="isThisDraftVideo==true">
+                [disabled]="isThisDraftVideo==true" translate>
                 <i class="fa fa-share-alt" aria-hidden="true"></i> Share
               </button>
               <button *ngIf="embedVideo==true"
                 class="btn btn-primary embedVideoButton" data-toggle="modal"
                 data-target="#myModal" [disabled]="isThisDraftVideo"
-                (click)="embedModal()">
+                (click)="embedModal()" translate>
                 <i class="fa fa-external-link" aria-hidden="true"></i> Embed
               </button>
             </div>
@@ -133,14 +133,14 @@
             (notifyParent)="closeEmbedModal($event)"></app-embed-modal>
           <!-- Modal End-->
           <div [hidden]="isVideoChanged">
-            <strong>Uploaded on : <app-timestamp [isOnlyDate]="true"
+            <strong translate>Uploaded on : <app-timestamp [isOnlyDate]="true"
                 [dateAndTime]="selectedVideo.uploadedDate"> </app-timestamp>
             </strong>
             <p align="justify" style="word-break: break-all;">
               {{selectedVideo.description}}</p>
           </div>
           <div [hidden]="isVideoChanged">
-            <p>Category : {{selectedVideo.category.name}}</p>
+            <p translate>Category : {{selectedVideo.category.name}}</p>
           </div>
           <div>
             <div class="slimScrollDiv"
@@ -154,11 +154,11 @@
                   <div class="tabbable-line">
                     <ul class="nav nav-tabs ">
                       <li class="active"><a href="#tab_1" data-toggle="tab"
-                        aria-expanded="true"> Comments </a></li>
+                        aria-expanded="true" translate> Comments </a></li>
                     </ul>
                     <div *ngIf="!comments">
                       <h2>
-                        <pre style="border-radius: 0; color: #3e2525;">Comments are disabled for this video.!!! </pre>
+                        <pre style="border-radius: 0; color: #3e2525;" translate>Comments are disabled for this video.!!! </pre>
                       </h2>
                     </div>
                     <div class="tab-content" *ngIf="comments">
@@ -174,7 +174,7 @@
                               </a>
                                 <div class="media-body todo-comment">
                                   <button type="button"
-                                    class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
+                                    class="todo-comment-btn btn btn-circle btn-default btn-xs" translate>&nbsp;
                                     Reply &nbsp;</button>
                                   <p class="todo-comment-head">
                                     <span class="todo-comment-username">Christina
@@ -200,7 +200,7 @@
                                           Puyol </span> &nbsp; <span class="todo-comment-date">17
                                           Sep 2014 at 4:30pm</span>
                                       </p>
-                                      <p class="todo-text-color">Thanks so much my dear!
+                                      <p class="todo-text-color" translate>Thanks so much my dear!
                                       </p>
                                     </div>
                                   </div>
@@ -212,7 +212,7 @@
                               </a>
                                 <div class="media-body todo-comment">
                                   <button type="button"
-                                    class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
+                                    class="todo-comment-btn btn btn-circle btn-default btn-xs" translate>&nbsp;
                                     Reply &nbsp;</button>
                                   <p class="todo-comment-head">
                                     <span class="todo-comment-username">Andres
@@ -233,7 +233,7 @@
                               </a>
                                 <div class="media-body todo-comment">
                                   <button type="button"
-                                    class="todo-comment-btn btn btn-circle btn-default btn-xs">&nbsp;
+                                    class="todo-comment-btn btn btn-circle btn-default btn-xs" translate>&nbsp;
                                     Reply &nbsp;</button>
                                   <p class="todo-comment-head">
                                     <span class="todo-comment-username">Olivia Wilde</span>
@@ -264,7 +264,7 @@
                                 </div></li>
                             </ul>
                             <button type="button"
-                              class="pull-right btn btn-sm btn-circle green-haze">
+                              class="pull-right btn btn-sm btn-circle green-haze" translate>
                               &nbsp; Submit &nbsp;</button>
                           </div>
                         </div>
@@ -292,7 +292,7 @@
 
 
           <div class="row">
-            <div class="col-xs-6"><h4 class="mt0">Related Videos:</h4></div>
+            <div class="col-xs-6"><h4 class="mt0" translate>Related Videos:</h4></div>
             <div class="col-xs-6" *ngIf="false">
               <button class="btn btn-xs hidden-xs pull-right l-g-view"
                 [disabled]="isListView" (click)="isListView = true"
@@ -375,7 +375,7 @@
               (notifyParentDropDown)="loadAllVideos($event)"></app-pagination>
           </div>
           </div>
-          <p *ngIf="showRelatedMessage" class="notFoundVideo">No Related videos Found</p>
+          <p *ngIf="showRelatedMessage" class="notFoundVideo" translate>No Related videos Found</p>
         </div>
       </div>
     </div>
