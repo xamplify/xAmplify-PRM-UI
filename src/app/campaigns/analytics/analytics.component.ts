@@ -1751,13 +1751,29 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     } else if (this.downloadTypeName === 'usersWatchedList') {
       this.usersWatchTotalList(this.campaignId, this.usersWatchListPagination.totalRecords);
     } else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
-      this.listTotalCampaignViews(this.campaignId);
+    	this.checkDownLoadAccess(this.downloadTypeName);
     } else if (this.downloadTypeName === 'worldMap') {
       this.getCampaignUsersWatchedTotalInfo(this.countryCode, this.pagination.totalRecords);
     } else if (this.downloadTypeName === 'rsvp') {
-      this.downloadEmailLogs();
+    	this.checkDownLoadAccess(this.downloadTypeName);
     }
   }
+  
+  checkDownLoadAccess(downloadTypeName: any) {
+      this.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
+          data => {
+              if (data) {
+                  if (this.downloadTypeName === 'rsvp') {
+                      this.downloadEmailLogs();
+                  } else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
+                      this.listTotalCampaignViews(this.campaignId);
+                  }
+              } else {
+                  this.authenticationService.forceToLogout();
+              }
+          }
+      );
+}
 
   downloadEmailLogs() {
     try {

@@ -363,19 +363,22 @@ export class AddMoreReceiversComponent implements OnInit {
           this.campaign.userId = this.authenticationService.getUserId();
           this.campaign.scheduleCampaign ='SAVE';
           this.campaignService.sendEventToContactList(this.campaign).subscribe(
-                  (response: any) => {
+              (response: any) => {
+                  if (response.access) {
                       this.sendingRequest = false;
                       this.sendSuccess = true;
                       this.responseMessage = response.message;
-                      if(response.statusCode==200){
+                      if (response.statusCode == 200) {
                           this.responseImage = "assets/images/event-success.png";
                           this.responseClass = "event-success";
-                      }else{
+                      } else {
                           this.responseImage = "assets/images/event-error.ico";
                           this.responseClass = "event-error";
                       }
-                      
-                  },
+                  } else {
+                      this.authenticationService.forceToLogout();
+                  }
+              },
                   (error: any) => {
                       this.customResponse = new CustomResponse('ERROR', this.properties.serverErrorMessage, true);
                       this.sendingRequest = false;
