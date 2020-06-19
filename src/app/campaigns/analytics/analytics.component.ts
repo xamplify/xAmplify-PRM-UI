@@ -2626,24 +2626,49 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
 
   }
-
+  hasCampaignListViewOrAnalyticsOrDeleteAccess() {
+      try {
+          return  this.campaignService.hasCampaignListViewOrAnalyticsOrDeleteAccess()
+              .map(
+              data => {
+                  if(data.access){
+                      return true;
+                  }else{
+                       return false;
+                  }
+              }
+              );
+      } catch (error) {
+          this.xtremandLogger.error(error, "AddPartnersComponent", "hasAccess()");
+      }
+  }
+  
   downloadLeadList() {
-    try {
-      this.isLeadListDownloadProcessing = true;
-      this.campaignService.downloadLeadList(this.campaignId, this.leadDetailType)
-        .subscribe(
-          data => this.downloadFile(data, this.leadDetailType, 'lead'),
-          (error: any) => {
-            this.xtremandLogger.error(error);
-            this.xtremandLogger.errorPage(error);
-            this.isLeadListDownloadProcessing = false;
-          },
-          () => this.xtremandLogger.info("download completed")
-        );
-    } catch (error) {
-      this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-      this.isLeadListDownloadProcessing = false;
-    }
+      this.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
+          data => {
+              if (data) {
+                  try {
+                      this.isLeadListDownloadProcessing = true;
+                      this.campaignService.downloadLeadList(this.campaignId, this.leadDetailType)
+                          .subscribe(
+                          data => this.downloadFile(data, this.leadDetailType, 'lead'),
+                          (error: any) => {
+                              this.xtremandLogger.error(error);
+                              this.xtremandLogger.errorPage(error);
+                              this.isLeadListDownloadProcessing = false;
+                          },
+                          () => this.xtremandLogger.info("download completed")
+                          );
+                  } catch (error) {
+                      this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+                      this.isLeadListDownloadProcessing = false;
+                  }
+
+              } else {
+                  this.authenticationService.forceToLogout();
+              }
+          }
+      );
   }
 
   downloadPartnerLeadList() {
