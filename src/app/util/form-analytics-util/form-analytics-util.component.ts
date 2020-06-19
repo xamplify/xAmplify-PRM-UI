@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { Properties } from '../../common/models/properties';
 import { CustomResponse } from '../../common/models/custom-response';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 
 declare var $: any, swal: any;
 
@@ -54,7 +55,8 @@ export class FormAnalyticsUtilComponent implements OnInit {
     constructor( public referenceService: ReferenceService, private route: ActivatedRoute,
         public authenticationService: AuthenticationService, public formService: FormService,
         public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
-        public logger: XtremandLogger,public callActionSwitch: CallActionSwitch,public properties:Properties
+        public logger: XtremandLogger,public callActionSwitch: CallActionSwitch,public properties:Properties,
+        private campaignService: CampaignService
     ) {
         this.loggedInUserId = this.authenticationService.getUserId();
         this.pagination.userId = this.loggedInUserId;
@@ -202,11 +204,11 @@ export class FormAnalyticsUtilComponent implements OnInit {
         }else if(this.pagination.checkInLeads){
             window.open(this.authenticationService.REST_URL+"eccl/"+this.pagination.campaignId);
         }else if(this.pagination.totalAttendees){
-            window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
+        	this.downloadCsvFile();
         }else if(this.formAnalyticsDownload){
 	 		window.open(this.authenticationService.REST_URL+"form/download/fa/"+this.alias+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
 		}else if(this.campaignFormAnalyticsDownload){
-            window.open(this.authenticationService.REST_URL+"form/download/cfa/"+this.alias+"/"+this.pagination.campaignId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+			this.downloadCsvFile();
         }else if(this.campaignPartnerFormAnalyticsDownload){
             window.open(this.authenticationService.REST_URL+"form/download/cpfa/"+this.alias+"/"+this.pagination.campaignId+"/"+this.pagination.partnerId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
         }else if(this.pagination.partnerLandingPageForm){
@@ -214,6 +216,22 @@ export class FormAnalyticsUtilComponent implements OnInit {
 
         }
     }
+    
+    downloadCsvFile() {
+        this.campaignService.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
+            data => {
+                if (data.access) {
+               if(this.pagination.totalAttendees){
+            window.open(this.authenticationService.REST_URL+"ectl/"+this.pagination.campaignId+"/"+this.isTotalAttendees);
+        }else if(this.campaignFormAnalyticsDownload){
+            window.open(this.authenticationService.REST_URL+"form/download/cfa/"+this.alias+"/"+this.pagination.campaignId+"/"+this.loggedInUserId+"?access_token="+this.authenticationService.access_token);
+        }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            }
+        );
+  }
     
 
 }
