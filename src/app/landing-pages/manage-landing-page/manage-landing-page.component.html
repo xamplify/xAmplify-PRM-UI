@@ -3,16 +3,16 @@
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home" aria-hidden="true"></i>
-                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                 <ng-container *ngIf="!isPartnerLandingPage">
-                    <a [routerLink]="['/home/design/add']">Create Design</a>
+                    <a [routerLink]="['/home/design/add']" translate>Create Design</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </ng-container>
             </li>
             <li>
-                <a *ngIf="!isPartnerLandingPage">Manage Pages</a>
-                <a *ngIf="isPartnerLandingPage">Pages Shared By Vendors</a>
+                <a *ngIf="!isPartnerLandingPage" translate>Manage Pages</a>
+                <a *ngIf="isPartnerLandingPage" translate>Pages Shared By Vendors</a>
             </li>
         </ul>
     </div>
@@ -31,21 +31,21 @@
                         <div class="colxs-12 col-sm-12 col-md-6">
                             <div>
                                 <ul class="mix-filter" *ngIf="!modulesDisplayType.isFolderGridView && !modulesDisplayType.isFolderListView">
-                                    <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex">All</li>
+                                    <li class="filter" (click)="showAllLandingPages('All',0)" [class.landing-page-selected]="0 == selectedLandingPageTypeIndex" translate>All</li>
                                     <ng-container *ngIf="!isPartnerLandingPage">
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex">Regular (Public)
+                                        <li class="filter" (click)="showAllLandingPages('Regular&PUBLIC',1)" [class.landing-page-selected]="1 == selectedLandingPageTypeIndex" translate>Regular (Public)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex">Regular (Private)
+                                        <li class="filter" (click)="showAllLandingPages('Regular&PRIVATE',2)" [class.landing-page-selected]="2 == selectedLandingPageTypeIndex" translate>Regular (Private)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex">Co-Branded (Public)
+                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PUBLIC',3)" [class.landing-page-selected]="3 == selectedLandingPageTypeIndex" translate>Co-Branded (Public)
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex">Co-Branded (Private)
+                                        <li class="filter" (click)="showAllLandingPages('Co-Branded&PRIVATE',4)" [class.landing-page-selected]="4 == selectedLandingPageTypeIndex" translate>Co-Branded (Private)
                                         </li>
                                     </ng-container>
                                     <ng-container *ngIf="isPartnerLandingPage">
-                                        <li class="filter" (click)="showAllLandingPages('PUBLIC',5)" [class.landing-page-selected]="5 == selectedLandingPageTypeIndex">Public
+                                        <li class="filter" (click)="showAllLandingPages('PUBLIC',5)" [class.landing-page-selected]="5 == selectedLandingPageTypeIndex" translate>Public
                                         </li>
-                                        <li class="filter" (click)="showAllLandingPages('PRIVATE',6)" [class.landing-page-selected]="6 == selectedLandingPageTypeIndex">Private
+                                        <li class="filter" (click)="showAllLandingPages('PRIVATE',6)" [class.landing-page-selected]="6 == selectedLandingPageTypeIndex" translate>Private
                                         </li>
                                     </ng-container>
                                 </ul>
@@ -121,16 +121,16 @@
                                         <th class="text-center hidden-xs" colspan="2" style="width: 30%" id="border-bottom">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-page-list',2)">
                                             </span>
-                                            <span class="gridHeader">Page</span>
+                                            <span class="gridHeader" translate>Page</span>
                                         </th>
                                         <th class="text-center visible-xs" colspan="1" style="width: 10%" id="border-bottom">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-page-list',1)">
                                             </span>
-                                            <span class="gridHeader">Page</span>
+                                            <span class="gridHeader" translate>Page</span>
                                         </th>
-                                        <th class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">Type</th>
-                                        <th class="hidden-xs text-center">Created On</th>
-                                        <th class="text-center" style="min-width: 200px;">Actions</th>
+                                        <th class="hidden-xs text-center" *ngIf="!isPartnerLandingPage" translate>Type</th>
+                                        <th class="hidden-xs text-center" translate>Created On</th>
+                                        <th class="text-center" style="min-width: 200px;" translate>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -145,8 +145,8 @@
                                            
                                             <ng-container>
                                                 <h6 class="moreipsis" title="{{landingPage.createdUser}}">
-                                                    <span *ngIf="!isPartnerLandingPage">Created By <b>{{landingPage.createdUser}}</b></span>
-                                                    <span *ngIf="isPartnerLandingPage">Shared By <b>{{landingPage.createdUser}}</b></span>
+                                                    <span *ngIf="!isPartnerLandingPage" translate>Created By <b>{{landingPage.createdUser}}</b></span>
+                                                    <span *ngIf="isPartnerLandingPage" translate>Shared By <b>{{landingPage.createdUser}}</b></span>
                                                 </h6>
                                             </ng-container>
                                             <h6 class="moreipsis" *ngIf="isPartnerLandingPage">
@@ -159,8 +159,8 @@
                                         </td>
 
                                         <td class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">
-                                            <span *ngIf="landingPage.coBranded" class="view-banner">Co-Branded</span>
-                                            <span *ngIf="!landingPage.coBranded" class="view-banner">Regular</span>
+                                            <span *ngIf="landingPage.coBranded" class="view-banner" translate>Co-Branded</span>
+                                            <span *ngIf="!landingPage.coBranded" class="view-banner" translate>Regular</span>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="landingPage.displayTime"> </app-timestamp>
@@ -214,8 +214,8 @@
                         <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let landingPage of pagination.pagedItems ;let i =index">
                             <div class="grid-box" id="landingPageListDiv_{{landingPage.id}}">
                                 <ng-container *ngIf="!isPartnerLandingPage">
-                                    <span class="ribbon1" *ngIf="landingPage.coBranded"><span>Co-Branded</span></span>
-                                    <span class="ribbon1" *ngIf="!landingPage.coBranded"><span>Regular</span></span>
+                                    <span class="ribbon1" *ngIf="landingPage.coBranded"><span translate>Co-Branded</span></span>
+                                    <span class="ribbon1" *ngIf="!landingPage.coBranded"><span translate>Regular</span></span>
                                 </ng-container>
                                 <img class="img-responsive center-block" src="{{landingPage.thumbnailPath}}" alt="Not Found">
                                 <div>
@@ -226,11 +226,11 @@
                                         Folder <strong>{{landingPage.categoryName | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.categoryName?.length>25">..</span>
                                     </h6>
-                                    <h6 *ngIf="!isPartnerLandingPage">Created On <strong>
+                                    <h6 *ngIf="!isPartnerLandingPage" translate>Created On <strong>
                                                 <app-timestamp [isOnlyDate]="true"
                                                     [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                             </strong></h6>
-                                    <h6 *ngIf="isPartnerLandingPage">Shared On <strong>
+                                    <h6 *ngIf="isPartnerLandingPage" translate>Shared On <strong>
                                                 <app-timestamp [isOnlyDate]="true"
                                                     [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                             </strong></h6>
@@ -285,7 +285,7 @@
                         </app-pagination>
                     </div>
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                        <strong>No Pages Found.</strong>
+                        <strong translate>No Pages Found.</strong>
                     </div>
                 </ng-container>
             </div>
@@ -300,29 +300,27 @@
                     <button type="button" class="close-circle" data-dismiss="modal">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
-                    <h4 class="modal-title text-center">COPY LINK / EMBED LINK</h4>
+                    <h4 class="modal-title text-center" translate>COPY LINK / EMBED LINK</h4>
                 </div>
                 <div class="modal-body">
                     <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
                     </app-response-message>
                     <br>
                     <div class="form-group">
-                        <label class="control-label">Copy Link</label>
+                        <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="landingPageAliasUrl" #userinput>
                         <br>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')">Copy
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')" translate>Copy Link</a>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')">Copy Embed
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link</a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn btn-default" id="right">Close</a>
+                    <a data-dismiss="modal" class="btn btn-default" id="right" translate>Close</a>
                 </div>
             </div>
         </div>
