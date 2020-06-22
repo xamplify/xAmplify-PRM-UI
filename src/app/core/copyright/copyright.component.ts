@@ -10,7 +10,7 @@ import { AuthenticationService } from "../services/authentication.service";
 })
 export class CopyrightComponent implements OnInit {
 
-  constructor(public properties: Properties, private authService: AuthenticationService) { }
+  constructor(public properties: Properties, public authService: AuthenticationService) { }
 
   ngOnInit() {
     if (this.authService.v_companyName) {

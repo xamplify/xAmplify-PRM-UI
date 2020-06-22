@@ -207,6 +207,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	isValidClipBoardData = false;
 	sourceType = "";
 	showAddOptions = false;
+	campaignsTitle = "";
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
@@ -240,6 +241,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			this.sortOptions.push({ 'name': 'Category (ASC)', 'value': 'category-ASC' });
 			this.sortOptions.push({ 'name': 'Category (DESC)', 'value': 'category-DESC' });
 
+		}
+		if(this.checkingContactTypeName=="Contact"){
+			this.campaignsTitle = this.actionsDescription.campaigns_emails;
+		}else{
+			this.campaignsTitle = this.actionsDescription.send_campaigns;
 		}
 		this.users = new Array<User>();
 		this.notifyParent = new EventEmitter<User>();
@@ -549,6 +555,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 					"emailId": this.users[i].emailId,
 					"firstName": this.users[i].firstName,
 					"lastName": this.users[i].lastName,
+					"companyName":this.users[i]['contactCompany']
 				}
 
 				this.newUserDetails.push(userDetails);
@@ -625,7 +632,6 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 			.subscribe(
             (data: any) => {
                 if (data.access) {
-                    data = data;
                     this.loading = false;
                     this.allUsers = this.contactsByType.allContactsCount;
                     this.xtremandLogger.info("update Contacts ListUsers:" + data);
@@ -657,7 +663,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                     this.cancelContacts();
                     if (data.statusCode == 200) {
-                        this.getContactsAssocialteCampaigns();
+						//this.getContactsAssocialteCampaigns();
+						this.openCampaignsPopupForNewlyAddedPartners();
                     }
                 } else {
                     this.authenticationService.forceToLogout();
@@ -711,6 +718,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 						"emailId": this.users[i].emailId,
 						"firstName": this.users[i].firstName,
 						"lastName": this.users[i].lastName,
+						"companyName": this.users[i]['contactCompany']
 					}
 
 					this.newUserDetails.push(userDetails);
@@ -857,7 +865,8 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
 
                     if (data.statusCode == 200) {
-                        this.getContactsAssocialteCampaigns();
+						//this.getContactsAssocialteCampaigns();
+						this.openCampaignsPopupForNewlyAddedPartners();
                     }
                 } else {
                     this.authenticationService.forceToLogout();
@@ -1395,6 +1404,7 @@ goBackToManageList(){
 					"emailId": this.users[i].emailId,
 					"firstName": this.users[i].firstName,
 					"lastName": this.users[i].lastName,
+					"companyName":this.users[i]['contactCompany'],
 					"legalBasis": this.selectedLegalBasisOptions
 				}
 				this.newUserDetails.push(userDetails);
@@ -1512,7 +1522,8 @@ goBackToManageList(){
                     this.checkingLoadContactsCount = true;
                     this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                     if (data.statusCode == 200) {
-                        this.getContactsAssocialteCampaigns();
+						//this.getContactsAssocialteCampaigns();
+						this.openCampaignsPopupForNewlyAddedPartners();
                     }
                 } else {
                     this.authenticationService.forceToLogout();
@@ -3133,7 +3144,12 @@ goBackToManageList(){
 		}
 	}
 
-	addCampaigns(emailId:string,partnerId:number){
-        this.sendCampaignComponent.openPopUp(this.selectedContactListId,emailId,partnerId,this.checkingContactTypeName);
+	addCampaigns(contact:any){
+        this.sendCampaignComponent.openPopUp(this.selectedContactListId,contact,this.checkingContactTypeName);
+	}
+	
+	openCampaignsPopupForNewlyAddedPartners(){
+        this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.contactListId,this.newUserDetails,this.checkingContactTypeName);
     }
+    
 }

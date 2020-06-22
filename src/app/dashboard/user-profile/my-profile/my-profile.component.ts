@@ -1589,6 +1589,10 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.referenceService.companyId > 0) {
             pagination.companyId = this.referenceService.companyId;
             pagination.userId = this.loggedInUserId;
+            if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+                pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
+                pagination.vanityUrlFilter = true;
+            }
             this.referenceService.startLoader(this.httpRequestLoader);
             this.userService.getCategories(pagination)
                 .subscribe(

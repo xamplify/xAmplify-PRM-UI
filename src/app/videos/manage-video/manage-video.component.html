@@ -3,12 +3,12 @@
    <div>
      <div class="page-bar">
        <ul class="page-breadcrumb">
-         <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a (click)="gotoHome()">Home</a><i class="fa fa-angle-right"></i></li>
-         <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
-         <li><a (click)="backToManageVideos()">Manage Videos</a> </li>
-         <li *ngIf="editVideo" style="color: #888;"><i class="fa fa-angle-right"></i>Edit Video </li>
-         <li *ngIf="playVideo" style="color: #888;"><i class="fa fa-angle-right"></i>Play Videos </li>
-         <li *ngIf="campaignReport" style="color: #888;"><i class="fa fa-angle-right"></i>Reports - video statistics</li>
+         <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a (click)="gotoHome()" translate>Home</a><i class="fa fa-angle-right"></i></li>
+         <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i class="fa fa-angle-right"></i></li>
+         <li><a (click)="backToManageVideos()" translate>Manage Videos</a> </li>
+         <li *ngIf="editVideo" style="color: #888;" translate><i class="fa fa-angle-right"></i>Edit Video </li>
+         <li *ngIf="playVideo" style="color: #888;" translate><i class="fa fa-angle-right"></i>Play Videos </li>
+         <li *ngIf="campaignReport" style="color: #888;" translate><i class="fa fa-angle-right"></i>Reports - video statistics</li>
        </ul>
      </div>
    </div>
@@ -26,7 +26,7 @@
                    <div class="inputs" align="right">
                      <div style="padding:0" class="col-xs-12 col-sm-6 col-md-3">
                        <select class="form-control select-option" [(ngModel)]="categoryNum" (ngModelChange)="getCategoryNumber()">
-                          <option  [value]="0" >All Categories</option>
+                          <option  [value]="0" translate>All Categories</option>
                           <option *ngFor="let category of categories" [ngValue]="category.id" [selected]="category.id==pagination.videoCategoryId">{{category.name}}</option>
                        </select>
                      </div>
@@ -54,7 +54,7 @@
                    <div class="col-xs-12" style="margin: 2px -18px;"  *ngIf="authenticationService.isOrgAdminPartner() || authenticationService.isVendorPartner()">
                    <ul class="mix-filter" >
                      <li class="filter" *ngFor="let videoType of videoTypes; let i = index;"
-                      (click)="getVideoTypes(videoType)" [class.selectedtype]="videoFileService.videoType === videoType.value">{{videoType.name}}</li>
+                      (click)="getVideoTypes(videoType)" [class.selectedtype]="videoFileService.videoType === videoType.value">{{videoType.name | translate}}</li>
                    </ul></div>
                  </div>
                </div>
@@ -65,7 +65,7 @@
                  <div *ngIf="!httpRequestLoader.isLoading  && !referenceService.isPlayVideo">
                    <div *ngIf="pagination.pagedItems.length == 0" class="col-md-9 alert alert-info alert-dismissable alert-custom-change">
                      <a class="close" data-dismiss="alert" aria-label="close"></a>
-                     <p>No results found</p>
+                     <p translate>No results found</p>
                    </div>
                  </div>
                  <section [hidden]="!isListView">
@@ -73,11 +73,11 @@
                    <table class='table tgrid' *ngIf="pagination.pagedItems.length !== 0">
                      <thead>
                        <tr class="hidden-xs">
-                         <th colspan="1" style="width:50%">Videos</th>
+                         <th colspan="1" style="width:50%" translate>Videos</th>
                          <!-- <th class="text-center">Type</th> -->
-                         <th class="text-center">Category</th>
-                         <th class="text-center">Upload Date</th>
-                         <th style="width: 20%;" class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()">Actions</span></th>
+                         <th class="text-center" translate>Category</th>
+                         <th class="text-center" translate>Upload Date</th>
+                         <th style="width: 20%;" class="text-center" *ngIf="!authenticationService.isSuperAdmin()"><span [hidden]="authenticationService.isOnlyPartner()" translate>Actions</span></th>
                        </tr>
                      </thead>
                      <tbody>
@@ -87,8 +87,8 @@
                         </td>
                          <td class="text-center hidden-xs">
                            <!-- <span class='view-by-banner'>{{videoFile.viewBy}}</span> -->
-                           <span *ngIf="videoFile.viewBy!='DRAFT'">{{videoFile.category.name}}</span>
-                           <span *ngIf="videoFile.viewBy==='DRAFT'">None</span>
+                           <span *ngIf="videoFile.viewBy!='DRAFT'">{{videoFile.category.name | translate}}</span>
+                           <span *ngIf="videoFile.viewBy==='DRAFT'" translate>None</span>
                          </td>
                          <td class="text-center hidden-xs" >
                          <app-timestamp [isOnlyDate]="true" [dateAndTime]="videoFile.uploadedDate"> </app-timestamp>

@@ -272,14 +272,14 @@ export class CampaignService {
 
     saveAsCampaign(campaign:any) {
       let campaignURL:any;
-      if(campaign.campaignType==='EVENT') { campaignURL = this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`;
+      if(campaign.campaignType==='EVENT') { campaignURL = this.URL + "campaign/save-as-event-campaign?access_token="+this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId();
       } else { campaignURL = this.URL + `campaign/saveas?access_token=${this.authenticationService.access_token}`; }
       return this.http.post(campaignURL, campaign)
             .map(this.extractData)
             .catch(this.handleError);
     }
     saveAsEventCampaign(campaign:any) {
-      return this.http.post(this.URL + `campaign/save-as-event-campaign?access_token=${this.authenticationService.access_token}`, campaign)
+      return this.http.post(this.URL +  "campaign/save-as-event-campaign?access_token="+this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId(), campaign)
           .map(this.extractData)
           .catch(this.handleError);
    }
@@ -533,15 +533,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    private extractData(res: Response) {
-        let body = res.json();
-        return body || {};
-    }
-
-
-    private handleError(error: any) {
-        return Observable.throw(error);
-    }
+  
 
     /*********Common Methods***********/
     setLaunchTime() {
@@ -721,9 +713,9 @@ export class CampaignService {
     createEventCampaign(eventCampaign: any, eventUpdate: boolean) {
         let eventUrl;
         if(eventUpdate){
-            eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token;
+            eventUrl = this.URL + "campaign/update-event-campaign?access_token=" + this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId();
         }else{
-            eventUrl = this.URL + `campaign/save-event-campaign?access_token=${this.authenticationService.access_token}`
+            eventUrl = this.URL + "campaign/save-event-campaign?access_token="+this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId();
         }
         return this.http.post(eventUrl, eventCampaign)
             .map(this.extractData)
@@ -809,7 +801,7 @@ export class CampaignService {
     }
     
     sendPublicEventEmail(data: any) {
-        return this.http.post(this.URL + "campaign/sendPublicEventEmail?access_token=" + this.authenticationService.access_token, data)
+        return this.http.post(this.URL + "campaign/sendPublicEventEmail?access_token=" + this.authenticationService.access_token+"&userId="+this.authenticationService.getUserId(), data)
             .map(this.extractData)
             .catch(this.handleError);
     }
@@ -850,12 +842,7 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    listCampaignsByUserListIdAndUserId(pagination: Pagination) {
-        let url = this.URL + "campaign/listLaunchedCampaignsByUserListId?access_token=" + this.authenticationService.access_token;
-        return this.http.post(url, pagination)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
+  
 
 
     listEmailTemplateOrLandingPageFolders(userId:number,campaignType:string){
@@ -915,8 +902,12 @@ export class CampaignService {
         .map(this.extractData)
             .catch(this.handleError);
 	}
-
-
+    
+    hasCampaignListViewOrAnalyticsOrDeleteAccess(){
+        return this.http.get(this.URL + "campaign/hasCampaignListViewOrAnalyticsOrDeleteAccess/"+this.authenticationService.getUserId()+"?access_token=" + this.authenticationService.access_token,"")
+        .map(this.extractData)
+            .catch(this.handleError);
+    }
   
 
     // Added by Vivek for Vanity URL
@@ -948,6 +939,35 @@ export class CampaignService {
         return this.http.post(url, dashboardAnalyticsDto)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+
+ 	 listCampaignsByUserListIdAndUserId(pagination: Pagination,type:string) {
+        let url = "";
+        if("Partner"==type){
+            url = this.URL + "campaign/listLaunchedCampaignsByUserListIdForPartners?access_token=" + this.authenticationService.access_token;
+        }else{
+            url = this.URL + "campaign/listLaunchedCampaignsByUserListIdForContacts?access_token=" + this.authenticationService.access_token;
+        }
+        return this.http.post(url, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+	
+	
+	  shareOrSendCampaigns(campaigDetails:any){
+        return this.http.post(this.URL + "campaign/shareCampaignsOrSendEmailsToUserListUsers?access_token=" + this.authenticationService.access_token, campaigDetails)
+        .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    private extractData(res: Response) {
+        let body = res.json();
+        return body || {};
+    }
+
+
+    private handleError(error: any) {
+        return Observable.throw(error);
     }
 
 

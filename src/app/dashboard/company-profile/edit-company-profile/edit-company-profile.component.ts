@@ -168,6 +168,16 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     countryFromBrowser:string = "";
     showVendorLogo: boolean = true;
     vendorLogoTooltipText: string;
+
+    favIconfile: File;
+    bgImageFile: File; 
+    companyFavIconPath = "";
+    companyBgImagePath = "";
+    cropLogoImageText:string;
+    squareDataForBgImage:any;
+    croppedImageForBgImage: any = '';
+    bgImageChangedEvent: any = '';
+    allLoginScreenDirectionsList:string[] = [];
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -193,8 +203,8 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               .subscribe(value => {
                 this.validateUserUsingEmailId();
               });
-            
         }
+        this.allLoginScreenDirectionsList = ["Center","Left","Right"];
         this.loggedInUserId = this.authenticationService.getUserId();
         this.companyNameDivClass = this.refService.formGroupClass;
         this.companyProfileNameDivClass = this.refService.formGroupClass;
@@ -255,6 +265,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         if(!this.companyLogoImageUrlPath){
           this.squareData = {};
         }
+
+        if(!this.companyBgImagePath){
+            this.squareDataForBgImage = {};
+        }
     }
     
     
@@ -289,6 +303,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
       this.squareData = {};
       this.imageChangedEvent = null;
       this.croppedImage = '';
+      this.croppedImageForBgImage = '';
+      this.squareDataForBgImage = {};
+      this.bgImageChangedEvent = null;
     }
     // cropperSettings(){
     //   this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
@@ -333,6 +350,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     imageCroppedMethod(event: ImageCroppedEvent) {
       this.croppedImage = event.base64;
       console.log(event);
+      console.log(this.squareData);
     }
     imageLoaded() {
       this.showCropper = true;
@@ -398,12 +416,26 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
         } )
     }
-    imageClick(){
+
+   imageClick(){
+    this.cropLogoImageText = "Choose the image to be used as your company logo";
      this.fileChangeEvent();
     }
 
-   
+   favIconImageClick(){
+    this.cropLogoImageText = "Choose the image to be used as your company fav icon";
+    this.cropRounded = false;
+    $('#cropFavLogoImage').modal('show');
+    //this.fileChangeEvent();
+   }
     
+   bgImageClick(){
+    this.cropLogoImageText = "Choose the image to be used as your company background logo";
+    this.cropRounded = false;
+    $('#cropBgImage').modal('show');
+    //this.fileChangeEvent();
+   }
+
     getUserByUserName( userName: string ) {
         try{
            this.authenticationService.getUserByUserName( userName )
@@ -460,6 +492,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 this.companyProfile.phone = "";
             }
 
+            //this.companyProfileService.save(this.companyProfile, this.loggedInUserId,this.favIconfile,this.bgImageFile)
             this.companyProfileService.save(this.companyProfile, this.loggedInUserId)
                 .subscribe(
                     data => {
@@ -636,6 +669,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                 data => {
                     if (data.data != undefined) {
                         this.companyProfile = data.data;
+                        this.authenticationService.loginScreenDirection = data.data.loginScreenDirection;
                         this.setCompanyProfileViewData(data.data.companyName);
                     }
                 },
@@ -652,6 +686,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
         if ($.trim(this.companyProfile.backgroundLogoPath).length > 0) {
             this.backGroundImage = this.authenticationService.MEDIA_URL + this.companyProfile.backgroundLogoPath;
+            this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
+        }
+        if ($.trim(this.companyProfile.favIconLogoPath).length > 0) {
+            this.companyFavIconPath = this.companyProfile.favIconLogoPath;
         }
         if ($.trim(this.companyProfile.country).length == 0) {
             this.companyProfile.country = this.countryNames.countries[0];
@@ -1437,4 +1475,86 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         this.vendorLogoTooltipText = "<b> On </b> - Your company logo will be displayed throughout the platform when your partners log into their accounts. <br/>"
             + "<b> Off </b> - Each partner’s logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>"
     }
+
+    
+
+    processFavIconFile(event: any){
+        const file:File = event.target.files[0];
+        if(file){
+            const isSupportfile = file.type;
+            if (isSupportfile === 'image/x-icon') {
+                this.errorUploadCropper = false;
+                this.imageChangedEvent = event;
+                this.companyProfileService.uploadFavIconFile(event).subscribe(result => {
+                  if(result.statusCode === 200){
+                      this.companyProfile.favIconLogoPath = result.data;
+                      this.companyFavIconPath = result.data;
+                  }
+              }, error => {
+                  console.log(error);
+              });
+            } else {
+              this.errorUploadCropper = true;
+              this.showCropper = false;
+            }       
+            this.closeModal(); 
+        }        
+    }
+
+    openFavIconFileId(){
+        $('#favIconId').trigger('click');
+    }
+
+    uploadFavIconLogo(){
+        
+    }
+
+    bgImageCroppedMethod(event: ImageCroppedEvent) {
+        this.croppedImageForBgImage = event.base64;
+        this.squareDataForBgImage=event.base64;
+        console.log(event);
+    }
+
+    uploadBgImage(){
+        if(this.croppedImageForBgImage!=""){
+          this.loadingcrop = true;
+          let fileObj:any;
+          fileObj = this.utilService.convertBase64ToFileObject(this.croppedImageForBgImage);
+          fileObj = this.utilService.blobToFile(fileObj);
+          this.processBgImageFile(fileObj);
+        }else{
+            this.refService.showSweetAlertErrorMessage("Please upload an image");
+        }        
+      }
+
+      processBgImageFile(fileObj:File){
+        this.companyProfileService.uploadBgImageFile(fileObj).subscribe(result => {
+        if(result.statusCode === 200){
+            this.companyProfile.backgroundLogoPath = result.data;
+            this.companyBgImagePath = result.data;
+            this.logoError = false;
+            this.logoErrorMessage = "";
+            this.enableOrDisableButton();
+            $('#cropBgImage').modal('hide');
+            this.closeModal();
+            }            
+        }, error => {
+            console.log(error);
+            $('#cropLogoImage').modal('hide'); this.customResponse = new CustomResponse('ERROR',this.properties.SOMTHING_WENT_WRONG,true)
+        },
+        ()=>{ this.loadingcrop = false; if(this.companyProfile.website) { this.saveVideoBrandLog(); }});
+    }
+
+    fileBgImageChangeEvent(event){
+        const image:any = new Image();
+        const file:File = event.target.files[0];
+        const isSupportfile = file.type;
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+            this.errorUploadCropper = false;
+            this.bgImageChangedEvent = event;
+        } else {
+          this.errorUploadCropper = true;
+          this.showCropper = false;
+        }
+      }
 }

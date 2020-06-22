@@ -43,7 +43,7 @@ export class SocialService {
       .catch(this.handleError);
   }
 
-  callback(socialProvider: string): Observable<SocialConnection> {
+  callback(socialProvider: string,parentWindowUserId:number,loggedInThroughVanityUrl:string): Observable<SocialConnection> {
     let queryParam: string;
     let isDenied = false;
 
@@ -66,12 +66,18 @@ export class SocialService {
           queryParam = '?code=' + code;
         }
       });
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      const userId = JSON.parse(currentUser)['userId'];
-      queryParam += '&userId=' + userId;
-    }
 
+      if(loggedInThroughVanityUrl=="true"){
+        if(parentWindowUserId!=undefined && parentWindowUserId!=0){
+          queryParam += '&userId=' + parentWindowUserId;
+        }
+      }else{
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+          const userId = JSON.parse(currentUser)['userId'];
+          queryParam += '&userId=' + userId;
+        }
+      }
     if (isDenied) {
       // User has denied the permission to login through social account.
       this.router.navigate(['/']);

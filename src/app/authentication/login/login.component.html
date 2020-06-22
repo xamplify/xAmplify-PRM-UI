@@ -2,14 +2,21 @@
 	<div class="loader"></div>
 	<img alt="logo" class="logo-default" style="height: 54px" src="assets/images/xamplify-logo.png">
 </div>
-<app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
-<app-video *ngIf="vanityURLEnabled"></app-video>
-<div class="content">
-	<div class="my-container">
+<!-- <app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+<app-video *ngIf="vanityURLEnabled"></app-video> -->
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
+	<div style="background-color: rgba(0,0,0,.0);">
+		<app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
+		<app-video *ngIf="vanityURLEnabled"></app-video>
+		</div>		
+	<div class="row">
+	<!-- <div class="my-container">
 		<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-	</div>
+	</div> -->
+
 	<!-- BEGIN LOGIN FORM -->
-	<div class="row" *ngIf="model">
+	<div class="row" *ngIf="model" style="background-color: rgba(0,0,0,.5);padding: 12px; border-radius: 3px;">
 		<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 		<div *ngIf="resendActiveMail" class="alert alert-dismissible m0 alert-danger" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -73,6 +80,7 @@
 				<a class="uppercase text-white" routerLink="/signup">start your free trial</a>
 			</p>
 		</div> -->
+	</div>
 	</div>
 </div>
 <app-copyright *ngIf="!vanityURLEnabled && isNotVanityURL "></app-copyright>

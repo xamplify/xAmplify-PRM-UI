@@ -1751,13 +1751,29 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     } else if (this.downloadTypeName === 'usersWatchedList') {
       this.usersWatchTotalList(this.campaignId, this.usersWatchListPagination.totalRecords);
     } else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
-      this.listTotalCampaignViews(this.campaignId);
+    	this.checkDownLoadAccess(this.downloadTypeName);
     } else if (this.downloadTypeName === 'worldMap') {
       this.getCampaignUsersWatchedTotalInfo(this.countryCode, this.pagination.totalRecords);
     } else if (this.downloadTypeName === 'rsvp') {
-      this.downloadEmailLogs();
+    	this.checkDownLoadAccess(this.downloadTypeName);
     }
   }
+  
+  checkDownLoadAccess(downloadTypeName: any) {
+      this.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
+          data => {
+              if (data) {
+                  if (this.downloadTypeName === 'rsvp') {
+                      this.downloadEmailLogs();
+                  } else if (this.downloadTypeName === 'campaignViews' || this.downloadTypeName === 'sentEmails') {
+                      this.listTotalCampaignViews(this.campaignId);
+                  }
+              } else {
+                  this.authenticationService.forceToLogout();
+              }
+          }
+      );
+}
 
   downloadEmailLogs() {
     try {
@@ -2626,24 +2642,49 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
 
   }
-
+  hasCampaignListViewOrAnalyticsOrDeleteAccess() {
+      try {
+          return  this.campaignService.hasCampaignListViewOrAnalyticsOrDeleteAccess()
+              .map(
+              data => {
+                  if(data.access){
+                      return true;
+                  }else{
+                       return false;
+                  }
+              }
+              );
+      } catch (error) {
+          this.xtremandLogger.error(error, "AddPartnersComponent", "hasAccess()");
+      }
+  }
+  
   downloadLeadList() {
-    try {
-      this.isLeadListDownloadProcessing = true;
-      this.campaignService.downloadLeadList(this.campaignId, this.leadDetailType)
-        .subscribe(
-          data => this.downloadFile(data, this.leadDetailType, 'lead'),
-          (error: any) => {
-            this.xtremandLogger.error(error);
-            this.xtremandLogger.errorPage(error);
-            this.isLeadListDownloadProcessing = false;
-          },
-          () => this.xtremandLogger.info("download completed")
-        );
-    } catch (error) {
-      this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
-      this.isLeadListDownloadProcessing = false;
-    }
+      this.hasCampaignListViewOrAnalyticsOrDeleteAccess().subscribe(
+          data => {
+              if (data) {
+                  try {
+                      this.isLeadListDownloadProcessing = true;
+                      this.campaignService.downloadLeadList(this.campaignId, this.leadDetailType)
+                          .subscribe(
+                          data => this.downloadFile(data, this.leadDetailType, 'lead'),
+                          (error: any) => {
+                              this.xtremandLogger.error(error);
+                              this.xtremandLogger.errorPage(error);
+                              this.isLeadListDownloadProcessing = false;
+                          },
+                          () => this.xtremandLogger.info("download completed")
+                          );
+                  } catch (error) {
+                      this.xtremandLogger.error(error, "ManageContactsComponent", "downloadList()");
+                      this.isLeadListDownloadProcessing = false;
+                  }
+
+              } else {
+                  this.authenticationService.forceToLogout();
+              }
+          }
+      );
   }
 
   downloadPartnerLeadList() {

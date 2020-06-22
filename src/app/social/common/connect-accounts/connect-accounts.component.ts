@@ -22,10 +22,10 @@ export class ConnectAccountsComponent implements OnInit, OnDestroy {
     socialLogin( providerName: string ) {
                     $( '#connectAccountsModal' ).modal( 'toggle' );
                     if(this.isLoggedInVanityUrl){
-                      this.refernceService.showSweetAlertInfoMessage();
-                    //  var x = screen.width/2 - 700/2;
-                    //  var y = screen.height/2 - 450/2;
-                    //  window.open(providerName+"/login/"+this.loggedInUserId,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                    let url = this.authenticationService.APP_URL+"v/"+providerName+"/"+this.loggedInUserId+"/"+window.location.hostname;
+                    var x = screen.width/2 - 700/2;
+                    var y = screen.height/2 - 450/2;
+                    window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
                   }else{
                     this.router.navigate( [providerName + '/login'] );
                     }

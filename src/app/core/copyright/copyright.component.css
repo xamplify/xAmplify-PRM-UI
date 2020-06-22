@@ -4,3 +4,19 @@
     color: #ffffff;
     font-size: 15px;
 }
+
+.copyright-css-left{
+    text-align: left;
+    padding: 10px;
+    color: #ffffff;
+    font-size: 15px;
+    margin-left: 80px;
+}
+
+.copyright-css-right{
+    text-align: right;
+    padding: 10px;
+    color: #ffffff;
+    font-size: 15px;
+    margin-right: 80px;    
+}

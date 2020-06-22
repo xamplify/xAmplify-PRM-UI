@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   isNotVanityURL: boolean;
   isLoggedInVanityUrl = false;
 
-  constructor(private router: Router, private authenticationService: AuthenticationService, public userService: UserService,
+  constructor(private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
     if (this.referenceService.userProviderMessage !== "") {
@@ -217,6 +217,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
           }
           this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
+          this.authenticationService.loginScreenDirection = result.loginScreenDirection;
           this.vanityURLService.setVanityURLTitleAndFavIcon();
         }, error => {
           console.log(error);

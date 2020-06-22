@@ -103,14 +103,14 @@
 	</div>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+			<li><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
 				<i class="fa fa-angle-right"></i></li>
-			<li style="color: #888">Add {{checkingContactTypeName}}s</li>
+			<li style="color: #888" translate>Add {{checkingContactTypeName}}s</li>
 
 		</ul>
 		<div align="right" style="margin-top: 2px;" class="hidden-xs">
 			<a (click)="downloadEmptyCsv()">
-				<button type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}">
+				<button type="button" class="btn green" download style="color: #ffffff;" [ngStyle]="{'width':referenceService.isMobileScreenSize()? '100%': 'unset'}" translate>
 					Download Contact CSV Template
 					<i class="fa fa-download" aria-hidden="true" style="margin-left: 5px"></i>
 				</button>
@@ -127,7 +127,7 @@
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
 								<div class="portlet light add-options">
 									<!-- Add your {{checkingContactTypeName}}s with given options -->
-									<div class="portlet-title">
+									<div class="portlet-title" translate>
 										How would you like to add your {{checkingContactTypeName}}s?</div>
 									<div class="portlet-body">
 										<div class="row">
@@ -135,24 +135,24 @@
 												<button class="btn-primary btn-block" id="addContacts" (click)="addContactModalOpen()" [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 													<i class="fa fa-user-plus"></i>
 													<!-- <span>Add {{checkingContactTypeName}}</span> -->
-													<span>One at a time</span>
+													<span translate>One at a Time</span>
 												</button>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
 												<button class="btn-success btn-block" id="copyFromClipBoard" (click)="copyFromClipboard()" [disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5">
-													<i class="fa fa-users"></i> <span>Copy list from clipboard</span>
+													<i class="fa fa-users"></i> <span translate>Copy list from clipboard</span>
 												</button>
 											</div>
 											<div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
 												<div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height: 85px; border-radius: 3px !important;" [class.disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || disableOtherFuctionality">
 													<i style="display: block; margin-top: 22px !important; text-align: center; font-size: 24px; margin: 0 auto 10px" class="fa fa-file-excel-o"></i>
-													<span style="display: block; font-size: 12px; text-align: center">Upload a CSV</span> <input type="file" title=" "
+													<span style="display: block; font-size: 12px; text-align: center" translate>Upload a CSV</span> <input type="file" title=" "
 													 (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 0 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 ||selectedAddContactsOption == 5 || selectedAddContactsOption == 2 || disableOtherFuctionality"
 													/>
 												</div>
 												<div style="margin-top: 5px;">
 										<a (click)="downloadEmptyCsv()">
-										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b>&nbsp;Download File</b>
+										<i class="fa fa-download" aria-hidden="true" style="display: contents !important; font-size: 15px !important"></i><b translate>&nbsp;Download File</b>
 										</a>
 										</div>
 												<!--  ng2FileSelect *ngIf="uploader.queue.length==0" [uploader]="uploader" -->
@@ -169,7 +169,7 @@
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
 								<div class="portlet light cloud-services" style="padding-bottom: 30px !important;">
-									<div class="portlet-title">Import contacts from the cloud:</div>
+									<div class="portlet-title" translate>Import contacts from the cloud:</div>
 									<div class="portlet-body">
 										<div class="row">
 											<div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
@@ -304,7 +304,7 @@
 						<div class="row">
 							<div class="col-xs-12 col-md-4">
 								<div class="form-group">
-									<label for="name" class="col-xs-12 col-sm-4 control-label">{{checkingContactTypeName}} List Name*</label>
+									<label for="name" class="col-xs-12 col-sm-4 control-label" translate>{{checkingContactTypeName}} List Name*</label>
 									<div class="col-xs-12 col-sm-8">
 										<input type="text" class="form-control" id="contactListName" autocomplete="off" (ngModelChange)="changEvent($event)" required
 										 [(ngModel)]="model.contactListName" name="contactListName" (input)="validateContactName(model.contactListName)"
@@ -312,10 +312,10 @@
 
 										<!-- Validation Messages -->
 										<div *ngIf="isValidContactName">
-											<p class="custom-error-message chagneText">{{checkingContactTypeName}} List name already exists</p>
+											<p class="custom-error-message chagneText" translate>{{checkingContactTypeName}} List name already exists</p>
 										</div>
 										<div *ngIf="contactListNameError">
-											<p class="custom-error-message chagneText">Please enter the {{checkingContactTypeName}} list name.</p>
+											<p class="custom-error-message chagneText" translate>Please enter the {{checkingContactTypeName}} list name.</p>
 										</div>
 										<div *ngIf="noOptionsClickError ">
 											<p class="custom-error-message chagneText">{{properties.CONTACT_LIST_VALIDATION}}</p>
@@ -326,7 +326,7 @@
 							<!--  // -->
 							<div class="col-xs-12 col-md-4">
 							<div class="portlet-title" style="display:block">
-							<h4 class="pull-left f-w-600">Public vs Private</h4>
+							<h4 class="pull-left f-w-600" translate>Public vs Private</h4>
 							<span style="cursor: pointer;color: #54a7e9;">
 								<i class="fa fa-question-circle" data-html="true"
 									data-toggle="tooltip" data-placement="bottom"
@@ -354,10 +354,10 @@
 							<!--  // -->
 							<div class="col-xs-12 col-md-4">
 								<section class="pull-right" style="margin-bottom: 10px; margin-top: 3px;">
-									<button id="sample_editable_1_new" class="btn green" (click)="saveContacts()">
+									<button id="sample_editable_1_new" class="btn green" (click)="saveContacts()" translate>
 										Save <i class="fa fa-save"></i>
 									</button>
-									<button id="cancel_button" class="btn green" (click)="cancelContacts()">
+									<button id="cancel_button" class="btn green" (click)="cancelContacts()" translate>
 										Cancel<i class="fa fa-cancel"></i>
 									</button>
 								</section>
@@ -367,13 +367,13 @@
 						<br><br>
 								<div class="col-xs-12 col-md-6">
 								<div class="form-group">
-									<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options*</label>
+									<label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options*</label>
 									  <div id="multiselect-sample" class="control-section">
 									    <div class="col-lg-8 content-wrapper">
 									        <div class="control-styles">
 									        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
 									        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-									        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+									        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
 									        </div>
 									    </div>
 									    </div>
@@ -411,19 +411,19 @@
 						<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 						<div class="row" *ngIf="clipBoard">
 							<div class="col-sm-12">
-								<h3 style="margin-left: 30px;">Copy from text -- paste below
+								<h3 style="margin-left: 30px;" translate>Copy from text -- paste below
 								</h3>
 								<div class="col-xs-12 col-sm-7">
 									<div class="col-xs-6" style="margin-bottom: 10px">
 										<select class="opts form-control">
-											<option selected value="DEFAULT">Delimiter Type</option>
-											<option value="CommaSeperated">Comma Separated</option>
-											<option value="TabSeperated">Tab Separated</option>
+											<option selected value="DEFAULT" translate>Delimiter Type</option>
+											<option value="CommaSeperated" translate>Comma Separated</option>
+											<option value="TabSeperated" translate>Tab Separated</option>
 										</select>
 									</div>
 									<div class="col-xs-6" style="margin-bottom: 10px">
-										<button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()">VERIFY
-											DATA
+										<button class="btn btn-default" type="button" style="background-color: #26a69a; color: white" (click)="clipboardShowPreview()" translate>
+											VERIFY DATA
 										</button>
 									</div>
 									<div class="col-xs-12">
@@ -449,11 +449,11 @@
 								<table class='table tgrid' id="sample_editable_1">
 									<thead>
 										<tr>
-											<th>EMAILID</th>
-											<th class="hidden-xs">FIRST NAME</th>
-											<th class="hidden-xs">LAST NAME</th>
-											<th>MORE</th>
-											<th>CANCEL</th>
+											<th translate>EMAILID</th>
+											<th class="hidden-xs" translate>FIRST NAME</th>
+											<th class="hidden-xs" translate>LAST NAME</th>
+											<th translate>MORE</th>
+											<th translate>CANCEL</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -464,10 +464,10 @@
 												<td class="hidden-xs">{{newContact.lastName}}</td>
 												<td>
 													<button id='more_less_button_{{i}}' (click)="newContact.isShowDetails = ! newContact.isShowDetails">
-														<span *ngIf="!newContact.isShowDetails">More</span> <span *ngIf="newContact.isShowDetails">Less</span>
+														<span *ngIf="!newContact.isShowDetails" translate>More</span> <span *ngIf="newContact.isShowDetails">Less</span>
 													</button>
 												</td>
-												<td><a class="delete" (click)="cancelRow(i)"> Cancel
+												<td><a class="delete" (click)="cancelRow(i)" translate>Cancel
 													</a></td>
 											</tr>
 											<tr [ngClass]="{'hidden': !newContact.isShowDetails, 'show-more': newContact.isShowDetails}">
@@ -475,39 +475,39 @@
 													<table cellpadding="5" cellspacing="0" style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Company:</td>
+																<td class='pt10 pb10' translate>Company:</td>
 																<td class='pt10 pb10'>{{newContact.contactCompany}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc" *ngIf="gdprStatus">
-																<td class='pt10 pb10'>Legal Basis:</td>
+																<td class='pt10 pb10' translate>Legal Basis:</td>
 																<td class='pt10 pb10'>{{newContact.legalBasisString}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Job Title:</td>
+																<td class='pt10 pb10' translate>Job Title:</td>
 																<td class='pt10 pb10'>{{newContact.jobTitle}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Address:</td>
+																<td class='pt10 pb10' translate>Address:</td>
 																<td class='pt10 pb10'>{{newContact.address}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>City:</td>
+																<td class='pt10 pb10' translate>City:</td>
 																<td class='pt10 pb10'>{{newContact.city}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>State:</td>
+																<td class='pt10 pb10' translate>State:</td>
 																<td class='pt10 pb10'>{{newContact.state}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Country:</td>
+																<td class='pt10 pb10' translate>Country:</td>
 																<td class='pt10 pb10'>{{newContact.country}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Zip Code:</td>
+																<td class='pt10 pb10' translate>Zip Code:</td>
 																<td class='pt10 pb10'>{{newContact.zipCode}}</td>
 															</tr>
 															<tr style="border-bottom: 1px solid #dcdcdc">
-																<td class='pt10 pb10'>Phone Number:</td>
+																<td class='pt10 pb10' translate>Phone Number:</td>
 																<td class='pt10 pb10'>
 																	<!-- <div *ngIf="newContact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 																		<int-phone-prefix [(ngModel)]="newContact.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
@@ -533,7 +533,7 @@
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
 								<div class="portlet box blue">
 									<div class="portlet-title">
-										<div class="caption">
+										<div class="caption" translate>
 											<i class="fa fa-edit"></i>File Preview
 										</div>
 									</div>
@@ -544,9 +544,9 @@
 												<tr>
 													<td align="center"><input type="checkbox" name="all" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"
 														 class="" id="checkAllExistingContacts" /></td>
-													<th>EMAIL</th>
-													<th>FIRST NAME</th>
-													<th>LAST NAME</th>
+													<th translate>EMAIL</th>
+													<th translate>FIRST NAME</th>
+													<th translate>LAST NAME</th>
 													<th *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9"></th>
 												</tr>
 											</thead>
@@ -568,7 +568,7 @@
 													<td>{{user.lastName}}</td>
 													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">
 														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails">More</span> <span *ngIf="user.isShowDetails">Less</span>
+																<span *ngIf="!user.isShowDetails" translate>More</span> <span *ngIf="user.isShowDetails" translate>Less</span>
 															</button>
 														</td>
 												</tr>
@@ -579,19 +579,19 @@
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 														<tr *ngIf="user?.company">
-																<td class='pt10 pb10 bold'>Company:</td>
+																<td class='pt10 pb10 bold' translate>Company:</td>
 																<td class='pt10 pb10' style="padding-left: 20px;">
 																	{{user.company}}
 																</td>
 															</tr>
 															<tr *ngIf="user?.title">
-																<td class='pt10 pb10 bold'>Job Title:</td>
+																<td class='pt10 pb10 bold' translate>Job Title:</td>
 					 											<td class='pt10 pb10' style="padding-left: 20px;">
 																	{{user.title}}
 																</td>
 															</tr>
 															<tr>
-																<td class='pt10 pb10 bold'>Phone:</td>
+																<td class='pt10 pb10 bold' translate>Phone:</td>
 																<td class='pt10 pb10'>
 																	<!-- <div *ngIf="user?.mobilePhone"
 																		[class.disabled]="true"
@@ -603,7 +603,7 @@
 																</td>
 															</tr>
 															<tr>
-																<td class='pt10 pb10 bold'>Address: </td>
+																<td class='pt10 pb10 bold' translate>Address: </td>
 																<td align="center" class="hidden-xs">
 																	<h5 *ngIf="user?.address" class='mb0'>{{user.address}}</h5>
 																	<h5 class='m0' *ngIf="user?.city">
@@ -618,7 +618,7 @@
 																</td>
 															</tr>
 															<tr *ngIf="user?.website">
-																<td class='pt10 pb10 bold'>Website:</td>
+																<td class='pt10 pb10 bold' translate>Website:</td>
 																<td class='pt10 pb10'>
 																	{{user.website}}
 																</td>
@@ -660,7 +660,7 @@
 								<!-- BEGIN EXAMPLE TABLE PORTLET-->
 								<div class="portlet box blue">
 									<div class="portlet-title">
-										<div class="caption">
+										<div class="caption" translate>
 											<i class="fa fa-edit"></i>File Preview
 										</div>
 									</div>
@@ -670,10 +670,10 @@
 										<table class="table tgrid" id="sample_editable_2">
 											<thead>
 												<tr>
-													<th>FIRST NAME</th>
-													<th>LAST NAME</th>
-													<th>EMAILID</th>
-													<th>MORE</th>
+													<th translate>FIRST NAME</th>
+													<th translate>LAST NAME</th>
+													<th translate>EMAILID</th>
+													<th translate>MORE</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -691,7 +691,7 @@
 														</td>
 														<td>
 															<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
-																<span *ngIf="!user.isShowDetails">More</span> <span *ngIf="user.isShowDetails">Less</span>
+																<span *ngIf="!user.isShowDetails" translate>More</span> <span *ngIf="user.isShowDetails" translate>Less</span>
 															</button>
 														</td>
 													</tr>
@@ -700,35 +700,35 @@
 															<table cellpadding="5" cellspacing="0" style="padding-left: 50px; margin-left: 55px;">
 																<tbody>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Company:</td>
+																		<td class='pt10 pb10' translate>Company:</td>
 																		<td class='pt10 pb10'>{{user.contactCompany}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Job Title:</td>
+																		<td class='pt10 pb10' translate>Job Title:</td>
 																		<td class='pt10 pb10'>{{user.jobTitle}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Address:</td>
+																		<td class='pt10 pb10' translate>Address:</td>
 																		<td class='pt10 pb10'>{{user.address}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>City:</td>
+																		<td class='pt10 pb10' translate>City:</td>
 																		<td class='pt10 pb10'>{{user.city}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>State:</td>
+																		<td class='pt10 pb10' translate>State:</td>
 																		<td class='pt10 pb10'>{{user.state}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Zip Code:</td>
+																		<td class='pt10 pb10' translate>Zip Code:</td>
 																		<td class='pt10 pb10'>{{user.zipCode}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Country:</td>
+																		<td class='pt10 pb10' translate>Country:</td>
 																		<td class='pt10 pb10'>{{user.country}}</td>
 																	</tr>
 																	<tr style="border-bottom: 1px solid #dcdcdc">
-																		<td class='pt10 pb10'>Phone Number:</td>
+																		<td class='pt10 pb10' translate>Phone Number:</td>
 																		<td class='pt10 pb10'>
 																			<!-- <div *ngIf="user.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
 																				<int-phone-prefix [(ngModel)]="user.mobileNumber" [ngModelOptions]="{standalone: true}"></int-phone-prefix>
@@ -772,15 +772,15 @@
 
 						<div class="panel panel-success">
 							<div class="panel-heading">
-								<h3 class="panel-title">**Notes</h3>
+								<h3 class="panel-title" translate>**Notes</h3>
 							</div>
 							<div class="panel-body">
 								<ul>
-									<li>
+									<li translate>
 										<!-- The maximum number of users allowed for each uploads depends on your account. -->
 										The maximum number of contacts per upload is determined by your account type.
 									</li>
-									<li>
+									<li translate>
 										<!-- Only files with (<strong>.csv</strong>) extension are allowed to upload. -->
 										You can only upload (.csv) extension files
 									</li>
@@ -814,7 +814,7 @@
 					<div>
 						<img src="assets/images/zoho.png" alt="Picture of a happy monkey" style="height: 65px" width="90px" />
 						<h4 class="modal-title" id="myModalLabel" align="center">
-							<b>Sign in</b>
+							<b translate>Sign in</b>
 						</h4>
 					</div>
 				</div>
@@ -824,33 +824,33 @@
 							<span>{{zohoCredentialError}}</span>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="email">Email:</label>
+							<label class="control-label col-sm-3" for="email" translate>Email:</label>
 							<div class="col-sm-8">
 								<input type="email" style="width: 75%" class="form-control" id="email" placeholder="email" [(ngModel)]="userName" [ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="pwd">Password:</label>
+							<label class="control-label col-sm-3" for="pwd" translate>Password:</label>
 							<div class="col-sm-8">
 								<input type="password" style="width: 75%" class="form-control" id="pwd" placeholder="password" [(ngModel)]="password" [ngModelOptions]="{standalone: true}">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="pwd">Import From:
+							<label class="control-label col-sm-3" for="pwd" translate>Import From:
 							</label>
 							<div class="col-sm-8">
 								<select class="opts form-control" style="width: 75%">
-									<option selected value="DEFAULT">Select</option>
-									<option value="contact">Contacts</option>
-									<option value="lead">Leads</option>
+									<option selected value="DEFAULT" translate>Select</option>
+									<option value="contact" translate>Contacts</option>
+									<option value="lead" translate>Leads</option>
 								</select>
 							</div>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoModal()">Close</button>
-					<button type="button" class="btn btn-primary" (click)="zohoContacts()">Authorize</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoModal()" translate>Close</button>
+					<button type="button" class="btn btn-primary" (click)="zohoContacts()" translate>Authorize</button>
 				</div>
 			</div>
 		</div>
@@ -867,27 +867,27 @@
 				<a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
 				<div>
 					<img src="assets/images/zoho.png" alt="Picture of a happy monkey" style="height: 65px" width="90px" />
-					<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;">Retrieve Zoho Contacts</h4>
+					<h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;" translate>Retrieve Zoho Contacts</h4>
 				</div>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="pwd">Import From:
+						<label class="control-label col-sm-3" for="pwd" translate>Import From:
 						</label>
 						<div class="col-sm-8">
 							<select class="opts form-control" style="width: 75%">
-								<option selected value="DEFAULT">Select</option>
-								<option value="contact">Contacts</option>
-								<option value="lead">Leads</option>
+								<option selected value="DEFAULT" translate>Select</option>
+								<option value="contact" translate>Contacts</option>
+								<option value="lead" translate>Leads</option>
 							</select>
 						</div>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()">Close</button>
-				<button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()">Authorize</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()" translate>Close</button>
+				<button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button>
 			</div>
 		</div>
 	</div>
@@ -902,20 +902,20 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<!-- <a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a> -->
-				<h4 class="modal-title" id="myModalLabel">Select contacts import from:</h4>
+				<h4 class="modal-title" id="myModalLabel" translate>Select contacts import from:</h4>
 			</div>
 			<div class="modal-body">
 				<select class="opts">
-					<option selected value="DEFAULT">Select Import from</option>
-					<option value="contact">Contacts</option>
-					<option value="lead">Leads</option>
-					<option value="contact_listviews">Contacts_listViews</option>
-					<option value="lead_listviews">Leads_listViews</option>
+					<option selected value="DEFAULT" translate>Select Import from</option>
+					<option value="contact" translate>Contacts</option>
+					<option value="lead" translate>Leads</option>
+					<option value="contact_listviews" translate>Contacts_listViews</option>
+					<option value="lead_listviews" translate>Leads_listViews</option>
 				</select>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" (click)="salesforceContacts()">Submit</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+				<button type="button" class="btn btn-primary" (click)="salesforceContacts()" translate>Submit</button>
 			</div>
 		</div>
 	</div>
@@ -930,7 +930,7 @@
 						data-dismiss="modal">&times;</button> -->
 				<a class="close-circle" data-dismiss="modal"><i class="fa fa-times"></i></a>
 				<div>
-					<h4 class="modal-title" id="settingSocialNetworkModalLabel">{{settingSocialNetwork}} Account Settings</h4>
+					<h4 class="modal-title" id="settingSocialNetworkModalLabel" translate>{{settingSocialNetwork}} Account Settings</h4>
 				</div>
 			</div>
 			<div class="modal-body">
@@ -940,22 +940,22 @@
 							<span class="glyphicon glyphicon-triangle-right"></span>You are about to unlink your {{settingSocialNetwork}} account from xAmplify.
 						</h4>
 						
-						<h4 style="margin-left: 20px;">
+						<h4 style="margin-left: 20px;" translate>
 							<span class="glyphicon glyphicon-triangle-right"></span>If you decide to relink your account, you will need to reenter your credentials.
 						</h4>
 						
-						<h4 style="margin-left: 20px;">
-							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists? <input
+						<h4 style="margin-left: 20px;" translate>
+							<span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists?<input
 							 type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
 						</h4>
-						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()">Unlink
-							Account
+						<button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()" translate>
+							Unlink Account
 						</button>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
 			</div>
 		</div>
 	</div>
@@ -971,31 +971,31 @@
 					<img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px" width="100px" />
 				</div>
 				<div class="col-sm-12" style="margin-left: 136px; margin-top: -44px">
-					<h4 class="modal-title">import from salesforce:
+					<h4 class="modal-title" translate>import from salesforce:
 					</h4>
 				</div>
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal">
 					<div class="form-group">
-						<label class="control-label col-sm-3" for="email">Select Option:
+						<label class="control-label col-sm-3" for="email" translate>Select Option:
 						</label>
 						<div class="col-sm-8">
 							<select class="opts form-control" (change)="onChangeSalesforceDropdown($event)">
-								<option selected value="DEFAULT">Select</option>
-								<option value="contact">Contacts</option>
-								<option value="lead">Leads</option>
-								<option value="contact_listviews">Contacts_listViews</option>
-								<option value="lead_listviews">Leads_listViews</option>
+								<option selected value="DEFAULT" translate>Select</option>
+								<option value="contact" translate>Contacts</option>
+								<option value="lead" translate>Leads</option>
+								<option value="contact_listviews" translate>Contacts_listViews</option>
+								<option value="lead_listviews" translate>Leads_listViews</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group" *ngIf="salesforceListViewsData?.length > 0">
-						<label class="control-label col-sm-3" for="salesforce-dropdown-2">Select Option:
+						<label class="control-label col-sm-3" for="salesforce-dropdown-2" translate>Select Option:
 						</label>
 						<div class="col-sm-8">
 							<select class="form-control" id="salesforce-dropdown-2" (change)="onChange($event.target.value)">
-								<option selected value="DEFAULT">Select</option>
+								<option selected value="DEFAULT" translate>Select</option>
 								<option *ngFor="let item of salesforceListViewsData" value='{{item.listViewId}}'>{{item.listViewName}}</option>
 							</select>
 						</div>
@@ -1003,8 +1003,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="salesforce_save_button" class="btn btn-primary" (click)="checkingPopupValues()">Submit</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+				<button type="button" id="salesforce_save_button" class="btn btn-primary" (click)="checkingPopupValues()" translate>Submit</button>
 			</div>
 		</div>
 	</div>
@@ -1019,29 +1019,29 @@
 					<img src="assets/images/Salesforce-01.png" alt="Picture of a happy monkey" style="height: 65px" width="100px" />
 				</div>
 				<div class="col-sm-12 salesforce">
-					<h4 class="modal-title">Import from salesforce:</h4>
+					<h4 class="modal-title" translate>Import from salesforce:</h4>
 				</div>
 			</div>
 			<div class="modal-body">
 				<div class="clearfix">
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="email">Select Option:</label>
+							<label class="control-label col-sm-3" for="email" translate>Select Option:</label>
 							<div class="col-sm-8">
 								<select class="opts form-control" id="salesforce-dropdown-1" (change)="onChangeSalesforceDropdown($event)">
-									<option selected value="DEFAULT">Select</option>
-									<option value="contact">Contacts</option>
-									<option value="lead">Leads</option>
-									<option value="contact_listviews">Contacts_listViews</option>
-									<option value="lead_listviews">Leads_listViews</option>
+									<option selected value="DEFAULT" translate>Select</option>
+									<option value="contact" translate>Contacts</option>
+									<option value="lead" translate>Leads</option>
+									<option value="contact_listviews" translate>Contacts_listViews</option>
+									<option value="lead_listviews" translate>Leads_listViews</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group" *ngIf="salesforceListViewsData?.length > 0">
-							<label class="control-label col-sm-3" for="salesforce-dropdown-2">Select Option:</label>
+							<label class="control-label col-sm-3" for="salesforce-dropdown-2" translate>Select Option:</label>
 							<div class="col-sm-8">
 								<select class="form-control" id="salesforce-dropdown-2" (change)="onChange($event.target.value)">
-									<option selected value="DEFAULT">Select</option>
+									<option selected value="DEFAULT" translate>Select</option>
 									<option *ngFor="let item of salesforceListViewsData" value='{{item.listViewId}}'>{{item.listViewName}}</option>
 								</select>
 							</div>
@@ -1050,8 +1050,8 @@
 				</div> 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="salesforce_save_button" class="btn btn-primary" (click)="checkingPopupValues()" data-dismiss="modal">Submit</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+				<button type="button" id="salesforce_save_button" class="btn btn-primary" (click)="checkingPopupValues()" data-dismiss="modal" translate>Submit</button>
 			</div>
 		</div>
 	</div>
@@ -1068,7 +1068,7 @@
 					<!-- <button type="button" class="close"  (click)="hideZohoModal()"
 						data-dismiss="modal">&times;</button> -->
 					<a class="close-circle" data-dismiss="modal" (click)="hideMarketoModal()"><i class="fa fa-times"></i></a>
-					<h4 class="modal-title" id="templateRetrieve">Marketo integration with xAmplify</h4>
+					<h4 class="modal-title" id="templateRetrieve" translate>Marketo integration with xAmplify</h4>
 					<div>
 						<div>
 							<img src="assets/images/crm/Mark-amplify.png"  style="margin: 30px 30% 0;width: 50%;text-align: center;">
@@ -1082,21 +1082,21 @@
 							<span>{{marketoContactError}}</span>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="client">Client Id:</label>
+							<label class="control-label col-sm-3" for="client" translate>Client Id:</label>
 							<div class="col-sm-8">
 								<input type="text" style="width: 75%" class="form-control" id="client" placeholder="Client Id" [(ngModel)]="marketoClientId" [ngModelOptions]="{standalone: true}"
 								(input)="validateModelForm('client')">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="secret">Client Secret:</label>
+							<label class="control-label col-sm-3" for="secret" translate>Client Secret:</label>
 							<div class="col-sm-8">
 								<input type="password" style="width: 75%" class="form-control" id="secret" placeholder="Secret Id" [(ngModel)]="marketoSecretId" [ngModelOptions]="{standalone: true}"
 								(input)="validateModelForm('secret')">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
+							<label class="control-label col-sm-3" for="instance" translate>Marketo Instance:</label>
 							<div class="col-sm-8">
 								<input type="password" style="width: 75%" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}"
 								(input)="validateModelForm('instance')">
@@ -1106,8 +1106,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMarketoModal()">Close</button>
-					<button type="button" class="btn btn-primary" [class.disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance" (click)="getMarketoContacts()">Authorize</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideMarketoModal()" translate>Close</button>
+					<button type="button" class="btn btn-primary" [class.disabled]="!isMarketoModelFormValid || !marketoClientId || !marketoSecretId || !marketoInstance" (click)="getMarketoContacts()" translate>Authorize</button>
 				</div>
 			</div>
 		</div>
@@ -1120,23 +1120,23 @@
 	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content" style="width: 80%;top: 100px;left: 60px">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you sure?</h4>
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel" translate> Are you sure?</h4>
 			</div>
 			<div class="modal-body">
 			<div>
-				<h4 class="modal-title f-w-600">You are agreeing to xAmplify's Terms and Conditions.</h4>
+				<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
 			</div>
 			<div class="form-group" style="margin-top: 15px;">
-			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
-				By adding a contact you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked translate><!--  I Agree <a (click)="navigateToTermsOfUse()">T&C</a> -->
+				By adding a contact you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()" translate>Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
-			<div *ngIf="!isCheckTC" style="color:red">You must agree</div>
+			<div *ngIf="!isCheckTC" style="color:red" translate>You must agree</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()">Decline</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()" translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-					(click)="saveContactsWithPermission()">Accept</button>
+					(click)="saveContactsWithPermission()" translate>Accept</button>
 			</div>
 		</div>
 	</div>
@@ -1152,27 +1152,27 @@
 					<img src="assets/images/crm/hubspot-logo.png" alt="Picture of a happy monkey" style="height: 60px" width="150px" />
 				</div>
 				<div class="col-sm-12 salesforce">
-					<h4 class="modal-title">Import from HubSpot:</h4>
+					<h4 class="modal-title" translate>Import from HubSpot:</h4>
 				</div>
 			</div>
 			<div class="modal-body">
 				<div class="clearfix">
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label class="control-label col-sm-3" for="email">Select Option:</label>
+							<label class="control-label col-sm-3" for="email" translate>Select Option:</label>
 							<div class="col-sm-8">
 								<select class="opts form-control" id="hubspot-dropdown-1" (change)="onChangeHubSpotDropdown($event)">
-									<option selected value="DEFAULT">Select</option>
-									<option value="contacts">Contacts</option>
-									<option value="lists">Lists</option>
+									<option selected value="DEFAULT" translate>Select</option>
+									<option value="contacts" translate>Contacts</option>
+									<option value="lists" translate>Lists</option>
 								</select>
 							</div>
 						</div>
 						<div class="form-group" *ngIf="hubSpotContactListsData?.length > 0">
-							<label class="control-label col-sm-3" for="hubspot-dropdown-2">Select Option:</label>
+							<label class="control-label col-sm-3" for="hubspot-dropdown-2" translate>Select Option:</label>
 							<div class="col-sm-8">
 								<select class="form-control" id="hubspot-dropdown-2" (change)="onChangeHubSpotListsDropdown($event.target.value)">
-									<option selected value="DEFAULT">Select</option>
+									<option selected value="DEFAULT" translate>Select</option>
 									<option *ngFor="let item of hubSpotContactListsData" value='{{item.id}}'>{{item.name}}</option>
 								</select>
 							</div>
@@ -1181,8 +1181,8 @@
 				</div> 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()" data-dismiss="modal">Submit</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+				<button type="button" id="hubspot_save_button" class="btn btn-primary" (click)="getHubSpotData()" data-dismiss="modal" translate>Submit</button>
 			</div>
 		</div>
 	</div>

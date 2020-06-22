@@ -470,7 +470,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
                 let userDetails = {
                         "firstName": this.newPartnerUser[i].firstName,
-                        "lastName": this.newPartnerUser[i].lastName
+                        "lastName": this.newPartnerUser[i].lastName,
+                        "companyName": this.newPartnerUser[i].contactCompany
                     }
                 
                  if(this.newPartnerUser[i].emailId){
@@ -567,11 +568,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.clipBoard = false;
                     this.cancelPartners();
                     if (data.statusCode == 200) {
-                        this.getContactsAssocialteCampaigns();
-                    }
-                    this.disableOtherFuctionality = false;
+                        //this.getContactsAssocialteCampaigns();//Old method
+                        this.disableOtherFuctionality = false;
+                        this.openCampaignsPopupForNewlyAddedPartners();
 
-                    if (data.statusCode == 409) {
+                    }else if (data.statusCode == 409) {
                         let emailIds = data.emailAddresses;
                         let allEmailIds = "";
                         $.each(emailIds, function(index, emailId) {
@@ -579,9 +580,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         });
                         let message = data.errorMessage + "<br><br>" + allEmailIds;
                         this.customResponse = new CustomResponse('ERROR', message, true);
-                    }
-
-                    if (data.statusCode == 417) {
+                    }else if (data.statusCode == 417) {
                         this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
                     }
                 } else {
@@ -2199,21 +2198,49 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "addPartnerComponent", "download list of Partners" );
         }
     }
+    
+    hasAccess() {
+        try {
+        	return  this.contactService.hasAccess(this.isPartner)
+                .map(
+                data => {
+                    const body = data['_body'];
+                     const response = JSON.parse(body);
+                    let access = response.access;
+                    if(access){
+                        return true;
+                    }else{
+                         return false;
+                    }
+                }
+                );
+        } catch (error) {
+            this.xtremandLogger.error(error, "AddPartnersComponent", "hasAccess()");
+        }
+    }
 
     downloadPartnerList() {
-        try {
-            this.contactService.downloadContactList( this.partnerListId )
-                .subscribe(
-                data => this.downloadFile( data ),
-                ( error: any ) => {
-                    this.xtremandLogger.error( error );
-                    this.xtremandLogger.errorPage( error );
-                },
-                () => this.xtremandLogger.info( "download partner List completed" )
-                );
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "addPartnerComponent", "download Partner list" );
-        }
+        this.hasAccess().subscribe(
+            data => {
+                if (data) {
+                    try {
+                        this.contactService.downloadContactList(this.partnerListId)
+                            .subscribe(
+                            data => this.downloadFile(data),
+                            (error: any) => {
+                                this.xtremandLogger.error(error);
+                                this.xtremandLogger.errorPage(error);
+                            },
+                            () => this.xtremandLogger.info("download partner List completed")
+                            );
+                    } catch (error) {
+                        this.xtremandLogger.error(error, "addPartnerComponent", "download Partner list");
+                    }
+                } else {
+                    this.authenticationService.forceToLogout();
+                }
+            }
+        );
     }
 
     sendMail( partnerId: number ) {
@@ -2341,14 +2368,22 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    eventHandler( keyCode: any ) { if ( keyCode === 13 ) { this.search(); } }
    
    saveAsChange(showGDPR: boolean){
-    try {
-    	this.showGDPR = showGDPR;
-        this.isSaveAsList = true;
-        this.saveAsListName = this.editContactComponent.addCopyToField();
+       this.hasAccess().subscribe(
+               data => {
+                   if (data) {
+                	    try {
+                	        this.showGDPR = showGDPR;
+                	        this.isSaveAsList = true;
+                	        this.saveAsListName = this.editContactComponent.addCopyToField();
 
-    }catch(error){
-       this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
-      }
+                	    }catch(error){
+                	       this.xtremandLogger.error( error, "Add Partner component", "saveAsChange()" );
+                	      }
+                   } else {
+                       this.authenticationService.forceToLogout();
+                   }
+               }
+           );
    }
    saveAsInputChecking(){
     try{
@@ -3221,8 +3256,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     /************Add Campaigns Pop up****************************** */
-    addCampaigns(emailId:string,partnerId:number){
-        this.sendCampaignComponent.openPopUp(this.partnerListId,emailId,partnerId,"Partner");
+    addCampaigns(contact:any){
+        this.sendCampaignComponent.openPopUp(this.partnerListId,contact,"Partner");
+    }
+
+
+    openCampaignsPopupForNewlyAddedPartners(){
+        this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.partnerListId,this.newUserDetails,"Partner");
     }
     
 }

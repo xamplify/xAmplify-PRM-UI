@@ -22,3 +22,11 @@ a.forget-password:hover {color: #4db1e2;}
     background-size: cover;
     transition: opacity 1s;
 }
+
+.login-content-left{
+    margin-left: 50px;
+}
+
+.login-content-right{
+    margin-right: 50px;
+}

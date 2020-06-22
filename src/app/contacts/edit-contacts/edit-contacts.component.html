@@ -755,11 +755,13 @@
 															</button> -->
 															<div class="actions-block override-actions">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
-																  	<i class="fa fa-pencil-square-o"></i>
+																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
-																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">	<i class="fa fa-trash-o"></i>	</a>
- 																<a *ngIf="checkingContactTypeName=='Partner'" data-toggle="tooltip" data-placement="bottom" title="{{actionsDescription.send_campaigns}}" (click)="addCampaigns(contact.emailId,contact.id)">
-                                                                <i class="fa fa-bullhorn"></i></a>
+																<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_delete}} {{checkingContactTypeName}}" (click)="deleteUserShowAlert(contact.id)">
+																		<i class="fa fa-trash-o" aria-hidden="true"></i>	
+																</a>
+ 																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)">
+                                                                <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
                                                             </div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
@@ -1177,9 +1179,9 @@
 <app-save-as *ngIf="saveAsListName" [listName]="checkingContactTypeName" [saveAsListName]="saveAsListName" [isPartner]="isPartner" 
    [showGDPR]="showGDPR" (notifyParentSaveAs)="closeSaveAsModal()" [gdprInput]="parentInput"></app-save-as>
 
-<div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
+<!-- <div *ngIf="contactsByType.contactListAssociatedCampaigns?.length && openCampaignModal">
 <app-contacts-campaigns-mails [associatedCampaignDetails]="contactsByType.contactListAssociatedCampaigns" [isPartner]="isPartner"
 [users]="newUserDetails" [contactListId]="contactListId" (notifyParent)="closeModal($event)"></app-contacts-campaigns-mails>
-</div>
+</div> -->
 <app-send-campaigns #sendCampaignComponent></app-send-campaigns>
 <!-- END PAGE CONTENT -->

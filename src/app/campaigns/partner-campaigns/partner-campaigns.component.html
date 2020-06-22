@@ -10,21 +10,21 @@
         <ul class="page-breadcrumb">
             <li>
                 <i class="fa fa-home"></i>
-                <a [routerLink]="referenceService.homeRouter">Home</a>
+                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li *ngIf="role === 'Vendor'">
-                <a [routerLink]="['/home/dashboard/vendors']">Campaigns From Vendor</a>
+                <a [routerLink]="['/home/dashboard/vendors']" translate>Campaigns From Vendor</a>
             </li>
             <li *ngIf="role === 'Vendor'">
-                <a [routerLink]="['/home/dashboard/vendors']">Your Vendors</a>
+                <a [routerLink]="['/home/dashboard/vendors']" translate>Your Vendors</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li *ngIf="role === 'Vendor'">
-                <a>Campaigns</a>
+                <a translate>Campaigns</a>
             </li>
             <li *ngIf="role === 'Partner'">
-                <a>Campaigns shared by Vendors</a>
+                <a translate>Campaigns shared by Vendors</a>
             </li>
         </ul>
     </div>
@@ -37,14 +37,14 @@
                 <div class="tab-content">
                     <div class="page-bar m10">
                         <ul class="mix-filter col-xs-12 col-sm-12 col-md-6 p0 m0" *ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">
-                            <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType">
+                            <li class="filter" (click)="filterCampaigns('all')" [class.active]="'all' == campaignType" translate>
                                 All</li>
-                            <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType">Email</li>
-                            <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType">Video</li>
-                            <li class="filter" *ngIf="referenceService.socialCampaignTabAccess" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType">Social
+                            <li class="filter" (click)="filterCampaigns('regular')" [class.active]="'regular' == campaignType" translate>Email</li>
+                            <li class="filter" (click)="filterCampaigns('video')" [class.active]="'video' == campaignType" translate>Video</li>
+                            <li class="filter" *ngIf="referenceService.socialCampaignTabAccess" (click)="filterCampaigns('social')" [class.active]="'social' == campaignType" translate>Social
                             </li>
-                            <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType">Event</li>
-                            <li class="filter" style="display: none;">Own Template</li>
+                            <li class="filter" *ngIf="referenceService.eventCampaignTabAccess" (click)="filterCampaigns('event')" [class.active]="'event' == campaignType" translate>Event</li>
+                            <li class="filter" style="display: none;" translate>Own Template</li>
                         </ul>
                         <div class="page-toolbar col-xs-12 col-sm-12 col-md-6"  *ngIf="!this.modulesDisplayType.isFolderGridView && !this.modulesDisplayType.isFolderListView">
                             <div class="row btn-group pull-right">
@@ -109,11 +109,11 @@
                                     <tr>
                                         <th colspan="2" style="width: 30%">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'redistribute-campaign-list',2)"> </span>
-                                            <span class="gridHeader">Campaign</span>
+                                            <span class="gridHeader" translate>Campaign</span>
                                         </th>
-                                        <th class="custom-center hidden-xs">Vendor Company Name</th>
-                                        <th class="custom-center hidden-xs">Status</th>
-                                        <th class="custom-center">Actions</th>
+                                        <th class="custom-center hidden-xs" translate>Vendor Company Name</th>
+                                        <th class="custom-center hidden-xs" translate>Status</th>
+                                        <th class="custom-center" translate>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -141,15 +141,15 @@
                                                 <span>{{campaign.campaignName}}</span>
                                             </h4>
                                             <h5 class="moreipsis mobile-left" [title]="campaign.createdBy">
-                                                <span> By <b>{{campaign.createdBy}}</b></span>
+                                                <span translate> By <b>{{campaign.createdBy}}</b></span>
                                             </h5>
                                             <h5 class="moreipsis mobile-left" [title]="campaign.companyName">
-                                                <span> From <b>{{campaign.companyName}}</b></span>
+                                                <span translate> From <b>{{campaign.companyName}}</b></span>
                                             </h5>
                                             <h5 class="moreipsis mobile-left" [title]="campaign.categoryName">
-                                                <span> Folder <b>{{campaign.categoryName}}</b></span>
+                                                <span translate> Folder <b>{{campaign.categoryName}}</b></span>
                                             </h5>
-                                            <h5 class="ellipsis view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</h5>
+                                            <h5 class="ellipsis view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;" translate>Cancelled</h5>
                                         </td>
                                         <td class="moreipsis custom-center hidden-xs">
                                             <span><b>{{campaign.companyName}}</b></span>
@@ -157,7 +157,7 @@
 
                                         <td class="custom-center hidden-xs">
                                             <span align="right">
-												<b>Received On</b>
+												<b translate>Received On</b>
 											</span>
                                             <span align="right" title="Received On"><b>
 													<app-timestamp [isOnlyDate]="false"
@@ -214,12 +214,12 @@
                                                                  <span data-toggle="dropdown" title="Download"></span>
                                                                     <ul class="dropdown-menu pull-right">
                                                                     <li>
-                                                                        <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button">
+                                                                        <a (click)="downloadHTMLFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" translate>
                                                                             <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                                                         </a>
                                                                     </li>
                                                                     <li *ngIf="campaign.campaignType != 'EVENT'">
-                                                                        <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button">
+                                                                        <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button" translate>
                                                                             <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                                                                         </a>
                                                                     </li>
@@ -239,7 +239,7 @@
                 </div>
                 </section>
                 <div *ngIf="totalRecords <= 0 && this.modulesDisplayType.isListView" class="alert alert-info">
-                    <strong>No campaigns found</strong>
+                    <strong translate>No campaigns found</strong>
                 </div>
                 <div class="tab-pane active" *ngIf="this.modulesDisplayType.isGridView">
                     <div class="margin-top-10">
@@ -255,21 +255,21 @@
                                             <span *ngIf="campaign.campaignName?.length>25">...</span>
                                         </h4>
                                         <!-- <span class="view-banner" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" style="background-color: red;">Cancelled</span> -->
-                                        <h6 [title]="campaign.createdBy">By
+                                        <h6 [title]="campaign.createdBy" translate>By
                                             <b>{{campaign.createdBy | slice:0:15}}<span
 														*ngIf="campaign.createdBy?.length>15">...</span></b></h6>
-                                        <h6 [title]="campaign.companyName">From
+                                        <h6 [title]="campaign.companyName" translate>From
                                             <b>{{campaign.companyName | slice:0:15}}
                                                 <span *ngIf="campaign.companyName?.length>15">...</span>
                                             </b>
                                         </h6>
 
-                                        <h6 [title]="campaign.categoryName">Folder
+                                        <h6 [title]="campaign.categoryName" translate>Folder
                                             <b>{{campaign.categoryName | slice:0:15}}
                                                 <span *ngIf="campaign.categoryName?.length>15">...</span>
                                             </b>
                                         </h6>
-                                        <h6>Received On <b>
+                                        <h6 translate>Received On <b>
 													<app-timestamp [isOnlyDate]="false"
 														[dateAndTime]="campaign.displayTime"> </app-timestamp>
 												</b></h6>
@@ -288,7 +288,7 @@
 												</span>
                                         </div>
                                         <div class="ribbon">
-                                            <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1">
+                                            <div class="cancel-ribbon" *ngIf="campaign.launched && !campaign.showCancelButton && campaign.campaignType.indexOf('EVENT') > -1" translate>
                                                 Cancelled</div>
                                         </div>
                                         <div class="bar">
@@ -323,12 +323,12 @@
                                                     <span data-toggle="dropdown" title="Download"></span>
                                                     <ul class="dropdown-menu pull-right">
                                                         <li>
-                                                            <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
+                                                            <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank" translate>
                                                                 <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                                             </a>
                                                         </li>
                                                         <li *ngIf="campaign.campaignType != 'EVENT'">
-                                                            <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank">
+                                                            <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" data-rel="fancybox-button" target="_blank" translate>
                                                                 <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
                                                             </a>
                                                         </li>
@@ -351,7 +351,7 @@
                     </div>
                     <!-- End of 24 -->
                     <div *ngIf="totalRecords <= 0 && this.modulesDisplayType.isGridView &&  !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" class="alert alert-info">
-                        <strong>No campaigns found</strong>
+                        <strong translate>No campaigns found</strong>
                     </div>
                 </div>
                 <ng-container *ngIf="this.modulesDisplayType.isListView || this.modulesDisplayType.isGridView">
@@ -385,7 +385,7 @@
                 <app-modal-popup-loader *ngIf="loadingEmailTemplate"></app-modal-popup-loader>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>
@@ -412,14 +412,14 @@
                     </ng-container>
                     <ng-container *ngIf="socialCampaign?.socialStatusList?.length==0">
                         <div class="alert alert-info">
-                            <strong>No Social Accounts Found</strong>
+                            <strong translate>No Social Accounts Found</strong>
                         </div>
                     </ng-container>
                 </ng-container>
                 <app-landing-page-loader *ngIf="socialAccountsLoader" [maxBoxLength]=2></app-landing-page-loader>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>

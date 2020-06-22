@@ -2045,7 +2045,7 @@ export class ReferenceService {
 
 	closeChildWindowAndRefreshParentWindow(url:string){
 		window.opener.location.href=url;
-       // self.close();
+        self.close();
 	}
 
 	closeChildWindowOnError(){

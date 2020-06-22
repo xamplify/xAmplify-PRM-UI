@@ -13,7 +13,8 @@
 </video> -->
 <div *ngIf = "authService.v_companyBgImagePath" class="xamplify-background-image" [style.backgroundImage]="'url('+authService.v_companyBgImagePath+')'">
 </div>
-<div class="logo">
+<!-- <div [ngClass]="(authService.loginScreenDirection === 'Center')?'logo': (authService.loginScreenDirection === 'Left')?'logo-css-left':'logo-css-right'"> -->
+  <div class="logo">
   <a [href]="properties.xamplify_router">
     <img style="height: 54px;" [src]="properties.COMPANY_LOGO" alt="" />
   </a>
