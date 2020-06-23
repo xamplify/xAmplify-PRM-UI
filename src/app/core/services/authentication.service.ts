@@ -81,6 +81,7 @@ export class AuthenticationService {
   private userLoggedIn = new Subject<boolean>();
   pagination: Pagination = new Pagination();
   userPreferredLanguage: string;
+  beeLanguageCode: string;
   allLanguagesList: any = [];
   loginScreenDirection: string = 'Center';
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {

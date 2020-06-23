@@ -298,7 +298,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                 uid: beeUserId,
                 container: 'bee-plugin-container',
                 autosave: 15,
-                language: 'en-US',
+                //language: 'en-US',
+                language:this.authenticationService.beeLanguageCode,
                 mergeTags: mergeTags,
                 roleHash: roleHash,
                 onSave: function( jsonFile, htmlFile ) {

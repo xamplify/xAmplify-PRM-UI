@@ -254,7 +254,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 uid: beeUserId,
                                 container: 'bee-plugin-container',
                                 autosave: 15,
-                                language: 'en-US',
+                                //language: 'en-US',
+                                language:this.authenticationService.beeLanguageCode,
                                 onSave: function (jsonFile, htmlFile) {
                                     save(jsonFile, htmlFile);
                                 },

@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
   isLoggedInVanityUrl = false;
-
+  checkedVanityURLDomain = false;
   constructor(private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
@@ -205,8 +205,11 @@ export class LoginComponent implements OnInit, OnDestroy {
     try {
       this.mainLoader = true;
       if (this.vanityURLService.isVanityURLEnabled()) {
-        this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
-          this.vanityURLEnabled = true;
+        this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
+          this.vanityURLEnabled = result.enableVanityURL;
+          if(!this.vanityURLEnabled){
+            this.checkedVanityURLDomain = true;
+          }
           this.authenticationService.v_companyName = result.companyName;
           this.authenticationService.vanityURLink = result.vanityURLink;
           this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
@@ -223,7 +226,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           console.log(error);
         });
       } else {
-        this.isNotVanityURL = true;
+        this.isNotVanityURL = true;        
       }
       this.cleaningLeftSidebar();
       this.authenticationService.navigateToDashboardIfUserExists();
@@ -252,5 +255,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
     }
+  }
+
+  redirectToXamplify(){    
+    window.open("https://xamplify.co/login");
   }
 }
