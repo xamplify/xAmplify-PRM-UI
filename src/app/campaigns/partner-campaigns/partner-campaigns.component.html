@@ -213,14 +213,19 @@
 																data-toggle="dropdown" id="download-drop" title="Download"></span>
                                                                  <span data-toggle="dropdown" title="Download"></span>
                                                                     <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a (click)="downloadHTMLFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" translate>
+                                                                    <li *ngIf="campaign.campaignType != 'EVENT'">
+                                                                        <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" translate>
                                                                             <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                                                         </a>
                                                                     </li>
                                                                     <li *ngIf="campaign.campaignType != 'EVENT'">
                                                                         <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button" translate>
                                                                             <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
+                                                                        </a>
+                                                                    </li>
+                                                                       <li *ngIf="campaign.campaignType === 'EVENT'">
+                                                                        <a (click)="downloadHTMLFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" translate>
+                                                                            <i class="fa fa-file" style="width: 30px;"></i> Download Html
                                                                         </a>
                                                                     </li>
                                                                 </ul>
