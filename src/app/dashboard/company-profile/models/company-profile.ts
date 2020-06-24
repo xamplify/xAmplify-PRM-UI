@@ -33,4 +33,5 @@ export class CompanyProfile {
     showVendorCompanyLogo:boolean = true;
     favIconLogoPath:string;
     loginScreenDirection:string;
+    enableVanityURL:boolean =false;
 }

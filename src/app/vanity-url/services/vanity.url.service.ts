@@ -93,8 +93,8 @@ export class VanityURLService {
     //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytify.xamplify.com";
-    //let url = "vendor.xamplify.com";
-    let url =window.location.hostname;
+   // let url = "syfe.xamplify.com";
+      let url =window.location.hostname;
 
     if (!url.includes("release")) {
       let domainName = url.split('.');
@@ -174,7 +174,7 @@ export class VanityURLService {
   public setVanityURLTitleAndFavIcon() {
     this.titleService.setTitle(this.authenticationService.v_companyName);    
     if(this.authenticationService.v_companyFavIconPath){
-      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.v_companyFavIconPath);
+      this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
     }
   }
 

@@ -1,19 +1,23 @@
 {
 	"languages": [{
 			"name": "English",
-			"id": "en"
+			"id": "en",
+			"beeId":"en-US"
 		},
 		{
 			"name": "French",
-			"id": "fr"
+			"id": "fr",
+			"beeId":"fr-FR"
 		},
 		{
 			"name": "Spanish",
-			"id": "es"
+			"id": "es",
+			"beeId":"es-ES"
 		},
 		{
 			"name": "Japanese",
-			"id": "ja"
+			"id": "ja",
+			"beeId":"ja-JP"
 		}
 	]
 }

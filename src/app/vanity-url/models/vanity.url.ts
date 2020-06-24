@@ -6,4 +6,5 @@ export class VanityURL{
     showVendorCompanyLogo:boolean;
     companyFavIconPath:string;
     loginScreenDirection:string;
+    enableVanityURL:boolean;
 }

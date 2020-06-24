@@ -706,6 +706,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                                         this.authenticationService.userProfile = res;
                                         this.translateService.use(res.preferredLanguage);
                                         this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).id;
+                                        this.authenticationService.beeLanguageCode = this.authenticationService.allLanguagesList.find(item => item.id === res.preferredLanguage).beeId;
                                     },
                                     error => { this.logger.error(this.referenceService.errorPrepender + " updateUserProfile():" + error) },
                                     () => console.log("Finished")

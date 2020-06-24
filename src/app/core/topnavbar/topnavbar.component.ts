@@ -349,6 +349,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       this.authenticationService.allLanguagesList = result.languages;
       if(userPreferredLangId){
         this.authenticationService.userPreferredLanguage = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).id;
+        this.authenticationService.beeLanguageCode = this.authenticationService.allLanguagesList.find(item => item.id === userPreferredLangId).beeId;
       }      
     }, error => {
       console.log(error);
@@ -356,7 +357,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   }
 
   selectedLanguage(langCode:any){
-    this.authenticationService.userPreferredLanguage= langCode; 
+    this.authenticationService.userPreferredLanguage= langCode;
     this.translateService.use(langCode);
   }
 }
