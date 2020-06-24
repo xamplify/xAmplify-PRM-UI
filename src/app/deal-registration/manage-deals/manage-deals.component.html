@@ -7,29 +7,29 @@
 			<ul class="page-breadcrumb">
 				<li *ngIf="!authenticationService.isSuperAdmin()">
 					<i class="fa fa-home" aria-hidden="true"></i>
-					<a [routerLink]="referenceService.homeRouter">Home</a>
+					<a [routerLink]="referenceService.homeRouter" translate>Home</a>
 					<i class="fa fa-angle-right" aria-hidden="true"></i>
 				</li>
 				<li>
 					<ng-container *ngIf="!allApisLoader">
-						<a (click)="showCampaigns()">Opportunities</a>
+						<a (click)="showCampaigns()" translate>Opportunities</a>
 						<i class="fa fa-angle-right" aria-hidden="true"></i>
 					</ng-container>
 				</li>
 
 				<li *ngIf="leadList">
-					<a>Leads</a>
+					<a translate>Leads</a>
 				</li>
 			</ul>
 		</div>
 		<div class="col-xs-12 col-sm-6 col-lg-6 p0">
 			<ul class="mix-filter p0 m0" style="float: right" *ngIf="isCompanyPartner && isVendor && !allApisLoader">
 				<li class="filter" (click)="showPartner()" [class.campaign-type-selected]="isPartnerVersion" style="float: right;
-						margin-top: 5px;" *ngIf="isCompanyPartner">Partner View </li>
+						margin-top: 5px;" *ngIf="isCompanyPartner" translate>Partner View </li>
 				<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
-						margin-top: 5px;" *ngIf=" isVendor && enableLeads">Vendor View</li>
+						margin-top: 5px;" *ngIf=" isVendor && enableLeads" translate>Vendor View</li>
 				<p class="filter" style="float: right;
-						margin: 10px;background-color: white">Opportunities: </p>
+						margin: 10px;background-color: white" translate>Opportunities: </p>
 			</ul>
 		</div>
 		</div>
@@ -51,10 +51,10 @@
 								<div class="number">
 									<span>{{opportunitiesAnalytics?.totalLeads}}</span>
 								</div>
-								<div class="desc">Total Leads</div>
+								<div class="desc" translate>Total Leads</div>
 							</div>
 							<span id="permhref" class="morePadding ">
-								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+								<a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
 					</div>
@@ -69,10 +69,10 @@
 								<div class="number">
 									<span>{{opportunitiesAnalytics?.totalDeals}}</span>
 								</div>
-								<div class="desc">Total Deals</div>
+								<div class="desc" translate>Total Deals</div>
 							</div>
 							<span id="permhref" class="morePadding">
-								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+								<a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
 					</div>
@@ -88,10 +88,10 @@
 								<div class="number">
 									<span>{{opportunitiesAnalytics?.openedDeals}}</span>
 								</div>
-								<div class="desc">Opened Deals</div>
+								<div class="desc" translate>Opened Deals</div>
 							</div>
 							<span id="permhref" class="morePadding">
-								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+								<a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
 					</div>
@@ -129,10 +129,10 @@
 								<div class="number">
 									<span>{{opportunitiesAnalytics?.dealsOnHold}}</span>
 								</div>
-								<div class="desc"> Deals On Hold</div>
+								<div class="desc" translate> Deals On Hold</div>
 							</div>
 							<span id="permhref" class="morePadding">
-								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+								<a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
 					</div>
@@ -147,10 +147,10 @@
 								<div class="number">
 									<span>{{opportunitiesAnalytics?.approvedDeals}}</span>
 								</div>
-								<div class="desc">Approved Deals</div>
+								<div class="desc" translate>Approved Deals</div>
 							</div>
 							<span id="permhref" class="morePadding">
-								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+								<a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
 					</div>
@@ -166,10 +166,10 @@
 								<div class="number">
 									<span>{{opportunitiesAnalytics?.rejectedDeals}}</span>
 								</div>
-								<div class="desc">Rejected Deals</div>
+								<div class="desc" translate>Rejected Deals</div>
 							</div>
 							<span id="permhref" class="morePadding">
-								<a class="more"> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
+								<a class="more" translate> Detailed view <i class="m-icon-swapright m-icon-white"></i></a>
 							</span>
 						</a>
 					</div>
@@ -183,14 +183,14 @@
 					<div class="tab-content">
 						<div class="page-bar m10" *ngIf="!httpRequestLoader.isLoading &&  !httpRequestLoader.isServerError">
 							<ul class="mix-filter col-xs-12 col-sm-6 col-lg-6 p0 m0">
-								<li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;">Campaign Type:</li>
-								<li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex">All</li>
-								<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == sortOption.selectedCampaignTypeIndex">Email</li>
-								<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex">Video</li>
+								<li class="hidden-xs" style="background: white; color: #616161;cursor: default;font-size: 14px;" translate>Campaign Type:</li>
+								<li class="filter" (click)="filterCampaigns('NONE',0)" [class.campaign-type-selected]="0 == sortOption.selectedCampaignTypeIndex" translate>All</li>
+								<li class="filter" (click)="filterCampaigns('REGULAR',1)" [class.campaign-type-selected]="1 == sortOption.selectedCampaignTypeIndex" translate>Email</li>
+								<li class="filter" (click)="filterCampaigns('VIDEO',2)" [class.campaign-type-selected]="2 == sortOption.selectedCampaignTypeIndex" translate>Video</li>
 								<!-- <li class="filter" (click)="filterCampaigns('SOCIAL',3)" [class.campaign-type-selected]="3 == sortOption.selectedCampaignTypeIndex">Social</li> -->
-								<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex">Event</li>
-								<li *ngIf="authenticationService.module.hasLandingPageAccess || authenticationService.module.hasPartnerLandingPageAccess" class="filter" (click)="filterCampaigns('LANDINGPAGE',5)" [class.campaign-type-selected]="5 == sortOption.selectedCampaignTypeIndex">Page</li>
-								<li class="filter" style="display: none;">Own Template</li>
+								<li class="filter" (click)="filterCampaigns('EVENT',4)" [class.campaign-type-selected]="4 == sortOption.selectedCampaignTypeIndex" translate>Event</li>
+								<li *ngIf="authenticationService.module.hasLandingPageAccess || authenticationService.module.hasPartnerLandingPageAccess" class="filter" (click)="filterCampaigns('LANDINGPAGE',5)" [class.campaign-type-selected]="5 == sortOption.selectedCampaignTypeIndex" translate>Page</li>
+								<li class="filter" style="display: none;" translate>Own Template</li>
 							</ul>
 							<div class="page-toolbar col-xs-12 col-sm-6 col-lg-6">
 								<div class="btn-group pull-right">
@@ -225,8 +225,8 @@
 								</div>
 							</div>
 						</div>
-						<div class="row" id="box" *ngIf="httpRequestLoader.isServerError">
-							Please contact admin for "Campaings"
+						<div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
+							Please contact admin for 'Campaings'
 						</div>
 						<app-grid-loader *ngIf="httpRequestLoader.isLoading && !isListView && !httpRequestLoader.isServerError"></app-grid-loader>
 						<app-list-loader *ngIf="httpRequestLoader.isLoading && isListView && !httpRequestLoader.isServerError"></app-list-loader>
@@ -237,10 +237,10 @@
 									<thead>
 
 										<tr>
-											<th class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
-											<th class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
-											<th class="hidden-xs">Status </th>
-											<th>Leads Count </th>
+											<th class="hidden-xs" colspan="2" style="width: 50%" translate>Campaign</th>
+											<th class="visible-xs" colspan="1" style="width: 50%" translate>Campaign</th>
+											<th class="hidden-xs" translate>Status </th>
+											<th translate>Leads Count </th>
 										</tr>
 
 									</thead>
@@ -267,7 +267,7 @@
 												</td>
 												<td class="center hidden-xs">
 													<span align="right">
-														<b>Launched On</b>
+														<b translate>Launched On</b>
 													</span>
 													<span align="right" title="Upload Date">
 														<b>
@@ -303,10 +303,10 @@
 								<table class='table tgrid table-hover table-sm' *ngIf="isListView">
 									<thead>
 										<tr>
-											<th class="hidden-xs" colspan="2" style="width: 50%">Campaign</th>
-											<th class="visible-xs" colspan="1" style="width: 50%">Campaign</th>
-											<th class="hidden-xs">Status</th>
-											<th class="hidden-xs">Deals Count</th>
+											<th class="hidden-xs" colspan="2" style="width: 50%" translate>Campaign</th>
+											<th class="visible-xs" colspan="1" style="width: 50%" translate>Campaign</th>
+											<th class="hidden-xs" translate>Status</th>
+											<th class="hidden-xs" translate>Deals Count</th>
 
 										</tr>
 									</thead>
@@ -332,7 +332,7 @@
 												</td>
 												<td class="center hidden-xs">
 													<span align="right">
-														<b>Launched On</b>
+														<b translate>Launched On</b>
 													</span>
 													<span align="right" title="Upload Date">
 														<b>
@@ -369,7 +369,7 @@
 							</div>
 						</section>
 						<div *ngIf="sortOption.totalRecords <= 0 && isListView && !httpRequestLoader.isLoading " class="alert alert-info">
-							<strong>No campaigns found</strong>
+							<strong translate>No campaigns found</strong>
 						</div>
 						<!-- ------------------------------List View----------------------- -->
 						<div class="tab-pane active" *ngIf="!isListView">
@@ -386,7 +386,7 @@
 												<h6 class="mt0"><b>{{campaign.companyName | slice:0:15}}<span *ngIf="campaign.companyName?.length>15">...</span></b></h6>
 												<h6>
 													<span>
-														<span>Launched On</span>
+														<span translate>Launched On</span>
 													</span>
 													<span title="Upload date">
 														<span>
@@ -402,7 +402,7 @@
 													</span>
 												</div>
 												<div class="ribbon" [class.active]="false">
-													<span>Launched</span>
+													<span translate>Launched</span>
 												</div>
 												<div class="bar">
 													<a data-toggle="tooltip" data-placement="top" title="Number of Deals">
@@ -431,7 +431,7 @@
 							</div>
 							<!-- End of 24 -->
 							<div *ngIf="sortOption.totalRecords <= 0 && !isListView && !httpRequestLoader.isLoading"  class="alert alert-info">
-								<strong>No campaigns found</strong>
+								<strong translate>No campaigns found</strong>
 							</div>
 						</div>
 						<!-- --------------------Pagination0-------------------- -->
@@ -461,8 +461,8 @@
 			<app-response-message [customResponse]="customResponse" *ngIf="customResponse?.isVisible"></app-response-message>
 			<div class="caption col-xs-8 col-md-6" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px
 				;font-size: 18px;font-weight: 600">
-				<span class="caption-subject font-red-sunglo uppercase" *ngIf="filterDeals.length >0">{{filterDeals}} Deals</span>
-				<span class="caption-subject font-red-sunglo uppercase" *ngIf="filterDeals.length == 0">Total Leads</span>
+				<span class="caption-subject font-red-sunglo uppercase" *ngIf="filterDeals.length >0" >{{filterDeals | translate}} Deals</span>
+				<span class="caption-subject font-red-sunglo uppercase" *ngIf="filterDeals.length == 0" translate>Total Leads</span>
 			</div>
 
 			<a (click)="closeLeads()" class="pull-right close-circle" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
