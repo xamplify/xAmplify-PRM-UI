@@ -29,6 +29,7 @@ import { ImageCroppedEvent } from '../../../common/image-cropper/interfaces/imag
 import { ImageCropperComponent } from '../../../common/image-cropper/component/image-cropper.component';
 import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 
 declare var $,swal: any;
@@ -183,7 +184,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
-        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute,public callActionSwitch: CallActionSwitch) {
+        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute,public callActionSwitch: CallActionSwitch, private vanityURLService: VanityURLService) {
         if(this.router.url.indexOf("/home/dashboard/admin-company-profile")>-1){
             this.userAlias = this.route.snapshot.params['alias'];
             if(this.userAlias!=undefined && $.trim(this.userAlias).length>0){
@@ -503,6 +504,9 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                           this.message = 'Company Profile saved successfully';
                           this.formUpdated = false;
                         }
+                        this.authenticationService.v_companyFavIconPath = this.companyProfile.favIconLogoPath;
+                        this.authenticationService.v_companyName = this.companyProfile.companyName;
+                        this.vanityURLService.setVanityURLTitleAndFavIcon();                        
                         $('#info').hide();
                         $('#edit-sucess').show(600);
                         let self = this;
@@ -594,7 +598,10 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         if(this.message ==='Company Profile Info Updated Successfully'){
                           this.message = 'Company Profile updated successfully'
                           this.formUpdated = false;
-                        }
+                        }                        
+                        this.authenticationService.v_companyFavIconPath = this.companyProfile.favIconLogoPath;
+                        this.authenticationService.v_companyName = this.companyProfile.companyName;
+                        this.vanityURLService.setVanityURLTitleAndFavIcon();
                         this.homeComponent.getVideoDefaultSettings();
                         $('#company-profile-error-div').hide();
                         $('#info').hide();
@@ -690,10 +697,13 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         }
         if ($.trim(this.companyProfile.favIconLogoPath).length > 0) {
             this.companyFavIconPath = this.companyProfile.favIconLogoPath;
+            this.authenticationService.v_companyFavIconPath = this.companyFavIconPath;            
         }
         if ($.trim(this.companyProfile.country).length == 0) {
             this.companyProfile.country = this.countryNames.countries[0];
         }
+        this.authenticationService.v_companyName = existingCompanyName;
+        this.vanityURLService.setVanityURLTitleAndFavIcon();
         this.geoLocation();
         this.existingCompanyName = existingCompanyName;
         this.loadPublicVideos();
