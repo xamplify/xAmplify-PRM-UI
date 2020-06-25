@@ -344,8 +344,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    cancelEvent(cancelEventData: any, userId: number, channelCampaign:boolean) {
-        let url = this.URL + "campaign/cancel-event-campaign/" + userId + "/" + channelCampaign +"?access_token=" + this.authenticationService.access_token;
+    cancelEvent(cancelEventData: any, userId: number, channelCampaign:boolean, nurtureCampaign:boolean,toPartner:boolean) {
+        let url = this.URL + "campaign/cancel-event-campaign/" + userId + "/" + channelCampaign + "/" + nurtureCampaign  + "/" + toPartner 
+        +"?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, cancelEventData)
             .map(this.extractData)
             .catch(this.handleError);
