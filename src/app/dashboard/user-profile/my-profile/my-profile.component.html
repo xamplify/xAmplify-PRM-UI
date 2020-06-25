@@ -1095,15 +1095,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeDeleteCategoryModal()">
-                    <i class="fa fa-times"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-center">Move Items & Delete Folder</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Select Folder</label>
+                    <label>The contents of this folder must be transferred to another location. Please select a folder.
+                    </label>
                     <select class="form-control" [(ngModel)]="selectedCategoryIdForTransferItems">
-                        <option value="0">Please select a folder</option>
+                        <option value="0">please select a folder</option>
                         <option *ngFor="let category of exisitingCategories" [ngValue]="category.id">{{category.name}}</option>
                         </select>
                 </div>

@@ -1545,7 +1545,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 data => {
                     this.gdprSetting.isExists = true;
-                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.customResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
                     this.referenceService.stopLoader(this.httpRequestLoader);
                 },
                 (error: any) => {
