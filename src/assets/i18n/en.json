@@ -613,9 +613,13 @@
 "26499new": "26499new",
 "26470new": "26470new",
 "26464new": "26464new",
-"soit heureux": "soit heureux"
+"soit heureux": "soit heureux",
 
-
-
-
+"PUBLIC": "PUBLIC",
+"Add Form Details": "Add Form Details",
+"Name*":"Name*",
+"Select a folder": "Select a folder",
+"Description": "Description",
+"Continue": "Continue",
+"TGAInfoSolutions-Default-Category":"TGAInfoSolutions-Default-Category"
 }

@@ -629,12 +629,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group" id="formNameDiv">
-                        <label>Name <font class="invalid-form-name">*</font></label>
+                        <label translate>Name <font class="invalid-form-name">*</font></label>
                         <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
                         <span *ngIf="!form.isValid" class="required" translate>{{formNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
-                        <label>Select a folder <font class="invalid-form-name">*</font></label>
+                        <label translate>Select a folder <font class="invalid-form-name">*</font></label>
                         <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
                         <option *ngFor="let category of categoryNames" [value]="category.id" translate>
                           {{category.name}}
@@ -642,7 +642,7 @@
                     </select>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
+                        <label translate>Description</label>
                         <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
                     </div>
                     <!-- <div class="form-group">
@@ -666,3 +666,32 @@
     <app-preview-popup #previewPopUpComponent></app-preview-popup>
 </div>
 <!-- -End Of page-content -->
+
+
+
+
+
+
+
+
+
+
+
+
+	
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
