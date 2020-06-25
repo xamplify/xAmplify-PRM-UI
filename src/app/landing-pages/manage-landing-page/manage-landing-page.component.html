@@ -80,7 +80,7 @@
                                     <div *ngIf="!isPartnerLandingPage">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option *ngFor="let option of sortOption.manageFormsSortOptions"
-                                                    [ngValue]="option" translate>
+                                                    [ngValue]="option">
                                                     {{option.name}}</option>
                                             </select>
                                     </div>
@@ -88,7 +88,7 @@
                                         <select class="form-control" [(ngModel)]="sortOption.partnerLandingPageSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
                                                 <option
                                                     *ngFor="let option of sortOption.partnerLandingPageSortOptions"
-                                                    [ngValue]="option" translate>
+                                                    [ngValue]="option">
                                                     {{option.name}}</option>
                                             </select>
                                     </div>
@@ -140,22 +140,22 @@
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{landingPage.name}}">
-                                                <span><b translate>{{landingPage.name}}</b></span>
+                                                <span><b>{{landingPage.name}}</b></span>
                                             </h4>
                                            
                                             <ng-container>
                                                 <h6 class="moreipsis" title="{{landingPage.createdUser}}">
-                                                    <span *ngIf="!isPartnerLandingPage" translate>Created By <b translate>{{landingPage.createdUser}}</b></span>
-                                                    <span *ngIf="isPartnerLandingPage" translate>Shared By <b translate>{{landingPage.createdUser}}</b></span>
+                                                    <span *ngIf="!isPartnerLandingPage" translate>Created By <b>{{landingPage.createdUser}}</b></span>
+                                                    <span *ngIf="isPartnerLandingPage" translate>Shared By <b>{{landingPage.createdUser}}</b></span>
                                                 </h6>
                                             </ng-container>
                                             <h6 class="moreipsis" *ngIf="isPartnerLandingPage">
-                                                <span translate>From <b translate>{{landingPage.companyName}}</b></span>
+                                                <span>From <b>{{landingPage.companyName}}</b></span>
                                             </h6>
                                             <h6 class="moreipsis">
-                                                <span translate>Folder <b translate>{{landingPage.categoryName}}</b></span>
+                                                <span>Folder <b>{{landingPage.categoryName}}</b></span>
                                             </h6>
-                                            <span class="view-banner" translate>{{landingPage.type}}</span>
+                                            <span class="view-banner">{{landingPage.type}}</span>
                                         </td>
 
                                         <td class="hidden-xs text-center" *ngIf="!isPartnerLandingPage">
@@ -183,7 +183,7 @@
                                                                 aria-hidden="true"></i></a>
                                                     <a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                                 class="fa fa-wpforms" aria-hidden="true"></i></a>
-                                                    <span class="badge" id="notification-list" translate>{{landingPage.formsCount}}</span>
+                                                    <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
                                                 </ng-container>
                                                 <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                                     <a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
@@ -195,7 +195,7 @@
                                                     <a *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Analytics">
                                                         <i class="fa fa-line-chart" aria-hidden="true"></i>
                                                     </a>
-                                                    <span class="badge" id="notification-list" translate>{{landingPage.analyticsCount}}</span>
+                                                    <span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
                                                 </ng-container>
                                                 <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
                                                     <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -221,9 +221,9 @@
                                 <div>
                                     <h4 id="landing-page-title" title="{{landingPage.name}}">
                                         {{landingPage.name|slice:0:23}} <span *ngIf="landingPage.name?.length>23">....</span></h4>
-                                    <span class="view-banner" translate>{{landingPage.type}}</span>
-                                    <h6 title="{{landingPage.categoryName}}" translate>
-                                        Folder <strong translate>{{landingPage.categoryName | slice:0:25}}</strong>
+                                    <span class="view-banner">{{landingPage.type}}</span>
+                                    <h6 title="{{landingPage.categoryName}}">
+                                        Folder <strong>{{landingPage.categoryName | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.categoryName?.length>25">..</span>
                                     </h6>
                                     <h6 *ngIf="!isPartnerLandingPage" translate>Created On <strong>
@@ -234,7 +234,7 @@
                                                 <app-timestamp [isOnlyDate]="true"
                                                     [dateAndTime]="landingPage.displayTime"> </app-timestamp>
                                             </strong></h6>
-                                    <h6 title="{{landingPage.createdUser}}" translate>By
+                                    <h6 title="{{landingPage.createdUser}}">By
                                         <strong>{{landingPage.createdUser | slice:0:25}}</strong>
                                         <span *ngIf="landingPage.createdUser?.length>25">..</span>
                                     </h6>
@@ -257,7 +257,7 @@
                                                     aria-hidden="true"></i></a>
                                         <a *ngIf="isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageFormAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Form Count"><i
                                                     class="fa fa-wpforms" aria-hidden="true"></i></a>
-                                        <span class="badge" id="notification-list" translate>{{landingPage.formsCount}}</span>
+                                        <span class="badge" id="notification-list">{{landingPage.formsCount}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="!(isPartnerLandingPage && landingPage.type=='PRIVATE')">
                                         <a *ngIf="landingPage.analyticsCount<=0" data-rel="fancybox-button" id="cursor-not-allowed" data-toggle="tooltip" data-placement="top" title="Analytics">
@@ -269,7 +269,7 @@
                                         <a *ngIf="landingPage.analyticsCount>0 && isPartnerLandingPage" data-rel="fancybox-button" (click)="goToPartnerLandingPageAnalytics(landingPage.alias)" data-toggle="tooltip" data-placement="top" title="Analytics">
                                             <i class="fa fa-line-chart" aria-hidden="true"></i>
                                         </a>
-                                        <span class="badge" id="notification-list" translate>{{landingPage.analyticsCount}}</span>
+                                        <span class="badge" id="notification-list">{{landingPage.analyticsCount}}</span>
                                     </ng-container>
                                     <a *ngIf="!isPartnerLandingPage && (deleteAndEditAccess || loggedInUserId==landingPage.userId)" data-toggle="tooltip" class="delete" data-placement="top" title="Delete" (click)="confirmDelete(landingPage)">
                                         <i class="fa fa-trash-o" aria-hidden="true"></i>
@@ -285,7 +285,7 @@
                         </app-pagination>
                     </div>
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                        <strong>No Pages Found.</strong>
+                        <strong translate>No Pages Found.</strong>
                     </div>
                 </ng-container>
             </div>
@@ -310,15 +310,13 @@
                         <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="landingPageAliasUrl" #userinput>
                         <br>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')" translate>Copy
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Page link')" translate>Copy Link</a>
                         <br>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" translate>Copy Embed Link</label>
+                        <label class="control-label">Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')"  translate>Copy Embed
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link</a>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -330,19 +328,3 @@
     <app-preview-landing-page #previewLandingPageComponent></app-preview-landing-page>
     <app-scroll-top></app-scroll-top>
 </div>
-
-
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-
-	
-
-	
