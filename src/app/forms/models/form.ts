@@ -8,6 +8,7 @@ export class Form {
     description = "";
     formLabelDTOs: Array<ColumnInfo> = new Array<ColumnInfo>();
     isValid = false;    
+    isFormNameValid = false;  
     createdBy:number;
     updatedBy:number;
     analyticsType:GeoLocationAnalyticsType;
@@ -18,5 +19,11 @@ export class Form {
     partnerCompanyId:number;   
     categoryId:number = 0; 
     ailasUrl = "";
-    //backgroundColor = ""; 
+    backgroundColor = ""; 
+    labelColor= "";
+    buttonValue= "";
+    buttonColor= "";
+    buttonValueColor= "";
+    formSubmitMessage= "";
+    backgroundImage= "";
 }

@@ -1,3 +1,4 @@
+
 <div class="page-content">
     <div class="my-container">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -94,8 +95,8 @@
                                         <a class="close-circle" data-toggle="tooltip" [attr.data-original-title]="toolTip" id="full-screen" (click)="expandForm()"><i class="fa fa-expand" aria-hidden="true"></i></a>
                                         <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true" id="eye"></i></a>
                                     </div>
-                                    <!-- <div class="portlet-body clearfix" id="create-from-div" [style.backgroundColor]="form.backgroundColor"> -->
-                                    <div class="portlet-body clearfix" id="create-from-div">
+                                    <div class="portlet-body clearfix" id="create-from-div" [style.backgroundColor]="form.backgroundColor"
+                                    [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
                                         <div class="tab-content">
                                             <!-- <div class="profile-image-wrapper" style="cursor:pointer">
                           <span></span>
@@ -116,7 +117,7 @@
                                                                 <legend>
                                                                     <a id="drag-div">
                                                                         <h4>
-                                                                            <label class="control-label">{{columnInfo.labelName}}
+                                                                            <label class="control-label" [style.color]="form.labelColor" >{{columnInfo.labelName}}
                                         <span class="required" *ngIf="columnInfo.required">*</span>
                                       </label>
                                                                             <button type="button" class="btn btn-danger btn-xs right-corner" (click)="$event.stopPropagation();removeColumn(columnInfo,i)">
@@ -135,7 +136,7 @@
                                                                         <ng-container *ngIf="columnInfo.labelType=='radio'">
                                                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <label class="form-check-label">
+                                                                                    <label class="form-check-label"  [style.color]="form.labelColor">
                                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                                               class="form-check-input">
                                             {{radioButton.name}}
@@ -148,7 +149,7 @@
                                                                         <ng-container *ngIf="columnInfo.labelType=='checkbox'">
                                                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                                                 <div class="form-check">
-                                                                                    <label class="form-check-label">
+                                                                                    <label class="form-check-label"  [style.color]="form.labelColor">
                                             <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
                                               class="form-check-input">
                                             {{checkBox.name}}
@@ -296,7 +297,7 @@
 
 
     <div class="modal right fade" id="add-form-name-modal" data-backdrop="static">
-        <div class="modal-dialog modal-lg" style="width: 75%; right: 0">
+        <div class="modal-dialog modal-lg" style="width: 75%; right: 0;overflow-y: scroll;">
             <div class="modal-content">
                 <div class="modal-header">
                     <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
@@ -308,7 +309,7 @@
                     <div class="form-group" id="formNameDiv">
                         <label>Name <font class="invalid-form-name">*</font></label>
                         <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
-                        <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
+                        <span *ngIf="!form.isFormNameValid" class="required">{{formNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
                         <label>Select a folder <font class="invalid-form-name">*</font></label>
@@ -322,14 +323,72 @@
                         <label>Description</label>
                         <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
                     </div>
-                    <!-- <div class="form-group">
+                    <div class="form-group">
+                        <label>Form Submit Message:</label>
+                            <textarea class="form-control" placeholder="Form Submit Message"  [(ngModel)]="form.formSubmitMessage" 
+                            maxlength="1000" rows="5" (input)="characterSize()"></textarea>
+                            <label class="text-area-css">{{charactersLeft}} characters
+                                left</label>
+                    </div>
+                    <div class="form-group">
                         <label>Background Color:</label>
-                            <input class="form-control" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" [(ngModel)]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form)"
-                                [value]="compControllerColor" [cpPosition]="'bottom'" />
-                    </div> -->
+                            <input class="form-control" [(colorPicker)]="compControllerColor" [style.background]="compControllerColor" [(ngModel)]="form.backgroundColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')"
+                                [value]="compControllerColor" [cpPosition]="'bottom'" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label>Label Color</label>
+                            <input class="form-control" [(colorPicker)]="labelControllerColor" [style.background]="labelControllerColor" [(ngModel)]="form.labelColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'labelColor')"
+                                [value]="labelControllerColor" [cpPosition]="'bottom'" readonly/>
+                    </div>
+                    <div class="form-group"  id="formButtonValueDiv">
+                        <label>Submit Button Value<font class="invalid-form-name">*</font></label>
+                            <input class="form-control" [value]="Submit"  [(ngModel)]="form.buttonValue" maxlength="1000"
+                            (input)="validateFormButtonValue(form.buttonValue)" />
+                            <span *ngIf="!form.isValid" class="required">{{formButtonValueErrorMessage}}</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Button Value Color</label>
+                            <input class="form-control" [(colorPicker)]="buttonValueControllerColor" [style.background]="buttonValueControllerColor" [(ngModel)]="form.buttonValueColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonValueColor')"
+                                [value]="buttonValueControllerColor" [cpPosition]="'bottom'" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label>Button Background Color</label>
+                            <input class="form-control" [(colorPicker)]="buttonBackgroundControllerColor" [style.background]="buttonBackgroundControllerColor" [(ngModel)]="form.buttonColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'buttonColor')"
+                                [value]="buttonBackgroundControllerColor" [cpPosition]="'bottom'" readonly />
+                    </div>
+                    <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;"
+                    (click)="imageClick()">
+                    <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
+                    <span *ngIf="!croppedImage">
+                     <span
+                        *ngIf="!imageChangedEvent" style="color: #f55d7a;">*
+                            Please upload company logo</span>
+                    </span> 
+                            
+                            <span
+                        *ngIf="(squareData | json) == '{}'"> <img
+                        *ngIf="!imageChangedEvent"
+                        src="assets/images/company-profile-logo.png"
+                        class="profile-image img-grid"></span>
+                        
+                         <span
+                        *ngIf="croppedImage; else showImage"> <img class="img-grid"
+                        [src]="croppedImage">
+                    </span>
+                    <ng-template #showImage> <img class="img-grid"
+                        *ngIf="companyLogoImageUrlPath"
+                        [src]="form.backgroundImage"
+                        (error)="errorHandler($event)"> </ng-template>
+                         <a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent()"
+                          data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
+                           &nbsp;&nbsp;<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"></i></a>
+                </div>
+                <div class="col-md-12" style="text-align: center;padding-top:16px;">
+        <p style="color:#949090;"> upload 2:1 ratio logo only</p>
+    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" [disabled]="!form.isValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                    <button type="submit" [disabled]="!form.isValid || !form.isFormNameValid" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
                 </div>
             </div>
         </div>
@@ -343,3 +402,67 @@
     <app-preview-popup #previewPopUpComponent></app-preview-popup>
 </div>
 <!-- -End Of page-content -->
+
+<!--Modal Popup Starts Here------------>
+<div class="modal right fade" id="cropbackgroundImage" tabindex="-1"
+	role="dialog" aria-labelledby="cropLogoImage" data-keyboard="false"
+	data-backdrop="static">
+	<div class="modal-dialog imgCrop-modal" role="document">
+		<div class="modal-content rounded-0">
+			<div class="modal-header">
+				<a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()"><i
+					class="fa fa-times"></i></a>
+				<h4 class="modal-title" id="cropLogoImage">Choose the image to
+					be used as form background</h4>
+			</div>
+			<div class="modal-body" style="overflow-y: unset !important;">
+				<div style="position: relative; top: -5px; width: 118px;"
+					class="btn green fileinput-button-css" *ngIf="!imageChangedEvent">
+					<span>Select image</span> <input style="height: 36px;" title=" "
+						id="custom-input" type="file"
+						(change)="filenewChangeEvent($event)">
+				</div>
+				<div style="position: relative; top: -5px;"
+					*ngIf="errorUploadCropper" style="color:red">*Please Upload
+					only images</div>
+				<div>
+					<ngx-loading [show]="loadingcrop"
+						[config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
+					<div [hidden]="!imageChangedEvent">
+						<image-cropper [imageChangedEvent]="imageChangedEvent"
+							[maintainAspectRatio]="false" [onlyScaleDown]="true"
+							[roundCropper]="false" format="jpg" outputType="base64"
+							(imageCropped)="imageCroppedMethod($event)"
+							(imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
+							(imageQuality)=0 (loadImageFailed)="loadImageFailed()"
+							[style.display]="showCropper ? null : 'none'"></image-cropper>
+					</div>
+					<div *ngIf="!imageChangedEvent">
+						<fieldset
+							style="background: #cacaca; height: 227px; margin-bottom: 5px;">
+						</fieldset>
+					</div>
+				</div>
+				<div>
+					<button class="btn btn-primary" [disabled]="!showCropper"
+						(click)="uploadBackgroundImage()">Save Changes</button>
+				</div>
+				<div>
+					<ul style="padding: 0 15px;">
+						<li>For optimal results, your logo should fit within the
+							white rectangle.</li>
+						<li>If you would like to use a different logo in an email
+							template, you can change it during the template design process.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<svg id="svg-filter">
+        <filter id="svg-blur">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1"></feGaussianBlur>
+        </filter>
+    </svg>
+</div>
+
+  

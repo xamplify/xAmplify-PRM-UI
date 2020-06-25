@@ -222,3 +222,56 @@ LEGEND {
 #eye{
 	margin-left: -1px;
 }
+
+.text-area-css{
+	float: right;
+	font-size: 11px;
+	position: relative;
+	left: -4px;
+	color: #7b8894;
+	bottom: 22px;
+  }
+
+  .profile-image-wrapper {
+    display: block;
+    width: 224px;
+    height: auto;
+    background: #fff;
+    padding: 1px;
+    margin: 0 auto;
+    border: 2px dotted #ddd;
+    position: relative;
+  }
+
+.profile-image {
+	border-radius: 50% !important;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+  
+.upload-btn-wrapper {
+	position: absolute;
+	overflow: hidden;
+	display: block;
+	cursor: pointer;
+	right: 0;
+	bottom: 0;
+	width: 32px;
+}
+
+.upload-btn-wrapper .fa {
+	border: 1px solid #008fd5;
+	color: #008fd5;
+	background-color: white;
+	padding: 7px;
+	border-radius: 50%;
+}
+
+.upload-btn-wrapper input[type=file] {
+	padding: 10px;
+	margin-top: -35px;
+	opacity: 0;
+	cursor: pointer;
+	width: 32px;
+}

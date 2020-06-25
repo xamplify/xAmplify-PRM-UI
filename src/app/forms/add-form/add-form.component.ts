@@ -14,7 +14,12 @@ import { Router } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {PreviewPopupComponent} from '../preview-popup/preview-popup.component';
-//import {VideoUtilService } from '../../videos/services/video-util.service';
+import {VideoUtilService } from '../../videos/services/video-util.service';
+import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import { UtilService } from 'app/core/services/util.service';
+
+import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
+
 
 declare var $:any,swal:any ;
 
@@ -60,6 +65,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     formErrorClass = "form-group form-error";
     defaultFormClass = "form-group";
     formNameErrorMessage = "";
+    formButtonValueErrorMessage = "";
     names:any = [];
     isAdd = true;
     portletBody = 'portlet-body';
@@ -72,12 +78,27 @@ export class AddFormComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
     categoryNames: any;
     routerLink: string="/home/forms/manage";
-   // compControllerColor: string;
-   // valueRange: number;
-    // constructor(public logger: XtremandLogger,public referenceService:ReferenceService,public videoUtilService: VideoUtilService,
-        constructor(public logger: XtremandLogger,public referenceService:ReferenceService,
+   compControllerColor: string;
+   labelControllerColor: string;
+   buttonBackgroundControllerColor: string;
+   buttonValueControllerColor: string;
+   valueRange: number;
+   charactersLeft= 1000;
+   cropRounded = false;
+   @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
+   errorUploadCropper = false;
+   loadingcrop = false;
+   fileObj: any;
+   squareData:any;
+   imageChangedEvent: any = '';
+   croppedImage: any = '';
+   showCropper = false;
+   squareCropperSettings: any;
+   companyLogoImageUrlPath = "";
+
+    constructor(public logger: XtremandLogger,public referenceService:ReferenceService,public videoUtilService: VideoUtilService,
         public authenticationService:AuthenticationService,public formService:FormService,
-        private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch,public route:ActivatedRoute) {
+        private router:Router,private dragulaService: DragulaService,public callActionSwitch: CallActionSwitch,public route:ActivatedRoute, public utilService: UtilService) {
             this.loggedInUserId = this.authenticationService.getUserId();
         let categoryId = this.route.snapshot.params['categoryId'];
          if(categoryId>0){
@@ -94,12 +115,16 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.buttonName = "Update";
             this.existingFormName = this.formService.form.name.toLowerCase();
             this.form = this.formService.form;
+            this.form.isFormNameValid = true;
             this.form.isValid = true;
             this.listExistingColumns(this.form.formLabelDTOs);
+            this.characterSize();
         }else{
             this.listDefaultColumns();
         }
         this.highlightByLength(1);
+
+        this.cropperSettings();
 
         dragulaService.setOptions('form-options', {})
             dragulaService.dropModel.subscribe((value) => {
@@ -119,6 +144,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
         }
         this.listFormNames();
         this.listCategories();
+        if(!this.form.backgroundImage){
+            this.squareData = {};
+          }
     }
 
     listCategories(){
@@ -209,6 +237,14 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
     
     
+    validateFormButtonValue(buttonValue:string){
+        if(!($.trim(buttonValue).length>0)){
+            this.addFormButtonValueErrorMessage(this.requiredMessage);
+        }else {
+            this.removeFormButtoValueErrorClass();
+        }
+    }
+    
     sumbitOnEnter(event){
         if(event.keyCode==13 &&this.form.isValid){
             this.unBlurDiv();
@@ -220,10 +256,15 @@ export class AddFormComponent implements OnInit, OnDestroy {
     removeFormNameErrorClass(){
         $('#formNameDiv').removeClass(this.formErrorClass);
         $('#formNameDiv').addClass(this.defaultFormClass);
-        this.form.isValid = true;
+        this.form.isFormNameValid=true;
         this.formNameClass = "valid-form-name";
     }
     
+    removeFormButtoValueErrorClass(){
+        $('#formButtonValueDiv').removeClass(this.formErrorClass);
+        $('#formButtonValueDiv').addClass(this.defaultFormClass);
+        this.form.isValid = true;
+    }
     
     
     highlightByLength(length:number){
@@ -555,12 +596,19 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
 
     private addFormNameErrorMessage(errorMessage:string) {
-        this.form.isValid = false;
+        this.form.isFormNameValid = false;
         $('#formNameDiv').addClass(this.formErrorClass);
         this.formNameErrorMessage = errorMessage;
         this.formNameClass = "invalid-form-name";
     }
     
+    private addFormButtonValueErrorMessage(errorMessage:string) {
+        this.form.isValid = false;
+        $('#formButtonValueDiv').addClass(this.formErrorClass);
+        this.formButtonValueErrorMessage = errorMessage;
+    }
+
+
     private showSweetAlert(errorMessage:string){
         swal(errorMessage,"","error");
     }
@@ -577,7 +625,14 @@ export class AddFormComponent implements OnInit, OnDestroy {
      
      save(form:Form){
          form.formType = this.formType;
-         this.formService.saveForm(form)
+         let formData: FormData = new FormData(); 
+         formData.append('formDto',JSON.stringify(this.form));
+         if(this.fileObj){
+            formData.append('file', this.fileObj, this.fileObj.name);
+         }else{
+            formData.append('file', null);
+         }
+         this.formService.saveForm(formData)
          .subscribe(
          (result:any) => {
              if(result.access){
@@ -605,7 +660,14 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
      
      update(form:Form){
-         this.formService.updateForm(form)
+        let formData: FormData = new FormData(); 
+        formData.append('formDto',JSON.stringify(this.form));
+        if(this.fileObj){
+            formData.append('file', this.fileObj, this.fileObj.name);
+         }else{
+            formData.append('file', null);
+         }       
+        this.formService.updateForm(formData)
          .subscribe(
          (result:any) => {
              if(result.access){
@@ -689,13 +751,98 @@ export class AddFormComponent implements OnInit, OnDestroy {
         }
       }
 
-    //   changeControllerColor(event: any, form:Form) {
-    //     try {
-    //         this.compControllerColor = event;
-    //             const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
-    //             $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
-    //            form.backgroundColor=event;
-    //     } catch (error) { console.log(error); }
-    // }
+      changeControllerColor(event: any, form:Form, type:string) {
+        try {
+                const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
+                $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
+                if(type === "backgroundColor"){
+                    this.compControllerColor = event;
+                    form.backgroundColor=event;
+                }else if(type === "labelColor"){
+                    this.labelControllerColor = event;
+                    form.labelColor=event;
+                }else if(type === "buttonColor"){
+                    this.buttonBackgroundControllerColor = event;
+                    form.buttonColor=event
+                }else if(type === "buttonValueColor"){
+                    this.buttonValueControllerColor = event;
+                    form.buttonValueColor=event
+                }
+        } catch (error) { console.log(error); }
+    }
+
+    characterSize(){
+        this.charactersLeft=1000-this.form.formSubmitMessage.length;
+    }
+
+    imageClick(){
+        this.fileChangeEvent();
+       }
+
+       closeImageUploadModal(){
+        this.cropRounded = !this.cropRounded;
+        this.squareData = {};
+        this.imageChangedEvent = null;
+        this.croppedImage = '';
+        this.fileObj=null;
+        $('#add-form-name-modal').removeClass(this.portletBodyBlur);
+      }
+
+      filenewChangeEvent(event){
+        const image:any = new Image();
+        const file:File = event.target.files[0];
+        const isSupportfile = file.type;
+        if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
+            this.errorUploadCropper = false;
+            this.imageChangedEvent = event;
+        } else {
+          this.errorUploadCropper = true;
+          this.showCropper = false;
+        }
+      }
+
+      imageCroppedMethod(event: ImageCroppedEvent) {
+        this.croppedImage = event.base64;
+        console.log(event);
+      }
+
+      imageLoaded() {
+        this.showCropper = true;
+        console.log('Image loaded')
+      }
+
+      cropperReady() {
+        console.log('Cropper ready')
+      }
+
+      loadImageFailed () {
+        console.log('Load failed');
+        this.errorUploadCropper = true;
+        this.showCropper = false;
+      }
+
+      uploadBackgroundImage() {
+        this.loadingcrop = true;
+        this.fileObj = this.utilService.convertBase64ToFileObject(this.croppedImage);
+        this.fileObj = this.utilService.blobToFile(this.fileObj);
+        this.loadingcrop = false;
+        $('#cropbackgroundImage').modal('hide');
+        $('#add-form-name-modal').removeClass(this.portletBodyBlur);
+    }
+
+    fileChangeEvent() { 
+        this.cropRounded = false;
+        $('#add-form-name-modal').addClass(this.portletBodyBlur);
+        $('#cropbackgroundImage').modal('show');
+     }
+
+    cropperSettings() {
+        this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings,130,196,130,false);
+        this.squareCropperSettings.noFileInput = true;
+        if(this.form.backgroundImage.length>0){
+            this. companyLogoImageUrlPath = this.form.backgroundImage;
+            console.log(this.companyLogoImageUrlPath)
+        }
+    }
 
 }

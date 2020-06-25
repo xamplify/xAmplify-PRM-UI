@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http,Response } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -22,14 +22,14 @@ export class FormService {
     constructor( private http: Http, private authenticationService: AuthenticationService, private logger: XtremandLogger ) { }
 
 
-    saveForm( form: Form ) {
-        return this.http.post( this.URL + "save?access_token=" + this.authenticationService.access_token, form )
+    saveForm(formData: any) {
+        return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token, formData)
             .map( this.extractData )
             .catch( this.handleError );
     }
 
-    updateForm( form: Form ) {
-        return this.http.post( this.URL + "update?access_token=" + this.authenticationService.access_token, form )
+    updateForm(formData: any) {
+        return this.http.post(this.URL + "update?access_token=" + this.authenticationService.access_token, formData)
             .map( this.extractData )
             .catch( this.handleError );
     }
