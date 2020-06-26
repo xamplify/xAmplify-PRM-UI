@@ -14,11 +14,11 @@
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
             <div class="portlet light">
                 <div class="portlet-title">
-                    <div class="caption">
+                    <div class="caption" translate>
                         <i class="fa fa-cogs"></i>Create a Design
                     </div>
                     <div>
-                        <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+                        <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -34,23 +34,23 @@
                                             <img alt="Email Templates" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/email-design.png">
                                         </div>
                                         <div class="text">
-                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Email Templates
+                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Email Templates
                                             </h4>
-                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
+                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
                                                 For use in email, video, and event campaigns.
                                             </p>
                                         </div>
                                         <div class="text">
                                             <h5>
                                                 <a [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                 <span class="design-name">Design Email Templates</span></a>
+                                 <span class="design-name" translate>Design Email Templates</span></a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5>
                                                 <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']"><i
                                     class="fa fa-list">&nbsp;</i>&nbsp;
-                                    <span  class="design-name">Manage Email Templates</span></a>
+                                    <span  class="design-name" translate>Manage Email Templates</span></a>
                                             </h5>
                                         </div>
                                     </div>
@@ -63,22 +63,22 @@
                                             <img alt="Forms" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/form-design.png">
                                         </div>
                                         <div class="text">
-                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Forms</h4>
-                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
+                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Forms</h4>
+                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
                                                 Gather basic contact info, newsletter sign ups, feedback, and more.
                                             </p>
                                         </div>
                                         <div class="text">
                                             <h5>
                                                 <a [routerLink]="['../../forms/add']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                   <span class="design-name">Design Forms</span></a>
+                                   <span class="design-name" translate>Design Forms</span></a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5>
                                                 <a style="padding-left: 10px;" [routerLink]="['../../forms/manage']"><i
                                     class="fa fa-list"></i>&nbsp;
-                                    <span class="design-name">Manage Forms</span></a>
+                                    <span class="design-name" translate>Manage Forms</span></a>
                                             </h5>
                                         </div>
                                     </div>
@@ -91,23 +91,23 @@
                                             <img alt="Pages" style="margin: 0 auto;" class="pricing-head-img img-responsive	" src="assets/images/page-design.png">
                                         </div>
                                         <div class="text">
-                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd">Pages
+                                            <h4 style="text-align: left; padding-left: 10px; padding-bottom: 11px; border-bottom: 1px solid #ddd" translate>Pages
                                             </h4>
-                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;">
+                                            <p style="text-align: left; padding-left: 10px; color: #888; font-size: 12px; padding-top: 10px; height: 60px;" translate>
                                                 Turn web traffic into leads and improve conversion rates.
                                             </p>
                                         </div>
                                         <div class="text" *ngIf="landingPage">
                                             <h5>
                                                 <a [routerLink]="['../../pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                 <span class="design-name">Design Pages</span></a>
+                                 <span class="design-name" translate>Design Pages</span></a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5>
                                                 <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink]="['../../pages/manage']"><i
                                     class="fa fa-list"></i>&nbsp;
-                                    <span class="design-name">Manage Pages</span></a>
+                                    <span class="design-name" translate>Manage Pages</span></a>
                                             </h5>
                                         </div>
                                     </div>
