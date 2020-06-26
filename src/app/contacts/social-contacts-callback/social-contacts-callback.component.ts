@@ -34,11 +34,11 @@ export class SocialContactsCallbackComponent implements OnInit {
             this.contactService.socialCallbackName = "salesforceOauth";
             this.callbackName = 'salesforce';
         }
-
-        if ( currentUrl.includes( 'error=access_denied' ) && this.isPartner == false ) {
+        let isErrorUrl = (currentUrl.includes( 'error=access_denied' )  || currentUrl.includes( 'zoho-callback?error'));
+        if ( isErrorUrl && !this.isPartner) {
             this.router.navigate( ['/home/contacts/add'] );
         }
-        else if ( currentUrl.includes( 'error=access_denied' ) && this.isPartner == true ) {
+        else if (isErrorUrl && this.isPartner) {
             this.router.navigate( ['/home/partners'] );
         }
     }
