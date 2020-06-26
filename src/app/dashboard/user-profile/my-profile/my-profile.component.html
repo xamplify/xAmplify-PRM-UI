@@ -1011,6 +1011,11 @@
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                         </div>
+                        <div class="form-group col-md-6" style="margin-left: -16px;">
+                            <label>Subject</label>        
+                            <input type="text" class="form-control" name="subject" placeholder="subject"
+                              [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">
+                          </div>
                     </div>
                     <div class="portlet-body clearfix">
                      	  <app-xamplify-default-templates [xamplifyDefaultTemplate]="xamplifyDefaultTemplate"></app-xamplify-default-templates>

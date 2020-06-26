@@ -90,7 +90,7 @@ export class VanityURLService {
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
-    //let url = "key.xamplify.com";
+   // let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytify.xamplify.com";
    // let url = "syfe.xamplify.com";
@@ -171,9 +171,9 @@ export class VanityURLService {
     return dto;
   }
 
-  public setVanityURLTitleAndFavIcon() {
-    this.titleService.setTitle(this.authenticationService.v_companyName);    
-    if(this.authenticationService.v_companyFavIconPath){
+  public setVanityURLTitleAndFavIcon() {    
+    if(this.authenticationService.v_companyName && this.authenticationService.v_companyFavIconPath){
+      this.titleService.setTitle(this.authenticationService.v_companyName);    
       this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
     }
   }

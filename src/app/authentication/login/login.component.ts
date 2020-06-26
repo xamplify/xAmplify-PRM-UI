@@ -39,8 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   roles: Array<Role>;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
-  isLoggedInVanityUrl = false;
-  checkedVanityURLDomain = false;
+  isLoggedInVanityUrl = false;  
   constructor(private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
@@ -206,12 +205,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.mainLoader = true;
       if (this.vanityURLService.isVanityURLEnabled()) {
         this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
-          this.vanityURLEnabled = result.enableVanityURL;
-          if(!this.vanityURLEnabled){
-            this.checkedVanityURLDomain = true;
-          }
+          this.vanityURLEnabled = result.enableVanityURL;               
           this.authenticationService.v_companyName = result.companyName;
           this.authenticationService.vanityURLink = result.vanityURLink;
+          if(!this.vanityURLEnabled){
+            this.router.navigate( ['/vanity-domain-error'] );
+            return;
+          }
+          
           this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
           this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
           if (result.companyBgImagePath) {

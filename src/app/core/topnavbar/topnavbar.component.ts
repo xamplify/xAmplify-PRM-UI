@@ -19,6 +19,7 @@ import "rxjs/add/observable/of";
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 @Component({
   selector: 'app-topnavbar',
@@ -53,7 +54,7 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
   isLoggedInFromAdminSection = false;
   constructor(public dashboardService: DashboardService, public router: Router, public userService: UserService, public utilService: UtilService,
     public socialService: SocialService, public authenticationService: AuthenticationService,
-    public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService) {
+    public refService: ReferenceService, public logger: XtremandLogger,public properties: Properties,private translateService: TranslateService,private vanityServiceURL:VanityURLService) {
     try{
     this.isLoggedInFromAdminSection = this.utilService.isLoggedInFromAdminPortal();
     this.currentUrl = this.router.url;
@@ -69,6 +70,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
                 this.translateService.use(data.preferredLanguage);
                 this.getAllPreferredLanguages(data.preferredLanguage);
                 console.log(data);
+                this.authenticationService.v_companyName=data.companyName;
+                this.authenticationService.v_companyFavIconPath = data.companyFavIconPath;
+                this.vanityServiceURL.setVanityURLTitleAndFavIcon();
                 refService.userDefaultPage = data.userDefaultPage;
                 const loggedInUser = data;
                 if (loggedInUser.firstName) {
