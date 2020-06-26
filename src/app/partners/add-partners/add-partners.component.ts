@@ -2382,7 +2382,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }else if(this.contactService.socialProviderName == 'zoho'){
-                alert("calling zoho");
                 this.getZohoContactsUsingOAuth2();
             }
             

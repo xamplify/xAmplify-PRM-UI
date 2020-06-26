@@ -24,7 +24,6 @@ export class SocialContactsCallbackComponent implements OnInit {
         } else {
             this.isPartner = true;
         }
-
         if ( currentUrl.includes( 'google-callback' ) ) {
             this.callbackName = 'google';
             this.contactService.socialCallbackName = "googleOauth";

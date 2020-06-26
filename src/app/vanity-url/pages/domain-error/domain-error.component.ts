@@ -8,7 +8,7 @@ import { AuthenticationService } from 'app/core/services/authentication.service'
 })
 export class DomainErrorComponent implements OnInit {
   
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(public authenticationService: AuthenticationService) { }
 
   ngOnInit() {    
   }
