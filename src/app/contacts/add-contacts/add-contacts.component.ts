@@ -3402,15 +3402,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     getZohoContactsUsingOAuth2(){
         this.contactService.socialProviderName = 'zoho';
-            this.socialContact.socialNetwork = "ZOHO";
+        this.socialContact.socialNetwork = "ZOHO";
         swal( {
             text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
             allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
         });
-        this.contactService.getGoogleContacts( this.socialContact )
+        this.contactService.getZohoAutherizedContacts( this.socialContact )
                 .subscribe(
                 data => {
-                    console.log(data);
                    this.processZohoContactsToDisplayInUI(data);
                 },
                 ( error: any ) => {

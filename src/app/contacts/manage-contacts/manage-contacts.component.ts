@@ -534,7 +534,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.contactService.contactListSynchronization(contactListId, this.socialContact)
                 .subscribe(
                 data => {
-                    data
                     swal.close();
                     this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
                     this.loadContactLists(this.pagination);
@@ -555,19 +554,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         try {
             this.resetResponse();
             swal({ title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+           if(this.contactLists!=undefined){
             for (let i = 0; i < this.contactLists.length; i++) {
                 if (this.contactLists[i].id == contactListId) {
                     this.contactType = this.contactLists[i].contactType;
                 }
             }
+           }
             this.socialContact.socialNetwork = "ZOHO";
             this.socialContact.contactType = this.contactType;
             this.contactService.checkingZohoAuthentication(this.isPartner)
                 .subscribe(
                 (data: any) => {
                     this.xtremandLogger.info(data);
-                    if (data.authSuccess == true) {
+                    this.storeLogin = data;
+                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
                         this.syncronizeContactList(contactListId, socialNetwork);
+                    } else {
+                        localStorage.setItem("userAlias", data.userAlias);
+                        window.location.href = "" + data.redirectUrl;
                     }
                 },
                 (error: any) => {
