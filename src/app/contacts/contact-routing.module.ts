@@ -13,6 +13,7 @@ const routes: Routes = [
     { path: 'add', component: AddContactsComponent },
     { path: 'manage', component: ManageContactsComponent },
     { path: 'google-callback', component: SocialContactsCallbackComponent },
+    { path: 'zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
 ];

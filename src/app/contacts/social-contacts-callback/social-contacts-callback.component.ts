@@ -28,6 +28,9 @@ export class SocialContactsCallbackComponent implements OnInit {
         if ( currentUrl.includes( 'google-callback' ) ) {
             this.callbackName = 'google';
             this.contactService.socialCallbackName = "googleOauth";
+        }else if(currentUrl.includes( 'zoho-callback' )){
+            this.callbackName = 'zoho';
+            this.contactService.socialCallbackName = "zohoOauth";
         } else {
             this.contactService.socialCallbackName = "salesforceOauth";
             this.callbackName = 'salesforce';
@@ -54,9 +57,10 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.contactService.socialProviderName = 'google';
                     } else if ( this.callbackName == 'salesforce' ) {
                         this.contactService.socialProviderName = 'salesforce';                        
+                    }else if ( this.callbackName == 'zoho' ) {
+                        this.contactService.socialProviderName = 'zoho';                        
                     }
-
-                    if ( this.isPartner == true ) {
+                    if ( this.isPartner) {
                         this.router.navigate( ['/home/partners'] );
                     } else {
                         this.router.navigate( ['/home/contacts/add'] );

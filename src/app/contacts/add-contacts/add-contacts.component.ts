@@ -1543,7 +1543,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         .subscribe(
         data => {
         	if(data.access){
-            data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
@@ -1683,11 +1682,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 return false;
             }
             else {
-                if ( self.selectedZohoDropDown == "contact" ) {
-                    self.contactType = self.selectedZohoDropDown;
-                    self.xtremandLogger.log( self.selectedZohoDropDown );
-                }
-                else if ( this.selectedZohoDropDown == "lead" ) {
+                if ( self.selectedZohoDropDown == "contact" || this.selectedZohoDropDown == "lead" ) {
                     self.contactType = self.selectedZohoDropDown;
                     self.xtremandLogger.log( self.selectedZohoDropDown );
                 }
@@ -1704,48 +1699,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $( "#zohoShowLoginPopup" ).hide();
     }
 
-    checkingZohoContactsAuthentication() {
-        try {
-            if(this.loggedInThroughVanityUrl){
-                this.referenceService.showSweetAlertInfoMessage();
-            }else{
-                if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
-                    this.contactService.checkingZohoAuthentication()
-                        .subscribe(
-                        ( data: any ) => {
-                            this.xtremandLogger.info( data );
-                            if ( data.showLogin == true ) {
-                                $( "#zohoShowLoginPopup" ).show();
-                            }
-                            if ( data.authSuccess == true ) {
-                                $( "#zohoShowAuthorisedPopup" ).show();
-                            }
-                        },
-                        ( error: any ) => {
-                            var body = error['_body'];
-                            if ( body != "" ) {
-                                var response = JSON.parse( body );
-                                if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                                    this.customResponse = new CustomResponse( 'ERROR', 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account', true );
-                                } else {
-                                    this.xtremandLogger.errorPage( error );
-                                }
-                            } else {
-                                this.xtremandLogger.errorPage( error );
-                            }
-                            console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
     
-                        },
-                        () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
-                        )
-                }
-            }
-
-           
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
-        }
-    }
 
     getZohoContacts( contactType: any, username: string, password: string ) {
         try {
@@ -1833,15 +1787,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 return false;
             }
             else {
-                if ( self.selectedZohoDropDown == "contact" ) {
+                if ( self.selectedZohoDropDown == "contact" || this.selectedZohoDropDown == "lead" ) {
                     self.contactType = self.selectedZohoDropDown;
                     self.xtremandLogger.log( self.selectedZohoDropDown );
                 }
-                else if ( this.selectedZohoDropDown == "lead" ) {
-                    self.contactType = self.selectedZohoDropDown;
-                    self.xtremandLogger.log( self.selectedZohoDropDown );
-                }
-
             }
             this.loading = true;
             this.socialContact.socialNetwork = "ZOHO";
@@ -1928,16 +1877,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.setLegalBasisOptions(this.socialContact.contacts);
         this.socialContact.publicList  = this.model.isPublic;
+        this.socialContact.contactType = 'CONTACT';//Added after oAuth2.0 implementation by Sravan
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
         if(data.access){
-            data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
-            if ( this.isPartner == false ) {
+            if (!this.isPartner) {
                 this.router.navigateByUrl( '/home/contacts/manage' )
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
@@ -1991,7 +1940,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         .subscribe(
         data => {
         	if(data.access){
-            data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
@@ -2564,11 +2512,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.getGoogleContactsUsers();
                 this.contactService.socialProviderName = "nothing";
             } else if ( this.contactService.socialProviderName == 'salesforce' ) {
-                /* $( "#salesforceModal" ).modal();*/
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }
-
             this.contactListName = '';
             $( "#Gfile_preview" ).hide();
             $( "#popupForListviews" ).hide();
@@ -2581,6 +2527,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             $( "button#cancel_button" ).prop( 'disabled', true );
             if ( this.socialContactType == "google" ) {
                 this.getGoogleContactsUsers();
+            }else if(this.contactService.socialProviderName == 'zoho' || this.socialContactType == "zoho" ){
+                this.getZohoContactsUsingOAuth2();
             }
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
@@ -3354,7 +3302,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         .subscribe(
         data => {
         	if(data.access){
-            data = data;
             this.loading = false;
             this.selectedAddContactsOption = 8;
             this.contactService.saveAsSuccessMessage = "add";
@@ -3418,6 +3365,102 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     	this.model.isPublic = event;
     	
     }
+
+    /**************Sravan************************ */
+
+    checkingZohoContactsAuthentication() {
+        try {
+            if(this.loggedInThroughVanityUrl){
+                this.referenceService.showSweetAlertInfoMessage();
+            }else{
+                if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
+                    this.contactService.checkingZohoAuthentication(this.isPartner)
+                        .subscribe(
+                        ( data: any ) => {
+                            this.storeLogin = data;
+                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                                this.getZohoContactsUsingOAuth2();
+                            } else{
+                                localStorage.setItem( "userAlias", data.userAlias )
+                                localStorage.setItem( "isPartner", data.isPartner );
+                                window.location.href = "" + data.redirectUrl;
+                            }
+                        },
+                        ( error: any ) => {
+                            this.referenceService.showSweetAlertServerErrorMessage();
+                        },
+                        () => this.xtremandLogger.info( "Add contact component checkingZohoContactsAuthentication() finished" )
+                        )
+                }
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
+        }
+    }
+
+
+
+    getZohoContactsUsingOAuth2(){
+        this.contactService.socialProviderName = 'zoho';
+            this.socialContact.socialNetwork = "ZOHO";
+        swal( {
+            text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
+        this.contactService.getGoogleContacts( this.socialContact )
+                .subscribe(
+                data => {
+                    console.log(data);
+                   this.processZohoContactsToDisplayInUI(data);
+                },
+                ( error: any ) => {
+                    swal.close();
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                );
+
+    }
+    
    
+    processZohoContactsToDisplayInUI(data) {
+        swal.close();
+        this.getZohoConatacts = data;
+        this.zohoImageBlur = false;
+        this.zohoImageNormal = true;
+        this.socialContactImage();
+        let contacts = this.getZohoConatacts['contacts'];
+        if (contacts!=null && contacts.length>0) {
+            for (var i = 0; i <contacts.length; i++) {
+                let socialContact = new SocialContact();
+                socialContact.id = i;
+                if (this.validateEmailAddress(contacts[i].emailId)) {
+                    socialContact.emailId = contacts[i].emailId.trim();
+                    socialContact.firstName = contacts[i].firstName;
+                    socialContact.lastName = contacts[i].lastName;
+                    this.socialContactUsers.push(socialContact);
+                }
+                $("button#sample_editable_1_new").prop('disabled', false);
+                $("button#cancel_button").prop('disabled', false);
+                this.showFilePreview();
+                $("#myModal .close").click()
+                $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+                $('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+                $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+                $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+                $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+            }
+        } else {
+            this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+            $("button#cancel_button").prop('disabled', false);
+
+        }
+        this.selectedAddContactsOption = 5;
+        this.setPage(1);
+    }
+
     
 }

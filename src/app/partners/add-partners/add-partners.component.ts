@@ -1448,7 +1448,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.referenceService.showSweetAlertInfoMessage();
             }else{
                 if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-                    this.contactService.checkingZohoAuthentication()
+                    this.contactService.checkingZohoAuthentication(this.isPartner)
                         .subscribe(
                         ( data: any ) => {
                             this.xtremandLogger.info( data );

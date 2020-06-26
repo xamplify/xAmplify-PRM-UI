@@ -562,7 +562,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             }
             this.socialContact.socialNetwork = "ZOHO";
             this.socialContact.contactType = this.contactType;
-            this.contactService.checkingZohoAuthentication()
+            this.contactService.checkingZohoAuthentication(this.isPartner)
                 .subscribe(
                 (data: any) => {
                     this.xtremandLogger.info(data);
