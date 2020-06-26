@@ -427,7 +427,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.logger.error(this.refService.errorPrepender + " :" + error);
                 this.refService.showServerError(this.httpRequestLoader);
             },
-            () => this.logger.info("Got Email Templates"))
+            () => this.logger.info("Got  Templates"))
     }
     showMarketoEmailtemplatePreview(emailTemplateId: number): any {
         this.emailTemplateService.getMarketoEmailTemplatePreview(this.authenticationService.getUserId(), emailTemplateId).subscribe(response => {
@@ -581,7 +581,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.refService.showServerError(this.httpRequestLoader);
                 this.importLoading = false;
             },
-            () => this.logger.info("Imported Email Templates"))
+            () => this.logger.info("Imported Templates"))
     }
     toggleSubmitButtonState() {
         if (!this.clentIdError && !this.secretIdError && !this.marketoInstanceError)
@@ -766,7 +766,7 @@ export class SelectTemplateComponent implements OnInit, OnDestroy {
                 this.refService.showServerError(this.httpRequestLoader);
                 this.importLoading = false;
             },
-            () => this.logger.info("Imported HubSpot Email Templates"));
+            () => this.logger.info("Imported HubSpot Templates"));
     }
 
     createTemplate(emailTemplateId: number) {

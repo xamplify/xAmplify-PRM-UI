@@ -1891,7 +1891,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         let type = item.moduleName;
         if(count>0 && item.previewAccess){
             this.ngxloading = true;
-            if("Email Templates"==type){
+            if("Templates"==type){
                 this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
             }else if("Forms"==type){
                 this.router.navigate(['/home/forms/manage/'+categoryId]);
