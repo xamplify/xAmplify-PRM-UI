@@ -36,7 +36,6 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
 
   editTemplate(){
     let emailTemplate = this.xamplifyDefaultTemplate;
-    console.log(emailTemplate);
     if(emailTemplate.jsonBody!=undefined){
       var request = function (method, url, data, type, callback) {
         var req = new XMLHttpRequest();
@@ -114,20 +113,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         { name: 'Last Name', value: '{{lastName}}' },
         { name: 'Full Name', value: '{{fullName}}' },
         { name: 'Email Id', value: '{{emailId}}' },
-        { name: 'Company Name', value: '{{companyName}}' }
         ];
-
-        mergeTags.push( { name: 'Sender First Name', value: this.senderMergeTag.senderFirstName } );
-        mergeTags.push( { name: 'Sender Last Name', value: this.senderMergeTag.senderLastName } );
-        mergeTags.push( { name: 'Sender Full Name', value: this.senderMergeTag.senderFullName } );
-        mergeTags.push( { name: 'Sender Title', value: this.senderMergeTag.senderTitle } );
-        mergeTags.push( { name: 'Sender Email Id',  value: this.senderMergeTag.senderEmailId } );
-        mergeTags.push( { name: 'Sender Contact Number',value: this.senderMergeTag.senderContactNumber } );
-        mergeTags.push( { name: 'Sender Company', value: this.senderMergeTag.senderCompany } );
-        mergeTags.push( { name: 'Sender Company Url', value: this.senderMergeTag.senderCompanyUrl} );
-        mergeTags.push( { name: 'Sender Company Contact Number', value: this.senderMergeTag.senderCompanyContactNumber } );
-        mergeTags.push( { name: 'Sender About Us (Partner)', value: this.senderMergeTag.aboutUs } );
-
 
       var beeUserId = "bee-"+emailTemplate.companyId;
       var roleHash = self.authenticationService.vendorRoleHash;
