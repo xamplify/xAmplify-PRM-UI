@@ -8,20 +8,20 @@
                         <ul class="page-breadcrumb" *ngIf="loadTemplate">
                             <li>
                                 <i class="fa fa-home" aria-hidden="true"></i>
-                                <a [routerLink]="refService.homeRouter">Home</a>
+                                <a [routerLink]="refService.homeRouter" translate>Home</a>
                                 <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li *ngIf="emailTemplateService.isNewTemplate">
-                                <a [routerLink]="['/home/emailtemplates/select']">Select Templates</a>
+                                <a [routerLink]="['/home/emailtemplates/select']" translate>Select Templates</a>
                                 <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li *ngIf="!emailTemplateService.isNewTemplate">
-                                <a routerLink="{{manageRouterLink}}">Manage Templates</a>
+                                <a routerLink="{{manageRouterLink}}" translate>Manage Templates</a>
                                 <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li>
-                                <a><span *ngIf="emailTemplateService.isNewTemplate; else Other">Create</span>
-                          <ng-template #Other>Update</ng-template> Template</a>
+                                <a><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
+                          <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
                         </ul>
                         <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>

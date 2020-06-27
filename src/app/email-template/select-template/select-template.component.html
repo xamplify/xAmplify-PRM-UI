@@ -4,7 +4,7 @@
         <ul class="page-breadcrumb">
             <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter" translate>Home</a> <i class="fa fa-angle-right"></i></li>
             <li><a [routerLink]="['/home/design/add']" translate>Create Design</a> <i class="fa fa-angle-right"></i></li>
-            <li><a translate>Create Templates</a></li>
+            <li><a translate>Create Email Templates</a></li>
         </ul>
     </div>
     <!-- END PAGE HEADER-->
@@ -41,7 +41,7 @@
                                         <!-- <i class="icon-magnifier"></i> -->
                                         <input type="text" class="form-control" [(ngModel)]="templateFilter.name" placeholder="Search for a template">
                                         <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="templateFilter.name" (click)="templateFilter.name=''"></button>
-                                        <button type="submit" class="search-box-item-click"><i class="fa fa-search"></i></button>
+                                        <button type="submit" class="search-box-item-click"><i class="fa fa-search"></i></button> 
                                     </div>
                                 </div>
                             </div>
@@ -81,9 +81,9 @@
                                 <img class="img-responsive center-block" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.body}}" alt="{{beeRegularTemplate.name}}">
                                 <img class="img-responsive center-block" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
                                 <img class="img-responsive center-block" *ngIf="beeRegularTemplate.marketoTemplate || beeRegularTemplate.hubSpotTemplate" src="{{beeRegularTemplate.subject}}" alt="{{beeRegularTemplate.name}}">
-                                <h4 title="{{beeRegularTemplate.name}}">{{beeRegularTemplate.name|slice:0:23}}<span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
+                                <h4 title="{{beeRegularTemplate.name}}" translate>{{beeRegularTemplate.name|slice:0:23}}<span *ngIf="beeRegularTemplate.name?.length>23">....</span></h4>
                                 <div class="bar">
-                                    <a data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"><i class="fa fa-plus-circle"></i></a>
+                                    <a data-toggle="tooltip" data-placement="top" title="Create template" (click)="showTemplateById(beeRegularTemplate)" *ngIf="!beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"><i class="fa fa-plus-circle"></i></a> 
                                     <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showPreview(beeRegularTemplate)" *ngIf="beeRegularTemplate.campaignDefault && !beeRegularTemplate.marketoTemplate && !beeRegularTemplate.hubSpotTemplate"><i
 										 class="fa fa-eye"></i></a>
                                     <a data-toggle="tooltip" data-placement="top" title="Preview" (click)="showMarketoEmailtemplatePreview(beeRegularTemplate.id)" *ngIf="beeRegularTemplate.marketoTemplate"><i class="fa fa-eye"></i></a>
@@ -119,7 +119,7 @@
                 <div id="htmlContent"></div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>
@@ -145,7 +145,7 @@
 
             <div class="modal-body" style="padding: 39px;">
                 <form class="form-horizontal">
-                    <div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
+                    <div *ngIf="templateError" class="alert alert-danger"><span translate>{{templateError}}</span></div>
                     <div *ngIf="templateSuccessMsg" class="alert alert-success"><span translate>{{templateSuccessMsg}}</span></div>
                     <div [attr.class]="clientIdClass">
                         <label class="control-label col-sm-3" for="email" translate>Client Id:</label>
@@ -178,4 +178,3 @@
         </div>
     </div>
 </div>
-
