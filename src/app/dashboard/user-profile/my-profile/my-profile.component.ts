@@ -165,6 +165,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     preferredLanguage:string;    
     editXamplifyDefaultTemplate = false;
     xamplifyDefaultTemplate:VanityEmailTempalte;
+    subjectLineTooltipText:string;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -373,6 +374,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     this.status = false;
                 }
+            }
+            if(this.authenticationService.vanityURLEnabled){
+                this.setSubjectLineTooltipText();
             }
         } catch (error) {
             this.hasClientErrors = true;
@@ -1966,5 +1970,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.editXamplifyDefaultTemplate = false;
         this.xamplifyDefaultTemplate = new VanityEmailTempalte();
         this.referenceService.goToTop();
+    }
+
+    setSubjectLineTooltipText() {
+        this.subjectLineTooltipText = "Set your own subject line"
     }
 }

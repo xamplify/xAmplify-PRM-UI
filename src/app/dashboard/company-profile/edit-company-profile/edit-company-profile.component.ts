@@ -431,7 +431,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
    }
     
    bgImageClick(){
-    this.cropLogoImageText = "Choose the image to be used as your company background logo";
+    this.cropLogoImageText = "Choose the image to be used as your company background";
     this.cropRounded = false;
     $('#cropBgImage').modal('show');
     //this.fileChangeEvent();
@@ -696,14 +696,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
         }
         if ($.trim(this.companyProfile.favIconLogoPath).length > 0) {
-            this.companyFavIconPath = this.companyProfile.favIconLogoPath;
-            this.authenticationService.v_companyFavIconPath = this.companyFavIconPath;            
+            this.companyFavIconPath = this.companyProfile.favIconLogoPath;            
         }
         if ($.trim(this.companyProfile.country).length == 0) {
             this.companyProfile.country = this.countryNames.countries[0];
         }
-        this.authenticationService.v_companyName = existingCompanyName;
-        this.vanityURLService.setVanityURLTitleAndFavIcon();
+        
         this.geoLocation();
         this.existingCompanyName = existingCompanyName;
         this.loadPublicVideos();

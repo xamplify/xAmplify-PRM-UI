@@ -70,9 +70,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
                 this.translateService.use(data.preferredLanguage);
                 this.getAllPreferredLanguages(data.preferredLanguage);
                 console.log(data);
-                this.authenticationService.v_companyName=data.companyName;
-                this.authenticationService.v_companyFavIconPath = data.companyFavIconPath;
-                this.vanityServiceURL.setVanityURLTitleAndFavIcon();
+                if(this.vanityServiceURL.isVanityURLEnabled()){
+                  this.vanityServiceURL.checkVanityURLDetails();
+                }                
                 refService.userDefaultPage = data.userDefaultPage;
                 const loggedInUser = data;
                 if (loggedInUser.firstName) {

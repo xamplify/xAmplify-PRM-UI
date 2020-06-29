@@ -69,6 +69,10 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
         emailTemplate.jsonBody = jsonContent;
         emailTemplate.htmlBody = htmlContent;
         emailTemplate.userId = self.loggedInUserId;
+        if(!emailTemplate.subject){
+          swal( "", "Whoops! We are unable to save this template because subject line is empty", "error" );
+          return false;
+        }
         if (jsonContent.indexOf("_CUSTOMER_FULL_NAME") < 0 ) {
           swal( "", "Whoops! We are unable to save this template because you deleted '_CUSTOMER_FULL_NAME' tag.", "error" );
           return false;
