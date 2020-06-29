@@ -14,23 +14,23 @@
             <ul class="page-breadcrumb">
                 <li>
                     <i class="fa fa-home" aria-hidden="true"></i>
-                    <a [routerLink]="refService.homeRouter">Home</a>
+                    <a [routerLink]="refService.homeRouter" translate>Home</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li>
-                    <a *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd" [routerLink]="['../../campaigns/manage']">Manage Campaigns</a>
-                    <a *ngIf="refService.isCampaignFromVideoRouter==false && isAdd" [routerLink]="['../../campaigns/select']">Select Campaign</a>
+                    <a *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd" [routerLink]="['../../campaigns/manage']" translate>Manage Campaigns</a>
+                    <a *ngIf="refService.isCampaignFromVideoRouter==false && isAdd" [routerLink]="['../../campaigns/select']" translate>Select Campaign</a>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </li>
                 <li *ngIf="refService.isCampaignFromVideoRouter==true|| !isAdd">
-                    <a>Edit Campaign</a>
+                    <a translate>Edit Campaign</a>
                 </li>
                 <li *ngIf="refService.isCampaignFromVideoRouter==false && isAdd">
-                    <a>Create Campaign</a>
+                    <a translate>Create Campaign</a>
                 </li>
             </ul>
             <div id="folder-margin-xamp">
-                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
             </div>
         </div>
         <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -45,7 +45,7 @@
                             <span>
                                 <i class="fa fa-th-list"></i>
                             </span>
-                            <h5 class="hidden-xs">Campaign Details</h5>
+                            <h5 class="hidden-xs" translate>Campaign Details</h5>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                             <span>
                                 <i class="fa fa-video-camera"></i>
                             </span>
-                            <h5 class="hidden-xs">Select a Video</h5>
+                            <h5 class="hidden-xs" translate>Select a Video</h5>
                         </div>
                     </div>
                     <div *ngIf="isCampaignDetailsFormValid && campaignType=='video'" id="step3" [attr.class]="videoTabClass" (click)="resetActive($event, 40, 'step-3');" [ngStyle]="{ 'width': width }">
@@ -62,7 +62,7 @@
                             <span>
                                 <i class="fa fa-video-camera"></i>
                             </span>
-                            <h5 class="hidden-xs">Select a Video</h5>
+                            <h5 class="hidden-xs" translate>Select a Video</h5>
                         </div>
                     </div>
                     <div *ngIf="!isCampaignDetailsFormValid ||!isVideo" [attr.class]="disableTabClass" [ngStyle]="{ 'width': width }">
@@ -70,7 +70,7 @@
                             <span>
                                 <i class="fa fa-users"></i>
                             </span>
-                            <h5 class="hidden-xs">{{contactListTabName}}</h5>
+                            <h5 class="hidden-xs">{{contactListTabName | translate}}</h5>
                         </div>
                     </div>
 
@@ -88,14 +88,14 @@
                                 <span>
                                     <i class="fa fa-wpforms"></i>
                                 </span>
-                                <h5 class="hidden-xs">Page</h5>
+                                <h5 class="hidden-xs" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
                                 <span>
                                     <i class="fa fa-envelope"></i>
                                 </span>
-                                <h5 class="hidden-xs">Email Template</h5>
+                                <h5 class="hidden-xs" translate>Email Template</h5>
                             </ng-container>
                         </div>
                     </div>
@@ -106,14 +106,14 @@
                                 <span>
                                     <i class="fa fa-wpforms"></i>
                                 </span>
-                                <h5 class="hidden-xs">Page</h5>
+                                <h5 class="hidden-xs" translate>Page</h5>
                             </ng-container>
 
                             <ng-container *ngIf="campaignType!='landingPage'">
                                 <span>
                                     <i class="fa fa-envelope"></i>
                                 </span>
-                                <h5 class="hidden-xs">Email Template</h5>
+                                <h5 class="hidden-xs" translate>Email Template</h5>
                             </ng-container>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
                             <span>
                                 <i class="fa fa-flag"></i>
                             </span>
-                            <h5 class="hidden-xs">Launch</h5>
+                            <h5 class="hidden-xs" translate>Launch</h5>
                         </div>
                     </div>
 
@@ -132,7 +132,7 @@
                             <span>
                                 <i class="fa fa-flag"></i>
                             </span>
-                            <h5 class="hidden-xs">Launch</h5>
+                            <h5 class="hidden-xs" translate>Launch</h5>
                         </div>
                     </div>
                 </div>
@@ -147,19 +147,19 @@
                                         <!-- BEGIN FORM-->
                                         <div class="form-body col-sm-6 col-sm-offset-3">
                                             <div class="form-group" [attr.class]="campaignNameDivClass">
-                                                <label class="control-label col-sm-4">Campaign name
-                                                    <br><small>(Save as)</small>
+                                                <label class="control-label col-sm-4" translate>Campaign name
+                                                    <br><small translate>(Save as)</small>
                                                     <font style="color: red">*</font>
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <input type="text" id="campaignName" placeholder="Campaign Name" class="form-control" [(ngModel)]="campaign.campaignName" name="campaignName" (input)="validateCampaignName(campaign.campaignName);validateForm();validateField('campaignName');" maxlength="200"
                                                     />
-                                                    <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red">Already Exists</span>
+                                                    <span class="pull-left" *ngIf="!isValidCampaignName &&campaign.campaignName?.length>0" style="color: red" translate>Already Exists</span>
                                                 </div>
                                             </div>
 
                                             <div class="form-group" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4">Folder
+                                                <label class="control-label col-sm-4" translate>Folder
                                                     <font style="color: red"><b>*</b>
                                                     </font>
                                                 </label>
@@ -175,10 +175,10 @@
 
 
                                             <div class="form-group" *ngIf="!isOnlyPartner">
-                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}"><b>Through
-                                                        Partner</b></label>
-                                                <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}">Through
-                                                    Partner</label>
+                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}"><b translate>Through Partner
+                                                        </b></label>
+                                                <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}" translate>Through Partner
+                                                    </label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -188,8 +188,8 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}"><b>{{channelCampaignFieldName}}</b></label>
-                                                                <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">{{channelCampaignFieldName}}</label>
+                                                                <label *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}"><b>{{channelCampaignFieldName | translate}}</b></label>
+                                                                <label *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{TO_PARTNER_MESSAGE}}">{{channelCampaignFieldName | translate}</label>
                                                                 <span style="cursor: pointer;color: #54a7e9;">
                                                                     <i class="fa fa-question-circle" data-html="true"
                                                                         data-toggle="tooltip" data-placement="bottom"
@@ -203,7 +203,7 @@
                                             </div>
 
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign">
-                                                <label class="control-label col-sm-4">Co-Branding Logo</label>
+                                                <label class="control-label col-sm-4" translate>Co-Branding Logo</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.enableCoBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="setCoBrandingLogo($event)">
@@ -218,7 +218,7 @@
                                             </div>
 
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaignType!='sms' && (campaign.channelCampaign || (campaignType=='landingPage'  && channelCampaignFieldName != 'To Recipient')) ">
-                                                <label class="control-label col-sm-4">Notify Partners ?</label>
+                                                <label class="control-label col-sm-4" translate>Notify Partners ?</label>
                                                 <div class="col-sm-8">
                                                     <switch class="pull-left" [status]="campaign.emailNotification" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                         (statusChange)="setPartnerEmailNotification($event)">
@@ -231,7 +231,7 @@
                                             </div>
 
                                             <div class="form-group" [attr.class]="fromNameDivClass" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4">From Name
+                                                <label class="control-label col-sm-4" translate>From Name
                                                     <font style="color: red">
                                                         <b>*</b>
                                                     </font>
@@ -241,7 +241,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" [attr.class]="subjectLineDivClass" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4">Subject Line
+                                                <label class="control-label col-sm-4" translate>Subject Line
                                                     <font style="color: red">
                                                         <b>*</b>
                                                     </font>
@@ -251,7 +251,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" [attr.class]="fromEmaiDivClass" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4">From Email
+                                                <label class="control-label col-sm-4" translate>From Email
                                                     <font style="color: red">
                                                         <b>*</b>
                                                     </font>
@@ -270,7 +270,7 @@
                                           
 
                                             <div class="form-group" [attr.class]="preHeaderDivClass" *ngIf="campaignType!='sms'">
-                                                <label class="control-label col-sm-4">Pre Header<font
+                                                <label class="control-label col-sm-4" translate>Pre Header<font
                                                         style="color: red"><b>*</b></font></label>
                                                 <div class="col-sm-8">
                                                     <input type="text" id="preHeader" placeholder="Preheader" class="form-control" [(ngModel)]="campaign.preHeader" name="preHeader" (input)="validateForm();validateField('preHeader');" maxlength="200" />
@@ -278,7 +278,7 @@
                                             </div>
 
                                             <div class="form-group" *ngIf="campaign.emailNotification">
-                                                <label class="control-label col-sm-4">Notify Me When</label>
+                                                <label class="control-label col-sm-4" translate>Notify Me When</label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -288,7 +288,7 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label>Email is opened</label>
+                                                                <label translate>Email is opened</label>
                                                             </div>
                                                         </div>
 
@@ -299,7 +299,7 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label>Link is opened</label>
+                                                                <label translate>Link is opened</label>
                                                             </div>
                                                         </div>
 
@@ -310,7 +310,7 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label>SMS is opened</label>
+                                                                <label translate>SMS is opened</label>
                                                             </div>
                                                         </div>
 
@@ -324,7 +324,7 @@
                                                                 </switch>
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label>SMS is opened</label>
+                                                                <label translate>SMS is opened</label>
                                                             </div>
                                                         </div>
 
@@ -337,7 +337,7 @@
                                                                 <!-- <ui-switch color="green" size="medium" [(ngModel)]="campaign.videoPlayed" name="videoPlayed"  (change)=setVideoPlayed($event)></ui-switch> -->
                                                             </div>
                                                             <div class="col-sm-11" style="padding: 0; margin-left: 100px;margin-top: -32px">
-                                                                <label>Video is played</label>
+                                                                <label translate>Video is played</label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -347,8 +347,8 @@
 
 
                                             <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage'">
-                                                <label class="control-label col-sm-4">Push To Marketing
-                                                    Automation</label>
+                                                <label class="control-label col-sm-4" translate>Push To Marketing Automation
+                                                    </label>
                                                 <div class="col-sm-3">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -394,7 +394,7 @@
                                                                     </label>
                                                                     <img class="image-size" src="assets/images/crm/hubspot-crm.png">
                                                                     <div>
-                                                                        <h5 class="hidden-xs mr-2">Hubspot</h5>
+                                                                        <h5 class="hidden-xs mr-2" translate>Hubspot</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -416,7 +416,7 @@
                                                                         <img class="image-size" src="assets/images/crm/salesforce-crm.png">
                                                                     </div>
                                                                     <div>
-                                                                        <h5 class="hidden-xs">Salesforce</h5>
+                                                                        <h5 class="hidden-xs" translate>Salesforce</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -480,7 +480,7 @@
 
 
                                             <div class="form-group" *ngIf="!isOnlyPartner && refService.smsCampaign && enableSMS  && campaignType!='sms'">
-                                                <label class="control-label col-sm-4">SMS service</label>
+                                                <label class="control-label col-sm-4" translate>SMS service</label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -504,7 +504,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group" [attr.class]="smsTextDivClass" *ngIf="enableSmsText || campaignType=='sms'">
-                                                <label class="control-label col-sm-4">Sms Text
+                                                <label class="control-label col-sm-4" translate>Sms Text
                                                     <font style="color: red">
                                                         <b>*</b>
                                                     </font>
@@ -549,11 +549,11 @@
                                         <!-- END FORM-->
                                     </div>
                                 </div>
-                                <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+                                <button *ngIf="campaignType=='video'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-3');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
 
-                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+                                <button *ngIf="campaignType=='regular' || campaignType=='landingPage'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
 
-                                <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid">Next</button>
+                                <button *ngIf="campaignType=='sms'" type="button" id="campaign-detail-next-button" style="float: right" class=" btn green" (click)="resetActive($event, 40, 'step-4');" title="Please Fill Campaign Details" [disabled]="!isCampaignDetailsFormValid" translate>Next</button>
                             </div>
                         </form>
                     </div>
@@ -567,11 +567,11 @@
                         <div class="col-xs-12 text-center" style="margin-top: 10px;">
                             <div class="row pb10" id="user_list_table_view">
                                 <div class="col-lg-12" style="padding-left: 0px;padding-right: 0px;">
-                                    <div class="note-vid">Select the video for your campaign</div>
+                                    <div class="note-vid" translate>Select the video for your campaign</div>
                                     <div id="home" class="tab-pane fade in active">
                                         <div class="tab" *ngIf="!campaign.createdFromVideos">
-                                            <button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner">My Videos</button>
-                                            <button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab">Partner Videos</button>
+                                            <button [class]="myVideosClass" (click)="showTab($event,'my-videos')" id="my-videos-tab" *ngIf="!isOnlyPartner" translate>My Videos</button>
+                                            <button *ngIf="isPartnerToo" [class]="partnerVideosClass" (click)="showTab($event,'channel-videos')" id="partner-videos-tab" translate>Partner Videos</button>
                                             <ng-container *ngIf="!campaign.createdFromVideos">
                                                 <div class="input-icon right pull-right m10" *ngIf="isMyVideosActive">
                                                     <input type="text" [(ngModel)]="videoSearchInput" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for a Video" (keypress)="eventHandler($event.keyCode, 'myvideos')">
@@ -595,7 +595,7 @@
                                                     <table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable">
                                                         <thead style="background-color: #B7B7B7;">
                                                             <tr role="row">
-                                                                <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail" style="width: 45%;">Videos
+                                                                <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Thumbnail" style="width: 45%;" translate>Videos
                                                                 </th>
                                                                 <!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending"></th> -->
                                                                 <th style="text-align: center;width: 24%;" class="sorting_disabled" rowspan="1" colspan="1" *ngIf="!campaign.createdFromVideos">
@@ -603,7 +603,7 @@
                                                                         <select class="select_filter form-control"
                                                                             data-live-search="true"
                                                                             (change)="filterCategoryVideos($event)">
-                                                                            <option value="" class="search_init">
+                                                                            <option value="" class="search_init" translate>
                                                                                 Category</option>
                                                                             <option *ngFor="let category of categories"
                                                                                 class="colorSelect"
@@ -613,22 +613,22 @@
                                                                         </select>
                                                                     </span>
                                                                 </th>
-                                                                <th style="text-align: center;width: 24%;" *ngIf="campaign.createdFromVideos">Category</th>
-                                                                <th style="text-align: center;width: 18%;" *ngIf="!campaign.createdFromVideos">Upload Date
+                                                                <th style="text-align: center;width: 24%;" *ngIf="campaign.createdFromVideos" translate>Category</th>
+                                                                <th style="text-align: center;width: 18%;" *ngIf="!campaign.createdFromVideos" translate>Upload Date
                                                                     <span class="filter_column filter_select" *ngIf="false">
                                                                         <select class="form-control"
                                                                             (change)="filterVideosByType($event)">
-                                                                            <option value="" class="search_init">Type
+                                                                            <option value="" class="search_init" translate>Type
                                                                             </option>
-                                                                            <option value="PRIVATE">PRIVATE</option>
-                                                                            <option value="PUBLIC">PUBLIC</option>
-                                                                            <option value="UNLISTED">UNLISTED</option>
+                                                                            <option value="PRIVATE" translate>PRIVATE</option>
+                                                                            <option value="PUBLIC" translate>PUBLIC</option>
+                                                                            <option value="UNLISTED" translate>UNLISTED</option>
                                                                         </select>
                                                                     </span>
                                                                 </th>
                                                                 <!-- <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Type</th> -->
-                                                                <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos">Upload Date</th>
-                                                                <th style="text-align: center;width: 13%;">Status</th>
+                                                                <th style="text-align: center;width: 18%;" *ngIf="campaign.createdFromVideos" translate>Upload Date</th>
+                                                                <th style="text-align: center;width: 13%;" translate>Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="row_selected">
@@ -642,8 +642,8 @@
                                                             </tr>
                                                             <tr *ngIf="videosPagination.totalRecords==0">
                                                                 <td colspan="5">
-                                                                    <div class="alert alert-info"><strong>No videos
-                                                                            found</strong></div>
+                                                                    <div class="alert alert-info"><strong translate>No videos found
+                                                                            </strong></div>
                                                                 </td>
                                                             </tr>
                                                             <ng-container *ngIf="videosPagination.totalRecords > 0 && !campaignVideo.httpRequestLoader.isLoading && !campaignVideo.httpRequestLoader.isServerError">
@@ -724,14 +724,14 @@
                                                     <table class="table table-filter" cellspacing="0" width="100%" style="background-color: rgb(255, 255, 255);" role="grid" id="videoTable" style="margin-top:-18px;">
                                                         <thead style="background-color: #B7B7B7;">
                                                             <tr role="row">
-                                                                <th style="text-align: left;width:45%">Videos</th>
+                                                                <th style="text-align: left;width:45%" translate>Videos</th>
                                                                 <!-- <th style="text-align: center;" class="sorting" tabindex="0" aria-controls="videos_table_new" rowspan="1" colspan="1" aria-label="Title: activate to sort column ascending">Title</th> -->
                                                                 <th style="width:24%;" class="text-center" *ngIf="!campaign.createdFromVideos">
                                                                     <span class="filter_column filter_select">
                                                                         <select class="select_filter form-control"
                                                                             data-live-search="true"
                                                                             (change)="filterPartnerCategoryVideos($event)">
-                                                                            <option value="" class="search_init">
+                                                                            <option value="" class="search_init" translate>
                                                                                 Category</option>
                                                                             <option
                                                                                 *ngFor="let category of partnerCategories"
@@ -742,22 +742,22 @@
                                                                         </select>
                                                                     </span>
                                                                 </th>
-                                                                <th style="width: 24%;" class="text-center" *ngIf="campaign.createdFromVideos">Category</th>
-                                                                <th style="width: 18%" class="text-center" *ngIf="!campaign.createdFromVideos">Upload Date
+                                                                <th style="width: 24%;" class="text-center" *ngIf="campaign.createdFromVideos" translate>Category</th>
+                                                                <th style="width: 18%" class="text-center" *ngIf="!campaign.createdFromVideos" translate>Upload Date
                                                                     <span class="filter_column filter_select" *ngIf="false">
                                                                         <select class="form-control"
                                                                             (change)="filterPartnerVideosByType($event)">
-                                                                            <option value="" class="search_init">Type
+                                                                            <option value="" class="search_init" translate>Type
                                                                             </option>
-                                                                            <option value="PRIVATE">PRIVATE</option>
-                                                                            <option value="PUBLIC">PUBLIC</option>
-                                                                            <option value="UNLISTED">UNLISTED</option>
+                                                                            <option value="PRIVATE" translate>PRIVATE</option>
+                                                                            <option value="PUBLIC" translate>PUBLIC</option>
+                                                                            <option value="UNLISTED" translate>UNLISTED</option>
                                                                         </select>
                                                                     </span>
                                                                 </th>
                                                                 <!-- <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Type</th> -->
-                                                                <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos">Upload Date</th>
-                                                                <th style="width: 13%;" class="text-center">Status</th>
+                                                                <th style="width: 18%;" class="text-center" *ngIf="campaign.createdFromVideos" translate>Upload Date</th>
+                                                                <th style="width: 13%;" class="text-center" translate>Status</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody class="row_selected">
@@ -772,7 +772,7 @@
                                                             <tr *ngIf="channelVideosPagination.totalRecords==0">
                                                                 <td colspan="5">
                                                                     <div class="alert alert-info">
-                                                                        <strong>No Partner videos found</strong>
+                                                                        <strong translate>No Partner videos found</strong>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -852,8 +852,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" style="float:left;margin-left:-15px;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2');">Previous</button>
-                            <button type="button" style="float: right;margin-right: -15px;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-4');" [disabled]="!isVideo" title="Please Select Video">Next</button>
+                            <button type="button" style="float:left;margin-left:-15px;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2');" translate>Previous</button>
+                            <button type="button" style="float: right;margin-right: -15px;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-4');" [disabled]="!isVideo" title="Please Select Video" translate>Next</button>
                         </div>
                     </div>
                 </div>
@@ -904,12 +904,12 @@
                                                             <th style="text-align: center;">
                                                                 <span class="ui-column-resizer" (mousedown)="refService.onMouseDown($event,'user_list_tb',1)">
                                                                 </span>
-                                                                <span class="gridHeader">List Name</span>
+                                                                <span class="gridHeader" translate>List Name</span>
                                                             </th>
-                                                            <th style="text-align: center;" *ngIf="showContactType">Type
+                                                            <th style="text-align: center;" *ngIf="showContactType" translate>Type
                                                             </th>
-                                                            <th style="text-align: center;">Uploaded Date</th>
-                                                            <th style="text-align: center;">Preview </th>
+                                                            <th style="text-align: center;" translate>Uploaded Date</th>
+                                                            <th style="text-align: center;" translate>Preview </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -928,10 +928,10 @@
                                                             </td>
 
                                                             <td *ngIf="showContactType">
-                                                                <ng-container *ngIf="contacts.partnerUserList">
+                                                                <ng-container *ngIf="contacts.partnerUserList" translate>
                                                                     Partners
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!contacts.partnerUserList">
+                                                                <ng-container *ngIf="!contacts.partnerUserList" translate> 
                                                                     Contacts
                                                                 </ng-container>
                                                             </td>
@@ -963,9 +963,9 @@
                                     </div>
                                 </ng-container>
                             </div>
-                            <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-3');">Previous</button>
-                            <button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')">Previous</button>
-                            <button type="submit" style="float: right;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List">Next</button>
+                            <button *ngIf="campaignType=='video'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-3');" translate>Previous</button>
+                            <button *ngIf="campaignType=='regular'" type="button" style="float:left;" class="btn btn-default" (click)="resetActive($event, 40, 'step-2')" translate>Previous</button>
+                            <button type="submit" style="float: right;" class="btn btn-default btn green" (click)="resetActive($event, 40, 'step-5');" [disabled]="!isContactList" title="Please Select Contact List" translate>Next</button>
                         </div>
                     </div>
                 </div>
@@ -975,18 +975,18 @@
                     <div class="col-xs-12 text-center" style="margin-top: 10px;">
                         <div class="portlet light">
                             <ul class="mix-filter pull-left" style="padding:0" *ngIf="!campaign.enableCoBrandingLogo">
-                                <li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner">All</li>
-                                <li class="filter" (click)="filterTemplates('BASIC',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex">Basic
+                                <li class="filter" (click)="filterTemplates('NONE',0)" [class.emailtemplate-selected]="0 == selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner" translate>All</li>
+                                <li class="filter" (click)="filterTemplates('BASIC',2)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="2 == selectedEmailTemplateTypeIndex" translate>Basic
                                 </li>
-                                <li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex">Uploaded
+                                <li class="filter" (click)="filterTemplates('UPLOADED',3)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="3 == selectedEmailTemplateTypeIndex" translate>Uploaded
                                 </li>
-                                <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',4)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="4 == selectedEmailTemplateTypeIndex">Email Co-Branding</li>
-                                <li class="filter" (click)="filterTemplates('BASIC',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex">Video
+                                <li class="filter" (click)="filterTemplates('REGULAR_CO_BRANDING',4)" *ngIf="campaignType=='regular' && !isOnlyPartner" [class.emailtemplate-selected]="4 == selectedEmailTemplateTypeIndex" translate>Email Co-Branding</li>
+                                <li class="filter" (click)="filterTemplates('BASIC',5)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="5== selectedEmailTemplateTypeIndex" translate>Video
                                 </li>
-                                <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex">Uploaded
+                                <li class="filter" (click)="filterTemplates('UPLOADED',6)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="6== selectedEmailTemplateTypeIndex" translate>Uploaded
                                 </li>
-                                <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex">Video Co-Branding</li>
-                                <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner && isPartnerToo">Partner</li>
+                                <li class="filter" (click)="filterTemplates('VIDEO_CO_BRANDING',7)" *ngIf="campaignType=='video' && !isOnlyPartner" [class.emailtemplate-selected]="7== selectedEmailTemplateTypeIndex" translate>Video Co-Branding</li>
+                                <li class="filter" (click)="filterTemplates('PARTNER',8)" [class.emailtemplate-selected]="8== selectedEmailTemplateTypeIndex" *ngIf="!isOnlyPartner && isPartnerToo" translate>Partner</li>
                             </ul>
 
                             <div class="input-icon right pull-right cebp">
@@ -1060,18 +1060,18 @@
                                                                                             </span>
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type!='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.createdBy}}">
-                                                                                                    <b>By:</b><span>{{campaign?.emailTemplate?.createdBy|slice:0:12}}<span
+                                                                                                    <b translate>By:</b><span>{{campaign?.emailTemplate?.createdBy|slice:0:12}}<span
                                                                                                             *ngIf="campaign?.emailTemplate?.createdBy?.length>12">..</span></span>
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <ng-container *ngIf="campaign?.emailTemplate?.type=='PARTNER'">
                                                                                                 <span style="float:left" title="{{campaign?.emailTemplate?.vendorName}}">
-                                                                                                    <b>By:</b><span>{{campaign?.emailTemplate?.vendorName|slice:0:12}}<span
+                                                                                                    <b translate>By:</b><span>{{campaign?.emailTemplate?.vendorName|slice:0:12}}<span
                                                                                                             *ngIf="campaign?.emailTemplate?.vendorName?.length>12">..</span></span>
                                                                                                 </span>
                                                                                             </ng-container>
                                                                                             <span *ngIf="campaign?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{campaign?.emailTemplate?.category}}">
-                                                                                                <b>Folder:</b><font>{{campaign?.emailTemplate?.category|slice:0:5}}</font>
+                                                                                                <b translate>Folder:</b><font>{{campaign?.emailTemplate?.category|slice:0:5}}</font>
                                                                                                 <font *ngIf="campaign?.emailTemplate?.category?.length>5">..</font>
                                                                                             </span>
                                                                                             <div class="item__actions">
@@ -1137,18 +1137,18 @@
                                                                                     <br>
                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                            <b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
+                                                                                            <b translate>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
                                                                                                     *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
                                                                                         </span>
                                                                                     </ng-container>
                                                                                     <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                         <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                            <b>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
+                                                                                            <b translate>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
                                                                                                     *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
                                                                                         </span>
                                                                                     </ng-container>
                                                                                     <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                        <b>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+                                                                                        <b translate>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
                                                                                         <font *ngIf="emailTemplate?.category?.length>5">..</font>
                                                                                     </span>
                                                                                     <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
@@ -1179,17 +1179,17 @@
                                                 </div>
                                             </ng-container>
                                             <div *ngIf="emailTemplatesPagination.totalRecords==0 && campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
-                                                <strong>No co-branded templates found</strong>
+                                                <strong translate>No co-branded templates found</strong>
                                             </div>
                                             <div *ngIf="emailTemplatesPagination.totalRecords==0 && !campaign.enableCoBrandingLogo && !campaignEmailTemplate.httpRequestLoader.isLoading" class="alert alert-info">
-                                                <strong>No templates found</strong>
+                                                <strong translate>No templates found</strong>
                                             </div>
                                             <div style="text-align:left;" [hidden]="emailTemplatesPagination.totalRecords<0 || campaignEmailTemplate.httpRequestLoader.isLoading || campaignEmailTemplate.httpRequestLoader.isServerError">
                                                 <app-pagination [pagination]="emailTemplatesPagination" [type]="'emailTemplates'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="loadPaginationDropdownTemplates($event)">
                                                 </app-pagination>
                                             </div>
-                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
-                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template">Next</button>
+                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
+                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isEmailTemplate" title="Please Select Email Template" translate>Next</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1270,11 +1270,11 @@
                                                                                             </span>
                                                                                             <br>
                                                                                             <span class="campaign-email-template-category" title="{{campaign?.landingPage?.createdUser}}">
-                                                                                                <b>By:</b><span>{{campaign.landingPage?.createdUser|slice:0:13}}<span
+                                                                                                <b translate>By:</b><span>{{campaign.landingPage?.createdUser|slice:0:13}}<span
                                                                                                         *ngIf="campaign.landingPage?.createdUser?.length>13">..</span></span>
                                                                                             </span>
                                                                                             <span *ngIf="campaign.landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{campaign.landingPage?.categoryName}}">
-                                                                                                <b>Folder:</b><font>{{campaign?.landingPage?.categoryName|slice:0:7}}</font>
+                                                                                                <b translate>Folder:</b><font>{{campaign?.landingPage?.categoryName|slice:0:7}}</font>
                                                                                                 <font *ngIf="campaign?.landingPage?.categoryName?.length>7">..</font>
                                                                                             </span>
                                                                                             <div class="item__actions">
@@ -1338,11 +1338,11 @@
                                                                                     </span>
                                                                                     <br>
                                                                                     <span class="campaign-email-template-category" title="{{landingPage.createdUser}}">
-                                                                                        <b>By:</b><span>{{landingPage.createdUser|slice:0:13}}<span
+                                                                                        <b translate>By:</b><span>{{landingPage.createdUser|slice:0:13}}<span
                                                                                                 *ngIf="landingPage.createdUser?.length>13">..</span></span>
                                                                                     </span>
                                                                                     <span *ngIf="landingPage?.categoryName?.length>0" class="campaign-email-template-category" title="{{landingPage?.categoryName}}">
-                                                                                        <b>Folder:</b><font>{{landingPage?.categoryName|slice:0:7}}</font>
+                                                                                        <b translate>Folder:</b><font>{{landingPage?.categoryName|slice:0:7}}</font>
                                                                                         <font *ngIf="landingPage?.categoryName?.length>7">..</font>
                                                                                     </span>
                                                                                     <div class="item__actions">
@@ -1372,13 +1372,13 @@
                                                 </div>
                                             </ng-container>
                                             <div *ngIf="landingPagePagination.totalRecords==0 &&!landingPageLoader.isLoading" class="alert alert-info alert-top-padding-xamplify">
-                                                <strong>No pages found</strong>
+                                                <strong translate>No pages found</strong>
                                             </div>
                                             <div style="text-align:left;" [hidden]="landingPagePagination.totalRecords<0 || landingPageLoader.isLoading || landingPageLoader.isServerError">
                                                 <app-pagination [pagination]="landingPagePagination" [type]="'landingPages'" (notifyParent)="setPagePagination($event)" (notifyParentDropDown)="listLandingPages($event)"></app-pagination>
                                             </div>
-                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')">Previous</button>
-                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select  Page">Next</button>
+                                            <button type="button" class="btn btn-default pull-left" (click)="resetActive($event, 40, 'step-4')" translate>Previous</button>
+                                            <button type="submit" class=" btn green pull-right" (click)="resetActive($event, 40, 'step-6');addUserEmailIds();" [disabled]="!isLandingPage" title="Please Select  Page" translate>Next</button>
                                         </div>
                                     </form>
                                 </div>
@@ -1398,7 +1398,7 @@
                     <form role="form" [formGroup]="campaignLaunchForm" (ngSubmit)="launchCampaign();" class="form-horizontal form-bordered form-label-stripped">
                         <div class="col-xs-12">
                             <fieldset>
-                                <legend>Preview Before Publishing</legend>
+                                <legend translate>Preview Before Publishing</legend>
                                 <div class="row">
                                     <!-- 	<div class="col-xs-12">
 						<div *ngIf="socialStatusProviders?.length > 0">
@@ -1493,11 +1493,11 @@
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
                                                                 <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
-                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">
+                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
                                                                         Partner List(s)</ng-container>
                                                                 </ng-container>
                                                                 <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
-                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'">
+                                                                    <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
                                                                         Contact List(s)</ng-container>
                                                                 </ng-container>
                                                             </td>
@@ -1520,11 +1520,11 @@
                                                                
 
                                                                 <span *ngIf="campaign.emailNotification" id="blue-font">This email will be sent to {{validUsersCount}}({{allUsersCount}}) users.</span>
-                                                                <span *ngIf="!campaign.emailNotification" id="red-font">No email will be sent.</span>
+                                                                <span *ngIf="!campaign.emailNotification" id="red-font" translate>No email will be sent.</span>
 
                                                             </td>
                                                             <td style="text-align: right" width="20%">
-                                                                <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')">Change</a>
+                                                                <a class="btn btn-primary btn-sm" style="color:#fff" (click)="resetActive($event, 40, 'step-4')" translate>Change</a>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -1540,11 +1540,11 @@
                                                                     <i *ngIf="campaignType == 'video' || campaignType == 'regular'" class="fa fa-envelope fa-2x icon-position" aria-hidden="true"></i>
                                                                     <i *ngIf="campaignType == 'landingPage'" class="fa fa-wpforms fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container class="h4-text" *ngIf="campaignType == 'video'">Email Template
+                                                                <ng-container class="h4-text" *ngIf="campaignType == 'video'" translate>Email Template
                                                                 </ng-container>
-                                                                <ng-container class="h4-text" *ngIf="campaignType == 'regular'">Email Template
+                                                                <ng-container class="h4-text" *ngIf="campaignType == 'regular'" translate>Email Template
                                                                 </ng-container>
-                                                                <ng-container class="h4-text" *ngIf="campaignType == 'landingPage'">Page
+                                                                <ng-container class="h4-text" *ngIf="campaignType == 'landingPage'" translate>Page
                                                                 </ng-container>
                                                             </td>
                                                             <td width="55%">
@@ -1574,7 +1574,7 @@
                                                                 </ng-container>
                                                             </td>
                                                             <td style="text-align: right" width="20%">
-                                                                <a class="btn btn-primary btn-sm" (click)="resetActive($event, 40, 'step-5')">Change</a>
+                                                                <a class="btn btn-primary btn-sm" (click)="resetActive($event, 40, 'step-5')" translate>Change</a>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -1590,7 +1590,7 @@
                             <div>
                                 <div class="row" style="margin-bottom: 5px;margin-top: -9px;">
                                     <div class="col-xs-6">
-                                        <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;padding: 9px 0;">
+                                        <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;padding: 9px 0;" translate>
                                             <i class="fa fa-ban p0"></i> No website links found
                                         </a>
                                         <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;padding: 9px 0;" (click)="addClickRows()">
@@ -1619,8 +1619,8 @@
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="pull-right">
-                                                                <label class="switch-choose" style="color:#fff">Choose
-                                                                    Template</label>
+                                                                <label class="switch-choose" style="color:#fff" translate>Choose Template
+                                                                    </label>
                                                                 <switch class="switch-choose" [status]="reply.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="selectReplyEmailBody($event,i,reply)">
                                                                 </switch>
@@ -1638,50 +1638,49 @@
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12 p0">
                                                                     <div class="col-xs-6" style="margin-bottom: 6px;">
-                                                                        <label style="cursor: default;" for="reason">Reason</label>
+                                                                        <label style="cursor: default;" for="reason" translate>Reason</label>
                                                                         <select class="form-control" name="actionId" [(ngModel)]="reply.actionId">
                                                                             <option [value]="0"
-                                                                                [selected]="reply.actionId ==0">Email is
-                                                                                not opened</option>
+                                                                                [selected]="reply.actionId ==0" translate>Email is not opened
+                                                                                </option>
                                                                             <option [value]="13"
-                                                                                [selected]="reply.actionId==13">Email is
-                                                                                opened</option>
+                                                                                [selected]="reply.actionId==13" translate>Email is opened
+                                                                                </option>
                                                                             <option [value]="16"
-                                                                                [selected]="reply.actionId ==16">Send
-                                                                                immediately after email is opened
+                                                                                [selected]="reply.actionId ==16" translate>
+                                                                                Send immediately after email is opened
                                                                             </option>
                                                                             <option [value]="22"
                                                                                 [selected]="reply.actionId ==22"
-                                                                                *ngIf="campaign.channelCampaign && campaignType=='regular'">
-                                                                                Email is not redistributed by the
-                                                                                partner</option>
+                                                                                *ngIf="campaign.channelCampaign && campaignType=='regular'" translate>
+                                                                                Email is not redistributed by the partner
+                                                                                </option>
                                                                             <ng-container *ngIf="campaignType=='video'">
                                                                                 <option [value]="1"
-                                                                                    [selected]="reply.actionId==1">
+                                                                                    [selected]="reply.actionId==1" translate>
                                                                                     Video is played</option>
                                                                                 <option [value]="17"
-                                                                                    [selected]="reply.actionId==17">
-                                                                                    Send immediately after video is
-                                                                                    played</option>
+                                                                                    [selected]="reply.actionId==17" translate>
+                                                                                    Send immediately after video is played
+                                                                                    </option>
                                                                                 <option [value]="18"
-                                                                                    [selected]="reply.actionId==18">
+                                                                                    [selected]="reply.actionId==18" translate>
                                                                                     Video is not played</option>
                                                                                 <option [value]="23"
                                                                                     [selected]="reply.actionId ==23"
-                                                                                    *ngIf="campaign.channelCampaign">
+                                                                                    *ngIf="campaign.channelCampaign" translate>
                                                                                     Video is not redistributed</option>
                                                                             </ng-container>
                                                                         </select>
                                                                     </div>
                                                                     <div *ngIf="reply.actionId!=16 && reply.actionId!=17 && reply.actionId!=18">
                                                                         <div class="col-xs-2">
-                                                                            <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}">Reply In
-                                                                                X Days
+                                                                            <label class="default" for="days" *ngIf="reply.actionId==22 || reply.actionId==23 " id="reply-days-{{reply.divId}}" translate>
+                                                                                Reply In X Days
                                                                                 <b style="color: red">*</b>
-                                                                                <font><b>(Minimum 1 Day)</b></font>
+                                                                                <font><b translate>(Minimum 1 Day)</b></font>
                                                                             </label>
-                                                                            <label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}">Reply In
-                                                                                X Days
+                                                                            <label class="default" for="days" *ngIf="reply.actionId!=22 && reply.actionId!=23" id="reply-days-{{reply.divId}}" translate>Reply In X Days
                                                                                 <b style="color: red">*</b>
                                                                             </label>
                                                                             <input type="number" class="form-control" name="days" placeholder="Days" [(ngModel)]="reply.replyInDays" min="0" oninput="validity.valid||(value='');">
@@ -1718,8 +1717,8 @@
                                                                    <!--Email Template Selection-->
                                                                    <div class="col-xs-12 text-center" style="margin-top: 10px;" id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">
                                                                     <div class="form-group" style="margin-left: 1px;">
-                                                                        <label for="days" id="email-template-{{reply.divId}}">Select
-                                                                            Email Template
+                                                                        <label for="days" id="email-template-{{reply.divId}}">Select Email Template
+                                                                            
                                                                             <strong class="required">*</strong>
                                                                         </label>
                                                                     </div>
@@ -2465,8 +2464,8 @@
     <div class="modal-dialog modal-lg modal-template" style="width: 65% !important;right:0">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-                    <i class="fa fa-times" aria-hidden="true"></i></button>
+                <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i
+                        class="fa fa-times"></i></button>
                 <h4 class="modal-title">Email Spam Check</h4>
             </div>
             <div class="modal-body">
