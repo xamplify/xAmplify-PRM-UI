@@ -38,6 +38,7 @@ import { DownloadTemplateComponent } from './campaigns/download-template/downloa
 import { PublicPageResponseComponent } from 'app/common/public-page-response/public-page-response.component';
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
+import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },    
@@ -104,7 +105,8 @@ export const routes: Routes = [
     { path: 'axAa/:alias', component: AccessAccountComponent },
     { path: 'download/:type', component: DownloadTemplateComponent },
     {path: 'samlsecurity/:alias', component:SamlsecurityauthComponent},
-    {path: 'au/:alias', component:SamlsecurityauthComponent},
+    {path: 'au/:alias', component:SamlsecurityauthComponent},    
+    {path:'vanity-domain-error', component:DomainErrorComponent},    
     { path: '**', component: PageNotFoundComponent },
 ];
 

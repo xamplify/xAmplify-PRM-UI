@@ -7,7 +7,7 @@
     <div class="col-xs-12 col-sm-12 col-lg-12 p0">
        <div class="col-xs-12 col-sm-6 col-lg-6 p0">
       <div class="caption" style="font-size:15px; padding-bottom: 0px!important;margin-top: 15px">
-        <span class="caption-subject font-red-sunglo uppercase">{{pageHeader}}</span>
+        <span class="caption-subject font-red-sunglo uppercase">{{pageHeader | translate}}</span>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-lg-6 p0">
@@ -33,8 +33,8 @@
     </div>
     <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
 
-    <div class="row" id="box" *ngIf="httpRequestLoader.isServerError">
-      Please contact admin for "Leads"
+    <div class="row" id="box" *ngIf="httpRequestLoader.isServerError" translate>
+      Please contact admin for 'Leads'
     </div>
     <app-list-loader *ngIf="httpRequestLoader.isLoading && !httpRequestLoader.isServerError"></app-list-loader>
     <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!httpRequestLoader.isLoading && !httpRequestLoader.isServerError ">
@@ -42,12 +42,12 @@
       <table class="table tgrid">
         <thead>
           <tr>
-            <th class="center-aligned">Lead</th>
-            <th class="center-aligned" *ngIf="pageText != 'TOTAL LEADS'" >Deal Title</th>
-            <th class="center">Campaign Name</th>
-            <th class="center">Added By (Partner)</th>
-            <th class="center" *ngIf ="!isPartner && pageText != 'TOTAL LEADS'">Status</th>
-            <th class="center" style="width: 18%">Actions</th>
+            <th class="center-aligned" translate>Lead</th>
+            <th class="center-aligned" *ngIf="pageText != 'TOTAL LEADS'" translate>Deal Title</th>
+            <th class="center" translate>Campaign Name</th>
+            <th class="center" translate>Added By (Partner)</th>
+            <th class="center" *ngIf ="!isPartner && pageText != 'TOTAL LEADS'" translate>Status</th>
+            <th class="center" style="width: 18%" translate>Actions</th>
             <!--  <th class="center">Details</th> -->
           </tr>
         </thead>
@@ -141,8 +141,8 @@
                 </a>
                 <a *ngIf="isPartner" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="Comments" style="margin-top: 10px">
                    
-                  <button class="btn btn-primary register_deal" *ngIf="item.deal" >Update Deal</button>
-                  <button class="btn btn-primary register_deal" *ngIf="!item.deal" >Register Deal</button> 
+                  <button class="btn btn-primary register_deal" *ngIf="item.deal" translate>Update Deal</button>
+                  <button class="btn btn-primary register_deal" *ngIf="!item.deal" translate>Register Deal</button> 
                    
               
               </a>
@@ -158,7 +158,7 @@
       </div>
       <ng-container>
         <div  *ngIf="pagination.pagedItems.length == 0" class="alert alert-info">
-          <strong>No campaigns found</strong>
+          <strong translate>No campaigns found</strong>
         </div>
       </ng-container>
       <div *ngIf="sortOption.totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError" style="background:white">

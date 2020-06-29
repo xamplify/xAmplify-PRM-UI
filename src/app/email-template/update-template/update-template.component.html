@@ -6,35 +6,35 @@
         <div class="page-bar">
             <ul class="page-breadcrumb">
                 <li>
-                    <i class="fa fa-home"></i><a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
+                    <i class="fa fa-home"></i><a [routerLink]="refService.homeRouter" translate>Home</a><i class="fa fa-angle-right"></i>
                 </li>
                 <li>
-                    <a routerLink="{{routerLink}}">Manage Templates</a><i class="fa fa-angle-right"></i>
+                    <a routerLink="{{routerLink}}" translate>Manage Templates</a><i class="fa fa-angle-right"></i>
                 </li>
-                <li><a>Update Template</a></li>
+                <li><a translate>Update Template</a></li>
             </ul>
         </div>
         <div class="portlet light">
             <div class="portlet-body">
                 <form>
                     <div class="col-md-12">
-                        <div class="col-md-2" style="font-weight: 500;font-size: 17px;margin-bottom: 34px;padding: 2px;">Name</div>
+                        <div class="col-md-2" style="font-weight: 500;font-size: 17px;margin-bottom: 34px;padding: 2px;" translate>Name</div>
                         <div class="col-md-4">
                             <input type="text" class="form-control" id="templateName" [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50" placeholder="Template name" #templateName="ngModel" (ngModelChange)="checkUpdatedAvailableNames($event)">
                             <span *ngIf="invalidTemplateName" style="color:red">Name is required</span>
-                            <span *ngIf="duplicateTemplateName && !invalidTemplateName" style="color:red">Name already exists.</span>
-                            <span *ngIf="isVideoTagError" style="color:red">{{videoTagsError}}</span>
+                            <span *ngIf="duplicateTemplateName && !invalidTemplateName" style="color:red" translate>Name already exists.</span>
+                            <span *ngIf="isVideoTagError" style="color:red" translate>{{videoTagsError}}</span>
                         </div>
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName">Update</button>
+                            <button type="button" class="btn btn-info" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName" translate>Update</button>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="col-md-2" id="templateTypeDiv">Folder</div>
+                        <div class="col-md-2" id="templateTypeDiv" translate>Folder</div>
                         <div class="col-md-4">
                             <div>
                                 <select class="form-control" id="uploadType" [(ngModel)]="model.categoryId" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
-									<option *ngFor="let category of categoryNames" [value]="category.id">
+									<option *ngFor="let category of categoryNames" [value]="category.id" translate>
 										{{category.name}}
 									</option>
 						</select>
@@ -42,12 +42,12 @@
                         </div>
                     </div>
                     <div class="col-md-12" *ngIf="showDropDown">
-                        <div class="col-md-2" id="templateTypeDiv">Type</div>
+                        <div class="col-md-2" id="templateTypeDiv" translate>Type</div>
                         <div class="col-md-4">
                             <div>
                                 <select class="form-control" id="uploadType" [(ngModel)]="model.uploadType" name="uploadType" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectUploadType($event)">
-							<option [value]="'REGULAR'" selected>REGULAR</option>
-							<option [value]="'VIDEO'">VIDEO</option>
+							<option [value]="'REGULAR'" selected translate>REGULAR</option>
+							<option [value]="'VIDEO'" translate>VIDEO</option>
 							<!-- <option [value]="'EVENT'">EVENT</option> -->
 						</select>
                             </div>
@@ -57,20 +57,20 @@
                 <div class="col-xs-12 col-md-6">
                     <br>
                     <div>
-                        <label for="info"><font style="color: red;">Copy the below image tag link to enable co-branding.</font></label>
-                        <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')">Copy Link</button>
-                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" #coBrandingTag>{{refService.coBrandingTag}}</textarea>
-                        <font class="success" id="co-branding-copy" style="display:none"><b>Copied successfully<i class="fa fa-check"></i></b></font>
+                        <label for="info"><font style="color: red;" translate>Copy the below image tag link to enable co-branding.</font></label>
+                        <button type="button" class="btn-xs btn-success" (click)="copyLink(coBrandingTag,'co-branding-copy')" translate>Copy Link</button>
+                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" #coBrandingTag translate>{{refService.coBrandingTag}}</textarea>
+                        <font class="success" id="co-branding-copy" style="display:none"><b translate>Copied successfully<i class="fa fa-check"></i></b></font>
                     </div>
                     <div *ngIf="emailTemplateService.emailTemplate.videoTemplate || model.uploadType=='VIDEO'" class="form-group" id="infoDiv">
-                        <br><label for="info"><font style="color: red;">Your HTML template must include the code below.</font></label>
-                        <button type="button" class="btn-xs btn-success" (click)="copyLink(videoTag,'video-tag-copy')">Copy Link</button>
+                        <br><label for="info"><font style="color: red;" translate>Your HTML template must include the code below.</font></label>
+                        <button type="button" class="btn-xs btn-success" (click)="copyLink(videoTag,'video-tag-copy')" translate>Copy Link</button>
                         <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" #videoTag>{{refService.videoTag}}</textarea>
-                        <font class="success" id="video-tag-copy" style="display:none"><b>Copied successfully<i class="fa fa-check"></i></b></font>
+                        <font class="success" id="video-tag-copy" style="display:none"><b translate>Copied successfully<i class="fa fa-check"></i></b></font>
                     </div>
                     <br>
                     <div class="form-group" *ngIf="mycontent?.length>0">
-                        <label class="control-label col-sm-5">Enable Co-Branding Logo</label>
+                        <label class="control-label col-sm-5" translate>Enable Co-Branding Logo</label>
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>
                     </div>

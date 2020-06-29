@@ -11,20 +11,20 @@
                         <ul class="page-breadcrumb" *ngIf="loadLandingPage">
                             <li>
                                 <i class="fa fa-home" aria-hidden="true"></i>
-                                <a [routerLink]="referenceService.homeRouter">Home</a>
+                                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </li>
                             <li *ngIf="defaultLandingPage">
-                                <a [routerLink]="['/home/pages/select']">Select  Page</a>
+                                <a [routerLink]="['/home/pages/select']" translate>Select  Page</a>
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </li>
                             <li *ngIf="!defaultLandingPage">
-                                <a routerLink="{{routerLink}}">Manage Pages</a>
+                                <a routerLink="{{routerLink}}" translate>Manage Pages</a>
                                 <i class="fa fa-angle-right" aria-hidden="true"></i>
                             </li>
                             <li>
-                                <a *ngIf="defaultLandingPage">Create Page</a>
-                                <a *ngIf="!defaultLandingPage">Edit Page</a>
+                                <a *ngIf="defaultLandingPage" translate>Create Page</a>
+                                <a *ngIf="!defaultLandingPage" translate>Edit Page</a>
                             </li>
                         </ul>
                         <app-preview-popup #previewPopUpComponent *ngIf="loadLandingPage"></app-preview-popup>

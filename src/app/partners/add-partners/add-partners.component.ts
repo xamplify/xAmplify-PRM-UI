@@ -1441,52 +1441,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( "#zohoShowLoginPopup" ).hide();
     }
 
-    checkingZohoContactsAuthentication() {
-        try {
-
-            if(this.loggedInThroughVanityUrl){
-                this.referenceService.showSweetAlertInfoMessage();
-            }else{
-                if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
-                    this.contactService.checkingZohoAuthentication()
-                        .subscribe(
-                        ( data: any ) => {
-                            this.xtremandLogger.info( data );
-                            if ( data.showLogin == true ) {
-                                $( "#zohoShowLoginPopup" ).show();
-                            }
-                            if ( data.authSuccess == true ) {
-                                $( "#zohoShowAuthorisedPopup" ).show();
-                            }
-                        },
-                        ( error: any ) => {
-                            var body = error['_body'];
-                            if ( body != "" ) {
-                                var response = JSON.parse( body );
-                                if ( response.message == "Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!" ) {
-                                    this.zohoAuthStorageError = 'Maximum allowed AuthTokens are exceeded, Please remove Active AuthTokens from your ZOHO Account.!';
-                                    setTimeout(() => {
-                                        this.zohoAuthStorageError = '';
-                                    }, 5000 )
-                                } else {
-                                    this.xtremandLogger.errorPage( error );
-                                }
-                            } else {
-                                this.xtremandLogger.errorPage( error );
-                            }
-                            console.log( "errorrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr:" + error )
-    
-                        },
-                        () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
-                        )
-                }
-            }
-
-            
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
-        }
-    }
+  
 
     getZohoContacts( contactType: any, username: string, password: string ) {
         try {
@@ -1545,8 +1500,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             setTimeout(() => {
                                 this.zohoCredentialError = '';
                             }, 5000 )
-                        } else {
-                        }
+                        } 
                     } else {
                         this.xtremandLogger.errorPage( error );
                     }
@@ -1597,7 +1551,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     } else {
                         for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
                             let socialContact = new SocialContact();
-                            let user = new User();
                             socialContact.id = i;
                             if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
                                 socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
@@ -2428,6 +2381,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 $('#salesforceModal').modal('toggle');*/
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
+            }else if(this.contactService.socialProviderName == 'zoho'){
+                this.getZohoContactsUsingOAuth2();
             }
             
             /********Check Gdpr Settings******************/
@@ -3264,5 +3219,95 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     openCampaignsPopupForNewlyAddedPartners(){
         this.sendCampaignComponent.openPopUpForNewlyAddedPartnersOrContacts(this.partnerListId,this.newUserDetails,"Partner");
     }
+
+/**********************Sravan************************ */
+    checkingZohoContactsAuthentication() {
+        try {
+
+            if(this.loggedInThroughVanityUrl){
+                this.referenceService.showSweetAlertInfoMessage();
+            }else{
+                if ( this.selectedAddPartnerOption == 5 && !this.disableOtherFuctionality ) {
+                    this.contactService.checkingZohoAuthentication(this.isPartner)
+                        .subscribe(
+                        ( data: any ) => {
+                            this.storeLogin = data;
+                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
+                                this.getZohoContactsUsingOAuth2();
+                            } else{
+                                localStorage.setItem( "userAlias", data.userAlias )
+                                localStorage.setItem( "isPartner", data.isPartner );
+                                window.location.href = "" + data.redirectUrl;
+                            }
+                        },
+                        ( error: any ) => {
+                           this.referenceService.showSweetAlertServerErrorMessage();
     
+                        },
+                        () => this.xtremandLogger.info( "Add contact component loadContactListsName() finished" )
+                        )
+                }
+            }
+
+            
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "addPartnerComponent", "zoho authentication cheking" );
+        }
+    }
+
+    getZohoContactsUsingOAuth2(){
+        this.socialPartners.socialNetwork = "ZOHO";
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.contactType = "CONTACT";
+        swal( {
+            text: 'Retrieving partners from zoho...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
+        this.contactService.getZohoAutherizedContacts(this.socialPartners)
+                .subscribe(
+                data => {
+                    this.getGoogleConatacts = data;
+                    this.zohoImageBlur = false;
+                    this.zohoImageNormal = true;
+                    if ( !this.getGoogleConatacts.contacts ) {
+                        this.customResponse = new CustomResponse( 'ERROR', this.properties.NO_RESULTS_FOUND, true );
+                        this.selectedAddPartnerOption = 5;
+                        $("button#cancel_button").prop('disabled', false);
+                    } else {
+                        for ( var i = 0; i < this.getGoogleConatacts.contacts.length; i++ ) {
+                            let socialContact = new SocialContact();
+                            socialContact.id = i;
+                            if ( this.validateEmailAddress( this.getGoogleConatacts.contacts[i].emailId ) ) {
+                                socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
+                                socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                                socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                                this.socialPartnerUsers.push( socialContact );
+                            }
+                            this.showFilePreview();
+                            $( "#myModal .close" ).click()
+                            $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                            $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                            $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
+                            $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+                            $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                            $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+                            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+                        }
+                    }
+                    this.selectedAddPartnerOption = 6;
+                    this.setSocialPage( 1 );
+                    swal.close();
+                },
+                ( error: any ) => {
+                    swal.close();
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
+                );
+
+    }
+    
+   
 }

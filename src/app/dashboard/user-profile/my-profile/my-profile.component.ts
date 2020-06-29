@@ -1545,7 +1545,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 data => {
                     this.gdprSetting.isExists = true;
-                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.customResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
                     this.referenceService.stopLoader(this.httpRequestLoader);
                 },
                 (error: any) => {
@@ -1891,7 +1891,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         let type = item.moduleName;
         if(count>0 && item.previewAccess){
             this.ngxloading = true;
-            if("Email Templates"==type){
+            if("Templates"==type){
                 this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
             }else if("Forms"==type){
                 this.router.navigate(['/home/forms/manage/'+categoryId]);

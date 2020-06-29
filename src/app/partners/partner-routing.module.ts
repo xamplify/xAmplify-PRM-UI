@@ -11,6 +11,7 @@ const routes: Routes = [
     { path: 'add', component: AddPartnersComponent },
     { path: 'manage', component: ManagePartnersComponent },
     { path: 'google-callback', component: SocialContactsCallbackComponent },
+    { path: 'zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'analytics', component: PartnerReportsComponent },
     { path: 'hubspot-callback',component:SocialContactsCallbackComponent}

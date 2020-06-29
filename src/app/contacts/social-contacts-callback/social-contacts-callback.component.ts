@@ -24,19 +24,21 @@ export class SocialContactsCallbackComponent implements OnInit {
         } else {
             this.isPartner = true;
         }
-
         if ( currentUrl.includes( 'google-callback' ) ) {
             this.callbackName = 'google';
             this.contactService.socialCallbackName = "googleOauth";
+        }else if(currentUrl.includes( 'zoho-callback' )){
+            this.callbackName = 'zoho';
+            this.contactService.socialCallbackName = "zohoOauth";
         } else {
             this.contactService.socialCallbackName = "salesforceOauth";
             this.callbackName = 'salesforce';
         }
-
-        if ( currentUrl.includes( 'error=access_denied' ) && this.isPartner == false ) {
+        let isErrorUrl = (currentUrl.includes( 'error=access_denied' )  || currentUrl.includes( 'zoho-callback?error'));
+        if ( isErrorUrl && !this.isPartner) {
             this.router.navigate( ['/home/contacts/add'] );
         }
-        else if ( currentUrl.includes( 'error=access_denied' ) && this.isPartner == true ) {
+        else if (isErrorUrl && this.isPartner) {
             this.router.navigate( ['/home/partners'] );
         }
     }
@@ -54,9 +56,10 @@ export class SocialContactsCallbackComponent implements OnInit {
                         this.contactService.socialProviderName = 'google';
                     } else if ( this.callbackName == 'salesforce' ) {
                         this.contactService.socialProviderName = 'salesforce';                        
+                    }else if ( this.callbackName == 'zoho' ) {
+                        this.contactService.socialProviderName = 'zoho';                        
                     }
-
-                    if ( this.isPartner == true ) {
+                    if ( this.isPartner) {
                         this.router.navigate( ['/home/partners'] );
                     } else {
                         this.router.navigate( ['/home/contacts/add'] );

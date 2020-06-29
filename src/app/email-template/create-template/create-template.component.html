@@ -7,25 +7,26 @@
                     <div class="page-bar">
                         <ul class="page-breadcrumb" *ngIf="loadTemplate">
                             <li>
-                                <i class="fa fa-home"></i>
-                                <a [routerLink]="refService.homeRouter">Home</a>
-                                <i class="fa fa-angle-right"></i>
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                <a [routerLink]="refService.homeRouter" translate>Home</a>
+                                <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li *ngIf="emailTemplateService.isNewTemplate">
-                                <a [routerLink]="['/home/emailtemplates/select']">Select Templates</a><i class="fa fa-angle-right"></i>
+                                <a [routerLink]="['/home/emailtemplates/select']" translate>Select Templates</a>
+                                <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li *ngIf="!emailTemplateService.isNewTemplate">
-                                <a routerLink="{{manageRouterLink}}">Manage Templates</a>
-                                <i class="fa fa-angle-right"></i>
+                                <a routerLink="{{manageRouterLink}}" translate>Manage Templates</a>
+                                <i class="fa fa-angle-right"  aria-hidden="true"></i>
                             </li>
                             <li>
-                                <a><span *ngIf="emailTemplateService.isNewTemplate; else Other">Create</span>
-                          <ng-template #Other>Update</ng-template> Template</a>
+                                <a><span *ngIf="emailTemplateService.isNewTemplate; else Other" translate>Create</span>
+                          <ng-template #Other translate>Update</ng-template> Template</a>
                             </li>
                         </ul>
                         <app-merge-tags *ngIf="loadTemplate" [isEvent]="emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate"></app-merge-tags>
                         <!--   <app-preview-popup #previewPopUpComponent *ngIf="loadTemplate"></app-preview-popup> -->
-                        <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your email templates">
+                        <!-- <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="You can add these forms into your templates">
                   	<i class="fa fa-plus-circle"></i>
 				  </button> -->
                         <div id="bee-plugin-container"></div>

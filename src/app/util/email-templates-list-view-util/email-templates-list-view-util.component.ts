@@ -41,7 +41,7 @@ export class EmailTemplatesListViewUtilComponent implements OnInit, OnDestroy {
   isPartnerToo = false;
   ngxloading: boolean;
   templatesDropDown = [
-      { 'name': 'All Email Templates', 'value': '' },
+      { 'name': 'All Templates', 'value': '' },
       { 'name': 'Uploaded Regular Templates', 'value': 'regularTemplate' },
       { 'name': 'Uploaded Video Templates', 'value': 'videoTemplate' },
       { 'name': 'Regular Templates', 'value': 'beeRegularTemplate' },

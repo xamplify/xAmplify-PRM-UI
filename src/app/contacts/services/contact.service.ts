@@ -339,9 +339,8 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    checkingZohoAuthentication() {
-        this.logger.info( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.get( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
+    checkingZohoAuthentication(isPartner:boolean) {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&isPartner="+isPartner)
             .map( this.extractData )
             .catch( this.handleError );
     }
