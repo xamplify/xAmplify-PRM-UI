@@ -12,6 +12,7 @@ import { Role } from '../../core/models/role';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { EnvService } from 'app/env.service';
 
 declare const $: any;
 
@@ -40,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
   isLoggedInVanityUrl = false;  
-  constructor(private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
+  constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
     if (this.referenceService.userProviderMessage !== "") {
@@ -208,7 +209,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.vanityURLEnabled = result.enableVanityURL;               
           this.authenticationService.v_companyName = result.companyName;
           this.authenticationService.vanityURLink = result.vanityURLink;
-          if(!this.vanityURLEnabled){
+          if(!this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("http://localhost:4200/")<0){
             this.router.navigate( ['/vanity-domain-error'] );
             return;
           }
