@@ -5,20 +5,20 @@
         </div>
         <div class="page-bar">
             <ul class="page-breadcrumb">
-                <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter" translate>Home</a><i class="fa fa-angle-right"></i></li>
-                <li><a [routerLink]="['../../emailtemplates/select']" translate>Select Template</a><i class="fa fa-angle-right"></i></li>
-                <li><a translate>Upload Template</a></li>
+                <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i></li>
+                <li><a [routerLink]="['../../emailtemplates/select']">Select Template</a><i class="fa fa-angle-right"></i></li>
+                <li><a>Upload Template</a></li>
             </ul>
         </div>
         <div class="portlet light" style="min-height: 515px;">
             <div class="portlet-body">
                 <div class="col-md-12">
                     <form>
-                        <div class="col-md-2" style="font-weight: 500;font-size: 17px;margin-bottom: 34px; padding: 2px;" translate>Template Name: </div>
+                        <div class="col-md-2" style="font-weight: 500;font-size: 17px;margin-bottom: 34px; padding: 2px;">Template Name: </div>
                         <div class="col-md-4">
                             <input type="text" class="form-control" style="border-left: 1px solid #a94442" id="templateName" [(ngModel)]="model.templateName" name="templateName" minlength="1" maxlength="50" placeholder="Template name" #templateName="ngModel" (ngModelChange)="checkAvailableNames($event)">
-                            <span *ngIf="!isValidTemplateName" style="color:red" translate>Name is required</span>
-                            <span *ngIf="duplicateTemplateName &&isValidTemplateName" style="color:red" translate>Template name is alreday exists.</span>
+                            <span *ngIf="!isValidTemplateName" style="color:red">Name is required</span>
+                            <span *ngIf="duplicateTemplateName &&isValidTemplateName" style="color:red">Template name is alreday exists.</span>
                         </div>
                         <div class="col-md-6"></div>
                     </form>
@@ -37,9 +37,9 @@
                             <input type="file" ng2FileSelect [uploader]="emailTemplateUploader" accept=".zip" *ngIf="emailTemplateUploader.queue.length==0" (change)="changeLogo($event)" style="opacity: 0.0; position: absolute;" title=" " id="file-upload">
                             <div class="text-center">
                                 <img src="../../../assets/images/uploadimage.png" alt=''>
-                                <h2 class="upload-video" style="margin:-5px;padding-top: 5px;" translate>Upload a File </h2>
-                                <h6 style="color: #717171" translate>Drag and drop files here or click to select files</h6>
-                                <button class="btn btn-primary" style="color:#fff" translate>Browse</button>
+                                <h2 class="upload-video" style="margin:-5px;padding-top: 5px;">Upload a File </h2>
+                                <h6 style="color: #717171">Drag and drop files here or click to select files</h6>
+                                <button class="btn btn-primary" style="color:#fff">Browse</button>
                             </div>
                         </div>
                         <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
@@ -51,28 +51,28 @@
                             <tr *ngFor="let item of emailTemplateUploader.queue;let last = last;let index = index">
                                 <td *ngIf="last">
                                     <button type="button" class="btn btn-success" (click)="save()" id="save" [disabled]="disableButton ||duplicateTemplateName ">
-											<span class="glyphicon glyphicon-upload" translate></span> Save
+											<span class="glyphicon glyphicon-upload"></span> Save
 										</button>
                                     <button type="button" class="btn btn-danger" (click)="item.remove();removeFile()" data-dismiss="fileinput" [disabled]="item.isReady || item.isUploading">
-											<span class="glyphicon glyphicon-trash" translate></span> Remove
+											<span class="glyphicon glyphicon-trash"></span> Remove
 										</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <div *ngIf="!emailTemplateService.isRegularUpload" class="form-group" id="infoDiv">
-                        <br><label for="info"><font style="color: red;" translate>Your HTML template must include the code below.</font></label>
-                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1" translate>{{refService.videoTag}}</textarea>
+                        <br><label for="info"><font style="color: red;">Your HTML template must include the code below.</font></label>
+                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="1">{{refService.videoTag}}</textarea>
                     </div>
 
                     <div>
-                        <label for="info"><font style="color: red;" translate>Use the image tag below to enable co-branding.</font></label>
-                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="2" translate>{{refService.coBrandingTag}}</textarea>
+                        <label for="info"><font style="color: red;">Use the image tag below to enable co-branding.</font></label>
+                        <textarea class="form-control" style="cursor: default;resize: none;" id="info" readonly="readonly" rows="2">{{refService.coBrandingTag}}</textarea>
                     </div>
 
                     <br>
                     <div class="form-group" *ngIf="mycontent?.length>0">
-                        <label class="control-label col-sm-5" translate>Enable Co-Branding Logo</label>
+                        <label class="control-label col-sm-5">Enable Co-Branding Logo</label>
                         <switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size" (statusChange)="setCoBrandingLogo($event)">
                         </switch>
                     </div>

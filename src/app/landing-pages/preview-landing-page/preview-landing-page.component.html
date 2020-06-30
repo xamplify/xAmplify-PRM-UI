@@ -1,44 +1,44 @@
 <!-- -----------------------Preview------------------- -->
-<div class="modal right" id="landing-page-preview-modal" data-backdrop="static" data-keyboard="false">
-	<div class="modal-dialog modal-lg modal-template" id="right-padding">
-		<div class="modal-content" id="over-flow-y">
-			<div class="modal-header">
-				<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
-					<i class="fa fa-times"></i>
-				</button>
-				<h4 class="modal-title" id="landing-page-preview-title" class="center-aligned"></h4>
-			</div>
-			<div class="modal-body" id="min-height">
-				<div id="landingPage-html-content">
+		<div class="modal right" id="landing-page-preview-modal" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog modal-lg modal-template" id="right-padding">
+			<div class="modal-content" id="over-flow-y">
+				<div class="modal-header">
+					<button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true">
+						<i class="fa fa-times"></i>
+					</button>
+					<h4 class="modal-title" id="landing-page-preview-title" class="center-aligned"></h4>
 				</div>
-				 <ng-template [ngTemplateOutlet]="loader" *ngIf="loading"></ng-template>
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0)" id="float-right" data-dismiss="modal"  class="btn btn-default" translate >Close</a>
+				<div class="modal-body" id="min-height">
+					<div id="landingPage-html-content">
+					</div>
+					 <ng-template [ngTemplateOutlet]="loader" *ngIf="loading"></ng-template>
+				</div>
+				<div class="modal-footer">
+					<a href="javascript:void(0)" id="float-right" data-dismiss="modal"  class="btn btn-default" >Close</a>
+				</div>
 			</div>
 		</div>
 	</div>
+
+
+	<ng-template #loader>
+	<div class="timeline-wrapper">
+        <div class="animated-background">
+            <div class="background-masker header-top"></div>
+            <div class="background-masker header-left"></div>
+            <div class="background-masker header-right"></div>
+            <div class="background-masker header-bottom"></div>
+            <div class="background-masker subheader-left"></div>
+            <div class="background-masker subheader-right"></div>
+            <div class="background-masker subheader-bottom"></div>
+            <div class="background-masker content-top"></div>
+            <div class="background-masker content-first-end"></div>
+            <div class="background-masker content-second-line"></div>
+            <div class="background-masker content-second-end"></div>
+            <div class="background-masker content-third-line"></div>
+            <div class="background-masker content-third-end"></div>
+        </div>
 </div>
+	</ng-template>
 
-
-<ng-template #loader>
-<div class="timeline-wrapper">
-	<div class="animated-background">
-		<div class="background-masker header-top"></div>
-		<div class="background-masker header-left"></div>
-		<div class="background-masker header-right"></div>
-		<div class="background-masker header-bottom"></div>
-		<div class="background-masker subheader-left"></div>
-		<div class="background-masker subheader-right"></div>
-		<div class="background-masker subheader-bottom"></div>
-		<div class="background-masker content-top"></div>
-		<div class="background-masker content-first-end"></div>
-		<div class="background-masker content-second-line"></div>
-		<div class="background-masker content-second-end"></div>
-		<div class="background-masker content-third-line"></div>
-		<div class="background-masker content-third-end"></div>
-	</div>
-</div>
-</ng-template>
-
-<app-save-geo-location-analytics #saveGeoLocationAnalyticsComponent></app-save-geo-location-analytics>
+	<app-save-geo-location-analytics #saveGeoLocationAnalyticsComponent></app-save-geo-location-analytics>

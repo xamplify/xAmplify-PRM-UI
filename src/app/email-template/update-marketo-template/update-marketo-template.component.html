@@ -8,12 +8,12 @@
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
 				<li>
-					<i class="fa fa-home"></i><a [routerLink]="refService.homeRouter" translate>Home</a><i class="fa fa-angle-right"></i>
+					<i class="fa fa-home"></i><a [routerLink]="refService.homeRouter">Home</a><i class="fa fa-angle-right"></i>
 				</li>
 				<li>
-					<a [routerLink]="['../../../emailtemplates/manage']" translate>Email Templates</a><i class="fa fa-angle-right"></i>
+					<a [routerLink]="['../../../emailtemplates/manage']">Templates</a><i class="fa fa-angle-right"></i>
 				</li>
-				<li><a style="color: blue;" translate>Update Template</a></li>
+				<li><a style="color: blue;" >Update Template</a></li>
 			</ul>
 		</div>
 		<!-- BEGIN PAGE CONTENT-->
@@ -24,35 +24,35 @@
 							<form>
 								<div class="row">
 									<div class="col-xs-12 col-md-4" >
-										<h4 style="float:right;" translate>Template Name <font style="color: red;">*</font> :</h4>
+										<h4 style="float:right;">Template Name<font style="color: red;">*</font> :</h4>
 									</div>
 									<div class="col-xs-12 col-md-8">
 										<input type="text" class="form-control" style="border-left: 5px solid #42A948" id="templateName" [(ngModel)]="model.templateName"
 										 name="templateName" minlength="1" maxlength="50" placeholder="Please name your template" #templateName="ngModel"
 										 (ngModelChange)="checkUpdatedAvailableNames($event)">
-										<div *ngIf="invalidTemplateName" class="alert alert-danger" translate>Name is required</div>
-										<div *ngIf="duplicateTemplateName && !invalidTemplateName" class="alert alert-danger" translate>Duplicate Name</div>
-										<div *ngIf="isVideoTagError" class="alert alert-danger" translate>{{videoTagsError}}</div>
+										<div *ngIf="invalidTemplateName" class="alert alert-danger">Name is required</div>
+										<div *ngIf="duplicateTemplateName && !invalidTemplateName" class="alert alert-danger">Duplicate Name</div>
+										<div *ngIf="isVideoTagError" class="alert alert-danger">{{videoTagsError}}</div>
 									</div>
 								</div>
 								<div class="row" *ngIf="model.draft">
 									<div class="col-xs-12 col-md-4" >
-										<h4 style="float:right;" translate>Template Type<font style="color: red;">*</font> :</h4>
+										<h4 style="float:right;">Template Type<font style="color: red;">*</font> :</h4>
 									</div>
 									<div class="col-xs-12 col-md-8">
 										<div >
 											<select class="form-control" style="border-left: 5px solid #42A948" id="isRegularUpload" [(ngModel)]="model.isRegularUpload"
 											 name="isRegularUpload" [ngModelOptions]="{standalone: true}" (ngModelChange)="setVideoGif($event)">
 		
-												<option [value]="'REGULAR'" selected translate>REGULAR</option>
-												<option [value]="'VIDEO'" translate>VIDEO</option>
+												<option [value]="'REGULAR'" selected>REGULAR</option>
+												<option [value]="'VIDEO'">VIDEO</option>
 											</select>
 										</div>
 									</div>
 								</div>
 								<div class="row" style="margin-top: 20px">
 										<div class="col-xs-12 col-md-4" >
-											<h4 style="float:right;" translate>Enable Co-Branding Logo<font style="color: red;">*</font> :</h4>
+											<h4 style="float:right;">Enable Co-Branding Logo<font style="color: red;">*</font> :</h4>
 										</div>
 										<div class="col-xs-12 col-md-8">
 												<switch [status]="coBrandingLogo" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch"
@@ -68,7 +68,7 @@
 		
 									<button type="button" class="btn btn-success" (click)="update()" [disabled]="duplicateTemplateName ||invalidTemplateName"
 									style="float: right">
-										<span class="glyphicon glyphicon-upload" translate></span> Update
+										<span class="glyphicon glyphicon-upload"></span> Update
 									</button>
 								</div>
 							</form>
@@ -80,13 +80,13 @@
 		
 		
 							<div *ngIf="model.isRegularUpload == 'VIDEO'" class="form-group" id="infoDiv" >
-								<label for="info"><font style="color: red;" translate>Your HTML template will include the code below.</font></label>
-								<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="3" translate>{{refService.videoTag}}</textarea>
+								<label for="info"><font style="color: red;">Your HTML template will include the code below.</font></label>
+								<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="3">{{refService.videoTag}}</textarea>
 							</div>
 		
 							<div>
-								<label for="info"><font style="color: red;" translate>Use the image tag below to enable co-branding.</font></label>
-								<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="3" translate>{{refService.coBrandingTag}}</textarea>
+								<label for="info"><font style="color: red;">Use the image tag below to enable co-branding.</font></label>
+								<textarea class="form-control" style="cursor: default;resize: none;" id="info" disabled="disabled" rows="3">{{refService.coBrandingTag}}</textarea>
 							</div>
 		
 							<br>
