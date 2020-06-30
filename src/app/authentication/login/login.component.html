@@ -5,21 +5,6 @@
 <!-- <app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>
 <app-video *ngIf="vanityURLEnabled"></app-video> -->
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-<!-- <div class="clearfix" *ngIf= "checkedVanityURLDomain">
-	<div class="page-content">	
-		<div class="page-bar">			
-			<ng-container>
-				<div class="loader-container">
-					<div class="text-center">						
-			<h3>Vanity has not been configured</h3>
-			<button class="btn btn-info" (click)="redirectToXamplify();">Login to xAmplify</button>
-					</div>
-				</div>
-			</ng-container>
-		</div>
-	</div>
-</div> -->
-
 <div class="content" style="background-color: rgba(0,0,0,.0);" [ngClass] = "{'login-content-left':authenticationService.loginScreenDirection==='Left','login-content-right':authenticationService.loginScreenDirection==='Right'}">
 	<div style="background-color: rgba(0,0,0,.0);">
 		<app-video *ngIf="!vanityURLEnabled && isNotVanityURL"></app-video>

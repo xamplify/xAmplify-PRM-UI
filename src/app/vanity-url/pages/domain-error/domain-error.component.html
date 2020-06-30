@@ -1,15 +1,20 @@
 <div class="clearfix">
   <div class="page-content">
-    <div class="page-bar">
+    <div class="page-bar">      
       <ng-container>
-        <div class="loader-container">
+        <div class="loader-container">          
           <div class="text-center">
-            <h3>oh no! vanity URL based <a
-                href="{{authenticationService.vanityURLink}}">{{authenticationService.vanityURLink}} </a> has not been
-              approved and/or enabled for your organization by the admin team, please contact xAmplify <a
-                href="mailto:support@xamplify.com"> adminstration</a> team to get it enabled, until then please login via <a
-                href="{{authenticationService.APP_URL}}">{{authenticationService.APP_URL}}</a>
-            </h3>
+            <div class="logo">
+              <a href="{{authenticationService.APP_URL}}">
+                <img style="height: 54px;" src="assets/images/xamplify-logo.png" alt="" />
+              </a>              
+            </div> 
+            <p style="font-size: 35px;">oh no! vanity URL based 
+              <a href="{{authenticationService.vanityURLink}}">{{authenticationService.vanityURLink}} </a> has not been
+            approved and/or enabled for your organization by the admin team, please contact xAmplify <a
+              href="mailto:support@xamplify.com"> adminstration</a> team to get it enabled, until then please login via <a
+              href="{{authenticationService.APP_URL}}">{{authenticationService.APP_URL}}</a>
+            </p>         
           </div>
         </div>
       </ng-container>
