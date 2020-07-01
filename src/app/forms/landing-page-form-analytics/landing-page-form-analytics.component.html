@@ -3,18 +3,18 @@
         <ul class="page-breadcrumb">
             <li *ngIf="!authenticationService.isSuperAdmin()">
                 <i class="fa fa-home"></i>
-                <a [routerLink]="referenceService.homeRouter" translate>Home</a>
+                <a [routerLink]="referenceService.homeRouter">Home</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a routerLink="{{pagesRouterLink}}" translate>Manage Pages</a><i class="fa fa-angle-right"></i>
+                <a routerLink="{{pagesRouterLink}}">Manage Pages</a><i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a routerLink="{{formsRouterLink}}" translate>Manage Forms</a>
+                <a routerLink="{{formsRouterLink}}">Manage Forms</a>
                 <i class="fa fa-angle-right"></i>
             </li>
             <li>
-                <a translate>Analytics</a>
+                <a>Analytics</a>
             </li>
         </ul>
     </div>
@@ -23,7 +23,7 @@
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
-                        <span class="caption-subject font-red-sunglo uppercase" translate>{{formName}}</span>
+                        <span class="caption-subject font-red-sunglo uppercase">{{formName}}</span>
                     </div>
                     <div class="inputs" align="right" style="float: right">
                         <a class="close-circle" routerLink="{{formsRouterLink}}" data-toggle="tooltip" data-placement="top" title="Close">
@@ -52,14 +52,14 @@
                 </div>
 
                 <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
-                <div class="alert alert-danger" *ngIf="httpRequestLoader.isServerError"><strong translate>Oops!Something went wrong.Please try after sometime.</strong></div>
+                <div class="alert alert-danger" *ngIf="httpRequestLoader.isServerError"><strong>Oops!Something went wrong.Please try after sometime.</strong></div>
                 <div class="portlet-body" *ngIf="!httpRequestLoader.isLoading &&!httpRequestLoader.isServerError ">
                     <table class="table tgrid">
                         <thead>
                             <tr>
                                 <ng-container *ngFor="let column of columns;let i  = index">
                                     <ng-container *ngIf="i<=3">
-                                        <th id="th-width" translate>{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
+                                        <th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
                                     </ng-container>
                                 </ng-container>
                                 <th></th>
@@ -69,7 +69,7 @@
                             <ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
                                 <tr id="form-data-row-{{rowIndex}}" class="form-data-row">
                                     <ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
-                                        <td *ngIf="columnIndex<=3" translate>{{columnValue.value}}</td>
+                                        <td *ngIf="columnIndex<=3">{{columnValue.value}}</td>
                                     </ng-container>
                                     <td>
                                         <a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip" title="View More Columns" *ngIf="columns.length>4">
@@ -81,10 +81,10 @@
                                     <td colspan="5">
                                         <table id="expanded-table" class="table tgrid table-bordered">
                                             <tr *ngFor="let column of columns;let i  = index;">
-                                                <th *ngIf="i>=4" translate>
+                                                <th *ngIf="i>=4">
                                                     {{column.labelName}}<span class="required" *ngIf="column.required">*</span>
                                                 </th>
-                                                <td *ngIf="i>=4" translate>
+                                                <td *ngIf="i>=4">
                                                     {{formDataRow.values[i].value}}
                                                 </td>
                                             </tr>
@@ -101,7 +101,7 @@
                 </div>
                 <!-- End of 24 -->
                 <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                    <strong translate>No Data Found.</strong>
+                    <strong>No Data Found.</strong>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
         <div class="col-xs-12 p5" *ngIf="statusCode==404">
             <div class="alert alert-danger">
                 <strong>
-					<h4 translate>Form does not exists</h4>
+					<h4>Form does not exists</h4>
 				</strong>
             </div>
         </div>
@@ -118,7 +118,7 @@
         <div class="col-xs-12 p5" *ngIf="statusCode==403">
             <div class="alert alert-danger">
                 <strong>
-					<h4 translate>Access Denied</h4>
+					<h4>Access Denied</h4>
 				</strong>
             </div>
         </div>

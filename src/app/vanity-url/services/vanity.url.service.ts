@@ -1,4 +1,4 @@
-import { Injectable,Inject  } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import { Http, Response, RequestOptions, Headers, ResponseContentType } from "@angular/http";
 import { AuthenticationService } from "app/core/services/authentication.service";
 import { Observable } from "rxjs/Observable";
@@ -8,13 +8,13 @@ import { DashboardButton } from "../models/dashboard.button";
 import { Pagination } from "app/core/models/pagination";
 import { Properties } from "app/common/models/properties";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
-import { Title, DOCUMENT  } from "@angular/platform-browser";
+import { Title, DOCUMENT } from "@angular/platform-browser";
 
 @Injectable()
 export class VanityURLService {
 
 
-  constructor(private http: Http, private authenticationService: AuthenticationService,private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
     const url = this.authenticationService.REST_URL + "v_url/companyDetails/" + companyProfileName;
@@ -26,7 +26,7 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  getCompanyProfileNameByCompanyName(companyName:string){
+  getCompanyProfileNameByCompanyName(companyName: string) {
     const url = this.authenticationService.REST_URL + "v_url/getCompanyProfileName/" + companyName + '?access_token=' + this.authenticationService.access_token;
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
@@ -62,18 +62,18 @@ export class VanityURLService {
     return this.http.get(url).map(this.extractData).catch(this.handleError);
   }
 
-  getDashboardButtonIcons(iconsFilePath:string) :Observable<any>{
+  getDashboardButtonIcons(iconsFilePath: string): Observable<any> {
     return this.http.get(iconsFilePath).map(this.extractData).catch(this.handleError);
   }
 
-  getVanityEmailTemplates(pagination: Pagination){
+  getVanityEmailTemplates(pagination: Pagination) {
     const url = this.authenticationService.REST_URL + "v_url/getEmailTemplates" + "?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, pagination)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  saveOrUpdateEmailTemplate(vanityEmailTemplate:VanityEmailTempalte){
+  saveOrUpdateEmailTemplate(vanityEmailTemplate: VanityEmailTempalte) {
     const url = this.authenticationService.REST_URL + "v_url/saveOrUpdate/emailTemplate" + "?access_token=" + this.authenticationService.access_token;
     return this.http.post(url, vanityEmailTemplate)
       .map(this.extractData)
@@ -86,21 +86,21 @@ export class VanityURLService {
   }
 
 
-  isVanityURLEnabled(){
+  isVanityURLEnabled() {
     //console.log("Router URL :" + window.location.href);
     //console.log("Router URL :" + window.location.hostname);
 
-   // let url = "key.xamplify.com";
+    //let url = "key.xamplify.com";
     //let url = "TGAInfoSolutions.xamplify.com";
     //let url = "analytify.xamplify.com";
-   // let url = "syfe.xamplify.com";
-      let url =window.location.hostname;
+    //let url = "tga.xamplify.com";
+     let url =window.location.hostname;
 
     if (!url.includes("release")) {
       let domainName = url.split('.');
       if (domainName.length > 2) {
         this.authenticationService.vanityURLEnabled = true;
-        this.authenticationService.companyProfileName = domainName[0];        
+        this.authenticationService.companyProfileName = domainName[0];
         if (!this.authenticationService.vanityURLUserRoles) {
           let currentUser = localStorage.getItem('currentUser');
           if (currentUser) {
@@ -110,51 +110,31 @@ export class VanityURLService {
         }
         return true;
       }
-    }  
+    }
   }
 
-  checkVanityURLDetails(){
-    //console.log("Router URL :" + window.location.href);
-    //console.log("Router URL :" + window.location.hostname);
-
-    //let url = "key.xamplify.com";
-    //let url = "TGAInfoSolutions.xamplify.com";
-    //let url = "analytify.xamplify.com";
-    //let url = "tga.xamplify.com";
-    let url =window.location.hostname;
-    let status = false;
-    if (!url.includes("release")) {
-      let domainName = url.split('.');
-      if (domainName.length > 2) {
-        this.authenticationService.vanityURLEnabled = true;
-        this.authenticationService.companyProfileName = domainName[0];
-        if (this.authenticationService.v_companyName == undefined || this.authenticationService.v_companyLogoImagePath == undefined) {
-          this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
-            this.authenticationService.v_companyName = result.companyName;
-            this.authenticationService.vanityURLink = result.vanityURLink;
-            this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
-            //this.authenticationService.v_companyLogoImagePath = "assets/images/logo.jpg";
-            this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;           
-            if(result.companyBgImagePath){
-              this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;           
-            }else{
-              this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
-            }
-            return true;            
-          }, error => {
-            console.log(error);
-          });
+  checkVanityURLDetails() {
+    if (this.authenticationService.v_companyName == undefined || this.authenticationService.v_companyLogoImagePath == undefined) {
+      this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
+        this.authenticationService.v_companyName = result.companyName;
+        this.authenticationService.vanityURLink = result.vanityURLink;        
+        this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
+        this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
+        if (result.companyBgImagePath) {
+          this.authenticationService.v_companyBgImagePath = this.authenticationService.MEDIA_URL + result.companyBgImagePath;
+        } else {
+          this.authenticationService.v_companyBgImagePath = "assets/images/stratapps.jpeg";
         }
-        if (!this.authenticationService.vanityURLUserRoles) {
-          let currentUser = localStorage.getItem('currentUser');
-          if (currentUser) {
-            const parsedObject = JSON.parse(currentUser);
-            this.authenticationService.vanityURLUserRoles = parsedObject.roles;
-          }
-        }
-      }
-    }    
+        this.authenticationService.v_companyFavIconPath = result.companyFavIconPath;
+        this.authenticationService.loginScreenDirection = result.loginScreenDirection;
+        this.setVanityURLTitleAndFavIcon();        
+      }, error => {
+        console.log(error);
+      });
+    }
   }
+
+
 
   addVanityUrlFilterDTO(dto: DashboardAnalyticsDto) {
     if (this.authenticationService.getUserId()) {
@@ -171,9 +151,9 @@ export class VanityURLService {
     return dto;
   }
 
-  public setVanityURLTitleAndFavIcon() {    
-    if(this.authenticationService.v_companyName && this.authenticationService.v_companyFavIconPath){
-      this.titleService.setTitle(this.authenticationService.v_companyName);    
+  public setVanityURLTitleAndFavIcon() {
+    if (this.authenticationService.v_companyName && this.authenticationService.v_companyFavIconPath) {
+      this.titleService.setTitle(this.authenticationService.v_companyName);
       this._document.getElementById('appFavicon').setAttribute('href', this.authenticationService.MEDIA_URL + this.authenticationService.v_companyFavIconPath);
     }
   }

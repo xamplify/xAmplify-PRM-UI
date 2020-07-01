@@ -1011,10 +1011,29 @@
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                         </div>
-                        <div class="form-group col-md-6" style="margin-left: -16px;">
-                            <label>Subject</label>        
+                        <!-- <div class="form-group col-md-6" style="margin-left: -16px;">
+                            <label class="control-label">Subject <font
+                            style="color: #f55d7a"><b>*</b></font></label>        
                             <input type="text" class="form-control" name="subject" placeholder="subject"
+                              [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">            
+                              <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                <span style="cursor: pointer;color: #54a7e9;">
+                                    <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right" title="{{subjectLineTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 446px;"></i>
+                            </span>
+                            </div>
+                          </div> -->
+                          <div class="form-group row" style="margin-left: -16px;">
+                            <label class="col-md-2" style="margin-top: 6px;">Subject <font
+                            style="color: #f55d7a"><b>*</b></font></label>   
+                            <div class="col-md-4" style="margin-left: -100px;">
+                                <input type="text" class="form-control" name="subject" placeholder="subject"
                               [(ngModel)]="xamplifyDefaultTemplate.subject" maxlength="255">
+                            </div>                                        
+                              <div class="col-sm-12" style="padding: 0; margin-left: 100px;margin-top: -32px">
+                                <span style="cursor: pointer;color: #54a7e9;">
+                                    <i class="fa fa-question-circle" data-html="true" data-toggle="tooltip" data-placement="right" title="{{subjectLineTooltipText}}" style="font-size: 20px;float: left;margin: 8px 0 0 380px;"></i>
+                            </span>
+                            </div>
                           </div>
                     </div>
                     <div class="portlet-body clearfix">

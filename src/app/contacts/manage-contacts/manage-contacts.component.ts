@@ -489,9 +489,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     googleContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
         try {
             swal({ title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-            for (let i = 0; i < this.contactLists.length; i++) {
-                if (this.contactLists[i].id == contactListId) {
-                    this.contactType = this.contactLists[i].contactType;
+            if(this.contactLists!=undefined){
+                for (let i = 0; i < this.contactLists.length; i++) {
+                    if (this.contactLists[i].id == contactListId) {
+                        this.contactType = this.contactLists[i].contactType;
+                    }
                 }
             }
             this.socialContact.contactType = this.contactType;

@@ -3,24 +3,24 @@
 		<ul class="page-breadcrumb">
 			<li *ngIf="!authenticationService.isSuperAdmin()">
 				<i class="fa fa-home"></i>
-				<a [routerLink]="referenceService.homeRouter" translate>Home</a>
+				<a [routerLink]="referenceService.homeRouter">Home</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<!-- <li *ngIf="campaignForms">
 				<a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
 			</li> -->
 			<li *ngIf="campaignForms">
-				<a (click)="goToCampaignAnalytics()" translate>Campaign Analytics</a><i class="fa fa-angle-right"></i>
+				<a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
 			</li>
 			<li *ngIf="pagination.partnerLandingPageForm || isPartnerNavigation">
-				<a [routerLink]="['/home/pages/partner']" translate>Manage Pages</a><i class="fa fa-angle-right"></i>
+				<a [routerLink]="['/home/pages/partner']">Manage Pages</a><i class="fa fa-angle-right"></i>
 			</li>
 			<li >
-				<a routerLink="{{routerLink}}" translate>Manage Forms</a>
+				<a routerLink="{{routerLink}}">Manage Forms</a>
 				<i class="fa fa-angle-right"></i>
 			</li>
 			<li>
-				<a class="default-cursor" translate>Analytics</a> 
+				<a class="default-cursor">Analytics</a> 
 			</li>
 		</ul>
 	</div>

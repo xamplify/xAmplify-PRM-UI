@@ -1,4 +1,4 @@
-<button class="btn btn-danger" id="right" (click)="showMergeTagsPopUp()" translate>Insert Merge Tags</button>
+<button class="btn btn-danger" id="right" (click)="showMergeTagsPopUp()">Insert Merge Tags</button>
 
 <div class="modal right " id="merge-tags-popup" data-backdrop="static">
       <div class="modal-dialog modal-lg" style="width: 75%;right:0">
@@ -7,23 +7,23 @@
             <button type="button" class="close-circle" data-dismiss="modal">
               <i class="fa fa-times"></i>
             </button>
-            <h4 class="modal-title text-center" translate>Merge Tags</h4>
+            <h4 class="modal-title text-center">Merge Tags</h4>
           </div>
           <div class="modal-body">
           	<table class='table tgrid table-hover table-sm'>
 				<thead>
 				  <tr>
-					 <th class="text-center" translate>Name</th>
-					 <th translate>Merge Tag</th>
-					 <th class="text-center" translate>Copy</th>
+					 <th class="text-center">Name</th>
+					 <th>Merge Tag</th>
+					 <th class="text-center">Copy</th>
 				  </tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let mergeTag of mergeTags;let i = index">
-						<td class="text-center" translate>{{mergeTag.name}}</td>
+						<td class="text-center">{{mergeTag.name}}</td>
 						<td id="merge-tag-text">
 							<input type="text" class="form-control" readonly="readonly" value="{{mergeTag.value}}" #mergeTagInput>
-							<font class="merge-tag-success-message" id="merge-tag-copied-message-{{i}}" style="display:none;"><b translate>Copied successfully<i class="fa fa-check"></i></b></font>
+							<font class="merge-tag-success-message" id="merge-tag-copied-message-{{i}}" style="display:none;"><b>Copied successfully<i class="fa fa-check"></i></b></font>
 						</td>
 						<td class="text-center">
 						<a data-toggle="tooltip" data-placement="top" title="Copy" (click)="referenceService.copyInputMessage(mergeTagInput,i,'merge-tag-success-message','merge-tag-copied-message-')">
@@ -37,7 +37,7 @@
           </div>
            <div class="modal-footer">
 			<a data-dismiss="modal" class="btn btn-default" style="float: right">
-			<span translate>Close</span></a>
+			<span>Close</span></a>
 		</div>
           </div>
           </div>
