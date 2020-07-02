@@ -16,25 +16,25 @@ a.disabled {
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
 			<li><i class="fa fa-home"></i> <a
-				[routerLink]="referenceService.homeRouter">Home</a> <i
+				[routerLink]="referenceService.homeRouter" translate>Home</a> <i
 				class="fa fa-angle-right"></i></li>
 			<li *ngIf="!eventRouterPage"><a
-				[routerLink]="['/home/campaigns/select']">Select Campaign</a> <i
+				[routerLink]="['/home/campaigns/select']" translate>Select Campaign</a> <i
 				class="fa fa-angle-right"></i></li>
         <li *ngIf="!referenceService.manageRouter&& eventRouterPage">
-            <a *ngIf="isEditCampaign || reDistributeEventManage" [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
-            <a *ngIf="!isEditCampaign && !reDistributeEventManage" [routerLink]="['/home/campaigns/partner/all']"> Campaigns shared by Vendors</a>
+            <a *ngIf="isEditCampaign || reDistributeEventManage" [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
+            <a *ngIf="!isEditCampaign && !reDistributeEventManage" [routerLink]="['/home/campaigns/partner/all']" translate> Campaigns shared by Vendors</a>
             <i class="fa fa-angle-right"></i>
           </li>
         <li *ngIf="referenceService.manageRouter && eventRouterPage">
-            <a  [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a>
+            <a  [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
             <i class="fa fa-angle-right"></i>
          </li>
-      <li *ngIf="reDistributeEvent || reDistributeEventManage; else other">Redistribute Event Campaign</li>
-      <ng-template #other><li>Event Campaign</li></ng-template>
+      <li *ngIf="reDistributeEvent || reDistributeEventManage; else other" translate>Redistribute Event Campaign</li>
+      <ng-template #other><li translate>Event Campaign</li></ng-template>
 		</ul>
 		 <div id="folder-margin-xamp">
-                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
+                <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
             </div>
 	</div>
 	<app-list-loader [rowsCount]="6" *ngIf="loader"></app-list-loader>
@@ -52,7 +52,7 @@ a.disabled {
 					<div class="cenetered-block">
 						<span> <i class="fa fa-th-list"></i>
 						</span>
-						<h5 class="hidden-xs">Campaign Details</h5>
+						<h5 class="hidden-xs" translate>Campaign Details</h5>
 					</div>
 				</div>
 
@@ -61,12 +61,12 @@ a.disabled {
 					<div class="cenetered-block">
 						<span> <i class="fa fa-users"></i>
 						</span>
-            <h5 class="hidden-xs" *ngIf="!showContactType && !parentCampaignId">Partners</h5>
-            <h5 class="hidden-xs" *ngIf="!showContactType && parentCampaignId">Contacts</h5>
+            <h5 class="hidden-xs" *ngIf="!showContactType && !parentCampaignId" translate>Partners</h5>
+            <h5 class="hidden-xs" *ngIf="!showContactType && parentCampaignId" translate>Contacts</h5>
             <!-- Recipients -->
 						<h5 class="hidden-xs" *ngIf="showContactType">
-              <h5 *ngIf="eventCampaign?.channelCampaign; else otherp">Partners</h5>
-              <ng-template #otherp>Partners & Recipients</ng-template>
+              <h5 *ngIf="eventCampaign?.channelCampaign; else otherp" translate>Partners</h5>
+              <ng-template #otherp translate>Partners & Recipients</ng-template>
             </h5>
 					</div>
 				</div>
@@ -75,7 +75,7 @@ a.disabled {
 					<div class="cenetered-block">
 						<span> <i class="fa fa-envelope"></i>
 						</span>
-						<h5 class="hidden-xs">Email Template</h5>
+						<h5 class="hidden-xs" translate>Email Template</h5>
 					</div>
 				</div>
 
@@ -83,7 +83,7 @@ a.disabled {
 					<div class="cenetered-block">
 						<span> <i class="fa fa-flag"></i>
 						</span>
-						<h5 class="hidden-xs">Launch</h5>
+						<h5 class="hidden-xs" translate>Launch</h5>
 					</div>
 				</div>
 			</div>
@@ -91,16 +91,16 @@ a.disabled {
 			<!-- Step One code -->
             <fieldset class="portlet light" style="margin-top: 25px" [hidden]="!detailsTab">
             <div *ngIf="isPreviewEvent || reDistributeEvent || reDistributeEventManage || isEventUpdate" class="portlet-title" style="display:block">
-                <h4 class="pull-left f-w-600" *ngIf="!isEventUpdate">Event Details</h4>
-                <h4 class="pull-left f-w-600" *ngIf="isEventUpdate">Event Update</h4>
+                <h4 class="pull-left f-w-600" *ngIf="!isEventUpdate" translate>Event Details</h4>
+                <h4 class="pull-left f-w-600" *ngIf="isEventUpdate" translate>Event Update</h4>
             </div>
 				<!-- <div class="page-bar  portlet light border-radius-0 shadow">
 		    <div class="portlet-body clearfix"> -->
 				<div class="col-xs-12 col-sm-7">
 					<form class="form-horizontal">
 						<div class="form-group">
-							<label for="eventTitle" class="col-sm-3 labal-css color-css">Event
-								Title <span class=text-danger>*</span>
+							<label for="eventTitle" class="col-sm-3 labal-css color-css" translate>Event Title
+								 <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9">
 								<input type="text" class="form-control" id="eventTitle"
@@ -111,16 +111,16 @@ a.disabled {
 									(input)="validateCampaignName(eventCampaign.campaign); resetTabClass()"
 									(blur)="eventTitleError()"
 									[attr.disabled]="(isPreviewEvent || isEventUpdate || reDistributeEvent || reDistributeEventManage)? '' : null">
-								<div class="text-danger" *ngIf="eventError.eventTitleError">Event
-									Title is required</div>
+								<div class="text-danger" *ngIf="eventError.eventTitleError" translate>Event Title is required
+									</div>
 								<div class="text-danger"
 									*ngIf="!isValidCampaignName && eventCampaign.campaign?.length>0"
-									style="color: red">Title already Exists</div>
+									style="color: red" translate>Title already Exists</div>
 							</div>
 						</div>
 
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Folder<span class=text-danger>*</span></label>
+							<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Folder<span class=text-danger>*</span></label>
 							<div class="col-sm-9">
 								<select class="form-control" [(ngModel)]="eventCampaign.categoryId"	[ngModelOptions]="{standalone: true}">
 									<option *ngFor="let category of categoryNames" [value]="category.id">
@@ -134,8 +134,8 @@ a.disabled {
 
 
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Hosted
-								By <span class=text-danger>*</span>
+							<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Hosted By
+								 <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9">
 								<input type="text"
@@ -145,12 +145,12 @@ a.disabled {
 									[ngModelOptions]="{standalone: true}"
 									[ngClass]="{'has-error': eventError.eventHostByError}"
 									(input)="eventHostByError(); resetTabClass()" (blur)="eventHostByError()">
-								<div class="text-danger" *ngIf="eventError.eventHostByError">Hosted
-									By is required</div>
+								<div class="text-danger" *ngIf="eventError.eventHostByError" translate>Hosted By is required
+									</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">From	Email</label>
+							<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>From Email</label>
 							<div class="col-sm-9">
 								<select *ngIf="!isPreviewEvent"	[attr.disabled]="(isPreviewEvent || isEventUpdate)? '' : null"
 									class="form-control" [(ngModel)]="eventCampaign.email"	[ngModelOptions]="{standalone: true}" (change)="setFromName()">
@@ -165,7 +165,7 @@ a.disabled {
 						
 						
 						<div class="form-group">
-							<label class="col-sm-3 labal-css color-css">Subject Line <font
+							<label class="col-sm-3 labal-css color-css" translate>Subject Line <font
 								style="color: red"> <b>*</b>
 							</font>
 							</label>
@@ -177,14 +177,14 @@ a.disabled {
 									(input)="eventSubjectLineError()"
 									[ngClass]="{'has-error': eventError.eventSubjectLineError}"
 									maxlength="200" />
-									<div class="text-danger" *ngIf="eventError.eventSubjectLineError">
+									<div class="text-danger" *ngIf="eventError.eventSubjectLineError" translate>
 									Subject line is required</div>
 							</div>
 						</div>
 						<div class="form-group"
 							*ngIf="!authenticationService.isOnlyPartner()">
-							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }">Through
-								Partner</span>
+							<span for="Throughpartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': eventCampaign.channelCampaign }" translate>Through Partner
+								</span>
 							<div class="col-sm-2">
 								<switch [status]="eventCampaign.channelCampaign"
 									[onText]="callActionSwitch.onTextValue"
@@ -197,8 +197,8 @@ a.disabled {
 								</switch>
 							</div>
 							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
-                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other">To Recipients</span>
-                <ng-template #other><span>To Partner</span> </ng-template>
+                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
+                <ng-template #other><span translate>To Partner</span> </ng-template>
               </span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
@@ -209,7 +209,7 @@ a.disabled {
 						</div>
 						<div class="form-group"
 							*ngIf="eventCampaign.channelCampaign && !authenticationService.isOnlyPartner()">
-							<label class="col-sm-3">Co-Branding Logo</label>
+							<label class="col-sm-3" translate>Co-Branding Logo</label>
 							<div class="col-sm-9">
 								<switch class="pull-left"
 									[status]="eventCampaign.enableCoBrandingLogo"
@@ -243,7 +243,7 @@ a.disabled {
 							</div> -->
 						
 											<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
-                                                <label class="control-label col-sm-3">Push To Marketing Automation</label>
+                                                <label class="control-label col-sm-3" translate>Push To Marketing Automation</label>
                                                 <div class="col-sm-3">
                                                     <div class="email-options-checkbox-group email-options-notify">
                                                         <div class="email-options-checkbox clearfix">
@@ -275,7 +275,7 @@ a.disabled {
                                                                           </label>
                                                                     <img class="image-size" src="assets/images/crm/marketo-crm.png">
                                                                     <div>
-                                                                        <h5 class="hidden-xs mr-2">Marketo</h5>
+                                                                        <h5 class="hidden-xs mr-2" >Marketo</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -374,8 +374,8 @@ a.disabled {
 						
 						
 						<div class="form-group">
-							<label for="eventDateTime" class="col-sm-3 labal-css color-css">Event
-								Date/Time <span class="text-danger" style="margin-left: -3px;">*</span>
+							<label for="eventDateTime" class="col-sm-3 labal-css color-css" translate>Event Date/Time
+								 <span class="text-danger" style="margin-left: -3px;">*</span>
 							</label>
 							<div class="col-sm-9 p0">
 								<div class="col-sm-6">
@@ -410,13 +410,13 @@ a.disabled {
                         [attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"
                         [checked]="eventCampaign.campaignEventTimes[0].allDay"
                         (change)="changeAllDay()" (input)="resetTabClass();validateUpdateButton()">
-                        <label class="form-check-label" for="allDay" style="float:none"> All Day</label>
+                        <label class="form-check-label" for="allDay" style="float:none" translate> All Day</label>
                   </div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="Time Zone" class="col-sm-3 labal-css color-css">Time
-								Zone <span class=text-danger>*</span>
+							<label for="Time Zone" class="col-sm-3 labal-css color-css" translate>Time Zone
+								 <span class=text-danger>*</span>
 							</label>
 							<div class="col-sm-9 p0">
 								<div class="col-sm-6">
@@ -436,7 +436,7 @@ a.disabled {
                   class="form-control" style="width: 100%" (change)="setEventTimeZone()"
                   [(ngModel)]="eventCampaign.campaignEventTimes[0].timeZone" [ngModelOptions]="{standalone: true}"
                   id="timezoneIdChange">
-                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled  [attr.selected]="true">Select TimeZone...</option>
+                  <option *ngIf="!timezonesCampaignEventTime" value="" disabled  [attr.selected]="true" translate>Select TimeZone...</option>
                   <ng-container *ngIf="timezonesCampaignEventTime">
                   <option *ngFor="let timeZone of timezonesCampaignEventTime"  [attr.value]="timeZone.timezoneId"
                   [attr.selected]="timeZone.timezoneId === eventCampaign.campaignEventTimes[0].timeZone">{{timeZone.cityName}}
@@ -445,13 +445,13 @@ a.disabled {
                 </select>
 								</div>
 								<div class="text-danger" style="margin-left: 15px;"
-									*ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId && !isPreviewEvent">Please
-									select the country and timezone</div>
+									*ngIf="eventError.eventCountryAndTimeZone && !eventCampaign.campaignEventTimes[0].countryId && !isPreviewEvent" translate>
+									Please select the country and timezone</div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="hostedBy" class="col-sm-3 labal-css color-css">Online
-								Meeting</label>
+							<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Online Meeting
+								</label>
 							<div class="col-sm-9">
 								<switch [disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)"
 									[status]="eventCampaign.onlineMeeting"
@@ -467,7 +467,7 @@ a.disabled {
 						
 						<section *ngIf="eventCampaign.onlineMeeting">
 							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css color-css">Description
+								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Description
 									<!-- <span class="text-danger" style="position: absolute;">*</span> -->
 								</label>
 								<div class="col-sm-9">
@@ -479,8 +479,8 @@ a.disabled {
 						
 						<section *ngIf="!eventCampaign.onlineMeeting">
 							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css color-css">Location
-									Name <span class="text-danger" style="position: absolute;">*</span>
+								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Location Name
+									 <span class="text-danger" style="position: absolute;">*</span>
 								</label>
 								<div class="col-sm-9">
 									<input type="text"
@@ -491,12 +491,12 @@ a.disabled {
 										[ngClass]="{'has-error': eventError.eventLocationError}"
 										[(ngModel)]="eventCampaign.campaignLocation.location"
 										[ngModelOptions]="{standalone: true}" maxlength="200">
-									<div class="text-danger" *ngIf="eventError.eventLocationError && !isPreviewEvent">Location
-										is required</div>
+									<div class="text-danger" *ngIf="eventError.eventLocationError && !isPreviewEvent" translate>Location is required
+										</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="hostedBy" class="col-sm-3 labal-css color-css">Address</label>
+								<label for="hostedBy" class="col-sm-3 labal-css color-css" translate>Address</label>
 								<div class="col-sm-9">
 									<input type="text"
 										[attr.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)? '' : null"

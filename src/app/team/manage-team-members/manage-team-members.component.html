@@ -3,16 +3,16 @@
     <ul class="page-breadcrumb">
         <li *ngIf="!authenticationService.isSuperAdmin()">
           <i class="fa fa-home" aria-hidden="true"></i> 
-            <a [routerLink]="referenceService.homeRouter">Home</a>
+            <a [routerLink]="referenceService.homeRouter" translate>Home</a>
             <i class="fa fa-angle-right" aria-hidden="true"></i>
         </li>
         <li *ngIf="authenticationService.isSuperAdmin()">
           <i class="fa fa-home" aria-hidden="true"></i>
-          <a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
+          <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
           <i class="fa fa-angle-right" aria-hidden="true"></i>
         </li>
         <li>
-            <a>Add/Manage Team Members</a>
+            <a translate>Add/Manage Team Members</a>
         </li>
     </ul>
 </div>
@@ -41,31 +41,31 @@
       <ng-container *ngIf="!isLoggedInAsTeamMember">
         <div class="col-xs-6 col-sm-2 hidden-xs">
             <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;" *ngIf="!isAddTeamMember && !isUploadCsv">
-                <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
+                <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
                 <input type="file" title="" class="file-upload" #fileImportInput name="File Upload" id="txtFileUpload" accept=".csv" (change)="fileChangeListener($event)" />
             </div>
             <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;cursor: not-allowed;" disabled="disabled" *ngIf="isAddTeamMember  || isUploadCsv">
-                <h6 style="text-align: center; font-size:14px">Upload a CSV</h6>
+                <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
             </div>
         </div>
         <div class="col-xs-12 col-sm-2">
             <button class="btn-xs btn-primary btn-block rounded-0" (click)="showAddTeamMember()" *ngIf="!isAddTeamMember && !isUploadCsv">
-                <h6 style="font-size:14px">Add Team Member</h6>
+                <h6 style="font-size:14px" translate>Add Team Member</h6>
             </button>
             <button class="btn-xs btn-primary btn-block rounded-0" disabled="disabled" *ngIf="isAddTeamMember || isUploadCsv" style="cursor: not-allowed">
-                <h6 style="font-size:14px">Add Team Member</h6>
+                <h6 style="font-size:14px" translate>Add Team Member</h6>
             </button>
         </div>
       </ng-container>
         <div *ngIf="csvFilePath?.length>0" class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
-            <a class="btn btn-success" (click)="downloadEmptyCsv()" download>Download CSV Template</a>
+            <a class="btn btn-success" (click)="downloadEmptyCsv()" download translate>Download CSV Template</a>
         </div>
     </section>
 </div>
 <!------Added Team Members--------------------------->
 <div class="portlet light" *ngIf="!teamMemberUi.emptyTable">
   <div class="portlet-title">
-    <div class="caption">Added Team Members</div>
+    <div class="caption" translate>Added Team Members</div>
   </div>
   <app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
   <div class="portlet-body clearfix" *ngIf="!httpRequestLoader.isLoading">
@@ -75,7 +75,7 @@
           <tr>
             <th class="table-checkbox" id="first-header">
               <h4 class="user-permission-min-width"> 
-                  <img src="assets/images/user-permission.png" alt="No image found" class="user-permission-img">User & Permissions
+                  <img src="assets/images/user-permission.png" alt="No image found" class="user-permission-img" translate>User & Permissions
               </h4>
           </th>
           <th *ngFor="let module of teamMemberModules" scope="">
@@ -83,7 +83,7 @@
             {{module.moduleName}}
            </th>
             <th class="rest-header" scope="">
-              <i class="fa fa-trash red" aria-hidden="true"></i><br>Delete
+              <i class="fa fa-trash red" aria-hidden="true"></i><br translate>Delete
             </th>
             </tr>
             </thead>
@@ -154,8 +154,8 @@
       </div>
       <hr>
       <div class="pull-right">
-          <button class="btn btn-primary" (click)="save()">Save</button>
-          <button class="btn btn-secondary" (click)="clearRows()">Cancel</button>
+          <button class="btn btn-primary" (click)="save()" translate>Save</button>
+          <button class="btn btn-secondary" (click)="clearRows()" translate>Cancel</button>
       </div>
   </div>
   </div>
@@ -164,7 +164,7 @@
 <!-- Team Members List-->
 <div class="portlet light" *ngIf="teamMemberUi.emptyTable">
   <div class="portlet-title">
-      <div class="caption">Team Members List</div>
+      <div class="caption" translate>Team Members List</div>
       <div class="tools" style="padding: 0;margin: 0;">
           <div class="inputs" style="padding:0;display: inline;">
               <div class="portlet-input input-inline input-small" style="width: 236px !important;">
@@ -187,28 +187,28 @@
           <thead>
               <tr>
                  <th class="table-checkbox" id="first-header">
-                  <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif">
+                  <button *ngIf="isLoggedInAsTeamMember" (click)="logoutAsTeamMember()" class="btn btn-danger btn-xs fif" translate>
                     <i class="fa fa-sign-in" aria-hidden="true"></i> Logout
                 </button>
-                <h4 class="user-permission-min-width">
-                    <img src="assets/images/user-permission.png" alt="No Image Found" class="user-permission-img">
+                <h4 class="user-permission-min-width" translate>
+                    <img src="assets/images/user-permission.png" alt="No Image Found" class="user-permission-img" >
                     User & Permissions
                 </h4>
                  </th>
                  <th *ngFor="let module of teamMemberModules" scope="">
                   <i class="{{module.moduleIcon}}" aria-hidden="true"></i><br>
-                  {{module.moduleName}}
+                  {{module.moduleName | translate}}
                  </th>
-                  <th class="rest-header" scope="">
+                  <th class="rest-header" scope="" translate>
                     <i class="fa fa-ban" aria-hidden="true"></i><br>Enabled
                   </th>
-                  <th class="rest-header" scope="">
+                  <th class="rest-header" scope="" translate>
                       <i class="fa fa-line-chart" aria-hidden="true"></i><br>Analytics
                   </th>
-                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0" translate>
                     <i class="fa fa-save" aria-hidden="true"></i><br>Update
                 </th>
-                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0">
+                  <th class="rest-header" scope="" *ngIf="pagination.totalRecords>0" translate>
                     <i class="fa fa-trash" aria-hidden="true"></i><br>Delete
                 </th>
               </tr>
@@ -219,11 +219,11 @@
                 <tr id="list-team-member-{{i}}" class="list-team-member-class">
                   <td>
                     <ng-container *ngIf="loginAsTeamMemberAccess">
-                        <button *ngIf="teamMember.loginAsButtonEnabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)">
+                        <button *ngIf="teamMember.loginAsButtonEnabled" class="btn btn-primary btn-xs fif" (click)="loginAs(teamMember)" translate>
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                         </button>
 
-                        <button *ngIf="!teamMember.loginAsButtonEnabled" class="btn btn-default btn-xs fif inactive" title="{{teamMember.loginAsButtonToolTipMessage}}">
+                        <button *ngIf="!teamMember.loginAsButtonEnabled" class="btn btn-default btn-xs fif inactive" title="{{teamMember.loginAsButtonToolTipMessage}}" translate>
                             <i class="fa fa-sign-in" aria-hidden="true"></i> Login as
                         </button>
                     </ng-container>
@@ -313,7 +313,7 @@
             </ng-container>
             <tr>
               <td colspan="14">
-                  <div *ngIf="pagination.totalRecords==0" class="alert alert-info" style="text-align: center;"><strong>No Team Members Found</strong></div>
+                  <div *ngIf="pagination.totalRecords==0" class="alert alert-info" style="text-align: center;"><strong translate>No Team Members Found</strong></div>
               </td>
           </tr>
      </table>
@@ -337,7 +337,7 @@
             <div class="modal-header">
                 <a class="close-circle" data-dismiss="modal">
                    <i class="fa fa-times" aria-hidden="true"></i></a>
-                <h4 class="modal-title" id="myModalLabel">Please select the email Id to transfer your data</h4>
+                <h4 class="modal-title" id="myModalLabel" translate>Please select the email Id to transfer your data</h4>
             </div>
             <div class="modal-body">
                 <div id="modal-content">
@@ -349,7 +349,7 @@
                                 </label>
                             <div class="col-sm-10">
                                 <select class="form-control" id="org-id" [(ngModel)]="selectedId" name="name">
-                                        <option value="0">Please select emailId</option>
+                                        <option value="0" translate>Please select emailId</option>
                                         <option *ngFor="let data of emailIds" [ngValue]="data.id">{{data.emailId}}</option>
                                     </select>
                             </div>
@@ -357,9 +357,9 @@
                     </form>
                 </div>
                 <div class="modal-footer" *ngIf="!deletePopupLoader">
-                    <button type="button" class="btn btn-default" (click)="hidePopup()">Cancel</button>
-                    <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0">Go</button>
-                    <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled">Go</button>
+                    <button type="button" class="btn btn-default" (click)="hidePopup()" translate>Cancel</button>
+                    <button type="button" class="btn btn-primary" (click)="delete()" *ngIf="selectedId>0" translate>Go</button>
+                    <button type="button" class="btn btn-primary" *ngIf="selectedId==0" disabled="disabled" translate>Go</button>
                 </div>
             </div>
         </div>
@@ -374,7 +374,7 @@
           <div class="modal-header">
               <a class="close-circle" (click)="clearForm()">
                 <i class="fa fa-times" aria-hidden="true"></i></a>
-              <h4 class="modal-title" style="font-weight: 600;">Add Team Member</h4>
+              <h4 class="modal-title" style="font-weight: 600;" translate>Add Team Member</h4>
           </div>
           <div class="modal-body">
               <form  class="form-horizontal" id="add-team-member-form">
@@ -404,9 +404,9 @@
               </form>
           </div>
           <div class="modal-footer" style="border:none;">
-              <button class="btn btn-info" type="reset" (click)="clearForm();">Cancel</button>
-              <button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()">Add</button>
-              <button class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled">Add</button>
+              <button class="btn btn-info" type="reset" (click)="clearForm();" translate>Cancel</button>
+              <button type="button" class="btn btn-primary" *ngIf="teamMemberUi.isValidForm" (click)="addTeamMember()" translate>Add</button>
+              <button class="btn btn-primary" *ngIf="!teamMemberUi.isValidForm" disabled="disabled" translate>Add</button>
           </div>
       </div>
   </div>
