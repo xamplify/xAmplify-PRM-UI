@@ -240,6 +240,7 @@ export class ReferenceService {
 	goToTopImmediately() {
 		$('html,body').animate({ scrollTop: 0 }, 'fast');
 	}
+	
 	removeDuplicates(list: any) {
 		let result = [];
 		$.each(list, function(i, e) {

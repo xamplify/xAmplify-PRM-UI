@@ -1211,3 +1211,65 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title popup-header-title-font">Assign Contacts & MDF Amount</h4>
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
+                </app-response-message>
+                <div class="table-responsive" >
+                    <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
+                        <thead>
+                            <tr>
+                                <th scope="row">Entity Info</th>
+                                <th scope="row">#Contacts
+                                     <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner"></i>
+                                    </span>
+                                </th>
+                                <th scope="row">#Mdf Amount
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign amount to each partner"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let partner of newPartnerUser;let i=index">
+                                <tr id="partner-row-{{i}}">
+                                    <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
+                                        </app-user-info>
+                                    </td>
+                                    <td class="contact-count error" id="contact-count-{{i}}">
+                                        <input type="number" [(ngModel)]="partner.contactsCount"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsCount" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
+                                    </td>
+                                    <td>
+                                        <input type="text" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" 
+                                        [(ngModel)]=" partner.mdfAmount"  [ngModelOptions]="{standalone: true}" id="mdfAmount-{{i}}"
+                                        placeholder="Enter Amount"/>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+            <br>
+            </div>
+            <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-footer">
+                <button type="submit" class="btn green-haze"  (click)="validatePartners()">Save</button>
+                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
