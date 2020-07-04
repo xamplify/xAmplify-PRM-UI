@@ -820,13 +820,11 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		if (this.selectedLegalBasisOptions != undefined && this.selectedLegalBasisOptions.length > 0) {
 			this.setLegalBasisOptions(this.users);
 		}
-		console.log(this.users);
 		this.xtremandLogger.info("update contacts #contactSelectedListId " + this.contactListId + " data => " + JSON.stringify(this.users));
 		this.contactService.updateContactList(this.contactListId, this.users)
 			.subscribe(
             data => {
                 if (data.access) {
-                    data = data;
                     this.loading = false;
                     this.selectedAddContactsOption = 8;
                     this.xtremandLogger.info("update Contacts ListUsers:" + data);
@@ -1486,7 +1484,6 @@ goBackToManageList(){
 			.subscribe(
             data => {
                 if (data.access) {
-                    data = data;
                     this.loading = false;
                     this.selectedAddContactsOption = 8;
                     this.xtremandLogger.info("update Contacts ListUsers:" + data);
@@ -1557,7 +1554,6 @@ goBackToManageList(){
 			if (this.selectedAddContactsOption == 0) {
 				this.updateContactList(this.contactListId);
 			}
-
 			if (this.selectedAddContactsOption == 1) {
 				this.updateContactListFromClipBoard(this.contactListId);
 			}
@@ -2576,6 +2572,7 @@ goBackToManageList(){
 
 	updateContactListUser(event) {
 		try {
+			this.loading = true;
 			this.editUser.pagination = this.pagination;
 			if (event.mobileNumber) {
 				if (event.mobileNumber.length < 6) {
@@ -2592,8 +2589,8 @@ goBackToManageList(){
 			this.contactService.updateContactListUser(this.selectedContactListId, this.editUser)
 				.subscribe(
                 (data: any) => {
+					this.loading = false;
                     if (data.access) {
-                        console.log(data);
                         if (!this.isPartner) {
                             this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACTS_UPDATE_SUCCESS, true);
                         } else {
@@ -2604,7 +2601,10 @@ goBackToManageList(){
                         this.authenticationService.forceToLogout();
                     }
                 },
-					error => this.xtremandLogger.error(error),
+					error => {
+						this.xtremandLogger.error(error);
+						this.loading = false
+					},
 					() => this.xtremandLogger.info("EditContactsComponent updateContactListUser() finished")
 				)
 		} catch (error) {
