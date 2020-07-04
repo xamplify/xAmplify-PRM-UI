@@ -609,7 +609,7 @@
 														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
+														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
 														<th class="text-center" *ngIf="isPartner"></th>
 														<!-- <th class='text-center'>MORE</th> -->
 														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
@@ -708,19 +708,10 @@
 															<td *ngIf="!isPartner">
 															<app-user-info [isContactCompanyInfo]="true" [userInfo]="contact"> </app-user-info>
 															</td>
-														<!-- 	<td class="hidden-xs" *ngIf="!isPartner">
-															<div *ngIf="contact.mobileNumber" [class.disabled]="true" style="pointer-events: none !important; cursor: auto;">
-													<int-phone-prefix [(ngModel)]="contact.mobileNumber"  [ngModelOptions]="{standalone: true}"></int-phone-prefix>
-													</div>
-																<h5>
-																	<span *ngIf="contact?.mobileNumber; else NA">{{contact.mobileNumber}}</span>
-																</h5>
-															</td> -->
 															<td class="hidden-xs" *ngIf="!isPartner">
 																<h5 class='mb0 ellipsis' title="{{contact.jobTitle}}">{{contact.jobTitle | slice:0:25}}
 																<span *ngIf="contact.jobTitle?.length>25">...</span>
 																</h5>
-																<!-- <h6 class='mt0' *ngIf="!isPartner">{{contact.contactCompany}}</h6> -->
 															</td>
 															<td align="center" class="hidden-xs">
 																<h5 *ngIf="contact?.address" class='mb0'>{{contact.address | slice:0:30}}
@@ -733,14 +724,7 @@
 																</h5>
 																<h5 *ngIf="contact?.zipCode || contact.country" class='mt0'>{{contact.zipCode}}<span *ngIf="contact.zipCode && contact.country">,&nbsp;</span>{{contact.country}}</h5>
 															</td>
-															<!-- <td align="center">
-																<button id='more_less_button_{{i}}'
-																	(click)="contact.isShowDetails = ! contact.isShowDetails">
-																	<span *ngIf="!contact.isShowDetails">More</span> <span
-																		*ngIf="contact.isShowDetails">Less</span>
-																</button>
-															</td> -->
-															<td align="center" *ngIf="gdprStatus">
+															<td align="center" *ngIf="gdprStatus || isPartner">
 															<button  id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
 																<span *ngIf="!contact.isShowDetails">More</span> <span
@@ -748,11 +732,6 @@
 															</button>
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
-															<!-- <button  *ngIf="isPartner || contactsByType.selectedCategory == 'non-active'" id='more_less_button_{{i}}'
-																(click)="contact.isShowDetails = ! contact.isShowDetails">
-																<span *ngIf="!contact.isShowDetails">More</span> <span
-																	*ngIf="contact.isShowDetails">Less</span>
-															</button> -->
 															<div class="actions-block override-actions">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -768,23 +747,32 @@
 														</tr>
 														<tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-												<td colspan="8" *ngIf="gdprStatus">
+												<td [attr.colspan]="isPartner ? '9':'6'">
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
-															<tr>
+															<tr *ngIf="gdprStatus">
 																<td class='pt10 pb10 bold'>Legal Basis : </td>
-																&nbsp;<td align="center" class="pt10 pb10">
+																<td align="center" class="pt10 pb10">
 																	{{contact.legalBasisString}}
 																</td>
+															</tr>
+															<tr *ngIf="isPartner">
+																<td class='pt10 pb10 bold'>Contacts Limit : </td>
+																<td align="center" class="pt10 pb10">
+																	{{contact.contactsLimit}}
+															</tr>
+															<tr *ngIf="isPartner && mdfAccess">
+																<td class='pt10 pb10 bold'>MDF Amount : </td>
+																<td align="center" class="pt10 pb10">
+																	{{contact.mdfAmountInString}}
 															</tr>
 														</tbody>
 													</table>
 												</td>
 											</tr>
-														</ng-container>
-
-													</tbody>
+											    </ng-container>
+												</tbody>
 												</table>
 											</div>
 										</div>
@@ -1056,11 +1044,11 @@
 
 
 <div *ngIf="contactService.isContactModalPopup && !updateContactUser">
-	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
+	<app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contacts" [isContactTypeEdit]="true" [isUpdateUser] = "false"  (notifyParent)="addRow($event)" ></app-add-contact-modal>
 </div>
 
 <div *ngIf="contactService.isContactModalPopup && updateContactUser">
-	<app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
+	<app-add-contact-modal [mdfAccess]="mdfAccess"  [gdprInput]="parentInput" [totalUsers]="contacts"  [contactDetails]="contactAllDetails" [isUpdateUser] = "isUpdateUser" (notifyParent)="updateContactListUser($event)"></app-add-contact-modal>
 </div>
 
 <app-export-csv *ngIf="refService.isDownloadCsvFile" [downloadListDetails]="downloadDataList" [downloadListName]="logListName"> </app-export-csv>

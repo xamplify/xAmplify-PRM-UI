@@ -574,18 +574,20 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     openAssignContactAndMdfAmountPopup(){
         $.each(this.newPartnerUser,function(_index:number,partner:any){
             partner.mdfAmount = "0.00";
-            partner.contactsCount = 1;
+            partner.contactsLimit = 1;
         });
+        $('#assignContactAndMdfPopup').modal('show');
+       
+    }
+    getModuleAccess(){
         this.loading = true;
-        this.campaignService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
+        this.campaignService.getModuleAccessByUserId(this.loggedInUserId).subscribe(
             (data: any) => {
                this.mdfAccess = data.mdf;
                this.loading = false;
-               $('#assignContactAndMdfPopup').modal('show');
               }, (error: any) => {
-                console.log("Unable to fetch mdf access data");
+                console.log("Unable to fetch mdf access data",error);
                 this.loading = false;
-                $('#assignContactAndMdfPopup').modal('show');
               }
             );
     }
@@ -602,8 +604,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         let errorCount = 0;
        
         $.each(this.newPartnerUser,function(index:number,partner:any){
-            let contactsCount = partner.contactsCount;
-            if(contactsCount<1){
+            let contactsLimit = partner.contactsLimit;
+            if(contactsLimit<1){
                 errorCount++;
                 $('#contact-count-'+index).css('background-color','red');
             }
@@ -2411,6 +2413,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
+            this.getModuleAccess();
         }
         catch ( error ) {
             this.xtremandLogger.error( "addPartner.component oninit " + error );

@@ -31,7 +31,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
          </div>
         <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
-            <!-- <i class="glyphicon glyphicon-user" style="right: 11px" aria-hidden="true"></i> -->
           </label>
           <div class="form-group col-xs-5 col-sm-5">
             <input type="name" style="border: none" class="form-control padding-mobile" id="firstName"
@@ -47,7 +46,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 
         <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-            <!-- <i  class="fa fa-building-o" style="right: 11px !important" aria-hidden="true"></i> -->
             <span *ngIf="isPartner" class="star"> *</span>
           </label>
           <div class="form-group col-xs-10 col-sm-10">
@@ -57,6 +55,34 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
           </div>
         </div>
+       
+        <ng-container *ngIf="isPartner && isUpdateUser">
+          <!---Contacts Limit------->
+        <div class="form-group">
+          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
+            <span class="star"> *</span>
+          </label>
+          <div class="form-group col-xs-10 col-sm-10">
+            <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
+              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" oninput="validity.valid||(value='');">
+            <div class="textCss"></div>
+          </div>
+        </div>
+      <!---MDF Amount Limit------->
+      <div class="form-group" *ngIf="mdfAccess">
+        <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
+        </label>
+        <div class="form-group col-xs-10 col-sm-10">
+          <input type="name" style="border: none" class="form-control padding-mobile currency" id="mdfAmount"
+            [(ngModel)]="addContactuser.mdfAmount"  [ngModelOptions]="{standalone: true}" 
+            placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" 
+           >
+          <div class="textCss"></div>
+        </div>
+      </div>
+        </ng-container>
+        
+
         <!-- ------------Legal Basis------------ -->
         <div class="form-group" *ngIf="gdprStatus">
          <label class="control-label col-xs-2 col-sm-2" for="legalBasis" style="color: #00bcd4; right: 11px !important">
@@ -137,7 +163,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <div class="form-group">
           <div>
             <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
-              <!-- <i class="glyphicon glyphicon-home" aria-hidden="true"></i> -->
             </label>
             <div class="form-group col-xs-10 col-sm-10 px0">
               <input type="address" style="border: none" class="form-control" id="address"
@@ -150,7 +175,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <div class="form-group">
             <div>
               <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
-                <!-- <i class="glyphicon glyphicon-home" aria-hidden="true"></i> -->
               </label>
               <div class="form-group col-xs-5 col-sm-5 pxl0">
                 <input type="city" style="border: none" class="form-control"  id="city"
@@ -222,7 +246,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     <div class="modal-footer" *ngIf="isPartner"  style="border:none" >
        <button class="btn btn-default" (click)="addContactModalClose()">Cancel</button>
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
-      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()">Add</button>
+      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()">Proceed</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" >Proceed</button>
       <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" >Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"

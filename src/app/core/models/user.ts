@@ -48,4 +48,7 @@ export class User {
 
     companyProfileName: string;
     preferredLanguage:string;
+
+    contactsLimit:number;
+    mdfAmount:any;
 }

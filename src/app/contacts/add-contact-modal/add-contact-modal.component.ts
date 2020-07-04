@@ -20,6 +20,7 @@ declare var $: any;
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
     @Input() contactDetails: any;
     @Input() isContactTypeEdit: boolean;
+    @Input() mdfAccess: boolean;
     isPartner: boolean;
     @Input() isUpdateUser: boolean;
     @Input() totalUsers: any;
@@ -187,9 +188,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         //this.geoLocation();
         this.addContactuser.country = this.countryNames.countries[0];
         if(this.isPartner){
-            this.checkingContactTypeName = "Partner"
+            this.checkingContactTypeName = "Partner";
         }else{
-            this.checkingContactTypeName = "Contact"
+            this.checkingContactTypeName = "Contact";
         }
 
         if ( this.isUpdateUser ) {
@@ -212,6 +213,8 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.country = this.contactDetails.country;
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             this.addContactuser.legalBasis = this.contactDetails.legalBasis;
+            this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+            this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
            /* if ( this.addContactuser.mobileNumber == undefined ) {
                 //this.addContactuser.mobileNumber = "+1";
                 this.geoLocation()

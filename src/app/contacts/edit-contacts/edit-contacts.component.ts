@@ -28,6 +28,7 @@ import { GdprSetting } from '../../dashboard/models/gdpr-setting';
 import { UserService } from '../../core/services/user.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
 import {SendCampaignsComponent} from '../../common/send-campaigns/send-campaigns.component';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 
 declare var Metronic, Promise, Layout, Demo, swal, Portfolio, $, Swal, await, Papa: any;
 
@@ -208,11 +209,12 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 	sourceType = "";
 	showAddOptions = false;
 	campaignsTitle = "";
+	mdfAccess:boolean = false;
 	constructor(public socialPagerService: SocialPagerService, private fileUtil: FileUtil, public refService: ReferenceService, public contactService: ContactService, private manageContact: ManageContactsComponent,
 		public authenticationService: AuthenticationService, private router: Router, public countryNames: CountryNames,
 		public regularExpressions: RegularExpressions, public actionsDescription: ActionsDescription,
 		private pagerService: PagerService, public pagination: Pagination, public xtremandLogger: XtremandLogger, public properties: Properties,
-		public teamMemberService: TeamMemberService, public userService: UserService) {
+		public teamMemberService: TeamMemberService, public userService: UserService,public campaignService:CampaignService) {
 
 		this.addContactuser.country = (this.countryNames.countries[0]);
 		this.contactsByType.selectedCategory = "all";
@@ -3026,6 +3028,7 @@ goBackToManageList(){
 			this.loadContactListsNames();
 			if (this.isPartner) {
 				this.listTeamMembers();
+				this.getModuleAccess();
 				/*  this.listOrgAdmin();*/
 			}
 
@@ -3053,6 +3056,17 @@ goBackToManageList(){
 			this.xtremandLogger.error(error, "editContactComponent", "ngOnInit()");
 		}
 	}
+
+	getModuleAccess(){
+        this.loading = true;
+        this.campaignService.getModuleAccessByUserId(this.loggedInUserId).subscribe(
+            (data: any) => {
+               this.mdfAccess = data.mdf;
+              }, (error: any) => {
+                console.log("Unable to fetch mdf access data",error);
+              }
+            );
+    }
 
 	checkTermsAndConditionStatus() {
 		if (this.companyId > 0) {
