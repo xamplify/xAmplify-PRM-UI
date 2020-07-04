@@ -1220,7 +1220,9 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title popup-header-title-font">Assign Contacts & MDF Amount</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess">Assign Contacts & MDF Amount</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess">Assign Contacts</h4>
+
             </div>
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
@@ -1235,7 +1237,7 @@
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner"></i>
                                     </span>
                                 </th>
-                                <th scope="row">#Mdf Amount
+                                <th *ngIf="mdfAccess" scope="row">#Mdf Amount
                                     <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign amount to each partner"></i>
                                     </span>
@@ -1252,7 +1254,7 @@
                                     <td class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsCount"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsCount" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
                                     </td>
-                                    <td>
+                                    <td *ngIf="mdfAccess">
                                         <input type="text" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" 
                                         [(ngModel)]=" partner.mdfAmount"  [ngModelOptions]="{standalone: true}" id="mdfAmount-{{i}}"
                                         placeholder="Enter Amount"/>

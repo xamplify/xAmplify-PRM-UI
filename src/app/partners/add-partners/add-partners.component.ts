@@ -29,6 +29,7 @@ import { UserService } from '../../core/services/user.service';
 import {SendCampaignsComponent} from '../../common/send-campaigns/send-campaigns.component';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 
 declare var $, Papa, swal, Swal: any;
 
@@ -192,12 +193,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    loggedInThroughVanityUrl = false;
    processingPartnersLoader = false;
    contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
+    mdfAccess: boolean = false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService,
-        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService) {
+        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService, public campaignService: CampaignService) {
         this.loggedInThroughVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
         this.sourceType = this.authenticationService.getSource();
         if(this.sourceType=="ALLBOUND"){
@@ -574,18 +576,31 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             partner.mdfAmount = "0.00";
             partner.contactsCount = 1;
         });
-        $('#assignContactAndMdfPopup').modal('show');
+        this.loading = true;
+        this.campaignService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
+            (data: any) => {
+               this.mdfAccess = data.mdf;
+               this.loading = false;
+               $('#assignContactAndMdfPopup').modal('show');
+              }, (error: any) => {
+                console.log("Unable to fetch mdf access data");
+                this.loading = false;
+                $('#assignContactAndMdfPopup').modal('show');
+              }
+            );
     }
     closeAssignContactAndMdfAmountPopup(){
         this.newPartnerUser = [];
         this.contactAndMdfPopupResponse = new CustomResponse();
         $('#assignContactAndMdfPopup').modal('hide');
+        this.cancelPartners();
     }
     validatePartners(){
         this.processingPartnersLoader = true;
         $(".modal-body").animate({ scrollTop: 0 }, 'slow');
         this.contactAndMdfPopupResponse = new CustomResponse();
         let errorCount = 0;
+       
         $.each(this.newPartnerUser,function(index:number,partner:any){
             let contactsCount = partner.contactsCount;
             if(contactsCount<1){
@@ -598,15 +613,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.processingPartnersLoader = false;
         }else{
             $('#assignContactAndMdfPopup').modal('hide');
-            this.processingPartnersLoader = true;
-            this.allConditionsAcceptedListSave();
+            this.processingPartnersLoader = false;
+            this.savePartners();
         }
-        
-       
     }
 
-
-    allConditionsAcceptedListSave(){
+    savePartners(){
         /*****************Sravan*********************/
             this.loading = true;
             this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
@@ -3161,7 +3173,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 .subscribe(
                 (data: any) => {
                     if (data.access) {
-                        data = data;
                         console.log("update Partner ListUsers:" + data);
                         this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
                         this.loadPartnerList(this.pagination);
