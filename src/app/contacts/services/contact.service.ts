@@ -569,4 +569,10 @@ export class ContactService {
         .catch( this.handleError );
     }
 
+    getContactsLimitAndMdfAmount(partners:any,loggedInUserId:number){
+        return this._http.post(this.contactsUrl+ "getContactsLimitAndMdfAmount/"+loggedInUserId+"?access_token=" +this.authenticationService.access_token,partners)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
 }
