@@ -592,9 +592,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             );
     }
     closeAssignContactAndMdfAmountPopup(){
+        $('#assignContactAndMdfPopup').modal('hide');
         this.newPartnerUser = [];
         this.contactAndMdfPopupResponse = new CustomResponse();
-        $('#assignContactAndMdfPopup').modal('hide');
         this.cancelPartners();
     }
     validatePartners(){
@@ -602,7 +602,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $(".modal-body").animate({ scrollTop: 0 }, 'slow');
         this.contactAndMdfPopupResponse = new CustomResponse();
         let errorCount = 0;
-       
         $.each(this.newPartnerUser,function(index:number,partner:any){
             let contactsLimit = partner.contactsLimit;
             if(contactsLimit<1){
@@ -614,10 +613,37 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.contactAndMdfPopupResponse = new CustomResponse('ERROR','Minimum 1 contact should be assigned to each partner',true);
             this.processingPartnersLoader = false;
         }else{
-            $('#assignContactAndMdfPopup').modal('hide');
-            this.processingPartnersLoader = false;
-            this.savePartners();
+            this.validatePartnership();
         }
+    }
+
+    validatePartnership(){
+        this.processingPartnersLoader = true;
+        this.contactService.validatePartners(this.partnerListId, this.newPartnerUser).subscribe(
+            (data: any) => {
+              this.processingPartnersLoader = false;
+              let statusCode = data.statusCode;
+              if(statusCode==200){
+                $('#assignContactAndMdfPopup').modal('hide');
+                this.processingPartnersLoader = false;
+                this.savePartners();
+              }else{
+                let emailIds = "";
+                $.each(data.data,function(index:number,emailId:string){
+                    emailIds+= (index+1)+"."+emailId+"<br><br>";
+                });
+                let updatedMessage = data.message+"<br><br>"+emailIds;
+                this.contactAndMdfPopupResponse = new CustomResponse('ERROR',updatedMessage,true);
+              }
+              }, (error: any) => {
+                this.processingPartnersLoader = false;
+                let httpStatusCode = error['status'];
+                if(httpStatusCode!=500){
+                    this.contactAndMdfPopupResponse = new CustomResponse('ERROR',httpStatusCode,true);
+                }else{
+                    this.contactAndMdfPopupResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                }
+              });
     }
 
     savePartners(){

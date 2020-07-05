@@ -906,8 +906,7 @@
 													<!-- 	<th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
 														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
 														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
-														<th class="text-center hidden-xs" *ngIf="gdprStatus"></th>
-														<!-- <th class="text-center hidden-xs" *ngIf="isPartner"></th> -->
+														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
 														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
 												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
 												<!-- <th>MORE</th> -->
@@ -1019,6 +1018,23 @@
 																	{{allcontacts.legalBasisString}}
 																</td>
 															</tr>
+															<ng-container *ngIf="isPartner">
+																<tr>
+																	<td class='pt10 pb10 bold'>Contacts Limit : </td>
+																	<td align="center" class="pt10 pb10">
+																		{{allcontacts.contactsLimit}}
+																	</td>
+																</tr>
+																<tr  *ngIf="mdfAccess">
+																	<td class='pt10 pb10 bold'>MDF Amount : </td>
+																	<td align="center" class="pt10 pb10">
+																		{{allcontacts.mdfAmountInString}}
+																	</td>
+																</tr>
+
+															</ng-container>
+															
+															
 														</tbody>
 													</table>
 												</td>
