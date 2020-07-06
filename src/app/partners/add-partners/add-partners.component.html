@@ -85,7 +85,7 @@
 										</button>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px; !important" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
+                                            <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px !important;" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
                                                 <span style="display:block; font-size:12px; text-align:center" translate>Upload a CSV</span>
                                                 <input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
@@ -323,7 +323,7 @@
                                 </thead>
                                 <tbody>
                                     <ng-container *ngFor="let user of pagedItems;let i = index">
-                                        <tr class='row_{{user.id}}'>
+                                        <tr class='row_{{i}}'>
                                             <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9" align="center"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1" class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}" name="campaignContact[]"
                                                     value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
                                             </td>
@@ -567,7 +567,7 @@
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;" translate translate></i>List of Partners</div>
+                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners</div>
                         <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
                             <div style="float: left; margin: 0 10px;">
                                 <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -1232,8 +1232,8 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess">Assign Contacts & MDF Amount</h4>
-                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess">Assign Contacts</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
 
             </div>
             <div class="modal-body">
@@ -1243,13 +1243,13 @@
                     <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
-                                <th scope="row">Entity Info</th>
-                                <th scope="row">#Contacts
+                                <th scope="row" translate>Entity Info</th>
+                                <th scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
                                     </span>
                                 </th>
-                                <th *ngIf="mdfAccess" scope="row">#Mdf Amount
+                                <th *ngIf="mdfAccess" scope="row" translate>#Mdf Amount
                                     <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign amount to each partner"></i>
                                     </span>
@@ -1281,8 +1281,8 @@
             </div>
             <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer">
-                <button type="submit" class="btn green-haze"  (click)="validatePartners()">Save</button>
-                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()">Close</button>
+                <button type="submit" class="btn green-haze"  (click)="validatePartners()" translate>Save</button>
+                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
             </div>
         </div>
     </div>

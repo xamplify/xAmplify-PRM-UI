@@ -1,24 +1,24 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="page-bar">
 	<ul class="page-breadcrumb">
-		<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i
+		<li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter" translate>Home</a> <i
 			class="fa fa-angle-right"></i></li>
-		<li><a (click)="refresh()"> Manage
-				{{checkingContactTypeName}}s</a></li>
-		<li><a (click)="backToEditContacts()"><i
+		<li><a (click)="refresh()" translate> Manage {{checkingContactTypeName}}s
+				</a></li>
+		<li><a (click)="backToEditContacts()" translate><i
 				class="fa fa-angle-right"> </i>Edit {{checkingContactTypeName}}s</a></li>
 		<li *ngIf="! showEditContactData"><i class="fa fa-angle-right">
 		</i>
 		<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'unsubscribe' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory != 'invalid'">{{contactsByType.selectedCategory}}
 		   {{checkingContactTypeName}}s</span>
-		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
-		   {{checkingContactTypeName}}s</span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Unsubscribed
-		   {{checkingContactTypeName}}s</span>
-		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'">Registered
-		   {{checkingContactTypeName}}s</span>
-		   <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'">Undeliverable
-		   {{checkingContactTypeName}}s</span>
+		<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>Unregistered {{checkingContactTypeName}}s
+		   </span>
+		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Unsubscribed {{checkingContactTypeName}}s
+		   </span>
+		  <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>Registered {{checkingContactTypeName}}s
+		   </span>
+		   <span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>Undeliverable {{checkingContactTypeName}}s
+		   </span>
 		</li>
 	</ul>
 </div>
@@ -67,9 +67,9 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.allContactsCount}}</div>
-											<div class="desc" style="font-size:20px; color: #FFFFFF;">All <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>All <!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white">
+										<span class="morePadding"> <a class="more" style="text-align: left; background: #3480b5; color: white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -86,9 +86,9 @@
 										</div>
 										<div class="details">
 											<div class="number" style="color: #FFFFFF;">{{contactsByType.activeContactsCount}}</div>
-											<div class="desc" style="font-size:20px; color: #FFFFFF;">Registered <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px; color: #FFFFFF;" translate>Registered <!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white">
+										<span class="morePadding"> <a class="more" style="text-align: left; background: #268c83; color:white" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -105,9 +105,9 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.inactiveContactsCount}}</div>
-											<div class="desc" style="font-size:20px">Unregistered <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px" translate>Unregistered <!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left;">
+										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -124,9 +124,9 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.invalidContactsCount}}</div>
-											<div class="desc" style="font-size:20px">Undeliverable <!-- {{checkingContactTypeName}}s --></div>
+											<div class="desc" style="font-size:20px" translate>Undeliverable <!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left;">
+										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -145,10 +145,10 @@
 										</div>
 										<div class="details">
 											<div class="number">{{contactsByType.unsubscribedContactsCount}}</div>
-											<div class="desc" style="font-size:20px">Unsubscribed
+											<div class="desc" style="font-size:20px" translate>Unsubscribed
 												<!-- {{checkingContactTypeName}}s --></div>
 										</div>
-										<span class="morePadding"> <a class="more" style="text-align: left;">
+										<span class="morePadding"> <a class="more" style="text-align: left;" translate>
 														Detailed view <i class="m-icon-swapright m-icon-white"></i>
 												</a>
 												</span>
@@ -169,7 +169,7 @@
 							<!-- BEGIN EXAMPLE TABLE PORTLET-->
 							<div class="portlet box blue">
 								<div class="portlet-title">
-									<div class="caption">
+									<div class="caption" translate>
 										<i class="fa fa-edit"></i>List of {{checkingContactTypeName}}s
 									</div>
 
@@ -178,13 +178,13 @@
 											<!-- disabling cancel button condition
 											[disabled]="selectedAddContactsOption == 8 && !clickBoard"  -->
 														<button id="cancel_button" class="btn pull-right"
-															(click)="cancelContacts()" style="margin-left: 5px; background-color: white">
+															(click)="cancelContacts()" style="margin-left: 5px; background-color: white" translate>
 															Cancel<i class="fa fa-cancel"></i>
 														</button>
 													</div>
 													<div class="btn-group pull-right">
 														<button class="btn dropdown-toggle" style="background-color: white"
-															id="save&delete_button" data-toggle="dropdown">
+															id="save&delete_button" data-toggle="dropdown" translate>
 															Actions <i class="fa fa-angle-down"></i>
 														</button>
 														<ul class="dropdown-menu pull-right">
@@ -192,20 +192,20 @@
 															</a></li>
 															<li><a id="saveAs_button"
 																*ngIf="selectedAddContactsOption == 8"
-																(click)="saveAs(true)">Save As </a></li>
+																(click)="saveAs(true)" translate>Save As </a></li>
 															<li><a id="exportToExcel"
 																*ngIf="selectedAddContactsOption == 8"
-																(click)="hasAccess()">Export To Excel</a></li>
+																(click)="hasAccess()" translate>Export To Excel</a></li>
 															<li><a id="download_empy_csv"
-																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8">Download CSV Template</a></li>
+																(click)="downloadEmptyCsv()" *ngIf="selectedAddContactsOption == 8" translate>Download CSV Template</a></li>
 															<li><a id="delete_button"
 																*ngIf="(selectedAddContactsOption == 8 || selectedAddContactsOption == 9 && selectedContactListIds?.length != 0) && !isSynchronizationList"
-																(click)="showAlert(selectedContactListId)"> Delete</a></li>
+																(click)="showAlert(selectedContactListId)" translate> Delete</a></li>
 														</ul>
 													</div>
 													</div>
 										<button id="cancel_button" class="btn pull-right" *ngIf="selectedAddContactsOption == 8 && selectedContactListIds?.length != 0"
-															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070">
+															(click)="saveAs(true)" style="margin-right: 5px; background-color: white; color: #777070" translate>
 															Save As<!-- <i class="fa fa-save"></i> -->
 														</button>
 								</div>
@@ -220,9 +220,9 @@
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
 														(click)="addContactModalOpen()"
-														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9">
-														<!-- Add {{checkingContactTypeName}}  -->
+														[disabled]="selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9" translate>
 														One at a Time
+														<!-- Add {{checkingContactTypeName}}  -->
 														<i class="fa fa-plus" style="font-size: 12px; margin-left: 5px;"></i>
 													</button>
                        							 </div>
@@ -230,7 +230,7 @@
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="copyFrom_clipboard" class="btn green"
 														[disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 2 || selectedAddContactsOption == 9"
-														(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);">
+														(click)="addContactsOption(AddContactsOption.COPYFROMCLIPBOARD);" translate>
 														Copy List From ClipBoard <i class="fa fa-clipboard"
 															aria-hidden="true"
 															style="font-size: 12px; margin-left: 5px;"></i>
@@ -239,7 +239,7 @@
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<div class="fileUpload btn btn-primary" id="upload_csv"
 														[class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 9"
-														style="background-color: #26a69a !important">
+														style="background-color: #26a69a !important" translate>
 														Upload CSV <i class="fa fa-upload" aria-hidden="true"
 															style="font-size: 12px; margin-left: 5px;"></i> <input
 															type="file" ng2FileSelect class="upload"
@@ -327,7 +327,7 @@
 															class="glyphicon glyphicon-remove"></i></span></td>
 													<td nowrap>
 														<button type="button" class="btn btn-danger btn-xs"
-															(click)="item.remove()" (click)="removeCsv()">
+															(click)="item.remove()" (click)="removeCsv()" translate>
 															<span class="glyphicon glyphicon-trash"></span> Remove
 														</button>
 													</td>
@@ -337,13 +337,13 @@
 										<div *ngIf="fileTypeError" id="csvFileTypeError"
 											class="alert alert-danger alert-dismissable"
 											style="width: 50%">
-											<b>File type not allowed please select the .csv file
-												only..</b>
+											<b translate>File type not allowed please select the .csv file only..</b>
+												
 										</div>
 										<div *ngIf="inValidCsvContacts" id="csvInavalidCntactsError"
 											class="alert alert-danger alert-dismissable"
 											style="width: 80%">
-											<b>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong>
+											<b translate>We found invalid emailIds please remove..<strong>{{invalidPatternEmails}}</strong>
 												and Re Upload..
 											</b>
 										</div>
@@ -352,31 +352,31 @@
 										class="col-md-9 alert alert alert-danger alert-dismissable"
 										style="width: 100%">
 										<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
-										<h4>
-											Duplicate EmailId Exist Please Remove..<u>{{duplicateEmailIds}}</u>
+										<h4 translate>Duplicate EmailId Exist Please Remove..
+											<u>{{duplicateEmailIds}}</u>
 										</h4>
 									</div>
 
 									<div *ngIf="noContactsFound==true"
 										style="background-color: #3598dc" class="alert alert-info">
-										<h4 style="margin-top: 8px; color: white">No results found</h4>
+										<h4 style="margin-top: 8px; color: white" translate>No results found</h4>
 									</div>
 									<div *ngIf="showInvalidMaills==true" class="col-md-6"
 										class="col-md-9 alert alert alert-danger alert-dismissable">
 										<a class="close" (click)="closeShowValidMessage()"
-											data-dismiss="alert" aria-label="close">&times;</a> <strong>Invalid
-											email pattern Contacts found.. !!!</strong>
+											data-dismiss="alert" aria-label="close">&times;</a> <strong translate>
+											Invalid email pattern Contacts found.. !!!</strong>
 									</div>
 										<!-- ---Legal Basis Options -->
 											<div *ngIf="(isValidClipBoardData&&gdprStatus) || (gdprStatus && selectedAddContactsOption==2)" class="col-sm-6 form-group" id="customWidth">
 												<div class="form-group">
-												<label for="name" class="col-xs-12 col-sm-4 control-label">Legal Basis Options <span class="danger">*</span></label>
+												<label for="name" class="col-xs-12 col-sm-4 control-label" translate>Legal Basis Options <span class="danger">*</span></label>
 												  <div id="multiselect-sample" class="control-section">
 												    <div class="col-lg-8 content-wrapper">
 												        <div class="control-styles">
 												        	<ejs-multiselect [(ngModel)]='selectedLegalBasisOptions' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
 												        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-												        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+												        	  <span class="custom-error-message chagneText" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
 												        </div>
 												    </div>
 												    </div>
@@ -385,18 +385,18 @@
 									
 									<div class="row" *ngIf="clickBoard">
 										<div class="col-sm-12" style="padding-left:0px">
-											<h3 class="col-xs-12">Copy from text -- paste below</h3>
+											<h3 class="col-xs-12" translate>Copy from text -- paste below</h3>
 											<div class="col-sm-9 form-group">
 												<div class="col-sm-3" style="padding-left: 0px;">
 													<select class="col-sm-2 options form-control">
-														<option selected value="DEFAULT">Delimiter Type</option>
-														<option value="CommaSeperated">Comma Separated</option>
-														<option value="TabSeperated">Tab Separated</option>
+														<option selected value="DEFAULT" translate>Delimiter Type</option>
+														<option value="CommaSeperated" translate>Comma Separated</option>
+														<option value="TabSeperated" translate>Tab Separated</option>
 													</select>
 												</div>
 												<button class=" col-sm-3 btn btn-default" type="button"
 													style="background-color: #26a69a; color: white"
-													(click)="clipboardShowPreview()">VERIFY DATA</button>
+													(click)="clipboardShowPreview()" translate>VERIFY DATA</button>
 											</div>
 											<div class="col-sm-9">
 												<textarea *ngIf="!isPartner" class="textareaNumber" [(ngModel)]="clipboardTextareaText"
@@ -459,7 +459,7 @@
 									</div>
 											<div class="portlet box blue" *ngIf="users?.length != 0">
 												<div class="portlet-title">
-													<div class="caption">
+													<div class="caption" translate>
 														<i class="fa fa-edit"></i>File Preview
 													</div>
 												</div>
@@ -470,10 +470,10 @@
 														id="sample_editable_2">
 														<thead>
 															<tr>
-																<th>FIRST NAME</th>
-																<th>LAST NAME</th>
-																<th>EMAILID</th>
-																<th>MORE</th>
+																<th translate>FIRST NAME</th>
+																<th translate>LAST NAME</th>
+																<th translate>EMAILID</th>
+																<th translate>MORE</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -492,8 +492,8 @@
 																<td>
 																	<button id='more_less_button_{{i}}'
 																		(click)="user.isShowDetails = ! user.isShowDetails">
-																		<span *ngIf="!user.isShowDetails">More</span> <span
-																			*ngIf="user.isShowDetails">Less</span>
+																		<span *ngIf="!user.isShowDetails" translate>More</span> <span
+																			*ngIf="user.isShowDetails" translate>Less</span>
 																	</button>
 																</td>
 															</tr>
@@ -504,51 +504,51 @@
 																		style="padding-left: 50px; margin-left: 55px;">
 																		<tbody>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Company:</td>
+																				<td class='pt10 pb10' translate>Company:</td>
 																				<td class='pt10 pb10'>{{user.contactCompany}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Job Title:</td>
+																				<td class='pt10 pb10' translate>Job Title:</td>
 																				<td class='pt10 pb10'>{{user.jobTitle}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-																				<td class='pt10 pb10'>Vertical:</td>
+																				<td class='pt10 pb10' translate>Vertical:</td>
 																				<td class='pt10 pb10'>{{user.vertical}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-																				<td class='pt10 pb10'>Region:</td>
+																				<td class='pt10 pb10' translate>Region:</td>
 																				<td class='pt10 pb10'>{{user.region}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-																				<td class='pt10 pb10'>Type:</td>
+																				<td class='pt10 pb10' translate>Type:</td>
 																				<td class='pt10 pb10'>{{user.partnerType}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc" *ngIf="isPartner">
-																				<td class='pt10 pb10'>Category:</td>
+																				<td class='pt10 pb10' translate>Category:</td>
 																				<td class='pt10 pb10'>{{user.category}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Address:</td>
+																				<td class='pt10 pb10' translate>Address:</td>
 																				<td class='pt10 pb10'>{{user.address}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>City:</td>
+																				<td class='pt10 pb10' translate>City:</td>
 																				<td class='pt10 pb10'>{{user.city}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>State:</td>
+																				<td class='pt10 pb10' translate>State:</td>
 																				<td class='pt10 pb10'>{{user.state}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Zip Code:</td>
+																				<td class='pt10 pb10' translate>Zip Code:</td>
 																				<td class='pt10 pb10'>{{user.zipCode}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Country:</td>
+																				<td class='pt10 pb10' translate>Country:</td>
 																				<td class='pt10 pb10'>{{user.country}}</td>
 																			</tr>
 																			<tr style="border-bottom: 1px solid #dcdcdc">
-																				<td class='pt10 pb10'>Phone Number:</td>
+																				<td class='pt10 pb10' translate>Phone Number:</td>
 																				<td class='pt10 pb10'>{{user.mobileNumber}}</td>
 																			</tr>
 																			<!-- <tr style="border-bottom: 1px solid #dcdcdc">
@@ -566,19 +566,19 @@
 											<ul *ngIf="pager.pages && pager.pages.length"
 										class="pagination">
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-											(click)="setCsvPage(1)">First</a></li>
+											(click)="setCsvPage(1)" translate>First</a></li>
 										<li [ngClass]="{disabled:pager.currentPage === 1}"><a
-											(click)="setCsvPage(pager.currentPage - 1)">Previous</a></li>
+											(click)="setCsvPage(pager.currentPage - 1)" translate>Previous</a></li>
 										<li *ngFor="let page of pager.pages"
 											[ngClass]="{active:pager.currentPage === page}"><a
 											(click)="setCsvPage(page)">{{page}}</a></li>
 										<li
 											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-											<a (click)="setCsvPage(pager.currentPage + 1)">Next</a>
+											<a (click)="setCsvPage(pager.currentPage + 1)" translate>Next</a>
 										</li>
 										<li
 											[ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-											<a (click)="setCsvPage(pager.totalPages)">Last</a>
+											<a (click)="setCsvPage(pager.totalPages)" translate>Last</a>
 										</li>
 									</ul>
 													
@@ -600,19 +600,19 @@
 																name="all" [(ngModel)]="isHeaderCheckBoxChecked"
 																(change)="checkAll($event)"
 																id="checkAllExistingContacts"/></th>
-															<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-															<th style="width: 25%" *ngIf="!isPartner">NAME</th>
-																<th *ngIf="isPartner">VERTICAL</th>
-														<th *ngIf="isPartner">REGION</th>
-														<th *ngIf="isPartner">TYPE</th>
-														<th *ngIf="isPartner">CATEGORY</th>
+															<th style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
+															<th style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
+																<th *ngIf="isPartner" translate>VERTICAL</th>
+														<th *ngIf="isPartner" translate>REGION</th>
+														<th *ngIf="isPartner" translate>TYPE</th>
+														<th *ngIf="isPartner" translate>CATEGORY</th>
 														<!-- <th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
-														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
-														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
+														<th class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
 														<th class="text-center" *ngIf="isPartner"></th>
 														<!-- <th class='text-center'>MORE</th> -->
-														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard">ACTIONS</th>
+														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -658,7 +658,7 @@
 																</button>
 															</td> -->
 															<td align="center"><a class="delete textWhite"
-																(click)="cancelRow(i)"> Cancel </a></td>
+																(click)="cancelRow(i)" translate> Cancel </a></td>
 															<ng-template #NA>N/A</ng-template>
 														</tr>
 														<!-- <tr
@@ -727,8 +727,8 @@
 															<td align="center" *ngIf="gdprStatus || isPartner">
 															<button  id='more_less_button_{{i}}'
 																(click)="contact.isShowDetails = ! contact.isShowDetails">
-																<span *ngIf="!contact.isShowDetails">More</span> <span
-																	*ngIf="contact.isShowDetails">Less</span>
+																<span *ngIf="!contact.isShowDetails" translate>More</span> <span
+																	*ngIf="contact.isShowDetails" translate>Less</span>
 															</button>
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
@@ -752,18 +752,18 @@
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr *ngIf="gdprStatus">
-																<td class='pt10 pb10 bold'>Legal Basis : </td>
+																<td class='pt10 pb10 bold' translate>Legal Basis : </td>
 																<td align="center" class="pt10 pb10">
 																	{{contact.legalBasisString}}
 																</td>
 															</tr>
 															<tr *ngIf="isPartner">
-																<td class='pt10 pb10 bold'>Contacts Limit : </td>
+																<td class='pt10 pb10 bold' translate>Contacts Limit : </td>
 																<td align="center" class="pt10 pb10">
 																	{{contact.contactsLimit}}
 															</tr>
 															<tr *ngIf="isPartner && mdfAccess">
-																<td class='pt10 pb10 bold'>MDF Amount : </td>
+																<td class='pt10 pb10 bold' translate>MDF Amount : </td>
 																<td align="center" class="pt10 pb10">
 																	{{contact.mdfAmountInString}}
 															</tr>
@@ -790,12 +790,12 @@
 					<div class="col-xs-12">
 						<div *ngIf="!contactsByType.isLoading && contactsByType.contacts?.length == 0"
 							class="alert alert-info">
-							<h4>No results found</h4>
+							<h4 translate>No results found</h4>
 						</div>
 						<div class="alert alert-success alert-dismissable col-xs-12"
 							style="padding: 15px 10px 12px;"
 							*ngIf="invalidDeleteSuccessMessage">
-							<strong>Success!</strong> your {{checkingContactTypeName}}s has
+							<strong translate>Success!</strong> your {{checkingContactTypeName}}s has
 							been deleted successfully.
 						</div>
 					</div>
@@ -807,12 +807,12 @@
 								<div class="caption">
 									<span class="capitalize" *ngIf="contactsByType.selectedCategory != 'non-active' && contactsByType.selectedCategory != 'active' && contactsByType.selectedCategory !='invalid'">{{contactsByType.selectedCategory}}
 										{{checkingContactTypeName}} List</span>
-									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'">Unregistered
-										{{checkingContactTypeName}} List</span>
-									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'">Registered
-										{{checkingContactTypeName}} List</span>
-										<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'">Undeliverable
-										{{checkingContactTypeName}} List</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'non-active'" translate>
+										Unregistered {{checkingContactTypeName}} List</span>
+									<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'active'" translate>
+										Registered {{checkingContactTypeName}} List</span>
+										<span class="capitalize" *ngIf="contactsByType.selectedCategory == 'invalid'" translate>
+										Undeliverable {{checkingContactTypeName}} List</span>
 								</div>
 								<div class="btn-group pull-right"
 									style="margin-top: 4px; color: #000000;"
@@ -822,12 +822,12 @@
 									</span>
 									<ul class="dropdown-menu pull-right">
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a id="delete_button"
-											(click)="invalidContactsShowAlert()"> Delete </a></li>
+											(click)="invalidContactsShowAlert()" translate> Delete </a></li>
 										<li *ngIf="contactsByType.selectedCategory == 'invalid'"><a
-													id="validate_email_button" (click)="validateUndeliverableContacts()">
+													id="validate_email_button" (click)="validateUndeliverableContacts()" translate>
 													Mark as valid email(s) </a></li>
 										<li><a id="export_button"
-										(click) = "hasAccessForDownloadUndeliverableContacts()"> Export To Excel </a></li>
+										(click) = "hasAccessForDownloadUndeliverableContacts()" translate> Export To Excel </a></li>
 									</ul>
 								</div>
 							</div>
@@ -896,19 +896,19 @@
 													[(ngModel)]="isInvalidHeaderCheckBoxChecked"
 													(change)="checkAllInvalidContacts($event)" class=""
 													id="checkAllExistingInvalidContacts" /></th>
-												<th style="width: 25%" *ngIf="isPartner">Entity info</th>
-												<th style="width: 25%" *ngIf="!isPartner">NAME</th>
-												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner">EMAIL CATEGORY</th>
-												<th *ngIf="isPartner">VERTICAL</th>
-														<th *ngIf="isPartner">REGION</th>
-														<th *ngIf="isPartner">TYPE</th>
-														<th *ngIf="isPartner">CATEGORY</th>
+												<th style="width: 25%" *ngIf="isPartner" translate>Entity info</th>
+												<th style="width: 25%" *ngIf="!isPartner" translate>NAME</th>
+												<th *ngIf="contactsByType.selectedCategory == 'invalid' && !isPartner" translate>EMAIL CATEGORY</th>
+												<th *ngIf="isPartner" translate>VERTICAL</th>
+														<th *ngIf="isPartner" translate>REGION</th>
+														<th *ngIf="isPartner" translate>TYPE</th>
+														<th *ngIf="isPartner" translate>CATEGORY</th>
 													<!-- 	<th class="hidden-xs" *ngIf="!isPartner">Phone</th> -->
-														<th class="hidden-xs" *ngIf="!isPartner">Job Title</th>
-														<th class="text-center hidden-xs"  *ngIf="!isPartner">ADDRESS</th>
+														<th class="hidden-xs" *ngIf="!isPartner" translate>Job Title</th>
+														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
 														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
-														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'">Reason</th>
-												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%">ACTIONS</th>
+														<th class="text-center hidden-xs"  *ngIf="contactsByType.selectedCategory == 'unsubscribe'" translate>Reason</th>
+												<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" style="width:17%" translate>ACTIONS</th>
 												<!-- <th>MORE</th> -->
 												<th *ngIf="!isPartner"></th>
 											</tr>
@@ -977,8 +977,8 @@
 												<td align="center">
                            							<button id='more_less_button_{{i}}'
 																(click)="allcontacts.isShowDetails = ! allcontacts.isShowDetails">
-																<span *ngIf="!allcontacts.isShowDetails">More</span> <span
-																	*ngIf="allcontacts.isShowDetails">Less</span>
+																<span *ngIf="!allcontacts.isShowDetails" translate>More</span> <span
+																	*ngIf="allcontacts.isShowDetails" translate>Less</span>
 															</button>
 															</td>
 													<td align="center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'">
@@ -988,7 +988,7 @@
 																	*ngIf="allcontacts.isShowDetails">Less</span>
 															</button> -->
 															<button class="btn green" *ngIf="contactsByType.selectedCategory == 'unsubscribe' && (hasAllAccess || refService.roles.contactsRole || refService.roles.partnersRole || authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.isPartner() || authenticationService.isOnlyPartner())"
-																(click)="activateUnsubscribedUser(allcontacts.id)">
+																(click)="activateUnsubscribedUser(allcontacts.id)" translate>
 																Subscribe
 															</button>
                             <div class="actions-block" style="float: none !important;" *ngIf="isPartner && contactsByType.selectedCategory == 'non-active'">
@@ -1013,20 +1013,20 @@
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>
 															<tr>
-																<td class='pt10 pb10 bold'>Legal Basis : </td>
+																<td class='pt10 pb10 bold' translate>Legal Basis : </td>
 																&nbsp;<td align="center" class="pt10 pb10">
 																	{{allcontacts.legalBasisString}}
 																</td>
 															</tr>
 															<ng-container *ngIf="isPartner">
 																<tr>
-																	<td class='pt10 pb10 bold'>Contacts Limit : </td>
+																	<td class='pt10 pb10 bold' translate>Contacts Limit : </td>
 																	<td align="center" class="pt10 pb10">
 																		{{allcontacts.contactsLimit}}
 																	</td>
 																</tr>
 																<tr  *ngIf="mdfAccess">
-																	<td class='pt10 pb10 bold'>MDF Amount : </td>
+																	<td class='pt10 pb10 bold' translate>MDF Amount : </td>
 																	<td align="center" class="pt10 pb10">
 																		{{allcontacts.mdfAmountInString}}
 																	</td>
@@ -1080,7 +1080,7 @@
 				<!-- <button type="button" class="close"  (click)="cancelSegmentation()"
 						data-dismiss="modal">&times;</button> -->
 					<a class="close-circle" data-dismiss="modal" (click)="cancelSegmentation()"><i class="fa fa-times"></i></a>
-					<h4 class="modal-title">Filter</h4>
+					<h4 class="modal-title" translate>Filter</h4>
 				</div>
 				<div class="modal-body" style="padding: 28px;">
 					<div class="row">
@@ -1133,9 +1133,9 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn green" [disabled]="criterias.length === 0"
-						(click)="contactFilter()">Submit</button>
+						(click)="contactFilter()" translate>Submit</button>
 					<button type="button" class="btn green"
-						(click)="cancelSegmentation()" data-dismiss="modal">Cancel</button>
+						(click)="cancelSegmentation()" data-dismiss="modal" translate>Cancel</button>
 				</div>
 			</div>
 		</div>
@@ -1148,16 +1148,16 @@
 	<div class="modal-dialog modal-copy" role="document">
 		<div class="modal-content" style="top: 100px;">
 			<div class="modal-header">
-				<h4 class="modal-title f-w-600" id="saveAsModalLabel"> Are you sure?</h4>
+				<h4 class="modal-title f-w-600" id="saveAsModalLabel" translate> Are you sure?</h4>
 			</div>
 			<div class="modal-body">
 			<div>
-				<h4 class="modal-title f-w-600">You are agreeing to xAmplify's Terms and Conditions.</h4>
+				<h4 class="modal-title f-w-600" translate>You are agreeing to xAmplify's Terms and Conditions.</h4>
 			</div>
 			
 			<div class="form-group" style="margin-top: 15px;" *ngIf="isPartner">
 			  <input type="checkbox" [(ngModel)]="isCheckTC" [ngModelOptions]="{standalone: true}" name="xamplifyTC" value="tc" checked> <!-- I Agree <a (click)="navigateToTermsAndConditions()">T&C </a>-->
-			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()">xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
+			  By onboarding a partner you confirm that you have read and agree to the <a (click)="navigateToTermsOfUse()" translate>xAmplify Terms of Use</a> and that you agree to the processing of your personal data by xAmplify as described in the <a (click)="navigateToPrivacy()">Privacy Policy</a>. Furthermore, you agree to use xAmplify in compliance with <a (click)="navigateToGDPR()">GDPR</a> and <a (click)="navigateToCCPA()">CCPA</a>.
 			  <br>
 			</div>
 			
@@ -1168,12 +1168,12 @@
 			</div>
 			
 			
-			<div *ngIf="!isCheckTC" style="color:red">You must agree T&C</div>
+			<div *ngIf="!isCheckTC" style="color:red" translate>You must agree T&C</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()">Decline</button>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelContacts()" translate>Decline</button>
 				<button type="button" [disabled]="!isCheckTC" class="btn btn-primary"
-					(click)="saveContactsWithPermission()">Accept</button>
+					(click)="saveContactsWithPermission()" translate>Accept</button>
 			</div>
 		</div>
 	</div>
@@ -1196,8 +1196,8 @@
                 <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
-                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess">Assign Contacts & MDF Amount</h4>
-                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess">Assign Contacts</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
 
             </div>
             <div class="modal-body">
@@ -1207,13 +1207,13 @@
                     <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
                         <thead>
                             <tr>
-                                <th scope="row">Entity Info</th>
-                                <th scope="row">#Contacts
+                                <th scope="row" translate>Entity Info</th>
+                                <th scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
                                     </span>
                                 </th>
-                                <th *ngIf="mdfAccess" scope="row">#Mdf Amount
+                                <th *ngIf="mdfAccess" scope="row" translate>#Mdf Amount
                                     <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign amount to each partner"></i>
                                     </span>
@@ -1245,8 +1245,8 @@
             </div>
             <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-footer">
-                <button type="submit" class="btn green-haze"  (click)="validatePartners()">Save</button>
-                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()">Close</button>
+                <button type="submit" class="btn green-haze"  (click)="validatePartners()" translate>Save</button>
+                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
             </div>
         </div>
     </div>
