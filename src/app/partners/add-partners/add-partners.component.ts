@@ -2521,7 +2521,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         //         }
         //     })
         // }
-        
         if ( this.selectedAddPartnerOption == 5 ){
             swal.close();
         }
