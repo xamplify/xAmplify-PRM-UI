@@ -572,7 +572,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     openAssignContactAndMdfAmountPopup(){
-        this.newPartnerUser = this.allselectedUsers;
+        if(this.allselectedUsers.length>0){
+            this.newPartnerUser = this.allselectedUsers;
+        }
         $.each(this.newPartnerUser,function(_index:number,partner:any){
             partner.mdfAmount = "0.00";
             partner.contactsLimit = 1;
