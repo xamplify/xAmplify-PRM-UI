@@ -57,7 +57,12 @@ export class DynamicEmailContentComponent implements OnInit {
         // }else{
         //   accessUrl = this.authenticationService.APP_URL+"axAa/"+response.alias;
         // }
-        accessUrl= window.location.protocol + "//" + response.companyProfileName +"." + window.location.hostname +"/axAa/"+response.alias ;
+        if(response.enableVanityURL){
+          accessUrl= window.location.protocol + "//" + response.companyProfileName +"." + window.location.hostname +"/axAa/"+response.alias ;
+        }else{
+          accessUrl = this.authenticationService.APP_URL+"axAa/"+response.alias;
+        }
+        
         this.vendorInvitation.vanityURL = accessUrl;
         this.alias = response.alias;
         this.isShowCKeditor = true;

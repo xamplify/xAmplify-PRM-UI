@@ -22,6 +22,7 @@ import { SamlsecurityComponent } from "./samlsecurity/samlsecurity.component";
 import { DashboardAnalyticsComponent } from './dashboard-analytics/dashboard-analytics.component';
 import { DashboardButtonsComponent } from "./dashboard-buttons/dashboard-buttons.component";
 import { VanityEmailTemplatesComponent } from "app/email-template/vanity-email-templates/vanity-email-templates.component";
+import { ModuleAccessComponent } from "./module-access/module-access.component";
 
 const routes: Routes = [
  { path: "", component: DashboardAnalyticsComponent },
@@ -49,7 +50,8 @@ const routes: Routes = [
   { path: 'isalesforce-callback',component:SocialContactsCallbackComponent},
   {path:'sso-samlsecurity',component:SamlsecurityComponent},
   {path:'buttons', component:DashboardButtonsComponent},
-  {path:'v-templates', component:VanityEmailTemplatesComponent}
+  {path:'v-templates', component:VanityEmailTemplatesComponent},
+  {path:'module-access/:alias', component:ModuleAccessComponent},
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],

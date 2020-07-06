@@ -1,0 +1,86 @@
+<div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
+	<div class="page-bar" style="margin-bottom:0px!important">
+		<ul class="page-breadcrumb">
+			<li><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
+			<li><i class="fa fa-universal-access"></i>Module Access</li>
+		</ul>
+	</div>
+
+
+	<div class="portlet light">
+		<div class="portlet-body clearfix">
+			<app-response-message [customResponse]="customResponse"
+			*ngIf="customResponse.isVisible"></app-response-message>
+			<fieldset style="margin: 20px 2px;">
+				<legend>Module Access</legend>
+				<div class="table-responsive" style="overflow-x: inherit; padding:15px;">
+					<table class='table tgrid table-hover'>
+						<thead>
+							<tr>
+								<th>Module Name</th>
+								<th>Access</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Select source as ALLBOUND</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.allBoundSource"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Email Campaign</th>
+								<td><input disabled="disabled" type="checkbox"
+										[(ngModel)]="campaignAccess.emailCampaign"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Video Campaign</th>
+								<td><input disabled="disabled" type="checkbox"
+										[(ngModel)]="campaignAccess.videoCampaign"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Social Campaign</th>
+								<td><input disabled="disabled" type="checkbox"
+										[(ngModel)]="campaignAccess.socialCampaign"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Event Campaign</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.eventCampaign"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Leads</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.leads"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Form Builder</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.formBuilder"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Page</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPage"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th>Page Campaign</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+
+							<tr>
+								<th>Vanity URL</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<button type="button" (click)="updateModuleAccess()" class="btn green-haze pull-right">Update</button>
+			</fieldset>
+		</div>
+	</div>
+</div>

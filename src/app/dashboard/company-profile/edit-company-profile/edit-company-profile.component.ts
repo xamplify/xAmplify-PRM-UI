@@ -178,7 +178,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     squareDataForBgImage:any;
     croppedImageForBgImage: any = '';
     bgImageChangedEvent: any = '';
-    allLoginScreenDirectionsList:string[] = [];
+    allLoginScreenDirectionsList:string[] = [];    
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -204,14 +204,17 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               .subscribe(value => {
                 this.validateUserUsingEmailId();
               });
-        }
-        this.allLoginScreenDirectionsList = ["Center","Left","Right"];
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.companyNameDivClass = this.refService.formGroupClass;
-        this.companyProfileNameDivClass = this.refService.formGroupClass;
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-        this.isVendorRole = this.authenticationService.isVendor();
-        this.uploadFileConfiguration();
+        }        
+        else{
+            this.allLoginScreenDirectionsList = ["Center","Left","Right"];
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.companyNameDivClass = this.refService.formGroupClass;
+            this.companyProfileNameDivClass = this.refService.formGroupClass;
+            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+            this.isVendorRole = this.authenticationService.isVendor();
+            this.uploadFileConfiguration();
+        }          
+        
     }
     
     validateUserUsingEmailId(){
