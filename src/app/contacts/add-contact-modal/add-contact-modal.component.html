@@ -64,8 +64,10 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </label>
           <div class="form-group col-xs-10 col-sm-10">
             <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
-              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" oninput="validity.valid||(value='');">
+              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" 
+              oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">
             <div class="textCss"></div>
+            <p><strong>(Minimum 1) </strong></p>
           </div>
         </div>
       <!---MDF Amount Limit------->
@@ -248,7 +250,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
       <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()">Proceed</button>
       <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" >Proceed</button>
-      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" >Update</button>
+      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" >Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>

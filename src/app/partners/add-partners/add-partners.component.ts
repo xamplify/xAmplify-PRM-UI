@@ -2500,30 +2500,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '#settingSocialNetworkPartner' ).modal( 'hide' );
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
+        // if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
+        //    let self = this;
+        //     swal( {
+        //         title: 'Are you sure?',
+        //         text: "You have unsaved data",
+        //         type: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#54a7e9',
+        //         cancelButtonColor: '#999',
+        //         confirmButtonText: 'Yes, Save it!',
+        //         cancelButtonText: "No"
 
-        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
-           let self = this;
-            swal( {
-                title: 'Are you sure?',
-                text: "You have unsaved data",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#54a7e9',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, Save it!',
-                cancelButtonText: "No"
-
-            }).then( function() {
-                self.saveContacts();
-            }, function( dismiss ) {
-                if ( dismiss === 'No' ) {
-                    self.selectedAddPartnerOption = 5;
-                }
-            })
-        }
-        if ( this.selectedAddPartnerOption == 5 ){
-            swal.close();
-        }
+        //     }).then( function() {
+        //         self.saveContacts();
+        //     }, function( dismiss ) {
+        //         if ( dismiss === 'No' ) {
+        //             self.selectedAddPartnerOption = 5;
+        //         }
+        //     })
+        // }
+        // if ( this.selectedAddPartnerOption == 5 ){
+        //     swal.close();
+        // }
 
     }
 

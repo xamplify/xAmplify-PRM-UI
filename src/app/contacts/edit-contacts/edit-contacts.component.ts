@@ -1550,13 +1550,12 @@ goBackToManageList(){
 	saveContacts(contactListId: number) {
 		this.validateLegalBasisOptions();
 		if (this.isValidLegalOptions) {
-			this.saveData();
-			// if(this.isPartner){
-			//  this.loading = true;
-			//  this.getContactsLimitAndMdfAmount();
-			// }else{
-			// 	this.saveData();
-			// }
+			if(this.isPartner){
+			 this.loading = true;
+			 this.getContactsLimitAndMdfAmount();
+			}else{
+				this.saveData();
+			}
 		}
 	}
 
@@ -3138,8 +3137,10 @@ goBackToManageList(){
         this.loading = true;
         this.campaignService.getModuleAccessByUserId(this.loggedInUserId).subscribe(
             (data: any) => {
+				this.loading = false;
                this.mdfAccess = data.mdf;
               }, (error: any) => {
+				this.loading = false;
                 console.log("Unable to fetch mdf access data",error);
               }
             );
