@@ -323,7 +323,7 @@
                                 </thead>
                                 <tbody>
                                     <ng-container *ngFor="let user of pagedItems;let i = index">
-                                        <tr class='row_{{i}}'>
+                                        <tr class='row_{{user.id}}'>
                                             <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9" align="center"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1" class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}" name="campaignContact[]"
                                                     value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
                                             </td>

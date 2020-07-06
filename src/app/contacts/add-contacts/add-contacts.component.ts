@@ -1611,10 +1611,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     this.allselectedUsers.length = 0;
                 } else {
                     this.paginatedSelectedIds = [];
-                    let paginationIdsArray = new Array;
                     for ( let j = 0; j < this.pagedItems.length; j++ ) {
                         var paginationEmail = this.pagedItems[j].emailId;
-                        this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                        //this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                        this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,paginationEmail);
                     }
                     let currentPageContactIds = this.pagedItems.map( function( a ) { return a.id; });
                     this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedContactListIds, currentPageContactIds );
@@ -1643,14 +1643,15 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }else{
                 object['emailId'] = email;
             }
-            
             this.allselectedUsers.push( object );
             console.log( this.allselectedUsers );
         } else {
             $( '#row_' + contactId ).removeClass( 'contact-list-selected' );
             this.selectedContactListIds.splice( $.inArray( contactId, this.selectedContactListIds ), 1 );
             this.paginatedSelectedIds.splice( $.inArray( contactId, this.paginatedSelectedIds ), 1 );
-            this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+            //this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+            this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,email);
+
         }
         if ( this.paginatedSelectedIds.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
@@ -3088,10 +3089,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.allselectedUsers.length = 0;
             } else {
                 this.paginatedSelectedIds = [];
-                let paginationIdsArray = new Array;
                 for ( let j = 0; j < this.pagedItems.length; j++ ) {
                     var paginationEmail = this.pagedItems[j].emailId;
-                    this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                  //  this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                    this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,paginationEmail);
                 }
                 let currentPageContactIds = this.pagedItems.map( function( a ) { return a.id; });
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedContactListIds, currentPageContactIds );

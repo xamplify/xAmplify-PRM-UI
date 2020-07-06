@@ -353,6 +353,13 @@ export class ReferenceService {
 		return arrayList;
 	}
 
+	removeRowsFromPartnerOrContactListByEmailId(arrayList: any, emailId: any) {
+		for (let i = 0; i < arrayList.length; i++) {
+			if (arrayList[i].emailId === emailId) { arrayList.splice(i, 1); break; }
+		}
+		return arrayList;
+	}
+
 	getAllTimeZones() {
 		return ['(GMT -12:00) Etc/GMT+12',
 			'(GMT -11:00) Pacific/Niue',

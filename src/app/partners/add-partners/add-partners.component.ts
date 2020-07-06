@@ -572,6 +572,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     openAssignContactAndMdfAmountPopup(){
+        this.newPartnerUser = this.allselectedUsers;
         $.each(this.newPartnerUser,function(_index:number,partner:any){
             partner.mdfAmount = "0.00";
             partner.contactsLimit = 1;
@@ -594,6 +595,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     closeAssignContactAndMdfAmountPopup(){
         $('#assignContactAndMdfPopup').modal('hide');
         this.newPartnerUser = [];
+        this.allselectedUsers = [];
         this.contactAndMdfPopupResponse = new CustomResponse();
         this.cancelPartners();
     }
@@ -2127,7 +2129,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                     }
-                    console.log( object );
                     self.allselectedUsers.push( object );
                 }
             });
@@ -2140,10 +2141,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.selectedContactListIds = [];
                 this.allselectedUsers.length = 0;
             } else {
-                let paginationIdsArray = new Array;
                 for ( let j = 0; j < this.pagedItems.length; j++ ) {
                     var paginationEmail = this.pagedItems[j].emailId;
-                    this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                   // this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                  this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,paginationEmail);
                 }
                 let currentPageContactIds = this.pagedItems.map( function( a ) { return a.id; });
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedContactListIds, currentPageContactIds );
@@ -2171,7 +2172,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         } else {
             $( '#row_' + contactId ).removeClass( 'contact-list-selected' );
             this.selectedContactListIds.splice( $.inArray( contactId, this.selectedContactListIds ), 1 );
-            this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+            //this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+            this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,email);
         }
         if ( this.selectedContactListIds.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
@@ -2906,11 +2908,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.allselectedUsers.length = 0;
             } else
             {
-                let paginationIdsArray = new Array;
-                for (let j = 0; j < this.pagedItems.length; j++)
-                {
+                for (let j = 0; j < this.pagedItems.length; j++){
                     var paginationEmail = this.pagedItems[j].emailId;
-                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                   // this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                    this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,paginationEmail);
                 }
                 let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
