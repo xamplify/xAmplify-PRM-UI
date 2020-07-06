@@ -2500,6 +2500,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $( '#settingSocialNetworkPartner' ).modal( 'hide' );
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
+
         // if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
         //    let self = this;
         //     swal( {
@@ -2520,9 +2521,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         //         }
         //     })
         // }
-        // if ( this.selectedAddPartnerOption == 5 ){
-        //     swal.close();
-        // }
+        
+        if ( this.selectedAddPartnerOption == 5 ){
+            swal.close();
+        }
 
     }
 
