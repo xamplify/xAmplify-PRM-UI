@@ -379,7 +379,7 @@
                                                                     </label>
                                                                     <img class="image-size" src="assets/images/crm/marketo-crm.png">
                                                                     <div>
-                                                                        <h5 class="hidden-xs mr-2">Marketo</h5>
+                                                                        <h5 class="hidden-xs mr-2" translate>Marketo</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1151,7 +1151,7 @@
                                                                                         <b translate>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
                                                                                         <font *ngIf="emailTemplate?.category?.length>5">..</font>
                                                                                     </span>
-                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
+                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                                                                     <div class="item__actions">
                                                                                         <span> <a
                                                                                                 style="float:left;right: -6px;"
@@ -1513,8 +1513,8 @@
                                                                 </ng-container>
                                                                 <a> <span *ngIf="userListDTOObj?.length>2"
                                                                         (click)="resetActive($event, 40, 'step-4')">..</span>
-                                                                    <span *ngIf="userListDTOObj?.length == 0">0
-                                                                        contactlists</span></a>
+                                                                    <span *ngIf="userListDTOObj?.length == 0" translate>0 contact lists
+                                                                        </span></a>
                                                                 <br>
 
                                                                
@@ -1606,7 +1606,7 @@
                                     <!-- -------------------------------------Add Reply----------------------------- -->
                                     <div class="col-xs-12" id="reply-onclick-div" style="position: relative; bottom: -7px;">
                                         <div class="alert alert-danger" *ngIf="dataError">
-                                            <strong>Please complete the required fields</strong>
+                                            <strong translate>Please complete the required fields</strong>
                                         </div>
                                         <!-- Content Should Come here ------------ -->
                                         <fieldset *ngIf="replies?.length>0">
@@ -1687,7 +1687,7 @@
                                                                         </div>
 
                                                                         <div class="col-xs-3 time-col" style="padding-left: 0;" *ngIf="reply.actionId!=22 && reply.actionId!=23 ">
-                                                                            <div class="col-xs-2 default"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css">At<b
+                                                                            <div class="col-xs-2 default"><span for="time" id="send-time-{{reply.divId}}" class="time-picker-css" translate>At<b
                                                                                         style="color: red">*</b></span>
                                                                             </div>
                                                                             <div class="col-xs-10" style="height: 66px;">
@@ -1697,7 +1697,7 @@
                                                                     </div>
 
                                                                     <div class="col-xs-6">
-                                                                        <label class="default" for="time" id="reply-subject-{{reply.divId}}">Subject<b
+                                                                        <label class="default" for="time" id="reply-subject-{{reply.divId}}" translate>Subject<b
                                                                                 style="color: red">*</b>
                                                                         </label>
                                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="reply.subject" placeholder="Subject" maxlength="200">
@@ -1706,7 +1706,7 @@
                                                                 <div class="col-xs-12">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!reply.defaultTemplate">
                                                                         <div style="margin-left: 1px;">
-                                                                            <label class="default" for="days" id="reply-message-{{reply.divId}}">Message
+                                                                            <label class="default" for="days" id="reply-message-{{reply.divId}}" translate>Message
                                                                                 <strong class="required">*</strong>
                                                                             </label>
                                                                         </div>
@@ -1717,22 +1717,22 @@
                                                                    <!--Email Template Selection-->
                                                                    <div class="col-xs-12 text-center" style="margin-top: 10px;" id="reply-email-template-{{i}}" *ngIf="reply.defaultTemplate">
                                                                     <div class="form-group" style="margin-left: 1px;">
-                                                                        <label for="days" id="email-template-{{reply.divId}}">Select Email Template
+                                                                        <label for="days" id="email-template-{{reply.divId}}" translate>Select Email Template
                                                                             
                                                                             <strong class="required">*</strong>
                                                                         </label>
                                                                     </div>
                                                                     <div>
                                                                         <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
-                                                                            <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex">
+                                                                            <li class="filter" (click)="filterReplyTemplates('NONE',0,reply)" [class.emailtemplate-selected]="0 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 All</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex">
+                                                                            <li class="filter" (click)="filterReplyTemplates('BASIC',1,reply)" [class.emailtemplate-selected]="1 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 Basic</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('REGULAR_CO_BRANDING',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex">
-                                                                                    Email Co-Branding</li>
-                                                                            <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex">
+                                                                            <li class="filter" (click)="filterReplyTemplates('REGULAR_CO_BRANDING',2,reply)" [class.emailtemplate-selected]="2 == reply.selectedEmailTemplateTypeIndex" translate>
+                                                                                Email Co-Branding</li>
+                                                                            <li class="filter" (click)="filterReplyTemplates('UPLOADED',3,reply)" [class.emailtemplate-selected]="3 == reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 Uploaded</li>
-                                                                            <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex">
+                                                                            <li *ngIf="isPartnerToo" class="filter" (click)="filterReplyTemplates('PARTNER',7,reply)" [class.emailtemplate-selected]="7== reply.selectedEmailTemplateTypeIndex" translate>
                                                                                 Partner</li>
                                                                         </ul>
 
@@ -1748,7 +1748,7 @@
                                                                         </button> -->
                                                                         <div class="portlet-body">
                                                                             <div *ngIf="reply.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
-                                                                                <strong>No templates found</strong>
+                                                                                <strong translate>No templates found</strong>
                                                                             </div>
                                                                             <div class="row">
                                                                                 <form role="form" class="form-horizontal form-bordered form-label-stripped">
@@ -1807,18 +1807,18 @@
                                                                                                                                     </span>
                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{reply?.emailTemplate?.createdBy}}">
-                                                                                                                                            <b>By:</b><span>{{reply?.emailTemplate?.createdBy|slice:0:12}}<span
+                                                                                                                                            <b translate>By:</b><span>{{reply?.emailTemplate?.createdBy|slice:0:12}}<span
                                                                                                                                                     *ngIf="reply?.emailTemplate?.createdBy?.length>12">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                                     <ng-container *ngIf="reply?.emailTemplate?.type=='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{reply?.emailTemplate?.vendorName}}">
-                                                                                                                                            <b>By:</b><span>{{reply?.emailTemplate?.vendorName|slice:0:12}}<span
+                                                                                                                                            <b translate>By:</b><span>{{reply?.emailTemplate?.vendorName|slice:0:12}}<span
                                                                                                                                                     *ngIf="reply?.emailTemplate?.vendorName?.length>12">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                                     <span *ngIf="reply?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{reply?.emailTemplate?.category}}">
-                                                                                                                                        <b>Folder:</b><font>{{reply?.emailTemplate?.category|slice:0:5}}</font>
+                                                                                                                                        <b translate>Folder:</b><font>{{reply?.emailTemplate?.category|slice:0:5}}</font>
                                                                                                                                         <font *ngIf="reply?.emailTemplate?.category?.length>5">..</font>
                                                                                                                                     </span>
                                                                                                                                     <div class="item__actions">
@@ -1882,21 +1882,21 @@
                                                                                                                                 <br>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                        <b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
+                                                                                                                                        <b translate>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
                                                                                                                                                 *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                                                                     <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                        <b>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
+                                                                                                                                        <b translate>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
                                                                                                                                                 *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
                                                                                                                                     </span>
                                                                                                                                 </ng-container>
                                                                                                                                 <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                                                                    <b>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+                                                                                                                                    <b translate>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
                                                                                                                                     <font *ngIf="emailTemplate?.category?.length>5">..</font>
                                                                                                                                 </span>
-                                                                                                                                <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
+                                                                                                                                <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                                                                                                                 <div class="item__actions">
                                                                                                                                     <span> <a
                                                                                                                                             style="float:left;right: -6px;"
@@ -1921,19 +1921,19 @@
                                                                                                             <div class="col-xs-12" *ngIf="reply.emailTemplatesPagination.totalRecords>0 && !reply.loader">
                                                                                                                 <ul style="float: left" *ngIf="reply.emailTemplatesPagination.pager.pages && reply.emailTemplatesPagination.pager.pages.length" class="pagination">
                                                                                                                     <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-                                                                                                                        <a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">First</a>
+                                                                                                                        <a (click)="paginateEmailTemplateRows(1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1" translate>First</a>
                                                                                                                     </li>
                                                                                                                     <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === 1}">
-                                                                                                                        <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
+                                                                                                                        <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage - 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === 1" translate>Previous</a>
                                                                                                                     </li>
                                                                                                                     <li *ngFor="let page of reply.emailTemplatesPagination.pager.pages" [ngClass]="{active:reply.emailTemplatesPagination.pager.currentPage === page}">
                                                                                                                         <a (click)="paginateEmailTemplateRows(page,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
                                                                                                                     </li>
                                                                                                                     <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-                                                                                                                        <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Next</a>
+                                                                                                                        <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.currentPage + 1,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages" translate>Next</a>
                                                                                                                     </li>
                                                                                                                     <li [ngClass]="{disabled:reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages}">
-                                                                                                                        <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages">Last</a>
+                                                                                                                        <a (click)="paginateEmailTemplateRows(reply.emailTemplatesPagination.pager.totalPages,reply)" [class.disabled]="reply.emailTemplatesPagination.pager.currentPage === reply.emailTemplatesPagination.pager.totalPages" translate>Last</a>
                                                                                                                     </li>
                                                                                                                 </ul>
                                                                                                              </div>
@@ -1967,8 +1967,8 @@
                                                         </div>
                                                         <div class="col-xs-6">
                                                             <div class="pull-right">
-                                                                <label class="switch-choose" style="color:#fff">Choose
-                                                                    Template</label>
+                                                                <label class="switch-choose" style="color:#fff" translate>Choose Template
+                                                                    </label>
                                                                 <switch class="switch-choose" [status]="url.defaultTemplate" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.size"
                                                                     (statusChange)="selectClickEmailBody($event,i,url)">
                                                                 </switch>
@@ -1986,30 +1986,30 @@
                                                             <div class="col-xs-12 p0">
                                                                 <div class="col-xs-12 p0">
                                                                     <div class="col-xs-6">
-                                                                        <label class="default" for="reason">When To Send
-                                                                            Email</label>
+                                                                        <label class="default" for="reason" translate>When To Send Email
+                                                                            </label>
                                                                         <select class="form-control pointer" id="url-schedule-type" name="scheduleEmail" [(ngModel)]="url.actionId" (change)="setUrlScheduleType($event,url)">
                                                                             <option [value]="19"
-                                                                                [selected]="url.actionId ==19">Send if
-                                                                                not clicked</option>
+                                                                                [selected]="url.actionId ==19" translate>Send if not clicked
+                                                                                </option>
                                                                             <option [value]="20"
-                                                                                [selected]="url.actionId ==20">Send
-                                                                                immediately after clicked</option>
+                                                                                [selected]="url.actionId ==20" translate>Send immediately after clicked
+                                                                                </option>
                                                                             <option [value]="21"
-                                                                                [selected]="url.actionId ==21">Schedule
+                                                                                [selected]="url.actionId ==21" translate>Schedule
                                                                             </option>
                                                                         </select>
                                                                     </div>
                                                                     <div *ngIf="url.actionId==21" class="col-xs-6 p0">
                                                                         <div class="col-xs-4" style="padding:0">
-                                                                            <label for="days" id="click-days-{{url.divId}}" style="color:black !important;cursor: default;">Wait
-                                                                                X Days After Click<b
+                                                                            <label for="days" id="click-days-{{url.divId}}" style="color:black !important;cursor: default;" translate>
+                                                                                Wait X Days After Click<b
                                                                                     style="color: red">*</b>
                                                                             </label>
                                                                             <input type="number" class="form-control" name="days" [(ngModel)]="url.replyInDays" placeholder="Days" min="0" oninput="validity.valid||(value='');">
                                                                         </div>
                                                                         <div class="col-xs-8 time-col">
-                                                                            <div class="col-xs-2 default"><label for="time" id="send-time-{{url.divId}}" class="time-picker-css">At<b
+                                                                            <div class="col-xs-2 default"><label for="time" id="send-time-{{url.divId}}" class="time-picker-css" translate>At<b
                                                                                         style="color: red">*</b></label>
                                                                             </div>
                                                                             <div class="col-xs-10" style="height:66px">
@@ -2019,15 +2019,15 @@
                                                                     </div>
 
                                                                     <div class="col-xs-6">
-                                                                        <label class="default" for="time" id="click-subject-{{url.divId}}">Subject
+                                                                        <label class="default" for="time" id="click-subject-{{url.divId}}" translate>Subject
                                                                             <b style="color: red">*</b>
                                                                         </label>
                                                                         <input type="text" class="form-control" name="subject" [(ngModel)]="url.subject" placeholder="Subject" maxlength="200">
                                                                     </div>
 
                                                                     <div class="col-xs-6">
-                                                                        <label for="reason" style="cursor: default;">Available
-                                                                            URLs</label>
+                                                                        <label for="reason" style="cursor: default;" translate>Available URLs
+                                                                            </label>
                                                                         <select class="form-control pointer" name="url" [(ngModel)]="url.url" style="width: 100%">
                                                                             <option
                                                                                 *ngFor="let hrefLink of emailTemplateHrefLinks;"
@@ -2040,7 +2040,7 @@
                                                                 </div>
                                                                 <div class="col-xs-12">
                                                                     <div id="ck-editor-{{i}}" *ngIf="!url.defaultTemplate">
-                                                                        <label class="default" for="days" id="click-message-{{url.divId}}">Message 
+                                                                        <label class="default" for="days" id="click-message-{{url.divId}}" translate>Message 
                                                                             <strong class="required">*</strong>
                                                                         </label>
                                                                         <div>
@@ -2049,22 +2049,22 @@
                                                                     </div>
                                                                     <div class="col-xs-12 text-center" style="margin-top: 10px;" id="url-email-template-{{i}}" *ngIf="url.defaultTemplate">
                                                                         <div class="form-group" style="margin-left: 1px;">
-                                                                            <label for="days" id="click-email-template-{{url.divId}}">Select
-                                                                                Email Template
+                                                                            <label for="days" id="click-email-template-{{url.divId}}" translate>
+                                                                                Select Email Template
                                                                                 <strong class="required">*</strong>
                                                                             </label>
                                                                         </div>
                                                                         <div>
                                                                             <ul style="text-align: left" class="mix-filter col-xs-8 p0" *ngIf="!isOnlyPartner">
-                                                                                <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex">
+                                                                                <li class="filter" (click)="filterClickTemplates('NONE',0,url)" [class.emailtemplate-selected]="0 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     All</li>
-                                                                                <li class="filter" (click)="filterClickTemplates('BASIC',1,url)" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex">
+                                                                                <li class="filter" (click)="filterClickTemplates('BASIC',1,url)" [class.emailtemplate-selected]="1 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     Basic</li>
-                                                                                <li class="filter" (click)="filterClickTemplates('REGULAR_CO_BRANDING',2,url)" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex">
-                                                                                        Email Co-Branding</li>
-                                                                                <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex">
+                                                                                <li class="filter" (click)="filterClickTemplates('REGULAR_CO_BRANDING',2,url)" [class.emailtemplate-selected]="2 == url.selectedEmailTemplateTypeIndex" translate>
+                                                                                    Email Co-Branding</li>
+                                                                                <li class="filter" (click)="filterClickTemplates('UPLOADED',3,url)" [class.emailtemplate-selected]="3 == url.selectedEmailTemplateTypeIndex" translate>
                                                                                     Uploaded</li>
-                                                                                <li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex">
+                                                                                <li *ngIf="isPartnerToo" class="filter" (click)="filterClickTemplates('PARTNER',7,url)" [class.emailtemplate-selected]="7== url.selectedEmailTemplateTypeIndex" translate>
                                                                                     Partner</li>
                                                                             </ul>
     
@@ -2080,7 +2080,7 @@
                                                                             </button> -->
                                                                             <div class="portlet-body">
                                                                                 <div *ngIf="url.emailTemplatesPagination.totalRecords==0" class="col-xs-12 alert alert-info">
-                                                                                    <strong>No templates found</strong>
+                                                                                    <strong translate>No templates found</strong>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <form role="form" class="form-horizontal form-bordered form-label-stripped">
@@ -2140,18 +2140,18 @@
                                                                                                                                         </span>
                                                                                                                                         <ng-container *ngIf="url?.emailTemplate?.type!='PARTNER'">
                                                                                                                                             <span style="float:left" title="{{url?.emailTemplate?.createdBy}}">
-                                                                                                                                                <b>By:</b><span>{{url?.emailTemplate?.createdBy|slice:0:12}}<span
+                                                                                                                                                <b translate>By:</b><span>{{url?.emailTemplate?.createdBy|slice:0:12}}<span
                                                                                                                                                         *ngIf="url?.emailTemplate?.createdBy?.length>12">..</span></span>
                                                                                                                                             </span>
                                                                                                                                         </ng-container>
                                                                                                                                         <ng-container *ngIf="url?.emailTemplate?.type=='PARTNER'">
                                                                                                                                             <span style="float:left" title="{{url?.emailTemplate?.vendorName}}">
-                                                                                                                                                <b>By:</b><span>{{url?.emailTemplate?.vendorName|slice:0:12}}<span
+                                                                                                                                                <b translate>By:</b><span>{{url?.emailTemplate?.vendorName|slice:0:12}}<span
                                                                                                                                                         *ngIf="url?.emailTemplate?.vendorName?.length>12">..</span></span>
                                                                                                                                             </span>
                                                                                                                                         </ng-container>
                                                                                                                                         <span *ngIf="url?.emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{url?.emailTemplate?.category}}">
-                                                                                                                                            <b>Folder:</b><font>{{url?.emailTemplate?.category|slice:0:5}}</font>
+                                                                                                                                            <b translate>Folder:</b><font>{{url?.emailTemplate?.category|slice:0:5}}</font>
                                                                                                                                             <font *ngIf="url?.emailTemplate?.category?.length>5">..</font>
                                                                                                                                         </span>
                                                                                                                                         <div class="item__actions">
@@ -2215,21 +2215,21 @@
                                                                                                                                     <br>
                                                                                                                                     <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{emailTemplate.createdBy}}">
-                                                                                                                                            <b>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
+                                                                                                                                            <b translate>By:</b><span>{{emailTemplate.createdBy|slice:0:12}}<span
                                                                                                                                                     *ngIf="emailTemplate.createdBy?.length>12">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                                     <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                                                                                                         <span style="float:left" title="{{emailTemplate.vendorName}}">
-                                                                                                                                            <b>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
+                                                                                                                                            <b translate>By:</b><span>{{emailTemplate.vendorName|slice:0:12}}<span
                                                                                                                                                     *ngIf="emailTemplate.vendorName?.length>12">..</span></span>
                                                                                                                                         </span>
                                                                                                                                     </ng-container>
                                                                                                                                     <span *ngIf="emailTemplate?.category?.length>0" class="campaign-email-template-category" title="{{emailTemplate.category}}">
-                                                                                                                                        <b>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
+                                                                                                                                        <b translate>Folder:</b><font>{{emailTemplate?.category|slice:0:5}}</font>
                                                                                                                                         <font *ngIf="emailTemplate?.category?.length>5">..</font>
                                                                                                                                     </span>
-                                                                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft">DRAFT</span>
+                                                                                                                                    <span class="draft-template" *ngIf="emailTemplate.draft" translate>DRAFT</span>
                                                                                                                                     <div class="item__actions">
                                                                                                                                         <span> <a
                                                                                                                                                 style="float:left;right: -6px;"
@@ -2254,19 +2254,19 @@
                                                                                                                 <div class="col-xs-12" *ngIf="url.emailTemplatesPagination.totalRecords>0 && !url.loader">
                                                                                                                     <ul style="float: left" *ngIf="url.emailTemplatesPagination.pager.pages && url.emailTemplatesPagination.pager.pages.length" class="pagination">
                                                                                                                         <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === 1}">
-                                                                                                                            <a (click)="paginateClickEmailTemplateRows(1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1">First</a>
+                                                                                                                            <a (click)="paginateClickEmailTemplateRows(1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1" translate>First</a>
                                                                                                                         </li>
                                                                                                                         <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === 1}">
-                                                                                                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage - 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1">Previous</a>
+                                                                                                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage - 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === 1" translate>Previous</a>
                                                                                                                         </li>
                                                                                                                         <li *ngFor="let page of url.emailTemplatesPagination.pager.pages" [ngClass]="{active:url.emailTemplatesPagination.pager.currentPage === page}">
                                                                                                                             <a (click)="paginateClickEmailTemplateRows(page,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === page">{{page}}</a>
                                                                                                                         </li>
                                                                                                                         <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages}">
-                                                                                                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage + 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages">Next</a>
+                                                                                                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.currentPage + 1,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages" translate>Next</a>
                                                                                                                         </li>
                                                                                                                         <li [ngClass]="{disabled:url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages}">
-                                                                                                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.totalPages,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages">Last</a>
+                                                                                                                            <a (click)="paginateClickEmailTemplateRows(url.emailTemplatesPagination.pager.totalPages,url)" [class.disabled]="url.emailTemplatesPagination.pager.currentPage === url.emailTemplatesPagination.pager.totalPages" translate>Last</a>
                                                                                                                         </li>
                                                                                                                     </ul>
                                                                                                                 </div>
@@ -2308,14 +2308,14 @@
                                     </div>
                                     <div class="col-md-12" style="margin-left: -17px;margin-top: 12px;" [hidden]="buttonName!='Schedule'">
                                         <div class="col-md-4">
-                                            <label style="float: left;">Date</label>
+                                            <label style="float: left;" translate>Date</label>
                                             <br>
                                             <input type="text" class="form-control flatpickr square-box" placeholder="Select" formControlName="launchTime" />
-                                            <font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')">Date Required
+                                            <font style="color: red" *ngIf="campaignLaunchForm.hasError('invalidSchedule')" translate>Date Required
                                             </font>
                                         </div>
                                         <div class="col-md-4">
-                                            <label style="float: left;">Country</label>
+                                            <label style="float: left;" translate>Country</label>
                                             <br>
                                             <select class="form-control" style="width: 100%" formControlName="countryId" (change)="onSelect($event.target.value)" id="countryName">
                                                 <option *ngFor="let country of countries" [value]="country.id">
@@ -2323,7 +2323,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4">
-                                            <label style="float: left;">TimeZone </label>
+                                            <label style="float: left;" translate>TimeZone </label>
                                             <br>
                                             <select class="form-control" style="width: 100%" formControlName="timeZoneId" id="timezoneId">
                                                 <ng-container *ngIf="timezones?.length==1">
@@ -2346,10 +2346,10 @@
 
                                 <div class="portlet-title border-none">
                                     <div class="col-xs-12 center-block">
-                                        <button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;">Previous</button>
-                                        <button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;">Send Test Email</button>
+                                        <button type="button" class="btn btn-default" (click)="resetActive($event, 40, 'step-5')" style="font-weight: 600;width: 10em;" translate>Previous</button>
+                                        <button type="button" class="btn green" (click)="campaignService.addEmailId(campaign,selectedEmailTemplateRow,selectedLandingPageRow,false)" style="width: 10em;" translate>Send Test Email</button>
                                         <button type="submit" class="btn green" [disabled]="!campaignLaunchForm.valid" style="width: 10em;">{{buttonName}}</button>
-                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="spamCheck()" style="width: 10em;">Spam check</button>
+                                        <button *ngIf="campaignType!='landingPage'" type="button" class="btn green" (click)="spamCheck()" style="width: 10em;" translate>Spam check</button>
                                     </div>
                                 </div>
                             </div>
@@ -2373,7 +2373,7 @@
                         <div id="htmlContent"></div>
                     </div>
                     <div class="modal-footer">
-                        <a data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                        <a data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
                     </div>
                 </div>
             </div>
@@ -2397,7 +2397,7 @@
                     <div class="modal-footer">
                         <app-pagination style="float: left;" class="pg8" [pagination]="contactsUsersPagination" [type]="'contactUsers'" [isDropdown]="true" (notifyParent)="setPagePagination($event)">
                         </app-pagination>
-                        <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" (click)="closeModelPopup()" class="btn btn-default" data-dismiss="modal" translate>Close</button>
                     </div>
                 </div>
             </div>
@@ -2416,7 +2416,7 @@
             <div class="modal-header">
                 <a class="close-circle" data-dismiss="modal" (click)="closeModal()" id="closeButton"><i
                         class="fa fa-times"></i></a>
-                <h4 class="modal-title" id="templateRetrieve">Marketo integration with xAmplify</h4>
+                <h4 class="modal-title" id="templateRetrieve" translate>Marketo integration with xAmplify</h4>
             </div>
             <div>
                 <img src="assets/images/crm/Mark-amplify.png" style="margin: 30px 30% 0;width: 50%;text-align: center;">
@@ -2427,20 +2427,20 @@
                     <div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="email">Client Id:</label>
+                        <label class="control-label col-sm-3" for="email" translate>Client Id:</label>
                         <div class="col-sm-8">
                             <input type="email" class="form-control" id="email" placeholder="Client Id" autocomplete="nope" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('email')">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="pwd">Secret Id:</label>
+                        <label class="control-label col-sm-3" for="pwd" translate>Secret Id:</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="pwd" placeholder="Secret Id" autocomplete="new-password" [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('pwd')">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
+                        <label class="control-label col-sm-3" for="instance" translate>Marketo Instance:</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('instance')">
                         </div>
@@ -2450,7 +2450,7 @@
             </div>
             <div class="modal-footer">
                 <div style="text-align: right;">
-                    <button class="btn btn-default" (click)="clearValues()">Clear</button>
+                    <button class="btn btn-default" (click)="clearValues()" translate>Clear</button>
 
                     <button [attr.class]="marketoButtonClass" [class.disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitMarketoCredentials()">Submit</button>
 
@@ -2466,13 +2466,13 @@
             <div class="modal-header">
                 <button type="button" class="close-circle" data-dismiss="modal" aria-hidden="true"><i
                         class="fa fa-times"></i></button>
-                <h4 class="modal-title">Email Spam Check</h4>
+                <h4 class="modal-title" translate>Email Spam Check</h4>
             </div>
             <div class="modal-body">
                 <app-email-spam-check *ngIf="emailTemplate" [emailTemplate]="emailTemplate"></app-email-spam-check>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>
@@ -2486,7 +2486,7 @@
                 <button type="button" class="close-circle" (click)="closeFilterPopup()">
                     <i class="fa fa-times"></i>
                 </button>
-                <h5 class="modal-title text-center">Apply Filter</h5>
+                <h5 class="modal-title text-center" translate>Apply Filter</h5>
             </div>
             <div class="modal-body">
                 <app-response-message class="pg8" [customResponse]="folderErrorCustomResponse" *ngIf="folderErrorCustomResponse.isVisible">
@@ -2497,12 +2497,12 @@
                       [dataSource]='emailTemplateFolders' [fields]='folderFields'
                        [placeholder]='folderFilterPlaceHolder' (blur)='applyFilter()'>
                 </ejs-multiselect>
-                <span class="requried" *ngIf="!isFolderSelected">Please select at least one option</span>
+                <span class="requried" *ngIf="!isFolderSelected" translate>Please select at least one option</span>
                 </div>
             </div>
             <div class="folder-modal-footer" *ngIf="!folderErrorCustomResponse.isVisible">
-                <button type="button" class="btn btn-default" (click)="closeFilterPopup()">Cancel</button>
-                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()">Apply</button>
+                <button type="button" class="btn btn-default" (click)="closeFilterPopup()" translate>Cancel</button>
+                <button type="button" class="btn btn-primary" (click)="closeFilterPopup()" translate>Apply</button>
                    
             </div>
         </div>
