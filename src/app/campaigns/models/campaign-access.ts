@@ -13,4 +13,5 @@ export class CampaignAccess {
   userId = 0;
   allBoundSource = false;
   vanityUrlDomain = false;
+  mdf = false;
 }
