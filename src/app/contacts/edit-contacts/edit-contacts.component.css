@@ -79,4 +79,6 @@ a.disabled{pointer-events:none;cursor:not-allowed}
 		float: left !important;
 	}
 }
+.popup-header-title-font { font-weight: 600;}
+
 

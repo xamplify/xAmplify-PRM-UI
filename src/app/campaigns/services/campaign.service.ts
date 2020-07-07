@@ -756,7 +756,13 @@ export class CampaignService {
       return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
           .map(this.extractData)
           .catch(this.handleError);
-  }
+    }
+
+    getModuleAccessByUserId(userId: any) {
+        return this.http.get(this.URL + `campaign/getModulesByUserId/${userId}?access_token=${this.authenticationService.access_token}` )
+            .map(this.extractData)
+            .catch(this.handleError);
+      }
 
   getCampaignCalendarView(request: any){
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){

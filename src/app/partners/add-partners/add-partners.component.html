@@ -85,7 +85,7 @@
 										</button>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px; !important" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
+                                            <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px !important;" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
                                                 <span style="display:block; font-size:12px; text-align:center" translate>Upload a CSV</span>
                                                 <input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
@@ -567,7 +567,7 @@
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;" translate translate></i>List of Partners</div>
+                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners</div>
                         <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
                             <div style="float: left; margin: 0 10px;">
                                 <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -727,6 +727,18 @@
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Contacts Limit: </td>
+                                                                    <td align="center" class="pt10 pb10">
+                                                                        {{contact.contactsLimit}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="mdfAccess">
+                                                                    <td class='pt10 pb10 bold' translate>MDF Amount: </td>
+                                                                    <td *ngIf="contact?.mdfAmountInString" align="center" class="pt10 pb10">
+                                                                        {{contact.mdfAmountInString}}
+                                                                    </td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </td>
@@ -749,11 +761,11 @@
 
     <!-- Modal -->
     <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-        <app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser" (notifyParent)="addRow($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser" (notifyParent)="addRow($event)"></app-add-contact-modal>
     </div>
 
     <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
-        <app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser]="updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser]="updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
     </div>
 
     <div id="zohoId">
@@ -1211,3 +1223,67 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
+
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
+                </app-response-message>
+                <div class="table-responsive" >
+                    <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
+                        <thead>
+                            <tr>
+                                <th scope="row" translate>Entity Info</th>
+                                <th scope="row" translate>#Contacts
+                                     <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                    </span>
+                                </th>
+                                <th *ngIf="mdfAccess" scope="row" translate>#Mdf Amount
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign amount to each partner"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let partner of newPartnerUser;let i=index">
+                                <tr id="partner-row-{{i}}">
+                                    <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
+                                        </app-user-info>
+                                    </td>
+                                    <td class="contact-count error" id="contact-count-{{i}}">
+                                        <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
+                                    </td>
+                                    <td *ngIf="mdfAccess">
+                                        <input type="text" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" 
+                                        [(ngModel)]=" partner.mdfAmount"  [ngModelOptions]="{standalone: true}" id="mdfAmount-{{i}}"
+                                        placeholder="Enter Amount"/>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+            <br>
+            </div>
+            <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-footer">
+                <button type="submit" class="btn green-haze"  (click)="validatePartners()" translate>Save</button>
+                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>

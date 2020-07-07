@@ -54,7 +54,6 @@ span.ui-column-resizer {
 	float: right;
 }
 
-
 .margin-space {
 	margin-left: 3px !important;
 }
@@ -161,8 +160,13 @@ span.ui-column-resizer {
 	height: 15px !important;
 	margin-top: 8px;
 }
-.error-alert-custom-padding{
+
+.error-alert-custom-padding {
 	padding: 10px;
-    margin: 0px;
+	margin: 0px;
 }
 
+#tooltip-helper {
+	cursor: pointer;
+	color: #54a7e9;
+}

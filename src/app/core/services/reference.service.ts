@@ -240,6 +240,7 @@ export class ReferenceService {
 	goToTopImmediately() {
 		$('html,body').animate({ scrollTop: 0 }, 'fast');
 	}
+	
 	removeDuplicates(list: any) {
 		let result = [];
 		$.each(list, function(i, e) {
@@ -348,6 +349,13 @@ export class ReferenceService {
 	removeSelectedObjectFromList(arrayList: any, id: any) {
 		for (let i = 0; i < arrayList.length; i++) {
 			if (arrayList[i].id === id) { arrayList.splice(i, 1); break; }
+		}
+		return arrayList;
+	}
+
+	removeRowsFromPartnerOrContactListByEmailId(arrayList: any, emailId: any) {
+		for (let i = 0; i < arrayList.length; i++) {
+			if (arrayList[i].emailId === emailId) { arrayList.splice(i, 1); break; }
 		}
 		return arrayList;
 	}

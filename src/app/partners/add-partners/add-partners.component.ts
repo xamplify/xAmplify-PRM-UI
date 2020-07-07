@@ -29,6 +29,7 @@ import { UserService } from '../../core/services/user.service';
 import {SendCampaignsComponent} from '../../common/send-campaigns/send-campaigns.component';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import { CampaignService } from '../../campaigns/services/campaign.service';
 
 declare var $, Papa, swal, Swal: any;
 
@@ -190,12 +191,15 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    cloudPartnersModalCheckBox = false;
    sourceType = "";
    loggedInThroughVanityUrl = false;
+   processingPartnersLoader = false;
+   contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
+    mdfAccess: boolean = false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
         public contactService: ContactService, public properties: Properties, public actionsDescription: ActionsDescription, public regularExpressions: RegularExpressions,
         public pagination: Pagination, public pagerService: PagerService, public xtremandLogger: XtremandLogger, public teamMemberService: TeamMemberService,private hubSpotService: HubSpotService,public userService:UserService,
-        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService) {
+        public callActionSwitch: CallActionSwitch,private vanityUrlService:VanityURLService, public campaignService: CampaignService) {
         this.loggedInThroughVanityUrl =  this.vanityUrlService.isVanityURLEnabled();
         this.sourceType = this.authenticationService.getSource();
         if(this.sourceType=="ALLBOUND"){
@@ -545,108 +549,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.dublicateEmailId = false;
     }
     
-    allConditionsAcceptedListSave(){
-        this.loading = true;
-        this.xtremandLogger.info( "saving #partnerListId " + this.partnerListId + " data => " + JSON.stringify( this.newPartnerUser ) );
-        this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
-            .subscribe(
-            (data: any) => {
-                if (data.access) {
-                    data = data;
-                    this.loading = false;
-                    this.selectedAddPartnerOption = 5;
-                    this.xtremandLogger.info("update partner ListUsers:" + data);
-                    $("tr.new_row").each(function() {
-                        $(this).remove();
-                    });
-
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-
-                    this.newPartnerUser.length = 0;
-                    this.allselectedUsers.length = 0;
-                    this.loadPartnerList(this.pagination);
-                    this.clipBoard = false;
-                    this.cancelPartners();
-                    if (data.statusCode == 200) {
-                        //this.getContactsAssocialteCampaigns();//Old method
-                        this.disableOtherFuctionality = false;
-                        this.openCampaignsPopupForNewlyAddedPartners();
-
-                    }else if (data.statusCode == 409) {
-                        let emailIds = data.emailAddresses;
-                        let allEmailIds = "";
-                        $.each(emailIds, function(index, emailId) {
-                            allEmailIds += (index + 1) + "." + emailId + "<br><br>";
-                        });
-                        let message = data.errorMessage + "<br><br>" + allEmailIds;
-                        this.customResponse = new CustomResponse('ERROR', message, true);
-                    }else if (data.statusCode == 417) {
-                        this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
-                    }
-                } else {
-                    this.authenticationService.forceToLogout();
-                }
-            },
-            ( error: any ) => {
-                let body: string = error['_body'];
-                body = body.substring( 1, body.length - 1 );
-                if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
-                    this.customResponse = new CustomResponse( 'ERROR', error._body, true );
-                    console.log( "done" )
-                } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
-                    this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
-                }else{
-                    this.xtremandLogger.errorPage( error );
-                }
-                this.xtremandLogger.error( error );
-                this.loading = false;
-                console.log( error );
-                this.newPartnerUser.length = 0;
-                this.allselectedUsers.length = 0;
-                this.loadPartnerList( this.pagination );
-                this.clipBoard = false;
-                this.cancelPartners();
-            },
-            () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
-            )
-        this.dublicateEmailId = false;
-    }
+   
     
     chectTermAndConditions(){
         console.log("check box checked properly");
     }
     
-/*    askForPermission() {
-        let self = this;
-        swal({
-            title: 'Are you Sure?',
-            text: "You are acceptin all the T/C from Xamplify!",
-            type: 'warning',
-            showCancelButton: true,
-            //swalConfirmButtonColor: '#54a7e9',
-            //swalCancelButtonColor: '#999',
-            confirmButtonText: 'Yes, Accept it!',
-            input: 'checkbox',
-            inputPlaceholder: 'accept all the T/C.',
-            allowOutsideClick: false,
-            preConfirm: function( result: any ) {
-                return new Promise( function() {
-                        if (result === 0) {
-                              swal.showValidationError( 'you should accept T/C' )
-                          }else{
-                              swal.close();
-                              self.allConditionsAcceptedListSave();
-                          }
-                });
-            }
-          }).then( function( result: any ) {
-              console.log( result );
-          }, function( dismiss: any ) {
-              if ( dismiss === 'cancel' ) {
-                  self.cancelPartners();
-              }
-          });
-    }*/
     
     askForPermission() {
         if(this.termsAndConditionStatus){
@@ -658,8 +566,155 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     
     saveContactsWithPermission(){
         $('#tcModal').modal('hide');
-        this.allConditionsAcceptedListSave();
+        /*******Adding one more method to avoid confusion for on boarding partners process on 03/07/2020 by Sravan */
+        this.openAssignContactAndMdfAmountPopup();    
+        //this.allConditionsAcceptedListSave();
     }
+
+    openAssignContactAndMdfAmountPopup(){
+        if(this.allselectedUsers.length>0){
+            this.newPartnerUser = this.allselectedUsers;
+        }
+        $.each(this.newPartnerUser,function(_index:number,partner:any){
+            partner.mdfAmount = "0.00";
+            partner.contactsLimit = 1;
+        });
+        $('#assignContactAndMdfPopup').modal('show');
+       
+    }
+    getModuleAccess(){
+        this.loading = true;
+        this.campaignService.getModuleAccessByUserId(this.loggedInUserId).subscribe(
+            (data: any) => {
+               this.mdfAccess = data.mdf;
+               this.loading = false;
+              }, (error: any) => {
+                console.log("Unable to fetch mdf access data",error);
+                this.loading = false;
+              }
+            );
+    }
+    closeAssignContactAndMdfAmountPopup(){
+        $('#assignContactAndMdfPopup').modal('hide');
+        this.newPartnerUser = [];
+        this.allselectedUsers = [];
+        this.contactAndMdfPopupResponse = new CustomResponse();
+        this.cancelPartners();
+    }
+    validatePartners(){
+        this.processingPartnersLoader = true;
+        $(".modal-body").animate({ scrollTop: 0 }, 'slow');
+        this.contactAndMdfPopupResponse = new CustomResponse();
+        let errorCount = 0;
+        $.each(this.newPartnerUser,function(index:number,partner:any){
+            let contactsLimit = partner.contactsLimit;
+            if(contactsLimit<1){
+                errorCount++;
+                $('#contact-count-'+index).css('background-color','red');
+            }
+        });
+        if(errorCount>0){
+            this.contactAndMdfPopupResponse = new CustomResponse('ERROR','Minimum 1 contact should be assigned to each partner',true);
+            this.processingPartnersLoader = false;
+        }else{
+            this.validatePartnership();
+        }
+    }
+
+    validatePartnership(){
+        this.processingPartnersLoader = true;
+        this.contactService.validatePartners(this.partnerListId, this.newPartnerUser).subscribe(
+            (data: any) => {
+              this.processingPartnersLoader = false;
+              let statusCode = data.statusCode;
+              if(statusCode==200){
+                $('#assignContactAndMdfPopup').modal('hide');
+                this.processingPartnersLoader = false;
+                this.savePartners();
+              }else{
+                let emailIds = "";
+                $.each(data.data,function(index:number,emailId:string){
+                    emailIds+= (index+1)+"."+emailId+"<br><br>";
+                });
+                let updatedMessage = data.message+"<br><br>"+emailIds;
+                this.contactAndMdfPopupResponse = new CustomResponse('ERROR',updatedMessage,true);
+              }
+              }, (error: any) => {
+                this.processingPartnersLoader = false;
+                let httpStatusCode = error['status'];
+                if(httpStatusCode!=500){
+                    this.contactAndMdfPopupResponse = new CustomResponse('ERROR',httpStatusCode,true);
+                }else{
+                    this.contactAndMdfPopupResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+                }
+              });
+    }
+
+    savePartners(){
+        /*****************Sravan*********************/
+            this.loading = true;
+            this.contactService.updateContactList( this.partnerListId, this.newPartnerUser )
+                .subscribe(
+                (data: any) => {
+                    if (data.access) {
+                        this.loading = false;
+                        this.selectedAddPartnerOption = 5;
+                        this.xtremandLogger.info("update partner ListUsers:" + data);
+                        $("tr.new_row").each(function() {
+                            $(this).remove();
+                        });
+    
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
+    
+                        this.newPartnerUser.length = 0;
+                        this.allselectedUsers.length = 0;
+                        this.loadPartnerList(this.pagination);
+                        this.clipBoard = false;
+                        this.cancelPartners();
+                        if (data.statusCode == 200) {
+                            //this.getContactsAssocialteCampaigns();//Old method
+                            this.disableOtherFuctionality = false;
+                            this.openCampaignsPopupForNewlyAddedPartners();
+    
+                        }else if (data.statusCode == 409) {
+                            let emailIds = data.emailAddresses;
+                            let allEmailIds = "";
+                            $.each(emailIds, function(index, emailId) {
+                                allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                            });
+                            let message = data.errorMessage + "<br><br>" + allEmailIds;
+                            this.customResponse = new CustomResponse('ERROR', message, true);
+                        }else if (data.statusCode == 417) {
+                            this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+                        }
+                    } else {
+                        this.authenticationService.forceToLogout();
+                    }
+                },
+                ( error: any ) => {
+                    let body: string = error['_body'];
+                    body = body.substring( 1, body.length - 1 );
+                    if ( error._body.includes( 'Please launch or delete those campaigns first' ) ) {
+                        this.customResponse = new CustomResponse( 'ERROR', error._body, true );
+                    } else if(error._body.includes("email addresses in your contact list that aren't formatted properly")){
+                        this.customResponse = new CustomResponse( 'ERROR', JSON.parse(error._body), true );
+                    }else{
+                        this.xtremandLogger.errorPage( error );
+                    }
+                    this.xtremandLogger.error( error );
+                    this.loading = false;
+                    console.log( error );
+                    this.newPartnerUser.length = 0;
+                    this.allselectedUsers.length = 0;
+                    this.loadPartnerList( this.pagination );
+                    this.clipBoard = false;
+                    this.cancelPartners();
+                },
+                () => this.xtremandLogger.info( "MangePartnerComponent loadPartners() finished" )
+                )
+            this.dublicateEmailId = false;
+        }
+
    
     navigateToTermsAndConditions(){
         window.open("https://www.xamplify.com/terms-conditions", "_blank");
@@ -2076,7 +2131,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                     }
-                    console.log( object );
                     self.allselectedUsers.push( object );
                 }
             });
@@ -2089,10 +2143,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.selectedContactListIds = [];
                 this.allselectedUsers.length = 0;
             } else {
-                let paginationIdsArray = new Array;
                 for ( let j = 0; j < this.pagedItems.length; j++ ) {
                     var paginationEmail = this.pagedItems[j].emailId;
-                    this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                   // this.allselectedUsers.splice( this.allselectedUsers.indexOf( paginationEmail ), 1 );
+                  this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,paginationEmail);
                 }
                 let currentPageContactIds = this.pagedItems.map( function( a ) { return a.id; });
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedContactListIds, currentPageContactIds );
@@ -2120,7 +2174,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         } else {
             $( '#row_' + contactId ).removeClass( 'contact-list-selected' );
             this.selectedContactListIds.splice( $.inArray( contactId, this.selectedContactListIds ), 1 );
-            this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+            //this.allselectedUsers.splice( $.inArray( contactId, this.allselectedUsers ), 1 );
+            this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,email);
         }
         if ( this.selectedContactListIds.length == this.pagedItems.length ) {
             this.isHeaderCheckBoxChecked = true;
@@ -2388,6 +2443,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
+            this.getModuleAccess();
         }
         catch ( error ) {
             this.xtremandLogger.error( "addPartner.component oninit " + error );
@@ -2449,26 +2505,26 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("body>#settingSocialNetworkPartner").remove();
         $( 'body' ).removeClass( 'modal-backdrop in' );
 
-        if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
-           let self = this;
-            swal( {
-                title: 'Are you sure?',
-                text: "You have unsaved data",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#54a7e9',
-                cancelButtonColor: '#999',
-                confirmButtonText: 'Yes, Save it!',
-                cancelButtonText: "No"
+        // if ( this.selectedAddPartnerOption !=5 && this.router.url !=='/login' && !this.isDuplicateEmailId ) {
+        //    let self = this;
+        //     swal( {
+        //         title: 'Are you sure?',
+        //         text: "You have unsaved data",
+        //         type: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#54a7e9',
+        //         cancelButtonColor: '#999',
+        //         confirmButtonText: 'Yes, Save it!',
+        //         cancelButtonText: "No"
 
-            }).then( function() {
-                self.saveContacts();
-            }, function( dismiss ) {
-                if ( dismiss === 'No' ) {
-                    self.selectedAddPartnerOption = 5;
-                }
-            })
-        }
+        //     }).then( function() {
+        //         self.saveContacts();
+        //     }, function( dismiss ) {
+        //         if ( dismiss === 'No' ) {
+        //             self.selectedAddPartnerOption = 5;
+        //         }
+        //     })
+        // }
         if ( this.selectedAddPartnerOption == 5 ){
             swal.close();
         }
@@ -2854,11 +2910,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.allselectedUsers.length = 0;
             } else
             {
-                let paginationIdsArray = new Array;
-                for (let j = 0; j < this.pagedItems.length; j++)
-                {
+                for (let j = 0; j < this.pagedItems.length; j++){
                     var paginationEmail = this.pagedItems[j].emailId;
-                    this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                   // this.allselectedUsers.splice(this.allselectedUsers.indexOf(paginationEmail), 1);
+                    this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,paginationEmail);
                 }
                 let currentPageContactIds = this.pagedItems.map(function (a) { return a.id; });
                 this.selectedContactListIds = this.referenceService.removeDuplicatesFromTwoArrays(this.selectedContactListIds, currentPageContactIds);
@@ -3150,7 +3205,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 .subscribe(
                 (data: any) => {
                     if (data.access) {
-                        data = data;
                         console.log("update Partner ListUsers:" + data);
                         this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_DELETE_SUCCESS, true);
                         this.loadPartnerList(this.pagination);
