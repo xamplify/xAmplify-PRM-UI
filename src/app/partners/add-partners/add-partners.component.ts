@@ -575,7 +575,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if(this.allselectedUsers.length>0){
             this.newPartnerUser = this.allselectedUsers;
         }
-        $.each(this.newPartnerUser,function(_index:number,partner:any){
+        $.each(this.newPartnerUser,function(index:number,partner:any){
             partner.mdfAmount = "0.00";
             partner.contactsLimit = 1;
         });
@@ -663,19 +663,29 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         $("tr.new_row").each(function() {
                             $(this).remove();
                         });
-    
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-    
                         this.newPartnerUser.length = 0;
                         this.allselectedUsers.length = 0;
                         this.loadPartnerList(this.pagination);
                         this.clipBoard = false;
                         this.cancelPartners();
                         if (data.statusCode == 200) {
+                            let message = this.properties.PARTNERS_SAVE_SUCCESS+"<br><br>";
+                            let invalidEmailIds = data.invalidEmailIds;
+                            if(invalidEmailIds!=undefined && invalidEmailIds.length>0){
+                                let allEmailIds = "";
+                                $.each(invalidEmailIds, function(index, emailId) {
+                                    allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                                });
+                                if(invalidEmailIds.length==1){
+                                    message+= "Following email address is not saved because it is not formatted properly" + "<br><br>" + allEmailIds;
+                                }else{
+                                    message+= "Following email addresses are not saved because they not formatted properly" + "<br><br>" + allEmailIds;
+                                }
+                            }
+                            this.customResponse = new CustomResponse('SUCCESS', message, true);
                             //this.getContactsAssocialteCampaigns();//Old method
                             this.disableOtherFuctionality = false;
                             this.openCampaignsPopupForNewlyAddedPartners();
-    
                         }else if (data.statusCode == 409) {
                             let emailIds = data.emailAddresses;
                             let allEmailIds = "";
@@ -686,6 +696,19 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                             this.customResponse = new CustomResponse('ERROR', message, true);
                         }else if (data.statusCode == 417) {
                             this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
+                        }else if(data.statusCode==418){
+                            let invalidEmailIds = data.invalidEmailIds;
+                            let allEmailIds = "";
+                            $.each(invalidEmailIds, function(index, emailId) {
+                                allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+                            });
+                            let message = "";
+                            if(invalidEmailIds.length==1){
+                                message = "Following email address is not formatted properly " + "<br><br>" + allEmailIds;
+                            }else{
+                                message = "Following email addresses are not formatted properly " + "<br><br>" + allEmailIds;
+                            }
+                            this.customResponse = new CustomResponse('ERROR', message, true);
                         }
                     } else {
                         this.authenticationService.forceToLogout();
