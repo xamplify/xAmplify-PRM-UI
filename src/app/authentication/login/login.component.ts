@@ -209,7 +209,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.vanityURLEnabled = result.enableVanityURL;               
           this.authenticationService.v_companyName = result.companyName;
           this.authenticationService.vanityURLink = result.vanityURLink;
-          if(!this.vanityURLEnabled && this.envService.CLIENT_URL.indexOf("http://localhost:4200/")<0){
+          if(!this.vanityURLEnabled){
             this.router.navigate( ['/vanity-domain-error'] );
             return;
           }
