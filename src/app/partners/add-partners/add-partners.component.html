@@ -159,7 +159,7 @@
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Zoho account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
                                         </a>
-                                        <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
+                                        <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="zohoShowModal()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Zoho account"
                                                 height="86" width="90">
                                         </a>
@@ -850,7 +850,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()" translate>Close</button>
-                        <button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button>
+                    <!--    <button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button> -->
+                        <button type="button" class="btn btn-primary" (click)="checkingZohoContactsAuthentication()" translate>Submit</button>
                     </div>
                 </div>
             </div>

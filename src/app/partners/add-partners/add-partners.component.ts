@@ -1517,6 +1517,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     hideZohoModal() {
         $( "#zohoShowLoginPopup" ).hide();
+        $( "#zohoShowAuthorisedPopup" ).hide();
+        $('#zohoShowAuthorisedPopup').modal('toggle');
     }
 
   
@@ -1594,6 +1596,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     hideZohoAuthorisedPopup() {
         $( "#zohoShowAuthorisedPopup" ).hide();
+        $('#zohoShowAuthorisedPopup').modal('toggle');
     }
     authorisedZohoContacts() {
         try {
@@ -3298,7 +3301,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
 /**********************Sravan************************ */
-    checkingZohoContactsAuthentication() {
+    /*checkingZohoContactsAuthentication() {
         try {
 
             if(this.loggedInThroughVanityUrl){
@@ -3384,6 +3387,174 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 () => this.xtremandLogger.log( "googleContacts data :" + JSON.stringify( this.getGoogleConatacts.contacts ) )
                 );
 
+    }*/
+    
+    
+    selectedAddContactsOption: number = 6;
+    checkingZohoContactsAuthentication() {
+        try {
+            if(this.loggedInThroughVanityUrl)
+            {
+                this.referenceService.showSweetAlertInfoMessage();
+            }
+            else{
+                if( this.selectedAddContactsOption == 6 && !this.disableOtherFuctionality )
+                 {
+                    this.contactService.checkingZohoAuthentication(this.isPartner)
+                        .subscribe(
+                        ( data: any ) => {
+                            this.storeLogin = data;
+                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" )
+                             {
+                                let self = this;
+                                self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
+                            
+                                 if (this.selectedZohoDropDown == "contact") 
+                                 {
+                                      this.getZohoContactsUsingOAuth2();    
+                                 }
+                                 if ( this.selectedZohoDropDown == "lead" )
+                                 {
+                                      this.getZohoLeadsUsingOAuth2(); 
+                                 }
+
+                            } else{
+                                localStorage.setItem( "userAlias", data.userAlias )
+                                localStorage.setItem( "isPartner", data.isPartner );
+                                window.location.href = "" + data.redirectUrl;
+                             
+                            }
+                        },
+                        ( error: any ) => {
+                            this.referenceService.showSweetAlertServerErrorMessage();
+                        },
+                        () => this.xtremandLogger.info( "Add contact component checkingZohoContactsAuthentication() finished" )
+                        )
+                }
+            }
+        } catch ( error ) {
+            this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
+        }
+    }
+
+
+
+    getZohoContactsUsingOAuth2(){
+        this.socialPartners.socialNetwork = 'zoho';
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.contactType = "CONTACT";
+        this.contactType = "CONTACT";
+        swal( {
+            text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
+
+             this.contactService.getZohoAutherizedContacts( this.socialPartners )
+                .subscribe(
+                data => {
+                       if (data.statusCode != null &&  data.statusCode != 200 ) {
+                        swal.close();
+                        this.hideZohoAuthorisedPopup();
+                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.selectedAddContactsOption = 6;
+                     }
+                    else{
+                        this.processZohoContactsToDisplayInUI(data);
+
+                    }
+                   
+                },
+                ( error: any ) => {
+                    swal.close();
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                );
+    }
+    
+    
+    getZohoLeadsUsingOAuth2(){
+        this.socialPartners.socialNetwork = 'zoho';
+        this.socialPartners.contactType = this.contactType;
+        this.socialPartners.contactType = "LEAD";
+        this.contactType = "LEAD";
+        swal( {
+            text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
+
+             this.contactService.getZohoAutherizedLeads( this.socialPartners )
+                .subscribe(
+                data => {
+                    console.log(data.statusCode);
+                   // this.getZohoConatacts = data;
+                    this.selectedAddContactsOption = 6;
+                    if (data.statusCode != null &&  data.statusCode != 200 ) {
+                        swal.close();
+                        this.hideZohoAuthorisedPopup();
+                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.selectedAddContactsOption = 6;
+                     }
+                    else{
+                        this.processZohoContactsToDisplayInUI(data);
+
+                    }
+  
+                },
+                ( error: any ) => {
+                    swal.close();
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                );
+
+    }
+    
+   
+    processZohoContactsToDisplayInUI(data) {
+        swal.close();
+        this.hideZohoAuthorisedPopup();
+        this.getGoogleConatacts = data;
+        this.zohoImageBlur = false;
+        this.zohoImageNormal = true;
+        this.socialContactImage();
+        let contacts = this.getGoogleConatacts['contacts'];
+        if (contacts!=null && contacts.length>0) {
+            for (var i = 0; i < this.getGoogleConatacts.contacts.length; i++) {
+                let socialContact = new SocialContact();
+                socialContact.id = i;
+                if (this.validateEmailAddress(this.getGoogleConatacts.contacts[i].emailId)) {
+                    socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
+                    socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
+                    socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    this.socialPartnerUsers.push( socialContact );
+                }
+               
+            }
+
+            this.showFilePreview();
+            $( "#myModal .close" ).click()
+            $( '.mdImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+            $( '#addContacts' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+            $( '#uploadCSV' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px' );
+            $( '#copyFromClipBoard' ).attr( 'style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;' );
+            $( '.salesForceImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+            $( '.googleImageClass' ).attr( 'style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed' );
+            $( '#SgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            $( '#GgearIcon' ).attr( 'style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);' );
+            
+        } else {
+            this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
+            $("button#cancel_button").prop('disabled', false);
+
+        }
+        this.selectedAddPartnerOption = 6;
+                    this.setSocialPage( 1 );
+                    swal.close();
+    }
+
+    zohoShowModal(){
+        $( '#zohoShowAuthorisedPopup' ).modal( 'show' );
     }
     
    
