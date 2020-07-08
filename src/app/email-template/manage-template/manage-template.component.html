@@ -384,7 +384,7 @@
                                         <div style="float: left;">
                                             <select class="form-control" [(ngModel)]="selectedSortedOption" (ngModelChange)="getSortedResult($event)" style="position: relative;right: -3px;">
                                                 <option *ngFor="let sortOption of sortByDropDown"
-                                                    [ngValue]="sortOption" translate>
+                                                    [ngValue]="sortOption">
                                                     {{sortOption.name}}</option>
                                             </select>
                                         </div>
@@ -435,35 +435,35 @@
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
-                                                <span><b translate>{{emailTemplate.name}}</b></span>
+                                                <span><b>{{emailTemplate.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis">
-                                                <span translate>Folder <b translate>{{emailTemplate.category}}</b></span>
+                                                <span translate>Folder <b>{{emailTemplate.category}}</b></span>
                                             </h6>
                                             <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                                 <h6 class="moreipsis">
-                                                    <span translate> Shared By <b translate>{{emailTemplate.vendorName}}</b></span>
+                                                    <span translate> Shared By <b>{{emailTemplate.vendorName}}</b></span>
                                                 </h6>
                                                 <h6 class="moreipsis" title="{{emailTemplate.vendorOrganizationName}}">
-                                                    <span translate> From <b translate>{{emailTemplate.vendorOrganizationName}}</b></span>
+                                                    <span translate> From <b>{{emailTemplate.vendorOrganizationName}}</b></span>
                                                 </h6>
                                             </ng-container>
                                             <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                                 <h6 class="moreipsis" title="{{emailTemplate.createdBy}}">
-                                                    <span translate>Created By <b translate>{{emailTemplate.createdBy}}</b></span>
+                                                    <span translate>Created By <b>{{emailTemplate.createdBy}}</b></span>
                                                 </h6>
                                             </ng-container>
                                             <h5 class="view-banner-draft mr5" *ngIf="emailTemplate.draft" translate>DRAFT</h5>
                                             <h5 class="badge badge-secondary m0" style="width: 44px;" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                                data-toggle="tooltip" title="Spam score" translate>{{emailTemplate.spamScore}}
+                                                data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}
                                             </h5>
                                             <h5 class="view-banner" *ngIf="emailTemplate.type=='PARTNER'" translate>PARTNER</h5>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <h5 class="view-banner display-ib">
-                                                <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other" translate>Email
-                                                    Co-Branding</span>
-                                                <ng-template #Other translate>{{emailTemplate.emailTemplateType}}</ng-template>
+                                                <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'; else Other" translate>Email Co-Branding
+                                                    </span>
+                                                <ng-template #Other>{{emailTemplate.emailTemplateType | translate}}</ng-template>
                                             </h5>
                                         </td>
                                         <td class="hidden-xs text-center">
@@ -496,24 +496,24 @@
                     <div class="col-md-3 col-sm-4 col-xs-12" *ngFor="let emailTemplate of pagination.pagedItems ;let i =index" id="emailTemplateListDiv_{{emailTemplate.id}}">
                         <div class="grid-box">
                             <span class="ribbon1">
-                                <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'" translate>Email
-                                    Co-Branding</span>
-                            <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'" translate>{{emailTemplate.emailTemplateType}}</span>
+                                <span *ngIf="emailTemplate.emailTemplateType==='Regular Co-Branding'" translate>Email Co-Branding
+                                    </span>
+                            <span *ngIf="emailTemplate.emailTemplateType !='Regular Co-Branding'" >{{emailTemplate.emailTemplateType | translate}}</span>
                             </span>
                             <img class="email-template-preview" *ngIf="emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="{{emailTemplate.subject}}" alt="Image Not Found">
                             <img class="email-template-preview" *ngIf="!emailTemplate.subject" style="margin: 0 !important; height: 390px !important; width: 100% !important; border-radius: 5px;" src="assets/images/bee-template/rich-simple.jpg">
-                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}" translate>
+                            <h4 class="ellipsis mt5 mb5 f-w-600" title="{{emailTemplate.name}}">
                                 {{emailTemplate.name | slice:0:25}} <span *ngIf="emailTemplate.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
-                                <h6><span translate>Folder <b translate>{{emailTemplate.category}}</b></span></h6>
+                                <h6><span translate>Folder <b>{{emailTemplate.category}}</b></span></h6>
                                 <h6 *ngIf="emailTemplate.type=='PARTNER'" translate>
                                     Shared On <b>
                                         <app-timestamp [isOnlyDate]="true" [dateAndTime]="emailTemplate.createdDate">
                                         </app-timestamp>
                                     </b>
                                     <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                        data-toggle="tooltip" title="Spam score" translate>{{emailTemplate.spamScore}}</span>
+                                        data-toggle="tooltip" title="Spam score" >{{emailTemplate.spamScore}}</span>
 
                                 </h6>
                                 <h6 *ngIf="emailTemplate.type!='PARTNER'" translate>
@@ -522,16 +522,16 @@
                                         </app-timestamp>
                                     </b>
                                     <span class="badge badge-secondary list-view-spam-score" *ngIf="emailTemplate.spamScore" [ngClass]="{'bg-color-red': emailTemplate.spamScore < '5.0/10' && emailTemplate.spamScore != '10/10','bg-color-yellow': emailTemplate.spamScore > '5.0/10' && emailTemplate.spamScore < '8.0/10', 'bg-color-green': emailTemplate.spamScore > '8.0/10' || emailTemplate.spamScore == '10/10'}"
-                                        data-toggle="tooltip" title="Spam score" translate>{{emailTemplate.spamScore}}</span>
+                                        data-toggle="tooltip" title="Spam score">{{emailTemplate.spamScore}}</span>
 
                                 </h6>
                                 <ng-container *ngIf="emailTemplate.type!='PARTNER'">
                                     <h6 title="{{emailTemplate.createdBy}}" translate>
-                                        By <b translate>{{emailTemplate.createdBy | slice:0:17}}</b>
+                                        By <b>{{emailTemplate.createdBy | slice:0:17}}</b>
                                         <span *ngIf="emailTemplate.createdBy?.length>17">..</span>
                                     </h6>
                                     <h6 title="{{emailTemplate.companyName}}" translate>
-                                        From <b translate>{{emailTemplate.companyName | slice:0:17}}</b>
+                                        From <b>{{emailTemplate.companyName | slice:0:17}}</b>
                                         <span *ngIf="emailTemplate.companyName?.length>17">..</span>
                                     </h6>
                                 </ng-container>
@@ -543,11 +543,11 @@
                                 </div>
                                 <ng-container *ngIf="emailTemplate.type=='PARTNER'">
                                     <h6 title="{{emailTemplate.vendorName}}" translate>
-                                        By <b *ngIf="emailTemplate.vendorName?.length>17" translate>{{emailTemplate.vendorName|slice:0:17}}..</b>
-                                        <b *ngIf="emailTemplate.vendorName?.length<17" translate>{{emailTemplate.vendorName}}</b>
+                                        By <b *ngIf="emailTemplate.vendorName?.length>17">{{emailTemplate.vendorName|slice:0:17}}..</b>
+                                        <b *ngIf="emailTemplate.vendorName?.length<17">{{emailTemplate.vendorName}}</b>
                                     </h6>
                                     <h6 title="{{emailTemplate.vendorOrganizationName}}" translate>
-                                        From <b translate>{{emailTemplate.vendorOrganizationName | slice:0:20}}</b>
+                                        From <b>{{emailTemplate.vendorOrganizationName | slice:0:20}}</b>
                                         <span *ngIf="emailTemplate.vendorOrganizationName?.length>20">..</span>
                                     </h6>
                                 </ng-container>
@@ -576,7 +576,7 @@
                     </div>
                     <!-- End of 24 -->
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                        <strong>No Templates Found</strong>
+                        <strong translate>No Templates Found</strong>
                     </div>
                 </ng-container>
 

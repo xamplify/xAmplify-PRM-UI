@@ -43,15 +43,15 @@
                                     <div class="portlet-title tabbable-line">
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase" translate>Custom
-                        fields</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase" translate>Custom fields
+                                        </span>
                                         </div>
                                     </div>
                                     <div class="portlet-body clearfix">
                                         <div class="tab-content">
                                             <div class="btn-group-form">
                                                 <ng-container *ngFor="let customField of customFields;let i=index">
-                                                    <button (click)="addColumn(customField,false)" translate>{{customField.labelName}}</button>
+                                                    <button (click)="addColumn(customField,false)">{{customField.labelName}}</button>
                                                 </ng-container>
                                             </div>
                                         </div>
@@ -61,15 +61,15 @@
                                     <div class="portlet-title tabbable-line">
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase" translate>Predefined
-                        fields</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase" translate>Predefined fields
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="portlet-body clearfix">
                                         <div class="tab-content">
                                             <div class="btn-group-form">
                                                 <ng-container *ngFor="let column of defaultColumns;let i=index">
-                                                    <button (click)="addColumn(column,true)" translate>{{column.labelName}}</button>
+                                                    <button (click)="addColumn(column,true)">{{column.labelName}}</button>
                                                 </ng-container>
                                             </div>
                                         </div>
@@ -86,7 +86,7 @@
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
                                             <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
-                                            <h4 [attr.class]="formNameClass"><b translate>{{form.name}}</b>
+                                            <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
                                                 <a data-toggle="tooltip" data-placement="top" title="Change Form Details" (click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
                                                 </a>
                                             </h4>
@@ -117,11 +117,11 @@
                                                                     <a id="drag-div">
                                                                         <h4>
                                                                             <label class="control-label">{{columnInfo.labelName}}
-                                        <span class="required" *ngIf="columnInfo.required">*</span>
-                                      </label>
+                                                                                <span class="required" *ngIf="columnInfo.required">*</span>
+                                                                            </label>
                                                                             <button type="button" class="btn btn-danger btn-xs right-corner" (click)="$event.stopPropagation();removeColumn(columnInfo,i)">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                      </button>
+                                                                               <span class="glyphicon glyphicon-trash"></span>
+                                                                            </button>
                                                                         </h4>
                                                                         <!-- ---------------------------Text/Email----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='text' ||columnInfo.labelType=='email' ">
@@ -136,10 +136,10 @@
                                                                             <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
                                                                                 <div class="form-check">
                                                                                     <label class="form-check-label">
-                                            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-                                              class="form-check-input" translate>
-                                            {{radioButton.name}}
-                                          </label>
+                                                                                      <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                                                                                            class="form-check-input">
+                                                                                                {{radioButton.name}}
+                                                                                    </label>
                                                                                 </div>
                                                                                 <br>
                                                                             </ng-container>
@@ -149,10 +149,10 @@
                                                                             <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
                                                                                 <div class="form-check">
                                                                                     <label class="form-check-label">
-                                            <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-                                              class="form-check-input" translate>
-                                            {{checkBox.name}}
-                                          </label>
+                                                                                        <input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
+                                                                                            class="form-check-input">
+                                                                                                {{checkBox.name}}
+                                                                                    </label>
                                                                                 </div>
                                                                                 <br>
                                                                             </ng-container>
@@ -160,9 +160,9 @@
                                                                         <!-- ---------------------------DropDown Menu----------------------------- -->
                                                                         <ng-container *ngIf="columnInfo.labelType=='select'">
                                                                             <select class="form-control">
-                                        <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" translate>
-                                          {{dropDownValue.name}}</option>
-                                      </select>
+                                                                                 <option *ngFor="let dropDownValue of columnInfo.dropDownChoices">
+                                                                                    {{dropDownValue.name}}</option>
+                                                                                </select>
                                                                         </ng-container>
                                                                     </a>
                                                                 </legend>
@@ -185,8 +185,8 @@
                                     <div class="portlet-title tabbable-line">
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
-                                            <span class="caption-subject font-blue-madison bold uppercase" translate>Edit Fields
-                        Info</span>
+                                            <span class="caption-subject font-blue-madison bold uppercase" translate>Edit Fields Info
+                                        </span>
                                         </div>
                                     </div>
                                     <div class="portlet-body clearfix" id="edit-from-div">
@@ -215,60 +215,59 @@
                                                     <form class="form-inline">
                                                         <legend>
                                                             <div class="form-group">
-                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='radio'" translate>Radio
-                                  Button
-                                  Choices</label>
-                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'" translate>Checkbox
-                                  Choices</label>
-                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='select'" translate>Drop-down
-                                  Choices</label>
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='radio'" translate>Radio Button Choices
+                                                                </label>
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='checkbox'" translate>Checkbox Choices
+                                                                </label>
+                                                                <label class="control-label" *ngIf="selectedColumn.labelType=='select'" translate>Drop-down Choices
+                                                                   </label>
                                                                 <br><br>
                                                                 <!-- ---------------Radio Button--------------- -->
                                                                 <ng-container *ngIf="selectedColumn.labelType=='radio'">
-                                                                    <span class="info" *ngIf="selectedColumn.radioButtonErrorMessage?.length>0" translate>{{selectedColumn.radioButtonErrorMessage}}<br></span>
+                                                                    <span class="info" *ngIf="selectedColumn.radioButtonErrorMessage?.length>0">{{selectedColumn.radioButtonErrorMessage}}<br></span>
                                                                     <ng-container *ngFor="let radioButton of selectedColumn.radioButtonChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
                                                                         <input type="text" class="form-control" [(ngModel)]="radioButton.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(radioButton)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
-                                      <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
+                                                                            <span class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
                                                                         <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,radioButton)">
-                                      <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
                                                                         <br>
                                                                     </ng-container>
                                                                 </ng-container>
                                                                 <!-- ---------------Check Box--------------- -->
                                                                 <ng-container *ngIf="selectedColumn.labelType=='checkbox'">
-                                                                    <span class="info" *ngIf="selectedColumn.checkBoxErrorMessage?.length>0" translate>{{selectedColumn.checkBoxErrorMessage}}<br></span>
+                                                                    <span class="info" *ngIf="selectedColumn.checkBoxErrorMessage?.length>0" >{{selectedColumn.checkBoxErrorMessage}}<br></span>
                                                                     <!-- ---------------CheckBoxes--------------- -->
                                                                     <ng-container *ngFor="let checkBox of selectedColumn.checkBoxChoices;let index=index">
                                                                         <br>
                                                                         <input type="{{selectedColumn.labelType}}" name="{{selectedColumn.labelId}}">
                                                                         <input type="text" class="form-control" [(ngModel)]="checkBox.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(checkBox)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
-                                      <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
+                                                                             <span class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
                                                                         <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,checkBox)">
-                                      <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
                                                                         <br>
                                                                     </ng-container>
                                                                 </ng-container>
                                                                 <!-- ---------------Drop down--------------- -->
                                                                 <ng-container *ngIf="selectedColumn.labelType=='select'">
-                                                                    <span class="info" *ngIf="selectedColumn.dropDownErrorMessage?.length>0" translate>{{selectedColumn.dropDownErrorMessage}}<br></span>
+                                                                    <span class="info" *ngIf="selectedColumn.dropDownErrorMessage?.length>0">{{selectedColumn.dropDownErrorMessage}}<br></span>
                                                                     <!-- ---------------CheckBoxes--------------- -->
                                                                     <ng-container *ngFor="let dropDown of selectedColumn.dropDownChoices;let index=index">
                                                                         <br>
                                                                         <input type="text" class="form-control" [(ngModel)]="dropDown.name" [ngModelOptions]="{standalone: true}" (input)="updateHiddenLabelIdForChoice(dropDown)" maxlength="1000">
                                                                         <button type="button" class="btn btn-success  btn-xs" (click)="addChoice(selectedColumn,index)">
-                                      <span class="glyphicon glyphicon-plus"></span>
-                                    </button>
+                                                                            <span class="glyphicon glyphicon-plus"></span>
+                                                                        </button>
                                                                         <button type="button" class="btn btn-danger btn-xs" (click)="removeChoice(selectedColumn,index,dropDown)">
-                                      <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                        </button>
                                                                         <br>
                                                                     </ng-container>
                                                                 </ng-container>
@@ -284,7 +283,7 @@
                         </div>
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
-                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()" translate>{{buttonName}}</button>
+                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()">{{buttonName}}</button>
                             <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true" translate>Cancel</button>
                         </div>
                     </div>
@@ -302,24 +301,24 @@
                     <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle" (click)="closeModal()">
             <i class="fa fa-times"></i>
           </button>
-                    <h4 class="modal-title text-center" translate>{{formTitle}}</h4>
+                    <h4 class="modal-title text-center">{{formTitle}}</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group" id="formNameDiv">
-                        <label>Name <font class="invalid-form-name">*</font></label>
+                        <label translate>Name <font class="invalid-form-name">*</font></label>
                         <input type="text" class="form-control" [(ngModel)]="form.name" id="formName" placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)" (keydown)="sumbitOnEnter($event)">
-                        <span *ngIf="!form.isValid" class="required" translate>{{formNameErrorMessage}}</span>
+                        <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
                     </div>
                     <div class="form-group">
-                        <label>Select a folder <font class="invalid-form-name">*</font></label>
+                        <label translate>Select a folder <font class="invalid-form-name">*</font></label>
                         <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectCategory($event)">
-                        <option *ngFor="let category of categoryNames" [value]="category.id" translate>
+                        <option *ngFor="let category of categoryNames" [value]="category.id">
                           {{category.name}}
                         </option>
                     </select>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
+                        <label translate>Description</label>
                         <textarea class="form-control" placeholder="Description" [(ngModel)]="form.description" id="description" maxlength="1000"></textarea>
                     </div>
                     <!-- <div class="form-group">
