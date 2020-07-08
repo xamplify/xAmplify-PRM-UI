@@ -5,30 +5,50 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { ReferenceService } from 'app/core/services/reference.service';
+import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 
 @Component({
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
-  styleUrls: ['./module-access.component.css']
+  styleUrls: ['./module-access.component.css'],
+  providers:[HttpRequestLoader]
 })
 export class ModuleAccessComponent implements OnInit {
 
   companyId: any;
+  userAlias:any;
   customResponse: CustomResponse = new CustomResponse();
   campaignAccess = new CampaignAccess();
   moduleAccessList: any = [];
-  constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, private referenceService: ReferenceService) { }
+  companyAndUserDetails:any;
+  companyLoader = true;
+  moduleLoader = true;
+  constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService) { }
 
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
+    this.userAlias = this.route.snapshot.params['userAlias'];
+    this.getCompanyAndUserDetails();
     this.getModuleAccessByCompanyId();
+  }
+  getCompanyAndUserDetails() {
+    this.dashboardService.getCompanyDetailsAndUserId(this.companyId,this.userAlias).subscribe(result => {
+      this.companyLoader = false;
+      this.companyAndUserDetails = result;
+    }, error => {
+      this.companyLoader = false;
+      this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
+    });
+
   }
 
   getModuleAccessByCompanyId() {
     if (this.companyId) {
       this.dashboardService.getAccess(this.companyId).subscribe(result => {
         this.campaignAccess = result;
+        this.moduleLoader = false;
       }, error => {
+        this.moduleLoader = false;
         this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
       });
     }

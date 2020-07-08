@@ -167,7 +167,7 @@
 
 
  						 <a data-toggle="tooltip" data-placement="top" title="Activate/Deactivate" (click)="$event.stopPropagation();activateOrDeactivate(report)"> 
-								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a>
+								<i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i></a>
 
                        <!--  <a data-toggle="tooltip" data-placement="top" title="Change Role" (click)="$event.stopPropagation();changeStatus(report)"> 
 								<i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px"></i></a> -->
@@ -175,9 +175,8 @@
                         <!-- <a data-toggle="tooltip" data-placement="top" title="Change Access" (click)="$event.stopPropagation();getAccess(report)"> 
                 <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a> -->
                 
-                <a data-toggle="tooltip" data-placement="top" title="Module Access" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
-                  <i class="fa fa-universal-access" style="font-size: 20px;margin-left:5px"></i></a>
-
+                <a data-toggle="tooltip" data-placement="top" title="Edit Modules" (click)="$event.stopPropagation();displayModuleAccess(report)"> 
+                  <i class="fa fa-pencil-square-o" style="font-size: 20px;margin-left:5px" aria-hidden="true"></i></a>
                       </td>
                     </tr>
                   </ng-container>
@@ -211,21 +210,21 @@
                 <tbody>
                   <ng-container>
                     <!-- this div for ngFor -->
-                    <tr class="selectedRow">
+                    <tr>
                       <td>
-                        <app-user-info [userInfo]="selectedVendorRow">
+                        <app-user-info [userInfo]="companyAndUserDetails">
                         </app-user-info>
                       </td>
-                      <td>{{selectedVendorRow.companyName}}</td>
-                      <td>{{selectedVendorRow.userStatus}}</td>
+                      <td>{{companyAndUserDetails.companyName}}</td>
+                      <td>{{companyAndUserDetails.userStatus}}</td>
                       <td align="center">
-                        <app-timestamp [dateAndTime]="selectedVendorRow.dateReg"> </app-timestamp>
+                        <app-timestamp [dateAndTime]="companyAndUserDetails.dateReg"> </app-timestamp>
                       </td>
                       <td align="center">
-                        <app-timestamp [dateAndTime]="selectedVendorRow.dateLastLogin"> </app-timestamp>
+                        <app-timestamp [dateAndTime]="companyAndUserDetails.dateLastLogin"> </app-timestamp>
                       </td>
                       <td align="center">
-                        <app-timestamp [dateAndTime]="selectedVendorRow.updatedTime"> </app-timestamp>
+                        <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
                       </td>
                     </tr>
                   </ng-container>

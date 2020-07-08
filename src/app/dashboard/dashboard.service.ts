@@ -245,6 +245,13 @@ export class DashboardService {
         .catch(this.handleError);
     }
 
+    getCompanyDetailsAndUserId(companyId:number,userAlias:string){
+        return this.http.get(this.authenticationService.REST_URL + `superadmin/getUserAndCompanyDetails/${companyId}/${userAlias}?access_token=${this.authenticationService.access_token}`)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+
     
     changeAccess(campaignAccess:any){
         return this.http.post(this.authenticationService.REST_URL + `admin/updateAccess?access_token=${this.authenticationService.access_token}`,campaignAccess)
