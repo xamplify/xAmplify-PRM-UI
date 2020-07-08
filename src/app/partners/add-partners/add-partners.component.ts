@@ -1517,8 +1517,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     hideZohoModal() {
         $( "#zohoShowLoginPopup" ).hide();
-        $( "#zohoShowAuthorisedPopup" ).hide();
-        $('#zohoShowAuthorisedPopup').modal('toggle');
+        $('#zohoShowAuthorisedPopup').modal('hide');
     }
 
   
@@ -1595,8 +1594,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     hideZohoAuthorisedPopup() {
-        $( "#zohoShowAuthorisedPopup" ).hide();
-        $('#zohoShowAuthorisedPopup').modal('toggle');
+        $('#zohoShowAuthorisedPopup').modal('hide');
     }
     authorisedZohoContacts() {
         try {
