@@ -644,12 +644,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     $("tr.new_row").each(function() {
                         $(this).remove();
                     });
-                    if (!this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-                    } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-                    }
-
+                   
                     if (data.statusCode == 409) {
                         let emailIds = data.emailAddresses;
                         let allEmailIds = "";
@@ -663,14 +658,20 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                     if (data.statusCode == 417) {
                         this.customResponse = new CustomResponse('ERROR', data.detailedResponse[0].message, true);
                     }
-
                     this.checkingLoadContactsCount = true;
                     this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                     this.cancelContacts();
                     if (data.statusCode == 200) {
+						if (!this.isPartner) {
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+						} else {
+							this.showSuccessMessage(data);
+						}
 						//this.getContactsAssocialteCampaigns();
 						this.openCampaignsPopupForNewlyAddedPartners();
-                    }
+                    }else if(data.statusCode==418){
+						this.showUnFormattedEmailAddresses(data);
+					}
                 } else {
                     this.authenticationService.forceToLogout();
                 }
@@ -693,6 +694,38 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 				() => this.xtremandLogger.info("MangeContactsComponent loadContactLists() finished")
 			)
 		this.dublicateEmailId = false;
+	}
+
+	showSuccessMessage(data:any){
+		let message = this.properties.PARTNERS_SAVE_SUCCESS + "<br><br>";
+		let invalidEmailIds = data.invalidEmailIds;
+		if (invalidEmailIds != undefined && invalidEmailIds.length > 0) {
+			let allEmailIds = "";
+			$.each(invalidEmailIds, function (index, emailId) {
+				allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+			});
+			if (invalidEmailIds.length == 1) {
+				message += "Following email address is not saved because it is not formatted properly" + "<br><br>" + allEmailIds;
+			} else {
+				message += "Following email addresses are not saved because they not formatted properly" + "<br><br>" + allEmailIds;
+			}
+		}
+		this.customResponse = new CustomResponse('SUCCESS', message, true);
+	}
+
+	showUnFormattedEmailAddresses(data:any){
+		let invalidEmailIds = data.invalidEmailIds;
+		let allEmailIds = "";
+		$.each(invalidEmailIds, function (index, emailId) {
+			allEmailIds += (index + 1) + "." + emailId + "<br><br>";
+		});
+		let message = "";
+		if (invalidEmailIds.length == 1) {
+			message = "Following email address is not formatted properly " + "<br><br>" + allEmailIds;
+		} else {
+			message = "Following email addresses are not formatted properly " + "<br><br>" + allEmailIds;
+		}
+		this.customResponse = new CustomResponse('ERROR', message, true);
 	}
 
 	updateCsvContactList(contactListId: number) {
@@ -836,11 +869,7 @@ export class EditContactsComponent implements OnInit, OnDestroy {
                         $(this).remove();
                     });
 
-                    if (!this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-                    } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-                    }
+                   
 
                     this.users = [];
                     this.selectedAddContactsOption = 8;
@@ -869,8 +898,15 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 
                     if (data.statusCode == 200) {
 						//this.getContactsAssocialteCampaigns();
+						if (!this.isPartner) {
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+						} else {
+							this.showSuccessMessage(data);
+						}
 						this.openCampaignsPopupForNewlyAddedPartners();
-                    }
+                    }else if(data.statusCode==418){
+						this.showUnFormattedEmailAddresses(data);
+					}
                 } else {
                     this.authenticationService.forceToLogout();
                 }
@@ -1492,11 +1528,7 @@ goBackToManageList(){
 
                     });
                     this.clickBoard = false;
-                    if (!this.isPartner) {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
-                    } else {
-                        this.customResponse = new CustomResponse('SUCCESS', this.properties.PARTNERS_SAVE_SUCCESS, true);
-                    }
+                    
 
                     $("button#add_contact").prop('disabled', false);
                     $("button#upload_csv").prop('disabled', false);
@@ -1521,8 +1553,15 @@ goBackToManageList(){
                     this.editContactListLoadAllUsers(this.selectedContactListId, this.pagination);
                     if (data.statusCode == 200) {
 						//this.getContactsAssocialteCampaigns();
+						if (!this.isPartner) {
+							this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_SAVE_SUCCESS, true);
+						} else {
+							this.showSuccessMessage(data);
+						}
 						this.openCampaignsPopupForNewlyAddedPartners();
-                    }
+                    }else if(data.statusCode==418){
+						this.showUnFormattedEmailAddresses(data);
+					}
                 } else {
                     this.authenticationService.forceToLogout();
                 }
