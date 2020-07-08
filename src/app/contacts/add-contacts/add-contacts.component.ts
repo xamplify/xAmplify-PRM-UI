@@ -2535,7 +2535,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 this.getGoogleContactsUsers();
             }else if(this.contactService.socialProviderName == 'zoho' || this.socialContactType == "zoho" ){
                 //this.getZohoContactsUsingOAuth2(); ***
-                this.zohoShowModal(); ***
+                this.zohoShowModal();
             }
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
