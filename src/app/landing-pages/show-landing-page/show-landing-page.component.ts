@@ -35,11 +35,14 @@ export class ShowLandingPageComponent implements OnInit {
     isPartnerLandingPage:boolean=false;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,private landingPageService:LandingPageService,
           private authenticationService:AuthenticationService,private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,
-          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityUrlService:VanityURLService) {
-            this.vanityUrlService.isVanityURLEnabled();
+          public processor:Processor,private router:Router,private utilService:UtilService,public deviceService: Ng2DeviceService,private vanityURLService:VanityURLService) {
+            //this.vanityUrlService.isVanityURLEnabled();
           }
 
-  ngOnInit() {
+  ngOnInit() {    
+    if(this.vanityURLService.isVanityURLEnabled()){
+      this.vanityURLService.checkVanityURLDetails();
+    }
       this.processor.set(this.processor);
       this.alias = this.route.snapshot.params['alias'];
       if(this.router.url.includes("/showCampaignLandingPage/") || this.router.url.includes("/scp/")){
