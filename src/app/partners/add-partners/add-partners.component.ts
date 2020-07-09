@@ -2464,7 +2464,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }else if(this.contactService.socialProviderName == 'zoho'){
-                this.getZohoContactsUsingOAuth2();
+                this.zohoShowModal();
             }
             
             /********Check Gdpr Settings******************/
