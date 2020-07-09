@@ -378,6 +378,25 @@ export class ContactService {
             .map( this.extractData )
             .catch( this.handleError );
     }
+    
+    
+    getZohoAutherizedLeads( socialContact: SocialContact ) {
+        this.logger.info( "get zoho leads :" + socialContact );
+        //this.successMessage = true;
+        var requestoptions = new RequestOptions( {
+            body: socialContact,
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.authenticationService.REST_URL + "getZohoLeads?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
+        this.logger.info( "contactService getzohoAuthorizedLeads():" + this.authenticationService.REST_URL + "getLeads?&access_token=" + this.authenticationService.access_token );
+        return this._http.post( url, socialContact )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
 
     salesforceLogin(isPartner: boolean) {
         this.logger.info( this.salesforceContactUrl + "/authorizeLogin?access_token=" + this.authenticationService.access_token +"&userId=" + this.authenticationService.getUserId() );

@@ -159,6 +159,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     public fields: any;
     public placeHolder: string = 'Select Legal Basis';
     loggedInThroughVanityUrl = false;
+    zohoErrorResponse:CustomResponse = new CustomResponse();
+    zohoPopupLoader: boolean = false;
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -1777,7 +1779,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
 
     hideZohoAuthorisedPopup() {
-        $( "#zohoShowAuthorisedPopup" ).hide();
+        $('#zohoShowAuthorisedPopup').modal('hide');
+        this.zohoErrorResponse = new CustomResponse();
     }
     authorisedZohoContacts() {
         try {
@@ -1878,7 +1881,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.setLegalBasisOptions(this.socialContact.contacts);
         this.socialContact.publicList  = this.model.isPublic;
-        this.socialContact.contactType = 'CONTACT';//Added after oAuth2.0 implementation by Sravan
+      //  this.socialContact.contactType = 'CONTACT';//Added after oAuth2.0 implementation by Sravan
         this.contactService.saveSocialContactList( this.socialContact )
         .subscribe(
         data => {
@@ -2031,6 +2034,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         $( '#salesforceModal' ).modal( 'show' );
         $('#salesforceModal').modal('toggle');
         $("#salesforceModal").modal();*/
+    }
+    
+    zohoShowModal(){
+        $( '#zohoShowAuthorisedPopup' ).modal( 'show' );
     }
 
     hideModal() {
@@ -2529,7 +2536,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if ( this.socialContactType == "google" ) {
                 this.getGoogleContactsUsers();
             }else if(this.contactService.socialProviderName == 'zoho' || this.socialContactType == "zoho" ){
-                this.getZohoContactsUsingOAuth2();
+                //this.getZohoContactsUsingOAuth2(); ***
+                this.zohoShowModal();
             }
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
@@ -3371,28 +3379,52 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
     checkingZohoContactsAuthentication() {
         try {
-            if(this.loggedInThroughVanityUrl){
+            if(this.loggedInThroughVanityUrl)
+            {
                 this.referenceService.showSweetAlertInfoMessage();
-            }else{
-                if ( this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality ) {
-                    this.contactService.checkingZohoAuthentication(this.isPartner)
-                        .subscribe(
-                        ( data: any ) => {
-                            this.storeLogin = data;
-                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" ) {
-                                this.getZohoContactsUsingOAuth2();
-                            } else{
-                                localStorage.setItem( "userAlias", data.userAlias )
-                                localStorage.setItem( "isPartner", data.isPartner );
-                                window.location.href = "" + data.redirectUrl;
-                            }
-                        },
-                        ( error: any ) => {
-                            this.referenceService.showSweetAlertServerErrorMessage();
-                        },
-                        () => this.xtremandLogger.info( "Add contact component checkingZohoContactsAuthentication() finished" )
-                        )
+            }
+            else{
+                this.zohoPopupLoader = true;
+                this.zohoErrorResponse = new CustomResponse();
+                let selectedOption = $("select.opts:visible option:selected ").val();
+                if(selectedOption=="DEFAULT"){
+                    this.zohoErrorResponse = new CustomResponse('ERROR','Please select atleast one option',true);
+                    this.zohoPopupLoader = false;
+                }else{
+                    if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
+                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                            .subscribe(
+                                (data: any) => {
+                                    this.storeLogin = data;
+                                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                                        let self = this;
+                                        self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
+                                        if (this.selectedZohoDropDown == "contact") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoContactsUsingOAuth2();
+                                        }
+                                        if (this.selectedZohoDropDown == "lead") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoLeadsUsingOAuth2();
+                                        }
+    
+                                    } else {
+                                        this.zohoPopupLoader = false;
+                                        localStorage.setItem("userAlias", data.userAlias)
+                                        localStorage.setItem("isPartner", data.isPartner);
+                                        window.location.href = "" + data.redirectUrl;
+    
+                                    }
+                                },
+                                (error: any) => {
+                                    this.zohoPopupLoader = false;
+                                    this.referenceService.showSweetAlertServerErrorMessage();
+                                },
+                                () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
+                            )
+                    }
                 }
+               
             }
         } catch ( error ) {
             this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
@@ -3404,14 +3436,64 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     getZohoContactsUsingOAuth2(){
         this.contactService.socialProviderName = 'zoho';
         this.socialContact.socialNetwork = "ZOHO";
+        this.socialContact.contactType = "CONTACT";
+        this.contactType = "CONTACT";
         swal( {
             text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
             allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
         });
-        this.contactService.getZohoAutherizedContacts( this.socialContact )
+
+             this.contactService.getZohoAutherizedContacts( this.socialContact )
                 .subscribe(
                 data => {
-                   this.processZohoContactsToDisplayInUI(data);
+                       if (data.statusCode != null &&  data.statusCode != 200 ) {
+                        swal.close();
+                        this.hideZohoAuthorisedPopup();
+                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.selectedAddContactsOption = 6;
+                     }
+                    else{
+                        this.processZohoContactsToDisplayInUI(data);
+
+                    }
+                   
+                },
+                ( error: any ) => {
+                    swal.close();
+                    this.xtremandLogger.error( error );
+                    this.xtremandLogger.errorPage( error );
+                },
+                );
+    }
+    
+    
+    getZohoLeadsUsingOAuth2(){
+        this.contactService.socialProviderName = 'zoho';
+        this.socialContact.socialNetwork = "ZOHO";
+        this.socialContact.contactType = "LEAD";
+        this.contactType = "LEAD";
+        swal( {
+            text: 'Retrieving leads from zoho...! Please Wait...It\'s processing',
+            allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
+        });
+
+             this.contactService.getZohoAutherizedLeads( this.socialContact )
+                .subscribe(
+                data => {
+                    console.log(data.statusCode);
+                    this.getZohoConatacts = data;
+                    this.selectedAddContactsOption = 6;
+                    if (data.statusCode != null &&  data.statusCode != 200 ) {
+                        swal.close();
+                        this.hideZohoAuthorisedPopup();
+                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.selectedAddContactsOption = 6;
+                     }
+                    else{
+                        this.processZohoContactsToDisplayInUI(data);
+
+                    }
+  
                 },
                 ( error: any ) => {
                     swal.close();
@@ -3425,6 +3507,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
    
     processZohoContactsToDisplayInUI(data) {
         swal.close();
+        this.hideZohoAuthorisedPopup();
         this.getZohoConatacts = data;
         this.zohoImageBlur = false;
         this.zohoImageNormal = true;
@@ -3440,19 +3523,22 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     socialContact.lastName = contacts[i].lastName;
                     this.socialContactUsers.push(socialContact);
                 }
-                $("button#sample_editable_1_new").prop('disabled', false);
-                $("button#cancel_button").prop('disabled', false);
-                this.showFilePreview();
-                $("#myModal .close").click()
-                $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-                $('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-                $('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
-                $('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
-                $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-                $('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
-                $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
-                $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+               
             }
+
+            $("button#sample_editable_1_new").prop('disabled', false);
+            $("button#cancel_button").prop('disabled', false);
+            this.showFilePreview();
+            $("#myModal .close").click()
+            $('.mdImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+            $('#addContacts').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+            $('#uploadCSV').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;min-height:85px;border-radius: 3px');
+            $('#copyFromClipBoard').attr('style', '-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed;');
+            $('.salesForceImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+            $('.googleImageClass').attr('style', 'opacity: 0.5;-webkit-filter: grayscale(100%);filter: grayscale(100%);cursor:not-allowed');
+            $('#SgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+            $('#GgearIcon').attr('style', 'opacity: 0.5;position: relative;top: -81px;left: 71px;-webkit-filter: grayscale(100%);filter: grayscale(100%);');
+            
         } else {
             this.customResponse = new CustomResponse('ERROR', this.properties.NO_RESULTS_FOUND, true);
             $("button#cancel_button").prop('disabled', false);
