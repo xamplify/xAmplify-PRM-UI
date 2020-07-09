@@ -860,6 +860,7 @@
 <div class="modal right" id="zohoShowAuthorisedPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false"
  data-backdrop="static">
 	<div class="modal-dialog modal-css" role="document">
+		<ngx-loading [show]="zohoPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 		<div class="modal-content">
 			<div class="modal-header">
 				<!-- <button type="button" class="close"  (click)="hideZohoAuthorisedPopup()"
@@ -871,6 +872,8 @@
 				</div>
 			</div>
 			<div class="modal-body">
+				<app-response-message class="pg8" [customResponse]="zohoErrorResponse" *ngIf="zohoErrorResponse.isVisible">
+				</app-response-message>
 				<form class="form-horizontal">
 					<div class="form-group">
 						<label class="control-label col-sm-3" for="pwd" translate>Import From:
@@ -887,7 +890,6 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()" translate>Close</button>
-				<!--<button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button> -->
 				<button type="button" class="btn btn-primary" (click)="checkingZohoContactsAuthentication()" translate>Submit</button>
 
 			</div>

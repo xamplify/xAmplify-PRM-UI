@@ -193,7 +193,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    loggedInThroughVanityUrl = false;
    processingPartnersLoader = false;
    contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
-    mdfAccess: boolean = false;
+   mdfAccess: boolean = false;
+   zohoErrorResponse : CustomResponse = new CustomResponse();
+    zohoPopupLoader: boolean =false;
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -1516,8 +1518,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
 
     hideZohoModal() {
-        $( "#zohoShowLoginPopup" ).hide();
         $('#zohoShowAuthorisedPopup').modal('hide');
+        this.zohoErrorResponse = new CustomResponse();
     }
 
   
@@ -1595,6 +1597,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
 
     hideZohoAuthorisedPopup() {
         $('#zohoShowAuthorisedPopup').modal('hide');
+        this.zohoErrorResponse = new CustomResponse();
     }
     authorisedZohoContacts() {
         try {
@@ -3391,47 +3394,56 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     selectedAddContactsOption: number = 6;
     checkingZohoContactsAuthentication() {
         try {
-            if(this.loggedInThroughVanityUrl)
-            {
+            if (this.loggedInThroughVanityUrl) {
                 this.referenceService.showSweetAlertInfoMessage();
             }
-            else{
-                if( this.selectedAddContactsOption == 6 && !this.disableOtherFuctionality )
-                 {
-                    this.contactService.checkingZohoAuthentication(this.isPartner)
-                        .subscribe(
-                        ( data: any ) => {
-                            this.storeLogin = data;
-                            if ( this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM" )
-                             {
-                                let self = this;
-                                self.selectedZohoDropDown = $( "select.opts:visible option:selected " ).val();
-                            
-                                 if (this.selectedZohoDropDown == "contact") 
-                                 {
-                                      this.getZohoContactsUsingOAuth2();    
-                                 }
-                                 if ( this.selectedZohoDropDown == "lead" )
-                                 {
-                                      this.getZohoLeadsUsingOAuth2(); 
-                                 }
-
-                            } else{
-                                localStorage.setItem( "userAlias", data.userAlias )
-                                localStorage.setItem( "isPartner", data.isPartner );
-                                window.location.href = "" + data.redirectUrl;
-                             
-                            }
-                        },
-                        ( error: any ) => {
-                            this.referenceService.showSweetAlertServerErrorMessage();
-                        },
-                        () => this.xtremandLogger.info( "Add contact component checkingZohoContactsAuthentication() finished" )
-                        )
+            else {
+               this.zohoPopupLoader = true;
+                this.zohoErrorResponse = new CustomResponse();
+                let selectedOption = $("select.opts:visible option:selected ").val();
+                if(selectedOption=="DEFAULT"){
+                    this.zohoErrorResponse = new CustomResponse('ERROR','Please select atleast one option',true);
+                    this.zohoPopupLoader = false;
+                }else{
+                    if (this.selectedAddContactsOption == 6 && !this.disableOtherFuctionality) {
+                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                            .subscribe(
+                                (data: any) => {
+                                    this.storeLogin = data;
+                                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                                        let self = this;
+                                        self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
+    
+                                        if (this.selectedZohoDropDown == "contact") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoContactsUsingOAuth2();
+                                        }
+                                        if (this.selectedZohoDropDown == "lead") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoLeadsUsingOAuth2();
+                                        }
+    
+                                    } else {
+                                        this.zohoPopupLoader = false;
+                                        localStorage.setItem("userAlias", data.userAlias)
+                                        localStorage.setItem("isPartner", data.isPartner);
+                                        window.location.href = "" + data.redirectUrl;
+    
+                                    }
+                                },
+                                (error: any) => {
+                                    this.zohoPopupLoader = false;
+                                    this.referenceService.showSweetAlertServerErrorMessage();
+                                },
+                                () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
+                            )
+                    }
                 }
+
+                
             }
-        } catch ( error ) {
-            this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
+        } catch (error) {
+            this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
         }
     }
 
@@ -3477,7 +3489,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.socialPartners.contactType = "LEAD";
         this.contactType = "LEAD";
         swal( {
-            text: 'Retrieving contacts from zoho...! Please Wait...It\'s processing',
+            text: 'Retrieving leads from zoho...! Please Wait...It\'s processing',
             allowOutsideClick: false, showConfirmButton: false, imageUrl: 'assets/images/loader.gif'
         });
 
