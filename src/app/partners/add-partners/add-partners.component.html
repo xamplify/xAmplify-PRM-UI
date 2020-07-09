@@ -175,11 +175,11 @@
 									</div> -->
                                     </div>
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
-                                        <a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+                                        <a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
                                         </a>
-                                        <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+                                        <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
                                                 height="86" width="90">
                                         </a>
@@ -197,11 +197,11 @@
 
                                     <!-- Hubspot -->
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
-                                        <a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+                                        <a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
                                         </a>
-                                        <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+                                        <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
                                                 height="86" width="90">
                                         </a>
