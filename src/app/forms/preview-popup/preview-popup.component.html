@@ -1,7 +1,7 @@
 
- <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="btn btn-danger" id="right"  (click)="showForms()">
-                  		Show Forms 
-   </button>
+ <button *ngIf="authenticationService.module.hasFormAccess && (showButton || authenticationService.isShowForms)" class="btn btn-danger" id="right"  (click)="showForms()" translate>
+    Show Forms 
+  </button>
       <!-- ----------------------List Available Forms------------------- -->
     <div class="modal right" id="forms-list" data-backdrop="static">
       <div class="modal-lg full">
@@ -10,7 +10,7 @@
             <button type="button" class="close-circle" data-dismiss="modal">
               <i class="fa fa-times" aria-hidden="true"></i>
             </button>
-            <h4 class="modal-title text-center">Forms</h4>
+            <h4 class="modal-title text-center" translate>Forms</h4>
           </div>
           <div class="modal-body">
           <div class="row" *ngIf="!formsError">
@@ -39,11 +39,11 @@
 					<table class='table tgrid table-hover table-sm' *ngIf="pagination.pagedItems?.length>0" aria-describedby="describe">
 						<thead>
 						  <tr>
-						    <th *ngIf="authenticationService.isShowForms">Select</th>
+						    <th *ngIf="authenticationService.isShowForms" translate>Select</th>
 							  <th>Form Details</th>
-                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" >Link</th>
-                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2">Embed Link</th>
-							  <th class="text-center">Preview</th>
+                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" translate>Link</th>
+                <th class="text-center" *ngIf="!authenticationService.isShowForms" colspan="2" rowspan="2" translate>Embed Link</th>
+							  <th class="text-center" translate>Preview</th>
 						  </tr>
 						</thead>
 						<tbody>
@@ -56,10 +56,10 @@
 								 <h4 class="ellipsis mt5 mb5 f-w-600" title="{{form.name}}">
 									{{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span>
 								 </h4>
-								 <h6>
+								 <h6 translate>
 									Created By <strong>{{form.createdName}}</strong>
 								 </h6>
-								 <h6>
+								 <h6 translate>
 									From <strong>{{form.companyName}}</strong>
 								 </h6>
 							  </td>
@@ -67,7 +67,7 @@
                   <input type="text" id="copy-link" readonly="readonly" value="{{form.ailasUrl}}" #userinput><br>
                   <tr>
                   <p class="success" id="copied-message-{{i}}" style="display: none;">
-                    <strong>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                    <strong translate>Link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                   </p>
                 </tr>
                 </td>
@@ -82,7 +82,7 @@
                   <textarea id="text-area" rows="1" cols="50" readonly="readonly" spellcheck="false" #iframeUrlInput>{{form.embedUrl}}</textarea>
                   <tr>
                   <p class="success" id="embed-copied-message-{{i}}" style="display:none;">
-                    <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                    <strong translate>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                   </p>
                 </tr>
                   </td>
@@ -93,7 +93,7 @@
                   </a>
                 </div>
                   <p class="success" id="embed-copied-message-{{i}}" style="display:none;">
-                    <strong>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
+                    <strong translate>Embed link copied successfully<i class="fa fa-check" aria-hidden="true"></i></strong>
                   </p>
                 </td>
 							  <td id="actions-row" style="text-align: center;  vertical-align: middle;">
@@ -113,7 +113,7 @@
 				</div>
 				<!-- End of 24 -->
 				<div *ngIf="pagination.totalRecords==0 && !formsLoader.isLoading" class="alert alert-info">
-					<strong>No Forms Found.</strong>
+					<strong translate>No Forms Found.</strong>
 				</div>
 			</div>
 		</div>
@@ -125,7 +125,7 @@
 		
           </div>
           <div class="modal-footer">
-			<a data-dismiss="modal" class="btn btn-default" style="float: right"><span *ngIf="!authenticationService.isShowForms">Close</span><span  *ngIf="authenticationService.isShowForms">Submit</span></a>
+			<a data-dismiss="modal" class="btn btn-default" style="float: right"><span *ngIf="!authenticationService.isShowForms" translate>Close</span><span  *ngIf="authenticationService.isShowForms" translate>Submit</span></a>
 		</div>
         </div>
       </div>
@@ -138,7 +138,7 @@
           <button type="button" class="close-circle" data-dismiss="modal">
             <i class="fa fa-times" aria-hidden="true"></i>
           </button>
-          <h4 class="modal-title text-center">Form Preview</h4>
+          <h4 class="modal-title text-center" translate>Form Preview</h4>
         </div>
         <div class="modal-body">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -150,7 +150,7 @@
               <h5>{{form.description}}</h5>
                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                   <div class="form-group">
-                    <label class="control-label">{{columnInfo.labelName}}
+                    <label class="control-label">{{columnInfo.labelName | translate}}
                       <span class="required" *ngIf="columnInfo.required">*</span>
                     </label>
                     <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
@@ -197,7 +197,7 @@
                     </ng-container>
                   </div>
                 </ng-container>
-                <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right">Submit</button>
+                <button type="submit" disabled="disabled" class="btn green-haze" id="bottom-right" translate>Submit</button>
               </div>
             </div>
             
@@ -209,7 +209,7 @@
 			
         </div>
         <div class="modal-footer">
-          <a data-dismiss="modal" class="btn btn-default" id="bottom-right">Close</a>
+          <a data-dismiss="modal" class="btn btn-default" id="bottom-right" translate>Close</a>
         </div>
       </div>
     </div>

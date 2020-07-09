@@ -51,7 +51,7 @@
                                         <div class="tab-content">
                                             <div class="btn-group-form">
                                                 <ng-container *ngFor="let customField of customFields;let i=index">
-                                                    <button (click)="addColumn(customField,false)">{{customField.labelName}}</button>
+                                                    <button (click)="addColumn(customField,false)">{{customField.labelName | translate}}</button>
                                                 </ng-container>
                                             </div>
                                         </div>
@@ -69,7 +69,7 @@
                                         <div class="tab-content">
                                             <div class="btn-group-form">
                                                 <ng-container *ngFor="let column of defaultColumns;let i=index">
-                                                    <button (click)="addColumn(column,true)">{{column.labelName}}</button>
+                                                    <button (click)="addColumn(column,true)">{{column.labelName | translate}}</button>
                                                 </ng-container>
                                             </div>
                                         </div>
@@ -86,7 +86,7 @@
                                         <div class="caption caption-md">
                                             <i class="icon-globe theme-font hide"></i>
                                             <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
-                                            <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
+                                            <h4 [attr.class]="formNameClass"><b>{{form.name | translate}}</b>
                                                 <a data-toggle="tooltip" data-placement="top" title="Change Form Details" (click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
                                                 </a>
                                             </h4>
@@ -116,7 +116,7 @@
                                                                 <legend>
                                                                     <a id="drag-div">
                                                                         <h4>
-                                                                            <label class="control-label">{{columnInfo.labelName}}
+                                                                            <label class="control-label">{{columnInfo.labelName | translate}}
                                                                                 <span class="required" *ngIf="columnInfo.required">*</span>
                                                                             </label>
                                                                             <button type="button" class="btn btn-danger btn-xs right-corner" (click)="$event.stopPropagation();removeColumn(columnInfo,i)">
@@ -283,7 +283,7 @@
                         </div>
                         <!-- End Of Row---- -->
                         <div id="bottom-right">
-                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()">{{buttonName}}</button>
+                            <button [disabled]="!form.isValid" type="submit" class="btn green-haze" (click)="validateForm()">{{buttonName | translate}}</button>
                             <button type="button" class="btn btn-primay" (click)="navigateBack()" aria-hidden="true" translate>Cancel</button>
                         </div>
                     </div>
