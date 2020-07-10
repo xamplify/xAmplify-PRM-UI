@@ -688,7 +688,28 @@
 	"Drop-down Choices":"Opciones desplegables",
 	"Select a folder":"Selecciona una carpeta",
 	"Description":"La description",
-	"Continue":"Seguir"
+	"Continue":"Seguir",
+	"Create Pages":"Crear páginas",
+	"Insert Merge Tags":"Insertar etiquetas de fusión",
+	"Campaign Analytics":"Análisis de campaña",
+	"Form":"Formar",
+	"No Forms Found.":"No se encontraron formularios.",
+	"Access Denied":"Acceso denegado",
+	"Single Line Text Field":"Campo de texto de una sola línea",
+	"Multi Line Text Field":"Campo de texto de varias líneas",
+	"Radio Buttons":"Botones de radio",
+	"Checkboxes":"Casillas de verificación",
+	"Drop-down menu":"Menú desplegable",
+	"Show Forms":"Mostrar formularios",
+	"Form Preview":"Vista previa del formulario",
+	"Link":"Enlace",
+	"Embed Link":"Insertar enlace",
+	"Link copied successfully":"Enlace copiado exitosamente",
+	"Embed link copied successfully":"Enlace incrustado copiado correctamente",
+	"Merge Tags":"Fusionar etiquetas",
+	"Merge Tag":"Fusionar etiqueta",
+	"Copy":"Copiar",
+	"Copied successfully":"Copiado exitosamente"
 }
 
 

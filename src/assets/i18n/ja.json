@@ -688,7 +688,28 @@
 	"Drop-down Choices":"ドロップダウンの選択肢",
 	"Select a folder":"フォルダを選択",
 	"Description":"説明",
-	"Continue":"継続する"
+	"Continue":"継続する",
+	"Create Pages":"ページを作成する",
+	"Insert Merge Tags":"差し込みタグを挿入",
+	"Campaign Analytics":"キャンペーン分析",
+	"Form":"形",
+	"No Forms Found.":"フォームが見つかりませんでした。",
+	"Access Denied":"アクセスが拒否されました",
+	"Single Line Text Field":"単一行テキストフィールド",
+	"Multi Line Text Field":"複数行テキストフィールド",
+	"Radio Buttons":"ラジオボタン",
+	"Checkboxes":"チェックボックス",
+	"Drop-down menu":"ドロップダウンメニュー",
+	"Show Forms":"フォームを表示",
+	"Form Preview":"フォームのプレビュー",
+	"Link":"リンク",
+	"Embed Link":"リンクを埋め込む",
+	"Link copied successfully":"リンクが正常にコピーされました",
+	"Embed link copied successfully":"埋め込みリンクをコピーしました",
+	"Merge Tags":"タグをマージ",
+	"Merge Tag":"差し込みタグ",
+	"Copy":"コピーする",
+	"Copied successfully":"正常にコピーされました"
 
 
 }

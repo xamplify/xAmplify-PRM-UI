@@ -216,10 +216,12 @@ export class AccessAccountComponent implements OnInit {
     }
     ngOnInit() {
         try {
+            if(this.vanityURLService.isVanityURLEnabled()){
+                this.vanityURLService.checkVanityURLDetails();
+            }
             this.mainLoader = true;
             this.authenticationService.navigateToDashboardIfUserExists();
-            let alias = this.route.snapshot.params['alias'];
-            this.vanityURLService.isVanityURLEnabled();
+            let alias = this.route.snapshot.params['alias'];            
             this.getUserDatails( alias );
         } catch ( error ) { this.mainLoader = false; this.xtremandLogger.error( 'error' + error ); }
     }

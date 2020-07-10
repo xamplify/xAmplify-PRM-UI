@@ -9,12 +9,13 @@ import { Pagination } from "app/core/models/pagination";
 import { Properties } from "app/common/models/properties";
 import { VanityEmailTempalte } from "app/email-template/models/vanity-email-template";
 import { Title, DOCUMENT } from "@angular/platform-browser";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class VanityURLService {
 
 
-  constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) { }
+  constructor(private http: Http, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument, private router: Router) { }
 
   getVanityURLDetails(companyProfileName: string): Observable<VanityURL> {
     const url = this.authenticationService.REST_URL + "v_url/companyDetails/" + companyProfileName;
@@ -118,7 +119,11 @@ export class VanityURLService {
     if (this.authenticationService.v_companyName == undefined || this.authenticationService.v_companyLogoImagePath == undefined) {
       this.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {
         this.authenticationService.v_companyName = result.companyName;
-        this.authenticationService.vanityURLink = result.vanityURLink;        
+        this.authenticationService.vanityURLink = result.vanityURLink;   
+        if(!result.enableVanityURL){
+          this.router.navigate( ['/vanity-domain-error'] );
+          return;
+        }     
         this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
         this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
         if (result.companyBgImagePath) {

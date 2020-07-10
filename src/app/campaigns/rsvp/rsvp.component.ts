@@ -11,6 +11,7 @@ import { FormSubmit } from '../../forms/models/form-submit';
 import { FormSubmitField } from '../../forms/models/form-submit-field';
 import { ColumnInfo } from '../../forms/models/column-info';
 import { Form } from '../../forms/models/form';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 
 declare var $: any;
@@ -45,7 +46,7 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
   selectedUtmType: string;
   hideForm = false;
   constructor(private changeDetectorRef: ChangeDetectorRef, public referenceService: ReferenceService, private route: ActivatedRoute, public campaignService: CampaignService, public processor:Processor,
-  public authenticationService:AuthenticationService) { }
+  public authenticationService:AuthenticationService, private vanityURLService: VanityURLService) { }
 
   getEventCampaign (alias: string) {
     this.campaignService.getEventCampaignByAlias(alias)
@@ -305,6 +306,9 @@ export class RsvpComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   ngOnInit() {
     try{
+      if(this.vanityURLService.isVanityURLEnabled()){
+        this.vanityURLService.checkVanityURLDetails();
+      }
         this.authenticationService.isFromRsvpPage = true;
         $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
         this.processor.set(this.processor);

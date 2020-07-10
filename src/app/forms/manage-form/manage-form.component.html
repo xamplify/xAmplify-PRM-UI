@@ -7,7 +7,7 @@
                 <a [routerLink]="['/home/design/add']" translate>Create Design</a> <i class="fa fa-angle-right"></i>
             </li>
 
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i class="fa fa-angle-right"></i></li>
             <ng-container *ngIf="pagination.campaignForm">
                 <li>
                     <a [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a><i class="fa fa-angle-right"></i>
@@ -58,7 +58,7 @@
                                 <div class="inputs" style="float: right">
                                     <div style="float: left;">
                                         <select class="form-control" [(ngModel)]="sortOption.formsSortOption" (ngModelChange)="sortBy($event)" style="position: relative;right: -3px;">
-                                        <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option" translate>
+                                        <option *ngFor="let option of sortOption.manageFormsSortOptions" [ngValue]="option">
                                             {{option.name}}</option>
                                         </select>
                                     </div>
@@ -107,13 +107,13 @@
                                         </td>
                                         <td>
                                             <h4 class="moreipsis mt5 mb5 f-w-600" title="{{form.name}}">
-                                                <span><b translate>{{form.name}}</b></span>
+                                                <span><b>{{form.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis" title="{{form.categoryName}}">
-                                                <span translate> Folder <b translate>{{form.categoryName}}</b></span>
+                                                <span translate> Folder <b>{{form.categoryName}}</b></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{form.createdName}}">
-                                                <span translate> Created By <b translate>{{form.createdName}}</b></span>
+                                                <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
                                             <h6 class="view-banner" translate>Form</h6>
                                         </td>
@@ -136,7 +136,7 @@
                                                 <ng-container *ngIf="form.campaignForm&&!form.dataShare">
                                                     <a class="cursor">
                                                         <i class="fa fa-line-chart"></i>
-                                                        <span class="badge" id="notification" translate>{{form.count}}</span>
+                                                        <span class="badge" id="notification">{{form.count}}</span>
                                                     </a>
                                                     <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
                                                         <img src="../assets/images/disabled-icon.png">
@@ -147,13 +147,13 @@
                                                     <ng-container *ngIf="form.count==0">
                                                         <a class="cursor">
                                                             <i class="fa fa-line-chart"></i>
-                                                            <span class="badge" id="notification" translate>{{form.count}}</span>
+                                                            <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
                                                     </ng-container>
                                                     <ng-container *ngIf="form.count>0">
                                                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" data-toggle="tooltip" data-placement="top" title="Form Analytics">
                                                             <i class="fa fa-line-chart"></i>
-                                                            <span class="badge" id="notification" translate>{{form.count}}</span>
+                                                            <span class="badge" id="notification">{{form.count}}</span>
                                                         </a>
                                                     </ng-container>
                                                 </ng-container>
@@ -178,7 +178,7 @@
                                 {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
-                                <h6 title="{{form.categoryName}}">
+                                <h6 title="{{form.categoryName}}" translate>
                                     Folder <b>{{form.categoryName | slice:0:17}}</b>
                                     <span *ngIf="form.categoryName?.length>17">..</span>
                                 </h6>
@@ -188,7 +188,7 @@
                                 </b>
                                 </h6>
                                 <h6 title="{{form.createdName}}" translate>
-                                    By <b translate>{{form.createdName | slice:0:17}}</b>
+                                    By <b>{{form.createdName | slice:0:17}}</b>
                                     <span *ngIf="form.createdName?.length>17">..</span>
                                 </h6>
                             </div>
@@ -210,7 +210,7 @@
                                     <a class="cursor">
                                         <i class="fa fa-line-chart"></i>
                                     </a>
-                                    <span class="badge" id="notification-list" translate>{{form.count}}</span>
+                                    <span class="badge" id="notification-list">{{form.count}}</span>
                                     <!-- <a id="disabled-icon" class="blur" data-toggle="tooltip" data-placement="top" title="Data Sharing Disabled">
                                         <img src="../assets/images/disabled-icon.png">
                                     </a> -->
@@ -220,13 +220,13 @@
                                         <a class="cursor">
                                             <i class="fa fa-line-chart"></i>
                                         </a>
-                                        <span class="badge" id="notification-list" translate>{{form.count}}</span>
+                                        <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                     <ng-container *ngIf="form.count>0">
                                         <a data-rel="fancybox-button" (click)="goToAnalytics(form)" title="Form Analytics" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-line-chart"></i>
                                         </a>
-                                        <span class="badge" id="notification-list" translate>{{form.count}}</span>
+                                        <span class="badge" id="notification-list">{{form.count}}</span>
                                     </ng-container>
                                 </ng-container>
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" (click)="confirmDelete(form)" data-toggle="tooltip"
@@ -243,7 +243,7 @@
                     </div>
                     <!-- End of 24 -->
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                        <strong>No Forms Found.</strong>
+                        <strong translate>No Forms Found.</strong>
                     </div>
                 </ng-container>
             </div>
@@ -270,15 +270,15 @@
                         <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                         <br>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
+                            </a>
                         <br>
                     </div>
                     <div class="form-group">
                         <label class="control-label" translate>Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
+                            </a>
                     </div>
                 </div>
                 <div class="modal-footer">

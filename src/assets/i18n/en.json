@@ -688,7 +688,28 @@
 	"Drop-down Choices":"Drop-down Choices",
 	"Select a folder":"Select a folder",
 	"Description":"Description",
-	"Continue":"Continue"
+	"Continue":"Continue",
+	"Create Pages":"Create Pages",
+	"Insert Merge Tags":"Insert Merge Tags",
+	"Campaign Analytics":"Campaign Analytics",
+	"Form":"Form",
+	"No Forms Found.":"No Forms Found.",
+	"Access Denied":"Access Denied",
+	"Single Line Text Field":"Single Line Text Field",
+	"Multi Line Text Field":"Multi Line Text Field",
+	"Radio Buttons":"Radio Buttons",
+	"Checkboxes":"Checkboxes",
+	"Drop-down menu":"Drop-down menu",
+	"Show Forms":"Show Forms",
+	"Form Preview":"Form Preview",
+	"Link":"Link",
+	"Embed Link":"Embed Link",
+	"Link copied successfully":"Link copied successfully",
+	"Embed link copied successfully":"Embed link copied successfully",
+	"Merge Tags":"Merge Tags",
+	"Merge Tag":"Merge Tag",
+	"Copy":"Copy",
+	"Copied successfully":"Copied successfully"
 		
 }
 

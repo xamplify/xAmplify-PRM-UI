@@ -2464,7 +2464,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }else if(this.contactService.socialProviderName == 'zoho'){
-                this.getZohoContactsUsingOAuth2();
+                this.zohoShowModal();
             }
             
             /********Check Gdpr Settings******************/
@@ -2673,6 +2673,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         $("#marketoShowLoginPopup").modal('hide');
         this.contactService.getMarketoContacts(this.authenticationService.getUserId()).subscribe(data =>
         {
+        	this.selectedAddPartnerOption = 8;
             this.marketoImageBlur = false;
             this.marketoImageNormal = true;
             this.getMarketoConatacts = data.data;
@@ -3466,7 +3467,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
-                        this.selectedAddContactsOption = 6;
+                        this.selectedAddPartnerOption = 6;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3498,7 +3499,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 data => {
                     console.log(data.statusCode);
                    // this.getZohoConatacts = data;
-                    this.selectedAddContactsOption = 6;
+                    this.selectedAddPartnerOption = 6;
                     if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
