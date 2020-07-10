@@ -8,7 +8,7 @@ export class Form {
     description = "";
     formLabelDTOs: Array<ColumnInfo> = new Array<ColumnInfo>();
     isValid = false;    
-    isFormNameValid = false;  
+    //isFormNameValid = false;  
     createdBy:number;
     updatedBy:number;
     analyticsType:GeoLocationAnalyticsType;
@@ -26,4 +26,9 @@ export class Form {
     buttonValueColor= "";
     formSubmitMessage= "";
     backgroundImage= "";
+    companyLogo="";
+    showCompanyLogo=true;
+    footer="";
+	showFooter=true;
+	
 }

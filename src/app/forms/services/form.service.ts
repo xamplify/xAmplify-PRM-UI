@@ -23,13 +23,13 @@ export class FormService {
 
 
     saveForm(form: Form) {
-        return this.http.post(this.URL + "save/old?access_token=" + this.authenticationService.access_token, form)
+        return this.http.post(this.URL + "save?access_token=" + this.authenticationService.access_token, form)
             .map( this.extractData )
             .catch( this.handleError );
     }
 
     updateForm(form: Form) {
-        return this.http.post(this.URL + "update/old?access_token=" + this.authenticationService.access_token, form)
+        return this.http.post(this.URL + "update?access_token=" + this.authenticationService.access_token, form)
             .map( this.extractData )
             .catch( this.handleError );
     }
