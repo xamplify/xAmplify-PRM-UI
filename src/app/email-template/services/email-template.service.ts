@@ -147,6 +147,12 @@ export class EmailTemplateService {
             .catch(this.handleError);
     }
 
+    uploadFileFromForm(userId: number, formData: FormData) {
+        return this.http.post(this.URL + `email-template/aws/upload/fromForm?userId=${userId}&access_token=${this.authenticationService.access_token}`, formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     checkMarketoCredentials(userId: number) {
         return this.http.get(this.MARKETO_URL + `/marketo/${userId}/checkCredentials?access_token=${this.authenticationService.access_token}`)
             .map(this.extractData)

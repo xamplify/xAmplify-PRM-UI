@@ -923,6 +923,36 @@ b, strong {
 
 @media screen and (max-width:600px){.modal-dialog{ width: 100% !important; }}
 @media screen and (min-width:601px){.modal-dialog{ width: 50% !important;}}
+
+/* MODAL AS LEFT SIDEBAR */
+.modal.left .modal-dialog {
+	position: fixed;
+	margin: auto;
+	width: auto;
+	height: 100%;
+	-webkit-transform: translate3d(0%, 0, 0) !important;
+		-ms-transform: translate3d(0%, 0, 0) !important;
+		 -o-transform: translate3d(0%, 0, 0) !important;
+			transform: translate3d(0%, 0, 0) !important;
+  }
+  .modal.left .modal-content {  height: 100%; overflow-y: auto; }
+  .modal.left.fade .modal-dialog {
+	left: -320px;
+	-webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+	   -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+		 -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+			transition: opacity 0.3s linear, left 0.3s ease-out;
+  }
+  
+  .modal-body {max-height: calc(100vh - 122px); overflow-y: auto;}
+  .modal.left.fade.in .modal-dialog { left: 0 !important; }
+  @media screen and (max-width:600px){.accounts-modal { width:100%; } }
+@media screen and (min-width:601px){.accounts-modal { width:60%;float: left; } }
+/* .override-actions{ margin: 0 auto; display: table;float: none !important; } */
+
+@media screen and (max-width:600px){.modal-dialog{ width: 100% !important; }}
+@media screen and (min-width:601px){.modal-dialog{ width: 50% !important;}}
+  
 .fileinput-button-css {
   position: relative;
   overflow: hidden;
