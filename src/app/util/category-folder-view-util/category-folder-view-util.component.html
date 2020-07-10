@@ -60,16 +60,16 @@
                             <span *ngIf="category.name?.length>22">...</span>
                         </h4><br><br>
                         <span class="view-banner" id="custom-view-banner">{{category.count}}</span>
-                        <h6 [title]="category.createdBy">By
+                        <h6 [title]="category.createdBy" translate>By
                             <b>{{category.createdBy | slice:0:15}}<span
                                     *ngIf="category.createdBy?.length>15">...</span></b>
                         </h6>
-                        <h6 [title]="category.companyName">From
+                        <h6 [title]="category.companyName" translate>From
                             <b>{{category.companyName | slice:0:20}}<span
                                     *ngIf="category.companyName?.length>20">...</span></b>
                         </h6>
                         <h6>
-                            <span>Created On</span>
+                            <span translate>Created On</span>
                             <span><b>
                                     <span
                                         *ngIf="!referenceService.isSafariBrowser()">{{category.displayTime |date:'mediumDate'}},{{category.displayTime |date:'shortTime'}}</span>
@@ -95,10 +95,10 @@
                 <tr>
                     <th class="text-center" colspan="2" style="width: 50%" id="border-bottom">
                         <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'folder-list-view',2)"> </span>
-                        <span class="gridHeader">Folder</span>
+                        <span class="gridHeader" translate>Folder</span>
                     </th>
-                    <th class="text-center" id="border-bottom">Created On</th>
-                    <th class="text-center" id="border-bottom">Items Count</th>
+                    <th class="text-center" id="border-bottom" translate>Created On</th>
+                    <th class="text-center" id="border-bottom" translate>Items Count</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,7 +119,7 @@
                             <span>{{category.name}}</span>
                         </h4>
                         <h6 class="moreipsis">
-                            <span> Created By <strong>{{category.createdBy}}</strong></span>
+                            <span translate> Created By <strong>{{category.createdBy}}</strong></span>
                         </h6>
                     </td>
                     <td class="text-center">
@@ -166,7 +166,7 @@
         </div>
         <!-- End of 24 -->
         <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-            <strong>No Folders Found.</strong>
+            <strong translate>No Folders Found.</strong>
         </div>
 
 </div>
