@@ -57,6 +57,7 @@
                                                                 <span class="gridHeader">List Name</span>
                                                             </th>
                                                             <th style="text-align: center;" *ngIf="showContactType">Type</th>
+                                                            <th style="text-align: center;" >List Type</th>
                                                             <th style="text-align: center;">Uploaded Date</th>
                                                             <th style="text-align: center;">Preview </th>
                                                         </tr>
@@ -82,6 +83,14 @@
                                                                 </ng-container>
                                                                 <ng-container *ngIf="!contacts.partnerUserList">
                                                                     Contacts
+                                                                </ng-container>
+                                                            </td>
+                                                             <td class="text-center">
+                                                                <ng-container *ngIf="contacts.publicList">
+                                                                    Public
+                                                                </ng-container>
+                                                                <ng-container *ngIf="!contacts.publicList">
+                                                                    Private
                                                                 </ng-container>
                                                             </td>
                                                             <td class="text-center sorting_1">

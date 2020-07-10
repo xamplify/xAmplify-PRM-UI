@@ -1690,7 +1690,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   listTotalCampaignViews(campaignId: number) {
 	  try {
 	      //this.isLeadListDownloadProcessing = true;
-	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType)
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign)
 	        .subscribe(
 	          data => {
 	          this.downloadFile(data, 'campaignviews', campaignId);
