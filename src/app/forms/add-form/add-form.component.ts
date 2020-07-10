@@ -85,7 +85,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     loggedInUserId: number;
     categoryNames: any;
     routerLink: string = "/home/forms/manage";
-    compControllerColor: string;
+    backgroundControllerColor: string;
     labelControllerColor: string;
     buttonBackgroundControllerColor: string;
     buttonValueControllerColor: string;
@@ -148,6 +148,24 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.buttonName = "Update";
             this.existingFormName = this.formService.form.name.toLowerCase();
             this.form = this.formService.form;
+            if (this.form.showCompanyLogo === undefined || this.form.showCompanyLogo === null) {
+                this.form.showCompanyLogo = true;
+            }
+            if (this.form.showFooter === undefined || this.form.showFooter === null) {
+                this.form.showFooter = true;
+            }
+            if (this.form.backgroundColor) {
+                this.backgroundControllerColor = this.form.backgroundColor;
+            }
+            if (this.form.labelColor) {
+                this.labelControllerColor = this.form.labelColor;
+            }
+            if (this.form.buttonColor) {
+                this.buttonBackgroundControllerColor = this.form.buttonColor;
+            }
+            if (this.form.buttonValueColor) {
+                this.buttonValueControllerColor = this.form.buttonValueColor;
+            }
             this.form.isValid = true;
             this.listExistingColumns(this.form.formLabelDTOs);
             this.characterSize();
@@ -736,16 +754,16 @@ export class AddFormComponent implements OnInit, OnDestroy {
     maximizeForm() {
         //$("#custom-fields-div").css("display", "none");
         $("#edit-fields-div").css("display", "none");
-        $('#complete-form-div').removeClass("col-md-9");
+        $('#complete-form-div').removeClass("col-md-8");
         $('#complete-form-div').addClass("col-md-12");
         this.toolTip = "Minimize";
     }
 
     minimizeForm() {
-       // $("#custom-fields-div").css("display", "block");
+        // $("#custom-fields-div").css("display", "block");
         $("#edit-fields-div").css("display", "block");
         $('#complete-form-div').removeClass("col-md-12");
-        $('#complete-form-div').addClass("col-md-9");
+        $('#complete-form-div').addClass("col-md-8");
         this.toolTip = "Maximize";
     }
 
@@ -786,7 +804,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
             const rgba = this.videoUtilService.transparancyControllBarColor(event, this.valueRange);
             $('.video-js .vjs-control-bar').css('cssText', 'background-color:' + rgba + '!important');
             if (type === "backgroundColor") {
-                this.compControllerColor = event;
+                this.backgroundControllerColor = event;
                 form.backgroundColor = event;
             } else if (type === "labelColor") {
                 this.labelControllerColor = event;
@@ -977,15 +995,15 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#add-form-name-modal').removeClass(this.portletBodyBlur);
     }
 
-    showCompanyLogoChange(event:any) {
+    showCompanyLogoChange(event: any) {
         this.form.showCompanyLogo = event;
     }
 
-    showFooterChange(event:any){
+    showFooterChange(event: any) {
         this.form.showFooter = event;
     }
 
-    errorHandler(event){ event.target.src ='assets/images/company-profile-logo.png'; }
+    errorHandler(event) { event.target.src = 'assets/images/company-profile-logo.png'; }
 
     uploadFile(file: File, type: string) {
         this.loading = true;
@@ -1013,24 +1031,23 @@ export class AddFormComponent implements OnInit, OnDestroy {
                 });
     }
 
-    openFormFields(){
+    openFormFields() {
         $('#add-form-fields').modal('show');
         this.addBlurClass();
     }
 
-    closeFormFieldsModal(){
+    closeFormFieldsModal() {
         $('#add-form-fields').modal('hide');
         this.removeBlurClass()
     }
 
-    openFormDesignModal(){
+    openFormDesignModal() {
         $('#add-form-designs').modal('show');
         this.addBlurClass();
     }
 
-    closeFormDesignModal(){
+    closeFormDesignModal() {
         $('#add-form-designs').modal('hide');
         this.removeBlurClass()
     }
-
 }

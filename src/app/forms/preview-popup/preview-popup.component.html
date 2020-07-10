@@ -152,10 +152,10 @@
           </button>
           <h4 class="modal-title text-center">Form Preview</h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body"  [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-        <div class="panel panel-info" *ngIf="!formError" [style.backgroundColor]="form.backgroundColor"
-          [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
+        <div class="vertical-center">
+        <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor">
               <div class="panel-heading">
                 <div class="panel-title">{{form.name}}</div>
               </div>
@@ -222,6 +222,7 @@
             </ng-template>
               </div>
             </div>
+          </div>
             
             
              <div *ngIf="formError">

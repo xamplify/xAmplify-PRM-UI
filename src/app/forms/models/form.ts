@@ -21,7 +21,7 @@ export class Form {
     ailasUrl = "";
     backgroundColor = ""; 
     labelColor= "";
-    buttonValue= "";
+    buttonValue= "Submit";
     buttonColor= "";
     buttonValueColor= "";
     formSubmitMessage= "";
