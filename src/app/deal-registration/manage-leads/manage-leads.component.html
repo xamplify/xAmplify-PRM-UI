@@ -1,9 +1,6 @@
 <div class="col-xs-12 p5" style="min-height: 300px">
   <div class="portlet light">
     <div class="portlet-title">
-        <!-- <div class="caption col-md-12" *ngIf="pageText.length >0" >
-            <span class="caption-subject font-red-sunglo uppercase">{{pageText}}</span>
-        </div> -->
     <div class="col-xs-12 col-sm-12 col-lg-12 p0">
        <div class="col-xs-12 col-sm-6 col-lg-6 p0">
       <div class="caption" style="font-size:15px; padding-bottom: 0px!important;margin-top: 15px">
@@ -45,7 +42,8 @@
             <th class="center-aligned" translate>Lead</th>
             <th class="center-aligned" *ngIf="pageText != 'TOTAL LEADS'" translate>Deal Title</th>
             <th class="center" translate>Campaign Name</th>
-            <th class="center" translate>Added By (Partner)</th>
+            <th class="center" *ngIf="!ownCampaignLeadAndDeal" translate>Added By (Partner)</th>
+            <th class="center" *ngIf="ownCampaignLeadAndDeal" translate>Added By</th>
             <th class="center" *ngIf ="!isPartner && pageText != 'TOTAL LEADS'" translate>Status</th>
             <th class="center" style="width: 18%" translate>Actions</th>
             <!--  <th class="center">Details</th> -->
@@ -64,38 +62,58 @@
               <td class="re-distributed-count" title="{{item.campaignName}}">{{item.campaignName | slice:0:20}}
                 <span *ngIf="item.campaignName?.length>20">...</span>
               </td>
-              <td *ngIf="filter.length == 0">
-                <h5 class='ellipsis' title="{{partner.firstName}} {{partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{partner.firstName | slice:0:20}}
-                  <span *ngIf="partner.firstName?.length>20">...</span>
-                  &nbsp;{{partner.lastName | slice:0:15}}
-                  <span *ngIf="partner.lastName?.length>15">...</span>
-                </h5>
-                <h6 class='m0' style="font-weight: 400;">
-                  <a title="{{partner.emailId}}">{{partner.emailId | slice:0:30}}</a>
-                  <span *ngIf="partner.emailId?.length>30">...</span>
-                </h6>
-                <h5 style="font-weight: 600; color: #676767;">
-                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
-                  </app-timestamp>
-                  
-                </h5>
-              </td>
-              <td *ngIf="filter.length > 0 && item.partner != null">
-                <h5 class='ellipsis' title="{{item.partner.firstName}} {{item.partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.partner.firstName | slice:0:20}}
-                  <span *ngIf="item.partner.firstName?.length>20">...</span>
-                  &nbsp;{{item.partner.lastName | slice:0:15}}
-                  <span *ngIf="item.partner.lastName?.length>15">...</span>
-                </h5>
-                <h6 class='m0' style="font-weight: 400;">
-                  <a title="{{item.partner.emailId}}">{{item.partner.emailId | slice:0:30}}</a>
-                  <span *ngIf="item.partner.emailId?.length>30">...</span>
-                </h6>
-                <h5 style="font-weight: 600; color: #676767;">
-                 
-                  <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.dealCreatedTime">
-                  </app-timestamp>
-                </h5>
-              </td>
+            
+              <ng-container *ngIf="!ownCampaignLeadAndDeal">
+                <td *ngIf="filter.length == 0">
+                  <h5 class='ellipsis' title="{{partner.firstName}} {{partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{partner.firstName | slice:0:20}}
+                    <span *ngIf="partner.firstName?.length>20">...</span>
+                    &nbsp;{{partner.lastName | slice:0:15}}
+                    <span *ngIf="partner.lastName?.length>15">...</span>
+                  </h5>
+                  <h6 class='m0' style="font-weight: 400;">
+                    <a title="{{partner.emailId}}">{{partner.emailId | slice:0:30}}</a>
+                    <span *ngIf="partner.emailId?.length>30">...</span>
+                  </h6>
+                  <h5 style="font-weight: 600; color: #676767;">
+                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
+                    </app-timestamp>
+                  </h5>
+                </td>
+                <td *ngIf="filter.length > 0 && item.partner != null">
+                  <h5 class='ellipsis' title="{{item.partner.firstName}} {{item.partner.lastName}}" style="margin: 7px 0 2px 0;font-weight: 400;">{{item.partner.firstName | slice:0:20}}
+                    <span *ngIf="item.partner.firstName?.length>20">...</span>
+                    &nbsp;{{item.partner.lastName | slice:0:15}}
+                    <span *ngIf="item.partner.lastName?.length>15">...</span>
+                  </h5>
+                  <h6 class='m0' style="font-weight: 400;">
+                    <a title="{{item.partner.emailId}}">{{item.partner.emailId | slice:0:30}}</a>
+                    <span *ngIf="item.partner.emailId?.length>30">...</span>
+                  </h6>
+                  <h5 style="font-weight: 600; color: #676767;">
+                   
+                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.dealCreatedTime">
+                    </app-timestamp>
+                  </h5>
+                </td>
+              </ng-container>
+              <ng-container *ngIf="ownCampaignLeadAndDeal">
+                <td>
+                  <h5 class='ellipsis'  style="margin: 7px 0 2px 0;font-weight: 400;">{{item.leadCreatorFirstName | slice:0:20}}
+                    <span *ngIf="item.leadCreatorFirstName?.length>20">...</span>
+                    &nbsp;{{item.leadCreatorLastName | slice:0:15}}
+                    <span *ngIf="item.leadCreatorLastName?.length>15">...</span>
+                  </h5>
+                  <h6 class='m0' style="font-weight: 400;">
+                    <a title="{{item.leadCreatorEmailId}}">{{item.leadCreatorEmailId | slice:0:30}}</a>
+                    <span *ngIf="item.leadCreatorEmailId?.length>30">...</span>
+                  </h6>
+                  <h5 style="font-weight: 600; color: #676767;">
+                    <app-timestamp [isOnlyDate]="false" [dateAndTime]="item.createdTime">
+                    </app-timestamp>
+                  </h5>
+                </td>
+              </ng-container>
+              
 
               <td *ngIf ="!isPartner && pageText != 'TOTAL LEADS'">
                 <!-- <div *ngIf="item.dealStatus == 'APPROVED' || item.dealStatus == 'OPENED' || item.dealStatus == 'REJECTED'" >
@@ -119,7 +137,6 @@
                 style="margin-top: 10px" id="deal">
                     <span class="circled-number" style="height: 40px;width:40px">
                     <i class="fa fa-tags mr5"  aria-hidden="true" style="font-size:18px"></i>
-                    <!-- <i class="fa fa-comments" aria-hidden="true" style="margin-left: 5px;" *ngIf="item.propCommentCount"> </i>                 -->
                     <span  class="badge badge-default" style="margin-bottom: 32px; margin-left: -20px;background-color: #ed1c24 !important;" >
                       <span *ngIf="!item.propCommentCount">0</span><span *ngIf="item.propCommentCount">{{item.propCommentCount}}</span></span>
                   </span>
@@ -139,7 +156,7 @@
                      
                 
                 </a>
-                <a *ngIf="isPartner" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" title="Comments" style="margin-top: 10px">
+                <a *ngIf="isPartner || ownCampaignLeadAndDeal" data-rel="fancybox-button" (click)="showDealRegistrationForm(item,$event)" [attr.title]="item.deal ? 'Update Deal':'Register Deal'" style="margin-top: 10px">
                    
                   <button class="btn btn-primary register_deal" *ngIf="item.deal" translate>Update Deal</button>
                   <button class="btn btn-primary register_deal" *ngIf="!item.deal" translate>Register Deal</button> 

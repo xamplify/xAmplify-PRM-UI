@@ -20,9 +20,9 @@ import { Roles } from '../../core/models/roles';
 import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from 'app/core/services/user.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import {DashboardAnalyticsDto} from "app/dashboard/models/dashboard-analytics-dto";
+import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
 
-declare var  $:any;
+declare var $: any;
 
 
 @Component({
@@ -32,8 +32,7 @@ declare var  $:any;
     providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue],
 
 })
-export class ManageDealsComponent implements OnInit
-{
+export class ManageDealsComponent implements OnInit {
 
     loggedInUserId: number = 0;
     isListView = false;
@@ -52,7 +51,7 @@ export class ManageDealsComponent implements OnInit
     totalDealsLoader: boolean = true;
     openedDealsLoader: boolean = true;
     closedDealsLoader: boolean = true;
-    allApisLoader:boolean = true;
+    allApisLoader: boolean = true;
     campaingnList: boolean = false;
     partnerList: boolean = false;
     selectedCampaignId: number = 0;
@@ -91,127 +90,121 @@ export class ManageDealsComponent implements OnInit
     selectedTabIndex = 1;
     rejectedDealsLoader: boolean = true;
     rejectedDealsError: boolean = false;
-    rejectedDeals: number =0;
+    rejectedDeals: number = 0;
     isOnlyPartner: any;
     loggedInUser: User;
-    roleName: Roles= new Roles();
+    roleName: Roles = new Roles();
     isVendor: boolean;
     isCompanyPartner: boolean;
 
     enableLeads = false;
 
     customResponse: CustomResponse;
-    superiorId: number =0;
+    superiorId: number = 0;
 
 
     @ViewChild(ManagePartnersComponent)
-    set leadId(partner: ManagePartnersComponent)
-    {
+    set leadId(partner: ManagePartnersComponent) {
         this.selectedLeadId = partner;
     };
     opportunitiesAnalyticsLoader = false;
     opportunitiesAnalytics: any;
-    dashboardAnalyticsDto:DashboardAnalyticsDto = new DashboardAnalyticsDto();
+    dashboardAnalyticsDto: DashboardAnalyticsDto = new DashboardAnalyticsDto();
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
-        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService,userService:UserService,public vanityUrlService:VanityURLService)
-    {
+        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService, userService: UserService, public vanityUrlService: VanityURLService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
-      userService.getHomeRoles(url)
-      .subscribe(
-      response => {
-           if(response.statusCode==200){
-              this.authenticationService.loggedInUserRole = response.data.role;
-              this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
-              this.authenticationService.superiorRole = response.data.superiorRole;
-              if(this.authenticationService.loggedInUserRole == "Team Member"){
-                dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response=>{
-                    console.log(response)
-                    this.superiorId = response;
-                    this.init();
-                });
-            }else{
-                this.superiorId = this.authenticationService.getUserId();
-                this.init();
-            }
-           }
-        })
+        userService.getHomeRoles(url)
+            .subscribe(
+                response => {
+                    if (response.statusCode == 200) {
+                        this.authenticationService.loggedInUserRole = response.data.role;
+                        this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
+                        this.authenticationService.superiorRole = response.data.superiorRole;
+                        if (this.authenticationService.loggedInUserRole == "Team Member") {
+                            dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
+                                console.log(response)
+                                this.superiorId = response;
+                                this.init();
+                            });
+                        } else {
+                            this.superiorId = this.authenticationService.getUserId();
+                            this.init();
+                        }
+                    }
+                })
 
 
 
     }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.opportunitiesAnalyticsLoader = true;
         this.dashboardAnalyticsDto = this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.startOrStopAllCountsLoader(true);
     }
-    init(){
-        this.isListView = "LIST" ==localStorage.getItem('defaultDisplayType');
+    init() {
+        this.isListView = "LIST" == localStorage.getItem('defaultDisplayType');
 
         const roles = this.authenticationService.getRoles();
-        if(roles!==undefined){
-            if(this.authenticationService.loggedInUserRole != "Team Member"){
+        if (roles !== undefined) {
+            if (this.authenticationService.loggedInUserRole != "Team Member") {
                 this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-            if (
+                if (
                     roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                     roles.indexOf(this.roleName.allRole) > -1 ||
-                    roles.indexOf(this.roleName.vendorRole)>-1) {
+                    roles.indexOf(this.roleName.vendorRole) > -1) {
                     this.isVendor = true;
                 }
-                if(this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember){
+                if (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {
                     this.isCompanyPartner = true;
                 }
-            }else{
-                if(!this.authenticationService.superiorRole.includes("Vendor")
-                && this.authenticationService.superiorRole.includes("Partner")) {
-                        this.isOnlyPartner = true;
+            } else {
+                if (!this.authenticationService.superiorRole.includes("Vendor")
+                    && this.authenticationService.superiorRole.includes("Partner")) {
+                    this.isOnlyPartner = true;
                 }
-                if(this.authenticationService.superiorRole.includes("Vendor")) {
+                if (this.authenticationService.superiorRole.includes("Vendor")) {
                     this.isVendor = true;
                 }
-                if(this.authenticationService.superiorRole.includes("Partner")) {
+                if (this.authenticationService.superiorRole.includes("Partner")) {
                     this.isCompanyPartner = true;
                 }
             }
-            }
-            this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response=>{
-                console.log(this.superiorId)
-                this.referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-                    this.enableLeads = data.enableLeads;
-                    console.log(data)
-                    if(!this.isOnlyPartner){
-                        if(this.authenticationService.vanityURLEnabled){
-                            if(this.authenticationService.isPartnerTeamMember){
-                                this.showPartner();
-                            }else{
-                                this.isCompanyPartner = false;
-                                this.showVendor();
-                            }
-                        }else{
+        }
+        this.referenceService.getCompanyIdByUserId(this.superiorId).subscribe(response => {
+            console.log(this.superiorId)
+            this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
+                this.enableLeads = data.enableLeads;
+                console.log(data)
+                if (!this.isOnlyPartner) {
+                    if (this.authenticationService.vanityURLEnabled) {
+                        if (this.authenticationService.isPartnerTeamMember) {
+                            this.showPartner();
+                        } else {
+                            this.isCompanyPartner = false;
                             this.showVendor();
-                        }                        
-                    }else{
-                        this.showPartner();
+                        }
+                    } else {
+                        this.showVendor();
                     }
-                });
-            })
+                } else {
+                    this.showPartner();
+                }
+            });
+        })
 
         console.log(this.authenticationService.getRoles())
     }
-    switchVersions()
-    {
+    switchVersions() {
         this.startOrStopAllCountsLoader(true);
         this.resetAllDeals();
-        if (this.isVendorVersion && !this.isOnlyPartner)
-        {
+        if (this.isVendorVersion && !this.isOnlyPartner) {
             this.campaignsPagination = new Pagination();
             this.campaignsPaginationByDeals = new Pagination();
-            try
-            {
+            try {
                 this.campaingnList = true;
                 this.isCampaignByLeads = true;
                 this.isCampaignByDeals = false;
@@ -222,12 +215,10 @@ export class ManageDealsComponent implements OnInit
                 // if(this.isCampaignByDeals)
                 //     this.listCampaignsByDeals(this.campaignsPaginationByDeals);
                 this.parent = "manage-leads";
-            } catch (error)
-            {
+            } catch (error) {
                 this.catchError(error, "ngOnInit()");
             }
-        } else
-        {
+        } else {
             this.campaignsPagination = new Pagination();
             this.campaignsPaginationByDeals = new Pagination();
             this.isPartner = true;
@@ -246,70 +237,66 @@ export class ManageDealsComponent implements OnInit
     }
 
 
-    getOpportunitesAnalyticsForVendor(){
+    getOpportunitesAnalyticsForVendor() {
         this.opportunitiesAnalyticsLoader = true;
         this.dealRegistrationService.getOpportunitesAnalyticsForVendor(this.loggedInUserId).
-        subscribe(result => {
-            this.opportunitiesAnalytics = result.data;
-            this.opportunitiesAnalyticsLoader = false;
-        },
-        (error: any) => {
-            this.xtremandLogger.error(error);
-            //this.opportunitiesAnalyticsLoader = false;
-        });
-      }
+            subscribe(result => {
+                this.opportunitiesAnalytics = result.data;
+                this.opportunitiesAnalyticsLoader = false;
+            },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    //this.opportunitiesAnalyticsLoader = false;
+                });
+    }
 
-      getOpportunitesAnalyticsForPartner(){
+    getOpportunitesAnalyticsForPartner() {
         this.opportunitiesAnalyticsLoader = true;
         this.vanityUrlService.addVanityUrlFilterDTO(this.dashboardAnalyticsDto);
         this.dealRegistrationService.getOpportunitesAnalyticsForPartner(this.dashboardAnalyticsDto).
-        subscribe(result => {
-            this.opportunitiesAnalytics = result.data;
-            this.opportunitiesAnalyticsLoader = false;
-        },
-        (error: any) => {
-            this.xtremandLogger.error(error);
-            //this.opportunitiesAnalyticsLoader = false;
-        });
-      }
-    
+            subscribe(result => {
+                this.opportunitiesAnalytics = result.data;
+                this.opportunitiesAnalyticsLoader = false;
+            },
+                (error: any) => {
+                    this.xtremandLogger.error(error);
+                    //this.opportunitiesAnalyticsLoader = false;
+                });
+    }
 
-    showCampaigns()
-    {
+
+    showCampaigns() {
         $('#deals-page-content-div').css('pointer-events', 'none');
         this.clearPagination();
         this.clearFields();
-        if(this.isVendorVersion)
+        if (this.isVendorVersion)
             this.listCampaigns(this.campaignsPagination);
 
-        if(this.isPartnerVersion)
+        if (this.isPartnerVersion)
             this.listCampaignsByPartner(this.campaignsPagination);
         this.selectedTabIndex = 1;
         this.isCampaignByLeads = true;
         this.isCampaignByDeals = false;
-        this.campaignsPagination.pagedItems.forEach(element =>
-        {
+        this.campaignsPagination.pagedItems.forEach(element => {
             element.expand = false;
         });
         this.campaingnList = true;
         this.leadList = false;
 
     }
-    showCampaignsByDeals()
-    {
+    showCampaignsByDeals() {
         this.clearFields();
         $('#deals-page-content-div').css('pointer-events', 'none');
         this.clearPagination();
-        if(this.isVendorVersion)
+        if (this.isVendorVersion)
             this.listCampaignsByDeals(this.campaignsPaginationByDeals);
 
-        if(this.isPartnerVersion)
+        if (this.isPartnerVersion)
             this.listCampaignsDealsByPartner(this.campaignsPaginationByDeals);
         this.selectedTabIndex = 2;
         this.isCampaignByLeads = false;
         this.isCampaignByDeals = true;
-        this.campaignsPaginationByDeals.pagedItems.forEach(element =>
-        {
+        this.campaignsPaginationByDeals.pagedItems.forEach(element => {
             element.expand = false;
         });
         this.campaingnList = true;
@@ -317,157 +304,127 @@ export class ManageDealsComponent implements OnInit
 
     }
     /******************Total Deals************************/
-    getTotalLeads()
-    {
-        try
-        {
+    getTotalLeads() {
+        try {
             //this.totalLeadsLoader = true;
-           // this.allApisLoader = true;
+            // this.allApisLoader = true;
             this.dealRegistrationService.getTotalLeads(this.superiorId).subscribe(
-                (data: any) =>
-                {
+                (data: any) => {
                     this.totalLeads = data.data;
-                   // this.totalLeadsLoader = false;
+                    // this.totalLeadsLoader = false;
                 },
-                (error: any) =>
-                {
-                    this.totalLeadsError = true;
-                   this.totalLeadsLoader = false;
-                   this.allApisLoader = false;
-                }
-
-            );
-        } catch (error)
-        {
-            this.catchError(error, "getTotalLeads()");
-        }
-    }
-    getTotalLeadsByPartner()
-    {
-        try
-        {
-            //this.totalLeadsLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getTotalLeadsByPartner(this.superiorId).subscribe(
-                (data: any) =>
-                {
-                    this.totalLeads = data.data;
-                    //this.totalLeadsLoader = false;
-                },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.totalLeadsError = true;
                     this.totalLeadsLoader = false;
                     this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
+            this.catchError(error, "getTotalLeads()");
+        }
+    }
+    getTotalLeadsByPartner() {
+        try {
+            //this.totalLeadsLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getTotalLeadsByPartner(this.superiorId).subscribe(
+                (data: any) => {
+                    this.totalLeads = data.data;
+                    //this.totalLeadsLoader = false;
+                },
+                (error: any) => {
+                    this.totalLeadsError = true;
+                    this.totalLeadsLoader = false;
+                    this.allApisLoader = false;
+                }
+
+            );
+        } catch (error) {
             this.catchError(error, "getTotalLeads()");
         }
     }
     /******************Total Deals************************/
-    getTotalDeals()
-    {
-        try
-        {
-           // this.totalDealsLoader = true;
-           // this.allApisLoader = true;
+    getTotalDeals() {
+        try {
+            // this.totalDealsLoader = true;
+            // this.allApisLoader = true;
             this.dealRegistrationService.getTotalDeals(this.superiorId).subscribe(
-                (data: any) =>
-                {
+                (data: any) => {
                     this.totalDeals = data.data;
-                   // this.totalDealsLoader = false;
+                    // this.totalDealsLoader = false;
                 },
-                (error: any) =>
-                {
-                    this.totalDealsError = true;
-                   this.totalDealsLoader = false;
-                   this.allApisLoader = false;
-                }
-
-            );
-        } catch (error)
-        {
-            this.catchError(error, "getTotalDeals()");
-        }
-    }
-
-    getTotalDealsByPartner()
-    {
-        try
-        {
-           // this.totalDealsLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getTotalDealsByPartner(this.superiorId).subscribe(
-                (data: any) =>
-                {
-                    this.totalDeals = data.data;
-                   //this.totalDealsLoader = false;
-                },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.totalDealsError = true;
                     this.totalDealsLoader = false;
                     this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
+            this.catchError(error, "getTotalDeals()");
+        }
+    }
+
+    getTotalDealsByPartner() {
+        try {
+            // this.totalDealsLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getTotalDealsByPartner(this.superiorId).subscribe(
+                (data: any) => {
+                    this.totalDeals = data.data;
+                    //this.totalDealsLoader = false;
+                },
+                (error: any) => {
+                    this.totalDealsError = true;
+                    this.totalDealsLoader = false;
+                    this.allApisLoader = false;
+                }
+
+            );
+        } catch (error) {
             this.catchError(error, "getTotalDealsByPartner()");
         }
     }
     /*************Opened Deals****************************/
-    getOpenedDeals()
-    {
-        try
-        {
-          //  this.openedDealsLoader = true;
-          //  this.allApisLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"opened").subscribe(
-                (data: any) =>
-                {
+    getOpenedDeals() {
+        try {
+            //  this.openedDealsLoader = true;
+            //  this.allApisLoader = true;
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId, "opened").subscribe(
+                (data: any) => {
                     this.openedDeals = data.data;
-                   //this.openedDealsLoader = false;
+                    //this.openedDealsLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.openedDealsError = true;
                     this.openedDealsLoader = false;
                     this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getOpenedDeals()");
         }
     }
     /*************OnHold Deals****************************/
-    getDealsOnHold()
-    {
-        try
-        {
+    getDealsOnHold() {
+        try {
             //this.dealsOnHoldLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"hold").subscribe(
-                (data: any) =>
-                {
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId, "hold").subscribe(
+                (data: any) => {
                     this.dealsOnHold = data.data;
-                 //   this.dealsOnHoldLoader = false;
+                    //   this.dealsOnHoldLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.dealsOnHoldError = true;
-                   this.dealsOnHoldLoader = false;
-                   this.allApisLoader = false;
+                    this.dealsOnHoldLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getDealsOnHold()");
         }
     }
@@ -501,161 +458,131 @@ export class ManageDealsComponent implements OnInit
 
 
     /*************Approved Leads****************************/
-    getApprovedDeals()
-    {
-        try
-        {
-           // this.openedDealsLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"approved").subscribe(
-                (data: any) =>
-                {
+    getApprovedDeals() {
+        try {
+            // this.openedDealsLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId, "approved").subscribe(
+                (data: any) => {
                     this.approvedDeals = data.data;
-                  //  this.approvedDealsLoader = false;
+                    //  this.approvedDealsLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.approvedDealsError = true;
                     this.approvedDealsLoader = false;
                     this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getApprovedDeals()");
         }
     }
 
-    getApprovedDealsByPartner()
-    {
-        try
-        {
-           // this.openedDealsLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"approved").subscribe(
-                (data: any) =>
-                {
+    getApprovedDealsByPartner() {
+        try {
+            // this.openedDealsLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId, "approved").subscribe(
+                (data: any) => {
                     this.approvedDeals = data.data;
-                  //  this.approvedDealsLoader = false;
+                    //  this.approvedDealsLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.approvedDealsError = true;
-                   this.approvedDealsLoader = false;
-                   this.allApisLoader = false;
+                    this.approvedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getApprovedDealsByPartner()");
         }
     }
     /*************REJECTED Leads****************************/
-    getRejectedDeals()
-    {
-        try
-        {
-          //  this.closedDealsLoader = true;
-          //  this.allApisLoader = true;
-            this.dealRegistrationService.getDealsCountByStatus(this.superiorId,"rejected").subscribe(
-                (data: any) =>
-                {
+    getRejectedDeals() {
+        try {
+            //  this.closedDealsLoader = true;
+            //  this.allApisLoader = true;
+            this.dealRegistrationService.getDealsCountByStatus(this.superiorId, "rejected").subscribe(
+                (data: any) => {
 
                     this.rejectedDeals = data.data;
-                  //  this.rejectedDealsLoader = false;
+                    //  this.rejectedDealsLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.rejectedDealsError = true;
-                   this.rejectedDealsLoader = false;
-                   this.allApisLoader = false;
+                    this.rejectedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getRejectedDeals()");
         }
     }
 
-    getRejectedDealsByPartner()
-    {
-        try
-        {
-          //  this.rejectedDealsLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"rejected").subscribe(
-                (data: any) =>
-                {
+    getRejectedDealsByPartner() {
+        try {
+            //  this.rejectedDealsLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId, "rejected").subscribe(
+                (data: any) => {
                     this.rejectedDeals = data.data;
-                   // this.rejectedDealsLoader = false;
+                    // this.rejectedDealsLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.rejectedDealsError = true;
-                   this.rejectedDealsLoader = false;
-                   this.allApisLoader = false;
+                    this.rejectedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getRejectedDealsByPartner()");
         }
     }
 
     /*************Opened Deals****************************/
-    getOpenedDealsByPartner()
-    {
-        try
-        {
-           // this.openedDealsLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"opened").subscribe(
-                (data: any) =>
-                {
+    getOpenedDealsByPartner() {
+        try {
+            // this.openedDealsLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId, "opened").subscribe(
+                (data: any) => {
                     console.log(data)
                     this.openedDeals = data.data;
-                  //  this.openedDealsLoader = false;
+                    //  this.openedDealsLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.openedDealsError = true;
-                   this.openedDealsLoader = false;
-                   this.allApisLoader = false;
+                    this.openedDealsLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getOpenedDeals()");
         }
     }
     /*************OnHold Deals ByPartner****************************/
-    getDealsOnHoldByPartner()
-    {
-        try
-        {
-           // this.dealsOnHoldLoader = true;
-           // this.allApisLoader = true;
-            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId,"hold").subscribe(
-                (data: any) =>
-                {
+    getDealsOnHoldByPartner() {
+        try {
+            // this.dealsOnHoldLoader = true;
+            // this.allApisLoader = true;
+            this.dealRegistrationService.getPartnerDealsCountByStatus(this.superiorId, "hold").subscribe(
+                (data: any) => {
                     this.dealsOnHold = data.data;
-                  //  this.dealsOnHoldLoader = false;
+                    //  this.dealsOnHoldLoader = false;
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.dealsOnHoldError = true;
-                  this.dealsOnHoldLoader = false;
-                  this.allApisLoader = false;
+                    this.dealsOnHoldLoader = false;
+                    this.allApisLoader = false;
                 }
 
             );
-        } catch (error)
-        {
+        } catch (error) {
             this.catchError(error, "getDealsOnHold()");
         }
     }
@@ -688,7 +615,7 @@ export class ManageDealsComponent implements OnInit
     // }
 
 
-    startOrStopAllCountsLoader(condition:boolean){
+    startOrStopAllCountsLoader(condition: boolean) {
         this.totalLeadsLoader = condition;
         this.totalDealsLoader = condition;
         this.openedDealsLoader = condition;
@@ -699,307 +626,274 @@ export class ManageDealsComponent implements OnInit
         this.openedDealsLoader = condition;
         //this.closedDealsLoader = condition;
         this.allApisLoader = condition;
-        if(condition){
+        if (condition) {
             $('#deals-page-content-div').css('pointer-events', 'none');
-        }else{
+        } else {
             $('#deals-page-content-div').css('pointer-events', 'visible');
         }
 
     }
     /*********************List Campaigns*****************/
-    listCampaigns(pagination: Pagination)
-    {
+    listCampaigns(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
         this.dealRegistrationService.listCampaigns(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
-                    data.campaigns.forEach(element =>
-                        {
-                            element.expand = false;
-                        });
+                    data.campaigns.forEach(element => {
+                        element.expand = false;
+                    });
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.startOrStopAllCountsLoader(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                 }
             );
     }
     /*********************List Campaigns*****************/
-    listCampaignsByDeals(pagination: Pagination)
-    {
+    listCampaignsByDeals(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
 
         this.dealRegistrationService.listCampaignsByDeals(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.expand = false;
                     });
 
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.startOrStopAllCountsLoader(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                 }
             );
     }
 
-    listCampaignsByPartner(pagination: Pagination)
-    {
+    listCampaignsByPartner(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
             pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             pagination.vanityUrlFilter = true;
-        }        
+        }
         this.dealRegistrationService.listCampaignsByPartner(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.expand = false;
                     });
                     console.log(this.sortOption.totalRecords);
                     this.referenceService.loading(this.httpRequestLoader, false);
-                   this.startOrStopAllCountsLoader(false);
+                    this.startOrStopAllCountsLoader(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                 }
             );
     }
 
     /*********************List Campaigns*****************/
-    listCampaignsDealsByPartner(pagination: Pagination)
-    {
+    listCampaignsDealsByPartner(pagination: Pagination) {
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.superiorId;
-        if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
+        if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
             pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
             pagination.vanityUrlFilter = true;
         }
         this.dealRegistrationService.listCampaignsDealsByPartner(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.campaigns);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.expand = false;
                     });
 
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.startOrStopAllCountsLoader(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                 }
             );
     }
 
 
-    sortCampaigns(text: any)
-    {
+    sortCampaigns(text: any) {
         this.sortOption.selectedSortedOption = text;
         this.getAllFilteredResults(this.campaignsPagination);
     }
 
     searchCampaignsKeyPress(keyCode: any) { if (keyCode === 13) { this.getAllFilteredResults(this.campaignsPagination); } }
 
-    searchCampaigns()
-    {
+    searchCampaigns() {
         this.getAllFilteredResults(this.campaignsPagination);
     }
 
-    getAllFilteredResults(pagination: Pagination)
-    {
+    getAllFilteredResults(pagination: Pagination) {
         pagination.pageIndex = 1;
         pagination.searchKey = this.sortOption.searchKey;
-        if (this.sortOption.itemsSize.value == 0)
-        {
+        if (this.sortOption.itemsSize.value == 0) {
             pagination.maxResults = pagination.totalRecords;
-        } else
-        {
+        } else {
             pagination.maxResults = this.sortOption.itemsSize.value;
         }
         let sortedValue = this.sortOption.selectedSortedOption.value;
         this.setSortColumns(pagination, sortedValue);
-        if(this.isVendorVersion){
-            if(this.isCampaignByLeads){
-            this.listCampaigns(pagination);
+        if (this.isVendorVersion) {
+            if (this.isCampaignByLeads) {
+                this.listCampaigns(pagination);
             }
-            else{
-              this.campaignsPaginationByDeals.pageIndex = 1;
-              if (this.sortOption.itemsSize.value == 0)
-              {
-                this.campaignsPaginationByDeals.maxResults = pagination.totalRecords;
-              } else
-              {
-                this.campaignsPaginationByDeals.maxResults = this.sortOption.itemsSize.value;
-              }
-              let sortedValue = this.sortOption.selectedSortedOption.value;
+            else {
+                this.campaignsPaginationByDeals.pageIndex = 1;
+                if (this.sortOption.itemsSize.value == 0) {
+                    this.campaignsPaginationByDeals.maxResults = pagination.totalRecords;
+                } else {
+                    this.campaignsPaginationByDeals.maxResults = this.sortOption.itemsSize.value;
+                }
+                let sortedValue = this.sortOption.selectedSortedOption.value;
                 this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
                 this.setSortColumns(this.campaignsPaginationByDeals, sortedValue);
                 this.listCampaignsByDeals(this.campaignsPaginationByDeals);
             }
-        }else{
-            if(this.isCampaignByLeads){
+        } else {
+            if (this.isCampaignByLeads) {
                 this.listCampaignsByPartner(this.campaignsPagination);
             }
-            else{
-              this.campaignsPaginationByDeals.pageIndex = 1;
+            else {
+                this.campaignsPaginationByDeals.pageIndex = 1;
                 this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
-                if (this.sortOption.itemsSize.value == 0)
-                {
-                  this.campaignsPaginationByDeals.maxResults = pagination.totalRecords;
-                } else
-                {
-                  this.campaignsPaginationByDeals.maxResults = this.sortOption.itemsSize.value;
+                if (this.sortOption.itemsSize.value == 0) {
+                    this.campaignsPaginationByDeals.maxResults = pagination.totalRecords;
+                } else {
+                    this.campaignsPaginationByDeals.maxResults = this.sortOption.itemsSize.value;
                 }
                 let sortedValue = this.sortOption.selectedSortedOption.value;
                 this.setSortColumns(this.campaignsPaginationByDeals, sortedValue);
-                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+                this.listCampaignsDealsByPartner(this.campaignsPaginationByDeals);
             }
         }
 
     }
 
-    setSortColumns(pagination: Pagination, sortedValue: any)
-    {
-        if (sortedValue != "")
-        {
+    setSortColumns(pagination: Pagination, sortedValue: any) {
+        if (sortedValue != "") {
             let options: string[] = sortedValue.split("-");
             pagination.sortcolumn = options[0];
             pagination.sortingOrder = options[1];
         }
     }
 
-    filterCampaigns(type: string, index: number)
-    {
-        if(this.isVendorVersion){
+    filterCampaigns(type: string, index: number) {
+        if (this.isVendorVersion) {
             this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
 
-            if(this.isCampaignByLeads){
+            if (this.isCampaignByLeads) {
                 this.campaignsPagination.pageIndex = 1;
                 this.campaignsPagination.campaignType = type;
                 this.listCampaigns(this.campaignsPagination);
             }
-            else{
+            else {
                 this.campaignsPaginationByDeals.pageIndex = 1;
                 this.campaignsPaginationByDeals.campaignType = type;
                 this.listCampaignsByDeals(this.campaignsPaginationByDeals);
             }
-        }else{
+        } else {
             this.sortOption.selectedCampaignTypeIndex = index;//This is to highlight the tab
 
-            if(this.isCampaignByLeads){
+            if (this.isCampaignByLeads) {
                 this.campaignsPagination.pageIndex = 1;
                 this.campaignsPagination.campaignType = type;
                 this.listCampaignsByPartner(this.campaignsPagination);
             }
-            else{
+            else {
                 this.campaignsPaginationByDeals.pageIndex = 1;
                 this.campaignsPaginationByDeals.campaignType = type;
-                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+                this.listCampaignsDealsByPartner(this.campaignsPaginationByDeals);
             }
         }
     }
 
     /********Pages Navigation***********/
-    navigatePages(event: any)
-    {
+    navigatePages(event: any) {
 
 
-        if(this.isVendorVersion){
-            if(this.isCampaignByLeads){
+        if (this.isVendorVersion) {
+            if (this.isCampaignByLeads) {
                 this.campaignsPagination.pageIndex = event.page;
                 this.campaignsPagination.searchKey = this.sortOption.searchKey;
                 this.listCampaigns(this.campaignsPagination);
             }
-            else{
+            else {
                 this.campaignsPaginationByDeals.pageIndex = event.page;
                 this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
                 this.listCampaignsByDeals(this.campaignsPaginationByDeals);
             }
-        }else{
-            if(this.isCampaignByLeads){
+        } else {
+            if (this.isCampaignByLeads) {
                 this.campaignsPagination.pageIndex = event.page;
                 this.campaignsPagination.searchKey = this.sortOption.searchKey;
                 this.listCampaignsByPartner(this.campaignsPagination);
             }
-            else{
+            else {
                 this.campaignsPaginationByDeals.pageIndex = event.page;
                 this.campaignsPaginationByDeals.searchKey = this.sortOption.searchKey;
-                this.listCampaignsDealsByPartner (this.campaignsPaginationByDeals);
+                this.listCampaignsDealsByPartner(this.campaignsPaginationByDeals);
             }
         }
 
 
     }
     /*****Dropdown**********/
-    changeSize(items: any, type: any)
-    {
+    changeSize(items: any, type: any) {
         this.sortOption.itemsSize = items;
         this.getAllFilteredResults(this.campaignsPagination);
 
     }
 
     /*********Show Partners***************/
-    showPartners(campaign: any)
-    {
-      this.clearFields()
-        this.campaign = campaign
-        if (!this.isPartner)
-        {
+    showPartners(campaign: any) {
+        this.clearFields();
+        this.campaign = campaign;
+        if (!this.isPartner) {
             this.selectedCampaignId = campaign.id;
-            //    this.campaingnList = false;
             campaign.expand = !campaign.expand;
             this.partnerList = true;
-        } else
-        {
-
-            this.dealRegistrationService.getCampaignPartnerById(this.superiorId).subscribe(data =>
-            {
+        } else {
+            this.dealRegistrationService.getCampaignPartnerById(this.superiorId).subscribe(data => {
                 this.selectedCampaignId = campaign.id;
-
                 this.showLeads(data.partners);
-
-
             },
-            error => console.log(error),
-            () => { })
-
-
+                error => console.log(error),
+                () => { })
         }
     }
-    showLeads(partner: any)
-    {
-      this.clearFields()
-        console.log(partner);
+    showOwnLeads(campaign:any){
+        this.clearFields();
+        this.campaign = campaign;
+        this.selectedCampaignId = campaign.id;
+        let loggedInUserData = {};
+        loggedInUserData['partnerId'] = this.loggedInUserId;
+        this.showLeads(loggedInUserData);
+    }
+    showOwnDeals(){
+    }
+    showLeads(partner: any) {
+        this.clearFields()
         this.partner = partner;
         this.leadList = true;
         this.campaingnList = false;
@@ -1007,11 +901,9 @@ export class ManageDealsComponent implements OnInit
             this.filterDeals = "";
         else
             this.filterDeals = "TOTAL";
-
     }
 
-    resetAllDeals()
-    {
+    resetAllDeals() {
         this.clearFields()
         this.isPartner = false;
         this.partner = null;
@@ -1022,31 +914,27 @@ export class ManageDealsComponent implements OnInit
         this.filterDeals = "";
     }
 
-    goToReDistributedPartnersDiv()
-    {
-       this.clearFields()
+    goToReDistributedPartnersDiv() {
+        this.clearFields()
         this.selectedTabIndex = 1;
         this.filterDeals = "TOTAL_LEADS";
         this.leadList = true;
         this.campaingnList = false;
 
     }
-    showTotalDeals()
-    {
-       this.clearFields()
+    showTotalDeals() {
+        this.clearFields()
         this.selectedTabIndex = 2;
         this.filterDeals = "TOTAL";
         this.leadList = true;
         this.campaingnList = false;
 
     }
-      showOpenedLeads()
-    {
+    showOpenedLeads() {
         this.clearFields()
-        if (!this.isPartner)
-        {
+        if (!this.isPartner) {
             this.getOpenedDeals();
-        }else {
+        } else {
             this.getOpenedDealsByPartner();
         }
         this.selectedTabIndex = 3;
@@ -1055,16 +943,14 @@ export class ManageDealsComponent implements OnInit
         this.campaingnList = false;
 
     }
-  clearFields() {
-    this.sortOption.searchKey = '';
-  }
-    showDealsOnHold()
-    {
-      this.clearFields()
-        if (!this.isPartner)
-        {
+    clearFields() {
+        this.sortOption.searchKey = '';
+    }
+    showDealsOnHold() {
+        this.clearFields()
+        if (!this.isPartner) {
             this.getDealsOnHold();
-        }else {
+        } else {
             this.getDealsOnHoldByPartner();
         }
         this.selectedTabIndex = 5;
@@ -1074,13 +960,11 @@ export class ManageDealsComponent implements OnInit
 
     }
 
-    showApprovedLeads()
-    {
-      this.clearFields()
-        if (!this.isPartner)
-        {
+    showApprovedLeads() {
+        this.clearFields()
+        if (!this.isPartner) {
             this.getApprovedDeals();
-        }else {
+        } else {
             this.getApprovedDealsByPartner();
         }
         this.selectedTabIndex = 6;
@@ -1089,13 +973,11 @@ export class ManageDealsComponent implements OnInit
         this.campaingnList = false;
 
     }
-    showRejectedLeads()
-    {
-      this.clearFields()
-        if (!this.isPartner)
-        {
+    showRejectedLeads() {
+        this.clearFields()
+        if (!this.isPartner) {
             this.getRejectedDeals();
-        }else {
+        } else {
             this.getRejectedDealsByPartner();
         }
         this.selectedTabIndex = 7;
@@ -1120,36 +1002,28 @@ export class ManageDealsComponent implements OnInit
 
     // }
 
-    dealAnalytics(deal: any)
-    {
+    dealAnalytics(deal: any) {
 
-        if (deal === "status_change")
-        {
+        if (deal === "status_change") {
             this.resetCounters(0);
-        } else if (isNumber(deal))
-        {
+        } else if (isNumber(deal)) {
             this.showDealRegistrationForm(deal);
-        } else
-        {
+        } else {
 
             this.selectedDealId = deal.dealId;
-            this.dealRegistrationService.getDealById(deal.dealId,this.superiorId).subscribe(dealNew =>
-            {
+            this.dealRegistrationService.getDealById(deal.dealId, this.superiorId).subscribe(dealNew => {
                 this.selectedDeal = dealNew.data;
 
                 const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
 
 
-                this.campaignService.getCampaignById(obj).subscribe(campaign =>
-                {
+                this.campaignService.getCampaignById(obj).subscribe(campaign => {
 
                     this.selectedCampaign = campaign;
-                    this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user =>
-                    {
+                    this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user => {
 
                         this.user = user;
-                        this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead =>
-                        {
+                        this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead => {
 
                             this.selectedLead = lead;
                             this.selectedDealId = deal.dealId;
@@ -1158,59 +1032,50 @@ export class ManageDealsComponent implements OnInit
 
 
                         },
+                            error => console.log(error),
+                            () => { })
+                    },
                         error => console.log(error),
                         () => { })
-                    },
-                    error => console.log(error),
-                    () => { })
 
 
                 },
-                    error =>
-                    {
+                    error => {
                         console.log(error);
                     })
 
 
 
             },
-            error => console.log(error),
-            () => { })
+                error => console.log(error),
+                () => { })
         }
 
 
     }
-    dealRegistration(item: any)
-    {
+    dealRegistration(item: any) {
 
 
-        this.dealRegistrationService.getDealById(item,this.superiorId).subscribe(deal =>
-        {
+        this.dealRegistrationService.getDealById(item, this.superiorId).subscribe(deal => {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
             const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
 
-            this.campaignService.getCampaignById(obj).subscribe(campaign =>
-            {
-
+            this.campaignService.getCampaignById(obj).subscribe(campaign => {
                 this.selectedCampaign = campaign;
 
-
             },
-                error =>
-                {
+                error => {
                     console.log(error);
                 })
-            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user =>
-            {
+            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user => {
 
                 this.user = user;
 
             },
-            error => console.log(error),
-            () => { })
-            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead =>
-            {
+                error => console.log(error),
+                () => { })
+            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead => {
 
                 this.selectedLead = lead;
                 this.isDealAnalytics = false;
@@ -1220,36 +1085,34 @@ export class ManageDealsComponent implements OnInit
 
 
             },
-            error => console.log(error),
-            () => { })
+                error => console.log(error),
+                () => { })
             this.selectedDealId = item;
         },
-        error => console.log(error),
-        () => { })
+            error => console.log(error),
+            () => { })
 
 
     }
 
-    dealAnalyticsDisable()
-    {
+    dealAnalyticsDisable() {
         this.isDealAnalytics = !this.isDealAnalytics;
     }
-    resetCounters(event:number)
-    {
-        if(event==0){
-            if (!this.isPartner){
+    resetCounters(event: number) {
+        if (event == 0) {
+            if (!this.isPartner) {
                 this.getOpportunitesAnalyticsForVendor();
             } else {
                 this.getOpportunitesAnalyticsForPartner();
             }
-        }else{
+        } else {
             this.disableDealPushRegistrationForm();
 
-            if(event==1){
+            if (event == 1) {
                 this.customResponse = new CustomResponse('SUCCESS', "Deal Registered Successfully", true);
                 this.resetCounters(0);
 
-            }else if(event ==2){
+            } else if (event == 2) {
                 this.customResponse = new CustomResponse('SUCCESS', "Deal Updated Successfully", true);
             }
 
@@ -1258,37 +1121,31 @@ export class ManageDealsComponent implements OnInit
 
     }
 
-    getDealInfo(item: any)
-    {
+    getDealInfo(item: any) {
 
-        this.dealRegistrationService.getDealById(item,this.superiorId).subscribe(deal =>
-        {
+        this.dealRegistrationService.getDealById(item, this.superiorId).subscribe(deal => {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
             const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
 
 
-            this.campaignService.getCampaignById(obj).subscribe(campaign =>
-            {
+            this.campaignService.getCampaignById(obj).subscribe(campaign => {
 
                 this.selectedCampaign = campaign;
 
 
             },
-                error =>
-                {
+                error => {
                     console.log(error);
                 })
-            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user =>
-            {
+            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user => {
 
                 this.user = user;
 
             },
-            error => console.log(error),
-            () => { })
-            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead =>
-            {
+                error => console.log(error),
+                () => { })
+            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead => {
 
                 this.selectedLead = lead;
                 this.isDealAnalytics = false;
@@ -1297,73 +1154,67 @@ export class ManageDealsComponent implements OnInit
 
 
             },
-            error => console.log(error),
-            () => { })
+                error => console.log(error),
+                () => { })
             this.selectedDealId = item;
 
         },
-        error => console.log(error),
-        () => { })
+            error => console.log(error),
+            () => { })
     }
-    showVendor()
-    {
-        if(this.enableLeads){
+    showVendor() {
+        if (this.enableLeads) {
             this.isVendorVersion = true;
             this.isPartnerVersion = false;
             this.switchVersions();
-        }else{
+        } else {
             this.showPartner();
         }
     }
-    showPartner()
-    {
+    showPartner() {
 
-        if( this.isCompanyPartner ){
+        if (this.isCompanyPartner) {
             this.isVendorVersion = false;
             this.isPartnerVersion = true;
             this.switchVersions();
         }
     }
 
-    showDealRegistrationForm(item)
-    {
+    showDealRegistrationForm(item) {
 
         this.getDealInfo(item);
 
 
 
     }
-    disableDealRegistrationForm()
-    {
+    disableDealRegistrationForm() {
 
         this.isDealRegistration = false;
 
     }
-    disableDealPushRegistrationForm()
-    {
+    disableDealPushRegistrationForm() {
         //this.resetCounters();
         this.isDealForm = false;
     }
 
-    closeLeads(){
-        if(this.isCampaignByLeads){
+    closeLeads() {
+        if (this.isCampaignByLeads) {
             this.showCampaigns();
-        }else{
+        } else {
             this.showCampaignsByDeals();
         }
     }
 
 
 
-    catchError(error: any, methodName: string)
-    {
+    catchError(error: any, methodName: string) {
         this.hasClientErrors = true;
         this.xtremandLogger.showClientErrors(this.componentName, methodName, error);
     }
 
-    clearPagination(){
+    clearPagination() {
         this.campaignsPagination = new Pagination();
-            this.campaignsPaginationByDeals = new Pagination();
+        this.campaignsPaginationByDeals = new Pagination();
     }
 
 }

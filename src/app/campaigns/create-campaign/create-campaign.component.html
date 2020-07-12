@@ -346,7 +346,7 @@
 
 
 
-                                            <div class="form-group" *ngIf="!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage'">
+                                            <div class="form-group" *ngIf="(!isOnlyPartner && campaign.channelCampaign && enableLeads && campaignType!='landingPage') || (enableLeads && campaignType!='landingPage' && showMarketingAutomationOption)">
                                                 <label class="control-label col-sm-4" translate>Push To Marketing Automation
                                                     </label>
                                                 <div class="col-sm-3">

@@ -83,6 +83,8 @@ export class Campaign {
 	pushToMarketo = false;
 	pushToHubspot = false;
 	pushToSalesforce = false;
-	pushToMarketingAutomation = false;
+    pushToMarketingAutomation = false;
+    ownCampaignLeadAndDeal = false;
+    showRegisterLeadButton = false;
 
 }
