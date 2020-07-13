@@ -3527,7 +3527,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.hideZohoAuthorisedPopup();
         this.getGoogleConatacts = data;
         this.zohoImageBlur = false;
-        this.zohoImageNormal = true;
+        this.zohoImageNormal = false;
         this.socialContactImage();
         let contacts = this.getGoogleConatacts['contacts'];
         if (contacts!=null && contacts.length>0) {

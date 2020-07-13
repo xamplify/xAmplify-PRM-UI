@@ -280,6 +280,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     categoryNames: any;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     folderCustomResponse:CustomResponse = new CustomResponse();
+    showMarketingAutomationOption = false;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
@@ -674,8 +675,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
         if(isOrgAdmin){
             this.channelCampaignFieldName = "To Recipient";
+            this.showMarketingAutomationOption = true;
         }else{
             this.channelCampaignFieldName = "To Partner";
+            this.showMarketingAutomationOption = false;
         }
         if(isOrgAdmin){
             if(this.campaign.channelCampaign){
@@ -771,7 +774,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isCampaignDetailsFormValid = false;
         }
         
-        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
+        if( isValid && this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
             this.isValidCrmOption = false;
             this.isCampaignDetailsFormValid = false;
         }else{
@@ -863,7 +866,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      
      validatePushToCRM(){
-        if(this.isPushToCrm && this.campaign.channelCampaign && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
+        if(this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
             this.isValidCrmOption = false;
             this.validateForm();
         }else{

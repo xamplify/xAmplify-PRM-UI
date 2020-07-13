@@ -356,6 +356,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     deleteCampaign(id: number, position: number, campaignName: string) {
+        this.customResponse = new CustomResponse();
+        this.refService.goToTop();
         this.refService.loading(this.httpRequestLoader, true);
         this.campaignService.delete(id)
             .subscribe(
@@ -374,7 +376,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }
                 
             },
-            error => { this.logger.errorPage(error) },
+            error => { 
+                this.refService.loading(this.httpRequestLoader, false);
+                this.customResponse = new CustomResponse('ERROR','This campaign cannot be deleted at this time.Please try after sometime',true);
+               // this.logger.errorPage(error)
+             },
             () => console.log("Campaign Deleted Successfully")
             );
         this.isCampaignDeleted = false;

@@ -1635,11 +1635,11 @@
         <div class="col-xs-12 col-sm-6">
           <div data-animation="slideInUp">
             <div class="row mb10">
-              <img src="/assets/images/user.png" width="48px" class="user-profile-image">
+              <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
              <ng-container *ngIf="!disabled">
               <span
-                *ngIf="(campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&
-                  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf">
+                *ngIf="((campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&
+                  (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf) || campaign.showRegisterLeadButton">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
                   [disabled]="userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00' "
                   title=" Please watch the video to {{dealButtonText}} " class="btn btn-success"

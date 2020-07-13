@@ -16,7 +16,7 @@ import { EventEmitter } from '@angular/core';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Campaign } from '../../campaigns/models/campaign';
 import { User } from '../../core/models/user';
-declare var swal,$: any;
+declare var swal, $: any;
 
 
 
@@ -26,8 +26,7 @@ declare var swal,$: any;
     styleUrls: ['./manage-leads.component.css'],
     providers: [Pagination, HomeComponent, HttpRequestLoader, SortOption, ListLoaderValue, CallActionSwitch]
 })
-export class ManageLeadsComponent implements OnInit, OnChanges
-{
+export class ManageLeadsComponent implements OnInit, OnChanges {
 
     @Input() partner: any;
     @Input() campaignId: any;
@@ -43,7 +42,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
     isDealAnalytics: boolean = false;
     customResponse: CustomResponse = new CustomResponse();
     pageHeader = "";
-    pageText ="";
+    pageText = "";
 
 
     leadStatusArray = ["APPROVED", "OPENED", "HOLD", "REJECTED"];
@@ -55,7 +54,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
     commentForLead: any;
     isDealSection = false;
     loggedInUser: User;
-
+    ownCampaignLeadAndDeal = false;
 
 
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
@@ -63,28 +62,24 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
         public sortOption: SortOption, public pagerService: PagerService, public callActionSwitch: CallActionSwitch) { }
 
-    ngOnInit()
-    {
-       this.changePointerStyle(true);
+    ngOnInit() {
+        this.changePointerStyle(true);
         this.loggedInUser = this.authenticationService.user;
         if (!this.isPartner)
             this.listLeadsBasedOnFilters();
         else
             this.listLeadsBasedOnFiltersByPartner();
-
-
     }
 
-    changePointerStyle(loading:boolean){
-        if(loading){
+    changePointerStyle(loading: boolean) {
+        if (loading) {
             $('#deals-page-content-div').css('pointer-events', 'none');
-        }else{
+        } else {
             $('#deals-page-content-div').css('pointer-events', 'visible');
         }
 
     }
-    ngOnChanges(changes: SimpleChanges)
-    {
+    ngOnChanges(changes: SimpleChanges) {
         this.changePointerStyle(true);
         const filter: SimpleChange = changes.filter;
 
@@ -98,10 +93,8 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
 
     }
-    listLeadsBasedOnFilters()
-    {
-        switch (this.filter)
-        {
+    listLeadsBasedOnFilters() {
+        switch (this.filter) {
             case "TOTAL_LEADS": {
                 this.isDealSection = false;
                 this.pageText = "";
@@ -114,7 +107,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = true;
                 this.pageText = "TOTAL DEALS";
                 this.pageHeader = "CAMPAIGN: " + this.selectedCampaign.campaignName;
-                console.log(this.selectedCampaign)
+                this.ownCampaignLeadAndDeal = false;
                 this.listAllDeals(this.pagination);
                 break;
             }
@@ -122,6 +115,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = true;
                 this.pageText = "";
                 this.pageHeader = "APPROVED DEALS";
+                this.ownCampaignLeadAndDeal = false;
                 this.listApprovedLeads(this.pagination);
                 break;
             }
@@ -129,6 +123,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = true;
                 this.pageText = "";
                 this.pageHeader = "REJECTED DEALS";
+                this.ownCampaignLeadAndDeal = false;
                 this.listRejectedLeads(this.pagination);
                 break;
             }
@@ -136,14 +131,16 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = true;
                 this.pageText = "";
                 this.pageHeader = "OPENED DEALS";
+                this.ownCampaignLeadAndDeal = false;
                 this.listOpenedLeads(this.pagination);
-                console.log( this.pagination)
+                console.log(this.pagination)
                 break;
             }
             case "HOLD": {
                 this.isDealSection = true;
                 this.pageText = "";
                 this.pageHeader = "DEALS ON HOLD";
+                this.ownCampaignLeadAndDeal = false;
                 this.listHoldLeads(this.pagination);
                 break;
             }
@@ -158,23 +155,20 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.isDealSection = false;
                 this.pageText = "TOTAL LEADS";
                 this.pageHeader = "CAMPAIGN: " + this.selectedCampaign.campaignName;
-                console.log(this.selectedCampaign)
+                this.ownCampaignLeadAndDeal = this.selectedCampaign['ownCampaignLeadAndDeal'];
                 this.listLeads(this.pagination);
                 break;
             }
         }
 
     }
-    listLeadsBasedOnFiltersByPartner()
-    {
-        switch (this.filter)
-        {
+    listLeadsBasedOnFiltersByPartner() {
+        switch (this.filter) {
             case "TOTAL_LEADS": {
                 this.isDealSection = false;
                 this.pageText = "";
                 this.pageHeader = "TOTAL LEADS";
                 this.listAllLeadsByPartner(this.pagination);
-
                 break;
             }
             case "TOTAL": {
@@ -204,7 +198,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                 this.pageText = "";
                 this.pageHeader = "OPENED DEALS";
                 this.listOpenedLeadsByPartner(this.pagination);
-                console.log( this.pagination)
+                console.log(this.pagination)
                 break;
             }
             case "HOLD": {
@@ -233,16 +227,14 @@ export class ManageLeadsComponent implements OnInit, OnChanges
         }
 
     }
-    listAllLeads(pagination: Pagination)
-    {
+    listAllLeads(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
         this.dealRegistrationService.listAllLeads(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
@@ -251,8 +243,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.changePointerStyle(false);
 
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -260,8 +251,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listAllDeals(pagination: Pagination)
-    {
+    listAllDeals(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
 
@@ -270,8 +260,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
         this.dealRegistrationService.listAllDeals(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
@@ -280,8 +269,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.changePointerStyle(false);
 
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -289,48 +277,42 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listApprovedLeads(pagination: Pagination)
-    {
+    listApprovedLeads(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listLeadsByStatus(pagination,"approved")
+        this.dealRegistrationService.listLeadsByStatus(pagination, "approved")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
             );
 
     }
-    listHoldLeads(pagination: Pagination)
-    {
+    listHoldLeads(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listLeadsByStatus(pagination,"hold")
+        this.dealRegistrationService.listLeadsByStatus(pagination, "hold")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -338,48 +320,42 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listRejectedLeads(pagination: Pagination)
-    {
+    listRejectedLeads(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listLeadsByStatus(pagination,"rejected")
+        this.dealRegistrationService.listLeadsByStatus(pagination, "rejected")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
             );
 
     }
-    listOpenedLeads(pagination: Pagination)
-    {
+    listOpenedLeads(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listLeadsByStatus(pagination,"opened")
+        this.dealRegistrationService.listLeadsByStatus(pagination, "opened")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -412,22 +388,19 @@ export class ManageLeadsComponent implements OnInit, OnChanges
     // }
 
 
-    listAllLeadsByPartner(pagination: Pagination)
-    {
+    listAllLeadsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
         this.dealRegistrationService.listAllLeadsByPartner(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
 
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         if (!element.deal)
                             element.dealButtonText = "Register Deal"
                         else
@@ -438,16 +411,14 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.changePointerStyle(false);
 
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
             );
 
     }
-    listAllDealsByPartner(pagination: Pagination)
-    {
+    listAllDealsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
@@ -455,14 +426,12 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
         this.dealRegistrationService.listAllDealsByPartner(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     console.log(data)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.dealButtonText = "Update Deal "
                     });
 
@@ -470,8 +439,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.changePointerStyle(false);
 
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -479,28 +447,24 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listApprovedLeadsByPartner(pagination: Pagination)
-    {
+    listApprovedLeadsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listPartnerLeadsByStatus(pagination,"approved")
+        this.dealRegistrationService.listPartnerLeadsByStatus(pagination, "approved")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -508,28 +472,24 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listRejectedLeadsByPartner(pagination: Pagination)
-    {
+    listRejectedLeadsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listPartnerLeadsByStatus(pagination,"rejected")
+        this.dealRegistrationService.listPartnerLeadsByStatus(pagination, "rejected")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -537,29 +497,25 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listOpenedLeadsByPartner(pagination: Pagination)
-    {
+    listOpenedLeadsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listPartnerLeadsByStatus(pagination,"opened")
+        this.dealRegistrationService.listPartnerLeadsByStatus(pagination, "opened")
             .subscribe(
-                data =>
-                {
+                data => {
                     console.log(data.leads)
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -595,28 +551,24 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     // }
 
-    listHoldLeadsByPartner(pagination: Pagination)
-    {
+    listHoldLeadsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.authenticationService.getUserId();
 
-        this.dealRegistrationService.listPartnerLeadsByStatus(pagination,"hold")
+        this.dealRegistrationService.listPartnerLeadsByStatus(pagination, "hold")
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         element.dealButtonText = "Update Deal "
                     });
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -624,22 +576,19 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    listLeadsByPartner(pagination: Pagination)
-    {
+    listLeadsByPartner(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.partner.partnerId;
         pagination.campaignId = this.campaignId;
         this.dealRegistrationService.listLeadsByPartner(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
 
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
-                    pagination.pagedItems.forEach(element =>
-                    {
+                    pagination.pagedItems.forEach(element => {
                         if (!element.deal)
                             element.dealButtonText = "Register Deal"
                         else
@@ -648,32 +597,28 @@ export class ManageLeadsComponent implements OnInit, OnChanges
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
             );
 
     }
-    listLeads(pagination: Pagination)
-    {
+    listLeads(pagination: Pagination) {
 
         this.referenceService.loading(this.httpRequestLoader, true);
         pagination.userId = this.partner.partnerId;
         pagination.campaignId = this.campaignId;
         this.dealRegistrationService.listLeads(pagination)
             .subscribe(
-                data =>
-                {
+                data => {
                     this.sortOption.totalRecords = data.totalRecords;
                     pagination.totalRecords = data.totalRecords;
                     pagination = this.pagerService.getPagedItems(pagination, data.leads);
                     this.referenceService.loading(this.httpRequestLoader, false);
                     this.changePointerStyle(false);
                 },
-                (error: any) =>
-                {
+                (error: any) => {
                     this.httpRequestLoader.isServerError = true;
                     this.changePointerStyle(false);
                 }
@@ -684,8 +629,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
 
     /********Pages Navigation***********/
-    navigatePages(event: any)
-    {
+    navigatePages(event: any) {
         this.pagination.pageIndex = event.page;
         if (!this.isPartner)
             this.listLeadsBasedOnFilters();
@@ -693,36 +637,30 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             this.listLeadsBasedOnFiltersByPartner();
     }
     /*****Dropdown**********/
-    changeSize(items: any, type: any)
-    {
+    changeSize(items: any, type: any) {
         this.sortOption.itemsSize = items;
         this.getAllFilteredResults(this.pagination);
 
     }
 
 
-    sortLeads(text: any)
-    {
+    sortLeads(text: any) {
         this.sortOption.selectedSortedOption = text;
         this.getAllFilteredResults(this.pagination);
     }
 
     searchLeadsKeyPress(keyCode: any) { if (keyCode === 13) { this.getAllFilteredResults(this.pagination); } }
 
-    searchLeads()
-    {
+    searchLeads() {
         this.getAllFilteredResults(this.pagination);
     }
 
-    getAllFilteredResults(pagination: Pagination)
-    {
+    getAllFilteredResults(pagination: Pagination) {
         pagination.pageIndex = 1;
         pagination.searchKey = this.sortOption.searchKey;
-        if (this.sortOption.itemsSize.value == 0)
-        {
+        if (this.sortOption.itemsSize.value == 0) {
             pagination.maxResults = pagination.totalRecords;
-        } else
-        {
+        } else {
             pagination.maxResults = this.sortOption.itemsSize.value;
         }
         let sortedValue = this.sortOption.selectedSortedOption.value;
@@ -734,22 +672,17 @@ export class ManageLeadsComponent implements OnInit, OnChanges
 
     }
 
-    setSortColumns(pagination: Pagination, sortedValue: any)
-    {
-        if (sortedValue != "")
-        {
+    setSortColumns(pagination: Pagination, sortedValue: any) {
+        if (sortedValue != "") {
             let options: string[] = sortedValue.split("-");
             pagination.sortcolumn = options[0];
             pagination.sortingOrder = options[1];
         }
     }
-    setDealStatus(dealId: number, event: any)
-    {
-        try
-        {
+    setDealStatus(dealId: number, event: any) {
+        try {
 
-            this.dealRegistrationService.changeDealStatus(dealId, event,this.loggedInUser).subscribe(data =>
-            {
+            this.dealRegistrationService.changeDealStatus(dealId, event, this.loggedInUser).subscribe(data => {
                 this.customResponse = new CustomResponse('SUCCESS', "Successfully Changed ", true);
                 this.dealObj.emit("status_change");
                 if (!this.isPartner)
@@ -760,61 +693,48 @@ export class ManageLeadsComponent implements OnInit, OnChanges
             });
 
 
-        } catch (error)
-        {
+        } catch (error) {
             this.xtremandLogger.error(error, "ManageLeadsComponent", "setDealStatus()");
         }
     }
-    dealRouter(deal: any, event: any)
-    {
+    dealRouter(deal: any, event: any) {
         this.selectedDealId = deal.dealId;
         this.isDealAnalytics = true;
         this.dealObj.emit(deal);
         //this.router.navigate(['home/deals/'+deal.dealId+'/details']);
     }
-    showComments(leadObj: any)
-    {
+    showComments(leadObj: any) {
         this.commentForLead = leadObj;
         this.isCommentSection = !this.isCommentSection;
     }
-    addCommentModalClose(event: any)
-    {
-        this.commentForLead.newCommentCount =0;
+    addCommentModalClose(event: any) {
+        this.commentForLead.newCommentCount = 0;
         console.log(this.commentForLead.newCommentCount)
         this.isCommentSection = !this.isCommentSection;
     }
 
-    showDealRegistrationForm(item)
-    {
+    showDealRegistrationForm(item) {
         this.selectedDealId = item.dealId;
         this.dealPushObj.emit(item.dealId);
-        //this.isDealRegistration = !this.isDealRegistration;
     }
-    showLeadRegistrationForm(item)
-    {
-
+    showLeadRegistrationForm(item) {
         this.selectedDealId = item.dealId;
         this.dealObj.emit(item.dealId);
-        //this.isDealRegistration = !this.isDealRegistration;
     }
-    showTimeLineView()
-    {
+    showTimeLineView() {
         this.isDealRegistration = false;
 
     }
-    getCommentCount(leads: any)
-    {
-        leads.forEach(element =>
-        {
-            this.dealRegistrationService.getCommentsCount(element.dealId).subscribe(result =>
-            {
+    getCommentCount(leads: any) {
+        leads.forEach(element => {
+            this.dealRegistrationService.getCommentsCount(element.dealId).subscribe(result => {
                 if (isNaN(result))
                     element.commentCount = result.data;
                 else
                     element.commentCount = 0;
             },
-            error => console.log(error),
-            () => { })
+                error => console.log(error),
+                () => { })
         });
     }
 

@@ -3510,7 +3510,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.hideZohoAuthorisedPopup();
         this.getZohoConatacts = data;
         this.zohoImageBlur = false;
-        this.zohoImageNormal = true;
+        this.zohoImageNormal = false;
         this.socialContactImage();
         let contacts = this.getZohoConatacts['contacts'];
         if (contacts!=null && contacts.length>0) {
