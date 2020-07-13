@@ -3509,9 +3509,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         swal.close();
         this.hideZohoAuthorisedPopup();
         this.getZohoConatacts = data;
-       // this.zohoImageBlur = false;
         this.zohoImageNormal = false;
-        if(data.contacts.message == "Your zoho token expired please login agian"){
+        if(data.contacts.message == "Your zoho token expired please login again"){
             this.zohoImageBlur = true;
         }else{
             this.zohoImageBlur = false;
