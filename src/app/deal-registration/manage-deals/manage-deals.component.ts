@@ -125,7 +125,6 @@ export class ManageDealsComponent implements OnInit {
                         this.authenticationService.superiorRole = response.data.superiorRole;
                         if (this.authenticationService.loggedInUserRole == "Team Member") {
                             dealRegistrationService.getSuperorId(this.loggedInUserId).subscribe(response => {
-                                console.log(response)
                                 this.superiorId = response;
                                 this.init();
                             });
@@ -162,11 +161,11 @@ export class ManageDealsComponent implements OnInit {
                     this.isCompanyPartner = true;
                 }
             } else {
-                if (!this.authenticationService.superiorRole.includes("Vendor")
+                if (!this.authenticationService.superiorRole.includes("Vendor") && !this.authenticationService.superiorRole.includes("OrgAdmin")
                     && this.authenticationService.superiorRole.includes("Partner")) {
                     this.isOnlyPartner = true;
                 }
-                if (this.authenticationService.superiorRole.includes("Vendor")) {
+                if (this.authenticationService.superiorRole.includes("Vendor") || this.authenticationService.superiorRole.includes("OrgAdmin")) {
                     this.isVendor = true;
                 }
                 if (this.authenticationService.superiorRole.includes("Partner")) {
@@ -178,7 +177,6 @@ export class ManageDealsComponent implements OnInit {
             console.log(this.superiorId)
             this.referenceService.getOrgCampaignTypes(response).subscribe(data => {
                 this.enableLeads = data.enableLeads;
-                console.log(data)
                 if (!this.isOnlyPartner) {
                     if (this.authenticationService.vanityURLEnabled) {
                         if (this.authenticationService.isPartnerTeamMember) {
