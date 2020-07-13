@@ -115,7 +115,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     exisitingFileNames: string[] = [];
     pager: any = {};
     pagedItems: any[];
-    pageSize = 12;
+    pageSize = 6;
     selectedFileIds = [];
     selectedFiles = [];
     pageNumber: any;
@@ -995,12 +995,12 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#add-form-name-modal').removeClass(this.portletBodyBlur);
     }
 
-    showCompanyLogoChange(event: any) {
-        this.form.showCompanyLogo = event;
+    showCompanyLogoChange() {
+        this.form.showCompanyLogo = !this.form.showCompanyLogo;
     }
 
-    showFooterChange(event: any) {
-        this.form.showFooter = event;
+    showFooterChange() {
+        this.form.showFooter = !this.form.showFooter;
     }
 
     errorHandler(event) { event.target.src = 'assets/images/company-profile-logo.png'; }
