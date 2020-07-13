@@ -3451,6 +3451,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddContactsOption = 6;
+						this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3488,6 +3490,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddContactsOption = 6;
+                        this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);

@@ -3468,6 +3468,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddPartnerOption = 6;
+						this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3497,14 +3499,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
              this.contactService.getZohoAutherizedLeads( this.socialPartners )
                 .subscribe(
                 data => {
-                    console.log(data.statusCode);
-                   // this.getZohoConatacts = data;
                     this.selectedAddPartnerOption = 6;
                     if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddContactsOption = 6;
+					    this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
