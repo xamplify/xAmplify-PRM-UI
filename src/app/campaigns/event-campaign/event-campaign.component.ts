@@ -2545,9 +2545,9 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     
     checkSalesforceIntegration(): any {
-        if(!this.isOrgAdminOrOrgAdminTeamMember){
-            this.eventCampaign.pushToCRM = [];
-        }
+      //  if(!this.isOrgAdminOrOrgAdminTeamMember){
+      //      this.eventCampaign.pushToCRM = [];
+      //  }
         if(this.enableLeads){
         this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
             let response = data;
