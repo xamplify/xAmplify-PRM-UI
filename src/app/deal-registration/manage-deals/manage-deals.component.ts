@@ -1052,43 +1052,35 @@ export class ManageDealsComponent implements OnInit {
 
     }
     dealRegistration(item: any) {
-
-
         this.dealRegistrationService.getDealById(item, this.superiorId).subscribe(deal => {
             this.selectedDeal = deal.data;
             this.selectedDealId = this.selectedDeal.dealId;
             const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
-
             this.campaignService.getCampaignById(obj).subscribe(campaign => {
                 this.selectedCampaign = campaign;
-
-            },
-                error => {
-                    console.log(error);
-                })
-            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user => {
-
-                this.user = user;
-
-            },
+            },error => {
+                this.referenceService.showSweetAlertErrorMessage('Vendor has deleted the parent campaign');
+            },()=>{
+                this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.createdBy).subscribe(user => {
+                    this.user = user;
+                },error => console.log(error),
+                    () => { });
+    
+                this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead => {
+                    this.selectedLead = lead;
+                    this.isDealAnalytics = false;
+                    this.isDealRegistration = false;
+                    this.isDealForm = true;
+                },
                 error => console.log(error),
-                () => { })
-            this.dealRegistrationService.getDealCreatedBy(this.selectedDeal.leadId).subscribe(lead => {
-
-                this.selectedLead = lead;
-                this.isDealAnalytics = false;
-                this.isDealRegistration = false;
-                this.isDealForm = true;
-
-
-
-            },
-                error => console.log(error),
-                () => { })
-            this.selectedDealId = item;
+                    () => { });
+                this.selectedDealId = item;
+            });
+            
+        },error => {
+            this.xtremandLogger.errorPage(error)
         },
-            error => console.log(error),
-            () => { })
+            () => { });
 
 
     }
