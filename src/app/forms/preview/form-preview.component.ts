@@ -18,7 +18,7 @@ import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 
-declare var $:any;
+declare var $,flatpickr:any;
 
 
 @Component({
@@ -60,7 +60,9 @@ export class FormPreviewComponent implements OnInit {
           this.alias = this.route.snapshot.params['alias'];
       }
       this.getFormFieldsByAlias(this.alias);
-
+      flatpickr( '.flatpickr',{
+        dateFormat: 'm/d/Y',
+    } );
   }
   
   refreshForm(){

@@ -45,7 +45,7 @@
                 </div>
 
 
-                <div class="portlet-body blur-content" id="add-form-parent-div">
+                <div class="portlet-body" id="add-form-parent-div">
                     <app-response-message class="pg8" [customResponse]="customResponse"
                         *ngIf="customResponse.isVisible">
                     </app-response-message>
@@ -73,9 +73,9 @@
                                                 id="eye"></i></a>
                                     </div>
                                     <div class="portlet-body clearfix" id="create-from-div"
-                                        [style.backgroundColor]="form.backgroundColor"
                                         [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
-                                        <div class="tab-content">
+                                        <div class="tab-content vertical-center"
+                                            [style.backgroundColor]="form.backgroundColor">
                                             <!-- <div class="profile-image-wrapper" style="cursor:pointer">
                           <span></span>
                           <img src="assets/images/company-profile-logo.png" width="196" height="130">
@@ -92,7 +92,7 @@
                                                 <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                     <div id="form-div" (click)="highLightSelectedColumn(columnInfo)"
                                                         [class.selected]="columnInfo.divId==selectedColumn.divId">
-                                                        <fieldset class="default-fieldset" id="{{columnInfo.divId}}">
+                                                        <div id="{{columnInfo.divId}}">
                                                             <div class="form-group">
                                                                 <legend>
                                                                     <a id="drag-div">
@@ -126,6 +126,21 @@
                                                                                 placeholder="{{columnInfo.placeHolder}}"
                                                                                 class="form-control disabled"
                                                                                 id="{{columnInfo.labelId}}"></textarea>
+                                                                        </ng-container>
+                                                                        <!-- ---------------------------Date----------------------------- -->
+                                                                        <ng-container
+                                                                            *ngIf="columnInfo.labelType=='date'">
+                                                                            <input type="text"
+                                                                                class="form-control flatpickr square-box"
+                                                                                placeholder="{{columnInfo.placeHolder}}" />
+                                                                        </ng-container>
+                                                                        <!-- ---------------------------Number----------------------------- -->
+                                                                        <ng-container
+                                                                            *ngIf="columnInfo.labelType=='number'">
+                                                                            <input type="number"
+                                                                                placeholder="{{columnInfo.placeHolder}}"
+                                                                                class="form-control disabled"
+                                                                                id="{{columnInfo.labelId}}" />
                                                                         </ng-container>
                                                                         <!-- ---------------------------Radio Button----------------------------- -->
                                                                         <ng-container
@@ -175,10 +190,22 @@
                                                                     </a>
                                                                 </legend>
                                                             </div>
-                                                        </fieldset>
+                                                        </div>
                                                     </div>
                                                     <!-- End of form-div -->
                                                 </ng-container>
+                                                <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
+                                                </div>
+                                                <ng-template #show>
+                                                    <button type="submit" disabled="disabled" class="btn"
+                                                        id="bottom-right" [style.backgroundColor]="form.buttonColor"
+                                                        [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                </ng-template>
+                                                <ng-template #dontShow>
+                                                    <button type="submit" disabled="disabled"
+                                                        class="btn green-haze" id="bottom-right"
+                                                        [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>
+                                                </ng-template>
                                             </div>
                                             <!-- End of tab pane active -->
                                         </div>

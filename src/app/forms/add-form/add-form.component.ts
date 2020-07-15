@@ -26,7 +26,7 @@ import { ActionsDescription } from '../../common/models/actions-description';
 
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 
-declare var $: any, swal: any, CKEDITOR: any;
+declare var $: any, swal: any, CKEDITOR: any, flatpickr: any;
 
 
 @Component({
@@ -44,8 +44,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
         { 'labelName': 'Email', 'labelType': 'email' },
         { 'labelName': 'First Name', 'labelType': 'text' },
         { 'labelName': 'Last Name', 'labelType': 'text' },
-        { 'labelName': 'Mobile Number', 'labelType': 'text' }
-    ];
+        { 'labelName': 'Mobile Number', 'labelType': 'text' },
+        { 'labelName': 'Date', 'labelType': 'date' },
+        { 'labelName': 'Price', 'labelType': 'number' }
+        ];
     customFields = [
         { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
         { 'labelName': 'Multi Line Text Field', 'labelType': 'textarea', 'value': 'Field' },
@@ -76,7 +78,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     isAdd = true;
     editForm = false;
     portletBody = 'portlet-body';
-    portletBodyBlur = 'portlet-body blur-content';
+    portletBodyBlur = 'portlet-body';
     buttonName = "Save Form";
     existingFormName = "";
     isFullScreenView = false;
@@ -188,6 +190,11 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        flatpickr( '.flatpickr',{
+            enableTime: true,
+            dateFormat: 'm/d/Y h:i K',
+            time_24hr: false
+        } );
         if (this.isAdd) {
             $('#add-form-name-modal').modal('show');
         } else {
@@ -263,7 +270,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
     showAddForm() {
         $('#add-form-name-modal').modal('show');
-        this.addBlurClass();
+        //this.addBlurClass();
     }
 
 

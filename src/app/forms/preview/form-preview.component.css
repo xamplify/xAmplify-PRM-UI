@@ -67,17 +67,4 @@
 	pointer-events: none;
 	cursor: not-allowed;
 }
-.vertical-center {
-    min-height: 100%; 
-    min-height: 100vh;
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex; 
-           -webkit-box-pack : center;
-              -moz-box-pack : center;
-              -ms-flex-pack : center;
-    -webkit-justify-content : center;
-            justify-content : center;
-}
+

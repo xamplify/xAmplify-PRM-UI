@@ -1415,3 +1415,18 @@ div.switch5>input.switch:focus~label:before {
     height: 100%;
     padding: 0px;
 }
+
+.square-box {
+    border-radius: 0 !important;
+    webkit-border-radius: 0 !important
+}
+
+.flatpickr-time {
+    transition: none !important
+}
+
+#form-div {
+    padding: 0px 15px 10px 15px;
+}
+
+
