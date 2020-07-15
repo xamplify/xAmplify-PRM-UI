@@ -12,7 +12,7 @@
 				</li>
 				<li>
 					<ng-container *ngIf="!allApisLoader">
-						<a (click)="showCampaigns()" translate>Opportunities</a>
+						<a (click)="showCampaigns()" translate>Opportunities </a>
 						<i class="fa fa-angle-right" aria-hidden="true"></i>
 					</ng-container>
 				</li>
@@ -29,7 +29,7 @@
 				<li class="filter" (click)="showVendor()" [class.campaign-type-selected]="isVendorVersion" style="float: right;
 						margin-top: 5px;" *ngIf=" isVendor && enableLeads" translate>Vendor View</li>
 				<p class="filter" style="float: right;
-						margin: 10px;background-color: white" translate>Opportunities: </p>
+						margin: 10px;background-color: white" translate>Opportunities as: </p>
 			</ul>
 		</div>
 		</div>
