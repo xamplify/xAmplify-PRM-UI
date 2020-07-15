@@ -3451,6 +3451,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddContactsOption = 6;
+						this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3488,6 +3490,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddContactsOption = 6;
+                        this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3509,8 +3513,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         swal.close();
         this.hideZohoAuthorisedPopup();
         this.getZohoConatacts = data;
-        this.zohoImageBlur = false;
         this.zohoImageNormal = false;
+        if(data.contacts.message == "Your zoho token expired please login again"){
+            this.zohoImageBlur = true;
+        }else{
+            this.zohoImageBlur = false;
+        }
         this.socialContactImage();
         let contacts = this.getZohoConatacts['contacts'];
         if (contacts!=null && contacts.length>0) {

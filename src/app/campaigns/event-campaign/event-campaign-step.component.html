@@ -15,20 +15,20 @@ a.disabled {
 <div class="page-content">
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
-			<li><i class="fa fa-home"></i> <a
-				[routerLink]="referenceService.homeRouter" translate>Home</a> <i
-				class="fa fa-angle-right"></i></li>
+			<li><i class="fa fa-home" aria-hidden="true"></i> <a
+				[routerLink]="referenceService.homeRouter" translate>Home</a>
+				 <i	class="fa fa-angle-right" aria-hidden="true"></i></li>
 			<li *ngIf="!eventRouterPage"><a
-				[routerLink]="['/home/campaigns/select']" translate>Select Campaign</a> <i
-				class="fa fa-angle-right"></i></li>
+				[routerLink]="['/home/campaigns/select']" translate>Select Campaign</a> 
+				<i	class="fa fa-angle-right" aria-hidden="true"></i></li>
         <li *ngIf="!referenceService.manageRouter&& eventRouterPage">
             <a *ngIf="isEditCampaign || reDistributeEventManage" [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
             <a *ngIf="!isEditCampaign && !reDistributeEventManage" [routerLink]="['/home/campaigns/partner/all']" translate> Campaigns shared by Vendors</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
           </li>
         <li *ngIf="referenceService.manageRouter && eventRouterPage">
             <a  [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a>
-            <i class="fa fa-angle-right"></i>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
          </li>
       <li *ngIf="reDistributeEvent || reDistributeEventManage; else other" translate>Redistribute Event Campaign</li>
       <ng-template #other><li translate>Event Campaign</li></ng-template>
@@ -50,7 +50,7 @@ a.disabled {
 				<div id="step2" class="col-block col-block-complete" (click)="resetTabs('details')" [ngClass]="{'col-block-active': detailsTab}"
 					style="width: 25%">
 					<div class="cenetered-block">
-						<span> <i class="fa fa-th-list"></i>
+						<span> <i class="fa fa-th-list" aria-hidden="true"></i>
 						</span>
 						<h5 class="hidden-xs" translate>Campaign Details</h5>
 					</div>
@@ -59,21 +59,21 @@ a.disabled {
 
 				<div class="col-block" style="width: 25%" [class.disabled]="recipientsTabClass === 'disableRecipientsTab'" (click)="resetTabs('recipients')" [ngClass]="{'col-block-complete': recipientsTabClass === 'recipientsTabComplate', ' ': recipientsTabClass === 'enableRecipientsTab','col-block-active': recipientsTab, 'col-block-disable': recipientsTabClass === 'disableRecipientsTab'}">
 					<div class="cenetered-block">
-						<span> <i class="fa fa-users"></i>
+						<span> <i class="fa fa-users" aria-hidden="true"></i>
 						</span>
-            <h5 class="hidden-xs" *ngIf="!showContactType && !parentCampaignId" translate>Partners</h5>
-            <h5 class="hidden-xs" *ngIf="!showContactType && parentCampaignId" translate>Contacts</h5>
-            <!-- Recipients -->
-						<h5 class="hidden-xs" *ngIf="showContactType">
-              <h5 *ngIf="eventCampaign?.channelCampaign; else otherp" translate>Partners</h5>
-              <ng-template #otherp translate>Partners & Recipients</ng-template>
-            </h5>
+						<h5 class="hidden-xs" *ngIf="!showContactType && !parentCampaignId" translate>Partners</h5>
+						<h5 class="hidden-xs" *ngIf="!showContactType && parentCampaignId" translate>Contacts</h5>
+						<!-- Recipients -->
+									<h5 class="hidden-xs" *ngIf="showContactType">
+						<h5 *ngIf="eventCampaign?.channelCampaign; else otherp" translate>Partners</h5>
+						<ng-template #otherp translate>Partners & Recipients</ng-template>
+						</h5>
 					</div>
 				</div>
 
 				<div class="col-block" style="width: 25%" [class.disabled]="emailTemplatesTabClass === 'disableTemplateTab'" (click)="resetTabs('templates')" [ngClass]="{'col-block-complete': emailTemplatesTabClass === 'emailTemplateTabComplete', ' ': emailTemplatesTabClass === 'enableEmailTemplate','col-block-active': emailTemplatesTab, 'col-block-disable': emailTemplatesTabClass === 'disableTemplateTab'}">
 					<div class="cenetered-block">
-						<span> <i class="fa fa-envelope"></i>
+						<span> <i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
 						<h5 class="hidden-xs" translate>Email Template</h5>
 					</div>
@@ -81,7 +81,7 @@ a.disabled {
 
 				<div class="col-block" style="width: 25%" (click)="resetTabs('launch')" [class.disabled]="launchTabClass === 'disableLaunchTab'" [ngClass]="{'col-block-complete': launchTabClass === 'emailLauchTabComplete', ' ': launchTabClass === 'enableLaunchTab','col-block-active': launchTab, 'col-block-disable': launchTabClass === 'disableLaunchTab'}">
 					<div class="cenetered-block">
-						<span> <i class="fa fa-flag"></i>
+						<span> <i class="fa fa-flag" aria-hidden="true"></i>
 						</span>
 						<h5 class="hidden-xs" translate>Launch</h5>
 					</div>
@@ -165,9 +165,8 @@ a.disabled {
 						
 						
 						<div class="form-group">
-							<label class="col-sm-3 labal-css color-css" translate>Subject Line <font
-								style="color: red"> <b>*</b>
-							</font>
+							<label class="col-sm-3 labal-css color-css" translate>Subject Line
+								 <font style="color: red"> <strong>*</strong></font>
 							</label>
 							<div class="col-sm-9">
 								<input type="text" id="subjectLine" placeholder="Subject Line"
@@ -197,13 +196,13 @@ a.disabled {
 								</switch>
 							</div>
 							<span for="toPartner" class="col-sm-3 labal-css color-css" [ngClass]="{'highletClass': !eventCampaign.channelCampaign }">
-                <span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
-                <ng-template #other><span translate>To Partner</span> </ng-template>
-              </span>
+								<span *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || (!authenticationService.isAddedByVendor && !isVendor);else other" translate>To Recipients</span>
+								<ng-template #other><span translate>To Partner</span> </ng-template>
+              				</span>
 							<div class="col-sm-3" style="padding: 0; margin-top: 5px;">
 								<span style="cursor: pointer; color: #54a7e9;"
 									data-html="true" data-toggle="tooltip" data-placement="top" title="{{properties.EVENT_TO_PARTNER_MESSAGE}} <br> {{properties.THROUGH_PARTNER_MESSAGE}}">
-									<i class="fa fa-question-circle"></i>
+									<i class="fa fa-question-circle" aria-hidden="true"></i>
 								</span>
 							</div>
 						</div>
@@ -223,7 +222,7 @@ a.disabled {
 								<span style="cursor: pointer; color: #54a7e9;"
 									data-toggle="tooltip" data-placement="top"
 									title="Enable your Partner's logo to be displayed in redistributed campaigns">
-									<i class="fa fa-question-circle" style="padding: 8px;"></i>
+									<i class="fa fa-question-circle" style="padding: 8px;" aria-hidden="true"></i>
 								</span>
 							</div>
 						</div>
@@ -242,7 +241,7 @@ a.disabled {
 								</div>
 							</div> -->
 						
-											<div class="form-group" *ngIf="!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
+											<div class="form-group" *ngIf="(!authenticationService.isOnlyPartner() && eventCampaign.channelCampaign && enableLeads) || (isOrgAdminOrOrgAdminTeamMember &&enableLeads)" [class.disabled]="(isPreviewEvent || reDistributeEvent || reDistributeEventManage)">
                                                 <label class="control-label col-sm-3" translate>Push To Marketing Automation</label>
                                                 <div class="col-sm-3">
                                                     <div class="email-options-checkbox-group email-options-notify">
@@ -299,12 +298,10 @@ a.disabled {
 
 
                                                         </div>
-                                                        <div class="col-md-4" style="display:none">
+                                                        <!-- <div class="col-md-4" *ngIf="enableLeads">
                                                             <div class=" cenetered-block1">
                                                                 <div class="">
-                                                                    <!-- <div class="">
-                                                                        <input class="pos" type="checkbox" name="vehicle1" value="">
-                                                                    </div> -->
+                                                                   
                                                                     <label class="customcheck">
                                                                             <input type="checkbox" (click)="pushToCrmRequest('salesforce', $event)">
                                                                             <span class="checkmark"></span>
@@ -317,7 +314,7 @@ a.disabled {
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>

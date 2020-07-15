@@ -3468,6 +3468,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddPartnerOption = 6;
+						this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3497,14 +3499,14 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
              this.contactService.getZohoAutherizedLeads( this.socialPartners )
                 .subscribe(
                 data => {
-                    console.log(data.statusCode);
-                   // this.getZohoConatacts = data;
                     this.selectedAddPartnerOption = 6;
                     if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'ERROR', data.message, true );
                         this.selectedAddContactsOption = 6;
+					    this.zohoImageBlur = true;
+					    this.zohoImageNormal = false;
                      }
                     else{
                         this.processZohoContactsToDisplayInUI(data);
@@ -3526,8 +3528,13 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         swal.close();
         this.hideZohoAuthorisedPopup();
         this.getGoogleConatacts = data;
-        this.zohoImageBlur = false;
         this.zohoImageNormal = false;
+        if(data.contacts.message == "Your zoho token expired please login again"){
+            this.zohoImageBlur = true;
+         
+        }else{
+            this.zohoImageBlur = false;
+        }
         this.socialContactImage();
         let contacts = this.getGoogleConatacts['contacts'];
         if (contacts!=null && contacts.length>0) {

@@ -208,7 +208,8 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
  categoryNames: any;
  @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
  folderCustomResponse:CustomResponse = new CustomResponse();
-completeLoader = false;
+ completeLoader = false;
+ isOrgAdminOrOrgAdminTeamMember: boolean;
   constructor(public integrationService: IntegrationService, public envService: EnvService, public callActionSwitch: CallActionSwitch, public referenceService: ReferenceService,
     private contactService: ContactService, public socialService: SocialService,
     public campaignService: CampaignService,
@@ -235,28 +236,21 @@ completeLoader = false;
     if(this.reDistributeEvent) { this.isPartnerUserList = false; } else { this.isPartnerUserList = true; }
     if(this.authenticationService.isOnlyPartner()) {  this.isPartnerUserList = false; }
     this.isPartnerToo = this.authenticationService.checkIsPartnerToo();
+     this.completeLoader = true;   
     referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
         referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-            console.log(data)
             this.enableLeads = data.enableLeads;
-            console.log(this.enableLeads);
-           
+            this.completeLoader = false;
+        },error =>{
+            this.completeLoader = false;
         });
-    })
-    authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
-        console.log(response);
-       this.enableSMS = response.data;
-    })
-
-    referenceService.getCompanyIdByUserId(this.authenticationService.getUserId()).subscribe(response=>{
-        referenceService.getOrgCampaignTypes(response).subscribe(data=>{
-            console.log(data)
-            this.enableLeads = data.enableLeads;
-            console.log(this.enableLeads);
-
-        });
-    })
-    this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
+    },error=>{
+        this.completeLoader = false;
+    });
+    const roles = this.authenticationService.getRoles();
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
+        this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
   }
   isEven(n) { if(n % 2 === 0){ return true;} return false;}
   loadCampaignNames(userId:number){
@@ -264,7 +258,6 @@ completeLoader = false;
     error => console.log( error ), () => console.log( "Campaign Names Loaded" ) );
 }
   validateCampaignName(campaignName:string){
-     campaignName.replace( /\s\s+/g, '' )
      this.eventTitleError();
      this.resetTabClass();
      const lowerCaseCampaignName = $.trim(campaignName.toLowerCase());//Remove all spaces
@@ -736,7 +729,7 @@ completeLoader = false;
           this.eventCampaign.enableCoBrandingLogo = true;
           this.emailTemplatesPagination.emailTemplateType = EmailTemplateType.EVENT_CO_BRANDING;
           this.loadEmailTemplates(this.emailTemplatesPagination);
-          this.checkSalesforceIntegration();
+         // this.checkSalesforceIntegration();
       }
       if(this.authenticationService.isOrgAdmin() || this.authenticationService.isOrgAdminPartner() || (!this.authenticationService.isAddedByVendor && !this.isVendor) ){
       if(!this.eventCampaign.channelCampaign){
@@ -2491,7 +2484,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
           this.contactService.getValidUsersCount( this.listOfSelectedUserListIds )
              .subscribe(
              data => {
-                 data = data;
                  this.validUsersCount = data['validContactsCount'];
                  this.allUsersCount = data['allContactsCount'];
                  console.log( "valid contacts Data:" + data['validContactsCount'] );
@@ -2509,7 +2501,7 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
  
  
  validatePushToCRM(){
-     if(this.isPushToCrm && this.eventCampaign.channelCampaign && !(this.eventCampaign.pushToCRM.includes("marketo") || this.eventCampaign.pushToCRM.includes("hubspot"))){
+     if(this.isPushToCrm && (this.eventCampaign.channelCampaign || this.isOrgAdminOrOrgAdminTeamMember) && this.eventCampaign.pushToCRM.length === 0){
          this.isValidCrmOption = false;
      }else{
          this.isValidCrmOption = true;
@@ -2524,7 +2516,6 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
      if(!this.isPushToCrm){
          this.eventCampaign.pushToCRM = [];
          //this.eventCampaign.pushToCRM.push('salesforce');
-         
      }
      //this.checkSalesforceIntegration();
      this.validatePushToCRM();
@@ -2536,13 +2527,15 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
            
            if(crmName == 'marketo'){
                this.checkMarketoCredentials();
-           }else if(crmName == 'hubspot'){
+           } else if(crmName == 'hubspot'){
                this.checkingHubSpotContactsAuthentication();
+           } else if(crmName == 'salesforce'){
+               this.checkSalesforceIntegration();
            }
            
            //this.pushToCRM.push(crmName);
        }else{
-          if(crmName == 'marketo' || crmName == 'hubspot' ){
+          if(crmName == 'marketo' || crmName == 'hubspot' || crmName == 'salesforce' ){
            this.eventCampaign.pushToCRM = this.eventCampaign.pushToCRM.filter(e => e !== crmName);
            }
            console.log(this.eventCampaign.pushToCRM);
@@ -2552,14 +2545,21 @@ highlightPartnerContactRow(contactList:any,event:any,count:number,isValid:boolea
     }
     
     checkSalesforceIntegration(): any {
-        this.eventCampaign.pushToCRM = [];
+      //  if(!this.isOrgAdminOrOrgAdminTeamMember){
+      //      this.eventCampaign.pushToCRM = [];
+      //  }
         if(this.enableLeads){
         this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
             let response = data;
             if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
                 this.eventCampaign.pushToCRM.push('salesforce');
                console.log("isPushToSalesforce ::::" + this.pushToCRM);
-            }
+               this.validatePushToCRM();
+            } else{
+                  if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                      window.location.href = response.data.redirectUrl;
+                  }                
+              }
         },error =>{
             this.logger.error(error, "Error in salesforce checkIntegrations()");
         }, () => this.logger.log("Integration Salesforce Configuration Checking done"));

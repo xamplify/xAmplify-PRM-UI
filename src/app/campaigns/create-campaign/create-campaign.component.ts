@@ -774,7 +774,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isCampaignDetailsFormValid = false;
         }
         
-        if( isValid && this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
+        if( isValid && this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && this.pushToCRM.length === 0){
             this.isValidCrmOption = false;
             this.isCampaignDetailsFormValid = false;
         }else{
@@ -866,7 +866,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      
      validatePushToCRM(){
-        if(this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
+        if(this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && this.pushToCRM.length === 0){
             this.isValidCrmOption = false;
             this.validateForm();
         }else{
@@ -906,7 +906,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
            // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
-            this.checkSalesforceIntegration();
+          //  this.checkSalesforceIntegration();
         }else{
             this.loadContacts();
             this.removePartnerRules();
@@ -3177,10 +3177,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      this.isPushToCrm = !this.isPushToCrm;
      if(!this.isPushToCrm){
          this.pushToCRM = [];
-         //this.pushToCRM.push('salesforce');
-         this.checkSalesforceIntegration();
      }
-    // this.checkSalesforceIntegration();
+     
      this.validatePushToCRM();
     }
     
@@ -3192,6 +3190,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                this.checkMarketoCredentials();
            }else if(crmName == 'hubspot'){
                this.checkingHubSpotContactsAuthentication();
+           }
+           else if(crmName == 'salesforce'){
+               this.checkSalesforceIntegration();
            }
            
            //this.pushToCRM.push(crmName);
@@ -3216,14 +3217,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    }
    
    checkSalesforceIntegration(): any {
-      this.pushToCRM = [];
+     // this.pushToCRM = [];
       if(this.enableLeads){ 
       this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
            let response = data;
            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
               this.pushToCRM.push('salesforce');
+              this.validatePushToCRM();
               console.log("isPushToSalesforce ::::" + this.pushToCRM);
-           }
+           } else{
+                  if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                      window.location.href = response.data.redirectUrl;
+                  }                
+              }
        },error =>{
            this.logger.error(error, "Error in salesforce checkIntegrations()");
        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
