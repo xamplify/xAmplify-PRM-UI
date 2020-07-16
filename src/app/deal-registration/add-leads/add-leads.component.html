@@ -61,12 +61,14 @@
 
             <div class="form-group" [attr.class]="lastName" style="margin-bottom: 20px">
               <label class="control-label">Last Name
-
+                <font style="color: #f55d7a">
+                  <b>*</b>
+                </font>
               </label>
               <input type="text" maxlength="100"  class="form-control" [(ngModel)]=" dealRegistration.lastName"
-                [ngModelOptions]="{standalone: true}" id="lastName" [disabled]="parent"/>
+                [ngModelOptions]="{standalone: true}" id="lastName" (input)="validateField('lastName',false)" [disabled]="parent"/>
             </div>
-            <div class="form-group" [attr.class]="lastName" style="margin-bottom: 20px">
+            <div class="form-group" [attr.class]="company" style="margin-bottom: 20px">
               <label class="control-label">Company
                 <font style="color: #f55d7a">
                   <b>*</b>
