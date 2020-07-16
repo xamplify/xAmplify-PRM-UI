@@ -27,8 +27,8 @@ export class Form {
     formSubmitMessage= "";
     backgroundImage= "";
     companyLogo="";
-    showCompanyLogo=true;
+    showCompanyLogo=false;
     footer="";
-	showFooter=true;
+	showFooter=false;
 	
 }
