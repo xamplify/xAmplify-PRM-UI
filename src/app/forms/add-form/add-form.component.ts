@@ -125,7 +125,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     { 'name': 'All', 'value': 0 }];
     companyLogoPath: string;
     formBackgroundImagePath: string;
-    popupOpenedFor: String;
+    popupOpenedFor: string;
     name = 'ng2-ckeditor';
     ckeConfig: any;
     @ViewChild("myckeditor") ckeditor: any;

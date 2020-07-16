@@ -67,4 +67,14 @@
 	pointer-events: none;
 	cursor: not-allowed;
 }
+#form-preview-company-logo{
+    vertical-align: middle;
+    position: relative;
+    bottom: 10px;
+    left: 45%;
+    filter: grayscale(100%);
+    height: 45px;
+    width: 115px;
+    align-items: center;
+}
 

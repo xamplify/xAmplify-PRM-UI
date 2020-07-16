@@ -6,14 +6,15 @@
     <div class="page-bar">
         <ul class="page-breadcrumb">
             <li>
-                <i class="fa fa-home"></i>
+                <i class="fa fa-home" aria-hidden="true"></i>
                 <a [routerLink]="referenceService.homeRouter">Home</a>
-                <i class="fa fa-angle-right"></i>
-                <a *ngIf="isAdd" [routerLink]="['/home/design/add']">Create Design</a> <i *ngIf="isAdd"
-                    class="fa fa-angle-right"></i>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <a *ngIf="isAdd" [routerLink]="['/home/design/add']">Create Design</a> 
+                <i *ngIf="isAdd" class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li *ngIf="!isAdd">
-                <a routerLink="{{routerLink}}">Manage Forms</a><i class="fa fa-angle-right"></i>
+                <a routerLink="{{routerLink}}">Manage Forms</a>
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
             </li>
             <li>
                 <a>Create Form</a>
@@ -25,21 +26,19 @@
             <div class="portlet light" id="portlet-height">
                 <div class="row">
                     <div class="col-md-2">
-                        <h4 [attr.class]="formNameClass"><b>CREATE FORM</b>
-                            <!-- <a data-toggle="tooltip" data-placement="top" title="Edit Form Name"
-                    (click)="showAddForm()"> <i class="fa fa-pencil-square-o"></i>
-                </a> -->
+                        <h4 [attr.class]="formNameClass"><strong>CREATE FORM</strong>
+                          
                         </h4>
                     </div>
                     <div class="col-md-2"> <button type="button" class=" btn green-haze" (click)=openFormFields()>ADD
                             FIELDS</button>
                     </div>
                     <div class="col-md-8">
-                        <a class="close-circle" (click)="navigateBack()" aria-hidden="true">
-                            <i class="fa fa-times"></i>
+                        <a class="close-circle xamp-margin-left-icon" (click)="navigateBack()" aria-hidden="true">
+                            <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <a class="close-circle" (click)="openFormDesignModal()">
-                            <i class="fa fa-paint-brush"></i>
+                            <i class="fa fa-paint-brush custom-size-form-brush" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
@@ -56,12 +55,11 @@
                                 <div class="portlet light">
                                     <div class="portlet-title tabbable-line">
                                         <div class="caption caption-md">
-                                            <i class="icon-globe theme-font hide"></i>
-                                            <!-- <span class="caption-subject font-blue-madison bold uppercase">Create Form</span> -->
-                                            <h4 [attr.class]="formNameClass"><b>{{form.name}}</b>
+                                            <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                                            <h4 [attr.class]="formNameClass"><strong>{{form.name}}</strong>
                                                 <a data-toggle="tooltip" data-placement="top"
-                                                    title="Change Form Details" (click)="showAddForm()"> <i
-                                                        class="fa fa-pencil-square-o"></i>
+                                                    title="Change Form Details" (click)="showAddForm()"> 
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -74,20 +72,11 @@
                                     </div>
                                     <div class="portlet-body clearfix" id="create-from-div"
                                         [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
-                                        <div class="tab-content vertical-center"
-                                            [style.backgroundColor]="form.backgroundColor">
-                                            <!-- <div class="profile-image-wrapper" style="cursor:pointer">
-                          <span></span>
-                          <img src="assets/images/company-profile-logo.png" width="196" height="130">
-                        
-                          <div class="profile-overlay">
-                            <label class="fileContainer pointer">
-                              <i class="fa fa-camera"></i>&nbsp;<span>Change company logo</span>
-                        
-                            </label>
-                          </div>
-                        </div> -->
-                                            <div class="tab-pane active" [dragula]='"form-options"'
+                                        <div *ngIf="form.showCompanyLogo">
+                                            <img id="form-company-logo"  src="{{form.companyLogo}}" alt="">
+                                        </div>
+                                        <div class="tab-content vertical-center" [style.backgroundColor]="form.backgroundColor" style="margin-top: 10px;">
+                                            <div class="panel-body" [dragula]='"form-options"'
                                                 [dragulaModel]='columnInfos'>
                                                 <ng-container *ngFor="let columnInfo of columnInfos;let i=index">
                                                     <div id="form-div" (click)="highLightSelectedColumn(columnInfo)"
@@ -192,8 +181,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- End of form-div -->
                                                 </ng-container>
+                                                <br>
+                                                <!-- End of form-div -->
                                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
                                                 </div>
                                                 <ng-template #show>
@@ -209,6 +199,10 @@
                                             </div>
                                             <!-- End of tab pane active -->
                                         </div>
+                                        <!------Show Footer-------->
+                                        <footer>
+                                            <div style="text-align: center;" *ngIf="form.showFooter" [innerHTML]="form.footer"></div>
+                                        </footer>
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +213,7 @@
                                 <div class="portlet light">
                                     <div class="portlet-title tabbable-line">
                                         <div class="caption caption-md">
-                                            <i class="icon-globe theme-font hide"></i>
+                                            <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                                             <span class="caption-subject font-blue-madison bold uppercase">Edit Fields
                                                 Info</span>
                                         </div>
@@ -401,20 +395,20 @@
             <div class="modal-header">
                 <button *ngIf="(!this.isAdd && form.isValid) || this.isAdd" type="button" class="close-circle"
                     (click)="closeModal()">
-                    <i class="fa fa-times"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-center">{{formTitle}}</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group" id="formNameDiv">
-                    <label>Name <font class="invalid-form-name">*</font></label>
+                    <label>Name <span class="invalid-form-name">*</span></label>
                     <input type="text" class="form-control" [(ngModel)]="form.name" id="formName"
                         placeholder="Enter Form Name" maxlength="1000" (input)="validateFormNames(form.name)"
                         (keydown)="sumbitOnEnter($event)">
                     <span *ngIf="!form.isValid" class="required">{{formNameErrorMessage}}</span>
                 </div>
                 <div class="form-group">
-                    <label>Select a folder <font class="invalid-form-name">*</font></label>
+                    <label>Select a folder <span class="invalid-form-name">*</span></label>
                     <select class="form-control" [(ngModel)]="form.categoryId" [ngModelOptions]="{standalone: true}"
                         (ngModelChange)="selectCategory($event)">
                         <option *ngFor="let category of categoryNames" [value]="category.id">
@@ -444,7 +438,7 @@
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeFormDesignModal()">
-                    <i class="fa fa-times"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-left">Design Your Form</h4>
             </div>
@@ -536,7 +530,7 @@
 
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group" id="formButtonValueDiv">
-                                        <label>Button Preview</label>
+                                        <label>Button Preview</label><br>
                                         <button class=" btn green-haze" type="button"
                                             style="border-radius: 4px!important;"
                                             [style.backgroundColor]="form.buttonColor"
@@ -563,25 +557,23 @@
 
                                 <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
                                     <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage"
-                                        src="assets/images/background-form.png" class="profile-image img-grid"></div>
+                                        src="assets/images/background-form.png" class="profile-image img-grid" alt=""></div>
                                 <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload
                                     background image</div>
 
                                 <div
                                     *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
                                 </div>
-                                <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage"> <img
-                                        class="img-grid" [src]="formBackgroundImagePath">
+                                <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
+                                     <img  class="img-grid" [src]="formBackgroundImagePath" alt="">
                                 </div>
                                 <ng-template #showCroppedBackgroundImage>
-                                    <span *ngIf="croppedBackgroundImage; else showBackgroundImage"> <img
-                                            class="img-grid" [src]="croppedBackgroundImage">
+                                    <span *ngIf="croppedBackgroundImage; else showBackgroundImage">
+                                         <img class="img-grid" [src]="croppedBackgroundImage" alt="">
                                     </span>
                                 </ng-template>
-                                <ng-template #showBackgroundImage> <img class="img-grid" *ngIf="form.backgroundImage"
-                                        [src]="form.backgroundImage" (error)="errorHandler($event)"> </ng-template>
-                                <!-- <a class="btn btn-primary1 profile-pic" (click)="fileChangeEvent('formBackgroundImage')" data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !">
-                                &nbsp;&nbsp;<i class="fa fa-camera icon" style="font-size:25px;padding-top:10px"></i></a> -->
+                                <ng-template #showBackgroundImage>
+                                     <img class="img-grid" *ngIf="form.backgroundImage" [src]="form.backgroundImage" (error)="errorHandler($event)" alt=""> </ng-template>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
@@ -621,31 +613,28 @@
                                     <span style="margin: 10px 0px 10px 0px;" *ngIf="!companyLogoPath">
                                         <img *ngIf="!companyLogoChangedEvent && !form.companyLogo"
                                             src="assets/images/your-logo.png" class="profile-image img-grid"
-                                            style="height:135px !important;">
+                                            style="height:135px !important;" alt="">
                                     </span>
 
                                 </span>
                                 <div style="color: #f55d7a;">* Please upload company logo</div>
-                                <span *ngIf="companyLogoPath?.length>0; else showCroppedCompanyLogoImage"> <img
-                                        class="img-grid" [src]="companyLogoPath">
+                                <span *ngIf="companyLogoPath?.length>0; else showCroppedCompanyLogoImage">
+                                     <img class="img-grid" [src]="companyLogoPath" alt="">
                                 </span>
 
                                 <ng-template #showCroppedCompanyLogoImage>
-                                    <span *ngIf="croppedCompanyLogoImage; else showCompanyLogoImage"> <img
-                                            class="img-grid" [src]="croppedCompanyLogoImage">
+                                    <span *ngIf="croppedCompanyLogoImage; else showCompanyLogoImage">
+                                         <img  class="img-grid" [src]="croppedCompanyLogoImage" alt="">
                                     </span>
                                 </ng-template>
-                                <ng-template #showCompanyLogoImage> <span *ngIf="form.companyLogo"> <img
-                                            class="img-grid"
-                                            *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
-                                            [src]="form.companyLogo" (error)="errorHandler($event)"></span>
+                                <ng-template #showCompanyLogoImage> <span *ngIf="form.companyLogo">
+                                     <img    class="img-grid"  *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
+                                            [src]="form.companyLogo" (error)="errorHandler($event)" alt=""></span>
                                 </ng-template>
-                                <ng-template #showFullPath><span *ngIf="form.companyLogo"><img
-                                            [src]="authenticationService.MEDIA_URL + form.companyLogo"
-                                            class="profile-image img-grid" (error)="errorHandler($event)" /></span>
+                                <ng-template #showFullPath><span *ngIf="form.companyLogo">
+                                    <img [src]="authenticationService.MEDIA_URL + form.companyLogo"
+                                            class="profile-image img-grid" (error)="errorHandler($event)" alt="" /></span>
                                 </ng-template>
-                                <!-- <a class="btn btn-primary1 profile-pic" data-toggle="tooltip" data-placement="top" title="upload 2:1 ratio logo !" (click)="fileChangeEvent('companyLogo')">
-                                &nbsp;&nbsp;<i class="fa fa-camera icon1" style="font-size:25px;padding-top:10px"></i></a> -->
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
@@ -707,14 +696,14 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close-circle" (click)="closeFormFieldsModal()">
-                    <i class="fa fa-times"></i>
+                    <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-center">ADD FORM FIELDS</h4>
             </div>
             <div class="modal-body">
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
-                        <i class="icon-globe theme-font hide"></i>
+                        <i class="icon-globe theme-font hide" aria-hidden="true"></i>
                         <span class="caption-subject font-blue-madison bold uppercase">Custom
                             fields</span>
                     </div>
@@ -732,9 +721,8 @@
                 <!-- ---Pre Defined Fields------- -->
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
-                        <i class="icon-globe theme-font hide"></i>
-                        <span class="caption-subject font-blue-madison bold uppercase">Predefined
-                            fields</span>
+                        <i class="icon-globe theme-font hide" aria-hidden="true"></i>
+                        <span class="caption-subject font-blue-madison bold uppercase">Predefined fields</span>
                     </div>
                 </div>
                 <div class="portlet-body clearfix">
@@ -760,8 +748,9 @@
         <div class="modal-content rounded-0">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading>
             <div class="modal-header">
-                <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()"><i
-                        class="fa fa-times"></i></a>
+                <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
                 <h4 class="modal-title" id="cropLogoImage">Choose the image to be used as <span
                         *ngIf="!popupOpenedFor?.indexOf('formBackgroundImage')>0;else showCompanyLogoContent">form
                         background</span>
@@ -824,8 +813,9 @@
         <div class="modal-lg full">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a class="close-circle" data-dismiss="modal" (click)="closeYourImagesModal()"><i
-                            class="fa fa-times"></i></a>
+                    <a class="close-circle" data-dismiss="modal" (click)="closeYourImagesModal()">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </a>
                     <h4 class="modal-title text-center">Choose the image to be used as company logo in form</h4>
                 </div>
                 <div class="modal-body">
@@ -846,7 +836,7 @@
                                                 <img ng-src="https://d15k2d11r6t6rl.cloudfront.net/public/_thumbs/Integrators/6639d69f-523f-44ca-b809-a00daa26b367/bee-12092/BC-xAmplify-changes1.jpg_thumb.png?hash=1537857431976"
                                                     id="content_image_grid_{{i}}"
                                                     (error)="changeImage(i, file.filePath)" class="thumb ng-scope"
-                                                    src="{{file.filePath}}">
+                                                    src="{{file.filePath}}" alt="">
                                             </a> <a href="javascript:;"> </a>
                                         </span>
                                     </div>

@@ -1,14 +1,17 @@
 <div [hidden]="processor.isProcessing" class="mobile-camp">
 	<div class="" *ngIf="hasFormExists">
-		<span *ngIf="form.companyLogo"><img *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
-				[src]="form.companyLogo" style="top: 0px;align-items: center;" /></span>
-		<ng-template #showFullPath><img *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
-				[src]="authenticationService.MEDIA_URL + form.companyLogo" style=" top: 0px;align-items: center;" />
-		</ng-template>
 		<div [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="col-xs-1 col-sm-1 col-md-3 col-lg-3"></div>
 			<div class="col-xs-10 col-sm-10 col-md-6 col-lg-6">
+				<div *ngIf="form.companyLogo">
+					<img id="form-preview-company-logo" *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
+						[src]="form.companyLogo" alt="No Image Found" />
+				</div>
+				<ng-template #showFullPath>
+					<img id="form-preview-company-logo" *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
+						[src]="authenticationService.MEDIA_URL + form.companyLogo" alt="No Image Found" />
+				</ng-template>
 				<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 				<div [style.backgroundColor]="form.backgroundColor">
 					<div class="panel panel-info" style=" border-radius: 0px!important;">

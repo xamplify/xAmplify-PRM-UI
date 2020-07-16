@@ -1,21 +1,23 @@
 <div class="page-content">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a>Home</a> <i class="fa fa-angle-right"></i></li>
-            <!-- <li><a [routerLink]="['../../campaigns/manage']">Manage Publish</a> <i class="fa fa-angle-right"></i></li> -->
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i> <a>Home</a> 
+                <i class="fa fa-angle-right" aria-hidden="true"></i></li>
             <li><a>Create Design</a></li>
         </ul>
     </div>
     <!-- End of page-bar -->
     <div class="row">
         <div class="col-md-12">
+            <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
             </app-response-message>
             <!-- BEGIN INLINE NOTIFICATIONS PORTLET-->
             <div class="portlet light">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-cogs"></i>Create a Design
+                        <i class="fa fa-cogs" aria-hidden="true"></i>Create a Design
                     </div>
                     <div>
                         <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()">Create a Folder</button>
@@ -42,15 +44,17 @@
                                         </div>
                                         <div class="text">
                                             <h5>
-                                                <a [routerLink]="['../../emailtemplates/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                 <span class="design-name">Design Email Templates</span></a>
+                                                <a  [routerLink]="['../../emailtemplates/select']">
+                                                    <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
+                                                    <span class="design-name">Design Email Templates</span>
+                                                </a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5>
-                                                <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']"><i
-                                    class="fa fa-list">&nbsp;</i>&nbsp;
-                                    <span  class="design-name">Manage Email Templates</span></a>
+                                                <a style="padding-left: 10px;" [routerLink]="['../../emailtemplates/manage']">
+                                                    <i class="fa fa-list" aria-hidden="true">&nbsp;</i>&nbsp;
+                                                <span  class="design-name">Manage Email Templates</span></a>
                                             </h5>
                                         </div>
                                     </div>
@@ -70,15 +74,16 @@
                                         </div>
                                         <div class="text">
                                             <h5>
-                                                <a [routerLink]="['../../forms/add']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                   <span class="design-name">Design Forms</span></a>
+                                                <a [routerLink]="['../../forms/add']">
+                                                    <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
+                                                    <span class="design-name">Design Forms</span></a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5>
-                                                <a style="padding-left: 10px;" [routerLink]="['../../forms/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;
-                                    <span class="design-name">Manage Forms</span></a>
+                                                <a style="padding-left: 10px;" [routerLink]="['../../forms/manage']">
+                                                    <i  class="fa fa-list" aria-hidden="true"></i>&nbsp;
+                                                    <span class="design-name">Manage Forms</span></a>
                                             </h5>
                                         </div>
                                     </div>
@@ -99,15 +104,18 @@
                                         </div>
                                         <div class="text" *ngIf="landingPage">
                                             <h5>
-                                                <a [routerLink]="['../../pages/select']"><i class="glyphicon glyphicon-edit"></i>&nbsp;
-                                 <span class="design-name">Design Pages</span></a>
+                                                <a [routerLink]="['../../pages/select']">
+                                                    <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>&nbsp;
+                                                    <span class="design-name">Design Pages</span>
+                                                </a>
                                             </h5>
                                         </div>
                                         <div class="text" style="border: none !important">
                                             <h5>
-                                                <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink]="['../../pages/manage']"><i
-                                    class="fa fa-list"></i>&nbsp;
-                                    <span class="design-name">Manage Pages</span></a>
+                                                <a *ngIf="landingPage" style="padding-left: 10px;" [routerLink]="['../../pages/manage']">
+                                                    <i class="fa fa-list" aria-hidden="true"></i>&nbsp;
+                                                    <span class="design-name">Manage Pages</span>
+                                                </a>
                                             </h5>
                                         </div>
                                     </div>
