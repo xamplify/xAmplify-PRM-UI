@@ -195,13 +195,25 @@ export class AddFormComponent implements OnInit, OnDestroy {
             dateFormat: 'm/d/Y h:i K',
             time_24hr: false
         } );
+        this.listFormNames();
+        this.listCategories();
         if (this.isAdd) {
-            $('#add-form-name-modal').modal('show');
+            this.ngxloading = true;
+            this.formService.getCompanyLogo(this.loggedInUserId) .subscribe(
+                data => {
+                   this.ngxloading = false;
+                   this.companyLogoPath = this.authenticationService.MEDIA_URL+data;
+                    $('#add-form-name-modal').modal('show');
+                },
+                error => {
+                    this.ngxloading = false;
+                    $('#add-form-name-modal').modal('show');
+                });
+           
         } else {
             this.removeBlurClass();
         }
-        this.listFormNames();
-        this.listCategories();
+        
         if (!this.form.backgroundImage) {
             //this.squareData = {};
         }
@@ -240,7 +252,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
 
     listFormNames() {
-        this.formService.listFormNames(this.authenticationService.getUserId())
+        this.formService.listFormNames(this.loggedInUserId)
             .subscribe(
                 data => {
                     this.names = data;

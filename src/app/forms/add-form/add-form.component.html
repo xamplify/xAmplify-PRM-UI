@@ -608,8 +608,6 @@
                                 (click)="imageClick('companyLogo')">
                                 <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
                                 <span *ngIf="!croppedCompanyLogoImage && !companyLogoPath && !form.companyLogo">
-
-
                                     <span style="margin: 10px 0px 10px 0px;" *ngIf="!companyLogoPath">
                                         <img *ngIf="!companyLogoChangedEvent && !form.companyLogo"
                                             src="assets/images/your-logo.png" class="profile-image img-grid"
@@ -627,11 +625,13 @@
                                          <img  class="img-grid" [src]="croppedCompanyLogoImage" alt="">
                                     </span>
                                 </ng-template>
-                                <ng-template #showCompanyLogoImage> <span *ngIf="form.companyLogo">
-                                     <img    class="img-grid"  *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
+                                <ng-template #showCompanyLogoImage>
+                                     <span *ngIf="form.companyLogo">
+                                     <img  class="img-grid"  *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
                                             [src]="form.companyLogo" (error)="errorHandler($event)" alt=""></span>
                                 </ng-template>
-                                <ng-template #showFullPath><span *ngIf="form.companyLogo">
+                                <ng-template #showFullPath>
+                                    <span *ngIf="form.companyLogo">
                                     <img [src]="authenticationService.MEDIA_URL + form.companyLogo"
                                             class="profile-image img-grid" (error)="errorHandler($event)" alt="" /></span>
                                 </ng-template>
