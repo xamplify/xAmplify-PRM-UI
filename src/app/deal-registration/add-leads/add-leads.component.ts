@@ -498,7 +498,7 @@ export class AddLeadsComponent implements OnInit
     submitButtonStatus()
     {
         // &&  !this.phoneError
-        if (!this.companyError )
+        if (!this.companyError && !this.lastNameError)
         {
         this.isDealRegistrationFormValid = true;
         }else{

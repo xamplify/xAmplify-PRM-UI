@@ -3529,12 +3529,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         this.hideZohoAuthorisedPopup();
         this.getGoogleConatacts = data;
         this.zohoImageNormal = false;
-        if(data.contacts.message == "Your zoho token expired please login again"){
-            this.zohoImageBlur = true;
-         
-        }else{
-            this.zohoImageBlur = false;
-        }
+        this.zohoImageBlur = false;
         this.socialContactImage();
         let contacts = this.getGoogleConatacts['contacts'];
         if (contacts!=null && contacts.length>0) {
@@ -3545,6 +3540,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     socialContact.emailId = this.getGoogleConatacts.contacts[i].emailId.trim();
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
+                    socialContact.company = this.getGoogleConatacts.contacts[i].contactCompany;
                     this.socialPartnerUsers.push( socialContact );
                 }
                

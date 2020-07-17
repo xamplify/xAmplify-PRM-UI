@@ -3514,11 +3514,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         this.hideZohoAuthorisedPopup();
         this.getZohoConatacts = data;
         this.zohoImageNormal = false;
-        if(data.contacts.message == "Your zoho token expired please login again"){
-            this.zohoImageBlur = true;
-        }else{
-            this.zohoImageBlur = false;
-        }
+        this.zohoImageBlur = false;
         this.socialContactImage();
         let contacts = this.getZohoConatacts['contacts'];
         if (contacts!=null && contacts.length>0) {
@@ -3529,6 +3525,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     socialContact.emailId = contacts[i].emailId.trim();
                     socialContact.firstName = contacts[i].firstName;
                     socialContact.lastName = contacts[i].lastName;
+                    socialContact.company = contacts[i].contactCompany;
                     this.socialContactUsers.push(socialContact);
                 }
                
