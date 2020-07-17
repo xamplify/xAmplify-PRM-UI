@@ -88,8 +88,12 @@ export class AuthenticationService {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
     this.REST_URL = this.SERVER_URL + 'xtremand-rest/';
-
-    this.MEDIA_URL = this.SERVER_URL + 'vod/';
+    if(this.SERVER_URL.indexOf('localhost')>-1){
+      this.MEDIA_URL = 'https://aravindu.com/vod/';
+    }else{
+      this.MEDIA_URL = this.SERVER_URL + 'vod/';
+    }
+    
     this.SHARE_URL = this.SERVER_URL + 'embed/';
 
     this.clientId = this.envService.clientId;

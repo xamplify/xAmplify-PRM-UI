@@ -75,7 +75,7 @@
                                         <div *ngIf="form.showCompanyLogo">
                                             <img id="form-company-logo"  src="{{form.companyLogo}}" alt="">
                                         </div>
-                                        <div class="tab-content vertical-center" [style.backgroundColor]="form.backgroundColor" style="margin-top: 10px;">
+                                        <div class="tab-content vertical-center" [style.backgroundColor]="form.backgroundColor">
                                             <div class="panel-body" [dragula]='"form-options"'
                                                 [dragulaModel]='columnInfos'>
                                                 <ng-container *ngFor="let columnInfo of columnInfos;let i=index">

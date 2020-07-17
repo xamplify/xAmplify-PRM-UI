@@ -628,7 +628,7 @@ label {
     align-items: center;
     justify-content: center;
     display: block;
-    margin: 0px 100px 0px 100px;
+    margin: 10px 100px 0px 100px;
 }
 
 .color-pick {
@@ -1398,13 +1398,7 @@ div.switch5>input.switch:focus~label:before {
     padding: 0px 15px 10px 15px;
 }
 
-#form-company-logo {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 45px;
-    width: 115px;
-}
+
 
 .xamp-margin-left-icon{
     margin-left: 5px;
