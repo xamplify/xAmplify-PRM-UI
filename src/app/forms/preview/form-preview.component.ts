@@ -18,7 +18,7 @@ import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 
-declare var $,flatpickr:any;
+declare var $:any;
 
 
 @Component({
@@ -43,10 +43,11 @@ export class FormPreviewComponent implements OnInit {
     formSubmitted = false;
     message: string;
     isSubmittedAgain = false;
+    uploadedFile:File=null;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
     private authenticationService:AuthenticationService,private formService:FormService,
     private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
-    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,private utilService:UtilService) {
+    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService) {
       
   }
 
@@ -60,9 +61,6 @@ export class FormPreviewComponent implements OnInit {
           this.alias = this.route.snapshot.params['alias'];
       }
       this.getFormFieldsByAlias(this.alias);
-      flatpickr( '.flatpickr',{
-        dateFormat: 'm/d/Y',
-    } );
   }
   
   refreshForm(){
@@ -176,6 +174,13 @@ export class FormPreviewComponent implements OnInit {
       }
   }
 
+  onFileChangeEvent(files: FileList){
+    if(files && files.length > 0) {
+      this.uploadedFile = files.item(0);
+    }else{
+      this.uploadedFile = null;
+    }
+  }
 
   /*******Submit Forms********* */
   submitForm(){
@@ -205,7 +210,7 @@ export class FormPreviewComponent implements OnInit {
           formSubmit.fields.push(formField);
       });
       this.formService.submitForm(formSubmit)
-      .subscribe(
+       .subscribe(
         (response: any) => {
           if(response.statusCode==200){
               this.addHeaderMessage(response.message,this.successAlertClass);

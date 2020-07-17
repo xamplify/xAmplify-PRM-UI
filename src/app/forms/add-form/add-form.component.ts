@@ -26,7 +26,7 @@ import { ActionsDescription } from '../../common/models/actions-description';
 
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 
-declare var $: any, swal: any, CKEDITOR: any, flatpickr: any;
+declare var $: any, swal: any, CKEDITOR: any;
 
 
 @Component({
@@ -46,7 +46,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
         { 'labelName': 'Last Name', 'labelType': 'text' },
         { 'labelName': 'Mobile Number', 'labelType': 'text' },
         { 'labelName': 'Date', 'labelType': 'date' },
-        { 'labelName': 'Price', 'labelType': 'number' }
+        { 'labelName': 'Price', 'labelType': 'number' },
+        { 'labelName': 'Upload', 'labelType': 'upload' }
         ];
     customFields = [
         { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
@@ -190,11 +191,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        flatpickr( '.flatpickr',{
-            enableTime: true,
-            dateFormat: 'm/d/Y h:i K',
-            time_24hr: false
-        } );
         this.listFormNames();
         this.listCategories();
         if (this.isAdd) {
