@@ -23,6 +23,7 @@ export class ModuleAccessComponent implements OnInit {
   companyAndUserDetails:any;
   companyLoader = true;
   moduleLoader = true;
+  ngxLoading = false;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService) { }
 
   ngOnInit() {
@@ -55,14 +56,17 @@ export class ModuleAccessComponent implements OnInit {
   }
 
   updateModuleAccess() {
+    this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
         this.getModuleAccessByCompanyId();
         this.referenceService.goToTop();
+        this.ngxLoading = false;
       }
     }, error => {
+      this.ngxLoading = false;
       this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
     });
   }

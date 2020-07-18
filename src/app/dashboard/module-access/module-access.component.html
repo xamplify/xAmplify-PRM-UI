@@ -6,17 +6,15 @@
 				<a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a>
 				<i class="fa fa-angle-right" aria-hidden="true"></i>
 			</li>
-			
 			<li>
 				<i class="fa fa-pencil-square-o" aria-hidden="true"></i>Module Access
 			</li>
 		</ul>
 	</div>
 
-
 	<div class="portlet light">
 		<div class="portlet-body clearfix">
-			
+			<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 			<app-dashboard-loader *ngIf="companyLoader"></app-dashboard-loader>
 			<div class="table-responsive" *ngIf="!companyLoader">
 				<table class='table tgrid' aria-describedby="company-details-table">
@@ -116,7 +114,11 @@
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.landingPageCampaign"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
-
+							<tr>
+								<th scope="row">Login As Team Member</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.loginAsTeamMember"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
 							<tr>
 								<th scope="row">Vanity URL</th>
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.vanityUrlDomain"
