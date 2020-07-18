@@ -189,6 +189,10 @@
                     <input type="number" class="form-control" disabled="disabled"
                       placeholder="{{columnInfo.placeHolder}}">
                   </ng-container>
+                     <!-- ---------------------------Upload----------------------------- -->
+                     <ng-container *ngIf="columnInfo.labelType=='upload'">
+                      <input type="file" class="form-control" disabled="disabled">
+                    </ng-container>
                   <!-- ---------------------------Radio Button----------------------------- -->
                   <ng-container *ngIf="columnInfo.labelType=='radio'">
                     <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">

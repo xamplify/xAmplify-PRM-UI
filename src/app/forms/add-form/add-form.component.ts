@@ -48,7 +48,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         { 'labelName': 'Date', 'labelType': 'date' },
         { 'labelName': 'Price', 'labelType': 'number' },
         { 'labelName': 'Upload', 'labelType': 'upload' }
-        ];
+    ];
     customFields = [
         { 'labelName': 'Single Line Text Field', 'labelType': 'text', 'value': 'Field' },
         { 'labelName': 'Multi Line Text Field', 'labelType': 'textarea', 'value': 'Field' },
@@ -184,6 +184,15 @@ export class AddFormComponent implements OnInit, OnDestroy {
         dragulaService.dropModel.subscribe((value) => {
             this.onDropModel(value);
         });
+        if(!this.form.companyLogo){
+            this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
+                data => {
+                    this.form.companyLogo = this.authenticationService.MEDIA_URL + data;
+                },
+                error => {
+                    this.logger.errorPage(error);
+                });
+        }
     }
 
 
@@ -194,24 +203,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.listFormNames();
         this.listCategories();
         if (this.isAdd) {
-            this.ngxloading = true;
-            this.formService.getCompanyLogo(this.loggedInUserId) .subscribe(
-                data => {
-                   this.ngxloading = false;
-                   this.companyLogoPath = this.authenticationService.MEDIA_URL+data;
-                    $('#add-form-name-modal').modal('show');
-                },
-                error => {
-                    this.ngxloading = false;
-                    $('#add-form-name-modal').modal('show');
-                });
-           
+            $('#add-form-name-modal').modal('show');
         } else {
             this.removeBlurClass();
-        }
-        
-        if (!this.form.backgroundImage) {
-            //this.squareData = {};
         }
     }
 
@@ -835,7 +829,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
 
     characterSize() {
-        this.charactersLeft = 1000 - this.form.formSubmitMessage.length;
+        if (this.form.formSubmitMessage) {
+            this.charactersLeft = 1000 - this.form.formSubmitMessage.length;
+        }
     }
 
     imageClick(type: string) {

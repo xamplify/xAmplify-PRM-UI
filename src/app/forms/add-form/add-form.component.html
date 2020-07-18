@@ -562,16 +562,16 @@
                                 (click)="imageClick('formBackgroundImage')">
                                 <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
 
-
-                                <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
-                                    <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage"
-                                        src="assets/images/background-form.png" class="profile-image img-grid" alt="">
-                                </div>
-                                <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload
-                                    background image</div>
-
                                 <div
                                     *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
+                                    <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
+                                        <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please
+                                            upload
+                                            background image</div>
+                                        <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage"
+                                            src="assets/images/background-form.png" class="profile-image img-grid"
+                                            alt="">
+                                    </div>
                                 </div>
                                 <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
                                     <img class="img-grid" [src]="formBackgroundImagePath" alt="">
@@ -622,10 +622,10 @@
                                         <img *ngIf="!companyLogoChangedEvent && !form.companyLogo"
                                             src="assets/images/your-logo.png" class="profile-image img-grid"
                                             style="height:135px !important;" alt="">
+                                        <div style="color: #f55d7a;">* Please upload company logo</div>
                                     </span>
 
                                 </span>
-                                <div style="color: #f55d7a;">* Please upload company logo</div>
                                 <span *ngIf="companyLogoPath?.length>0; else showCroppedCompanyLogoImage">
                                     <img class="img-grid" [src]="companyLogoPath" alt="">
                                 </span>
@@ -638,14 +638,7 @@
                                 <ng-template #showCompanyLogoImage>
                                     <span *ngIf="form.companyLogo">
                                         <img class="img-grid"
-                                            *ngIf="form.companyLogo.indexOf('https')>-1; else showFullPath"
                                             [src]="form.companyLogo" (error)="errorHandler($event)" alt=""></span>
-                                </ng-template>
-                                <ng-template #showFullPath>
-                                    <span *ngIf="form.companyLogo">
-                                        <img [src]="authenticationService.MEDIA_URL + form.companyLogo"
-                                            class="profile-image img-grid" (error)="errorHandler($event)"
-                                            alt="" /></span>
                                 </ng-template>
                             </div>
                         </div>
@@ -680,19 +673,6 @@
                             </ckeditor>
                         </div>
                     </div>
-                    <!-- <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
-                            <div class="form-group">
-                                <label>Show footer:</label>
-                                <div class="email-options-checkbox-group email-options-notify">
-                                    <div class="email-options-checkbox clearfix">
-                                        <div class="col-sm-1 ui-switch-custom-div">
-                                            <switch [status]="form.showFooter" [onText]="callActionSwitch.yesTextValue" [offText]="callActionSwitch.noTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGrayColorSwitch" [size]="auto" (statusChange)="showFooterChange($event)">
-                                            </switch>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                 </div>
             </div>
             <div class="modal-footer">
