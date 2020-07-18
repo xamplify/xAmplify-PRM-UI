@@ -281,6 +281,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     folderCustomResponse:CustomResponse = new CustomResponse();
     showMarketingAutomationOption = false;
+    THROUGH_PARTNER_MESSAGE: string;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
@@ -701,7 +702,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
-        this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
+        if('landingPage'== this.campaignType){
+            this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
+            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
+        }else{
+            this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
+            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+
+        }
     }
 
     setOrgAdminReceipients(){
@@ -711,7 +719,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.showContactType = true;
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;
-        this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
+        if('landingPage'== this.campaignType){
+            this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
+            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
+        }else{
+            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
+            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+
+        }
     }
 
 

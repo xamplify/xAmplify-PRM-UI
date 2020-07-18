@@ -175,9 +175,9 @@
 
 
                                             <div class="form-group" *ngIf="!isOnlyPartner">
-                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}"><b translate>Through Partner
+                                                <label class="control-label col-sm-4" *ngIf="campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}"><b translate>Through Partner
                                                         </b></label>
-                                                <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{properties.THROUGH_PARTNER_MESSAGE}}" translate>Through Partner
+                                                <label class="control-label col-sm-4" *ngIf="!campaign.channelCampaign" data-toggle="tooltip" data-placement="top" title="{{THROUGH_PARTNER_MESSAGE}}" translate>Through Partner
                                                     </label>
                                                 <div class="col-sm-8">
                                                     <div class="email-options-checkbox-group email-options-notify">
@@ -193,8 +193,8 @@
                                                                 <span style="cursor: pointer;color: #54a7e9;">
                                                                     <i class="fa fa-question-circle" data-html="true"
                                                                         data-toggle="tooltip" data-placement="bottom"
-                                                                        title="{{TO_PARTNER_MESSAGE}} <br> {{properties.THROUGH_PARTNER_MESSAGE}}"
-                                                                        style="font-size: 20px;float: left;margin: -18px 0 0 15px;"></i>
+                                                                        title="{{TO_PARTNER_MESSAGE}} <br> {{THROUGH_PARTNER_MESSAGE}}"
+                                                                        style="font-size: 20px;float: left;margin: -18px 0 0 15px;" aria-hidden="true"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -1583,21 +1583,21 @@
                             </fieldset>
                         </div>
                         <!-- --Adding Work Flow------------- -->
-                        <div class="col-xs-12">
+                        <div class="col-xs-12" *ngIf="'landingPage'!=campaignType">
                             <div>
                                 <div class="row" style="margin-bottom: 5px;margin-top: -9px;">
                                     <div class="col-xs-6">
                                         <a *ngIf="emailTemplateHrefLinks?.length==0" class="dashboard-stat yellow-gold blur" style="background-color: #f76c1a;padding: 9px 0;" translate>
-                                            <i class="fa fa-ban p0"></i> No website links found
+                                            <i class="fa fa-ban p0" aria-hidden="true"></i> No website links found
                                         </a>
                                         <a *ngIf="emailTemplateHrefLinks?.length>0" class="dashboard-stat yellow-gold" style="background-color: #f76c1a;padding: 9px 0;" (click)="addClickRows()">
-                                            <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
+                                            <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i> {{properties.ADD_AUTO_RESPONSE_WEBSITE}}
                                         </a>
                                     </div>
 
                                     <div class="col-xs-6">
                                         <a class="dashboard-stat yellow-gold" style="background-color: #f4555c;padding: 9px 0;" (click)="addReplyRows()">
-                                            <i class="fa fa-plus-square p0" style="margin: 0 5px;"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
+                                            <i class="fa fa-plus-square p0" style="margin: 0 5px;" aria-hidden="true"></i> {{properties.ADD_AUTO_RESPONSE_EMAIL}}
                                         </a>
                                     </div>
                                     <!-- -------------------------------------Add Reply----------------------------- -->
