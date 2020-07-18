@@ -1641,14 +1641,7 @@
                 *ngIf="((campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&
                   (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf) || campaign.showRegisterLeadButton">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  [disabled]="userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00' "
-                  title=" Please watch the video to {{dealButtonText}} " class="btn btn-success"
-                  *ngIf="campaignType=='VIDEO' && userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00'">{{dealButtonText}}</button>
-                <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  title=" {{dealButtonText}} " class="btn btn-success"
-                  *ngIf="campaignType=='VIDEO' && !(userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00')">{{dealButtonText}}</button>
-                <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  class="btn btn-success" *ngIf="campaignType!='VIDEO'">{{dealButtonText}}</button>
+                  class="btn btn-success">{{dealButtonText}}</button>
               </span>
             </ng-container>
             <ng-container *ngIf="disabled">

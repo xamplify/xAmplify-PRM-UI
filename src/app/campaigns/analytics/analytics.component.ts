@@ -878,21 +878,20 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
 
     this.dealRegService.getDeal(campaignViews.campaignId, campaignViews.userId).subscribe(data => {
-      console.log(data)
       this.dealId = data;
       if (data == -1) {
         this.dealButtonText = "Register Lead";
         this.isDeal = false;
       } else {
-
         this.dealRegService.getDealById(data, campaignViews.userId).subscribe(response => {
-          if(this.campaign.showRegisterLeadButton){
+          let isDeal = response.data.deal;
+          if(this.campaign.showRegisterLeadButton && !isDeal ){
             this.isDeal = false;
           }else{
-            this.isDeal = response.data.deal;
+            this.isDeal = isDeal;
           }
           if (this.isDeal) {
-            this.dealButtonText = "Preview Deal";
+            this.dealButtonText = "Preview Lead";
           } else {
             this.dealButtonText = "Update Lead";
           }
