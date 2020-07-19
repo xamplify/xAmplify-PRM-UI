@@ -577,17 +577,25 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
            }
             this.socialContact.socialNetwork = "ZOHO";
             this.socialContact.contactType = this.contactType;
-            this.contactService.checkingZohoAuthentication(this.isPartner)
+            this.contactService.checkingZohoSyncAuthentication(this.isPartner)
                 .subscribe(
                 (data: any) => {
                     this.xtremandLogger.info(data);
                     this.storeLogin = data;
-                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                    if(data.statusCode == 402){
+                        swal.close();
+                        this.customResponse = new CustomResponse( 'INFO', data.message, true );
+                    }
+                    else{
+                        this.syncronizeContactList(contactListId, socialNetwork);
+                    }
+
+                 /*  else if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
                         this.syncronizeContactList(contactListId, socialNetwork);
                     } else {
                         localStorage.setItem("userAlias", data.userAlias);
                         window.location.href = "" + data.redirectUrl;
-                    }
+                    } */
                 },
                 (error: any) => {
                     var body = error['_body'];

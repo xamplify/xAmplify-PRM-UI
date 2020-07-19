@@ -3466,7 +3466,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                        if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
-                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.selectedAddPartnerOption = 6;
 						this.zohoImageBlur = true;
 					    this.zohoImageNormal = false;
@@ -3503,7 +3503,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
-                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.selectedAddContactsOption = 6;
 					    this.zohoImageBlur = true;
 					    this.zohoImageNormal = false;
