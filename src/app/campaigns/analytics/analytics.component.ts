@@ -891,7 +891,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             this.isDeal = isDeal;
           }
           if (this.isDeal) {
-            this.dealButtonText = "Preview Lead";
+            this.dealButtonText = "Preview Deal";
           } else {
             this.dealButtonText = "Update Lead";
           }
