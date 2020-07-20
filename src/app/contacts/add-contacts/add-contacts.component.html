@@ -567,7 +567,7 @@
 													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">{{user.email}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
-													<td>{{user.company}}</td>
+													<td>{{user.contactCompany}}</td>
 													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">
 														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails" translate>More</span> <span *ngIf="user.isShowDetails" translate>Less</span>

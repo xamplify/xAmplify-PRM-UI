@@ -3525,8 +3525,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     socialContact.emailId = contacts[i].emailId.trim();
                     socialContact.firstName = contacts[i].firstName;
                     socialContact.lastName = contacts[i].lastName;
-                    socialContact.company = contacts[i].contactCompany;
-                    socialContact.contactCompany = contacts[i].company;
+                    socialContact.contactCompany = contacts[i].contactCompany;
                     this.socialContactUsers.push(socialContact);
                 }
                

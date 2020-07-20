@@ -3541,6 +3541,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     socialContact.firstName = this.getGoogleConatacts.contacts[i].firstName;
                     socialContact.lastName = this.getGoogleConatacts.contacts[i].lastName;
                     socialContact.company = this.getGoogleConatacts.contacts[i].contactCompany;
+                    socialContact.contactCompany = this.getGoogleConatacts.contacts[i].contactCompany;
                     this.socialPartnerUsers.push( socialContact );
                 }
                

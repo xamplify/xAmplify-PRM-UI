@@ -34,5 +34,6 @@ export class SocialContact{
     externalListId:number;
     isShowDetails = false;
     publicList=false;
-	contactCompany = "";
+    contactCompany:string;
+    
 }
