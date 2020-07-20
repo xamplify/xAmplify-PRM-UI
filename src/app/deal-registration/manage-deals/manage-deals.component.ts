@@ -1054,7 +1054,7 @@ export class ManageDealsComponent implements OnInit {
     dealRegistration(item: any) {
         this.dealRegistrationService.getDealById(item, this.superiorId).subscribe(deal => {
             this.selectedDeal = deal.data;
-            this.selectedDealId = this.selectedDeal.dealId;
+            this.selectedDealId = item;
             const obj = { campaignId: this.selectedDeal.parentCampaignId.toString() };
             this.campaignService.getCampaignById(obj).subscribe(campaign => {
                 this.selectedCampaign = campaign;
@@ -1074,7 +1074,6 @@ export class ManageDealsComponent implements OnInit {
                 },
                 error => console.log(error),
                     () => { });
-                this.selectedDealId = item;
             });
             
         },error => {

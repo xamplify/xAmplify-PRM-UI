@@ -3449,7 +3449,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                        if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
-                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.selectedAddContactsOption = 6;
 						this.zohoImageBlur = true;
 					    this.zohoImageNormal = false;
@@ -3488,7 +3488,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     if (data.statusCode != null &&  data.statusCode != 200 ) {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
-                        this.customResponse = new CustomResponse( 'ERROR', data.message, true );
+                        this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.selectedAddContactsOption = 6;
                         this.zohoImageBlur = true;
 					    this.zohoImageNormal = false;
@@ -3525,7 +3525,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     socialContact.emailId = contacts[i].emailId.trim();
                     socialContact.firstName = contacts[i].firstName;
                     socialContact.lastName = contacts[i].lastName;
-                    socialContact.company = contacts[i].contactCompany;
+                    socialContact.contactCompany = contacts[i].contactCompany;
                     this.socialContactUsers.push(socialContact);
                 }
                

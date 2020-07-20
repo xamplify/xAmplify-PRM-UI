@@ -746,15 +746,15 @@
                       <span class="glyphicon glyphicon-remove" style="font-size: 1em"></span>
                     </button>
                     <button type="submit" class="search-box-item-click" style="right: 1px" (click)="search()">
-                      <i class="fa fa-search" style="padding: 4px; color: black !important"></i>
+                      <i class="fa fa-search" style="padding: 4px; color: black !important" aria-hidden="true"></i>
                     </button>
                   </div>
-                  <div [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
+                  <div *ngIf="'LANDINGPAGE'!=campaignType" [class.disabled]="campaignViewsPagination.pagedItems?.length == 0"
                     class="btn-group pull-right col-xs-1" style="margin-top: -10px; cursor:pointer; color: #7d8c98">
                     <span class="dropdown-toggle" data-toggle="dropdown"
                       style="box-shadow:none;margin-top: 14px; float:right;display: inline-flex;">
-                      <i class="fa fa-cog" style="font-size:20px; margin-right:5px"></i><i class="fa fa-angle-down"
-                        style="font-size:14px; float:right"></i>
+                      <i class="fa fa-cog" style="font-size:20px; margin-right:5px" aria-hidden="true"></i>
+                      <i class="fa fa-angle-down" style="font-size:14px; float:right" aria-hidden="true"></i>
                     </span>
                     <ul class="dropdown-menu pull-right" style="right: 20px !important" >
                       <li>
@@ -1638,17 +1638,10 @@
               <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
              <ng-container *ngIf="!disabled">
               <span
-                *ngIf="((campaign.nurtureCampaign || !channelCampaign) &&(campaignType!='SOCIAL')&&
+                *ngIf="((campaign.nurtureCampaign || !channelCampaign) &&  (campaignType!='LANDINGPAGE') &&(campaignType!='SOCIAL')&&
                   (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf) || campaign.showRegisterLeadButton">
                 <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  [disabled]="userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00' "
-                  title=" Please watch the video to {{dealButtonText}} " class="btn btn-success"
-                  *ngIf="campaignType=='VIDEO' && userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00'">{{dealButtonText}}</button>
-                <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  title=" {{dealButtonText}} " class="btn btn-success"
-                  *ngIf="campaignType=='VIDEO' && !(userCampaignReport.emailOpenCount ==0 && totalTimeSpent == '00:00:00')">{{dealButtonText}}</button>
-                <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
-                  class="btn btn-success" *ngIf="campaignType!='VIDEO'">{{dealButtonText}}</button>
+                  class="btn btn-success">{{dealButtonText}}</button>
               </span>
             </ng-container>
             <ng-container *ngIf="disabled">

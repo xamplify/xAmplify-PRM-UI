@@ -345,6 +345,12 @@ export class ContactService {
             .catch( this.handleError );
     }
 
+    checkingZohoSyncAuthentication(isPartner:boolean) {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/checkSyncAuthorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&isPartner="+isPartner)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
     getZohoContacts( username: string, password: string, contactType: string ) {
         this.zohoContact = { "userName": username, "password": password, "contactType": contactType };
         var requestoptions = new RequestOptions( {
