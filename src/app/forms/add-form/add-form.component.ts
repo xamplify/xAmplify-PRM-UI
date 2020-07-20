@@ -46,7 +46,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         { 'labelName': 'Last Name', 'labelType': 'text' },
         { 'labelName': 'Mobile Number', 'labelType': 'text' },
         { 'labelName': 'Date', 'labelType': 'date' },
-        { 'labelName': 'Price', 'labelType': 'number' },
+        { 'labelName': 'Price', 'labelType': 'price' },
         { 'labelName': 'Upload', 'labelType': 'upload' }
     ];
     customFields = [
@@ -131,6 +131,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     ckeConfig: any;
     @ViewChild("myckeditor") ckeditor: any;
     loading = false;
+    priceTypes:Array<string>;
 
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
@@ -152,10 +153,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.existingFormName = this.formService.form.name.toLowerCase();
             this.form = this.formService.form;
             if (this.form.showCompanyLogo === undefined || this.form.showCompanyLogo === null) {
-                this.form.showCompanyLogo = true;
+                this.form.showCompanyLogo = false;
             }
             if (this.form.showFooter === undefined || this.form.showFooter === null) {
-                this.form.showFooter = true;
+                this.form.showFooter = false;
             }
             if (this.form.backgroundColor) {
                 this.backgroundControllerColor = this.form.backgroundColor;
@@ -169,7 +170,11 @@ export class AddFormComponent implements OnInit, OnDestroy {
             if (this.form.buttonValueColor) {
                 this.buttonValueControllerColor = this.form.buttonValueColor;
             }
+            if (!this.form.buttonValue) {
+                this.form.buttonValue = "Submit";
+            }
             this.form.isValid = true;
+            this.form.isFormButtonValueValid = true;
             this.listExistingColumns(this.form.formLabelDTOs);
             this.characterSize();
         } else {
@@ -184,15 +189,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
         dragulaService.dropModel.subscribe((value) => {
             this.onDropModel(value);
         });
-        if(!this.form.companyLogo){
-            this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
-                data => {
-                    this.form.companyLogo = this.authenticationService.MEDIA_URL + data;
-                },
-                error => {
-                    this.logger.errorPage(error);
-                });
-        }
     }
 
 
@@ -202,11 +198,35 @@ export class AddFormComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.listFormNames();
         this.listCategories();
+        this.listPriceTypes();
         if (this.isAdd) {
-            $('#add-form-name-modal').modal('show');
+            this.ngxloading = true;
+            this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
+                data => {
+                    this.ngxloading = false;
+                    this.form.companyLogo = data;
+                    this.companyLogoImageUrlPath = data;
+                    console.log(data)
+                    $('#add-form-name-modal').modal('show');
+                },
+                error => {
+                    this.ngxloading = false;
+                    $('#add-form-name-modal').modal('show');
+                });
         } else {
             this.removeBlurClass();
         }
+    }
+
+    listPriceTypes(){
+        this.formService.getPriceTypes().subscribe(
+            (response: any) => {
+                this.priceTypes = response.data;
+                console.log(response.data)
+            },
+            error => {
+                this.logger.errorPage(error);
+            });
     }
 
     listCategories() {
@@ -341,6 +361,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
         } else {
             columnInfo.labelName = column.labelName
             columnInfo.placeHolder = column.labelName;
+            if(column.labelType == 'price' && column.priceType != undefined){
+                columnInfo.priceType = column.priceType;
+            }
         }
         if (column.required != undefined) {
             columnInfo.required = column.required;
@@ -673,6 +696,11 @@ export class AddFormComponent implements OnInit, OnDestroy {
             CKEDITOR.instances[instanceName].updateElement();
             this.form.footer = CKEDITOR.instances[instanceName].getData();
         }
+        if(!this.form.companyLogo){
+            this.form.companyLogo=this.companyLogoImageUrlPath;
+        }
+        console.log(this.form.companyLogo)
+        console.log(this.form.companyLogo.indexOf('images/'))
         if (this.isAdd) {
             this.save(this.form);
         } else {
@@ -932,10 +960,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings, 130, 196, 130, false);
         this.squareCropperSettings.noFileInput = true;
         console.log(this.authenticationService.SERVER_URL + this.form.companyLogo)
-        if (this.form.backgroundImage != null && this.form.backgroundImage.length > 0) {
-            this.companyLogoImageUrlPath = this.form.backgroundImage;
-            console.log(this.companyLogoImageUrlPath)
-        }
+        // if (this.form.backgroundImage != null && this.form.backgroundImage.length > 0) {
+        //     this.companyLogoImageUrlPath = this.form.backgroundImage;
+        //     console.log(this.companyLogoImageUrlPath)
+        // }
     }
 
     chooseFileFromList() {
@@ -1014,7 +1042,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.form.showFooter = !this.form.showFooter;
     }
 
-    errorHandler(event) { event.target.src = 'assets/images/company-profile-logo.png'; }
+    errorHandler(event) { event.target.src = 'assets/images/your-logo.png'; }
 
     uploadFile(file: File, type: string) {
         this.loading = true;
@@ -1060,5 +1088,27 @@ export class AddFormComponent implements OnInit, OnDestroy {
     closeFormDesignModal() {
         $('#add-form-designs').modal('hide');
         this.removeBlurClass()
+    }
+
+    validateFormButtonValue(buttonValue: string) {
+        if (!($.trim(buttonValue).length > 0)) {
+            this.form.isFormButtonValueValid = false;
+            this.addFormButtonValueErrorMessage(this.requiredMessage);
+        } else {
+            this.form.isFormButtonValueValid = true;
+            this.removeFormButtoValueErrorClass();
+        }
+    }
+
+    removeFormButtoValueErrorClass() {
+        $('#formButtonValueDiv').removeClass(this.formErrorClass);
+        $('#formButtonValueDiv').addClass(this.defaultFormClass);
+        this.form.isValid = true;
+    }
+
+    private addFormButtonValueErrorMessage(errorMessage: string) {
+        this.form.isValid = false;
+        $('#formButtonValueDiv').addClass(this.formErrorClass);
+        this.formButtonValueErrorMessage = errorMessage;
     }
 }

@@ -1406,3 +1406,40 @@ div.switch5>input.switch:focus~label:before {
 .custom-size-form-brush{
     font-size: 14px;
 }
+
+.prefix .input-group-addon {
+    border-right: 0;
+    border-radius: 0px 0px 0px 0px;
+    }
+    
+    .input-group-addon {
+        padding: 6px 12px;
+            font-size: 13px;
+    text-align: center;
+    background-color: white;
+    width: 40%;
+    vertical-align: middle;
+    line-height: 1;
+    color: rgb(128, 109, 109);
+    border: 1px solid #ccc;
+    white-space: nowrap;
+    display: table-cell; 
+    }
+
+    .input-group {
+        position: relative;
+        display: flex;
+        border-collapse: separate;
+      }
+
+      .edit-field-prefix{
+        padding: 8px 12px;
+        font-size: 13px;
+        background-color: white; 
+        width: 40%;
+        vertical-align: middle;
+        text-align: center;
+        line-height: 1;
+        color: rgb(51, 46, 46);
+        border: 1px solid #ccc;
+      }

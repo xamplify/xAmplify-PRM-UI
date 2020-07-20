@@ -73,7 +73,10 @@
                                     <div class="portlet-body clearfix" id="create-from-div"
                                         [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
                                         <div *ngIf="form.showCompanyLogo">
-                                            <img id="form-company-logo" src="{{form.companyLogo}}" alt="">
+                                            <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;"
+                                                [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
+                                            <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;"
+                                                [src]="form.companyLogo" alt="" />
                                         </div>
                                         <div class="tab-content vertical-center"
                                             [style.backgroundColor]="form.backgroundColor">
@@ -123,13 +126,17 @@
                                                                             <app-flatpickr>
                                                                             </app-flatpickr>
                                                                         </ng-container>
-                                                                        <!-- ---------------------------Number----------------------------- -->
+                                                                        <!-- ---------------------------Price----------------------------- -->
                                                                         <ng-container
-                                                                            *ngIf="columnInfo.labelType=='number'">
-                                                                            <input type="number"
-                                                                                placeholder="{{columnInfo.placeHolder}}"
-                                                                                class="form-control disabled"
-                                                                                id="{{columnInfo.labelId}}" />
+                                                                            *ngIf="columnInfo.labelType=='price'">
+                                                                            <div class="input-group">
+                                                                                <span
+                                                                                    class="edit-field-prefix">{{columnInfo.priceType}}</span>
+                                                                                <input type="number"
+                                                                                    placeholder="{{columnInfo.placeHolder}}"
+                                                                                    class="form-control disabled"
+                                                                                    id="{{columnInfo.labelId}}" />
+                                                                            </div>
                                                                         </ng-container>
                                                                         <!-- ---------------------------Upload----------------------------- -->
                                                                         <ng-container
@@ -246,6 +253,42 @@
                                                         <input type="text" [(ngModel)]="selectedColumn.placeHolder"
                                                             class="form-control" maxlength="1000" />
                                                     </div>
+                                                    <!-- ---------------------------Price----------------------------- -->
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='price'">
+                                                        <label class="control-label">Field Placeholder Text</label>
+                                                        <div class="input-group prefix">
+                                                            <select class="input-group-addon"
+                                                                [(ngModel)]="selectedColumn.priceType"
+                                                                [ngModelOptions]="{standalone: true}">
+                                                                <ng-container *ngFor="let type of priceTypes">
+                                                                    <ng-container *ngIf="type=='rupee'">
+                                                                        <option value="{{type}}">
+                                                                            {{type}}(₹)</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='dollar'">
+                                                                        <option value="{{type}}">
+                                                                            {{type}}($)</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='yen'">
+                                                                        <option value="{{type}}">
+                                                                            {{type}}(¥)</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='pound'">
+                                                                        <option value="{{type}}">
+                                                                            {{type}}(£)</option>
+                                                                    </ng-container>
+                                                                    <ng-container *ngIf="type=='euro'">
+                                                                        <option value="{{type}}">
+                                                                            {{type}}(€)</option>
+                                                                    </ng-container>
+                                                                </ng-container>
+                                                            </select>
+                                                            <input type="number"
+                                                                [(ngModel)]="selectedColumn.placeHolder"
+                                                                class="form-control" />
+                                                        </div>
+                                                    </div>
+
                                                     <div class="form-group">
                                                         <label class="control-label">Required</label>
                                                         <switch [status]="selectedColumn.required"
@@ -445,7 +488,8 @@
         <div class="modal-content">
             <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-header">
-                <button type="button" class="close-circle" (click)="closeFormDesignModal()">
+                <button type="button" *ngIf="form.isFormButtonValueValid" class="close-circle"
+                    (click)="closeFormDesignModal()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
                 <h4 class="modal-title text-left">Design Your Form</h4>
@@ -530,9 +574,11 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group" id="formButtonValueDiv">
-                                        <label>Submit Button Value</label>
-                                        <input class="form-control" [value]="Submit" [(ngModel)]="form.buttonValue"
-                                            maxlength="1000" />
+                                        <label>Submit Button Value<span class="invalid-form-name">*</span></label>
+                                        <input class="form-control" [(ngModel)]="form.buttonValue" maxlength="1000"
+                                            (input)="validateFormButtonValue(form.buttonValue)" />
+                                        <span *ngIf="!form.isFormButtonValueValid"
+                                            class="required">{{formButtonValueErrorMessage}}</span>
                                     </div>
                                 </div>
 
@@ -638,7 +684,14 @@
                                 <ng-template #showCompanyLogoImage>
                                     <span *ngIf="form.companyLogo">
                                         <img class="img-grid"
-                                            [src]="form.companyLogo" (error)="errorHandler($event)" alt=""></span>
+                                            *ngIf="form.companyLogo.indexOf('images/')===0; else showPath"
+                                            [src]="authenticationService.MEDIA_URL + form.companyLogo"
+                                            (error)="errorHandler($event)" alt=""></span>
+                                </ng-template>
+                                <ng-template #showPath>
+                                    <span *ngIf="form.companyLogo">
+                                        <img [src]="form.companyLogo" class="profile-image img-grid"
+                                            (error)="errorHandler($event)" alt="" /></span>
                                 </ng-template>
                             </div>
                         </div>
@@ -676,7 +729,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn green-haze" (click)="unBlurDiv()" id="full-screen">Continue</button>
+                <button type="submit" [disabled]="!form.isFormButtonValueValid" class="btn green-haze"
+                    (click)="unBlurDiv()" id="full-screen">Continue</button>
             </div>
         </div>
     </div>

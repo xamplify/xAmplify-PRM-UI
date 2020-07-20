@@ -156,8 +156,11 @@
         [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
         <ngx-loading [show]="ngxloading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
         <div *ngIf="form.showCompanyLogo">
-          <img id="form-company-logo"  src="{{form.companyLogo}}" alt="">
-      </div>
+          <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;"
+            [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
+          <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo"
+            alt="" />
+        </div>
         <div class="vertical-center">
           <div class="panel panel-info " *ngIf="!formError" [style.backgroundColor]="form.backgroundColor">
             <div class="panel-heading">
@@ -181,18 +184,20 @@
                   </ng-container>
                   <!-- ---------------------------Date----------------------------- -->
                   <ng-container *ngIf="columnInfo.labelType=='date'">
-                    <app-flatpickr disabled="disabled"
-                    [(dataField)]="columnInfo.value"></app-flatpickr>
+                    <app-flatpickr style="pointer-events: none;"></app-flatpickr>
                   </ng-container>
-                  <!-- ---------------------------Number----------------------------- -->
-                  <ng-container *ngIf="columnInfo.labelType=='number'">
-                    <input type="number" class="form-control" disabled="disabled"
-                      placeholder="{{columnInfo.placeHolder}}">
+                  <!-- ---------------------------Price----------------------------- -->
+                  <ng-container *ngIf="columnInfo.labelType=='price'">
+                    <div class="input-group prefix">
+                      <span class="input-group-addon" style="pointer-events: none;">{{columnInfo.priceType}}</span>
+                      <input type="number" class="form-control" disabled="disabled"
+                        placeholder="{{columnInfo.placeHolder}}">
+                    </div>
                   </ng-container>
-                     <!-- ---------------------------Upload----------------------------- -->
-                     <ng-container *ngIf="columnInfo.labelType=='upload'">
-                      <input type="file" class="form-control" disabled="disabled">
-                    </ng-container>
+                  <!-- ---------------------------Upload----------------------------- -->
+                  <ng-container *ngIf="columnInfo.labelType=='upload'">
+                    <input type="file" class="form-control" disabled="disabled">
+                  </ng-container>
                   <!-- ---------------------------Radio Button----------------------------- -->
                   <ng-container *ngIf="columnInfo.labelType=='radio'">
                     <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
@@ -240,7 +245,7 @@
               </ng-template>
             </div>
           </div>
-           <!------Show Footer-------->
+          <!------Show Footer-------->
           <footer>
             <div style="text-align: center;" *ngIf="form.showFooter" [innerHTML]="form.footer"></div>
           </footer>

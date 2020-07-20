@@ -8,7 +8,7 @@ export class Form {
     description = "";
     formLabelDTOs: Array<ColumnInfo> = new Array<ColumnInfo>();
     isValid = false;    
-    //isFormNameValid = false;  
+    isFormButtonValueValid = true;  
     createdBy:number;
     updatedBy:number;
     analyticsType:GeoLocationAnalyticsType;
