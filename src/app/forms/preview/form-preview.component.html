@@ -86,9 +86,9 @@
 											</ng-container>
 											<!-- ---------------------------Upload----------------------------- -->
 											<ng-container *ngIf="columnInfo.labelType=='upload'">
-												<input type="file" [(ngModel)]="columnInfo.file" class="form-control"
+												<input type="file"  class="form-control"
 													placeholder="{{columnInfo.placeHolder}}"
-													(change)="onFileChangeEvent($event.target.files)">
+													(change)="onFileChangeEvent($event,columnInfo)">
 											</ng-container>
 											<!-- ---------------------------Radio Button----------------------------- -->
 											<ng-container *ngIf="columnInfo.labelType=='radio'">

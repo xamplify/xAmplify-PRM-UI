@@ -136,7 +136,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService) {
-        this.loggedInUserId = this.authenticationService.getUserId();
+        CKEDITOR.config.extraPlugins = 'colorbutton,colordialog';
+		this.loggedInUserId = this.authenticationService.getUserId();
         let categoryId = this.route.snapshot.params['categoryId'];
         if (categoryId > 0) {
             this.routerLink += "/" + categoryId;

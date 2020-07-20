@@ -45,7 +45,7 @@ export class FormPreviewComponent implements OnInit {
     isSubmittedAgain = false;
     uploadedFile:File=null;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
-    private authenticationService:AuthenticationService,private formService:FormService,
+    public authenticationService:AuthenticationService,private formService:FormService,
     private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
     private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService) {
       
@@ -174,12 +174,38 @@ export class FormPreviewComponent implements OnInit {
       }
   }
 
-  onFileChangeEvent(files: FileList){
-    if(files && files.length > 0) {
-      this.uploadedFile = files.item(0);
+  onFileChangeEvent(event:any,columnInfo:ColumnInfo) {
+    if (event.target.files.length > 0) {
+      this.ngxLoading = true;
+      let file = event.target.files[0];
+      const formData: any = new FormData();
+      formData.append("uploadedFile", file, file['name']);
+      const formSubmit = new FormSubmit();
+      formSubmit.id = this.form.id;
+      this.formService.uploadFile(formData,formSubmit)
+      .subscribe(
+       (response: any) => {
+         if(response.statusCode==200){
+           columnInfo.value = response.data;
+           this.ngxLoading = false;
+         }else{
+            this.showUploadErrorMessage(columnInfo);
+         }
+       },
+       (error: string) => {
+        this.showUploadErrorMessage(columnInfo);
+       }
+     );
+
     }else{
-      this.uploadedFile = null;
+      columnInfo.value = "";
     }
+  }
+
+  showUploadErrorMessage(columnInfo:ColumnInfo){
+    this.ngxLoading = false;
+    columnInfo.value = "";
+    this.referenceService.showSweetAlertServerErrorMessage();
   }
 
   /*******Submit Forms********* */
@@ -199,7 +225,7 @@ export class FormPreviewComponent implements OnInit {
       const formSubmit = new FormSubmit();
       formSubmit.id = this.form.id;
       formSubmit.alias = this.alias;
-      $.each(formLabelDtos,function(index:number,field:ColumnInfo){
+      $.each(formLabelDtos,function(_index:number,field:ColumnInfo){
           const formField  = new FormSubmitField();
           formField.id = field.id;
           formField.value = $.trim(field.value);
@@ -209,6 +235,7 @@ export class FormPreviewComponent implements OnInit {
           }
           formSubmit.fields.push(formField);
       });
+     
       this.formService.submitForm(formSubmit)
        .subscribe(
         (response: any) => {

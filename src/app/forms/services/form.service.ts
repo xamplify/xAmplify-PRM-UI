@@ -67,6 +67,16 @@ export class FormService {
             .catch( this.handleError );
     }
 
+	uploadFile( formData: FormData,formSubmit:FormSubmit ) {
+        formData.append('formSubmitDTO', new Blob([JSON.stringify(formSubmit)],
+            {
+                type: "application/json"
+            }));
+        return this.http.post(this.URL + "submit/uploadFile", formData)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     submitForm( formSubmit: FormSubmit ) {
         return this.http.post( this.URL + "submit/save", formSubmit )
