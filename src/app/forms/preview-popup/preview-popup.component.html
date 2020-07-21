@@ -184,12 +184,14 @@
                   </ng-container>
                   <!-- ---------------------------Date----------------------------- -->
                   <ng-container *ngIf="columnInfo.labelType=='date'">
-                    <app-flatpickr style="pointer-events: none;"></app-flatpickr>
+                    <app-flatpickr [class.disabled]='true' [isFromForm]='true'></app-flatpickr>
                   </ng-container>
                   <!-- ---------------------------Price----------------------------- -->
                   <ng-container *ngIf="columnInfo.labelType=='price'">
                     <div class="input-group prefix">
-                      <span class="input-group-addon" style="pointer-events: none;">{{columnInfo.priceType}}</span>
+                      <span class="input-group-addon" style="pointer-events: none;">
+                        {{columnInfo.priceType}}
+                      </span>
                       <input type="number" class="form-control" disabled="disabled"
                         placeholder="{{columnInfo.placeHolder}}">
                     </div>

@@ -72,7 +72,8 @@
 											</ng-container>
 											<!-- ---------------------------Date----------------------------- -->
 											<ng-container *ngIf="columnInfo.labelType=='date'">
-												<app-flatpickr [(dataField)]="columnInfo.value"></app-flatpickr>
+												<app-flatpickr [(dataField)]="columnInfo.value" [isFromForm]='true'>
+												</app-flatpickr>
 											</ng-container>
 
 											<!-- ---------------------------Price----------------------------- -->
@@ -86,7 +87,7 @@
 											</ng-container>
 											<!-- ---------------------------Upload----------------------------- -->
 											<ng-container *ngIf="columnInfo.labelType=='upload'">
-												<input type="file"  class="form-control"
+												<input type="file" class="form-control"
 													placeholder="{{columnInfo.placeHolder}}"
 													(change)="onFileChangeEvent($event,columnInfo)">
 											</ng-container>

@@ -1417,7 +1417,7 @@ div.switch5>input.switch:focus~label:before {
             font-size: 13px;
     text-align: center;
     background-color: white;
-    width: 40%;
+    width: auto;
     vertical-align: middle;
     line-height: 1;
     color: rgb(128, 109, 109);
@@ -1427,8 +1427,8 @@ div.switch5>input.switch:focus~label:before {
     }
 
     .input-group {
-        position: relative;
-        display: flex;
+        /* position: relative; */
+        display: flex;  
         border-collapse: separate;
       }
 
@@ -1443,3 +1443,4 @@ div.switch5>input.switch:focus~label:before {
         color: rgb(51, 46, 46);
         border: 1px solid #ccc;
       }
+      
