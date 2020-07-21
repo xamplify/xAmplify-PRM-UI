@@ -1629,7 +1629,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    highlightRow( contactId: number, email: any, userEmail: any, firstName: any, lastName: any, event: any ) {
+    highlightRow( contactId: number, email: any, userEmail: any, firstName: any, lastName: any, event: any,company: any ) {
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -1639,6 +1639,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             var object = {
                     "firstName": firstName,
                     "lastName": lastName,
+                    "contactCompany": company,
                 }
             if(userEmail){
                 object['emailId'] = userEmail;
@@ -3526,6 +3527,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     socialContact.firstName = contacts[i].firstName;
                     socialContact.lastName = contacts[i].lastName;
                     socialContact.contactCompany = contacts[i].contactCompany;
+                    socialContact.company = contacts[i].contactCompany;
                     this.socialContactUsers.push(socialContact);
                 }
                

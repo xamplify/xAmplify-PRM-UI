@@ -195,7 +195,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    contactAndMdfPopupResponse: CustomResponse = new CustomResponse();
    mdfAccess: boolean = false;
    zohoErrorResponse : CustomResponse = new CustomResponse();
-    zohoPopupLoader: boolean =false;
+   zohoPopupLoader: boolean =false;
+   public zohoAuthUrl: String;
+   public isZohoRedirectUrlButton: boolean=false;
+
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
         public referenceService: ReferenceService, public countryNames: CountryNames, public paginationComponent: PaginationComponent,
@@ -477,7 +480,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 let userDetails = {
                         "firstName": this.newPartnerUser[i].firstName,
                         "lastName": this.newPartnerUser[i].lastName,
-                        "companyName": this.newPartnerUser[i].contactCompany
+                        "companyName": this.newPartnerUser[i].contactCompany,
+                        "contactCompany": this.newPartnerUser[i].contactCompany
                     }
                 
                  if(this.newPartnerUser[i].emailId){
@@ -2185,7 +2189,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
     }
 
-    highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any ) {
+    highlightRow( contactId: number, email: any, firstName: any, lastName: any, event: any,company: any ) {
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -2195,6 +2199,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                 "emailId": email,
                 "firstName": firstName,
                 "lastName": lastName,
+                "contactCompany": company,
             }
             this.allselectedUsers.push( object );
             console.log( this.allselectedUsers );
@@ -3467,6 +3472,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'INFO', data.message, true );
+                       // this.isZohoRedirectUrlButton = true;
+                      //  this.zohoAuthentication();
                         this.selectedAddPartnerOption = 6;
 						this.zohoImageBlur = true;
 					    this.zohoImageNormal = false;
@@ -3483,6 +3490,23 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.xtremandLogger.errorPage( error );
                 },
                 );
+    }
+
+    zohoAuthentication()
+    {
+        this.contactService.checkingZohoAuthentication(this.isPartner)
+                            .subscribe(
+                                (data: any) => {
+                                    this.zohoAuthUrl = data.redirectUrl;
+                                            },
+                                            ( error: any ) => {
+                                                swal.close();
+                                                this.xtremandLogger.error( error );
+                                                this.xtremandLogger.errorPage( error );
+                                            },
+                                            ); 
+                                
+
     }
     
     
