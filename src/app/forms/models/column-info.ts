@@ -24,10 +24,9 @@ export class ColumnInfo {
     checkBoxErrorMessage = "";
     dropDownErrorMessage = "";
     priceType="";
-/****Edit Form Fields******/
+    /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";
-
     sfCustomField:boolean;
     labelLength:string;
 

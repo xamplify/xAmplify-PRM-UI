@@ -68,7 +68,7 @@
 										<td *ngIf="columnIndex<=3">
 											<ng-container *ngIf="columnValue.downloadable">
 												<a href="{{columnValue.value}}">
-													<i  aria-hidden="true" class="fa fa-download margin"></i>
+													{{columnValue.fileName}}
 												</a>
 											</ng-container>
 											<ng-container *ngIf="!columnValue.downloadable">
@@ -98,10 +98,9 @@
 													{{column.labelName}}<span class="required" *ngIf="column.required">*</span>
 												</th>
 												<td *ngIf="i>=4">
-
 													<ng-container *ngIf="formDataRow.values[i].downloadable">
 														<a href="{{formDataRow.values[i].value}}">
-															<i  aria-hidden="true" class="fa fa-download margin"></i>
+															{{formDataRow.values[i].fileName}}
 														</a>
 													</ng-container>
 													<ng-container *ngIf="!formDataRow.values[i].downloadable">

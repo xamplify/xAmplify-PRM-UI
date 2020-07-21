@@ -174,7 +174,7 @@ export class FormPreviewComponent implements OnInit {
       }
   }
 
-  onFileChangeEvent(event:any,columnInfo:ColumnInfo) {
+  onFileChangeEvent(event:any,columnInfo:ColumnInfo,index:number) {
     if (event.target.files.length > 0) {
       this.ngxLoading = true;
       let file = event.target.files[0];
@@ -189,7 +189,10 @@ export class FormPreviewComponent implements OnInit {
            columnInfo.value = response.data;
            this.ngxLoading = false;
          }else{
-            this.showUploadErrorMessage(columnInfo);
+          $('#file-'+index).val('');
+          this.ngxLoading = false;
+          columnInfo.value = "";
+          this.referenceService.showSweetAlertErrorMessage(response.message);
          }
        },
        (error: string) => {
