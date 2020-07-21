@@ -22,6 +22,7 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { ActionsDescription } from '../../common/models/actions-description';
+import {DomSanitizer} from '@angular/platform-browser';
 
 
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
@@ -135,7 +136,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
-        private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService) {
+        private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer:DomSanitizer) {
         CKEDITOR.config.extraPlugins = 'colorbutton,colordialog';
 		this.loggedInUserId = this.authenticationService.getUserId();
         let categoryId = this.route.snapshot.params['categoryId'];
@@ -700,8 +701,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
         if(!this.form.companyLogo){
             this.form.companyLogo=this.companyLogoImageUrlPath;
         }
-        console.log(this.form.companyLogo)
-        console.log(this.form.companyLogo.indexOf('images/'))
         if (this.isAdd) {
             this.save(this.form);
         } else {
@@ -1112,4 +1111,9 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#formButtonValueDiv').addClass(this.formErrorClass);
         this.formButtonValueErrorMessage = errorMessage;
     }
+
+    transform(html) {
+        this.form.footer = this.sanitizer.bypassSecurityTrustHtml(html);
+        console.log(this.form.footer)
+      }
 }

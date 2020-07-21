@@ -145,7 +145,7 @@
 				</div>
 			</div>
 			<footer>
-				<div style="text-align: center;" *ngIf="form.showFooter" [innerHTML]="form.footer"></div>
+				<div style="text-align: center;" *ngIf="form.showFooter" [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
 			</footer>
 		</div>
 	</div>

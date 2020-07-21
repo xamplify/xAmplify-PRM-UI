@@ -17,6 +17,7 @@ import { UtilService } from '../../core/services/util.service';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import {DomSanitizer} from "@angular/platform-browser";
 
 declare var $:any;
 
@@ -47,7 +48,7 @@ export class FormPreviewComponent implements OnInit {
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
     public authenticationService:AuthenticationService,private formService:FormService,
     private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
-    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService) {
+    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService,public sanitizer:DomSanitizer) {
       
   }
 

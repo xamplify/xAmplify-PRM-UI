@@ -216,7 +216,7 @@
                                         <!------Show Footer-------->
                                         <footer>
                                             <div style="text-align: center;" *ngIf="form.showFooter"
-                                                [innerHTML]="form.footer"></div>
+                                                [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
                                         </footer>
                                     </div>
                                 </div>
@@ -262,24 +262,29 @@
                                                                 [ngModelOptions]="{standalone: true}">
                                                                 <ng-container *ngFor="let type of priceTypes">
                                                                     <ng-container *ngIf="type=='rupee'">
-                                                                        <option value="{{type}}">
-                                                                            {{type}}(₹)</option>
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            ₹</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='dollar'">
-                                                                        <option value="{{type}}">
-                                                                            {{type}}($)</option>
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            $</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='yen'">
-                                                                        <option value="{{type}}">
-                                                                            {{type}}(¥)</option>
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            ¥</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='pound'">
-                                                                        <option value="{{type}}">
-                                                                            {{type}}(£)</option>
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            £</option>
                                                                     </ng-container>
                                                                     <ng-container *ngIf="type=='euro'">
-                                                                        <option value="{{type}}">
-                                                                            {{type}}(€)</option>
+                                                                        <option value="{{type}}" data-toggle="tooltip"
+                                                                            data-placement="top" title="{{type}}">
+                                                                            €</option>
                                                                     </ng-container>
                                                                 </ng-container>
                                                             </select>

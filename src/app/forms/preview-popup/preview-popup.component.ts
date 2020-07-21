@@ -14,8 +14,9 @@ import { SortOption } from '../../core/models/sort-option';
 import { UtilService } from '../../core/services/util.service';
 import { environment } from 'environments/environment';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
+import {DomSanitizer} from "@angular/platform-browser";
 
-declare var swal, $, flatpickr: any;
+declare var swal, $, flatpickr: any,safeHtml:any;
 @Component({
   selector: 'app-preview-popup',
   templateUrl: './preview-popup.component.html',
@@ -37,7 +38,7 @@ export class PreviewPopupComponent implements OnInit {
     formAliasUrl:string = "";
    constructor(private formService:FormService,public logger:XtremandLogger,public authenticationService:AuthenticationService,
            public referenceService:ReferenceService,public sortOption:SortOption,public pagerService:PagerService,public utilService:UtilService,
-           public router: Router,private vanityUrlService:VanityURLService) {
+           public router: Router,private vanityUrlService:VanityURLService,public sanitizer:DomSanitizer) {
         this.pagination.vanityUrlFilter =this.vanityUrlService.isVanityURLEnabled();
 
    }
