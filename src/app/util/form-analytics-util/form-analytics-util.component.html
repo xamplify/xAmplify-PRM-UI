@@ -67,8 +67,8 @@
 									<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
 										<td *ngIf="columnIndex<=3">
 											<ng-container *ngIf="columnValue.downloadable">
-												<a href="{{columnValue.value}}">
-													{{columnValue.fileName}}
+												<a href="{{columnValue.downloadLink}}">
+													{{columnValue.value}}
 												</a>
 											</ng-container>
 											<ng-container *ngIf="!columnValue.downloadable">
@@ -99,8 +99,8 @@
 												</th>
 												<td *ngIf="i>=4">
 													<ng-container *ngIf="formDataRow.values[i].downloadable">
-														<a href="{{formDataRow.values[i].value}}">
-															{{formDataRow.values[i].fileName}}
+														<a href="{{formDataRow.values[i].downloadLink}}">
+															{{formDataRow.values[i].value}}
 														</a>
 													</ng-container>
 													<ng-container *ngIf="!formDataRow.values[i].downloadable">
