@@ -191,6 +191,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         dragulaService.dropModel.subscribe((value) => {
             this.onDropModel(value);
         });
+        this.listPriceTypes();
     }
 
 
@@ -200,7 +201,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.listFormNames();
         this.listCategories();
-        this.listPriceTypes();
         if (this.isAdd) {
             this.ngxloading = true;
             this.formService.getCompanyLogo(this.loggedInUserId).subscribe(
@@ -365,6 +365,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
             columnInfo.placeHolder = column.labelName;
             if(column.labelType == 'price' && column.priceType != undefined){
                 columnInfo.priceType = column.priceType;
+                columnInfo.priceSymbol = column.priceSymbol;
             }
         }
         if (column.required != undefined) {
@@ -525,6 +526,22 @@ export class AddFormComponent implements OnInit, OnDestroy {
         columnInfo.required = event;
     }
 
+
+    updatePriceSymbol(columnInfo: ColumnInfo,type: string){
+        let symbol="";
+        if(type=='Rupee'){
+            symbol="₹"
+        }else if(type=='Dollar'){
+            symbol="$"
+        }else if(type=='Yen'){
+            symbol=" ¥"
+        }else if(type=='Pound'){
+            symbol="£"
+        }else if(type=='Euro'){
+            symbol="€"
+        }
+        columnInfo.priceSymbol=symbol;
+    }
 
     /****************Validate Form*****************/
     validateForm() {
@@ -1111,9 +1128,4 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#formButtonValueDiv').addClass(this.formErrorClass);
         this.formButtonValueErrorMessage = errorMessage;
     }
-
-    transform(html) {
-        this.form.footer = this.sanitizer.bypassSecurityTrustHtml(html);
-        console.log(this.form.footer)
-      }
 }

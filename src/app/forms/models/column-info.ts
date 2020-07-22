@@ -24,6 +24,7 @@ export class ColumnInfo {
     checkBoxErrorMessage = "";
     dropDownErrorMessage = "";
     priceType="";
+    priceSymbol="";
     /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";

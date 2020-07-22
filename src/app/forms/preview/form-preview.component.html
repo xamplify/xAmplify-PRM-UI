@@ -79,7 +79,7 @@
 											<!-- ---------------------------Price----------------------------- -->
 											<ng-container *ngIf="columnInfo.labelType=='price'">
 												<div class="input-group prefix">
-													<span class="input-group-addon">{{columnInfo.priceType}}</span>
+													<span class="input-group-addon">{{columnInfo.priceSymbol}}</span>
 													<input type="number" [(ngModel)]="columnInfo.value" rows="4"
 														cols="4" class="form-control"
 														placeholder="{{columnInfo.placeHolder}}">
@@ -145,7 +145,7 @@
 				</div>
 			</div>
 			<footer>
-				<div style="text-align: center;" *ngIf="form.showFooter" [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
+				<div style="text-align: center;" *ngIf="form.showFooter  && form.footer" [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
 			</footer>
 		</div>
 	</div>

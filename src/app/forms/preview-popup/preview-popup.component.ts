@@ -16,7 +16,7 @@ import { environment } from 'environments/environment';
 import {VanityURLService} from 'app/vanity-url/services/vanity.url.service';
 import {DomSanitizer} from "@angular/platform-browser";
 
-declare var swal, $, flatpickr: any,safeHtml:any;
+declare var swal, $: any;
 @Component({
   selector: 'app-preview-popup',
   templateUrl: './preview-popup.component.html',
@@ -44,11 +44,6 @@ export class PreviewPopupComponent implements OnInit {
    }
 
   ngOnInit() {
-    flatpickr( '.flatpickr',{
-        enableTime: true,
-        dateFormat: 'm/d/Y h:i K',
-        time_24hr: false
-    } );
       if(    this.router.url.indexOf("/home/emailtemplates/create")>-1  || this.router.url.indexOf("/home/pages/add")>-1){
           this.showButton = true;
       }

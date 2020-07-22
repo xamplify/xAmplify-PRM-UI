@@ -130,8 +130,9 @@
                                                                         <ng-container
                                                                             *ngIf="columnInfo.labelType=='price'">
                                                                             <div class="input-group">
-                                                                                <span
-                                                                                    class="edit-field-prefix">{{columnInfo.priceType}}</span>
+                                                                                <span class="edit-field-prefix">
+                                                                                    {{columnInfo.priceSymbol}}
+                                                                                </span>
                                                                                 <input type="number"
                                                                                     placeholder="{{columnInfo.placeHolder}}"
                                                                                     class="form-control disabled"
@@ -215,7 +216,7 @@
                                         </div>
                                         <!------Show Footer-------->
                                         <footer>
-                                            <div style="text-align: center;" *ngIf="form.showFooter"
+                                            <div style="text-align: center;" *ngIf="form.showFooter && form.footer"
                                                 [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
                                         </footer>
                                     </div>
@@ -257,31 +258,32 @@
                                                     <div class="form-group" *ngIf="selectedColumn.labelType=='price'">
                                                         <label class="control-label">Field Placeholder Text</label>
                                                         <div class="input-group prefix">
-                                                            <select class="input-group-addon"
+                                                            <select class="input-group-prefix"
                                                                 [(ngModel)]="selectedColumn.priceType"
-                                                                [ngModelOptions]="{standalone: true}">
+                                                                [ngModelOptions]="{standalone: true}"
+                                                                (change)="updatePriceSymbol(selectedColumn,$event.target.value)">
                                                                 <ng-container *ngFor="let type of priceTypes">
-                                                                    <ng-container *ngIf="type=='rupee'">
+                                                                    <ng-container *ngIf="type=='Rupee'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
                                                                             ₹</option>
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="type=='dollar'">
+                                                                    <ng-container *ngIf="type=='Dollar'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
                                                                             $</option>
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="type=='yen'">
+                                                                    <ng-container *ngIf="type=='Yen'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
                                                                             ¥</option>
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="type=='pound'">
+                                                                    <ng-container *ngIf="type=='Pound'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
                                                                             £</option>
                                                                     </ng-container>
-                                                                    <ng-container *ngIf="type=='euro'">
+                                                                    <ng-container *ngIf="type=='Euro'">
                                                                         <option value="{{type}}" data-toggle="tooltip"
                                                                             data-placement="top" title="{{type}}">
                                                                             €</option>

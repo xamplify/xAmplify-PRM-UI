@@ -28,7 +28,7 @@ export class Form {
     backgroundImage= "";
     companyLogo="";
     showCompanyLogo=false;
-    footer="";
+    footer:any;
 	showFooter=false;
 	
 }

@@ -1407,12 +1407,12 @@ div.switch5>input.switch:focus~label:before {
     font-size: 14px;
 }
 
-.prefix .input-group-addon {
+.prefix .input-group-prefix {
     border-right: 0;
     border-radius: 0px 0px 0px 0px;
     }
     
-    .input-group-addon {
+    .input-group-prefix {
         padding: 6px 12px;
             font-size: 13px;
     text-align: center;
@@ -1427,7 +1427,7 @@ div.switch5>input.switch:focus~label:before {
     }
 
     .input-group {
-        /* position: relative; */
+        position: relative;
         display: flex;  
         border-collapse: separate;
       }
@@ -1436,7 +1436,7 @@ div.switch5>input.switch:focus~label:before {
         padding: 8px 12px;
         font-size: 13px;
         background-color: white; 
-        width: 40%;
+        width: auto;
         vertical-align: middle;
         text-align: center;
         line-height: 1;
