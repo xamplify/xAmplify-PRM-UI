@@ -9,7 +9,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
   styleUrls: ['./design.component.css']
 })
 export class DesignComponent implements OnInit {
-    isLoading:boolean = true;
+    isLoading:boolean = false;
     emailTemplate:boolean = false;
     form:boolean = false;
     landingPage:boolean = false;
@@ -25,6 +25,7 @@ export class DesignComponent implements OnInit {
   }
   
   getModuleAccess(){
+      this.isLoading = true;
       this.authenticationService.getModulesByUserId()
       .subscribe(
           data => {
@@ -41,6 +42,7 @@ export class DesignComponent implements OnInit {
               this.isLoading = false;
           },
           error => {
+            this.isLoading = false;
               this.logger.errorPage(error);
           },
           () => this.logger.info("Finished getModuleAccess()")
@@ -53,4 +55,6 @@ export class DesignComponent implements OnInit {
   showSuccessMessage(message:any){
     this.customResponse = new CustomResponse('SUCCESS',message, true);
   }
+
+ 
 }

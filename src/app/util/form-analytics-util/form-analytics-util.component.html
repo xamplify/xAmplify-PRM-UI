@@ -7,7 +7,7 @@
 				         <div class="col-xs-12 col-sm-6 col-md-6 text-left">
 				         <div class="caption" style="padding:10px">
 						<span class="caption-subject font-red-sunglo uppercase" *ngIf="!pagination.checkInLeads">{{title}}</span>
-						<span class="caption-subject font-red-sunglo uppercase" *ngIf="pagination.checkInLeads && !httpRequestLoader.isLoading"></span><!-- {{title}} ( <b>#{{pagination.totalRecords}}</b> ) -->
+						<span class="caption-subject font-red-sunglo uppercase" *ngIf="pagination.checkInLeads && !httpRequestLoader.isLoading"></span>
 					</div>
 				         </div>
 				         <div class="col-xs-12 col-sm-6 col-md-6 text-right">
@@ -16,13 +16,13 @@
 								 	<span id="icon-properties" aria-hidden="true" class="glyphicon glyphicon-remove"></span>
 								 </a>
 								<a  (click)="openLinkInBrowser()" *ngIf="pagination.checkInLeads"  class="close-circle"  data-toggle="tooltip" data-placement="top" title="Open">
-									<i class="fa fa-link"></i>
+									<i class="fa fa-link" aria-hidden="true"></i>
 								</a>
 								<a *ngIf="pagination.totalRecords>0" (click)="downloadCsv()" class="close-circle"  data-toggle="tooltip" data-placement="top" title="Download">
-									<i class="fa fa-download margin"></i>
+									<i class="fa fa-download margin" aria-hidden="true"></i>
 								</a>
 								<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-									<i class="fa fa-refresh margin"></i>
+									<i class="fa fa-refresh margin" aria-hidden="true"></i>
 								</a>
 								<div class="portlet-input input-inline input-small" id="search-margin">
 									<div class="input-icon right" id="icon-right">
@@ -31,8 +31,8 @@
 											(keypress)="eventHandler($event.keyCode)">
 										<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
 											(click)="searchKey='';search()"></button>
-										<button type="submit" class="search-box-item-click" (click)="search()"><i
-												class="fa fa-search"></i></button>
+										<button type="submit" class="search-box-item-click" (click)="search()">
+											<i class="fa fa-search" aria-hidden="true"></i></button>
 									</div>
 								</div>
 							</div>
@@ -47,7 +47,7 @@
 					<div id="response-message">
     					<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   					</div>
-					<table class="table tgrid">
+					<table class="table tgrid" aria-describedby="form-analytics-table">
 						<thead>
 							<tr>
 								<ng-container *ngFor="let column of columns;let i  = index">
@@ -55,9 +55,9 @@
 										<th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
 									</ng-container>
 								</ng-container>
-								<th *ngIf="columns?.length>3"></th>
+								<th *ngIf="columns?.length>3" scope="row"></th>
 								<th *ngIf="isEventCheckIn" id="th-width">
-									<img src="assets/images/attendees-black.png" id="custom-width">
+									<img src="assets/images/attendees-black.png" id="custom-width" alt="">
 								</th>
 							</tr>
 						</thead>
@@ -65,13 +65,22 @@
 							<ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
 								<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
 									<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
-										<td *ngIf="columnIndex<=3">{{columnValue.value}}</td>
+										<td *ngIf="columnIndex<=3">
+											<ng-container *ngIf="columnValue.downloadable">
+												<a href="{{columnValue.downloadLink}}">
+													{{columnValue.value}}
+												</a>
+											</ng-container>
+											<ng-container *ngIf="!columnValue.downloadable">
+												{{columnValue.value}}
+											</ng-container>
+										</td>
 									</ng-container>
 									<td *ngIf="columns?.length>3">
 										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
 											title="View More Columns" *ngIf="columns.length>4">
 											<i class="fa"
-												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}"></i>
+												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}" aria-hidden="true"></i>
 										</a>
 									</td>
 									<td *ngIf="isEventCheckIn">
@@ -83,13 +92,21 @@
 								</tr>
 								<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
 									<td colspan="5">
-										<table id="expanded-table" class="table tgrid table-bordered">
+										<table id="expanded-table" class="table tgrid table-bordered" aria-describedby="form-analytics-table">
 											<tr *ngFor="let column of columns;let i  = index;">
-												<th *ngIf="i>=4">
+												<th *ngIf="i>=4" scope="row">
 													{{column.labelName}}<span class="required" *ngIf="column.required">*</span>
 												</th>
 												<td *ngIf="i>=4">
-													{{formDataRow.values[i].value}}
+													<ng-container *ngIf="formDataRow.values[i].downloadable">
+														<a href="{{formDataRow.values[i].downloadLink}}">
+															{{formDataRow.values[i].value}}
+														</a>
+													</ng-container>
+													<ng-container *ngIf="!formDataRow.values[i].downloadable">
+														{{formDataRow.values[i].value}}
+													</ng-container>
+													
 												</td>
 											</tr>
 										</table>

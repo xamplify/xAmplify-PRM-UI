@@ -23,10 +23,12 @@ export class ColumnInfo {
     radioButtonErrorMessage = "";
     checkBoxErrorMessage = "";
     dropDownErrorMessage = "";
-/****Edit Form Fields******/
+    priceType="";
+    priceSymbol="";
+    /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";
-
     sfCustomField:boolean;
     labelLength:string;
+
 }

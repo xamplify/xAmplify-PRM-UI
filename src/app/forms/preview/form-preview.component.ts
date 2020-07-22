@@ -17,6 +17,7 @@ import { UtilService } from '../../core/services/util.service';
 import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
+import {DomSanitizer} from "@angular/platform-browser";
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $:any;
@@ -44,10 +45,12 @@ export class FormPreviewComponent implements OnInit {
     formSubmitted = false;
     message: string;
     isSubmittedAgain = false;
+    uploadedFile:File=null;
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
-    private authenticationService:AuthenticationService,private formService:FormService,
+    public authenticationService:AuthenticationService,private formService:FormService,
     private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
-    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,private utilService:UtilService, private vanityURLService: VanityURLService) {
+    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService,public sanitizer:DomSanitizer,private vanityURLService: VanityURLService) {
+
       
   }
 
@@ -57,7 +60,7 @@ export class FormPreviewComponent implements OnInit {
     }
 
      $('.mobile-camp').removeClass('mobile-camp');
-     $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
+    // $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
       this.processor.set(this.processor);
       if(this.authenticationService.formAlias){
           this.alias = this.authenticationService.formAlias;
@@ -65,7 +68,6 @@ export class FormPreviewComponent implements OnInit {
           this.alias = this.route.snapshot.params['alias'];
       }
       this.getFormFieldsByAlias(this.alias);
-
   }
   
   refreshForm(){
@@ -84,7 +86,7 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
-            //$("body").css("background-color","this.form.backgroundColor");
+            $("body").css("background-color","this.form.backgroundColor");
             if(!this.isSubmittedAgain){
                 this.saveLocationDetails(this.form);
             }
@@ -179,6 +181,42 @@ export class FormPreviewComponent implements OnInit {
       }
   }
 
+  onFileChangeEvent(event:any,columnInfo:ColumnInfo,index:number) {
+    if (event.target.files.length > 0) {
+      this.ngxLoading = true;
+      let file = event.target.files[0];
+      const formData: any = new FormData();
+      formData.append("uploadedFile", file, file['name']);
+      const formSubmit = new FormSubmit();
+      formSubmit.id = this.form.id;
+      this.formService.uploadFile(formData,formSubmit)
+      .subscribe(
+       (response: any) => {
+         if(response.statusCode==200){
+           columnInfo.value = response.data;
+           this.ngxLoading = false;
+         }else{
+          $('#file-'+index).val('');
+          this.ngxLoading = false;
+          columnInfo.value = "";
+          this.referenceService.showSweetAlertErrorMessage(response.message);
+         }
+       },
+       (error: string) => {
+        this.showUploadErrorMessage(columnInfo);
+       }
+     );
+
+    }else{
+      columnInfo.value = "";
+    }
+  }
+
+  showUploadErrorMessage(columnInfo:ColumnInfo){
+    this.ngxLoading = false;
+    columnInfo.value = "";
+    this.referenceService.showSweetAlertServerErrorMessage();
+  }
 
   /*******Submit Forms********* */
   submitForm(){
@@ -197,7 +235,7 @@ export class FormPreviewComponent implements OnInit {
       const formSubmit = new FormSubmit();
       formSubmit.id = this.form.id;
       formSubmit.alias = this.alias;
-      $.each(formLabelDtos,function(index:number,field:ColumnInfo){
+      $.each(formLabelDtos,function(_index:number,field:ColumnInfo){
           const formField  = new FormSubmitField();
           formField.id = field.id;
           formField.value = $.trim(field.value);
@@ -207,8 +245,9 @@ export class FormPreviewComponent implements OnInit {
           }
           formSubmit.fields.push(formField);
       });
+     
       this.formService.submitForm(formSubmit)
-      .subscribe(
+       .subscribe(
         (response: any) => {
           if(response.statusCode==200){
               this.addHeaderMessage(response.message,this.successAlertClass);
