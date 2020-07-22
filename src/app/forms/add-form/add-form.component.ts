@@ -133,7 +133,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     @ViewChild("myckeditor") ckeditor: any;
     loading = false;
     priceTypes:Array<string>;
-
+	logoError = false;
+     formsError = false;
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer:DomSanitizer) {
@@ -1128,4 +1129,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
         $('#formButtonValueDiv').addClass(this.formErrorClass);
         this.formButtonValueErrorMessage = errorMessage;
     }
+
+	selectedPageNumber(event){
+	
+		}
 }
