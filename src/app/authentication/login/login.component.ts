@@ -12,6 +12,7 @@ import { Role } from '../../core/models/role';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { EnvService } from 'app/env.service';
 
 declare const $: any;
 
@@ -39,9 +40,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   roles: Array<Role>;
   vanityURLEnabled: boolean;
   isNotVanityURL: boolean;
-  isLoggedInVanityUrl = false;
-  checkedVanityURLDomain = false;
-  constructor(private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
+  isLoggedInVanityUrl = false;  
+  constructor(public envService:EnvService,private router: Router, public authenticationService: AuthenticationService, public userService: UserService,
     public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public properties: Properties, private vanityURLService: VanityURLService) {
     this.isLoggedInVanityUrl = this.vanityURLService.isVanityURLEnabled();
     if (this.referenceService.userProviderMessage !== "") {
@@ -206,12 +206,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.mainLoader = true;
       if (this.vanityURLService.isVanityURLEnabled()) {
         this.vanityURLService.getVanityURLDetails(this.authenticationService.companyProfileName).subscribe(result => {         
-          this.vanityURLEnabled = result.enableVanityURL;
-          if(!this.vanityURLEnabled){
-            this.checkedVanityURLDomain = true;
-          }
+          this.vanityURLEnabled = result.enableVanityURL;               
           this.authenticationService.v_companyName = result.companyName;
           this.authenticationService.vanityURLink = result.vanityURLink;
+          if(!this.vanityURLEnabled){
+            this.router.navigate( ['/vanity-domain-error'] );
+            return;
+          }
+          
           this.authenticationService.v_showCompanyLogo = result.showVendorCompanyLogo;
           this.authenticationService.v_companyLogoImagePath = this.authenticationService.MEDIA_URL + result.companyLogoImagePath;
           if (result.companyBgImagePath) {

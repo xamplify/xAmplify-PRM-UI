@@ -2,9 +2,9 @@
 <div class="page-content">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter">Home</a> <i class="fa fa-angle-right"></i></li>
-            <li><a [routerLink]="['/home/design/add']">Create Design</a> <i class="fa fa-angle-right"></i></li>
-            <li><a>Create Email Templates</a></li>
+            <li><i class="fa fa-home"></i> <a [routerLink]="refService.homeRouter" translate>Home</a> <i class="fa fa-angle-right"></i></li>
+            <li><a [routerLink]="['/home/design/add']" translate>Create Design</a> <i class="fa fa-angle-right"></i></li>
+            <li><a translate>Create Templates</a></li>
         </ul>
     </div>
     <!-- END PAGE HEADER-->
@@ -17,20 +17,20 @@
                         <div class="colxs-12 col-sm-9">
                             <div>
                                 <ul class="mix-filter">
-                                    <li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex">All</li>
+                                    <li class="filter" (click)="showAllTemplates(0)" [class.emailtemplate-selected]="0 == selectedTemplateTypeIndex" translate>All</li>
                                     <!-- <li class="filter" (click)="showBasicTemplates(1)" [class.emailtemplate-selected]="1 == selectedTemplateTypeIndex">Basic</li> -->
-                                    <li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading">Email</li>
+                                    <li class="filter" (click)="showRichTemplates(2)" [class.emailtemplate-selected]="2 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading" translate>Email</li>
                                     <!-- <li class="filter" (click)="showBasicVideoTemplates(3)" [class.emailtemplate-selected]="3 == selectedTemplateTypeIndex">Basic Video</li> -->
-                                    <li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign &&!httpRequestLoader.isLoading ">Video</li>
-                                    <li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign && !httpRequestLoader.isLoading">Email Co-Branding</li>
-                                    <li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign && !httpRequestLoader.isLoading">Video Co-Branding</li>
+                                    <li class="filter" (click)="showRichVideoTemplates(4)" [class.emailtemplate-selected]="4 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign &&!httpRequestLoader.isLoading " translate>Video</li>
+                                    <li class="filter" (click)="showRegularCoBrandingTemplates(6)" [class.emailtemplate-selected]="6 == selectedTemplateTypeIndex" *ngIf="campaignAccess.emailCampaign && !httpRequestLoader.isLoading" translate>Email Co-Branding</li>
+                                    <li class="filter" (click)="showVideoCoBrandingTemplates(7)" [class.emailtemplate-selected]="7 == selectedTemplateTypeIndex" *ngIf="campaignAccess.videoCampaign && !httpRequestLoader.isLoading" translate>Video Co-Branding</li>
                                     <!--<li class="filter" (click)="showCampaignDefaultTemplates(8)" [class.emailtemplate-selected]="8 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading">Default</li>-->
-                                    <li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading">Upload Custom</li>
-                                    <li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading">Event</li>
-                                    <li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading">Event Co-Branding</li>
-                                    <li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex">Marketo Templates</li>
-                                    <li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex">HubSpot Templates</li>
-                                    <li class="filter" style="display: none;">Own Template</li>
+                                    <li class="filter" (click)="showUploadTemplates(5)" [class.emailtemplate-selected]="5 == selectedTemplateTypeIndex" *ngIf="!httpRequestLoader.isLoading" translate>Upload Custom</li>
+                                    <li class="filter" (click)="showEventTemplates(9)" [class.emailtemplate-selected]="9 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>Event</li>
+                                    <li class="filter" (click)="showEventCoBrandingTemplates(10)" [class.emailtemplate-selected]="10 == selectedTemplateTypeIndex" *ngIf="campaignAccess.eventCampaign && !httpRequestLoader.isLoading" translate>Event Co-Branding</li>
+                                    <li class="filter" (click)="getTemplatesFromMarketo()" [class.emailtemplate-selected]="11 == selectedTemplateTypeIndex" translate>Marketo Templates</li>
+                                    <li class="filter" (click)="getTemplatesFromHubSpot()" [class.emailtemplate-selected]="12 == selectedTemplateTypeIndex" translate>HubSpot Templates</li>
+                                    <li class="filter" style="display: none;" translate>Own Template</li>
                                 </ul>
                             </div>
                         </div>
@@ -59,12 +59,12 @@
                         <div *ngIf="selectedTemplateTypeIndex == 11 || selectedTemplateTypeIndex == 12" style="width: 100%;padding-left: 15px;" class="row">
                             <label class="select-all-filter" style="float:right;"> <input type="checkbox" value="" 
 									[(ngModel)]="selectAllTemplates" (ngModelChange)="selectAll(selectAllTemplates)" >
-									<span style="font-weight: 600;font-size: 12px;">Select All</span> </label>
+									<span style="font-weight: 600;font-size: 12px;" translate>Select All</span> </label>
                             <div *ngIf="isSaveMarketoTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()">IMPORT</button>
+                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importMarketotemplates()" translate>IMPORT</button>
                             </div>
                             <div *ngIf="isSaveHubSpotTemplatesButtonState" style="float:right;margin-right: 10px">
-                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()">IMPORT</button>
+                                <button class="btn" style="height: 36px;background-color: #6dcff6;" (click)="importHubSpotTemplates()" translate>IMPORT</button>
                             </div>
                         </div>
 
@@ -119,7 +119,7 @@
                 <div id="htmlContent"></div>
             </div>
             <div class="modal-footer">
-                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right">Close</a>
+                <a href="javascript:void(0)" data-dismiss="modal" class="btn btn-default" style="float: right" translate>Close</a>
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@
         <div class="modal-content rounded-0">
             <div class="modal-header">
                 <a class="close-circle" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times"></i></a>
-                <h4 class="modal-title" id="templateRetrieve">Marketo integration with xAmplify</h4>
+                <h4 class="modal-title" id="templateRetrieve" translate>Marketo integration with xAmplify</h4>
             </div>
 
             <div>
@@ -148,20 +148,20 @@
                     <div *ngIf="templateError" class="alert alert-danger"><span>{{templateError}}</span></div>
                     <div *ngIf="templateSuccessMsg" class="alert alert-success"><span>{{templateSuccessMsg}}</span></div>
                     <div [attr.class]="clientIdClass">
-                        <label class="control-label col-sm-3" for="email">Client Id:</label>
+                        <label class="control-label col-sm-3" for="email" translate>Client Id:</label>
                         <div class="col-sm-8">
                             <input type="email" class="form-control" id="email" placeholder="Client Id" [(ngModel)]="clientId" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('email')">
                         </div>
                     </div>
                     <div [attr.class]="secretIdClass">
-                        <label class="control-label col-sm-3" for="pwd">Secret Id:</label>
+                        <label class="control-label col-sm-3" for="pwd" translate>Secret Id:</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" id="pwd" placeholder="Secret Id" [(ngModel)]="secretId" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('pwd')">
                         </div>
                     </div>
 
                     <div [attr.class]="marketoInstanceClass">
-                        <label class="control-label col-sm-3" for="instance">Marketo Instance:</label>
+                        <label class="control-label col-sm-3" for="instance" translate>Marketo Instance:</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="instance" placeholder="Marketo Instance" [(ngModel)]="marketoInstance" [ngModelOptions]="{standalone: true}" (input)="validateModelForm('instance')">
                         </div>
@@ -171,10 +171,11 @@
             </div>
             <div class="modal-footer">
                 <div style="text-align: right;">
-                    <button class="btn btn-default" (click)="clearValues()">Clear</button>
-                    <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitRetrieTemplates()">Submit</button>
+                    <button class="btn btn-default" (click)="clearValues()" translate>Clear</button>
+                    <button class="btn btn-primary" [disabled]="!isModelFormValid || !clientId || !secretId || !marketoInstance" (click)="submitRetrieTemplates()" translate>Submit</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+

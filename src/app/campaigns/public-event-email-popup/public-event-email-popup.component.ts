@@ -110,6 +110,8 @@ export class PublicEventEmailPopupComponent implements OnInit {
         let values = this.emailIds.map( function( a ) { return a.value; } );
         eventCampaign.emailIds = values;
         eventCampaign.id = this.selectedCampaign.campaignId;
+        eventCampaign.channelCampaign = this.selectedCampaign.channelCampaign;
+        eventCampaign.nurtureCampaign = this.selectedCampaign.nurtureCampaign;
         this.campaignService.sendPublicEventEmail( eventCampaign ).subscribe(
             ( response: any ) => {
                 if (response.access) {

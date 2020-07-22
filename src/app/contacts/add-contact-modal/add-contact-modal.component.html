@@ -6,8 +6,8 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     <div class="modal-header">
       <button type="button" class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></button>
       <!-- <a class="close-circle" data-dismiss="modal" (click)="addContactModalClose()"><i class="fa fa-times"></i></a> -->
-      <h4 class="modal-title size-font" *ngIf="!isUpdateUser">Add {{checkingContactTypeName}}</h4>
-      <h4 class="modal-title size-font" *ngIf="isUpdateUser">Edit {{checkingContactTypeName}}</h4>
+      <h4 class="modal-title size-font" *ngIf="!isUpdateUser" translate>Add {{checkingContactTypeName}}</h4>
+      <h4 class="modal-title size-font" *ngIf="isUpdateUser" translate>Edit {{checkingContactTypeName}}</h4>
     </div>
     <div class="modal-body">
       <form class="form-horizontal" autocomplete="off">
@@ -25,13 +25,12 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
               [(ngModel)]="addContactuser.emailId"  [ngModelOptions]="{standalone: true}"
               placeholder="Email *" autocomplete="off" maxlength="250">
             <div class="textCss"></div>
-            <span class="danger" *ngIf="!validEmailPatternSuccess">Please enter a valid email address</span>
-            <span class="danger" *ngIf="isEmailExist">This email address has already been added</span>
+            <span class="danger" *ngIf="!validEmailPatternSuccess" translate>Please enter a valid email address</span>
+            <span class="danger" *ngIf="isEmailExist" translate>This email address has already been added</span>
            </div>
          </div>
         <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for="name"style="color: blue">
-            <!-- <i class="glyphicon glyphicon-user" style="right: 11px" aria-hidden="true"></i> -->
           </label>
           <div class="form-group col-xs-5 col-sm-5">
             <input type="name" style="border: none" class="form-control padding-mobile" id="firstName"
@@ -47,7 +46,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 
         <div class="form-group">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
-            <!-- <i  class="fa fa-building-o" style="right: 11px !important" aria-hidden="true"></i> -->
             <span *ngIf="isPartner" class="star"> *</span>
           </label>
           <div class="form-group col-xs-10 col-sm-10">
@@ -57,6 +55,36 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
             <div class="textCss"></div>
           </div>
         </div>
+       
+        <ng-container *ngIf="isPartner && isUpdateUser">
+          <!---Contacts Limit------->
+        <div class="form-group">
+          <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
+            <span class="star"> *</span>
+          </label>
+          <div class="form-group col-xs-10 col-sm-10">
+            <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
+              [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" 
+              oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">
+            <div class="textCss"></div>
+            <p><strong translate>(Minimum 1) </strong></p>
+          </div>
+        </div>
+      <!---MDF Amount Limit------->
+      <div class="form-group" *ngIf="mdfAccess">
+        <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
+        </label>
+        <div class="form-group col-xs-10 col-sm-10">
+          <input type="name" style="border: none" class="form-control padding-mobile currency" id="mdfAmount"
+            [(ngModel)]="addContactuser.mdfAmount"  [ngModelOptions]="{standalone: true}" 
+            placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" 
+           >
+          <div class="textCss"></div>
+        </div>
+      </div>
+        </ng-container>
+        
+
         <!-- ------------Legal Basis------------ -->
         <div class="form-group" *ngIf="gdprStatus">
          <label class="control-label col-xs-2 col-sm-2" for="legalBasis" style="color: #00bcd4; right: 11px !important">
@@ -67,7 +95,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
 	        <div class="control-styles">
 	        	<ejs-multiselect [(ngModel)]='addContactuser.legalBasis' [ngModelOptions]="{standalone: true}" [allowFiltering]='true' [ignoreAccent]='true' id='multiselectelement'
 	        	 [dataSource]='legalBasisOptions' [fields]='fields'[placeholder]='placeHolder' (blur)="validateLegalBasisOptions()"></ejs-multiselect>
-	        	  <span class="danger" *ngIf="!isValidLegalOptions">Please select at least one option</span>
+	        	  <span class="danger" *ngIf="!isValidLegalOptions" translate>Please select at least one option</span>
 	        </div>
 	    </div>
 	    </div>
@@ -137,7 +165,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <div class="form-group">
           <div>
             <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
-              <!-- <i class="glyphicon glyphicon-home" aria-hidden="true"></i> -->
             </label>
             <div class="form-group col-xs-10 col-sm-10 px0">
               <input type="address" style="border: none" class="form-control" id="address"
@@ -150,7 +177,6 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
         <div class="form-group">
             <div>
               <label class="control-label col-xs-2 col-sm-2" for="address" style="color: #53affe;">
-                <!-- <i class="glyphicon glyphicon-home" aria-hidden="true"></i> -->
               </label>
               <div class="form-group col-xs-5 col-sm-5 pxl0">
                 <input type="city" style="border: none" class="form-control"  id="city"
@@ -212,19 +238,19 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
     </div>
     <div class="modal-footer" style="border:none" *ngIf="!isPartner">
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
-      <button class="btn btn-default" (click)="addContactModalClose()">Cancel</button>
-      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" >Add</button>
-      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()">Save</button>
-      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" >Update</button>
+      <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
+      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail ||(gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Add</button>
+      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Save</button>
+      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>
     <div class="modal-footer" *ngIf="isPartner"  style="border:none" >
-       <button class="btn btn-default" (click)="addContactModalClose()">Cancel</button>
+       <button class="btn btn-default" (click)="addContactModalClose()" translate>Cancel</button>
       <!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
-      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()">Add</button>
-      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" >Save</button>
-      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" >Update</button>
+      <button *ngIf="!isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addRow()" translate>Proceed</button>
+      <button *ngIf="isContactTypeEdit && !isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="addEditContactRow()" translate>Proceed</button>
+      <button *ngIf="!isContactTypeEdit && isUpdateUser" type="submit" class="btn green" [disabled]="!checkingForEmail || !isCompanyDetails || !validLimit || isEmailExist || (gdprStatus && addContactuser.legalBasis?.length==0)" (click)="updateUser()" data-dismiss="modal" translate>Update</button>
       <!-- <button type="button" class="btn green" data-dismiss="modal"
         (click)="addContactModalClose()">Close</button> -->
     </div>

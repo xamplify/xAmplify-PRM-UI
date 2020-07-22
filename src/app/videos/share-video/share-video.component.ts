@@ -16,6 +16,7 @@ import { User } from '../../core/models/user';
 import { XtremandLog } from '../models/xtremand-log';
 import { CallAction } from '../models/call-action';
 import { LogAction } from '../models/log-action';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $, videojs: any;
 
@@ -73,7 +74,7 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
     constructor(public router: Router, public route: ActivatedRoute, public videoFileService: VideoFileService,
         public videoUtilService: VideoUtilService, public xtremandLogger: XtremandLogger, public http: Http,
         public xtremandLog: XtremandLog, public deviceService: Ng2DeviceService, public referService: ReferenceService,
-        public authenticationService: AuthenticationService) {
+        public authenticationService: AuthenticationService, private vanityURLService:VanityURLService) {
         this.xtremandLogger.log('share component constructor called');
         console.log('url is on angular 2' + document.location.href);
         this.shareUrl = document.location.href;
@@ -170,7 +171,11 @@ export class ShareVideoComponent implements OnInit, OnDestroy {
         $('#overlay-modal').css('height', height);
     }
     ngOnInit() {
-       try{
+       try{        
+        if(this.vanityURLService.isVanityURLEnabled()){
+            this.vanityURLService.checkVanityURLDetails();
+        }
+
        //  this.setConfirmUnload(true);
         $('body').css('cssText', 'background-color: white !important');
         $('#overlay-modal').hide();

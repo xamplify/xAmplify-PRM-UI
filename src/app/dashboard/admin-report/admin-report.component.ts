@@ -147,8 +147,7 @@ public authenticationService: AuthenticationService, public router:Router) {
       try {
           this.authenticationService.selectedVendorId = report.id; 
           
-          
-          this.router.navigate(['/home/dashboard/edit-company-profile'])
+          this.router.navigate(['/home/dashboard/edit-company-profile'])          
           /*this.dashboardService.getVendorsCompanyProfile( report.id )
               .subscribe(
               ( data: any ) => {
@@ -387,7 +386,11 @@ public authenticationService: AuthenticationService, public router:Router) {
       if(report !== undefined){
         this.copiedLinkCustomResponse = new CustomResponse();
         this.userAlias = report.alias;
-        this.accessAccountVanityURL = window.location.protocol + "//" + report.companyProfileName +"." + window.location.hostname +"/axAa/"+report.alias ;
+        if(report.enableVanityURL){
+            this.accessAccountVanityURL = window.location.protocol + "//" + report.companyProfileName +"." + window.location.hostname +"/axAa/"+report.alias ;
+        }else{
+            this.accessAccountVanityURL = this.authenticationService.APP_URL+"axAa/"+report.alias;
+        }
         $('#user-alias-modal').modal('show');
       }      
   }
@@ -401,5 +404,10 @@ public authenticationService: AuthenticationService, public router:Router) {
       this.copiedLinkCustomResponse = new CustomResponse('SUCCESS','Copied to clipboard successfully.',true );  
 
     }
-  
+
+    displayModuleAccess(report:any){
+        if(report && report.companyId){
+            this.router.navigate(['/home/dashboard/module-access/' + report.companyId+"/"+report.alias]);
+        }        
+    }  
 }

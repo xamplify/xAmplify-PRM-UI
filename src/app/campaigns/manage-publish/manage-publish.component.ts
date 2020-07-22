@@ -73,6 +73,9 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
     cancelEventMessage = "";
     selectedCancelEventId: number;
+    selectedCancelEventChannelCampaign=false;
+    selectedCancelEventNurtureCampaign=false;
+    selectedCancelEventToPartnerCampaign=false;
     eventCampaign: EventCampaign = new EventCampaign();
     cancelEventSubjectLine = "";
     cancelEventButton = false;
@@ -353,6 +356,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
     }
 
     deleteCampaign(id: number, position: number, campaignName: string) {
+        this.customResponse = new CustomResponse();
+        this.refService.goToTop();
         this.refService.loading(this.httpRequestLoader, true);
         this.campaignService.delete(id)
             .subscribe(
@@ -371,7 +376,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
                 }
                 
             },
-            error => { this.logger.errorPage(error) },
+            error => { 
+                this.refService.loading(this.httpRequestLoader, false);
+                this.customResponse = new CustomResponse('ERROR','This campaign cannot be deleted at this time.Please try after sometime',true);
+               // this.logger.errorPage(error)
+             },
             () => console.log("Campaign Deleted Successfully")
             );
         this.isCampaignDeleted = false;
@@ -465,8 +474,11 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
         this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/remove-access"]);
     }
 
-    getCancelEventDetails(campaignId: number) {
+    getCancelEventDetails(campaignId: number, channelCampaign:boolean, nurtureCampaign:boolean, toPartner:boolean) {
         this.selectedCancelEventId = campaignId;
+        this.selectedCancelEventChannelCampaign = channelCampaign;
+        this.selectedCancelEventNurtureCampaign=nurtureCampaign;
+        this.selectedCancelEventToPartnerCampaign=toPartner;
         this.campaignService.getEventCampaignById(campaignId).subscribe(
             (result) => {
                 this.eventCampaign = result.data;
@@ -483,7 +495,8 @@ export class ManagePublishComponent implements OnInit, OnDestroy {
 
         this.isloading = true;
         $('#cancelEventModal').modal('hide');
-        this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId)
+        this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId, this.selectedCancelEventChannelCampaign,this.selectedCancelEventNurtureCampaign,
+        		this.selectedCancelEventToPartnerCampaign)
             .subscribe(data => {
             	if(data.access){
                 console.log(data);

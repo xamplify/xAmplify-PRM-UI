@@ -280,6 +280,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
     categoryNames: any;
     @ViewChild('addFolderModalPopupComponent') addFolderModalPopupComponent: AddFolderModalPopupComponent;
     folderCustomResponse:CustomResponse = new CustomResponse();
+    showMarketingAutomationOption = false;
+    THROUGH_PARTNER_MESSAGE: string;
 
     /***********End Of Declation*************************/
     constructor(private fb: FormBuilder,public refService:ReferenceService,
@@ -674,8 +676,10 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
         if(isOrgAdmin){
             this.channelCampaignFieldName = "To Recipient";
+            this.showMarketingAutomationOption = true;
         }else{
             this.channelCampaignFieldName = "To Partner";
+            this.showMarketingAutomationOption = false;
         }
         if(isOrgAdmin){
             if(this.campaign.channelCampaign){
@@ -698,7 +702,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.contactsPagination.filterValue = true;
         this.contactsPagination.filterKey = "isPartnerUserList";
         this.showContactType = false;
-        this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
+        if('landingPage'== this.campaignType){
+            this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
+            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
+        }else{
+            this.TO_PARTNER_MESSAGE = "To Partner: Send a campaign intended just for your Partners";
+            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+
+        }
     }
 
     setOrgAdminReceipients(){
@@ -708,7 +719,14 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.showContactType = true;
         this.contactsPagination.filterValue = false;
         this.contactsPagination.filterKey = null;
-        this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
+        if('landingPage'== this.campaignType){
+            this.TO_PARTNER_MESSAGE = "To Partner: Share a private page";
+            this.THROUGH_PARTNER_MESSAGE = "Through Partner: Share a public page";
+        }else{
+            this.TO_PARTNER_MESSAGE = "To Recipient: Send a campaign intended just for your Partners/ Contacts";
+            this.THROUGH_PARTNER_MESSAGE = this.properties.THROUGH_PARTNER_MESSAGE;
+
+        }
     }
 
 
@@ -771,7 +789,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             this.isCampaignDetailsFormValid = false;
         }
         
-        if( isValid && this.isPushToCrm && this.campaign.channelCampaign && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
+        if( isValid && this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && this.pushToCRM.length === 0){
             this.isValidCrmOption = false;
             this.isCampaignDetailsFormValid = false;
         }else{
@@ -863,7 +881,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      }
      
      validatePushToCRM(){
-        if(this.isPushToCrm && this.campaign.channelCampaign && !(this.pushToCRM.includes("marketo") || this.pushToCRM.includes("hubspot"))){
+        if(this.isPushToCrm && (this.campaign.channelCampaign || this.showMarketingAutomationOption) && this.pushToCRM.length === 0){
             this.isValidCrmOption = false;
             this.validateForm();
         }else{
@@ -903,7 +921,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
             }
            // this.loadEmailTemplates(this.emailTemplatesPagination);
             this.loadContacts();
-            this.checkSalesforceIntegration();
+          //  this.checkSalesforceIntegration();
         }else{
             this.loadContacts();
             this.removePartnerRules();
@@ -3174,10 +3192,8 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
      this.isPushToCrm = !this.isPushToCrm;
      if(!this.isPushToCrm){
          this.pushToCRM = [];
-         //this.pushToCRM.push('salesforce');
-         this.checkSalesforceIntegration();
      }
-    // this.checkSalesforceIntegration();
+     
      this.validatePushToCRM();
     }
     
@@ -3189,6 +3205,9 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                this.checkMarketoCredentials();
            }else if(crmName == 'hubspot'){
                this.checkingHubSpotContactsAuthentication();
+           }
+           else if(crmName == 'salesforce'){
+               this.checkSalesforceIntegration();
            }
            
            //this.pushToCRM.push(crmName);
@@ -3213,14 +3232,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    }
    
    checkSalesforceIntegration(): any {
-      this.pushToCRM = [];
+     // this.pushToCRM = [];
       if(this.enableLeads){ 
       this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
            let response = data;
            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
               this.pushToCRM.push('salesforce');
+              this.validatePushToCRM();
               console.log("isPushToSalesforce ::::" + this.pushToCRM);
-           }
+           } else{
+                  if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
+                      window.location.href = response.data.redirectUrl;
+                  }                
+              }
        },error =>{
            this.logger.error(error, "Error in salesforce checkIntegrations()");
        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));

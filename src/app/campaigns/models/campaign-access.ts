@@ -12,4 +12,7 @@ export class CampaignAccess {
   companyId = 0;
   userId = 0;
   allBoundSource = false;
+  vanityUrlDomain = false;
+  mdf = false;
+loginAsTeamMember = false;
 }

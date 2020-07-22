@@ -236,16 +236,14 @@
           <div class="form-group " [attr.class]="opportunityAmount" style="margin-bottom: 20px">
             <label class="control-label">Opportunity Amount
               <font style="color: #f55d7a">
-                <b>*</b>
+                <strong>*</strong>
               </font>
             </label>
             <div class="input-group" style="border:1px solid #e5e5e5">
-
-
               <input type="text" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" [(ngModel)]=" dealRegistration.opportunityAmount "
                 [ngModelOptions]="{standalone: true}" id="opportunityAmount" (input)="validateField('opportunityAmount',false)"
                 (ngModelChange)="validateField('opportunityAmount',false)"
-                [disabled]="isVendor|| isPreview" maxlength="20" />
+                [disabled]="isVendor|| isPreview" maxlength="20" autocomplete="off" />
             </div>
           </div>
           <div class="form-group" [attr.class]="estimatedCloseDate" style="margin-bottom: 20px">

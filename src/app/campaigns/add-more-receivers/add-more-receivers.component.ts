@@ -362,6 +362,8 @@ export class AddMoreReceiversComponent implements OnInit {
           this.campaign.userListIds = this.selectedContactListIds;
           this.campaign.userId = this.authenticationService.getUserId();
           this.campaign.scheduleCampaign ='SAVE';
+          this.campaign.nurtureCampaign = true;
+          this.campaign.channelCampaign = false;
           this.campaignService.sendEventToContactList(this.campaign).subscribe(
               (response: any) => {
                   if (response.access) {

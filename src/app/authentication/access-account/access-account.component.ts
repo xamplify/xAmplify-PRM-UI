@@ -14,6 +14,7 @@ import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { CountryNames } from '../../common/models/country-names';
 import { AuthenticationService } from '../../core/services/authentication.service';
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 declare var $: any;
 @Component({
   selector: 'app-access-account',
@@ -87,7 +88,7 @@ export class AccessAccountComponent implements OnInit {
 
     constructor( private router: Router, public countryNames: CountryNames, public regularExpressions: RegularExpressions, public properties: Properties,
         private formBuilder: FormBuilder, private signUpUser: User, public route: ActivatedRoute,
-        private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService ) {
+        private userService: UserService, public referenceService: ReferenceService, private xtremandLogger: XtremandLogger, public authenticationService: AuthenticationService, private vanityURLService:VanityURLService ) {
         this.signUpForm = new FormGroup( {
             firstName: new FormControl(),
             lastName: new FormControl(),
@@ -215,9 +216,12 @@ export class AccessAccountComponent implements OnInit {
     }
     ngOnInit() {
         try {
+            if(this.vanityURLService.isVanityURLEnabled()){
+                this.vanityURLService.checkVanityURLDetails();
+            }
             this.mainLoader = true;
             this.authenticationService.navigateToDashboardIfUserExists();
-            let alias = this.route.snapshot.params['alias'];
+            let alias = this.route.snapshot.params['alias'];            
             this.getUserDatails( alias );
         } catch ( error ) { this.mainLoader = false; this.xtremandLogger.error( 'error' + error ); }
     }

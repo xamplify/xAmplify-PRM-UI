@@ -220,7 +220,7 @@ export class UserService {
     }
 
     getUserByAlias(alias: string) {
-        return this.http.get(this.URL + 'getUserByAlias/' + alias)
+        return this.http.get(this.URL + 'getUserByAlias/' + alias +"?companyProfileName=" + this.authenticationService.companyProfileName)
             .map(this.extractData)
             .catch(this.handleError);
     }

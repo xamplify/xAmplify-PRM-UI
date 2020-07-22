@@ -45,7 +45,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
         "videos": "Check out the shareable content you received from your Strategic Alliances.",
         "contacts": "Add, segment, manage, and edit your customers and leads.",
         "campaigns": "Easily automate your audience’s digital journey.",
-        "templates": "Browse through the email templates that your Strategic Alliances have provided.",
+        "templates": "Browse through the templates that your Strategic Alliances have provided.",
         "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
         "analytics": "Manage, monitor, and measure various aspects of your campaigns."
     }

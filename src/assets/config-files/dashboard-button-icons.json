@@ -50,6 +50,20 @@
 		{
 			"name": "large",
 			"id": "fa-th-large"
+		},
+		{
+			"name": "facebook",
+			"id": "fa-facebook-square"
+		},{
+			"name": "linkedin",
+			"id": "fa-linkedin-square"
+		},{
+			"name": "twitter",
+			"id": "fa-twitter-square"
+		},
+		{
+			"name": "instagram",
+			"id": "fa-instagram"
 		}
 	]
 }

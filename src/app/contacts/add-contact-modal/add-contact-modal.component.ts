@@ -20,6 +20,7 @@ declare var $: any;
 export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy {
     @Input() contactDetails: any;
     @Input() isContactTypeEdit: boolean;
+    @Input() mdfAccess: boolean;
     isPartner: boolean;
     @Input() isUpdateUser: boolean;
     @Input() totalUsers: any;
@@ -42,6 +43,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     isValidLegalOptions = true;
     termsAndConditionStatus: boolean = true;
     gdprStatus:boolean = true;
+    validLimit = false;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
                  public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger ) {
         this.notifyParent = new EventEmitter();
@@ -156,6 +158,11 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         }
     }
 
+    validteContactsCount(contactsLimit:number){
+        this.validLimit = contactsLimit>0;
+       
+    }
+
 /*    geoLocation(){
         try{
         this.videoFileService.getJSONLocation()
@@ -187,9 +194,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
         //this.geoLocation();
         this.addContactuser.country = this.countryNames.countries[0];
         if(this.isPartner){
-            this.checkingContactTypeName = "Partner"
+            this.checkingContactTypeName = "Partner";
         }else{
-            this.checkingContactTypeName = "Contact"
+            this.checkingContactTypeName = "Contact";
         }
 
         if ( this.isUpdateUser ) {
@@ -212,6 +219,9 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
             this.addContactuser.country = this.contactDetails.country;
             this.addContactuser.mobileNumber = this.contactDetails.mobileNumber;
             this.addContactuser.legalBasis = this.contactDetails.legalBasis;
+            this.addContactuser.contactsLimit = this.contactDetails.contactsLimit;
+            this.validLimit = this.contactDetails.contactsLimit>0;
+            this.addContactuser.mdfAmount = this.contactDetails.mdfAmount;
            /* if ( this.addContactuser.mobileNumber == undefined ) {
                 //this.addContactuser.mobileNumber = "+1";
                 this.geoLocation()

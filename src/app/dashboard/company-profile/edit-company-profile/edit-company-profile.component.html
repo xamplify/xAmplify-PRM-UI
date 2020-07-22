@@ -296,7 +296,14 @@
 											<tr>
 												<th>Vanity URL</th>
 												<td><input type="checkbox"
-													[(ngModel)]="companyProfile.enableVanityURL"
+													[(ngModel)]="campaignAccess.vanityUrlDomain"
+													[ngModelOptions]="{standalone: true}"></td>
+											</tr>
+
+											<tr>
+												<th>MDF</th>
+												<td><input type="checkbox"
+													[(ngModel)]="campaignAccess.mdf"
 													[ngModelOptions]="{standalone: true}"></td>
 											</tr>
 											
@@ -765,10 +772,11 @@
 				</div>
 				<div>
 					<ul style="padding: 0 15px;">
-						<li>For optimal results, your logo should fit within the
+						<li>For optimal results, your uploaded image should fit within the
 							white rectangle.</li>
-						<li>If you would like to use a different logo in an email
-							template, you can change it during the template design process.</li>
+						<li>The uploaded image should have the pixels in any of the given dimensions
+							1024×768, 1280×960, 1400×1050, 1440×1080 , 1600×1200, 1856×1392, 1920×1440
+						</li>
 					</ul>
 				</div>
 			</div>

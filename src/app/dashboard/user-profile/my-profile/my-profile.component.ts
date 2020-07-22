@@ -165,6 +165,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     preferredLanguage:string;    
     editXamplifyDefaultTemplate = false;
     xamplifyDefaultTemplate:VanityEmailTempalte;
+    subjectLineTooltipText:string;
     constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
@@ -373,6 +374,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
                     this.status = false;
                 }
+            }
+            if(this.authenticationService.vanityURLEnabled){
+                this.setSubjectLineTooltipText();
             }
         } catch (error) {
             this.hasClientErrors = true;
@@ -1545,7 +1549,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe(
                 data => {
                     this.gdprSetting.isExists = true;
-                    this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+                    this.customResponse = new CustomResponse('SUCCESS', 'Your settings have been saved.', true);
                     this.referenceService.stopLoader(this.httpRequestLoader);
                 },
                 (error: any) => {
@@ -1891,7 +1895,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         let type = item.moduleName;
         if(count>0 && item.previewAccess){
             this.ngxloading = true;
-            if("Email Templates"==type){
+            if("Templates"==type){
                 this.router.navigate(['/home/emailtemplates/manage/'+categoryId]);
             }else if("Forms"==type){
                 this.router.navigate(['/home/forms/manage/'+categoryId]);
@@ -1966,5 +1970,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
         this.editXamplifyDefaultTemplate = false;
         this.xamplifyDefaultTemplate = new VanityEmailTempalte();
         this.referenceService.goToTop();
+    }
+
+    setSubjectLineTooltipText() {
+        this.subjectLineTooltipText = "Set your own subject line"
     }
 }

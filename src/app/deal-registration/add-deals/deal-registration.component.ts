@@ -40,7 +40,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
     @Input() isVendor: any;
     @Output() dealReg = new EventEmitter<any>();
     @Input() isPreview = false;
-
+    @Input() selectedTab:number=1;
     dealRegistration: DealRegistration;
     isServerError: boolean = false;
     leadData: any;
@@ -128,6 +128,7 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
     // pushToMarketo = false;
     marketo = false;
     propertiesComments: Array<DealDynamicProperties> = new Array<DealDynamicProperties>();
+    ownCampaignLeadAndDeal = false;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, public referenceService: ReferenceService
         , public dealRegistrationService: DealRegistrationService, public countryNames: CountryNames, public utilService: UtilService
         , public callActionSwitch: CallActionSwitch,
@@ -161,9 +162,6 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
         this.loggenInUserId = this.authenticationService.user.id;
 
         if (this.dealId == -1) {
-            this.userService.listForm(this.campaign.userId).subscribe(questions => {
-                console.log(questions);
-            });
 
             this.userService.listForm(this.campaign.userId).subscribe(questions => {
                 this.questions = questions;
@@ -198,8 +196,18 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
 
 
         }
-
-
+        if(this.isPreview){
+            this.ownCampaignLeadAndDeal = false;
+        }else{
+            this.ownCampaignLeadAndDeal = this.campaign['ownCampaignLeadAndDeal'];
+            if(this.ownCampaignLeadAndDeal){
+                if(this.selectedTab==1){
+                    this.isVendor = false;
+                }else{
+                    this.ownCampaignLeadAndDeal = false;
+                }
+            }
+        }
     }
 
 
@@ -230,7 +238,6 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
     }
 
     setLeadData(data: any) {
-        console.log(data)
         this.dealRegistration.id = data.id;
         this.dealRegistration.firstName = data.firstName;
         this.dealRegistration.lastName = data.lastName;
@@ -264,7 +271,6 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
             date = this.getFormatedDate(new Date(data.estimatedClosedDate));
         else
             date = this.getFormatedDate(new Date());
-        console.log(date);
         this.dealRegistration.estimatedCloseDate = date
 
         /*if (!this.defaultDealTypes.includes(this.dealRegistration.dealType) && !this.dealTypes.includes(this.dealRegistration.dealType)) {
@@ -286,7 +292,12 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
                 property.isDisabled = true;
             })
         }
-        this.dealRegistration.opportunityAmount = data.opportunityAmount;
+        if(data.opportunityAmount!=null){
+            this.dealRegistration.opportunityAmount = data.opportunityAmount;
+        }else{
+            this.dealRegistration.opportunityAmount = 0.00;
+        }
+        
         let countryIndex = this.countryNames.countries.indexOf(data.leadCountry);
         if (countryIndex > -1) {
             this.dealRegistration.leadCountry = this.countryNames.countries[countryIndex];

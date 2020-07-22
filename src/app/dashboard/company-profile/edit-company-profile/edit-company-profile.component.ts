@@ -178,7 +178,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
     squareDataForBgImage:any;
     croppedImageForBgImage: any = '';
     bgImageChangedEvent: any = '';
-    allLoginScreenDirectionsList:string[] = [];
+    allLoginScreenDirectionsList:string[] = [];    
     // @ViewChild(ImageCropperComponent) cropper:ImageCropperComponent;
     constructor(private logger: XtremandLogger, public authenticationService: AuthenticationService, private fb: FormBuilder,
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
@@ -204,14 +204,17 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
               .subscribe(value => {
                 this.validateUserUsingEmailId();
               });
-        }
-        this.allLoginScreenDirectionsList = ["Center","Left","Right"];
-        this.loggedInUserId = this.authenticationService.getUserId();
-        this.companyNameDivClass = this.refService.formGroupClass;
-        this.companyProfileNameDivClass = this.refService.formGroupClass;
-        this.isOnlyPartner = this.authenticationService.isOnlyPartner();
-        this.isVendorRole = this.authenticationService.isVendor();
-        this.uploadFileConfiguration();
+        }        
+        else{
+            this.allLoginScreenDirectionsList = ["Center","Left","Right"];
+            this.loggedInUserId = this.authenticationService.getUserId();
+            this.companyNameDivClass = this.refService.formGroupClass;
+            this.companyProfileNameDivClass = this.refService.formGroupClass;
+            this.isOnlyPartner = this.authenticationService.isOnlyPartner();
+            this.isVendorRole = this.authenticationService.isVendor();
+            this.uploadFileConfiguration();
+        }          
+        
     }
     
     validateUserUsingEmailId(){
@@ -431,7 +434,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
    }
     
    bgImageClick(){
-    this.cropLogoImageText = "Choose the image to be used as your company background logo";
+    this.cropLogoImageText = "Choose the image to be used as your company background";
     this.cropRounded = false;
     $('#cropBgImage').modal('show');
     //this.fileChangeEvent();
@@ -696,14 +699,12 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
             this.companyBgImagePath = this.companyProfile.backgroundLogoPath;
         }
         if ($.trim(this.companyProfile.favIconLogoPath).length > 0) {
-            this.companyFavIconPath = this.companyProfile.favIconLogoPath;
-            this.authenticationService.v_companyFavIconPath = this.companyFavIconPath;            
+            this.companyFavIconPath = this.companyProfile.favIconLogoPath;            
         }
         if ($.trim(this.companyProfile.country).length == 0) {
             this.companyProfile.country = this.countryNames.countries[0];
         }
-        this.authenticationService.v_companyName = existingCompanyName;
-        this.vanityURLService.setVanityURLTitleAndFavIcon();
+        
         this.geoLocation();
         this.existingCompanyName = existingCompanyName;
         this.loadPublicVideos();

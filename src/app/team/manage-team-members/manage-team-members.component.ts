@@ -414,6 +414,8 @@ export class ManageTeamMembersComponent implements OnInit {
 							this.customResponse = new CustomResponse('SUCCESS',data.message,true);
 							this.pagination = new Pagination();
 							this.listAllTeamMembers(this.pagination);
+						}else if(data.statusCode==403){
+							this.authenticationService.forceToLogout();
 						}else{
 							this.customResponse = new CustomResponse('ERROR',data.message,true);
 							$('#list-team-member-'+index).css("background-color", "#ec6262");
@@ -581,6 +583,8 @@ export class ManageTeamMembersComponent implements OnInit {
 						this.customResponse = new CustomResponse('ERROR', data.message, true);
 					}else if(data.statusCode==3008){
 						this.customResponse = new CustomResponse('ERROR', data.message, true);
+					}else if(data.statusCode==403){
+						this.authenticationService.forceToLogout();
 					}
 				},
 				error => { 	

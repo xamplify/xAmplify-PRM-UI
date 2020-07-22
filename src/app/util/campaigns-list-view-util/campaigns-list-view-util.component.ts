@@ -74,6 +74,9 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
 
   cancelEventMessage = "";
   selectedCancelEventId: number;
+  selectedCancelEventChannelCampaign = false;
+  selectedCancelEventNurtureCampaign=false;
+  selectedCancelEventToPartnerCampaign=false;
   eventCampaign: EventCampaign = new EventCampaign();
   cancelEventSubjectLine = "";
   cancelEventButton = false;
@@ -432,8 +435,11 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
       this.router.navigate(['/home/campaigns/' + campaign.campaignId + "/remove-access"]);
   }
 
-  getCancelEventDetails(campaignId: number) {
+  getCancelEventDetails(campaignId: number, channelCampaign:boolean, nurtureCampaign:boolean, toPartner:boolean) {
       this.selectedCancelEventId = campaignId;
+      this.selectedCancelEventChannelCampaign = channelCampaign;
+      this.selectedCancelEventNurtureCampaign=nurtureCampaign;
+      this.selectedCancelEventToPartnerCampaign=toPartner;
       this.campaignService.getEventCampaignById(campaignId).subscribe(
           (result) => {
               this.eventCampaign = result.data;
@@ -450,7 +456,8 @@ export class CampaignsListViewUtilComponent implements OnInit, OnDestroy {
 
       this.isloading = true;
       $('#cancelEventModal').modal('hide');
-      this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId)
+      this.campaignService.cancelEvent(cancelEventData, this.loggedInUserId, this.selectedCancelEventChannelCampaign,this.selectedCancelEventNurtureCampaign,
+    		  this.selectedCancelEventToPartnerCampaign)
           .subscribe(data => {
         	  if(data.access){
               console.log(data);

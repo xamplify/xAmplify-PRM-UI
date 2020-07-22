@@ -339,9 +339,14 @@ export class ContactService {
             .catch( this.handleError );
     }
 
-    checkingZohoAuthentication() {
-        this.logger.info( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token );
-        return this._http.get( this.authenticationService.REST_URL + "zoho/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId())
+    checkingZohoAuthentication(isPartner:boolean) {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/authorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&isPartner="+isPartner)
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+
+    checkingZohoSyncAuthentication(isPartner:boolean) {
+        return this._http.get( this.authenticationService.REST_URL + "zohoOauth/checkSyncAuthorizeLogin?access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId()+"&isPartner="+isPartner)
             .map( this.extractData )
             .catch( this.handleError );
     }
@@ -375,6 +380,25 @@ export class ContactService {
         };
         var url = this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
         this.logger.info( "contactService getzohoAuthorizedContacts():" + this.authenticationService.REST_URL + "getContacts?&access_token=" + this.authenticationService.access_token );
+        return this._http.post( url, socialContact )
+            .map( this.extractData )
+            .catch( this.handleError );
+    }
+    
+    
+    getZohoAutherizedLeads( socialContact: SocialContact ) {
+        this.logger.info( "get zoho leads :" + socialContact );
+        //this.successMessage = true;
+        var requestoptions = new RequestOptions( {
+            body: socialContact,
+        })
+        var headers = new Headers();
+        headers.append( 'Content-Type', 'application/json' );
+        var options = {
+            headers: headers
+        };
+        var url = this.authenticationService.REST_URL + "getZohoLeads?&access_token=" + this.authenticationService.access_token+"&userId=" + this.authenticationService.getUserId();
+        this.logger.info( "contactService getzohoAuthorizedLeads():" + this.authenticationService.REST_URL + "getLeads?&access_token=" + this.authenticationService.access_token );
         return this._http.post( url, socialContact )
             .map( this.extractData )
             .catch( this.handleError );
@@ -562,6 +586,18 @@ export class ContactService {
         return this._http.get( this.authenticationService.REST_URL + "/salesforce/ui/formfields/" + this.authenticationService.getUserId()+"/"+ dealId + "?access_token=" +this.authenticationService.access_token)
             .map( this.extractData )
             .catch( this.handleError );
+    }
+
+    validatePartners(partnerListId:number,partners:any){
+        return this._http.post(this.contactsUrl+ "validatePartners/"+partnerListId+"?access_token=" +this.authenticationService.access_token,partners)
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+    getContactsLimitAndMdfAmount(partners:any,loggedInUserId:number){
+        return this._http.post(this.contactsUrl+ "getContactsLimitAndMdfAmount/"+loggedInUserId+"?access_token=" +this.authenticationService.access_token,partners)
+        .map( this.extractData )
+        .catch( this.handleError );
     }
 
 }

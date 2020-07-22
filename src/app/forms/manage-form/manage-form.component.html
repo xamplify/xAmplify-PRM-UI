@@ -1,26 +1,26 @@
 <div class="page-content" [class.ml0]="authenticationService.isSuperAdmin()">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter">Home</a>
+            <li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a [routerLink]="referenceService.homeRouter" translate>Home</a>
                 <i class="fa fa-angle-right"></i></li>
             <li *ngIf="onlyForms">
-                <a [routerLink]="['/home/design/add']">Create Design</a> <i class="fa fa-angle-right"></i>
+                <a [routerLink]="['/home/design/add']" translate>Create Design</a> <i class="fa fa-angle-right"></i>
             </li>
 
-            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']">Admin Report</a><i class="fa fa-angle-right"></i></li>
+            <li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i class="fa fa-angle-right"></i></li>
             <ng-container *ngIf="pagination.campaignForm">
                 <li>
-                    <a [routerLink]="['/home/campaigns/manage']">Manage Campaigns</a><i class="fa fa-angle-right"></i>
+                    <a [routerLink]="['/home/campaigns/manage']" translate>Manage Campaigns</a><i class="fa fa-angle-right"></i>
             </ng-container>
 
             <ng-container *ngIf="pagination.landingPageCampaignForm">
                 <li>
-                    <a (click)="goToCampaignAnalytics()">Campaign Analytics</a><i class="fa fa-angle-right"></i>
+                    <a (click)="goToCampaignAnalytics()" translate >Campaign Analytics</a><i class="fa fa-angle-right"></i>
             </ng-container>
 
             <li *ngIf="!pagination.landingPageCampaignForm && !onlyForms">
-                <a routerLink="{{landingPagesRouterLink}}">Manage Pages</a><i class="fa fa-angle-right"></i>
-                <li style="color: #808080">Manage Forms</li>
+                <a routerLink="{{landingPagesRouterLink}}" translate>Manage Pages</a><i class="fa fa-angle-right"></i>
+                <li style="color: #808080" translate>Manage Forms</li>
         </ul>
     </div>
     <div style="position: relative; top: -10px">
@@ -87,17 +87,17 @@
                                         <th class="hidden-xs" colspan="2" style="width: 35%" id="border-bottom">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',2)">
                                             </span>
-                                            <span class="gridHeader">Form</span>
+                                            <span class="gridHeader" translate>Form</span>
                                         </th>
                                         <th class="visible-xs" colspan="1" style="width: 45%" id="border-bottom">
                                             <span class="ui-column-resizer gray" (mousedown)="referenceService.onMouseDown($event,'manage-form-list-table',1)">
                                             </span>
-                                            <span class="gridHeader">Form</span>
+                                            <span class="gridHeader" translate>Form</span>
                                         </th>
 
-                                        <th class="hidden-xs text-center">Created On</th>
-                                        <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width">Actions</th>
-                                        <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner">Actions</th>
+                                        <th class="hidden-xs text-center" translate>Created On</th>
+                                        <th *ngIf="!pagination.campaignForm" class="text-center" id="min-width" translate>Actions</th>
+                                        <th *ngIf="pagination.campaignForm" class="text-center" id="right-corner" translate>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,12 +110,12 @@
                                                 <span><b>{{form.name}}</b></span>
                                             </h4>
                                             <h6 class="moreipsis" title="{{form.categoryName}}">
-                                                <span> Folder <b>{{form.categoryName}}</b></span>
+                                                <span translate> Folder <b>{{form.categoryName}}</b></span>
                                             </h6>
                                             <h6 class="moreipsis" title="{{form.createdName}}">
-                                                <span> Created By <b>{{form.createdName}}</b></span>
+                                                <span translate> Created By <b>{{form.createdName}}</b></span>
                                             </h6>
-                                            <h6 class="view-banner">Form</h6>
+                                            <h6 class="view-banner" translate>Form</h6>
                                         </td>
                                         <td class="hidden-xs text-center">
                                             <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString">
@@ -178,22 +178,22 @@
                                 {{form.name | slice:0:25}} <span *ngIf="form.name?.length>25">...</span><br><br>
                             </h4>
                             <div>
-                                <h6 title="{{form.categoryName}}">
+                                <h6 title="{{form.categoryName}}" translate>
                                     Folder <b>{{form.categoryName | slice:0:17}}</b>
                                     <span *ngIf="form.categoryName?.length>17">..</span>
                                 </h6>
-                                <h6>
+                                <h6 translate>
                                     Created On <b>
                                  <app-timestamp [isOnlyDate]="true" [dateAndTime]="form.createdDateString"> </app-timestamp>
                                 </b>
                                 </h6>
-                                <h6 title="{{form.createdName}}">
+                                <h6 title="{{form.createdName}}" translate>
                                     By <b>{{form.createdName | slice:0:17}}</b>
                                     <span *ngIf="form.createdName?.length>17">..</span>
                                 </h6>
                             </div>
                             <div class="ribbon">
-                                <span>Form</span>
+                                <span translate>Form</span>
                             </div>
                             <div class="bar">
                                 <a *ngIf="!pagination.campaignForm && !pagination.landingPageForm && !pagination.landingPageCampaignForm && !pagination.partnerLandingPageForm && (deleteAndEditAccess || loggedInUserId==form.userId)" data-toggle="tooltip" data-placement="top" title="Edit"
@@ -243,7 +243,7 @@
                     </div>
                     <!-- End of 24 -->
                     <div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
-                        <strong>No Forms Found.</strong>
+                        <strong translate>No Forms Found.</strong>
                     </div>
                 </ng-container>
             </div>
@@ -260,29 +260,29 @@
                     <button type="button" class="close-circle" data-dismiss="modal">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
-                    <h4 class="modal-title text-center">COPY LINK / EMBED LINK</h4>
+                    <h4 class="modal-title text-center" translate>COPY LINK / EMBED LINK</h4>
                 </div>
                 <div class="modal-body">
                     <app-response-message [customResponse]="copiedLinkCustomResponse" *ngIf="copiedLinkCustomResponse.isVisible">
                     </app-response-message>
                     <br>
                     <div class="form-group">
-                        <label class="control-label">Copy Link</label>
+                        <label class="control-label" translate>Copy Link</label>
                         <input type="text" id="copy-link" class="form-control" readonly="readonly" [ngModel]="formAliasUrl" #userinput>
                         <br>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')">Copy
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(userinput,'Form link')" translate>Copy Link
+                            </a>
                         <br>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Copy Embed Link</label>
+                        <label class="control-label" translate>Copy Embed Link</label>
                         <textarea id="text-area" rows="3" [ngModel]="iframeEmbedUrl" spellcheck="false" #iframeUrlInput></textarea>
-                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')">Copy Embed
-                            Link</a>
+                        <a class="btn btn-primary" id="right" (click)="copyInputMessage(iframeUrlInput,'Embed link')" translate>Copy Embed Link
+                            </a>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <a data-dismiss="modal" class="btn btn-default" id="right">Close</a>
+                    <a data-dismiss="modal" class="btn btn-default" id="right" translate>Close</a>
                 </div>
             </div>
         </div>
@@ -294,7 +294,7 @@
     <div class="col-xs-12 p5" *ngIf="statusCode==403">
         <div class="alert alert-danger">
             <strong>
-        <h4>Access Denied</h4>
+        <h4 translate>Access Denied</h4>
       </strong>
         </div>
     </div>

@@ -878,20 +878,22 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     }
 
     this.dealRegService.getDeal(campaignViews.campaignId, campaignViews.userId).subscribe(data => {
-      console.log(data)
       this.dealId = data;
       if (data == -1) {
         this.dealButtonText = "Register Lead";
         this.isDeal = false;
       } else {
-
         this.dealRegService.getDealById(data, campaignViews.userId).subscribe(response => {
-          console.log(response)
-          this.isDeal = response.data.deal;
-          if (response.data.deal) {
+          let isDeal = response.data.deal;
+          if(this.campaign.showRegisterLeadButton && !isDeal ){
+            this.isDeal = false;
+          }else{
+            this.isDeal = isDeal;
+          }
+          if (this.isDeal) {
             this.dealButtonText = "Preview Deal";
           } else {
-            this.dealButtonText = "Update Lead"
+            this.dealButtonText = "Update Lead";
           }
           this.leadData = response.data;
         })
@@ -1690,7 +1692,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   listTotalCampaignViews(campaignId: number) {
 	  try {
 	      //this.isLeadListDownloadProcessing = true;
-	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType)
+	      this.campaignService.downRegularVideoCampaignViews(this.campaignId, this.campaignType, this.campaign.publicEventCampaign)
 	        .subscribe(
 	          data => {
 	          this.downloadFile(data, 'campaignviews', campaignId);

@@ -18,6 +18,7 @@ import { GeoLocationAnalytics } from '../../util/geo-location-analytics';
 import { Ng2DeviceService } from 'ng2-device-detector';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import {DomSanitizer} from "@angular/platform-browser";
+import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 
 declare var $:any;
 
@@ -48,11 +49,16 @@ export class FormPreviewComponent implements OnInit {
   constructor(private route: ActivatedRoute,private referenceService:ReferenceService,
     public authenticationService:AuthenticationService,private formService:FormService,
     private logger:XtremandLogger,public httpRequestLoader: HttpRequestLoader,public processor:Processor,private router:Router,
-    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService,public sanitizer:DomSanitizer) {
+    private landingPageService:LandingPageService,public deviceService: Ng2DeviceService,public utilService:UtilService,public sanitizer:DomSanitizer,private vanityURLService: VanityURLService) {
+
       
   }
 
   ngOnInit() {
+    if(this.vanityURLService.isVanityURLEnabled()){
+      this.vanityURLService.checkVanityURLDetails();
+    }
+
      $('.mobile-camp').removeClass('mobile-camp');
     // $('body').css('cssText', 'background-image: url(https://www.xamplify.com/wp-content/uploads/2019/12/rsvp-bg.png);background-repeat: no-repeat;background-size: cover;background-position: center;');
       this.processor.set(this.processor);

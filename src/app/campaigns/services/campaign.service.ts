@@ -344,8 +344,9 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    cancelEvent(cancelEventData: any, userId: number) {
-        let url = this.URL + "campaign/cancel-event-campaign/" + userId + "?access_token=" + this.authenticationService.access_token;
+    cancelEvent(cancelEventData: any, userId: number, channelCampaign:boolean, nurtureCampaign:boolean,toPartner:boolean) {
+        let url = this.URL + "campaign/cancel-event-campaign/" + userId + "/" + channelCampaign + "/" + nurtureCampaign  + "/" + toPartner 
+        +"?access_token=" + this.authenticationService.access_token;
         return this.http.post(url, cancelEventData)
             .map(this.extractData)
             .catch(this.handleError);
@@ -511,9 +512,9 @@ export class CampaignService {
             .map(( response: any ) => response );
     }
     
-    downRegularVideoCampaignViews( campaignId: number, campaignType: string): Observable<Response> {
+    downRegularVideoCampaignViews( campaignId: number, campaignType: string, publicEventCampaign:boolean): Observable<Response> {
         this.logger.info( campaignId );
-        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
+        return this.http.get( this.URL + "campaign/" + campaignId + "/" +campaignType + "/"+ publicEventCampaign +"/download-campaign-views-details?access_token=" + this.authenticationService.access_token )
             .map(( response: any ) => response );
     }
     
@@ -755,7 +756,13 @@ export class CampaignService {
       return this.http.get(this.URL + `campaign/access/${companyId}?access_token=${this.authenticationService.access_token}` )
           .map(this.extractData)
           .catch(this.handleError);
-  }
+    }
+
+    getModuleAccessByUserId(userId: any) {
+        return this.http.get(this.URL + `campaign/getModulesByUserId/${userId}?access_token=${this.authenticationService.access_token}` )
+            .map(this.extractData)
+            .catch(this.handleError);
+      }
 
   getCampaignCalendarView(request: any){
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){

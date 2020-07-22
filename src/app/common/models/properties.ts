@@ -149,7 +149,7 @@ export class Properties {
   gdprSettings = "GDPR Settings";
   folders = "Folders";
   dashboardButtons = "Dashboard Buttons";
-  samlSettings = "SAML Settings";
+  samlSettings = "Allbound SAML Settings";
 
   /********Error Messages************* */
   roleUpdatedMessage = "Your role has been changed.Please login again.";

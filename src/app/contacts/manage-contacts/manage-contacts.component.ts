@@ -187,6 +187,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     isValidLegalOptions = true;
     selectedLegalBasisOptions = [];
 
+    public checkSyncCode: any;
+    
     constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
         public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
@@ -478,8 +480,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.googleContactsSynchronizationAuthentication(contactListId, socialNetwork);
         }
         else if (socialNetwork == 'SALESFORCE') {
-            this.salesforceContactsSynchronizationAuthentication(contactListId, socialNetwork);
-        }
+                this.salesforceContactsSynchronizationAuthentication(contactListId, socialNetwork);
+             }
         else if (socialNetwork == 'ZOHO') {
             this.zohoContactsSynchronizationAuthentication(contactListId, socialNetwork);
         }
@@ -489,9 +491,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     googleContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
         try {
             swal({ title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
-            for (let i = 0; i < this.contactLists.length; i++) {
-                if (this.contactLists[i].id == contactListId) {
-                    this.contactType = this.contactLists[i].contactType;
+            if(this.contactLists!=undefined){
+                for (let i = 0; i < this.contactLists.length; i++) {
+                    if (this.contactLists[i].id == contactListId) {
+                        this.contactType = this.contactLists[i].contactType;
+                    }
                 }
             }
             this.socialContact.contactType = this.contactType;
@@ -525,6 +529,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
         }
     }
 
+   
+
     syncronizeContactList(contactListId: number, socialNetwork: string) {
         try {
             this.resetResponse();
@@ -533,12 +539,18 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
             this.xtremandLogger.info("contactsSyncronize() ContactListId" + contactListId);
             this.contactService.contactListSynchronization(contactListId, this.socialContact)
                 .subscribe(
-                data => {
-                    data
+                (data:any) => {
                     swal.close();
-                    this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
-                    this.loadContactLists(this.pagination);
-                    this.contactsCount();
+                    if(data.statusCode == 402){
+                       // this.checkSyncCode = data.statusCode;
+                      //  localStorage.setItem("checkSyncCode", data.statusCode);
+                        this.customResponse = new CustomResponse('INFO', data.message, true);
+                    }else{
+                        this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
+                        this.loadContactLists(this.pagination);
+                        this.contactsCount();
+                    }
+                   
                 },
                 (error: any) => {
                     this.xtremandLogger.error(error);
@@ -552,23 +564,38 @@ export class ManageContactsComponent implements OnInit, AfterViewInit {
     }
 
     zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
+     
         try {
             this.resetResponse();
             swal({ title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
+           if(this.contactLists!=undefined){
             for (let i = 0; i < this.contactLists.length; i++) {
                 if (this.contactLists[i].id == contactListId) {
                     this.contactType = this.contactLists[i].contactType;
                 }
             }
+           }
             this.socialContact.socialNetwork = "ZOHO";
             this.socialContact.contactType = this.contactType;
-            this.contactService.checkingZohoAuthentication()
+            this.contactService.checkingZohoSyncAuthentication(this.isPartner)
                 .subscribe(
                 (data: any) => {
                     this.xtremandLogger.info(data);
-                    if (data.authSuccess == true) {
+                    this.storeLogin = data;
+                    if(data.statusCode == 402){
+                        swal.close();
+                        this.customResponse = new CustomResponse( 'INFO', data.message, true );
+                    }
+                    else{
                         this.syncronizeContactList(contactListId, socialNetwork);
                     }
+
+                 /*  else if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                        this.syncronizeContactList(contactListId, socialNetwork);
+                    } else {
+                        localStorage.setItem("userAlias", data.userAlias);
+                        window.location.href = "" + data.redirectUrl;
+                    } */
                 },
                 (error: any) => {
                     var body = error['_body'];

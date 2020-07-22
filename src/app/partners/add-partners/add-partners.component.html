@@ -85,7 +85,7 @@
 										</button>
                                         </div>
                                         <div class="col-xs-12 col-sm-4 col-md-4 hidden-xs">
-                                            <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px; !important" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
+                                            <div class="btn-info fileinput-button btn-block" id="uploadCSV" style="min-height:85px; border-radius: 3px !important;" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality">
                                                 <i style="display:block; margin-top: 22px !important; text-align: center; font-size:24px; margin:0 auto 10px" class="fa fa-file-excel-o"></i>
                                                 <span style="display:block; font-size:12px; text-align:center" translate>Upload a CSV</span>
                                                 <input type="file" ng2FileSelect [uploader]="uploader" title=" " (click)="input.value = null" (change)="fileChange(input)" accept=".csv" #input [disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality" />
@@ -159,7 +159,7 @@
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Zoho account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/Zoho.png';">
                                         </a>
-                                        <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="checkingZohoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
+                                        <a *ngIf="zohoImageNormal" id="zohoContact_buttonNormal" style="background-color: white" (click)="zohoShowModal()" [class.disabled]="selectedAddPartnerOption != 5 || selectedAddPartnerOption == 6 || disableOtherFuctionality">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :zohoImageBlur==true}" src="assets/images/crm/Zoho.png" class="zohoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access partners from your Zoho account"
                                                 height="86" width="90">
                                         </a>
@@ -175,11 +175,11 @@
 									</div> -->
                                     </div>
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
-                                        <a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+                                        <a *ngIf="marketoImageBlur" id="marketoContact_button" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/marketo.png';">
                                         </a>
-                                        <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 6">
+                                        <a *ngIf="marketoImageNormal" id="MarketoContact_buttonNormal" style="background-color: white" (click)="checkingMarketoContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 8">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :marketoImageBlur==true}" src="assets/images/crm/marketo.png" class="marketoImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your Marketo account"
                                                 height="86" width="90">
                                         </a>
@@ -197,11 +197,11 @@
 
                                     <!-- Hubspot -->
                                     <div class="col-xs-6 col-sm-3 col-md-3 col-lg-2" style="margin-top: 10px;">
-                                        <a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+                                        <a *ngIf="hubspotImageBlur" id="hubspotContact_button" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
                                                 height="86" width="90" onmouseover="this.src='assets/images/crm/connecting.png';" onmouseout="this.src='assets/images/crm/hubspot.png';">
                                         </a>
-                                        <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddContactsOption == 0 || selectedAddContactsOption == 1 || selectedAddContactsOption == 2 || selectedAddContactsOption == 3 || selectedAddContactsOption == 4 || selectedAddContactsOption == 5 || selectedAddContactsOption == 9">
+                                        <a *ngIf="hubspotImageNormal" id="HubspotContact_buttonNormal" style="background-color: white" (click)="checkingHubSpotContactsAuthentication()" [class.disabled]="selectedAddPartnerOption != 5 || disableOtherFuctionality || selectedAddPartnerOption == 9">
                                             <img [ngClass]="{imageblurNormal:googleImageNormal==true ,imageblur :hubspotImageBlur==true}" src="assets/images/crm/hubspot.png" class="hubspotImageClass" data-toggle="tooltip" data-placement="bottom" title="Click here to access Partners from your HubSpot account"
                                                 height="86" width="90">
                                         </a>
@@ -318,6 +318,7 @@
                                         <th translate>EMAIL</th>
                                         <th translate>FIRST NAME</th>
                                         <th translate>LAST NAME</th>
+                                        <th *ngIf="selectedAddPartnerOption === 6" translate>COMPANY</th>
                                         <th *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"></th>
                                     </tr>
                                 </thead>
@@ -325,7 +326,7 @@
                                     <ng-container *ngFor="let user of pagedItems;let i = index">
                                         <tr class='row_{{i}}'>
                                             <td *ngIf="selectedAddPartnerOption != 8 && selectedAddPartnerOption != 9" align="center"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1" class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}" name="campaignContact[]"
-                                                    value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,$event)" />
+                                                    value="{{user.id}}" id="{{user.id}}" (click)="highlightRow(user.id,user.emailId,user.firstName,user.lastName,user.company,user.contactCompany,user,$event)" />
                                             </td>
                                             <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9" align="center"><input type="checkbox" [checked]="selectedContactListIds.indexOf(user.id)>-1" class="chk" [class.contact-list-selected]="selectedContactListIds.indexOf(user.id)>-1" lang="{{user.name}}" name="campaignContact[]"
                                                     value="{{user.id}}" id="{{user.id}}" (click)="highlightMarketoRow(user,$event, i)" />
@@ -333,6 +334,7 @@
                                             <td>{{user.emailId}}</td>
                                             <td>{{user.firstName}}</td>
                                             <td>{{user.lastName}}</td>
+                                            <td *ngIf="selectedAddPartnerOption === 6" >{{user.contactCompany}}</td>
                                             <td *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9">
                                                 <button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
 																<span *ngIf="!user.isShowDetails" translate>More</span> <span *ngIf="user.isShowDetails" translate>Less</span>
@@ -567,7 +569,7 @@
                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                 <div class="portlet box blue">
                     <div class="portlet-title">
-                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;" translate translate></i>List of Partners</div>
+                        <div class="caption" translate> <i class="fa fa-edit" style="font-size: 19px;"></i>List of Partners</div>
                         <div class="inputs" align="right" style="float: right; padding: 4px" *ngIf="!referenceService.isMobileScreenSize()">
                             <div style="float: left; margin: 0 10px;">
                                 <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
@@ -727,6 +729,18 @@
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td class='pt10 pb10 bold' translate>Contacts Limit: </td>
+                                                                    <td align="center" class="pt10 pb10">
+                                                                        {{contact.contactsLimit}}
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="mdfAccess">
+                                                                    <td class='pt10 pb10 bold' translate>MDF Amount: </td>
+                                                                    <td *ngIf="contact?.mdfAmountInString" align="center" class="pt10 pb10">
+                                                                        {{contact.mdfAmountInString}}
+                                                                    </td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                     </td>
@@ -749,11 +763,11 @@
 
     <!-- Modal -->
     <div *ngIf="contactService.isContactModalPopup && !updatePartnerUser">
-        <app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser" (notifyParent)="addRow($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [isContactTypeEdit]="true" [isUpdateUser]="updatePartnerUser" (notifyParent)="addRow($event)"></app-add-contact-modal>
     </div>
 
     <div *ngIf="contactService.isContactModalPopup && updatePartnerUser">
-        <app-add-contact-modal [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser]="updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
+        <app-add-contact-modal [mdfAccess]="mdfAccess" [gdprInput]="parentInput" [totalUsers]="contactService.allPartners" [contactDetails]="partnerAllDetails" [isUpdateUser]="updatePartnerUser" (notifyParent)="updatePartnerListUser($event)"></app-add-contact-modal>
     </div>
 
     <div id="zohoId">
@@ -812,16 +826,19 @@
 
     <div class="modal right" id="zohoShowAuthorisedPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-css" role="document">
+            <ngx-loading [show]="zohoPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
             <div class="modal-content">
                 <div class="modal-header">
                     <div>
                         <a class="close-circle" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()"><i class="fa fa-times"></i></a>
                         <div>
                             <img src="assets/images/zoho.png" alt="Picture of a happy monkey" style="height: 65px" width="90px" />
-                            <h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;" translate>Retrieve Zoho Contacts</h4>
+                            <h4 class="modal-title" id="myModalLabel" align="center" style="margin-top: -20px;" translate>Import From Zoho</h4>
                         </div>
                     </div>
                     <div class="modal-body">
+                        <app-response-message class="pg8" [customResponse]="zohoErrorResponse" *ngIf="zohoErrorResponse.isVisible">
+                        </app-response-message>
                         <form class="form-horizontal">
                             <div class="form-group">
                                 <label class="control-label col-sm-3" for="pwd" translate>
@@ -838,7 +855,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hideZohoAuthorisedPopup()" translate>Close</button>
-                        <button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button>
+                    <!--    <button type="button" class="btn btn-primary" (click)="authorisedZohoContacts()" translate>Authorize</button> -->
+                        <button type="button" class="btn btn-primary" (click)="checkingZohoContactsAuthentication()" translate>Submit</button>
                     </div>
                 </div>
             </div>
@@ -914,9 +932,9 @@
                                 <h4 style="margin-left: 20px;" translate>
                                     <span class="glyphicon glyphicon-triangle-right"></span>If you decide to relink your account, you will need to reenter your credentials.
                                 </h4>
-                                <h4 style="margin-left: 20px;" translate>
+                                <!-- <h4 style="margin-left: 20px;" translate>
                                     <span class="glyphicon glyphicon-triangle-right"></span>Would you like to delete associated contact lists? <input type="checkbox" [(ngModel)]="isUnLinkSocialNetwork" [ngModelOptions]="{standalone: true}">
-                                </h4>
+                                </h4> -->
                                 <button type="button" class="btn btn-primary" style="margin-left: 38%; margin-top: 2%" (click)="unlinkSocailAccount()" translate>Unlink Account</button>
                             </div>
                         </form>
@@ -1211,3 +1229,67 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade right" id="assignContactAndMdfPopup" tabindex="-1" role="dialog" aria-labelledby="assignContactAndMdfPopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close-circle" (click)="closeAssignContactAndMdfAmountPopup()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+                <h4 class="modal-title popup-header-title-font" *ngIf="mdfAccess" translate>Assign Contacts & MDF Amount</h4>
+                <h4 class="modal-title popup-header-title-font" *ngIf="!mdfAccess" translate>Assign Contacts</h4>
+
+            </div>
+            <div class="modal-body">
+                <app-response-message class="pg8" [customResponse]="contactAndMdfPopupResponse" *ngIf="contactAndMdfPopupResponse.isVisible">
+                </app-response-message>
+                <div class="table-responsive" >
+                    <table class="table tgrid table-hover table-sm" id="assignContactAndTable" aria-describedby="assignContactAndTable">
+                        <thead>
+                            <tr>
+                                <th scope="row" translate>Entity Info</th>
+                                <th scope="row" translate>#Contacts
+                                     <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
+                                    </span>
+                                </th>
+                                <th *ngIf="mdfAccess" scope="row" translate>#Mdf Amount
+                                    <span id="tooltip-helper">
+                                        <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign amount to each partner"></i>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let partner of newPartnerUser;let i=index">
+                                <tr id="partner-row-{{i}}">
+                                    <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
+                                        </app-user-info>
+                                    </td>
+                                    <td class="contact-count error" id="contact-count-{{i}}">
+                                        <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
+                                    </td>
+                                    <td *ngIf="mdfAccess">
+                                        <input type="text" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }" class="form-control currency" 
+                                        [(ngModel)]=" partner.mdfAmount"  [ngModelOptions]="{standalone: true}" id="mdfAmount-{{i}}"
+                                        placeholder="Enter Amount"/>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+
+            <br>
+            </div>
+            <ngx-loading [show]="processingPartnersLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+            <div class="modal-footer">
+                <button type="submit" class="btn green-haze"  (click)="validatePartners()" translate>Save</button>
+                <button type="submit" class="btn btn-default" (click)="closeAssignContactAndMdfAmountPopup()" translate>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
