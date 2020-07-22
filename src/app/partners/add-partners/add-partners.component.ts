@@ -2162,6 +2162,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         "firstName": self.pagedItems[i].firstName,
                         "lastName": self.pagedItems[i].lastName,
                     }
+                    if(self.pagedItems[i].contactCompany){
+                        object['contactCompany'] = self.pagedItems[i].contactCompany;
+                    }
                     self.allselectedUsers.push( object );
                 }
             });
@@ -3397,9 +3400,9 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }*/
     
     
-    selectedAddContactsOption: number = 6;
     checkingZohoContactsAuthentication() {
         try {
+            this.selectedAddPartnerOption = 6;
             if (this.loggedInThroughVanityUrl) {
                 this.referenceService.showSweetAlertInfoMessage();
             }
@@ -3411,7 +3414,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                     this.zohoErrorResponse = new CustomResponse('ERROR','Please select atleast one option',true);
                     this.zohoPopupLoader = false;
                 }else{
-                    if (this.selectedAddContactsOption == 6 && !this.disableOtherFuctionality) {
+                    if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
                         this.contactService.checkingZohoAuthentication(this.isPartner)
                             .subscribe(
                                 (data: any) => {
@@ -3528,7 +3531,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
                         swal.close();
                         this.hideZohoAuthorisedPopup();
                         this.customResponse = new CustomResponse( 'INFO', data.message, true );
-                        this.selectedAddContactsOption = 6;
+                        this.selectedAddPartnerOption = 6;
 					    this.zohoImageBlur = true;
 					    this.zohoImageNormal = false;
                      }

@@ -1596,6 +1596,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }else{
                             object['emailId'] = self.pagedItems[i].emailId;
                         }
+                        if(self.pagedItems[i].contactCompany){
+                            object['contactCompany'] = self.pagedItems[i].contactCompany;
+                        }
                         
                         console.log( object );
                         self.allselectedUsers.push( object );

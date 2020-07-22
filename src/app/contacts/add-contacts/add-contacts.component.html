@@ -547,8 +547,8 @@
 													<th translate>EMAIL</th>
 													<th translate>FIRST NAME</th>
 													<th translate>LAST NAME</th>
-													<th *ngIf="selectedAddContactsOption != 6 && selectedAddContactsOption != 9"  translate>COMPANY</th>
-													<th *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9"></th>
+													<th *ngIf="selectedAddContactsOption === 5"  translate>COMPANY</th>
+													<th *ngIf="selectedAddPartnerOption == 8 || selectedAddPartnerOption == 9"></th>
 												</tr>
 											</thead>
 											<tbody>
@@ -567,7 +567,7 @@
 													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">{{user.email}}</td>
 													<td>{{user.firstName}}</td>
 													<td>{{user.lastName}}</td>
-													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption != 9">{{user.contactCompany}}</td>
+													<td *ngIf="selectedAddContactsOption === 5">{{user.contactCompany}}</td>
 													<!--<td>{{user.contactCompany}}</td> -->
 													<td *ngIf="selectedAddContactsOption == 6 || selectedAddContactsOption == 9">
 														<button id='more_less_button_{{i}}' (click)="user.isShowDetails = ! user.isShowDetails">
