@@ -2866,10 +2866,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     authorisedMarketoContacts() {
     }
     retriveMarketoContacts() {
-
+		this.loading = true;
 
         $( "#marketoShowLoginPopup" ).modal( 'hide' );
         this.contactService.getMarketoContacts( this.authenticationService.getUserId() ).subscribe( data => {
+            if (data.statusCode === 200) {
+            
             this.marketoImageBlur = false;
             this.marketoImageNormal = true;
             this.getMarketoConatacts = data.data;
@@ -2922,6 +2924,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
             this.xtremandLogger.info( this.getMarketoConatacts );
             this.setPage( 1 );
+             } else if (data.statusCode === 400) {
+				 this.customResponse = new CustomResponse( 'ERROR', data.message, true );   
+             }
+              this.loading = false;
         },
             ( error: any ) => {
                 this.loading = false;

@@ -2677,10 +2677,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
     }
     retriveMarketoContacts()
     {
-
+		this.loading = true;
         $("#marketoShowLoginPopup").modal('hide');
         this.contactService.getMarketoContacts(this.authenticationService.getUserId()).subscribe(data =>
         {
+        	if (data.statusCode === 200) {
         	this.selectedAddPartnerOption = 8;
             this.marketoImageBlur = false;
             this.marketoImageNormal = true;
@@ -2733,6 +2734,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             }
             this.xtremandLogger.info(this.getMarketoConatacts);
             this.setSocialPage(1);
+            } else if (data.statusCode === 400) {
+				 this.customResponse = new CustomResponse( 'ERROR', data.message, true );   
+             }
+             this.loading = false;
         },
             (error: any) =>
             {
