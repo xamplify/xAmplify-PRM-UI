@@ -804,10 +804,9 @@
                 <a class="close-circle" data-dismiss="modal" (click)="closeImageUploadModal()">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </a>
-                <h4 class="modal-title" id="cropLogoImage">Choose the image to be used as <span
-                        *ngIf="!popupOpenedFor?.indexOf('formBackgroundImage')>0;else showCompanyLogoContent">form
-                        background</span>
-                    <ng-template #showCompanyLogoContent>form company logo</ng-template>
+                <h4 class="modal-title" id="cropLogoImage">Choose the image to be used as
+                    <span *ngIf="popupOpenedFor=='formBackgroundImage'">form background</span>
+                    <span *ngIf="popupOpenedFor=='companyLogo'">form company logo</span>
                 </h4>
             </div>
             <div class="modal-body" style="overflow-y: unset !important;">
