@@ -407,9 +407,10 @@
                                                                     <img src="assets/images/crm/Mark-amplify.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-																<span class="arrow" *ngIf = "isMarketoProcess"  style="height: 40px;"> 
-																<img src="assets/images/Spinner.gif" class="loaderGif">
-																</span> <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configure'" translate>configure</a>
+																<span class="arrow" *ngIf = "isMarketoProcess"  style="position: absolute; margin-top: -40px;"> 
+																<img src="assets/images/Spinner.gif" class="loaderGif" style="height: 40px;"> Synchronization in process...																
+																</span> 
+																<a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configure'" translate>configure</a>
                                                             <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configured'" translate>re configure</a>
                                                                
                                                         </div>
