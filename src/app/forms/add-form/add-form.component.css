@@ -18,6 +18,7 @@
     border-bottom: none;
 }
 
+
 /* Add a background color on hover */
 
 .btn-group button:hover {
@@ -36,7 +37,8 @@
     height: 300px;
 }
 
-#create-from-div, #edit-from-div {
+#create-from-div,
+#edit-from-div {
     overflow-y: auto;
     max-height: 536px;
 }
@@ -133,6 +135,7 @@ LEGEND {
     color: red;
 }
 
+
 /* in-flight clone */
 
 .gu-mirror {
@@ -145,11 +148,13 @@ LEGEND {
     pointer-events: none;
 }
 
+
 /* high-performance display:none; helper */
 
 .gu-hide {
     left: -9999px !important;
 }
+
 
 /* added to mirrorContainer (default = body) while dragging */
 
@@ -160,6 +165,7 @@ LEGEND {
     user-select: none !important;
 }
 
+
 /* added to the source element while its mirror is dragged */
 
 .gu-transit {
@@ -167,6 +173,7 @@ LEGEND {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
 }
+
 
 /* dragula-specific example page styles */
 
@@ -184,12 +191,14 @@ LEGEND {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+
 /*
  * note that styling gu-mirror directly is a bad practice because it's too generic.
  * you're better off giving the draggable elements a unique class and styling that directly!
  */
 
-.container div, .gu-mirror:not(.container) {
+.container div,
+.gu-mirror:not(.container) {
     margin: 10px;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
@@ -307,7 +316,8 @@ LEGEND {
     list-style: none
 }
 
-.list__item .item__content, .list__item .item__select-box-wrapper {
+.list__item .item__content,
+.list__item .item__select-box-wrapper {
     width: 50%;
 }
 
@@ -417,7 +427,8 @@ label {
     font-weight: 700;
 }
 
-.list__item, .item__content {
+.list__item,
+.item__content {
     position: relative;
     min-height: 1px;
     padding-left: 15px;
@@ -425,7 +436,8 @@ label {
     padding-top: 15px;
 }
 
-.item__content, .item__select-box-wrapper {
+.item__content,
+.item__select-box-wrapper {
     width: 50%;
     float: left;
 }
@@ -473,11 +485,14 @@ label {
     font-size: 1.25rem;
 }
 
-.item__last-modified, .item__size, .item__type {
+.item__last-modified,
+.item__size,
+.item__type {
     font-size: 11px;
 }
 
-.item__size, .item__type {
+.item__size,
+.item__type {
     display: inline-block
 }
 
@@ -620,7 +635,8 @@ label {
     padding: 7px 0;
 }
 
-.modal.left.fade.in .modal-dialog, .modal.right.fade.in .modal-dialog {
+.modal.left.fade.in .modal-dialog,
+.modal.right.fade.in .modal-dialog {
     width: 450px!important;
 }
 
@@ -643,7 +659,8 @@ label {
     left: 18px;
 }
 
-.input-group-addon, .input-group-btn {
+.input-group-addon,
+.input-group-btn {
     white-space: nowrap;
     vertical-align: middle;
     height: 39%!important;
@@ -671,6 +688,7 @@ label {
     max-width: 218px !important;
     height: 118px !important;
 }
+
 
 /* new switch */
 
@@ -704,7 +722,8 @@ label {
     transition: margin 0.3s ease-in 0s;
 }
 
-.onoffswitch-inner:before, .onoffswitch-inner:after {
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
     display: block;
     float: left;
     width: 50%;
@@ -790,7 +809,8 @@ label {
     transition: margin 0.3s ease-in 0s;
 }
 
-.onoffswitch1-inner:before, .onoffswitch1-inner:after {
+.onoffswitch1-inner:before,
+.onoffswitch1-inner:after {
     display: block;
     float: left;
     width: 50%;
@@ -885,7 +905,8 @@ label {
     transition: margin 0.3s ease-in 0s;
 }
 
-.onoffswitch2-inner:before, .onoffswitch2-inner:after {
+.onoffswitch2-inner:before,
+.onoffswitch2-inner:after {
     display: block;
     float: left;
     width: 50%;
@@ -1081,7 +1102,8 @@ label {
     transition: margin 0.3s ease-in 0s;
 }
 
-.onoffswitch4-inner:before, .onoffswitch4-inner:after {
+.onoffswitch4-inner:before,
+.onoffswitch4-inner:after {
     display: block;
     float: left;
     width: 50%;
@@ -1170,7 +1192,8 @@ input.cmn-toggle-round-flat+label {
     transition: background 0.4s;
 }
 
-input.cmn-toggle-round-flat+label:before, input.cmn-toggle-round-flat+label:after {
+input.cmn-toggle-round-flat+label:before,
+input.cmn-toggle-round-flat+label:after {
     display: block;
     position: absolute;
     content: "";
@@ -1238,7 +1261,8 @@ div.switch5>input.switch:empty~label {
     -moz-user-select: none;
 }
 
-div.switch5>input.switch:empty~label:before, input.switch:empty~label:after {
+div.switch5>input.switch:empty~label:before,
+input.switch:empty~label:after {
     position: absolute;
     display: block;
     top: 0px;
@@ -1295,15 +1319,20 @@ div.switch5>input.switch:focus~label:before {
     margin: 0 auto;
 }
 
-.switch6-light>span, .switch-toggle>span {
+.switch6-light>span,
+.switch-toggle>span {
     color: #000000;
 }
 
-.switch6-light span span, .switch6-light label, .switch-toggle span span, .switch-toggle label {
+.switch6-light span span,
+.switch6-light label,
+.switch-toggle span span,
+.switch-toggle label {
     color: #2b2b2b;
 }
 
-.switch-toggle a, .switch6-light span span {
+.switch-toggle a,
+.switch6-light span span {
     display: none;
 }
 
@@ -1325,7 +1354,8 @@ div.switch5>input.switch:focus~label:before {
     transition: all 0.3s ease-out 0s;
 }
 
-.switch6-light label, .switch6-light>span {
+.switch6-light label,
+.switch6-light>span {
     line-height: 30px;
     vertical-align: middle;
 }
@@ -1336,7 +1366,8 @@ div.switch5>input.switch:focus~label:before {
     max-width: 100%;
 }
 
-.switch6-light input:focus~a, .switch6-light input:focus+label {
+.switch6-light input:focus~a,
+.switch6-light input:focus+label {
     outline: 1px dotted rgb(136, 136, 136);
 }
 
@@ -1398,23 +1429,22 @@ div.switch5>input.switch:focus~label:before {
     padding: 0px 15px 10px 15px;
 }
 
-
-
-.xamp-margin-left-icon{
-    margin-left: 5px;
+.xamp-margin-left-icon {
+    margin: 5px 5px 5px 5px;
 }
-.custom-size-form-brush{
+
+.custom-size-form-brush {
     font-size: 14px;
 }
 
 .prefix .input-group-prefix {
     border-right: 0;
     border-radius: 0px 0px 0px 0px;
-    }
-    
-    .input-group-prefix {
-        padding: 6px 12px;
-            font-size: 13px;
+}
+
+.input-group-prefix {
+    padding: 6px 12px;
+    font-size: 13px;
     text-align: center;
     background-color: white;
     width: 40%;
@@ -1423,24 +1453,57 @@ div.switch5>input.switch:focus~label:before {
     color: rgb(128, 109, 109);
     border: 1px solid #ccc;
     white-space: nowrap;
-    display: table-cell; 
-    }
+    display: table-cell;
+}
 
-    .input-group {
-        position: relative;
-        display: flex;  
-        border-collapse: separate;
-      }
+.input-group {
+    position: relative;
+    display: flex;
+    border-collapse: separate;
+}
 
-      .edit-field-prefix{
-        padding: 8px 12px;
-        font-size: 13px;
-        background-color: white; 
-        width: auto;
-        vertical-align: middle;
-        text-align: center;
-        line-height: 1;
-        color: rgb(51, 46, 46);
-        border: 1px solid #ccc;
-      }
-      
+.edit-field-prefix {
+    padding: 8px 12px;
+    font-size: 13px;
+    background-color: white;
+    width: auto;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 1;
+    color: rgb(51, 46, 46);
+    border: 1px solid #ccc;
+}
+
+.design-btn-group button {
+    background-color: #008fd5;
+    border: 1px solid #3575b5;
+    color: #fff;
+    padding: 6px 16px;
+    cursor: pointer;
+    float: left;
+    font-size: 14px;
+}
+
+.design-btn-group button:not(:last-child) {
+    border-right: none;
+}
+
+.design-btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.design-btn-group button:hover {
+    background-color: #4db1e2;
+}
+
+.button-padding {
+    padding: 7px 14px;
+    font-size: 14px;
+    border-width: 0;
+}
+
+.pagination {
+    margin: 10px 4px 1px;
+}

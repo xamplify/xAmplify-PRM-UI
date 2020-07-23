@@ -22,7 +22,8 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { EmailTemplateService } from '../../email-template/services/email-template.service';
 import { SocialPagerService } from '../../contacts/services/social-pager.service';
 import { ActionsDescription } from '../../common/models/actions-description';
-import {DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
+import { ContentManagement } from 'app/videos/models/content-management';
 
 
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
@@ -34,7 +35,7 @@ declare var $: any, swal: any, CKEDITOR: any;
     selector: 'app-add-form',
     templateUrl: './add-form.component.html',
     styleUrls: ['./add-form.component.css', '../../dashboard/company-profile/edit-company-profile/edit-company-profile.component.css', '../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css'],
-    providers: [CallActionSwitch, HttpRequestLoader, SocialPagerService, Pagination, ActionsDescription]
+    providers: [CallActionSwitch, HttpRequestLoader, SocialPagerService, Pagination, ActionsDescription, ContentManagement]
 })
 export class AddFormComponent implements OnInit, OnDestroy {
     ngxloading = false;
@@ -93,6 +94,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     labelControllerColor: string;
     buttonBackgroundControllerColor: string;
     buttonValueControllerColor: string;
+    titleControllerColor: string;
+    borderControllerColor: string;
     valueRange: number;
     charactersLeft = 1000;
     cropRounded = false;
@@ -132,14 +135,15 @@ export class AddFormComponent implements OnInit, OnDestroy {
     ckeConfig: any;
     @ViewChild("myckeditor") ckeditor: any;
     loading = false;
-    priceTypes:Array<string>;
-	logoError = false;
-     formsError = false;
+    priceTypes: Array<string>;
+    logoError = false;
+    formsError = false;
+    awsFileKeys: string[] = [];
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
-        private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer:DomSanitizer) {
+        private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
         CKEDITOR.config.extraPlugins = 'colorbutton,colordialog';
-		this.loggedInUserId = this.authenticationService.getUserId();
+        this.loggedInUserId = this.authenticationService.getUserId();
         let categoryId = this.route.snapshot.params['categoryId'];
         if (categoryId > 0) {
             this.routerLink += "/" + categoryId;
@@ -172,6 +176,12 @@ export class AddFormComponent implements OnInit, OnDestroy {
             }
             if (this.form.buttonValueColor) {
                 this.buttonValueControllerColor = this.form.buttonValueColor;
+            }
+            if (this.form.titleColor) {
+                this.titleControllerColor = this.form.titleColor;
+            }
+            if (this.form.borderColor) {
+                this.borderControllerColor = this.form.borderColor;
             }
             if (!this.form.buttonValue) {
                 this.form.buttonValue = "Submit";
@@ -221,7 +231,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    listPriceTypes(){
+    listPriceTypes() {
         this.formService.getPriceTypes().subscribe(
             (response: any) => {
                 this.priceTypes = response.data;
@@ -364,7 +374,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         } else {
             columnInfo.labelName = column.labelName
             columnInfo.placeHolder = column.labelName;
-            if(column.labelType == 'price' && column.priceType != undefined){
+            if (column.labelType == 'price' && column.priceType != undefined) {
                 columnInfo.priceType = column.priceType;
                 columnInfo.priceSymbol = column.priceSymbol;
             }
@@ -528,20 +538,20 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
 
 
-    updatePriceSymbol(columnInfo: ColumnInfo,type: string){
-        let symbol="";
-        if(type=='Rupee'){
-            symbol="₹"
-        }else if(type=='Dollar'){
-            symbol="$"
-        }else if(type=='Yen'){
-            symbol=" ¥"
-        }else if(type=='Pound'){
-            symbol="£"
-        }else if(type=='Euro'){
-            symbol="€"
+    updatePriceSymbol(columnInfo: ColumnInfo, type: string) {
+        let symbol = "";
+        if (type == 'Rupee') {
+            symbol = "₹"
+        } else if (type == 'Dollar') {
+            symbol = "$"
+        } else if (type == 'Yen') {
+            symbol = " ¥"
+        } else if (type == 'Pound') {
+            symbol = "£"
+        } else if (type == 'Euro') {
+            symbol = "€"
         }
-        columnInfo.priceSymbol=symbol;
+        columnInfo.priceSymbol = symbol;
     }
 
     /****************Validate Form*****************/
@@ -716,8 +726,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
             CKEDITOR.instances[instanceName].updateElement();
             this.form.footer = CKEDITOR.instances[instanceName].getData();
         }
-        if(!this.form.companyLogo){
-            this.form.companyLogo=this.companyLogoImageUrlPath;
+        if (!this.form.companyLogo) {
+            this.form.companyLogo = this.companyLogoImageUrlPath;
         }
         if (this.isAdd) {
             this.save(this.form);
@@ -870,6 +880,12 @@ export class AddFormComponent implements OnInit, OnDestroy {
             } else if (type === "buttonValueColor") {
                 this.buttonValueControllerColor = event;
                 form.buttonValueColor = event
+            } else if (type === "titleColor") {
+                this.titleControllerColor = event;
+                form.titleColor = event
+            } else if (type === "borderColor") {
+                this.borderControllerColor = event;
+                form.borderColor = event
             }
         } catch (error) { console.log(error); }
     }
@@ -1130,7 +1146,114 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.formButtonValueErrorMessage = errorMessage;
     }
 
-	selectedPageNumber(event){
-	
-		}
+    addImage(filePath: any) {
+        const parts = filePath.split('.');
+        const ext = parts[parts.length - 1];
+        switch (ext.toLowerCase()) {
+            case 'csv': return 'assets/images/content/csv.png';
+            case 'cvs': return 'assets/images/content/cvs.png';
+            case 'gif': return 'assets/images/content/gif.png';
+            case 'html': return 'assets/images/content/html.png';
+            case 'doc': return 'assets/images/content/docs.png';
+            case 'pdf': return 'assets/images/content/pdfs.png';
+            case 'ppt': return 'assets/images/content/ppt.png';
+            case 'pct': return 'assets/images/content/pct.png';
+            case 'pptx': return 'assets/images/content/pptx.png';
+            case 'txt': return 'assets/images/content/text.png';
+            case 'xls': return 'assets/images/content/xls.png';
+            case 'xlsx': return 'assets/images/content/xlsm.png';
+            case 'xlsm': return 'assets/images/content/xlsm.png';
+            case 'xml': return 'assets/images/content/xml.png';
+            case 'zip': return 'assets/images/content/zip.png';
+            case 'docx': return 'assets/images/content/docs.png';
+            case 'docm': return 'assets/images/content/docs.png';
+            case 'dotm': return 'assets/images/content/docs.png';
+            case 'dotx': return 'assets/images/content/docs.png';
+            case 'dot': return 'assets/images/content/docs.png';
+            case 'xps': return 'assets/images/content/xps.jpg';
+            case 'rtf': return 'assets/images/content/rtf.png';
+            case 'odt': return 'assets/images/content/odt.png';
+            case 'wps': return 'assets/images/content/wps.png';
+            case 'htm': return 'assets/images/content/htm.png';
+            case 'mht': return 'assets/images/content/mht.jpg';
+            case 'log': return 'assets/images/content/log.png';
+            case 'mp3': return 'assets/images/content/mp3.png';
+            case 'mhtml': return 'assets/images/content/mhtml.png';
+            case 'rar': return 'assets/images/content/rar.png';
+            case 'apk': return 'assets/images/content/apk.png';
+            default: return 'assets/images/content/error.png';
+        }
+    }
+    changeImage(id: number, path: string) {
+        let image = this.addImage(path);
+        (<HTMLInputElement>document.getElementById('content_image_' + id)).src = image;
+        (<HTMLInputElement>document.getElementById('content_image_grid_' + id)).src = image;
+        $('#content_image_' + id).css('cssText', "max-height: 55%; max-width: 69px; position: relative; top: 16px;");
+        $('#content_image_grid_' + id).css('cssText', "border: 0px solid #5a5a5a; max-height: 27% !important");
+    }
+
+    delete(file: ContentManagement, id: any) {
+        let self = this;
+        swal({
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action",
+            type: 'warning',
+            showCancelButton: true,
+            swalConfirmButtonColor: '#54a7e9',
+            swalCancelButtonColor: '#999',
+            confirmButtonText: 'Yes, delete it!'
+        }).then(function () {
+            if (self.selectedFileIds.length < 1) {
+                self.selectedFiles.push(file);
+                self.selectedFileIds.push(id);
+            }
+            self.deleteFile(self.contentManagement);
+        }, function (dismiss: any) {
+            console.log('you clicked on option' + dismiss);
+        });
+    }
+
+
+    deleteFile(file: ContentManagement) {
+        this.customResponse.isVisible = false;
+        if (this.selectedFileIds.length < 1) {
+            this.awsFileKeys.push(file.fileName);
+        } else {
+            for (let i = 0; i < this.selectedFileIds.length; i++) {
+                if (this.selectedFiles[i].fileName) {
+                    this.awsFileKeys.push(this.selectedFiles[i].fileName);
+                }
+            }
+
+        }
+        this.referenceService.loading(this.httpRequestLoader, true);
+        file.userId = this.loggedInUserId;
+        file.awsFileKeys = this.awsFileKeys;
+        this.emailTemplateService.deleteFile(file)
+            .subscribe(
+                data => {
+                    let deleteMessage;
+                    if (this.selectedFileIds.length === 1) { deleteMessage = file.fileName + ' deleted successfully'; }
+                    else { deleteMessage = 'File(s) deleted successfully'; }
+                    this.customResponse = new CustomResponse('SUCCESS', deleteMessage, true);
+                    this.listItems(this.pagination);
+                    if (this.selectedFileIds) {
+                        this.selectedFileIds.length = 0;
+                        this.selectedFiles.length = 0;
+                    }
+                },
+                (error: string) => {
+                    this.logger.errorPage(error);
+                }
+            );
+    }
+
+    selectedPageNumber(event) {
+        if (event === 0) { event = this.paginatedList.length; }
+        // this.paginatedList = this.list.slice(0,event);
+        this.referenceService.loading(this.httpRequestLoader, true);
+        this.pageSize = event;
+        this.setPage(1);
+        this.referenceService.loading(this.httpRequestLoader, false);
+    }
 }

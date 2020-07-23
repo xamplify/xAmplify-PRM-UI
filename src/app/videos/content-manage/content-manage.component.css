@@ -596,3 +596,8 @@ label {
 .mcss{  padding-right: 0;}
 @media only screen and (max-width:600px) { .mcss{  padding: 0;} }
 .override-actions{ margin: 0 auto; display: table;float: none !important; }
+
+#custom-align-padding{
+	margin-top: 9px;
+	margin-right: 5px;
+}

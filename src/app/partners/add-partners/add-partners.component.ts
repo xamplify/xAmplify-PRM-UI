@@ -2735,6 +2735,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.info(this.getMarketoConatacts);
             this.setSocialPage(1);
             } else if (data.statusCode === 400) {
+                 this.selectedAddPartnerOption = 5;
 				 this.customResponse = new CustomResponse( 'ERROR', data.message, true );   
              }
              this.loading = false;

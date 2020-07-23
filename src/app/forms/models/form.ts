@@ -29,6 +29,8 @@ export class Form {
     companyLogo="";
     showCompanyLogo=false;
     footer:any;
-	showFooter=false;
+    showFooter=false;
+    titleColor="";
+    borderColor="";
 	
 }
