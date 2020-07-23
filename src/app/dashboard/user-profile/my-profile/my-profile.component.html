@@ -391,7 +391,7 @@
                                         <section class="pricing py-5" *ngIf="integrationTabIndex == 0">
                                             <div class="row" style="background-color: white;">
                                                 <!-- Free Tier -->
-                                                <div class="col-lg-4" (click)="configmarketo()">
+                                                <div class="col-lg-4" [class.disabled] = "isMarketoProcess" (click)="configmarketo()">
                                                     <div class="card mb-5 mb-lg-0">
                                                         <div class="card-body" style="padding:10px">
                                                             <!-- <div class="triangle-up-right">
@@ -407,8 +407,9 @@
                                                                     <img src="assets/images/crm/Mark-amplify.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-
-                                                            <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configure'" translate>configure</a>
+																<span class="arrow" *ngIf = "isMarketoProcess"  style="height: 40px;"> 
+																<img src="assets/images/Spinner.gif" class="loaderGif">
+																</span> <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configure'" translate>configure</a>
                                                             <a class="btn btn-block btn-primary text-uppercase" *ngIf="integrateRibbonText == 'configured'" translate>re configure</a>
                                                                
                                                         </div>

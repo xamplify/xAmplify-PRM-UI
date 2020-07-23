@@ -85,7 +85,7 @@ export class MarketoAuthenticationComponent implements OnInit {
 
     submitMarketoCredentials()
     {
-        //this.loadingMarketo = true;
+        this.loadingMarketo = true;
         const obj = {
             userId: this.authenticationService.getUserId(),
             instanceUrl: this.marketoInstance,
@@ -110,6 +110,7 @@ export class MarketoAuthenticationComponent implements OnInit {
             }
         }, error =>
         {
+        this.loadingMarketo = false;
         this.templateErrorMarketo = error;
           
         }
