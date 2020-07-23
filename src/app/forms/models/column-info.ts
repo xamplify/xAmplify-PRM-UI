@@ -23,8 +23,8 @@ export class ColumnInfo {
     radioButtonErrorMessage = "";
     checkBoxErrorMessage = "";
     dropDownErrorMessage = "";
-    priceType="";
-    priceSymbol="";
+    priceType="Dollar";
+    priceSymbol="$";
     /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";
