@@ -3,12 +3,18 @@
 	<div>
 		<div class="page-bar">
 			<ul class="page-breadcrumb">
-				<li *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
-					[routerLink]="referenceService.homeRouter" translate>Home</a><i	class="fa fa-angle-right"></i></li>
-        <li *ngIf="authenticationService.isSuperAdmin()"><i	class="fa fa-home"></i>
-          <a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a><i class="fa fa-angle-right"></i></li>
+				<li *ngIf="!authenticationService.isSuperAdmin()">
+					<i class="fa fa-home" aria-hidden="true"></i>
+					 <a	[routerLink]="referenceService.homeRouter" translate>Home</a>
+					<i	class="fa fa-angle-right" aria-hidden="true"></i></li>
+        	<li *ngIf="authenticationService.isSuperAdmin()">
+				<i	class="fa fa-home" aria-hidden="true"></i>
+		  		<a [routerLink]="['/home/dashboard/admin-report']" translate>Admin Report</a>
+		  		<i class="fa fa-angle-right" aria-hidden="true"></i>
+			</li>
 				<li><a translate>Manage content</a></li>
 			</ul>
+			<a class="close-circle" title="Refresh" id="custom-align-padding" [routerLink]="['/home/content/manage']"><i class="fa fa-refresh" aria-hidden="true"></i></a>	
 		</div>
 	</div>
 	<div>
@@ -29,20 +35,20 @@
 											<button type="button" class="btn btn-danger" style="float:left"	*ngIf="selectedFileIds?.length>1" (click)="delete()" translate>Delete</button>
 										</div>
 										<div class='col-xs-0 col-sm-3 col-md-3'	style="z-index: 99;">
-                      <span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
-                      <span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="col-sm-3 col-md-3 col-xs-12 p0">
-                    <select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
-                      <ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
-                      </ng-container>
-                    </select>
-                  </div>
-                  <div class="col-sm-3 col-md-3 col-xs-12 mcss pointer">
-                    <input class="form-control" type="text" name="search" placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
-                    <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchTitle" (click)="searchTitle=''"></button>
-                    <button type="submit" class="search-input-button"	(click)="searchFile()">	<i class="fa fa-search"></i></button>
-                  </div>
+												<span class="btn btn-xs hidden-xs l-g-view" data-toggle="tooltip" data-placement="bottom" title="List View" [class.disabled]="isListView" (click)="isListView = true"><i class="fa fa-th-list p10" aria-hidden="true"></i></span>
+												<span class="btn btn-xs hidden-xs l-g-view"  data-toggle="tooltip" data-placement="bottom" title="Grid View" [class.disabled]="!isListView" (click)="isListView = false"><i class="fa fa-th-large p10" aria-hidden="true"></i></span>
+                    					</div>
+										<div class="col-sm-3 col-md-3 col-xs-12 p0">
+										<select class="form-control" [(ngModel)]="sortOption" (ngModelChange)="sortByOption($event)">
+										<ng-container *ngFor="let sort of sortOptions; let i = index"> <option [ngValue]="sort">{{sort.name}}</option>
+										</ng-container>
+										</select>
+									</div>
+									<div class="col-sm-3 col-md-3 col-xs-12 mcss pointer">
+										<input class="form-control" type="text" name="search" placeholder="Search for a file" [(ngModel)]="searchTitle"  (keypress)="eventHandler($event.keyCode)">
+										<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchTitle" (click)="searchTitle=''"></button>
+										<button type="submit" class="search-input-button"	(click)="searchFile()">	<i class="fa fa-search" aria-hidden="true"></i></button>
+									</div>
 									</div>
 								</div>
 							</div>
