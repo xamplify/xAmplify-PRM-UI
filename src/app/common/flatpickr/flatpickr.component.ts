@@ -21,7 +21,7 @@ export class FlatpickrComponent implements OnInit {
       flatpickr('.flatpickr', {
         enableTime: false,
         dateFormat: 'm-d-Y',
-        minDate: new Date()
+        //minDate: new Date()
       });
      this.customPlaceHolder="MM-DD-YYYY";
     } else {
