@@ -378,7 +378,7 @@
 																<i class="fa fa-trash-o"></i>
 															</a>
 														</div>
-														<div class="actions-block override-actions" *ngIf="!contactList.emailValidationInd">
+														<div class="actions-block override-actions" *ngIf="contactList.marketoSyncComplete && !contactList.emailValidationInd">
 														<a data-toggle="tooltip" data-placement="top"
 																title="Force process the list"
 																(click)="forceProcessList(contactList.id)">
