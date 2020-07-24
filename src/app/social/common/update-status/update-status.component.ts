@@ -559,10 +559,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
         error => console.log(error),
         () => {
           this.initializeSocialStatus();
-          // if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
-          //   this.populateRssFeed(this.referenceService.selectedFeed);
-          //   this.referenceService.selectedFeed = "";
-          // }
+           if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
+            this.populateRssFeed(this.referenceService.selectedFeed);
+             this.referenceService.selectedFeed = "";
+           }
         });
   }
 
