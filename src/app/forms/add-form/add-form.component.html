@@ -31,23 +31,20 @@
                         </h4>
                     </div>
                     <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2">
-                        <div class="design-btn-group">
-                            <button (click)="openFormFields()" style="border-radius: 3px 0px 0px 3px;" translate>Add
-                                Fields</button>
-                            <button (click)="openFormFields()" style="border-radius: 0px 3px 3px 0px;">
-                                <i class="fa fa-plus" data-toggle="tooltip" data-original-title=""
-                                    title=""></i></button>
-                        </div>
+                            <button (click)="openFormFields()" class="btn btn-primary"  style="border-radius: 3px !important;">
+                                <span class="hidden-xs margin-right-design" translate>Add Fields</span>
+                                <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                            </button>
                     </div>
                     <div class=" col-xs-12 col-sm-6 col-md-8 col-lg-8">
                         <a class="close-circle xamp-margin-left-icon" (click)="navigateBack()" aria-hidden="true">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <div class="design-btn-group" style="float: right;">
-                            <button (click)="openFormDesignModal()" style="border-radius: 3px 0px 0px 3px;" translate>Design</button>
-                            <button (click)="openFormDesignModal()" style="border-radius: 0px 3px 3px 0px;">
-                                <i class="fa fa-paint-brush" data-toggle="tooltip" data-original-title=""
-                                    title=""></i></button>
+                            <button (click)="openFormDesignModal()" class="btn btn-primary"  style="border-radius: 3px !important;">
+                                <span class="hidden-xs margin-right-design" translate>Design</span>
+                                <i class="fa fa-paint-brush" data-toggle="tooltip" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
