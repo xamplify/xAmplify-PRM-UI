@@ -790,9 +790,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
     var view = $('#calendar').fullCalendar('getView');
     var request = { startTime: view.start._d, endTime: view.end._d, userId: this.userId };
     this.loadingCalendar = true;
-    const self = this;
-    this.socialService.listEvents(request)
-      .subscribe(
+    this.socialService.listEvents(request).subscribe(
         data => {
           this.events = [];
           for (const i of Object.keys(data)) {
@@ -817,7 +815,10 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
           }
           $('#calendar').fullCalendar('addEventSource', this.events);
         },
-        error => console.log(error),
+        error => {
+          console.log(error);
+          this.loadingCalendar = false;
+        },
         () => {
           this.loadingCalendar = false;
         }
