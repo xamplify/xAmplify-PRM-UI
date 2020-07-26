@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RssService } from '../../services/rss.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-left-nav',
   templateUrl: './left-nav.component.html',
@@ -8,8 +10,9 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class LeftNavComponent implements OnInit {
   @Input('refreshTime') refreshTime: Date;
-  constructor(public rssService: RssService, private authenticationService: AuthenticationService) { }
+  constructor(public rssService: RssService, private authenticationService: AuthenticationService,private router:Router) { }
   loggedInUserId: number = this.authenticationService.getUserId();
+  isloading = false;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.getCollections();
@@ -36,5 +39,14 @@ export class LeftNavComponent implements OnInit {
       error => console.log(error),
       () => console.log("getCollections() completed")
     );
+  }
+
+  goToAddCustomFeeds(){
+    this.isloading = true;
+    this.router.navigate(['/home/rss/add-custom-feed'])
+  }
+
+  goToAllCustomFeeds(){
+
   }
 }

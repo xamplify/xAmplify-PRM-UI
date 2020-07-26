@@ -1,18 +1,17 @@
 <div class="col-md-3 pr0">
+    <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }">
+    </ngx-loading>
     <div id="leftbar">
         <div class="portlet-body" style="min-height:800px!important;padding-top:0px!important;overflow-y: auto;">
             <div class="single category">
                 <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">FEEDS</h4>
                 <div class="heading-top">
-                    <a class="mr5">
-                        <i class="fa fa-angle-right" style="font-size:16px;color:#2a3f54"  aria-hidden="true"></i>
-                    </a>
-                    <a style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                    <a (click)="goToAllCustomFeeds()" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                         All Feeds
                     </a>
                 </div>
                 <br>
-                <a class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
+                <a (click)="goToAddCustomFeeds()" class="btn btn-primary btn-block"  style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
                     <i class="fa fa-plus" style="padding: 5px;font-size:14px" aria-hidden="true"> &nbsp;
                         <span style="font-family: Open Sans, sans-serif;">Add Content</span>
                     </i>
