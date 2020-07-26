@@ -55,7 +55,9 @@
                                     </div>  
                                 </ng-container>    
                                     <div *ngIf="hasError">
-                                        <h5>I am here</h5>
+                                         <div>
+        									<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    									</div>
                                     </div>
                             </div>
                         </div>
