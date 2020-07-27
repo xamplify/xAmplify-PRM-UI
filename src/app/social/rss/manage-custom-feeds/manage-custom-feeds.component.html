@@ -52,7 +52,8 @@
                                             
                                              <div *ngIf="feed?.socialStatusContents.length>0" class="img-wrap img-responsive img-thumbnail rounded-0">
                                                 <ng-container *ngFor="let item of feed?.socialStatusContents">
-                                                   <img class="img-class-list" src="{{item.filePath}}" alt="Image Not Found">
+                                                  <img async *ngIf="item.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{item.filePath}}">
+                                                  <img async *ngIf="item.fileType === 'video'" src="{{item.filePath}}">
                                                 </ng-container>
                                                 
                                              </div>
