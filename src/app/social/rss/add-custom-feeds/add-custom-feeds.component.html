@@ -55,9 +55,8 @@
                                           
                                                 <div class="update-status-content col-xs-10 col-sm-11">
                                                   <textarea placeholder="What's happening?" rows="4" class="form-control form-group rounded-0 mb5"
-                                                   [(ngModel)]="socialStatus.statusMessage" [attr.maxLength]="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' &&  (selectedAccounts === 1 || isCustomizeButtonClicked) ? 280 : null"></textarea>
-                                                  <h6 class="text-count" *ngIf="socialStatus.socialStatusProvider?.socialConnection.source === 'TWITTER' && (selectedAccounts === 1 || isCustomizeButtonClicked)"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
-                                      
+                                                   [(ngModel)]="socialStatus.statusMessage" maxlength="280"></textarea>
+                                                  <h6 class="text-count"><b>{{280 - socialStatus.statusMessage.length}}</b> character(s) left</h6>
                                                   <section>
                                                     <div class="img-wrap img-responsive img-thumbnail rounded-0" *ngFor="let socialStatusContent of socialStatus.socialStatusContents">
                                                       <span (click)="removeItem(socialStatus, socialStatusContent)">
@@ -76,7 +75,7 @@
                                                     <p contenteditable="true" [innerHTML]="socialStatus.ogDescription">{{socialStatus.ogDescription}}</p>
                                                     </div>
                                                   </section>
-                                                  <section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
+                                                  <section class="pull-left actions-group">
                                                     <label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
                                                       <i class="fa fa-image" aria-hidden="true"></i>
                                                       <input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
@@ -98,7 +97,7 @@
                                                         <button type="button" class="btn btn-primary rounded-0" (click)="save(false)">Save</button>
                                                         <button type="button" class="btn btn-primary rounded-0" (click)="save(true)">Save & Publish</button>
                                                       </ng-container>
-                                                      <ng-container *ngIf="!Add">
+                                                      <ng-container *ngIf="!isAdd">
                                                         <button type="button" class="btn btn-info rounded-0" (click)="update()">Update</button>
                                                       </ng-container>
                                                     </div>
