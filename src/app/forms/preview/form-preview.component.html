@@ -7,8 +7,8 @@
                 <div class="col-xs-1 col-sm-1 col-md-3 col-lg-3 hidden-xs" *ngIf="!authenticationService.isFromRsvpPage"></div>
                 <div class="col-xs-12" [ngClass]="{'col-sm-12 col-md-12 col-lg-12': authenticationService.isFromRsvpPage, 'col-sm-10 col-md-6 col-lg-6': !authenticationService.isFromRsvpPage, 'p0': authenticationService.isFromRsvpPage}">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="form.companyLogo" style="text-align: center">
-                    <!--  removed id="form-preview-company-logo" from below img tag -->
-                        <img *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" style="position: relative; width: 114px;margin-top: 20px; left: 0; filter: grayscale(0);"/>
+                        <!--  removed id="form-preview-company-logo" from below img tag -->
+                        <img *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" style="position: relative; width: 114px;margin-top: 20px; left: 0; filter: grayscale(0);" />
                         <img *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" style="position: relative; width: 114px;margin-top: 20px; left: 0; filter: grayscale(0);" />
                     </div>
                     <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
@@ -64,7 +64,7 @@
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
                                             <div class="input-group prefix">
                                                 <span class="input-group-addon">{{columnInfo.priceSymbol}}</span>
-                                                <input type="number" [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}">
+                                                <input type="number" min="0" [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}">
                                             </div>
                                         </ng-container>
                                         <!-- ---------------------------Upload----------------------------- -->

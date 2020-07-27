@@ -31,7 +31,7 @@
                         </h4>
                     </div>
                     <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2">
-                            <button (click)="openFormFields()" class="btn btn-primary"  style="border-radius: 3px !important;">
+                        <button (click)="openFormFields()" class="btn btn-primary" style="border-radius: 3px !important;">
                                 <span class="hidden-xs margin-right-design" translate>Add Fields</span>
                                 <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
                             </button>
@@ -41,7 +41,7 @@
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <div class="design-btn-group" style="float: right;">
-                            <button (click)="openFormDesignModal()" class="btn btn-primary"  style="border-radius: 3px !important;">
+                            <button (click)="openFormDesignModal()" class="btn btn-primary" style="border-radius: 3px !important;">
                                 <span class="hidden-xs margin-right-design" translate>Design</span>
                                 <i class="fa fa-paint-brush" data-toggle="tooltip" aria-hidden="true"></i>
                             </button>
@@ -117,7 +117,7 @@
                                                                                     <span class="edit-field-prefix">
                                                                                         {{columnInfo.priceSymbol}}
                                                                                     </span>
-                                                                                    <input type="number" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}" />
+                                                                                    <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}" />
                                                                                 </div>
                                                                             </ng-container>
                                                                             <!-- ---------------------------Upload----------------------------- -->
@@ -249,7 +249,7 @@
                                                                     </ng-container>
                                                                 </ng-container>
                                                             </select>
-                                                            <input type="number" [(ngModel)]="selectedColumn.placeHolder" class="form-control" />
+                                                            <input type="number" min="0" [(ngModel)]="selectedColumn.placeHolder" class="form-control" />
                                                         </div>
                                                     </div>
 
@@ -772,8 +772,8 @@
                                                 </span>
                                             </div>
                                             <span class="item__name" data-toggle="tooltip" [title]="file.fileName">
-                                                <strong>{{file.fileName	| slice: 0: 16}} <span
-                                                        *ngIf="file.fileName?.length>16">...</span>
+                                                <strong>{{file.fileName	| slice: 0: 8}} <span
+                                                        *ngIf="file.fileName?.length>8">...</span>
                                             </strong>
                                             </span>
                                             <div class="item__size">

@@ -126,7 +126,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     selectedFileIds = [];
     selectedFiles = [];
     pageNumber: any;
-    numberPerPage = [{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
+    numberPerPage = [{ 'name': '6', 'value': 6 },{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
     { 'name': 'All', 'value': 0 }];
     companyLogoPath: string;
     formBackgroundImagePath: string;
@@ -708,20 +708,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
     saveOrUpdateForm() {
         this.form.formLabelDTOs = this.columnInfos;
         this.form.createdBy = this.authenticationService.getUserId();
-        // if (this.formBackgroundImagePath) {
-        //     this.form.backgroundImage = this.formBackgroundImagePath;
-        //     this.formBackgroundImagePath = null;
-        // } else if (this.backgroundImageFileObj) {
-        //     this.uploadFile(this.backgroundImageFileObj, 'backgroundImage')
-        //     this.backgroundImageFileObj = null;
-        // }
-        // if (this.companyLogoPath) {
-        //     this.form.companyLogo = this.companyLogoPath;
-        //     this.companyLogoPath = null;
-        // } else if (this.companyLogoFileObj) {
-        //     this.uploadFile(this.companyLogoFileObj, 'companyLogo')
-        //     this.companyLogoFileObj = null;
-        // }
         for (var instanceName in CKEDITOR.instances) {
             CKEDITOR.instances[instanceName].updateElement();
             this.form.footer = CKEDITOR.instances[instanceName].getData();
@@ -738,13 +724,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
     save(form: Form) {
         form.formType = this.formType;
-        //let formData: FormData = new FormData();
-        //formData.append('formDto', JSON.stringify(this.form));
-        //if (this.fileObj) {
-        //    formData.append('file', this.fileObj, this.fileObj.name);
-        //} else {
-        //    formData.append('file', null);
-        //}
         this.formService.saveForm(form)
             .subscribe(
                 (result: any) => {
@@ -772,13 +751,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
 
 
     update(form: Form) {
-        /* let formData: FormData = new FormData();
-                formData.append('formDto', JSON.stringify(this.form));
-                if (this.fileObj) {
-                    formData.append('file', this.fileObj, this.fileObj.name);
-                } else {
-                    formData.append('file', null);
-                } */
         console.log('entered' + this.form.backgroundImage)
         this.formService.updateForm(form)
             .subscribe(
@@ -966,11 +938,13 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.backgroundImageFileObj = this.utilService.blobToFile(this.backgroundImageFileObj);
             this.uploadFile(this.backgroundImageFileObj, 'backgroundImage')
             this.formBackgroundImagePath = null;
+            this.backgroundImageChangedEvent = null;
         } else if (this.popupOpenedFor == 'companyLogo') {
             this.companyLogoFileObj = this.utilService.convertBase64ToFileObject(this.croppedCompanyLogoImage);
             this.companyLogoFileObj = this.utilService.blobToFile(this.companyLogoFileObj);
             this.uploadFile(this.companyLogoFileObj, 'companyLogo')
             this.companyLogoPath = null;
+            this.companyLogoChangedEvent=null;
         }
         this.loadingcrop = false;
         this.popupOpenedFor = null;
@@ -994,10 +968,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.squareCropperSettings = this.utilService.cropSettings(this.squareCropperSettings, 130, 196, 130, false);
         this.squareCropperSettings.noFileInput = true;
         console.log(this.authenticationService.SERVER_URL + this.form.companyLogo)
-        // if (this.form.backgroundImage != null && this.form.backgroundImage.length > 0) {
-        //     this.companyLogoImageUrlPath = this.form.backgroundImage;
-        //     console.log(this.companyLogoImageUrlPath)
-        // }
     }
 
     chooseFileFromList() {

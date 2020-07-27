@@ -1507,6 +1507,13 @@ div.switch5>input.switch:focus~label:before {
 .pagination {
     margin: 10px 4px 1px;
 }
-.margin-right-design{
+
+.margin-right-design {
     margin-right: 5px;
+}
+
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 850px!important;
+    }
 }
