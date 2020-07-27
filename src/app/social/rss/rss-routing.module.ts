@@ -16,6 +16,7 @@ const routes: Routes = [
     { path: 'sources/:alias', component: SourceComponent },
     { path: 'search', component: SearchComponent },
     { path: 'add-custom-feed', component: AddCustomFeedsComponent },
+    { path: 'edit-custom-feed', component: AddCustomFeedsComponent },
     { path: 'manage-custom-feed', component: ManageCustomFeedsComponent },
 ];
 

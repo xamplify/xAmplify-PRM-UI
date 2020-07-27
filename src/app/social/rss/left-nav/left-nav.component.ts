@@ -19,7 +19,6 @@ export class LeftNavComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
         let currentValue = changes.refreshTime.currentValue;
         if(currentValue)
           this.getCollections();
@@ -43,10 +42,11 @@ export class LeftNavComponent implements OnInit {
 
   goToAddCustomFeeds(){
     this.isloading = true;
-    this.router.navigate(['/home/rss/add-custom-feed'])
+    this.router.navigate(['/home/rss/add-custom-feed']);
   }
 
   goToAllCustomFeeds(){
-
+    this.isloading = true;
+    this.router.navigate(['/home/rss/manage-custom-feed']);
   }
 }

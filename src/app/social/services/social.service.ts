@@ -12,6 +12,7 @@ import {SocialConnection} from '../models/social-connection';
 import {SocialCampaign} from '../models/social-campaign';
 
 import {AuthenticationService} from '../../core/services/authentication.service';
+import { Pagination } from '../../core/models/pagination';
 
 @Injectable()
 export class SocialService {
@@ -19,6 +20,7 @@ export class SocialService {
   public REST_URL: string;
   public socialConnections: SocialConnection[];
   selectedFeed: any;
+  selectedCustomFeed:any;
 
   constructor(private http: Http, private router: Router,
     private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
@@ -267,4 +269,35 @@ export class SocialService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    saveFeed(socialStatus: SocialStatus) {
+      return this.http.post(this.URL + 'social/vendor/feed/save?access_token=' + this.authenticationService.access_token, socialStatus)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    updateFeed(socialStatus: SocialStatus) {
+      return this.http.post(this.URL + 'social/vendor/feed/edit?access_token=' + this.authenticationService.access_token, socialStatus)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    listAllFeeds( pagination: Pagination): Observable<any> {
+      return this.http.post( this.URL + 'social/vendor/feeds?access_token=' + this.authenticationService.access_token, pagination )
+          .map( this.extractData )
+          .catch( this.handleError );
+  }
+
+  publishFeed( socialStatus: SocialStatus): Observable<any> {
+    return this.http.post( this.URL + 'social/vendor/feed/publish?access_token=' + this.authenticationService.access_token, socialStatus )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+  deleteFeed(socialStatus: SocialStatus){
+    return this.http.post( this.URL + 'social/vendor/feed/delete?access_token=' + this.authenticationService.access_token, socialStatus )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+  
 }
