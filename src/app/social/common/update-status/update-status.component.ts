@@ -562,6 +562,24 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
            if (this.referenceService.selectedFeed !== "" && this.referenceService.selectedFeed !== undefined) {
             this.populateRssFeed(this.referenceService.selectedFeed);
              this.referenceService.selectedFeed = "";
+           }else if(this.socialService.selectedCustomFeed!="" && this.socialService.selectedCustomFeed !== undefined ){
+            let selectedFeed =  this.socialService.selectedCustomFeed;
+            this.socialStatus = new SocialStatus();
+            this.socialStatus.statusMessage =  selectedFeed.statusMessage;
+            let images= selectedFeed.socialStatusContents;
+            let self = this;
+            $.each(images,function(_index:number,exSocialStatusContent:SocialStatusContent){
+              let socialStatusContent = new SocialStatusContent();
+              socialStatusContent.fileName = exSocialStatusContent.fileName;
+              socialStatusContent.filePath = exSocialStatusContent.filePath;
+              socialStatusContent.fileSize = exSocialStatusContent.fileSize;
+              socialStatusContent.fileType = exSocialStatusContent.fileType;
+              socialStatusContent.videoId = exSocialStatusContent.videoId;
+              self.socialStatus.socialStatusContents.push(socialStatusContent);
+            })
+            this.socialStatus.userId = this.userId;
+            this.socialStatusList[0] = this.socialStatus;
+            this.socialService.selectedCustomFeed = "";
            }
         });
   }

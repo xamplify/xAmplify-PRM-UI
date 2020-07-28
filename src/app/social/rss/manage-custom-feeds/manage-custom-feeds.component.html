@@ -43,8 +43,8 @@
                      <ng-container *ngIf="feed?.socialStatusContents.length>0">
                         <ng-container *ngFor="let item of feed?.socialStatusContents">
                            <div class="img-wrap img-thumbnail rounded-0" style="margin-bottom:15px;">
-                              <img async *ngIf="item.fileType !== 'video'" src="https://aravindu.com/vod/media/ra2keltmns3yq0nwsqxwn5sfvojp0q26.png" style="height:50px">
-                              <img async *ngIf="item.fileType === 'video'" src="{{item.filePath}}">
+                              <img async *ngIf="item.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{item.filePath}}" style="height:50px">
+                              <img async *ngIf="item.fileType === 'video'" src="{{item.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
                            </div>
                         </ng-container>
                      </ng-container>

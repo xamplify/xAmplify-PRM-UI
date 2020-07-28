@@ -4,8 +4,18 @@
     <div id="leftbar">
         <div class="portlet-body" style="min-height:777px!important;padding-top:0px!important;overflow-y: auto;">
             <div class="single category">
-                <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">FEEDS</h4>
-                <div class="heading-top">
+                <!--Feeds Shared By Vendor-->
+                    <ng-container *ngIf="showVendorFeeds">
+                        <h5> These are the feeds shared by vendor</h5>
+
+                    </ng-container>
+                    
+
+
+                <!--All Feeds---->
+                <ng-container *ngIf="showFeeds">
+                    <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">FEEDS</h4>
+                    <div class="heading-top">
                     <a (click)="goToAllCustomFeeds()" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                         All Feeds
                     </a>
@@ -17,7 +27,7 @@
                     </i>
                 </a>
                 <br>
-                <ng-container *ngIf="!partnerOrPartnerTeamMember">
+                <!----Rss Feeds----->
                 <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">RSS FEEDS </h4>
                 <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">
                     <div class="row">
@@ -51,7 +61,7 @@
             </ng-container>
             </div>
         </div>
-        <a *ngIf="!partnerOrPartnerTeamMember" class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
+        <a *ngIf="showFeeds" class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
             <i class="fa fa-plus" style="padding: 5px;font-size:14px" aria-hidden="true"> &nbsp;<span style="font-family: Open Sans, sans-serif;">Add Content</span></i></a>
     </div>
 </div>

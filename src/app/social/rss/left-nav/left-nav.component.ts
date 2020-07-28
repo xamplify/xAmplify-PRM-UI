@@ -10,10 +10,13 @@ import { Router } from '@angular/router';
 })
 export class LeftNavComponent implements OnInit {
   @Input('refreshTime') refreshTime: Date;
+  showVendorFeeds: boolean = false;
   constructor(public rssService: RssService, private authenticationService: AuthenticationService,private router:Router) { }
   loggedInUserId: number = this.authenticationService.getUserId();
   isloading = false;
   partnerOrPartnerTeamMember = false;
+  showFeeds = false;
+  roleDetails:any;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isloading = true;
@@ -22,10 +25,16 @@ export class LeftNavComponent implements OnInit {
       data => {
         this.isloading = false;
         if(!data.partner && !data.partnerTeamMember){
-          this.partnerOrPartnerTeamMember = false;
+          this.showFeeds = true;
           this.getCollections();
+          let isOrgAdminAndPartner = data.orgAdminAndPartner;
+          let isVendorAndPartner = data.vendorAndPartner;
+          let isOrgAdminAndPartnerTeamMember  = data.orgAdminAndPartnerTeamMember;
+          let isVendorAndPartnerTeamMember = data.vendorAndPartnerTeamMember;
+          this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
         }else{
-          this.partnerOrPartnerTeamMember = true;
+          this.showFeeds = false;
+          this.showVendorFeeds = true;
         }
       },
       error => {

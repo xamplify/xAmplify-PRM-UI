@@ -9,6 +9,7 @@ import { XtremandLogger } from '../../../error-pages/xtremand-logger.service';
 import { ActionsDescription } from '../../../common/models/actions-description';
 import { SocialService } from '../../services/social.service';
 import { SocialStatus } from 'app/social/models/social-status';
+import { VideoUtilService } from '../../../videos/services/video-util.service';
 
 declare var swal: any, $: any;
 
@@ -30,7 +31,7 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 	constructor(public referenceService: ReferenceService, public pagerService:
 		PagerService, public authenticationService: AuthenticationService,
 		public router: Router, public logger: XtremandLogger,
-		public actionsDescription: ActionsDescription, private route: ActivatedRoute, private socialService: SocialService) {
+		public actionsDescription: ActionsDescription, private route: ActivatedRoute, private socialService: SocialService,public videoUtilService: VideoUtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.pagination.userId = this.loggedInUserId;
 		if (this.referenceService.isCreated) {
@@ -197,7 +198,9 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 	}
 
 	shareFeed(feed: any) {
-		this.referenceService.showSweetAlertInfoMessage();
+		this.socialService.selectedCustomFeed = feed;
+		this.loading = true;
+		this.router.navigate(["/home/social/update-status"]);
 	}
 
 	ngOnDestroy() {
