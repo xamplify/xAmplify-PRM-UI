@@ -48,8 +48,14 @@ export class AddCustomFeedsComponent implements OnInit {
     public referenceService: ReferenceService) {
     this.resetCustomResponse();
     this.userId = this.authenticationService.getUserId();
+    if (this.router.url.indexOf("home/rss/add-custom-feed") > -1){
+      this.socialStatus = new SocialStatus();
+      this.socialService.selectedCustomFeed = undefined;
+      this.isAdd = true;
+    }
+
     if (this.socialService.selectedCustomFeed === undefined) {
-		this.socialStatus = new SocialStatus();
+	  	this.socialStatus = new SocialStatus();
       if (this.router.url.indexOf("home/rss/edit-custom-feed") > -1) {
         this.router.navigate(["/home/rss/manage-custom-feed"]);
       }
