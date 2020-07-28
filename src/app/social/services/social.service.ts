@@ -299,5 +299,11 @@ export class SocialService {
     .map( this.extractData )
     .catch( this.handleError );
   }
+
+  getFeedById(feedId: number,userId:number){
+    return this.http.get( this.URL + 'social/'+userId+'/feed/'+feedId+'?access_token=' + this.authenticationService.access_token,"" )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
   
 }

@@ -17,6 +17,7 @@
                     </i>
                 </a>
                 <br>
+                <ng-container *ngIf="!partnerOrPartnerTeamMember">
                 <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">RSS FEEDS </h4>
                 <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">
                     <div class="row">
@@ -47,10 +48,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                </div>
+            </ng-container>
             </div>
         </div>
-        <a class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;"><i class="fa fa-plus" style="padding: 5px;font-size:14px"> &nbsp;<span style="font-family: Open Sans, sans-serif;">Add Content</span></i></a>
+        <a *ngIf="!partnerOrPartnerTeamMember" class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
+            <i class="fa fa-plus" style="padding: 5px;font-size:14px" aria-hidden="true"> &nbsp;<span style="font-family: Open Sans, sans-serif;">Add Content</span></i></a>
     </div>
 </div>

@@ -13,9 +13,27 @@ export class LeftNavComponent implements OnInit {
   constructor(public rssService: RssService, private authenticationService: AuthenticationService,private router:Router) { }
   loggedInUserId: number = this.authenticationService.getUserId();
   isloading = false;
+  partnerOrPartnerTeamMember = false;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.getCollections();
+    this.isloading = true;
+    this.authenticationService.getRoleDetails(this.loggedInUserId)
+    .subscribe(
+      data => {
+        this.isloading = false;
+        if(!data.partner && !data.partnerTeamMember){
+          this.partnerOrPartnerTeamMember = false;
+          this.getCollections();
+        }else{
+          this.partnerOrPartnerTeamMember = true;
+        }
+      },
+      error => {
+        this.isloading = false;
+        console.log(error);
+      }
+    );
+    
   }
 
   ngOnChanges(changes: SimpleChanges) {

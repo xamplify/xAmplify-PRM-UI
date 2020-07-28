@@ -586,4 +586,10 @@ export class AuthenticationService {
       pagination.vanityUrlFilter = true;
     }
   }
+
+  getRoleDetails(userId:number) {
+    return this.http.get(this.REST_URL + "module/getRoleDetails/" + userId + "?access_token=" + this.access_token, "")
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
 }

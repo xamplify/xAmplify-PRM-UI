@@ -43,6 +43,7 @@ export class AddCustomFeedsComponent implements OnInit {
   selectedVideo: SaveVideoFile;
   savedURL: string;
   isAdd = true;
+  selectedFeedId = 0;
   constructor(private socialService:SocialService,private videoFileService:VideoFileService,private authenticationService:AuthenticationService,public pagerService:PagerService,private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
     public referenceService: ReferenceService) {
@@ -50,22 +51,37 @@ export class AddCustomFeedsComponent implements OnInit {
     this.userId = this.authenticationService.getUserId();
     if (this.router.url.indexOf("home/rss/add-custom-feed") > -1){
       this.socialStatus = new SocialStatus();
-      this.socialService.selectedCustomFeed = undefined;
       this.isAdd = true;
-    }
+    }else{
+      this.isAdd =false;
+      this.selectedFeedId = this.route.snapshot.params['feedId'];
+      if(this.selectedFeedId>0){
+          this.loading = true;
+          this.socialService.getFeedById(this.selectedFeedId,this.userId)
+        .subscribe(
+          data => {
+            let statusCode = data.statusCode;
+            if(statusCode==200){
+              this.socialStatus = data.data;
+            }else{
+              let message = data.message;
+              this.referenceService.showSweetAlertErrorMessage(message);
+              this.router.navigate(["/home/rss/manage-custom-feed"]);
+            }
+          },
+          error => {
+            this.loading = false;
+            this.setCustomResponse(ResponseType.Error, 'Error while adding the feed.');
+          },
+          () => {
+            this.loading = false;
+          }
+        );
 
-    if (this.socialService.selectedCustomFeed === undefined) {
-	  	this.socialStatus = new SocialStatus();
-      if (this.router.url.indexOf("home/rss/edit-custom-feed") > -1) {
+      }else{
         this.router.navigate(["/home/rss/manage-custom-feed"]);
       }
-  }
-
-  if(this.socialService.selectedCustomFeed != undefined){
-    this.isAdd = false;
-    this.socialStatus = this.socialService.selectedCustomFeed;
     }
-
     
    }
 

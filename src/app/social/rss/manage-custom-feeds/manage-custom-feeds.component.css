@@ -79,3 +79,8 @@
      font-weight: 600;
  }
  
+ .page-bar{
+ border: 1px solid #ddd;
+ margin-bottom:12px !important;
+ }
+ 

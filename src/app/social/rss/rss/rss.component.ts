@@ -13,19 +13,36 @@ declare var swal, $: any;
   providers: [Properties]
 })
 export class RssComponent implements OnInit {
-
-  constructor(private rssService: RssService, private authenticationService: AuthenticationService, private router: Router, private referenceService: ReferenceService,public properties:Properties) { }
   userId: number;
   homeFeedsResponse: any;
   loading = false;
   hasError = false;
   @Output() selectedFeed = new EventEmitter();
   customResponse:CustomResponse = new CustomResponse();
+  roleDto:any;
 
+  constructor(private rssService: RssService, private authenticationService: AuthenticationService, private router: Router, private referenceService: ReferenceService,public properties:Properties) { }
+  
   ngOnInit() {
     this.hasError = false;
     this.userId = this.authenticationService.getUserId();
-    this.getHomeFeeds(this.userId);
+    this.loading = true;
+    this.authenticationService.getRoleDetails(this.userId)
+        .subscribe(
+          data => {
+            this.roleDto = data; 
+            if(!this.roleDto.partner && !this.roleDto.partnerTeamMember){
+              this.getHomeFeeds(this.userId);
+            }else{
+              this.loading = false;
+              this.router.navigate(['/home/rss/manage-custom-feed']);
+            }
+          },
+          error => {
+            this.loading = false;
+            this.hasError = true;
+          }
+        );
   }
   getHomeFeeds(userId: number) {
     this.hasError = false;
