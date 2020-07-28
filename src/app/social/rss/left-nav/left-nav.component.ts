@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RssService } from '../../services/rss.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { SocialService } from '../../services/social.service';
 import { Router } from '@angular/router';
+import { ReferenceService } from '../../../core/services/reference.service';
 
 @Component({
   selector: 'app-left-nav',
@@ -11,12 +13,13 @@ import { Router } from '@angular/router';
 export class LeftNavComponent implements OnInit {
   @Input('refreshTime') refreshTime: Date;
   showVendorFeeds: boolean = false;
-  constructor(public rssService: RssService, private authenticationService: AuthenticationService,private router:Router) { }
+  constructor(public rssService: RssService, private authenticationService: AuthenticationService,private router:Router,private socialService:SocialService,private referenceService:ReferenceService) { }
   loggedInUserId: number = this.authenticationService.getUserId();
   isloading = false;
   partnerOrPartnerTeamMember = false;
   showFeeds = false;
   roleDetails:any;
+  vendors: Array<any>;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isloading = true;
@@ -32,6 +35,9 @@ export class LeftNavComponent implements OnInit {
           let isOrgAdminAndPartnerTeamMember  = data.orgAdminAndPartnerTeamMember;
           let isVendorAndPartnerTeamMember = data.vendorAndPartnerTeamMember;
           this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
+          if(this.showVendorFeeds){
+            this.listAllVendors();
+          }
         }else{
           this.showFeeds = false;
           this.showVendorFeeds = true;
@@ -43,6 +49,27 @@ export class LeftNavComponent implements OnInit {
       }
     );
     
+  }
+
+  listAllVendors(){
+    this.isloading = true;
+    this.socialService.listAllVendors(this.loggedInUserId)
+  .subscribe(
+    data => {
+      let statusCode = data.statusCode;
+      if(statusCode==200){
+        this.vendors = data.data;
+      }
+
+    },
+    error => {
+      this.isloading = false;
+    },
+    () => {
+      this.isloading = false;
+    }
+  );
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -72,8 +99,12 @@ export class LeftNavComponent implements OnInit {
     this.router.navigate(['/home/rss/add-custom-feed']);
   }
 
-  goToAllCustomFeeds(){
+  goToAllCustomFeeds(type:string){
     this.isloading = true;
-    this.router.navigate(['/home/rss/manage-custom-feed']);
+    this.router.navigate(['/home/rss/manage-custom-feed/'+type]);
+  }
+
+  goToVendorFeeds(vendorCompanyId:number){
+    this.referenceService.showSweetAlertInfoMessage();
   }
 }

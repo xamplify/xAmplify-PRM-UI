@@ -21,6 +21,7 @@ export class SocialService {
   public socialConnections: SocialConnection[];
   selectedFeed: any;
   selectedCustomFeed:any;
+  partnerFeed:any;
 
   constructor(private http: Http, private router: Router,
     private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
@@ -110,7 +111,7 @@ export class SocialService {
   }
 
   listEvents(request: any) {
-    return this.http.post(this.URL + 'social/list/?access_token=' + this.authenticationService.access_token, request)
+    return this.http.post(this.URL + 'social/list?access_token=' + this.authenticationService.access_token, request)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -201,6 +202,7 @@ export class SocialService {
   }
 
   private extractData(res: Response) {
+	console.log(res);
     const body = res.json();
     console.log(body);
     return body || {};
@@ -282,8 +284,14 @@ export class SocialService {
         .catch(this.handleError);
     }
 
-    listAllFeeds( pagination: Pagination): Observable<any> {
-      return this.http.post( this.URL + 'social/vendor/feeds?access_token=' + this.authenticationService.access_token, pagination )
+    listAllFeeds( pagination: Pagination,type:string): Observable<any> {
+      let url = "";
+      if("p"==type){
+        url = this.URL + 'social/partner/';
+      }else{
+        url = this.URL + 'social/vendor/';
+      }
+      return this.http.post( url+'feeds?access_token=' + this.authenticationService.access_token, pagination )
           .map( this.extractData )
           .catch( this.handleError );
   }
@@ -302,6 +310,12 @@ export class SocialService {
 
   getFeedById(feedId: number,userId:number){
     return this.http.get( this.URL + 'social/'+userId+'/feed/'+feedId+'?access_token=' + this.authenticationService.access_token,"" )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+
+  listAllVendors(userId:number){
+    return this.http.get( this.URL + 'social/partner/'+userId+'/vendors?access_token=' + this.authenticationService.access_token,"" )
     .map( this.extractData )
     .catch( this.handleError );
   }

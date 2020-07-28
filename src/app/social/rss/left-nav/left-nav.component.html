@@ -6,17 +6,27 @@
             <div class="single category">
                 <!--Feeds Shared By Vendor-->
                     <ng-container *ngIf="showVendorFeeds">
-                        <h5> These are the feeds shared by vendor</h5>
-
+                        <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">VENDOR FEEDS</h4>
+                         <div class="heading-top">
+                            <a (click)="goToAllCustomFeeds('p')" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                                All Shared Feeds
+                            </a>
+                        </div>
+                        <br>
+                        <div class="heading-top" *ngFor="let vendor of vendors">
+                            <a (click)="goToVendorFeeds(vendor.companyId)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                                {{vendor.companyName}} 
+                                <span class="circled-number" id="vpc">{{vendor.publishedFeedCount}}</span>
+                            </a>
+                        </div>
                     </ng-container>
-                    
-
-
+                    <br>
+                    <hr>
                 <!--All Feeds---->
                 <ng-container *ngIf="showFeeds">
                     <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">FEEDS</h4>
                     <div class="heading-top">
-                    <a (click)="goToAllCustomFeeds()" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                    <a (click)="goToAllCustomFeeds('v')" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
                         All Feeds
                     </a>
                 </div>
@@ -27,6 +37,7 @@
                     </i>
                 </a>
                 <br>
+                <hr>
                 <!----Rss Feeds----->
                 <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">RSS FEEDS </h4>
                 <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">

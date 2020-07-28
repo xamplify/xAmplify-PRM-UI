@@ -19,7 +19,7 @@ declare var swal: any, $: any;
 	styleUrls: ['../rss/rss.component.css', './manage-custom-feeds.component.css'],
 	providers: [Pagination, ActionsDescription],
 })
-export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
+export class ManageCustomFeedsComponent implements OnInit {
 	loading = false;
 	customResponse: CustomResponse = new CustomResponse();
 	hasError = false;
@@ -27,6 +27,7 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 	pagination: Pagination = new Pagination();
 	message = "";
 	statusCode: any;
+	selectedType: any;
 
 	constructor(public referenceService: ReferenceService, public pagerService:
 		PagerService, public authenticationService: AuthenticationService,
@@ -37,10 +38,13 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 		if (this.referenceService.isCreated) {
 			this.message = "Feed created successfully";
 			this.showMessageOnTop(this.message);
+			this.referenceService.isCreated = false;
 		} else if (this.referenceService.isUpdated) {
 			this.message = "Feed updated successfully";
 			this.showMessageOnTop(this.message);
+			this.referenceService.isUpdated = false;
 		}
+		
 	}
 
 	showMessageOnTop(message) {
@@ -50,8 +54,8 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 
 
 	ngOnInit() {
+		this.selectedType = this.route.snapshot.params['type'];
 		this.listAllFeeds(this.pagination);
-
 	}
 
 	listAllFeeds(pagination: Pagination) {
@@ -61,7 +65,7 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
 		}
-		this.socialService.listAllFeeds(pagination).subscribe(
+		this.socialService.listAllFeeds(pagination,this.selectedType).subscribe(
 			(response: any) => {
 				const data = response.data;
 				this.statusCode = response.statusCode;
@@ -71,6 +75,8 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 			},
 			(error: any) => { this.logger.errorPage(error); });
 	}
+
+	
 
 	searchFeeds() {
 		this.getAllFilteredResults();
@@ -198,15 +204,16 @@ export class ManageCustomFeedsComponent implements OnInit,OnDestroy {
 	}
 
 	shareFeed(feed: any) {
-		this.socialService.selectedCustomFeed = feed;
+		if(this.selectedType=='v'){
+			this.socialService.selectedCustomFeed = feed;
+		}else{
+			this.socialService.partnerFeed = feed;
+		}
 		this.loading = true;
 		this.router.navigate(["/home/social/update-status"]);
 	}
 
-	ngOnDestroy() {
-		this.referenceService.isCreated = false;
-		this.referenceService.isUpdated = false;
-	}
+	
 
 
 

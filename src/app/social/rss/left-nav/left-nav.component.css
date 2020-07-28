@@ -31,7 +31,8 @@ img {
     background-color: #f1f3fa;
     color: #fff!important;
     padding-left: 8px;
-    padding-top: 4px;
+    padding-top: 10px;
+    height: 40px;
 }
 
 .page-content-wrapper .page-content {
@@ -57,4 +58,9 @@ img {
 }
 .lbg:hover{
     background: #f1f3fa;
+}
+
+#vpc{
+    float: right;
+    margin-top: -5px;
 }

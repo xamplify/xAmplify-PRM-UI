@@ -34,4 +34,5 @@ export class SocialStatus {
   ogt: boolean;
   publishToPartners = false;
   type:any;
+parentFeed:SocialStatus;
 }
