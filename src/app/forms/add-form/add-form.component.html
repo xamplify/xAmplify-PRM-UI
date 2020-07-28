@@ -509,8 +509,6 @@
 
                             <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick('formBackgroundImage')">
                                 <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
-                                <div *ngIf="backgroundImageError" style="color: #f55d7a">{{backgroundImageError}}</div>
-
                                 <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
                                     <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
                                         <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload background image</div>
@@ -556,7 +554,6 @@
 
                             <div class="profile-image-wrapper form-group" style="cursor: pointer;text-align:center;color:#fff;height: 170px;" (click)="imageClick('companyLogo')">
                                 <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
-                                <div *ngIf="companyLogoError" style="color: #f55d7a">{{companyLogoError}}</div>
                                 <span *ngIf="!croppedCompanyLogoImage && !companyLogoPath && !form.companyLogo">
                                     <span style="margin: 10px 0px 10px 0px;" *ngIf="!companyLogoPath">
                                         <img *ngIf="!companyLogoChangedEvent && !form.companyLogo"

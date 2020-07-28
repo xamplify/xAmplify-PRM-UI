@@ -105,8 +105,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
     fileObj: any;
     backgroundImageFileObj: any;
     companyLogoFileObj: any;
-    companyLogoError = "";
-    backgroundImageError = "";
     //squareData: any;
     imageChangedEvent: any = '';
     backgroundImageChangedEvent: any = '';
@@ -128,7 +126,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     selectedFileIds = [];
     selectedFiles = [];
     pageNumber: any;
-    numberPerPage = [{ 'name': '6', 'value': 6 },{ 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
+    numberPerPage = [{ 'name': '6', 'value': 6 }, { 'name': '12', 'value': 12 }, { 'name': '24', 'value': 24 }, { 'name': '48', 'value': 48 },
     { 'name': 'All', 'value': 0 }];
     companyLogoPath: string;
     formBackgroundImagePath: string;
@@ -144,7 +142,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
-       // CKEDITOR.config.extraPlugins = 'colorbutton,colordialog';
+        // CKEDITOR.config.extraPlugins = 'colorbutton,colordialog';
         this.loggedInUserId = this.authenticationService.getUserId();
         let categoryId = this.route.snapshot.params['categoryId'];
         if (categoryId > 0) {
@@ -946,7 +944,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
             this.companyLogoFileObj = this.utilService.blobToFile(this.companyLogoFileObj);
             this.uploadFile(this.companyLogoFileObj, 'companyLogo')
             this.companyLogoPath = null;
-            this.companyLogoChangedEvent=null;
+            this.companyLogoChangedEvent = null;
         }
         this.loadingcrop = false;
         this.popupOpenedFor = null;
@@ -958,10 +956,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.popupOpenedFor = type;
         this.cropRounded = false;
         if (this.popupOpenedFor == 'formBackgroundImage') {
-            this.backgroundImageError = "";
             this.imageChangedEvent = this.backgroundImageChangedEvent;
         } else if (this.popupOpenedFor == 'companyLogo') {
-            this.companyLogoError = "";
             this.imageChangedEvent = this.companyLogoChangedEvent;
         }
         $('#add-form-name-modal').addClass(this.portletBodyBlur);
@@ -1060,22 +1056,23 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.emailTemplateService.uploadFileFromForm(this.authenticationService.getUserId(), formData)
             .subscribe(
                 (data: any) => {
-                    if (data.access) {
+                    if (data.statusCode === 1024 || data.statusCode === 1025) {
+                        if (type == 'backgroundImage') {
+                            this.backgroundImageChangedEvent = null;
+                            this.croppedBackgroundImage = null;
+                        } else if (type == 'companyLogo') {
+                            this.companyLogoChangedEvent = null;
+                            this.croppedCompanyLogoImage = null;
+                        }
+                        this.showSweetAlert(data.message);
+                    } else if (data.access) {
                         if (type == 'backgroundImage') {
                             this.form.backgroundImage = data.filePath;
                         } else if (type == 'companyLogo') {
                             this.form.companyLogo = data.filePath;
                         }
                     } else {
-                        if (type == 'backgroundImage') {
-                            this.backgroundImageChangedEvent = null;
-                            this.croppedBackgroundImage = null;
-                            this.backgroundImageError = data.message;
-                        } else if (type == 'companyLogo') {
-                            this.companyLogoChangedEvent = null;
-                            this.croppedCompanyLogoImage = null;
-                            this.companyLogoError = data.message;
-                        }
+                        this.authenticationService.forceToLogout();
                     }
                     this.loading = false;
                     this.referenceService.loading(this.httpRequestLoader, false);
@@ -1097,8 +1094,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
 
     openFormDesignModal() {
-        this.companyLogoError = "";
-        this.backgroundImageError = "";
         $('#add-form-designs').modal('show');
         this.addBlurClass();
     }
