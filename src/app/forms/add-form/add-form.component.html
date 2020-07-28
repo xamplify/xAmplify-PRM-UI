@@ -475,7 +475,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group" id="formButtonValueDiv">
                                         <label>Submit Button Value<span class="invalid-form-name">*</span></label>
-                                        <input class="form-control" [(ngModel)]="form.buttonValue" maxlength="1000" (input)="validateFormButtonValue(form.buttonValue)" />
+                                        <input class="form-control" [(ngModel)]="form.buttonValue" maxlength="15" (input)="validateFormButtonValue(form.buttonValue)" />
                                         <span *ngIf="!form.isFormButtonValueValid" class="required">{{formButtonValueErrorMessage}}</span>
                                     </div>
                                 </div>
@@ -499,16 +499,17 @@
                                     left</label>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12 pl0">
+                        <div class="col-md-12 col-lg-12 pl0" style="padding-top: 10px;">
                             <div class="form-group" style="margin-bottom: 5px!important;">
                                 <label>Select Background Image</label>
                             </div>
 
                         </div>
-                        <div class="col-md-12 col-lg-12 pl0 pr0" style="padding-top: 10px;">
+                        <div class="col-md-12 col-lg-12 pl0 pr0">
 
                             <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick('formBackgroundImage')">
                                 <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
+                                <div *ngIf="backgroundImageError" style="color: #f55d7a">{{backgroundImageError}}</div>
 
                                 <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
                                     <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
@@ -555,6 +556,7 @@
 
                             <div class="profile-image-wrapper form-group" style="cursor: pointer;text-align:center;color:#fff;height: 170px;" (click)="imageClick('companyLogo')">
                                 <span *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</span>
+                                <div *ngIf="companyLogoError" style="color: #f55d7a">{{companyLogoError}}</div>
                                 <span *ngIf="!croppedCompanyLogoImage && !companyLogoPath && !form.companyLogo">
                                     <span style="margin: 10px 0px 10px 0px;" *ngIf="!companyLogoPath">
                                         <img *ngIf="!companyLogoChangedEvent && !form.companyLogo"
@@ -824,16 +826,19 @@
                                 <a (click)="setPage(pager.totalPages)" translate>Last</a>
                             </li>
                         </ul>
-                        <select class="form-control" style="cursor: pointer; float: right;width:6%;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+                        <select class="form-control" style="cursor: pointer; float: right;width:auto;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
                             <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[1]">
+                            <option *ngIf="paginatedList?.length>6" [ngValue]="numberPerPage[1]">
                                 {{numberPerPage[1].name}}
                             </option>
-                            <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[2]">
+                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[2]">
                                 {{numberPerPage[2].name}}
                             </option>
-                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[3]">
+                            <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[3]">
                                 {{numberPerPage[3].name}}
+                            </option>
+                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[4]">
+                                {{numberPerPage[4].name}}
                             </option>
                         </select>
                     </section>

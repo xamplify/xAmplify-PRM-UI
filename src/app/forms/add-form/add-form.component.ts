@@ -105,6 +105,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     fileObj: any;
     backgroundImageFileObj: any;
     companyLogoFileObj: any;
+    companyLogoError = "";
+    backgroundImageError = "";
     //squareData: any;
     imageChangedEvent: any = '';
     backgroundImageChangedEvent: any = '';
@@ -956,8 +958,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.popupOpenedFor = type;
         this.cropRounded = false;
         if (this.popupOpenedFor == 'formBackgroundImage') {
+            this.backgroundImageError = "";
             this.imageChangedEvent = this.backgroundImageChangedEvent;
         } else if (this.popupOpenedFor == 'companyLogo') {
+            this.companyLogoError = "";
             this.imageChangedEvent = this.companyLogoChangedEvent;
         }
         $('#add-form-name-modal').addClass(this.portletBodyBlur);
@@ -1063,7 +1067,15 @@ export class AddFormComponent implements OnInit, OnDestroy {
                             this.form.companyLogo = data.filePath;
                         }
                     } else {
-                        this.authenticationService.forceToLogout();
+                        if (type == 'backgroundImage') {
+                            this.backgroundImageChangedEvent = null;
+                            this.croppedBackgroundImage = null;
+                            this.backgroundImageError = data.message;
+                        } else if (type == 'companyLogo') {
+                            this.companyLogoChangedEvent = null;
+                            this.croppedCompanyLogoImage = null;
+                            this.companyLogoError = data.message;
+                        }
                     }
                     this.loading = false;
                     this.referenceService.loading(this.httpRequestLoader, false);
@@ -1085,6 +1097,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     }
 
     openFormDesignModal() {
+        this.companyLogoError = "";
+        this.backgroundImageError = "";
         $('#add-form-designs').modal('show');
         this.addBlurClass();
     }
