@@ -28,6 +28,7 @@ export class ManageCustomFeedsComponent implements OnInit {
 	message = "";
 	statusCode: any;
 	selectedType: any;
+	vendorCompanyId = 0;
 
 	constructor(public referenceService: ReferenceService, public pagerService:
 		PagerService, public authenticationService: AuthenticationService,
@@ -55,6 +56,7 @@ export class ManageCustomFeedsComponent implements OnInit {
 
 	ngOnInit() {
 		this.selectedType = this.route.snapshot.params['type'];
+		this.vendorCompanyId = this.route.snapshot.params['vendorCompanyId'];
 		this.listAllFeeds(this.pagination);
 	}
 
@@ -64,6 +66,9 @@ export class ManageCustomFeedsComponent implements OnInit {
 		if (this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '') {
 			this.pagination.vendorCompanyProfileName = this.authenticationService.companyProfileName;
 			this.pagination.vanityUrlFilter = true;
+		}
+		if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
+			pagination.vendorCompanyId = this.vendorCompanyId;
 		}
 		this.socialService.listAllFeeds(pagination,this.selectedType).subscribe(
 			(response: any) => {

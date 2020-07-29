@@ -41,6 +41,7 @@ export class LeftNavComponent implements OnInit {
         }else{
           this.showFeeds = false;
           this.showVendorFeeds = true;
+          this.listAllVendors();
         }
       },
       error => {
@@ -104,7 +105,7 @@ export class LeftNavComponent implements OnInit {
     this.router.navigate(['/home/rss/manage-custom-feed/'+type]);
   }
 
-  goToVendorFeeds(vendorCompanyId:number){
-    this.referenceService.showSweetAlertInfoMessage();
+  goToVendorFeeds(vendorCompanyId:number,type:string){
+    this.router.navigate(['/home/rss/manage-custom-feed/'+type+"/"+vendorCompanyId]);
   }
 }

@@ -18,7 +18,8 @@ const routes: Routes = [
     { path: 'add-custom-feed', component: AddCustomFeedsComponent },
     { path: 'edit-custom-feed/:feedId', component: AddCustomFeedsComponent },
     { path: 'manage-custom-feed', component: ManageCustomFeedsComponent },
-	{ path: 'manage-custom-feed/:type', component: ManageCustomFeedsComponent },
+    { path: 'manage-custom-feed/:type', component: ManageCustomFeedsComponent },
+    { path: 'manage-custom-feed/:type/:vendorCompanyId', component: ManageCustomFeedsComponent },
 ];
 
 @NgModule({

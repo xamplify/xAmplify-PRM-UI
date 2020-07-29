@@ -402,13 +402,11 @@ export class DashboardService {
     }
 
     listLeftSideNavBarItems(userId:number) {
-        const url = this.moduleUrl+'hasRssFeedAccess/'+userId+'?access_token=' + this.authenticationService.access_token;
+        const url = this.moduleUrl+'showRssFeedOption/'+userId+'?access_token=' + this.authenticationService.access_token;
             return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-
 
     private extractData(res: Response) {
         let body = res.json();

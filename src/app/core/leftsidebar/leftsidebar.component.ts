@@ -227,7 +227,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         .subscribe(
           data => {
             this.loading = false;
-           this.rssFeedAccess = data.access;
+            this.rssFeedAccess = data.access;
           },
           error => {
             this.loading = false;

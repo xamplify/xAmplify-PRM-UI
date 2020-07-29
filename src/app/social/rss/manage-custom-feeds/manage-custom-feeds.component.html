@@ -50,8 +50,9 @@
                      </ng-container>
                   </div>
                   <div class="col-md-4 col-lg-4" style="margin-bottom:20px;">
-                     <div class="text-right" style="margin-top:10px" *ngIf="selectedType!='p'">
-                        <span *ngIf="feed.publishToPartners" class="published-banner uppercase">Published</span>
+                     <div class="text-right" style="margin-top:10px">
+                        <span *ngIf="feed.publishToPartners && selectedType!='p'" class="published-banner uppercase">Published</span>
+                        <span *ngIf="selectedType=='p'" class="published-banner uppercase">{{feed?.companyName}}</span>
                      </div>
                      <div class="actions-block override-actions" style="margin-top:20px">
                         <a *ngIf="selectedType!='p'"  data-toggle="tooltip" data-placement="top" title="Edit"

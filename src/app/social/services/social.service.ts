@@ -319,5 +319,11 @@ export class SocialService {
     .map( this.extractData )
     .catch( this.handleError );
   }
+  hasRssFeedAccess(userId:number) {
+    const url =  this.URL+'module/showRssFeedOption/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, "")
+        .map(this.extractData)
+        .catch(this.handleError);
+}
   
 }

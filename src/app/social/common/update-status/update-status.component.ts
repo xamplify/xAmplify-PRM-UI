@@ -80,6 +80,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	selectedSocialProviderId: number;
 	savedURL: string;
 	categoryNames: any;
+	showRssFeed = false;
 
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -925,6 +926,26 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 			this.loadCampaignNames(this.userId);
 			this.listCategories();
 		}
+
+		/*************Check Rss Feed Access*********** */
+		this.showRssFeedButton();
+	}
+
+	showRssFeedButton(){
+		this.loading = true;
+		this.socialService.hasRssFeedAccess(this.userId)
+        .subscribe(
+          data => {
+			this.showRssFeed = data.access;
+          },
+          error => {
+            this.loading = false;
+          },
+          () => {
+            this.loading = false;
+          }
+        );
+
 	}
 
 	ngOnDestroy() {
