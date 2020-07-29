@@ -1,97 +1,144 @@
 <div [hidden]="processor.isProcessing" class="mobile-camp">
-<div class="" *ngIf="hasFormExists">
-<!-- <div class="col-xs-12 col-sm-12 p0" [style.backgroundColor]="form.backgroundColor"> -->
-	<div class="col-xs-12 col-sm-12 p0">
-	<ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-		<div class="panel panel-info" style=" border-radius: 0px!important;">
-		
-		<ng-container *ngIf="formSubmitted">
-			<div class="panel-body">
-				<h4 class="alert alert-success" id="header-center">
-				<i class="fa fa-check-circle" id="check-mark" aria-hidden="true"></i>Your responses have been submitted successfully.
-				</h4>
-			</div>
-		</ng-container>
-		
-		
-		<ng-container *ngIf="!formSubmitted">
-			<div class="panel-heading" style="background-color: #d9edf7 !important;color: #4a4747 !important;border-top-left-radius: 0px; border-top-right-radius: 0px">
-			 <a class="close-circle" (click)="refreshForm()"  title="Refresh">
-					<i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
-				</a>
-				<div class="panel-title" title="{{form.name}}">{{form.name | slice:0:50}}<span *ngIf="form.name?.length>50">..</span></div>
-			</div>
-			<div class="panel-body">
-			 <h5 title="{{form.description}}">{{form.description  | slice:0:40}} <span *ngIf="form.description?.length>40">..</span></h5>
-				<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
-				<ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
-						<div class="form-group">
-							<label class="control-label">{{columnInfo.labelName}}
-								<span class="required" *ngIf="columnInfo.required">*</span>
-							</label>
-							<ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
-									<input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}"
-									[class.disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp"
-									id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000" (input)="validateEmail(columnInfo)">
-									 <span class="required-text" *ngIf="columnInfo.divClass=='error'">Please enter a valid email address</span>
-							</ng-container>	
+    <div class="" *ngIf="hasFormExists">
+        <div [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')'}" id="form-background-image">
+        </div>
+        <div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [ngClass]="{'p0': authenticationService.isFromRsvpPage}">
+                <div class="col-xs-1 col-sm-1 col-md-3 col-lg-3 hidden-xs" *ngIf="!authenticationService.isFromRsvpPage"></div>
+                <div class="col-xs-12" [ngClass]="{'col-sm-12 col-md-12 col-lg-12': authenticationService.isFromRsvpPage, 'col-sm-10 col-md-6 col-lg-6': !authenticationService.isFromRsvpPage, 'p0': authenticationService.isFromRsvpPage}">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" *ngIf="form.showCompanyLogo && form.companyLogo" style="text-align: center">
+                        <!--  removed id="form-preview-company-logo" from below img tag -->
+                        <img *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" style="position: relative; width: 114px;margin-top: 20px; left: 0; filter: grayscale(0);" />
+                        <img *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" style="position: relative; width: 114px;margin-top: 20px; left: 0; filter: grayscale(0);" />
+                    </div>
+                    <ngx-loading [show]="ngxLoading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p0 panel panel-info" [style.backgroundColor]="form.backgroundColor" [style.borderColor]="form.borderColor" style=" border-radius: 0px!important;">
+                        <div *ngIf="formSubmitted">
+                            <div class="panel-body">
+                                <h4 class="alert alert-success" id="header-center">
+                                    <div *ngIf="form.formSubmitMessage?.length>0;then customMessage else defaultMessage">
+                                    </div>
+                                    <ng-template #customMessage>
+                                        <i #customMessage class="fa fa-check-circle" id="check-mark" aria-hidden="true"></i>{{form.formSubmitMessage}}
+                                    </ng-template>
+                                    <ng-template #defaultMessage>
+                                        <i class="fa fa-check-circle" id="check-mark" aria-hidden="true"></i>Your responses have been submitted successfully.
+                                    </ng-template>
+                                </h4>
+                            </div>
+                        </div>
 
-							<ng-container *ngIf="columnInfo.labelType=='textarea'">
-								<textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000"></textarea>		
-							</ng-container>	
-							<!-- ---------------------------Radio Button----------------------------- -->
-							<ng-container *ngIf="columnInfo.labelType=='radio'">
-									<ng-container
-									*ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
-									<div class="form-check">
-										<label class="form-check-label">
-										<input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-											class="form-check-input" (click)="columnInfo.value = radioButton.id" 
-											[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue">
-										{{radioButton.name}}
-										</label>
-									</div>
-									<br>
-									</ng-container>
-							</ng-container>
-							<!-- ---------------------------Check Box----------------------------- -->
-							<ng-container *ngIf="columnInfo.labelType=='checkbox'">
-									<ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
-									<div class="form-check">
-										<label class="form-check-label">
-										<input type="{{columnInfo.labelType}}" name="{{columnInfo.labelId}}"
-										[checked]="checkBox.isChecked"
-											class="form-check-input" (click)="updateCheckBoxModel(columnInfo,checkBox,$event)">
-										{{checkBox.name}}
-										</label>
-									</div>
-									<br>
-									</ng-container>
-							</ng-container>
-							 <!-- ---------------------------DropDown Menu----------------------------- -->
-							 <ng-container *ngIf="columnInfo.labelType=='select'">
-									<select class="form-control" [(ngModel)]="columnInfo.value" >
-									  <option *ngFor="let dropDownValue of columnInfo.dropDownChoices" [ngValue]="dropDownValue.id">
-										{{dropDownValue.name}}</option>
-									</select>
-								  </ng-container>
-						</div>
-					</ng-container>
-					<button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds" class="btn green-haze" id="bottom-right" (click)="submitForm()">Submit</button>
-			</div>
-			</ng-container>
-		</div>
-	</div>
+                        <div *ngIf="!formSubmitted">
+                            <div class="panel-heading" [style.backgroundColor]="form.borderColor" [style.color]="form.titleColor" [style.borderColor]="form.borderColor">
+                                <a class="close-circle" (click)="refreshForm()" title="Refresh">
+                                    <i class="fa fa-refresh" id="line-height" aria-hidden="true"></i>
+                                </a>
+                                <div class="panel-title" title="{{form.name}}">{{form.name | slice:0:50}}<span *ngIf="form.name?.length>50">..</span></div>
+                            </div>
+                            <div class="panel-body">
+                                <h5 title="{{form.description}}">{{form.description | slice:0:40}} <span *ngIf="form.description?.length>40">..</span></h5>
+                                <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
+                                <ng-container *ngFor="let columnInfo of form.formLabelDTOs;let i = index">
+                                    <div class="form-group">
+                                        <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
+												<span class="required" *ngIf="columnInfo.required">*</span>
+											</label>
+                                        <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
+                                            <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" [class.disabled]="columnInfo.labelType=='email' && authenticationService.isPartnerRsvp" id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
+                                                (input)="validateEmail(columnInfo)">
+                                            <span class="required-text" *ngIf="columnInfo.divClass=='error'">Please
+													enter a
+													valid email address</span>
+                                        </ng-container>
+
+                                        <ng-container *ngIf="columnInfo.labelType=='textarea'">
+                                            <textarea [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000"></textarea>
+                                        </ng-container>
+                                        <!-- ---------------------------Date----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType=='date'">
+                                            <app-flatpickr [(dataField)]="columnInfo.value" [isFromForm]='true'>
+                                            </app-flatpickr>
+                                        </ng-container>
+
+                                        <!-- ---------------------------Price----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType=='price'">
+                                            <div class="input-group prefix">
+                                                <span class="input-group-addon">{{columnInfo.priceSymbol}}</span>
+                                                <input type="number" min="0" [(ngModel)]="columnInfo.value" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}">
+                                            </div>
+                                        </ng-container>
+                                        <!-- ---------------------------Upload----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType=='upload'">
+                                            <input type="file" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="file-{{i}}" (change)="onFileChangeEvent($event,columnInfo,i)">
+                                        </ng-container>
+                                        <!-- ---------------------------Radio Button----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType=='radio'">
+                                            <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                                <div class="form-check">
+                                                    <label class="form-check-label" [style.color]="form.labelColor">
+															<input type="{{columnInfo.labelType}}"
+																name="{{columnInfo.labelId}}" class="form-check-input"
+																(click)="columnInfo.value = radioButton.id"
+																[checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue">
+															{{radioButton.name}}
+														</label>
+                                                </div>
+                                                <br>
+                                            </ng-container>
+                                        </ng-container>
+                                        <!-- ---------------------------Check Box----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                                            <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                                                <div class="form-check">
+                                                    <label class="form-check-label" [style.color]="form.labelColor">
+															<input type="{{columnInfo.labelType}}"
+																name="{{columnInfo.labelId}}"
+																[checked]="checkBox.isChecked" class="form-check-input"
+																(click)="updateCheckBoxModel(columnInfo,checkBox,$event)">
+															{{checkBox.name}}
+														</label>
+                                                </div>
+                                                <br>
+                                            </ng-container>
+                                        </ng-container>
+                                        <!-- ---------------------------DropDown Menu----------------------------- -->
+                                        <ng-container *ngIf="columnInfo.labelType=='select'">
+                                            <select class="form-control" [(ngModel)]="columnInfo.value">
+													<option *ngFor="let dropDownValue of columnInfo.dropDownChoices"
+														[ngValue]="dropDownValue.id">
+														{{dropDownValue.name}}</option>
+												</select>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                                <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
+                                <ng-template #show>
+                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
+                                </ng-template>
+                                <ng-template #dontShow>
+                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 hidden-xs" *ngIf="!authenticationService.isFromRsvpPage"></div>
+                </div>
+            </div>
+            <footer>
+                <div style="text-align: center;" *ngIf="form.showFooter  && form.footer" [innerHTML]="sanitizer.bypassSecurityTrustHtml(form.footer)"></div>
+            </footer>
+        </div>
+    </div>
 </div>
 <ng-container *ngIf="!hasFormExists">
-	<div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
+    <div [attr.class]="alertClass" *ngIf="show"><strong>{{message}}</strong></div>
 </ng-container>
 
 
 
 <div [hidden]="!processor.isProcessing">
-			<div class="loader-container">
-				<div class="loader"></div>
-				<img  alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
-			</div>
-	</div>
+    <div class="loader-container">
+        <div class="loader"></div>
+        <img alt="logo" class="logo-default" src="assets/images/xamplify-logo.png">
+    </div>
+</div>

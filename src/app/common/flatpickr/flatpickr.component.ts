@@ -9,16 +9,29 @@ declare var flatpickr: any;
 })
 export class FlatpickrComponent implements OnInit {
 
+  customPlaceHolder:any;
+
   @Input() dataField: any;
+  @Input() isFromForm: boolean;
   @Output() dataFieldChange: EventEmitter<any> = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
-    flatpickr('.flatpickr', {
-      enableTime: false,
-      dateFormat: 'Y-m-d',
-      minDate: new Date()
-    });
+    if (this.isFromForm != undefined && this.isFromForm) {
+      flatpickr('.flatpickr', {
+        enableTime: false,
+        dateFormat: 'm-d-Y',
+        //minDate: new Date()
+      });
+     this.customPlaceHolder="MM-DD-YYYY";
+    } else {
+      flatpickr('.flatpickr', {
+        enableTime: false,
+        dateFormat: 'Y-m-d',
+        minDate: new Date()
+      });
+      this.customPlaceHolder="";
+    }
   }
   change() {
     this.dataFieldChange.emit(this.dataField);

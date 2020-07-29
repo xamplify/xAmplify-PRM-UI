@@ -1596,6 +1596,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                         }else{
                             object['emailId'] = self.pagedItems[i].emailId;
                         }
+                        if(self.pagedItems[i].contactCompany){
+                            object['contactCompany'] = self.pagedItems[i].contactCompany;
+                        }
                         
                         console.log( object );
                         self.allselectedUsers.push( object );
@@ -1629,7 +1632,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         }
     }
 
-    highlightRow( contactId: number, email: any, userEmail: any, firstName: any, lastName: any, event: any ) {
+    highlightRow( contactId: number, email: any, userEmail: any, firstName: any, lastName: any, event: any,company: any ) {
         let isChecked = $( '#' + contactId ).is( ':checked' );
         console.log( this.selectedContactListIds )
         if ( isChecked ) {
@@ -1639,6 +1642,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             var object = {
                     "firstName": firstName,
                     "lastName": lastName,
+                    "contactCompany": company,
                 }
             if(userEmail){
                 object['emailId'] = userEmail;
@@ -2862,10 +2866,12 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     authorisedMarketoContacts() {
     }
     retriveMarketoContacts() {
-
+		this.loading = true;
 
         $( "#marketoShowLoginPopup" ).modal( 'hide' );
         this.contactService.getMarketoContacts( this.authenticationService.getUserId() ).subscribe( data => {
+            if (data.statusCode === 200) {
+            
             this.marketoImageBlur = false;
             this.marketoImageNormal = true;
             this.getMarketoConatacts = data.data;
@@ -2918,6 +2924,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             }
             this.xtremandLogger.info( this.getMarketoConatacts );
             this.setPage( 1 );
+             } else if (data.statusCode === 400) {
+				 this.customResponse = new CustomResponse( 'ERROR', data.message, true );   
+             }
+              this.loading = false;
         },
             ( error: any ) => {
                 this.loading = false;
@@ -3526,6 +3536,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                     socialContact.firstName = contacts[i].firstName;
                     socialContact.lastName = contacts[i].lastName;
                     socialContact.contactCompany = contacts[i].contactCompany;
+                    socialContact.company = contacts[i].contactCompany;
                     this.socialContactUsers.push(socialContact);
                 }
                

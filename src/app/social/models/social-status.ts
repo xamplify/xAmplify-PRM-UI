@@ -32,4 +32,7 @@ export class SocialStatus {
 	ogTitle: string;
 	ogDescription: string;
   ogt: boolean;
+  publishToPartners = false;
+  type:any;
+parentFeed:SocialStatus;
 }

@@ -36,15 +36,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     forms: any;
     landingPages:any;
     isLoggedInAsTeamMember = false;
-
     sourceType = "";
-
     isLoggedInFromAdminPortal = false;
     loggedInThroughVanityUrl:boolean = false;
-
     checkCreateCampaignOptionForVanityURL:boolean = true;
-
-
+    loading = false;
+    rssFeedAccess: boolean;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -52,7 +49,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.updateLeftSideBar( location );
         this.sourceType = this.authService.getSource();
         this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal(); 
-        
     }
 
     updateLeftSideBar( location: Location ) {
@@ -179,6 +175,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     
     ngOnInit() {        
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;        
+        this.listLeftSideBarNavItems();
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false,false,false ); }
@@ -222,6 +219,24 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     logout() {
         this.authService.logout();
         this.router.navigate( ['/login'] );
+    }
+
+    listLeftSideBarNavItems(){
+        this.loading = true;
+        this.dashBoardService.listLeftSideNavBarItems(this.authService.getUserId())
+        .subscribe(
+          data => {
+            this.loading = false;
+            this.rssFeedAccess = data.access;
+          },
+          error => {
+            this.loading = false;
+            this.rssFeedAccess = false;
+          },
+          () => {
+            this.loading = false;
+          }
+        );
     }
 
 }

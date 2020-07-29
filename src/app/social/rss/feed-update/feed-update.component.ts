@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { RssService } from '../../services/rss.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+declare var  $:any;
 
 @Component({
   selector: 'app-feed-update',
@@ -13,7 +14,7 @@ export class FeedUpdateComponent implements OnInit {
   @Output() selectedFeed = new EventEmitter();
   @Output() navigateUrl = new EventEmitter();
   userId: number;
-  feeds: any;
+  feeds: any[] = [];
   loading = false;
   ngOnInit() {
     this.userId = this.authenticationService.getUserId();
@@ -26,9 +27,11 @@ export class FeedUpdateComponent implements OnInit {
       result => {
         if(result.statusCode === 8102){
           this.feeds = [];
-          result.data.forEach(element => {
-            element.feeds.forEach(feed => this.feeds.push(feed))
-          })
+          let feeds = result.data;
+          let self = this;
+          $.each(feeds,function(index:number,feed:any){
+              self.feeds.push(feed);
+          });
         }
         console.log(this.feeds);
       },

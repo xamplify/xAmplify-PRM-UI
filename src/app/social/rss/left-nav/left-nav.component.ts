@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RssService } from '../../services/rss.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { SocialService } from '../../services/social.service';
+import { Router } from '@angular/router';
+import { ReferenceService } from '../../../core/services/reference.service';
+
 @Component({
   selector: 'app-left-nav',
   templateUrl: './left-nav.component.html',
@@ -8,15 +12,68 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class LeftNavComponent implements OnInit {
   @Input('refreshTime') refreshTime: Date;
-  constructor(public rssService: RssService, private authenticationService: AuthenticationService) { }
+  showVendorFeeds: boolean = false;
+  constructor(public rssService: RssService, private authenticationService: AuthenticationService,private router:Router,private socialService:SocialService,private referenceService:ReferenceService) { }
   loggedInUserId: number = this.authenticationService.getUserId();
+  isloading = false;
+  partnerOrPartnerTeamMember = false;
+  showFeeds = false;
+  roleDetails:any;
+  vendors: Array<any>;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
-    this.getCollections();
+    this.isloading = true;
+    this.authenticationService.getRoleDetails(this.loggedInUserId)
+    .subscribe(
+      data => {
+        this.isloading = false;
+        if(!data.partner && !data.partnerTeamMember){
+          this.showFeeds = true;
+          this.getCollections();
+          let isOrgAdminAndPartner = data.orgAdminAndPartner;
+          let isVendorAndPartner = data.vendorAndPartner;
+          let isOrgAdminAndPartnerTeamMember  = data.orgAdminAndPartnerTeamMember;
+          let isVendorAndPartnerTeamMember = data.vendorAndPartnerTeamMember;
+          this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
+          if(this.showVendorFeeds){
+            this.listAllVendors();
+          }
+        }else{
+          this.showFeeds = false;
+          this.showVendorFeeds = true;
+          this.listAllVendors();
+        }
+      },
+      error => {
+        this.isloading = false;
+        console.log(error);
+      }
+    );
+    
+  }
+
+  listAllVendors(){
+    this.isloading = true;
+    this.socialService.listAllVendors(this.loggedInUserId)
+  .subscribe(
+    data => {
+      let statusCode = data.statusCode;
+      if(statusCode==200){
+        this.vendors = data.data;
+      }
+
+    },
+    error => {
+      this.isloading = false;
+    },
+    () => {
+      this.isloading = false;
+    }
+  );
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
         let currentValue = changes.refreshTime.currentValue;
         if(currentValue)
           this.getCollections();
@@ -36,5 +93,19 @@ export class LeftNavComponent implements OnInit {
       error => console.log(error),
       () => console.log("getCollections() completed")
     );
+  }
+
+  goToAddCustomFeeds(){
+    this.isloading = true;
+    this.router.navigate(['/home/rss/add-custom-feed']);
+  }
+
+  goToAllCustomFeeds(type:string){
+    this.isloading = true;
+    this.router.navigate(['/home/rss/manage-custom-feed/'+type]);
+  }
+
+  goToVendorFeeds(vendorCompanyId:number,type:string){
+    this.router.navigate(['/home/rss/manage-custom-feed/'+type+"/"+vendorCompanyId]);
   }
 }

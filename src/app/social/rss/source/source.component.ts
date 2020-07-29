@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RssService } from '../../services/rss.service';
 import { AuthenticationService } from '../../../core/services/authentication.service';
-
+import { CustomResponse } from '../../../common/models/custom-response';
+import { Properties } from '../../../common/models/properties';
 declare var swal, $: any;
 @Component({
   selector: 'app-source',
   templateUrl: './source.component.html',
-  styleUrls: ['../rss/rss.component.css', './source.component.css']
+  styleUrls: ['../rss/rss.component.css', './source.component.css'],
+  providers: [Properties]
 })
 export class SourceComponent implements OnInit {
 
@@ -17,7 +19,10 @@ export class SourceComponent implements OnInit {
   loading = false;
   sourceTitle: string;
   renameSourceTitleResponse: any;
-  constructor(private router: Router, private route: ActivatedRoute, public rssService: RssService, private authenticationService: AuthenticationService) { }
+  hasError = false;
+  customResponse:CustomResponse = new CustomResponse();
+  emptyFeeds = false;
+  constructor(private router: Router, private route: ActivatedRoute, public rssService: RssService, private authenticationService: AuthenticationService,public properties:Properties) { }
 
   ngOnInit() {
     this.userId = this.authenticationService.getUserId();
@@ -26,12 +31,26 @@ export class SourceComponent implements OnInit {
   }
 
   getFeedsBySourceAlias() {
+    this.hasError = false;
     this.loading = true;
+    this.emptyFeeds = false;
+    this.customResponse  = new CustomResponse();
     this.rssService.getFeedsBySourceAlias(this.userId, this.alias).subscribe(
       data => {
-        this.feedsResponse = data;
+        if(data.statusCode==8103){
+          this.emptyFeeds = true;
+          this.customResponse = new CustomResponse( 'INFO', 'No Feeds Found.', true );
+        }else{
+          this.feedsResponse = data;
+          this.emptyFeeds = false;
+        }
       },
-      error => console.log(error),
+      error => {
+        this.loading = false;
+        this.hasError = true;
+        this.emptyFeeds = false;
+        this.customResponse = new CustomResponse( 'ERROR', this.properties.serverErrorMessage, true );
+      },
       () => this.loading = false
     );
   }
@@ -71,9 +90,7 @@ export class SourceComponent implements OnInit {
         if (data.statusCode === 8114) {
           this.feedsResponse.data.customTitle = this.sourceTitle;
           this.rssService.refreshTime = new Date();
-        } else {
-
-        }
+        } 
       },
       error => console.log(error),
       () => this.loading = false

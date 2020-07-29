@@ -1,69 +1,113 @@
-#signupbox{
+#signupbox {
     margin-top: 25px;
     margin-left: 18%;
 }
+
 .required {
-	color: red;
-	margin: 1px;
-	font-size: 20px;
-}
-.required-text{
-	color: red;
-	margin: 1px;
-	font-size: 14px;
-	text-shadow: 2px 2px 5px #000000;
+    color: red;
+    margin: 1px;
+    font-size: 20px;
 }
 
-@media screen and (min-width:601px){
- .mobile-camp{  margin: -169px auto 21px; background: #f1f1f1;  padding: 180px; }
+.required-text {
+    color: red;
+    margin: 1px;
+    font-size: 14px;
+    text-shadow: 2px 2px 5px #000000;
 }
-@media screen and (max-width:600px){
-  .mobile-camp{   }
+
+@media screen and (min-width:601px) {
+    .mobile-camp {
+        margin: -169px auto 21px;
+        background: #f1f1f1;
+        padding: 180px;
+    }
 }
-#form-preivew-base-div{
-	background: #f1f1f1; 
+
+@media screen and (max-width:600px) {
+    .mobile-camp {}
 }
+
+#form-preivew-base-div {
+    background: #f1f1f1;
+}
+
 #bottom-right {
-	float: right;
+    float: right;
 }
+
 .control-label {
     margin-top: 1px;
-    color: #fff!important;
-}
-#header-center{
-	text-align: center;
+    color: #777;
 }
 
-#check-mark{
-	font-size: 25px;
+#header-center {
+    text-align: center;
+}
+
+#check-mark {
+    font-size: 25px;
     color: green;
     margin-right: 10px;
 }
-.alert {padding: 20px; margin: 20px;}
 
-    body {
-        overflow: hidden;
-         background: #f1f1f1  !important; 
-    }
-#line-height{
-	line-height: 15px;
-}  
-.panel .panel-body {
-    font-size: 13px;
-    color: #fff!important;
+.alert {
+    padding: 20px;
+    margin: 20px;
 }
-.panel {
-	background-color: rgba(0, 0, 0, 0.2) !important;
+
+body {
+    overflow: hidden;
+    background: #f1f1f1 !important;
 }
-.panel-info {
-    border-color: #ffffff !important;
+
+#line-height {
+    line-height: 15px;
 }
-.panel-info > .panel-heading {
-    color: #fff!important;
-    background-color: transparent!important;
+
+.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+#form-preview-company-logo {
+    vertical-align: middle;
+    position: relative;
+    bottom: 10px;
+    left: 45%;
+    filter: grayscale(0%);
+    height: 45px;
+    width: 115px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#form-background-image {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+    transition: opacity 1s
+}
+
+.button-padding {
+    padding: 7px 14px;
+    font-size: 14px;
+    border-width: 0;
+}
+
+.panel-heading {
+    color: #31708f;
+    background-color: #d9edf7;
     border-color: #bce8f1;
 }
-.disabled {
-	pointer-events: none;
-	cursor: not-allowed;
+
+.panel-info {
+    border-color: #bce8f1;
 }

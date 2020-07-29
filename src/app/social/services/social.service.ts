@@ -12,6 +12,7 @@ import {SocialConnection} from '../models/social-connection';
 import {SocialCampaign} from '../models/social-campaign';
 
 import {AuthenticationService} from '../../core/services/authentication.service';
+import { Pagination } from '../../core/models/pagination';
 
 @Injectable()
 export class SocialService {
@@ -19,6 +20,8 @@ export class SocialService {
   public REST_URL: string;
   public socialConnections: SocialConnection[];
   selectedFeed: any;
+  selectedCustomFeed:any;
+  partnerFeed:any;
 
   constructor(private http: Http, private router: Router,
     private authenticationService: AuthenticationService, private activatedRoute: ActivatedRoute) {
@@ -108,7 +111,7 @@ export class SocialService {
   }
 
   listEvents(request: any) {
-    return this.http.post(this.URL + 'social/list/?access_token=' + this.authenticationService.access_token, request)
+    return this.http.post(this.URL + 'social/list?access_token=' + this.authenticationService.access_token, request)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -199,6 +202,7 @@ export class SocialService {
   }
 
   private extractData(res: Response) {
+	console.log(res);
     const body = res.json();
     console.log(body);
     return body || {};
@@ -267,4 +271,59 @@ export class SocialService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    saveFeed(socialStatus: SocialStatus) {
+      return this.http.post(this.URL + 'social/vendor/feed/save?access_token=' + this.authenticationService.access_token, socialStatus)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    updateFeed(socialStatus: SocialStatus) {
+      return this.http.post(this.URL + 'social/vendor/feed/edit?access_token=' + this.authenticationService.access_token, socialStatus)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+
+    listAllFeeds( pagination: Pagination,type:string): Observable<any> {
+      let url = "";
+      if("p"==type){
+        url = this.URL + 'social/partner/';
+      }else{
+        url = this.URL + 'social/vendor/';
+      }
+      return this.http.post( url+'feeds?access_token=' + this.authenticationService.access_token, pagination )
+          .map( this.extractData )
+          .catch( this.handleError );
+  }
+
+  publishFeed( socialStatus: SocialStatus): Observable<any> {
+    return this.http.post( this.URL + 'social/vendor/feed/publish?access_token=' + this.authenticationService.access_token, socialStatus )
+        .map( this.extractData )
+        .catch( this.handleError );
+    }
+
+  deleteFeed(socialStatus: SocialStatus){
+    return this.http.post( this.URL + 'social/vendor/feed/delete?access_token=' + this.authenticationService.access_token, socialStatus )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+
+  getFeedById(feedId: number,userId:number){
+    return this.http.get( this.URL + 'social/'+userId+'/feed/'+feedId+'?access_token=' + this.authenticationService.access_token,"" )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+
+  listAllVendors(userId:number){
+    return this.http.get( this.URL + 'social/partner/'+userId+'/vendors?access_token=' + this.authenticationService.access_token,"" )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+  hasRssFeedAccess(userId:number) {
+    const url =  this.URL+'module/showRssFeedOption/'+userId+'?access_token=' + this.authenticationService.access_token;
+        return this.http.get(url, "")
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+  
 }

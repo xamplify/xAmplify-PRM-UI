@@ -1,0 +1,88 @@
+<div class="page-content">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li>
+            <i class="fa fa-home" aria-hidden="true"></i>
+            <a routerLink="/home/dashboard/default">Home</a>
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
+      </ul>
+   </div>
+   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="row">
+            <app-left-nav></app-left-nav>
+            <div class="col-sm-9" >
+               <div class="page-bar page-bar-shadow pb-m">
+                  <div class="portlet light" style="border-color: #fff !important;">
+                     <div style="position: relative; top: -5px">
+                        <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+                     </div>
+                     <!---Search Bar---->
+                     <div class="has-feedback has-search" style="margin-top:10px">
+                        <span class="glyphicon glyphicon-search"></span>
+                        <span class="glyphicon glyphicon-remove" (click)="pagination.searchKey='';searchFeeds();"></span>
+                        <input type="text" [(ngModel)]="pagination.searchKey" [ngModelOptions]="{standalone: true}"  class="form-control" placeholder="Search Feeds" 
+                        (keyup.enter)="searchFeeds()" style="padding: 22px;padding-left: 49px">
+                     </div>
+                  </div>
+               </div>
+               <!-- -List Starts here----------- -->
+               <app-list-loader *ngIf="loading"></app-list-loader>
+               <div class="page-bar page-bar-shadow pb-m" *ngFor="let feed of pagination.pagedItems ;let i =index">
+                  <div class="col-md-8 col-lg-8">
+                     <div style="margin-top:10px;">
+                        <span title="{{feed?.statusMessage}}">
+                        <span><strong>{{feed?.statusMessage|slice:0:100}}</strong>
+                        <span *ngIf="feed?.statusMessage?.length>100">..</span>
+                        </span>
+                        </span>       
+                     </div>
+                     <ng-container *ngIf="feed?.socialStatusContents.length>0">
+                        <ng-container *ngFor="let item of feed?.socialStatusContents">
+                           <div class="img-wrap img-thumbnail rounded-0" style="margin-bottom:15px;">
+                              <img async *ngIf="item.fileType !== 'video'" src="{{authenticationService.MEDIA_URL}}{{item.filePath}}" style="height:50px">
+                              <img async *ngIf="item.fileType === 'video'" src="{{item.filePath}}" (error)="videoUtilService.errorVideoHandler($event)">
+                           </div>
+                        </ng-container>
+                     </ng-container>
+                  </div>
+                  <div class="col-md-4 col-lg-4" style="margin-bottom:20px;">
+                     <div class="text-right" style="margin-top:10px">
+                        <span *ngIf="feed.publishToPartners && selectedType!='p'" class="published-banner uppercase">Published</span>
+                        <span *ngIf="selectedType=='p'" class="published-banner uppercase">{{feed?.companyName}}</span>
+                     </div>
+                     <div class="actions-block override-actions" style="margin-top:20px">
+                        <a *ngIf="selectedType!='p'"  data-toggle="tooltip" data-placement="top" title="Edit"
+                           (click)="editFeed(feed)">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                        <a *ngIf="selectedType!='p'" data-toggle="tooltip" data-placement="top" title="Publish"
+                           (click)="publishFeed(feed)">
+                        <i class="fa fa-upload" aria-hidden="true"></i>
+                        </a>
+                        <a  data-toggle="tooltip" data-placement="top" title="Share"
+                           (click)="shareFeed(feed)">
+                        <i class="fa fa-share" aria-hidden="true"></i>
+                        </a>
+                        <a *ngIf="selectedType!='p'"  data-toggle="tooltip" data-placement="top" title="Delete"
+                           (click)="confirmDeleteFeed(feed)">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+               <div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+                  <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listAllFeeds($event)" [hidden]="loading"></app-pagination>
+               </div>
+               <!-- End of 24 -->
+               <div *ngIf="pagination.totalRecords==0 && !loading" class="alert alert-info">
+                  <strong translate>No Feeds Found.</strong>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

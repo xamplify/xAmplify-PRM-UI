@@ -16,7 +16,8 @@ export class DashboardService {
     url = this.authenticationService.REST_URL + "admin/";
     demoUrl = this.authenticationService.REST_URL + "demo/request/";
     superAdminUrl = this.authenticationService.REST_URL + "superadmin/";  
- dashboardAnalytics = this.authenticationService.REST_URL + "dashboard/views/";
+    dashboardAnalytics = this.authenticationService.REST_URL + "dashboard/views/";
+    moduleUrl = this.authenticationService.REST_URL + "module/";
     QUERY_PARAMETERS = '?access_token=' + this.authenticationService.access_token;
     saveVideoFile: SaveVideoFile;
     pagination: Pagination;
@@ -400,6 +401,12 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
+    listLeftSideNavBarItems(userId:number) {
+        const url = this.moduleUrl+'showRssFeedOption/'+userId+'?access_token=' + this.authenticationService.access_token;
+            return this.http.get(url, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     private extractData(res: Response) {
         let body = res.json();

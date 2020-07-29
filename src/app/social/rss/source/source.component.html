@@ -1,52 +1,65 @@
 <div class="page-content">
   <div class="page-bar">
     <ul class="page-breadcrumb">
-      <li><i class="fa fa-home"></i> <a routerLink="/home/dashboard/default">Home</a><i class="fa fa-angle-right"></i>
+      <li><i class="fa fa-home" aria-hidden="true"></i>
+         <a routerLink="/home/dashboard/default">Home</a>
+         <i class="fa fa-angle-right" aria-hidden="true"></i>
       </li>
-      <li><i class="fa fa-rss"></i>RSS</li>
+      <li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
     </ul>
   </div>
   <div class="row">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="col-md-12 col-lg-12">
       <div class="row">
         <app-left-nav [refreshTime]="rssService.refreshTime"></app-left-nav>
         <div class="col-sm-9">
-          <div class="row">
+          <div class="row" *ngIf="!hasError">
             <div class="page-bar page-bar-shadow pb-m">
               <div class="portlet light" style="border-color: #fff !important;">
                 <div class="portlet-body pt0">
-                  <div class="col-sm-12 col-xs-12 head-h p0">
-                  <div class="col-sm-6 col-xs-12">
-                    <h4 class="f-w-600">{{feedsResponse?.data.customTitle}}</h4>
+                  <ng-container *ngIf="!emptyFeeds">
+                    <div class="col-sm-12 col-xs-12 head-h p0" >
+                    <div class="col-sm-6 col-xs-12">
+                      <h4 class="f-w-600">{{feedsResponse?.data.customTitle}}</h4>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                      <h4 class="text-right m0">
+                        <a data-toggle="tooltip" data-placement="bottom" title="View"><i class="fa fa-list circled-grey"
+                            aria-hidden="true"></i></a>
+                        <a (click)="getFeedsBySourceAlias()" data-toggle="tooltip" data-placement="bottom"
+                          title="Refresh"><i class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
+                        <div class="btn-group">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="fa fa-ellipsis-h  circled-grey" aria-hidden="true"></i>
+                          </a>
+                          <ul class="dropdown-menu pull-right">
+                            <li><a (click)="renameSourceDialog()">Rename</a></li>
+                            <li><a (click)="deleteSourceDialog()">Delete</a></li>
+                          </ul>
+                        </div>
+                      </h4>
+                    </div>
                   </div>
-                  <div class="col-sm-6 col-xs-12">
-                    <h4 class="text-right m0">
-                      <a data-toggle="tooltip" data-placement="bottom" title="View"><i class="fa fa-list circled-grey"
-                          aria-hidden="true"></i></a>
-                      <a (click)="getFeedsBySourceAlias()" data-toggle="tooltip" data-placement="bottom"
-                        title="Refresh"><i class="fa fa-refresh circled-grey" aria-hidden="true"></i></a>
-                      <div class="btn-group">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                          aria-expanded="false">
-                          <i class="fa fa-ellipsis-h  circled-grey" aria-hidden="true"></i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                          <li><a (click)="renameSourceDialog()">Rename</a></li>
-                          <li><a (click)="deleteSourceDialog()">Delete</a></li>
-                        </ul>
-                      </div>
-                    </h4>
+                  <h5 class="clearfix col-xs-12">{{feedsResponse?.data.description}}</h5>
+                  <app-rss-loader *ngIf="loading"></app-rss-loader>
+                  <div *ngFor="let feed of feedsResponse?.data.feeds">
+                    <app-feed [feed]="feed"></app-feed>
                   </div>
-                </div>
-                <h5 class="clearfix col-xs-12">{{feedsResponse?.data.description}}</h5>
-                <app-rss-loader *ngIf="loading"></app-rss-loader>
-                <div *ngFor="let feed of feedsResponse?.data.feeds">
-                  <app-feed [feed]="feed"></app-feed>
-                </div>
+              </ng-container>
+
+
+              <ng-container *ngIf="emptyFeeds">
+                <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+              </ng-container>
               </div>
             </div>
           </div>
         </div>
+        <div *ngIf="hasError">
+          <app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+      </div>
       </div>
     </div>
   </div>
@@ -73,7 +86,7 @@
           <h4>
             <i class="fa" [ngClass]="{
 									'fa-check-circle-o': renameSourceTitleResponse.statusCode === 8114,
-	                'fa-exclamation-circle': renameSourceTitleResponse.statusCode !== 8114}"></i>
+	                'fa-exclamation-circle': renameSourceTitleResponse.statusCode !== 8114}" aria-hidden="true"></i>
             <span class="ml10 f-w-600">{{renameSourceTitleResponse.message}}</span>
           </h4>
         </div>

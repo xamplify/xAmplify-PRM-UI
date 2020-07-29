@@ -283,7 +283,7 @@
 														<img
 														*ngIf="contactList.socialNetwork=='MARKETO'"
 														src="{{marketoImage}}" alt="manual" style="height: 70px;">
-														<img *ngIf="!contactList.emailValidationInd"
+														<img *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))"
 														src="assets/images/Spinner.gif"
 														style="width: 55px; margin-top: -88px; margin-left: 17px;">
 														
@@ -303,17 +303,21 @@
 															title="{{contactList.companyName}}">
 															<b>{{contactList.companyName | slice:0:50}}</b> <span
 																*ngIf="contactList.companyName?.length>50">...</span>
-															<h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
-																<span class="mb0" *ngIf="contactList.emailValidationInd" translate>
-																	Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}</span>
-																	<span *ngIf="!contactList.emailValidationInd"><b>-</b></span>
-																	<br> <span class="mb0" translate>
-																		Created On:<app-timestamp [isOnlyDate]="true"
-																		[dateAndTime]="contactList.createdDate">
-																	</app-timestamp>
-																</span>
+																<h5 class="mb0 ellipsis hidden-sm hidden-md hidden-lg">
+																	<span class="mb0"
+																		*ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)" translate>
+																		Total {{checkingContactTypeName}}s:
+																		{{contactList.noOfContacts}}</span> 
+																	<span
+																		*ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
+																		<b>-</b></span>
+																	<br> <span class="mb0" translate> Created
+																		On:<app-timestamp [isOnlyDate]="true"
+																			[dateAndTime]="contactList.createdDate">
+																		</app-timestamp>
+																	</span>
+																</h5>
 															</h5>
-														</h5>
 													</td>
 													<td class="hidden-xs">
 													<h5 class="view-banner" *ngIf="!contactList?.partnerUserList">
@@ -327,11 +331,14 @@
 															[isOnlyDate]="true"
 															[dateAndTime]="contactList.createdDate">
 														</app-timestamp></td>
-													<td class="text-center hidden-xs"><span *ngIf="contactList.emailValidationInd">{{contactList.noOfContacts}}</span>
-													<span *ngIf="!contactList.emailValidationInd"><strong>-</strong></span>
+													<td class="text-center hidden-xs">
+														<span *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
+														{{contactList.noOfContacts}}</span>
+														<span *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
+														<strong>-</strong></span>
 													</td>
 													<td *ngIf="!authenticationService.isSuperAdmin()">
-														<div class="actions-block override-actions" *ngIf="contactList.emailValidationInd">
+														<div class="actions-block override-actions" *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
 															<a
 																*ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isPartner() || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
@@ -349,27 +356,29 @@
 																(click)="saveAsNewList(contactList.id,contactList.name,contactList.publicList)">
 																<i class="fa fa-files-o"></i>
 															</a> <a [class.disabled]="contactList.noOfContacts == 0"
-																(click)="hasDownLoadAccess(contactList.id, contactList.name)"
-																data-toggle="tooltip" data-placement="top"
-																title="{{actionsDescription.contact_list_download}}"
-																data-rel="fancybox-button"> <i
-																class="fa fa-download"></i>
-															</a> <span *ngIf="contactList.synchronisedList == true && contactList.socialNetwork != 'MARKETO'">
-																<a data-toggle="tooltip" data-placement="top"
-																title="{{actionsDescription.contact_list_synchronize}}"
-																*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
-																(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
-																	<i class="fa fa-refresh" aria-hidden="true"></i>
-															</a>
-															</span> <a
-																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+																	(click)="hasDownLoadAccess(contactList.id, contactList.name)"
+																	data-toggle="tooltip" data-placement="top"
+																	title="{{actionsDescription.contact_list_download}}"
+																	data-rel="fancybox-button"> <i
+																	class="fa fa-download"></i>
+																</a> <span
+																	*ngIf="contactList.synchronisedList == true || contactList.marketoMasterList == true">
+																	<a data-toggle="tooltip" data-placement="top"
+																	title="{{actionsDescription.contact_list_synchronize}}"
+																	*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+																	(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
+																		<i class="fa fa-refresh" aria-hidden="true"></i>
+																</a>
+																</span> <a
+																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
+																 && !contactList.defaultPartnerList && !contactList.marketoMasterList"
 																(click)="showAlert(contactList.id)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_delete}}">
 																<i class="fa fa-trash-o"></i>
 															</a>
 														</div>
-														<div class="actions-block override-actions" *ngIf="!contactList.emailValidationInd">
+														<div class="actions-block override-actions" *ngIf="contactList.marketoSyncComplete && !contactList.emailValidationInd">
 														<a data-toggle="tooltip" data-placement="top"
 																title="Force process the list"
 																(click)="forceProcessList(contactList.id)">
@@ -380,7 +389,7 @@
 												</tr>
 											</tbody>
 										</table>
-									</div>
+									</div>	
 								</section>
 
 								<div class="row mix-grid" [hidden]="isListView"
@@ -406,7 +415,7 @@
 														src="{{marketoImage}}" alt="manual" style="height: 60px;">
 											<!-- <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png"> -->
 
-											<div id="container" *ngIf="!contactList.emailValidationInd">
+											<div id="container" *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))">
 												<h3 translate>
 													processing<span class="arrow"> <img
 														src="assets/images/Spinner.gif" class="loaderGif"
@@ -427,9 +436,10 @@
 												<b>{{contactList.companyName | slice:0:30}}</b> <span
 													*ngIf="contactList.companyName?.length>30">...</span>
 											</h6>
-											<h6 class="mt10 mb0" *ngIf="contactList.emailValidationInd" translate>Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}
+											<h6 class="mt10 mb0" *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)"
+											 translate>Total {{checkingContactTypeName}}s: {{contactList.noOfContacts}}
 												</h6>
-											<h6 *ngIf="!contactList.emailValidationInd" translate> Total {{checkingContactTypeName}}s <b>-</b></h6>
+											<h6 *ngIf="(!contactList.marketoMasterList && !contactList.emailValidationInd) || (contactList.marketoMasterList && (!contactList.marketoSyncComplete || !contactList.emailValidationInd))" translate> Total {{checkingContactTypeName}}s <b>-</b></h6>
 											<h6 class="mt10 mb0" translate>
 												Created date
 												<app-timestamp [isOnlyDate]="true"
@@ -450,7 +460,7 @@
 												</td>
 												<!--  -->
 											<div class="bar"
-												*ngIf="!authenticationService.isSuperAdmin() && contactList.emailValidationInd">
+												*ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
 												<a [class.disabled]="!contactList.emailValidationInd"
 													*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
@@ -479,7 +489,7 @@
 													data-rel="fancybox-button"> <i
 													class="fa fa-download"></i>
 												</a>
-												<ng-container *ngIf="contactList.synchronisedList == true">
+												<ng-container *ngIf="contactList.synchronisedList == true || contactList.marketoMasterList == true">
 												<a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_synchronize}}"
 													[class.disabled]="!contactList.emailValidationInd"
@@ -489,7 +499,7 @@
 													<i class="fa fa-refresh" aria-hidden="true"
 													style="color: white;"></i>
 												</a> </ng-container>
-												<a [class.disabled]="!contactList.emailValidationInd"
+												<a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
 													*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 													(click)="showAlert(contactList.id)" data-toggle="tooltip"
 													data-placement="top"

@@ -13,12 +13,13 @@ import { CampaignFormAnalyticsComponent } from './campaign-form-analytics/campai
 import { LandingPageFormAnalyticsComponent } from './landing-page-form-analytics/landing-page-form-analytics.component';
 import { LandingPageFormsComponent } from './landing-page-forms/landing-page-forms.component';
 import { CampaignLandingPageFormsComponent } from './campaign-landing-page-forms/campaign-landing-page-forms.component';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 
 
 @NgModule( {
     imports: [
-        CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule
+        CommonModule, SharedModule, ErrorPagesModule,CommonComponentModule,FormsRoutingModule,CKEditorModule
     ],
     declarations: [AddFormComponent, ManageFormComponent, CampaignFormAnalyticsComponent,FormAnalyticsComponent,LandingPageFormAnalyticsComponent, LandingPageFormsComponent, CampaignLandingPageFormsComponent],
     providers: [FormService]

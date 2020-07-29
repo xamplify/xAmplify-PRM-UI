@@ -165,6 +165,16 @@ span.ui-column-resizer {
 	padding: 10px;
 	margin: 0px;
 }
+#form-company-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 45px;
+    width: 115px;
+}
+.margin-top-form-body{
+	margin-top: 10px;
+}
 
 #tooltip-helper {
 	cursor: pointer;
