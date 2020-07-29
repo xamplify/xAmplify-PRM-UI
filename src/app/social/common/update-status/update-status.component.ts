@@ -929,6 +929,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 
 		/*************Check Rss Feed Access*********** */
 		this.showRssFeedButton();
+		
 	}
 
 	showRssFeedButton(){
@@ -936,7 +937,14 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialService.hasRssFeedAccess(this.userId)
         .subscribe(
           data => {
-			this.showRssFeed = data.access;
+			let isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
+			let isPartnerTeamMember = 	this.authenticationService.isPartnerTeamMember;
+			if(isOnlyPartner || isPartnerTeamMember){
+				this.showRssFeed =false;
+			}else{
+				this.showRssFeed = data.access;
+			}
+			
           },
           error => {
             this.loading = false;
