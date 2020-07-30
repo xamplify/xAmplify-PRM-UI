@@ -1,6 +1,6 @@
 <div [hidden]="processor.isProcessing" class="mobile-camp">
     <div class="" *ngIf="hasFormExists">
-        <div [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')'}" id="form-background-image">
+        <div [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')'}" [style.backgroundColor]="pageBackgroundColor" id="form-background-image">
         </div>
         <div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" [ngClass]="{'p0': authenticationService.isFromRsvpPage}">

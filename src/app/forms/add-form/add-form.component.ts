@@ -96,6 +96,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     buttonValueControllerColor: string;
     titleControllerColor: string;
     borderControllerColor: string;
+    pageBackgroundControllerColor: string;
     valueRange: number;
     charactersLeft = 1000;
     cropRounded = false;
@@ -139,6 +140,8 @@ export class AddFormComponent implements OnInit, OnDestroy {
     logoError = false;
     formsError = false;
     awsFileKeys: string[] = [];
+    formBackgroundImage = "";
+    pageBackgroundColor = "";
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
         private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -183,8 +186,18 @@ export class AddFormComponent implements OnInit, OnDestroy {
             if (this.form.borderColor) {
                 this.borderControllerColor = this.form.borderColor;
             }
+            if(this.form.pageBackgroundColor){
+                this.pageBackgroundControllerColor = this.form.pageBackgroundColor;
+            }
             if (!this.form.buttonValue) {
                 this.form.buttonValue = "Submit";
+            }
+            if(this.form.showBackgroundImage){
+                this.formBackgroundImage = this.form.backgroundImage;
+                this.pageBackgroundColor = "";
+            }else{
+                this.pageBackgroundColor = this.form.pageBackgroundColor;
+                this.formBackgroundImage = "";
             }
             this.form.isValid = true;
             this.form.isFormButtonValueValid = true;
@@ -858,6 +871,10 @@ export class AddFormComponent implements OnInit, OnDestroy {
             } else if (type === "borderColor") {
                 this.borderControllerColor = event;
                 form.borderColor = event
+            }else if (type === "pageBackgroundColor") {
+                this.pageBackgroundControllerColor = event;
+                form.pageBackgroundColor = event;
+                this.pageBackgroundColor = event;
             }
         } catch (error) { console.log(error); }
     }
@@ -1020,6 +1037,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         if (this.popupOpenedFor == 'formBackgroundImage') {
             this.formBackgroundImagePath = filePath;
             this.form.backgroundImage = filePath;
+            this.formBackgroundImage = this.form.backgroundImage;
             this.backgroundImageFileObj = null;
             this.croppedBackgroundImage = '';
             this.backgroundImageChangedEvent = null;
@@ -1068,6 +1086,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
                     } else if (data.access) {
                         if (type == 'backgroundImage') {
                             this.form.backgroundImage = data.filePath;
+                            this.formBackgroundImage = data.filePath;
                         } else if (type == 'companyLogo') {
                             this.form.companyLogo = data.filePath;
                         }
@@ -1234,5 +1253,16 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.pageSize = event;
         this.setPage(1);
         this.referenceService.loading(this.httpRequestLoader, false);
+    }
+
+    setShowBackgroundImage(event:any){
+        this.form.showBackgroundImage = event;
+        if(this.form.showBackgroundImage){
+            this.formBackgroundImage = this.form.backgroundImage;
+            this.pageBackgroundColor = "";
+        }else{
+            this.pageBackgroundColor = this.form.pageBackgroundColor;
+            this.formBackgroundImage = "";
+        }
     }
 }
