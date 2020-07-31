@@ -148,7 +148,9 @@
                 </ul>
                 </li>
 
-                <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || authService.module.isCompanyPartner || isLoggedInAsTeamMember)" [ngClass]="{'active': location.path().includes('team')}">
+                <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
+                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
+                [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
                         <i class="fa fa-users" aria-hidden="true"></i>
                         <span class="title" translate>Team</span>
