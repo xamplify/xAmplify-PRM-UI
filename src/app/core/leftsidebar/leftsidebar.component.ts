@@ -125,20 +125,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 }
                 
                 if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
-                    this.pagination.pageIndex = 1;
-                    this.pagination.maxResults = 10000;
-                    this.dashBoardService.loadVendorDetails( this.authService.getUserId(), this.pagination ).subscribe( response => {
-                        if(response.data!=undefined){
-                            response.data.forEach( element => {
-                                this.refService.getOrgCampaignTypes( element.companyId ).subscribe( data => {
-                                    if ( !this.enableLeadsByVendor ) {
-                                        this.enableLeadsByVendor = data.enableLeads;
-                                    }
-                                } );
-                            } );
-                        }
-                       
-                    } )
                     this.authService.module.isCompanyPartner = true;
                 }
                 
@@ -173,7 +159,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         } catch ( error ) { console.log( error ); }
     }
     
-    ngOnInit() {        
+    ngOnInit() {      
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;        
         this.listLeftSideBarNavItems();
     }

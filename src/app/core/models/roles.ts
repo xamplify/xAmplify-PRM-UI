@@ -15,4 +15,5 @@ export class Roles {
   opportunityRole = 'ROLE_OPPORTUNITY';
   formRole = 'ROLE_FORM';
   landingPageRole = 'ROLE_LANDING_PAGE';
+  marketingRole = 'ROLE_MARKETING';
 }

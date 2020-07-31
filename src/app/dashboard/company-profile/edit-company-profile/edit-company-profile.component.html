@@ -4,19 +4,16 @@
 		[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 	<div class="page-bar" style="margin-bottom:0px!important">
 		<ul class="page-breadcrumb">
-			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home"></i><a
+			<li *ngIf="authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i><a
 				[routerLink]="['/home/dashboard/admin-report']">Admin Report</a></li>
-			<li  *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home"></i> <a
+			<li  *ngIf="!authenticationService.isSuperAdmin()"><i class="fa fa-home" aria-hidden="true"></i> <a
 				routerLink="/home/dashboard/default">Home</a><i
-				class="fa fa-angle-right"></i></li>
-			<li><i class="fa fa-building-o"></i>Company Profile</li>
+				class="fa fa-angle-right" aria-hidden="true"></i></li>
+			<li><i class="fa fa-building-o" aria-hidden="true"></i>Company Profile</li>
 		</ul>
 	</div>
 
 	<div class="" id="company-profile-div">
-		<!-- <div class="portlet-title">
-			<div class="caption">Company Profile</div>
-		</div> -->
 		<div class="alert alert-danger" id="company-profile-error-div"
 			style="display: none;">
 			<a (click)="refService.hideDiv('company-profile-error-div')"
@@ -223,12 +220,12 @@
 								<div class="portlet-body clearfix">
 									<div class="portlet-title">
 										<div class="caption">
-											<b>Assign Modules</b>
+											<strong>Assign Modules</strong>
 										</div>
 									</div>
 									<br>
 									<div class="table-responsive" style="overflow-x: inherit">
-										<table class="table table-striped  table-hover"	style="width: 100%">
+										<table class="table table-striped  table-hover"	style="width: 100%" >
 											<!-- <tr>
 												<th>Vendor Tier1</th>
 												<td>
@@ -239,7 +236,16 @@
 													</td>
 											</tr> -->
 											<tr>
-												<th>Select source as ALLBOUND</th>
+												<th>Select Role</th>
+												<td>
+													<select class="form-control" id="selectedRole">
+														<option value="13">Vendor</option>
+														<option value="18">Marketing</option>
+														<option value="2">Org Admin</option>
+													</select>
+											</tr>
+											<tr>
+												<th scope="col">Select source as ALLBOUND</th>
 												<td><input type="checkbox"
 													[(ngModel)]="campaignAccess.allBoundSource"
 													[ngModelOptions]="{standalone: true}"></td>
@@ -306,6 +312,8 @@
 													[(ngModel)]="campaignAccess.mdf"
 													[ngModelOptions]="{standalone: true}"></td>
 											</tr>
+
+											
 											
 										</table>
 									</div>

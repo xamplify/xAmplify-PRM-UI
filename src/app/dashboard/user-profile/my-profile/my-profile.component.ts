@@ -295,14 +295,15 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
             this.getUserByUserName(this.currentUser.userName);
             this.cropperSettings();
             this.roleNames = this.authenticationService.loggedInUserRole;
-
             if(this.authenticationService.vanityURLEnabled && this.authenticationService.vanityURLUserRoles && this.roleNames !== "Team Member"){                
                 if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 13).length !== 0){
                     this.roleNames = "Vendor";
-                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !==0){
-                    this.roleNames = "Partner";
                 }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 2).length !== 0){
                     this.roleNames ="OrgAdmin";
+                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 18).length !== 0){
+                    this.roleNames ="Marketing";
+                }else if(this.authenticationService.vanityURLUserRoles.filter(rn => rn.roleId === 12).length !==0){
+                    this.roleNames = "Partner";
                 }
             }
             // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));

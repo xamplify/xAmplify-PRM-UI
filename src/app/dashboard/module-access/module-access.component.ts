@@ -6,7 +6,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-
+declare var $;
 @Component({
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
@@ -58,10 +58,13 @@ export class ModuleAccessComponent implements OnInit {
   updateModuleAccess() {
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
+    this.campaignAccess.roleId = $('#roleId option:selected').val();
+    this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       if (result.statusCode === 200) {
         this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
         this.getModuleAccessByCompanyId();
+        this.getCompanyAndUserDetails();
         this.referenceService.goToTop();
         this.ngxLoading = false;
       }

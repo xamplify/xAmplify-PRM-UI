@@ -246,6 +246,7 @@ export class AuthenticationService {
         const isOrgAdmin = roleNames.indexOf(this.roleName.orgAdminRole) > -1;
         const isPartner = roleNames.indexOf(this.roleName.companyPartnerRole) > -1;
         const isVendor = roleNames.indexOf(this.roleName.vendorRole) > -1;
+        const isMarketingRole = roleNames.indexOf(this.roleName.marketingRole) > -1;
         /* const isPartnerAndTeamMember = roleNames.indexOf(this.roleName.companyPartnerRole)>-1 &&
          (roleNames.indexOf(this.roleName.contactsRole)>-1 || roleNames.indexOf(this.roleName.campaignRole)>-1);*/
         if (roleNames.length === 1) {
@@ -259,6 +260,8 @@ export class AuthenticationService {
             return "Orgadmin";
           } else if (isVendor) {
             return "Vendor";
+          }else if(isMarketingRole){
+            return "Marketing";
           } else if (this.isOnlyPartner()) {
             return "Partner";
           } else {
@@ -276,20 +279,14 @@ export class AuthenticationService {
   }
 
   isOnlyPartner() {
-    /*
   try{
     const roleNames = this.getRoles();
-        if(roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1)){
-            return true;
-        }else{
-            return false;
-        }
-
+    return roleNames && roleNames.length===2 && (roleNames.indexOf('ROLE_USER')>-1 && roleNames.indexOf('ROLE_COMPANY_PARTNER')>-1);
   }catch(error){
     this.xtremandLogger.log('error'+error);
   }
-*/
-    return this.loggedInUserRole == "Partner" && this.isPartnerTeamMember == false;
+
+    //return this.loggedInUserRole == "Partner" && this.isPartnerTeamMember == false; commented on 30/07/2020.
   }
 
   isOnlyUser() {
@@ -327,6 +324,16 @@ export class AuthenticationService {
       } else {
         return false;
       }
+    } catch (error) {
+      this.xtremandLogger.log('error' + error);
+    }
+  }
+
+  isMarketingRole() {
+    try {
+      const roleNames = this.getRoles();
+      return roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && roleNames.indexOf(this.roleName.marketingRole) > -1);
+    
     } catch (error) {
       this.xtremandLogger.log('error' + error);
     }
