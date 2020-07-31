@@ -36,14 +36,6 @@
     <div class="col-xs-12 col-sm-6 p0">
         <h4 class="text-primary f-w-600 m10">{{'Welcome' | translate}} {{logedInCustomerCompanyName}}</h4>
     </div>
-    <!-- <div class="col-xs-12 col-sm-6 p0" *ngIf="vendorCompanies?.length>0">
-        <select  class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="vendorCompanyProfileName" (change)="filterByCompanyProfileName()">
-            <option value="">---Please select your vendor---</option>
-            <option *ngFor="let vendorCompany of vendorCompanies" [ngValue]="vendorCompany.companyProfileName">
-                {{vendorCompany.companyProfileName}}
-            </option>
-        </select>
-    </div> -->
     <div class="col-xs-12 col-sm-6" [hidden]="userDefaultPage.isCurrentPageDefaultPage">
         <div style="display: flex;float: right;">
             <h4 style="margin: 0.3em">Do you want to set this as your default screen?</h4>
@@ -145,11 +137,11 @@
                             <div class="portlet-body" style="min-height: 230px;  max-height: 100%; max-width: auto;">
                                 <app-modal-popup-loader [height]=220 [hidden]="!emailStatisticsLoader.isLoading"></app-modal-popup-loader>
                                 <div class="table-responsive" [hidden]="emailStatisticsLoader.isLoading">
-                                    <table id="trellis">
+                                    <table id="trellis" aria-describedby="desc">
                                         <tr>
-                                            <td class="first"></td>
-                                            <td></td>
-                                            <td></td>
+                                            <th class="first" scope="col"></th>
+                                            <th scope="col"></th>
+                                            <th scope="col"></th>
                                         </tr>
                                     </table>
                                 </div>

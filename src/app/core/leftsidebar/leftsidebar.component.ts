@@ -66,6 +66,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
                     this.authService.module.isCampaign = true;
                     if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner' || this.authService.superiorRole === 'Partner'))
@@ -85,33 +87,45 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 }
                 if ( roles.indexOf( this.roleName.emailTemplateRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isEmailTemplate = true;
                 }
                 if ( roles.indexOf( this.roleName.statsRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isStats = true;
                 }
                 if ( roles.indexOf( this.roleName.partnersRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isPartner = true;
                 }
                 if ( roles.indexOf( this.roleName.videRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isVideo = true;
                 }
                 if ( roles.indexOf( this.roleName.opportunityRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.hasOpportunityRole = true;
                 }
 
                 if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 &&
                         roles.indexOf( this.roleName.orgAdminRole ) < 0 &&
-                        roles.indexOf( this.roleName.vendorRole ) < 0 ) {
+                        roles.indexOf( this.roleName.vendorRole ) < 0 && 
+                        roles.indexOf( this.roleName.vendorTierRole )<0 && 
+                        roles.indexOf( this.roleName.marketingRole )<0  ) {
                         this.authService.module.isOnlyPartner = true;
                     }
 
@@ -119,9 +133,11 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isOrgAdmin = true;
                 }
 
-                if (roles.indexOf(this.roleName.vendorRole) > -1)
-                 {
+                if (roles.indexOf(this.roleName.vendorRole) > -1){
                     this.authService.module.isVendor = true;
+                }
+                if (roles.indexOf(this.roleName.vendorTierRole) > -1){
+                    this.authService.module.isVendorTier = true;
                 }
                 
                  if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {

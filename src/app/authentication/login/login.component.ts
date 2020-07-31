@@ -191,6 +191,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     module.isCompanyPartner = false;
     module.hasSocialStatusRole = false;
     module.isVendor = false;
+	module.isVendorTier = false;
+	module.isMarketing = false;
     module.isAddingPartnersAccess = false;
     this.authenticationService.isAddedByVendor = false;
     this.authenticationService.isPartnerTeamMember = false;

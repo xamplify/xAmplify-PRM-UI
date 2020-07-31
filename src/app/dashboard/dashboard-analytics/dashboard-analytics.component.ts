@@ -205,6 +205,7 @@ this.campaignService.listCampaignInteractionsDataForVanityURL(this.dashboardAnal
             if (this.totalCampaignsCount >= 1) {
                 this.getCampaignsEamailBarChartReports(campaignIdArray);
             }else{
+                this.referenceService.loading(this.emailStatisticsLoader,false);
                 this.topFourLoading = false;
             }
         },

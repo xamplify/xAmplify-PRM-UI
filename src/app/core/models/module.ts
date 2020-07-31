@@ -26,5 +26,7 @@ export class Module {
     isVendor:boolean = false;
     isOrgAdmin:boolean = false;
     isPartner:boolean = false;
+    isVendorTier = false;
+    isMarketing = false;
 
 }
