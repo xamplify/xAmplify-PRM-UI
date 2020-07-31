@@ -124,7 +124,21 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isVendor = true;
                 }
                 
-                if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
+                 if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
+                    this.pagination.pageIndex = 1;
+                    this.pagination.maxResults = 10000;
+                    this.dashBoardService.loadVendorDetails( this.authService.getUserId(), this.pagination ).subscribe( response => {
+                        if(response.data!=undefined){
+                            response.data.forEach( element => {
+                                this.refService.getOrgCampaignTypes( element.companyId ).subscribe( data => {
+                                    if ( !this.enableLeadsByVendor ) {
+                                        this.enableLeadsByVendor = data.enableLeads;
+                                    }
+                                } );
+                            } );
+                        }
+                       
+                    } )
                     this.authService.module.isCompanyPartner = true;
                 }
                 

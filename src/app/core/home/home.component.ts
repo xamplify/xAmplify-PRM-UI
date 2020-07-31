@@ -106,10 +106,21 @@ export class HomeComponent implements OnInit {
   saveVideoBrandLog(companyLogoPath, logoLink) {
     console.log("");
   }
+  getCompanyId() {
+    try {
+      this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
+        (result: any) => {
+          if (result !== "") {  this.referenceService.companyId = result;
+            this.getOrgCampaignTypes();
+          }
+        }, (error: any) => { this.xtremandLogger.log(error); }
+      );
+    } catch (error) { this.xtremandLogger.log(error);  } }
 
   getOrgCampaignTypes(){
       this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
       data=>{
+        this.xtremandLogger.log(data);
         this.referenceService.videoCampaign = data.video;
         this.referenceService.emailCampaign = data.regular;
         this.referenceService.socialCampaign = data.social;
@@ -123,6 +134,7 @@ export class HomeComponent implements OnInit {
       this.userService.getEventAccessTab(url)
           .subscribe(
               data => {
+                  console.log(data);
                   this.referenceService.eventCampaignTabAccess = data.event;
                   this.referenceService.socialCampaignTabAccess = data.social;
               },
@@ -138,11 +150,12 @@ export class HomeComponent implements OnInit {
       .subscribe(
       response => {
            if(response.statusCode==200){
+             console.log(response)
               this.authenticationService.loggedInUserRole = response.data.role;
               this.authenticationService.isPartnerTeamMember = response.data.partnerTeamMember;
               this.authenticationService.superiorRole = response.data.superiorRole;
               const roles = this.authenticationService.getRoles();
-              //this.checkEnableLeads()
+              this.checkEnableLeads()
 
               if ( roles ) {
                   
