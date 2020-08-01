@@ -1489,11 +1489,11 @@
                                                                 <div class="icon-border">
                                                                     <i class="fa fa-users fa-2x icon-position" aria-hidden="true"></i>
                                                                 </div>
-                                                                <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor">
+                                                                <ng-container *ngIf="authenticationService.module.isVendor || authenticationService.isAddedByVendor ||authenticationService.module.isVendorTier || authenticationService.isVendorTierTeamMember ">
                                                                     <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
                                                                         Partner List(s)</ng-container>
                                                                 </ng-container>
-                                                                <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor">
+                                                                <ng-container *ngIf="!authenticationService.module.isVendor && !authenticationService.isAddedByVendor && !authenticationService.module.isVendorTier && !authenticationService.isVendorTierTeamMember">
                                                                     <ng-container class="h4-text" *ngIf="campaignType == 'video'||'regular'" translate>
                                                                         Contact List(s)</ng-container>
                                                                 </ng-container>
