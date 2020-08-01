@@ -215,7 +215,7 @@
 											<ng-container *ngIf="showAddOptions">
 											<div class="col-xs-12 col-md-6 col-sm-6 p0" 
 											*ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
-											 authenticationService.module.isVendor || authenticationService.module.isPartner || 
+											 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || 
 											 (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
@@ -612,7 +612,7 @@
 														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
 														<th class="text-center" *ngIf="isPartner"></th>
 														<!-- <th class='text-center'>MORE</th> -->
-														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>ACTIONS</th>
+														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -731,7 +731,7 @@
 																	*ngIf="contact.isShowDetails" translate>Less</span>
 															</button>
 															</td>
-															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
+															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 															<div class="actions-block override-actions">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>

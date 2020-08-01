@@ -340,13 +340,13 @@
 													<td *ngIf="!authenticationService.isSuperAdmin()">
 														<div class="actions-block override-actions" *ngIf="(!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd)">
 															<a
-																*ngIf="(hasAllAccess || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isPartner() || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
+																*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isPartner() || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_edit}}"> <i
 																class="fa fa-pencil-square-o"></i>
 															</a> <a
-																*ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor || contactList.synchronisedList"
+																*ngIf="!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor  || authenticationService.module.isVendorTier || contactList.synchronisedList"
 																(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 																data-toggle="tooltip" data-placement="top"
 																title="{{actionsDescription.contact_list_info}}"> <i
@@ -365,12 +365,12 @@
 																	*ngIf="contactList.synchronisedList == true || contactList.marketoMasterList == true">
 																	<a data-toggle="tooltip" data-placement="top"
 																	title="{{actionsDescription.contact_list_synchronize}}"
-																	*ngIf="hasAllAccess || authenticationService.module.isVendor|| (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+																	*ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 																	(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)">
 																		<i class="fa fa-refresh" aria-hidden="true"></i>
 																</a>
 																</span> <a
-																*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
+																*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner())
 																 && !contactList.defaultPartnerList && !contactList.marketoMasterList"
 																(click)="showAlert(contactList.id)"
 																data-toggle="tooltip" data-placement="top"
@@ -462,14 +462,14 @@
 											<div class="bar"
 												*ngIf="!authenticationService.isSuperAdmin() && ((!contactList.marketoMasterList && contactList.emailValidationInd) || (contactList.marketoMasterList && contactList.marketoSyncComplete && contactList.emailValidationInd))">
 												<a [class.disabled]="!contactList.emailValidationInd"
-													*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
+													*ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || (hasContactRole && loggedInUserId == contactList.uploadedUserId)) && !contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_edit}}"
 													data-rel="fancybox-button"> <i
 													class="fa fa-pencil-square-o"></i>
 												</a> <a [class.disabled]="!contactList.emailValidationInd"
-													*ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor) || contactList.synchronisedList"
+													*ngIf="(!hasAllAccess && !authenticationService.isPartner() && loggedInUserId != contactList.uploadedUserId && !authenticationService.module.isVendor  || authenticationService.module.isVendorTier) || contactList.synchronisedList"
 													(click)="editContactList(contactList.id,contactList.name,contactList.uploadedUserId,contactList.defaultPartnerList,contactList.synchronisedList);setListType(contactList.publicList)"
 													data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_info}}"
@@ -493,14 +493,14 @@
 												<a data-toggle="tooltip" data-placement="top"
 													title="{{actionsDescription.contact_list_synchronize}}"
 													[class.disabled]="!contactList.emailValidationInd"
-													*ngIf="hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
+													*ngIf="hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId)"
 													(click)="synchronizeContactList(contactList.id,contactList.socialNetwork)"
 													data-rel="fancybox-button" style="left: 18%; top: -20px;">
 													<i class="fa fa-refresh" aria-hidden="true"
 													style="color: white;"></i>
 												</a> </ng-container>
 												<a [class.disabled]="!contactList.emailValidationInd || contactList.marketoMasterList"
-													*ngIf="(hasAllAccess || authenticationService.module.isVendor || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
+													*ngIf="(hasAllAccess || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || (hasContactRole && loggedInUserId==contactList.uploadedUserId) || authenticationService.isOnlyPartner()) && !contactList.defaultPartnerList"
 													(click)="showAlert(contactList.id)" data-toggle="tooltip"
 													data-placement="top"
 													title="{{actionsDescription.contact_list_delete}}"
@@ -651,7 +651,7 @@
 										</div>
 										<div class="btn-group pull-right"
 											style="margin-top: 4px; color: #000000;"
-											*ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor || authenticationService.isVendorPartner() || authenticationService.isPartner() || authenticationService.isOrgAdminPartner())">
+											*ngIf="(hasAllAccess || hasContactRole || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.isVendorPartner() || authenticationService.isPartner() || authenticationService.isOrgAdminPartner())">
 											<span class="dropdown-toggle" data-toggle="dropdown"
 												style="color: #FFF; box-shadow: none; margin-top: 8px; float: right;">
 												<i class="fa fa-cog"
