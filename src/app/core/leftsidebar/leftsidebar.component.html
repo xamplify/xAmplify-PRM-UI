@@ -76,9 +76,9 @@
                 </ul>
             </li>
 
-            <li *ngIf="authService.user.hasCompany && (authService.module.isContact || authService.isShowContact)" [ngClass]="{'active': location.path().includes('contacts')}">
+            <li *ngIf="authService.user.hasCompany && (authService.module.isContact)" [ngClass]="{'active': location.path().includes('contacts')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
-                    <i class="fa fa-list-ul"></i>
+                    <i class="fa fa-list-ul" aria-hidden="true"></i>
                     <span class="title" translate>Contacts</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>

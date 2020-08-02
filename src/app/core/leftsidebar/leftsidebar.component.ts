@@ -239,11 +239,18 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
 
     listLeftSideBarNavItems(){
         this.loading = true;
-        this.dashBoardService.listLeftSideNavBarItems(this.authService.getUserId())
+        let vanityUrlPostDto = {};
+        if(this.authService.companyProfileName !== undefined && this.authService.companyProfileName !== ''){
+            vanityUrlPostDto['vendorCompanyProfileName'] = this.authService.companyProfileName;
+            vanityUrlPostDto['vanityUrlFilter'] = true;
+        }
+        vanityUrlPostDto['userId'] = this.authService.getUserId();
+        this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
         .subscribe(
           data => {
             this.loading = false;
-            this.rssFeedAccess = data.access;
+            this.rssFeedAccess = data.rssFeeds;
+            this.authService.module.isContact = data.contacts;
           },
           error => {
             this.loading = false;
@@ -254,5 +261,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
           }
         );
     }
+
+    
+
 
 }

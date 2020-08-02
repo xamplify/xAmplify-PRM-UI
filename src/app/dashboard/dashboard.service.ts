@@ -401,12 +401,14 @@ export class DashboardService {
             .catch(this.handleError);
     }
 
-    listLeftSideNavBarItems(userId:number) {
-        const url = this.moduleUrl+'showRssFeedOption/'+userId+'?access_token=' + this.authenticationService.access_token;
-            return this.http.get(url, "")
+    listLeftSideNavBarItems(vanityUrlPostDto:any) {
+        const url = this.moduleUrl+'showRssFeedOption?access_token=' + this.authenticationService.access_token;
+            return this.http.post(url,vanityUrlPostDto)
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+ 
 
     private extractData(res: Response) {
         let body = res.json();

@@ -185,7 +185,7 @@ export class HomeComponent implements OnInit {
                               //||(this.authenticationService.superiorRole === 'OrgAdmin & Partner' || (this.authenticationService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
                               )
                           {
-                              this.authenticationService.isShowContact = true;
+                             // this.authenticationService.isShowContact = true;
                           }
                       
                   }
