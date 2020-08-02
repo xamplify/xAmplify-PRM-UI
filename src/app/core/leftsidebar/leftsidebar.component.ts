@@ -189,7 +189,7 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         } catch ( error ) { console.log( error ); }
     }
     
-    ngOnInit() {      
+    ngOnInit() { 
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;        
         this.listLeftSideBarNavItems();
     }

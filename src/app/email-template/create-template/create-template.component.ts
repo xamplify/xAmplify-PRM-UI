@@ -291,8 +291,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
         
 
-        if ( refService.defaultPlayerSettings != null ) {
-            var beeUserId = "bee-" + self.refService.defaultPlayerSettings.companyProfile.id;
+        if ( self.refService.companyId!=undefined && self.refService.companyId>0 ) {
+            var beeUserId = "bee-" + self.refService.companyId;
             var roleHash = self.authenticationService.vendorRoleHash;
             var beeConfig = {
                 uid: beeUserId,
@@ -355,6 +355,8 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
                             } );
                     } );
                 } );
+        }else{
+            swal("Please Contact Admin!", "No CompanyId Found", "error");
         }
     }else{
         this.location.back();//Navigating to previous router url

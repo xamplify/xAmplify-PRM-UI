@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
   userId: any;
   token: any;
   loggedInThroughVanityUrl = false;
+  loader = false;
   constructor(
     private titleService: Title,
     public referenceService: ReferenceService,
@@ -40,6 +41,7 @@ export class HomeComponent implements OnInit {
     public videoUtilService: VideoUtilService,
     private vanityURLService:VanityURLService
   ) {
+    this.referenceService.companyId = 0;
     this.loggedInThroughVanityUrl =  this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
   }
@@ -88,7 +90,6 @@ export class HomeComponent implements OnInit {
             this.referenceService.defaultPlayerSettings = response;
             this.referenceService.companyId = response.companyProfile.id;
             this.referenceService.companyProfileImage = response.companyProfile.companyLogoPath;
-            this.getOrgCampaignTypes();
             if (!response.brandingLogoUri || !response.brandingLogoDescUri) {
                 const logoLink = this.videoUtilService.isStartsWith(response.companyProfile.website);
               this.saveVideoBrandLog( response.companyProfile.companyLogoPath, logoLink);
@@ -110,8 +111,13 @@ export class HomeComponent implements OnInit {
     try {
       this.referenceService.getCompanyIdByUserId(this.authenticationService.user.id).subscribe(
         (result: any) => {
-          if (result !== "") {  this.referenceService.companyId = result;
-            this.getOrgCampaignTypes();
+          if (result !== "") { 
+            this.loader = false;
+            this.referenceService.companyId = result;
+            if(result!=undefined && result>0){
+              this.getOrgCampaignTypes();
+            }
+            
           }
         }, (error: any) => { this.xtremandLogger.log(error); }
       );
@@ -120,7 +126,6 @@ export class HomeComponent implements OnInit {
   getOrgCampaignTypes(){
       this.referenceService.getOrgCampaignTypes( this.referenceService.companyId).subscribe(
       data=>{
-        this.xtremandLogger.log(data);
         this.referenceService.videoCampaign = data.video;
         this.referenceService.emailCampaign = data.regular;
         this.referenceService.socialCampaign = data.social;
@@ -268,6 +273,7 @@ export class HomeComponent implements OnInit {
   
   ngOnInit() {
       try {
+        this.loader = true;
           if(this.currentUser['logedInCustomerCompanyNeme'] != undefined){            
             if(this.authenticationService.vanityURLEnabled && this.authenticationService.v_companyName){
               this.setTitle(this.authenticationService.v_companyName);
@@ -289,7 +295,8 @@ export class HomeComponent implements OnInit {
             this.getTeamMembersDetails();
             this.getPartnerCampaignsNotifications();
           }
-         this.vanityURLService.isVanityURLEnabled();      
+         this.vanityURLService.isVanityURLEnabled();  
+         this.getCompanyId();    
        } catch (error) {
          this.xtremandLogger.error("error" + error);
        }  

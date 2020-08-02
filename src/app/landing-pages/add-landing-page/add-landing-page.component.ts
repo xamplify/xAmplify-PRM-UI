@@ -248,8 +248,8 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                         }
 
 
-                        if (this.referenceService.defaultPlayerSettings != null) {
-                            var beeUserId = "bee-" + this.referenceService.defaultPlayerSettings.companyProfile.id;
+                        if (this.referenceService.companyId!=undefined && this.referenceService.companyId>0) {
+                            var beeUserId = "bee-" + this.referenceService.companyId;
                             var beeConfig = {
                                 uid: beeUserId,
                                 container: 'bee-plugin-container',
@@ -305,7 +305,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 });
                         }
                     } else {
-                        swal("Please Contact Admin!", "No Page Found", "error");
+                        swal("Please Contact Admin!", "No CompanyId Found", "error");
                     }
                     this.referenceService.loading(this.httpRequestLoader, false);
                 },
