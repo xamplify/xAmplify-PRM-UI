@@ -247,7 +247,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
                         }
 
-
+                        
                         if (this.referenceService.companyId!=undefined && this.referenceService.companyId>0) {
                             var beeUserId = "bee-" + this.referenceService.companyId;
                             var beeConfig = {

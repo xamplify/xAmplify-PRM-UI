@@ -41,7 +41,6 @@ export class HomeComponent implements OnInit {
     public videoUtilService: VideoUtilService,
     private vanityURLService:VanityURLService
   ) {
-    this.referenceService.companyId = 0;
     this.loggedInThroughVanityUrl =  this.vanityURLService.isVanityURLEnabled();
     this.isAuthorized();
   }

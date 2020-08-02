@@ -290,7 +290,6 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
         }
 
         
-
         if ( self.refService.companyId!=undefined && self.refService.companyId>0 ) {
             var beeUserId = "bee-" + self.refService.companyId;
             var roleHash = self.authenticationService.vendorRoleHash;
