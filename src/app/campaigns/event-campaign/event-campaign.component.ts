@@ -248,7 +248,7 @@ export class EventCampaignComponent implements OnInit, OnDestroy,AfterViewInit,A
         this.completeLoader = false;
     });
     const roles = this.authenticationService.getRoles();
-        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1 ;
         this.isOrgAdminOrOrgAdminTeamMember = (this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)) && !this.reDistributeEvent;
         this.eventCampaign.eventUrl = this.envService.CLIENT_URL;
   }
