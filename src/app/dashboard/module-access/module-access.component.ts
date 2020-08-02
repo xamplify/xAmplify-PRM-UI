@@ -24,6 +24,7 @@ export class ModuleAccessComponent implements OnInit {
   companyLoader = true;
   moduleLoader = true;
   ngxLoading = false;
+  roleId:number = 0;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService) { }
 
   ngOnInit() {
@@ -36,6 +37,7 @@ export class ModuleAccessComponent implements OnInit {
     this.dashboardService.getCompanyDetailsAndUserId(this.companyId,this.userAlias).subscribe(result => {
       this.companyLoader = false;
       this.companyAndUserDetails = result;
+      this.roleId = result.roleId;
     }, error => {
       this.companyLoader = false;
       this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);

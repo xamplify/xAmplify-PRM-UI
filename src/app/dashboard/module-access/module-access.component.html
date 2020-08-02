@@ -73,11 +73,11 @@
 							<tr>
 								<th scope="row">Select Role</th>
 								<td>
-									<select class="form-control" id="roleId" [(ngModel)]="companyAndUserDetails.roleId">
-										<option value="13" [selected]="companyAndUserDetails.roleId ==13">Vendor</option>
-										<option value="19" [selected]="companyAndUserDetails.roleId ==19">Vendor-Tier</option>
-										<option value="18" [selected]="companyAndUserDetails.roleId ==18">Marketing</option>
-										<option value="2" [selected]="companyAndUserDetails.roleId ==2">Org Admin</option>
+									<select class="form-control" id="roleId" [(ngModel)]="roleId">
+										<option value="13" [selected]="roleId ==13">Vendor</option>
+										<option value="19" [selected]="roleId ==19">Vendor-Tier</option>
+										<option value="18" [selected]="roleId ==18">Marketing</option>
+										<option value="2" [selected]="roleId ==2">Org Admin</option>
 									</select>
 							</tr>
 							<tr>
