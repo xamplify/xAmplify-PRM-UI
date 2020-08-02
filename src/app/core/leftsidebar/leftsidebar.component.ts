@@ -77,14 +77,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.authService.module.isReDistribution = false;
                     }
                 }
-                if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
-                    roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.companyPartnerRole ) > -1 
-                    // || (this.authService.superiorRole === 'OrgAdmin & Partner' || (this.authService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
-                    )
-                {
-                    this.authService.module.isContact = true;
-                }
                 if ( roles.indexOf( this.roleName.emailTemplateRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorTierRole ) > -1 ||

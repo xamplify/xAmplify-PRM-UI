@@ -729,7 +729,7 @@
                                                                         </h5>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr *ngIf="authenticationService.module.isContact">
                                                                     <td class='pt10 pb10 bold' translate>Contacts Limit: </td>
                                                                     <td align="center" class="pt10 pb10">
                                                                         {{contact.contactsLimit}}
@@ -1250,7 +1250,7 @@
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
-                                <th scope="row" translate>#Contacts
+                                <th *ngIf="authenticationService.module.isContact" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
                                     </span>
@@ -1269,7 +1269,7 @@
                                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
                                         </app-user-info>
                                     </td>
-                                    <td class="contact-count error" id="contact-count-{{i}}">
+                                    <td *ngIf="authenticationService.module.isContact" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
                                     </td>
                                     <td *ngIf="mdfAccess">
