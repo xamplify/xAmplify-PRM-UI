@@ -323,7 +323,7 @@ export class AuthenticationService {
   isVendor() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && roleNames.indexOf(this.roleName.vendorRole) > -1)) {
+      if (roleNames && roleNames.length === 2 && (roleNames.indexOf(this.roleName.userRole) > -1 && ( roleNames.indexOf(this.roleName.vendorRole) > -1) ||  roleNames.indexOf(this.roleName.vendorTierRole) > -1)) {
         return true;
       } else {
         return false;

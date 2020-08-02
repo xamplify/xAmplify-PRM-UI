@@ -195,6 +195,9 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
     }catch(error) {this.logger.error('error'+error); }
   }
 
+
+
+
   getRoles(){
       this.userService.getRoles(this.authenticationService.getUserId())
       .subscribe(
