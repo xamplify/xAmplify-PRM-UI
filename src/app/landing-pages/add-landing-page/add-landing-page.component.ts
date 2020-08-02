@@ -113,7 +113,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                             self.landingPage.jsonBody = jsonContent;
                             if (self.landingPage.coBranded) {
                                 if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                                    swal("", "Whoops! We’re unable to save this page because you deleted the co-branding logo. You’ll need to select a new page and start over.", "error");
+                                    swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
                                     return false;
                                 }
                             }

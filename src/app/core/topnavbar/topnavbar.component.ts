@@ -249,12 +249,12 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
       this.isShowCKeditor = true;
       CKEDITOR.config.height = '300px';
       CKEDITOR.config.baseFloatZIndex = 1E5;
-      this.vendoorInvitation.subject = "Check out xAmplify’s marketing automation platform"
-      this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It’s called xAmplify and I really think you should check it out."
+      this.vendoorInvitation.subject = "Check out xAmplify's marketing automation platform"
+      this.vendoorInvitation.message = "Hi There," + "<br><br>" + "As one of your channel partners, I wanted to tell you about this great new marketing automation platform that has made redistributing campaigns so much more efficient and effective for me. It's called xAmplify and I really think you should check it out."
 
           + "<br><br>" + "You see, once a vendor uses xAmplify to share an email, video, or social media campaign with me, I can log in and redistribute it in just a few clicks. I then get access to end-user metrics on every email and video campaign (opens, clicks, views, watch times) to easily prioritize who to follow up with. Plus, there are other useful features like automatic co-branding and deal registration all built into a single platform."
 
-          + "<br><br>" + "It’d be great if I could redistribute your content via xAmplify. Like I said, it’s made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
+          + "<br><br>" + "It'd be great if I could redistribute your content via xAmplify. Like I said, it's made a real impact on my other co-marketing efforts and it would be awesome for our partnership to experience the same success."
 
           + "<br><br>" + "Visit " + "<a href='www.xamplify.com'>" + "www.xamplify.com" + "</a>" + " to learn more, or feel free to ask me questions about how it works on my end."
 

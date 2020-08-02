@@ -1350,12 +1350,12 @@ export class UploadVideoComponent implements OnInit, OnDestroy {
             && this.errorIsThere === false && (this.router.url !=='/login') && !this.contentProcessing && !this.videoFileService.videoFileSweetAlertMessage) {
             this.redirectPge = true;
             this.videoFileService.isProgressBar = true;
-            swal('','We’ll process your video in the background and save it in draft mode for when you return. Just look for it in the “Manage Videos” section.');
+            swal('',"We'll process your video in the background and save it in draft mode for when you return. Just look for it in the Manage Videos section.");
         }
         if((this.router.url !=='/login') && this.contentProcessing ){
           this.redirectContent = true;
           this.videoFileService.contentRedirect = true;
-       //   swal('','We’ll process your content in the background and save it. Just look for it in the “Manage content" section.');
+       //   swal('','We'll process your content in the background and save it. Just look for it in the “Manage content" section.');
         }
         if (this.picker) {
             this.picker.setVisible(false);

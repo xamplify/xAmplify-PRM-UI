@@ -120,13 +120,13 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
             self.emailTemplate.jsonBody = jsonContent;
             if ( emailTemplateService.emailTemplate.beeVideoTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.videoGif ) < 0 ) {
-                    swal( "", "Whoops! We’re unable to save this template because you deleted the default gif. You’ll need to select a new email template and start over.", "error" );
+                    swal( "", "Whoops! We're unable to save this template because you deleted the default gif. You'll need to select a new email template and start over.", "error" );
                     return false;
                 }
             }
             if ( emailTemplateService.emailTemplate.regularCoBrandingTemplate || emailTemplateService.emailTemplate.videoCoBrandingTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.coBraningImage ) < 0 ) {
-                    swal("", "Whoops! We’re unable to save this template because you deleted the co-branding logo. You’ll need to select a new email template and start over.", "error" );
+                    swal("", "Whoops! We're unable to save this template because you deleted the co-branding logo. You'll need to select a new email template and start over.", "error" );
                     return false;
                 }
             }
@@ -137,24 +137,24 @@ export class CreateTemplateComponent implements OnInit,OnDestroy {
 
        /*  if ( emailTemplateService.emailTemplate.beeEventTemplate || emailTemplateService.emailTemplate.beeEventCoBrandingTemplate ) {
                 if ( jsonContent.indexOf( self.eventTitle ) < 0 ) {
-                    swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_title}} merge tag.", "error" );
+                    swal( "", "Whoops! We're unable to save this template because you deleted the {{event_title}} merge tag.", "error" );
                     return false;
                 }
                  if(jsonContent.indexOf(self.eventDescription)< 0){
-                           swal("","Whoops! We’re unable to save this template because you deleted the {{event_description}} merge tag.","error");
+                           swal("","Whoops! We're unable to save this template because you deleted the {{event_description}} merge tag.","error");
                            return false;
                       }
                 if ( jsonContent.indexOf( self.eventStartTime ) < 0 ) {
-                    swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_start_time}} merge tag.", "error" );
+                    swal( "", "Whoops! We're unable to save this template because you deleted the {{event_start_time}} merge tag.", "error" );
                     return false;
                 }
 
                 if ( jsonContent.indexOf( self.eventEndTime ) < 0 ) {
-                    swal( "", "Whoops! We’re unable to save this template because you deleted the {{event_end_time}}﻿ merge tag.", "error" );
+                    swal( "", "Whoops! We're unable to save this template because you deleted the {{event_end_time}}﻿ merge tag.", "error" );
                     return false;
                 }
                 if ( jsonContent.indexOf( self.eventLocation ) < 0 ) {
-                    swal( "", "Whoops! We’re unable to save this template because you deleted the {{address}} merge tag.", "error" );
+                    swal( "", "Whoops! We're unable to save this template because you deleted the {{address}} merge tag.", "error" );
                     return false;
                 }
             }*/

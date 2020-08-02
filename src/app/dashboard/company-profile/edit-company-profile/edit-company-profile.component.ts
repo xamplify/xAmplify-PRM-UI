@@ -1484,7 +1484,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     setVendorLogoTooltipText() {
         this.vendorLogoTooltipText = "<b> On </b> - Your company logo will be displayed throughout the platform when your partners log into their accounts. <br/>"
-            + "<b> Off </b> - Each partner’s logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>"
+            + "<b> Off </b> - Each partner's logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>"
     }
 
     

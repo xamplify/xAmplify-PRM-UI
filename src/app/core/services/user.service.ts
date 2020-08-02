@@ -175,11 +175,7 @@ export class UserService {
             .catch(this.handleError);
     }
 
-	isAddedByVendorTier(userId: number) {
-        return this.http.get(this.URL + "admin/get-team-member-details/" + userId + "?access_token=" + this.authenticationService.access_token)
-            .map(this.extractData)
-            .catch(this.handleError);
-    }
+	
 
     getRoles(userId: number) {
         return this.http.get(this.URL + "admin/getRolesByUserId/" + userId + "?access_token=" + this.authenticationService.access_token)
