@@ -4,13 +4,10 @@ export class Module {
     isEmailTemplate:boolean = false;
     isStats:boolean = false;
     isVideo:boolean = false;
-    isOrgAdmin:boolean = false;
-    isPartner:boolean = false;
     hasVideoRole:boolean = false;
     hasOpportunityRole = false;
     hasSocialStatusRole:boolean = false;
-    isCompanyPartner:boolean = false;
-    isVendor:boolean = false;
+    
 
     hasFormAccess:boolean = false;
     hasLandingPageAccess:boolean = false;
@@ -20,8 +17,16 @@ export class Module {
 
     enableLeadsByVendor = false;
     enableLeads = false;
-    isOnlyPartner = false;
+    
     isAddingPartnersAccess = false;
     isReDistribution = false;
+
+    isOnlyPartner = false;
+    isCompanyPartner:boolean = false;
+    isVendor:boolean = false;
+    isOrgAdmin:boolean = false;
+    isPartner:boolean = false;
+    isVendorTier = false;
+    isMarketing = false;
 
 }

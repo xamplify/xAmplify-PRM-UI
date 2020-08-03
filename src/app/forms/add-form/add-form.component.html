@@ -32,9 +32,9 @@
                     </div>
                     <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2">
                         <button (click)="openFormFields()" class="btn btn-primary" style="border-radius: 3px !important;">
-                                <span class="hidden-xs margin-right-design" translate>Add Fields</span>
-                                <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
-                            </button>
+                            <span class="hidden-xs margin-right-design" translate>Add Fields</span>
+                            <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                        </button>
                     </div>
                     <div class=" col-xs-12 col-sm-6 col-md-8 col-lg-8">
                         <a class="close-circle xamp-margin-left-icon" (click)="navigateBack()" aria-hidden="true">
@@ -71,7 +71,7 @@
                                         <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true"
                                                 id="eye"></i></a>
                                     </div>
-                                    <div class="portlet-body clearfix" id="create-from-div" [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
+                                    <div class="portlet-body clearfix" id="create-from-div" [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" [style.backgroundColor]="pageBackgroundColor">
                                         <div *ngIf="form.showCompanyLogo">
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
@@ -433,7 +433,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Background Color:</label>
+                                        <label>Background Color(Form)</label>
                                         <input class="form-control" [value]="backgroundControllerColor" [(ngModel)]="form.backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="backgroundControllerColor" [style.background]="backgroundControllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'bottom'"
                                             readonly></span>
@@ -488,8 +488,6 @@
 
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;">
                             <div class="form-group">
@@ -499,32 +497,70 @@
                                     left</label>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12 pl0" style="padding-top: 10px;">
-                            <div class="form-group" style="margin-bottom: 5px!important;">
-                                <label>Select Background Image</label>
-                            </div>
 
-                        </div>
-                        <div class="col-md-12 col-lg-12 pl0 pr0">
-
-                            <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick('formBackgroundImage')">
-                                <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
-                                <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
-                                    <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
-                                        <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload background image</div>
-                                        <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
+                        <div class="col-md-12 col-lg-12 pl0 pr0" style="padding-top: 10px;">
+                            <div class="row">
+                                <div class="col-sm-5" style="margin-top: 10px;float: left;">
+                                    <label *ngIf="form.showBackgroundImage">Background Image</label>
+                                    <div *ngIf="!form.showBackgroundImage">Background Image</div>
+                                </div>
+                                <div class="col-sm-2" style="float: left;">
+                                    <div class="email-options-checkbox-group email-options-notify">
+                                        <div class="email-options-checkbox clearfix">
+                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                <switch [status]="form.showBackgroundImage" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="setShowBackgroundImage($event)">
+                                                </switch>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
-                                    <img class="img-grid" [src]="formBackgroundImagePath" alt="">
+                                <div class="col-sm-5" style="margin-top: 12px;float: left;">
+                                    <label *ngIf="!form.showBackgroundImage">Background Color</label>
+                                    <div *ngIf="form.showBackgroundImage">Background Color</div>
                                 </div>
-                                <ng-template #showCroppedBackgroundImage>
-                                    <span *ngIf="croppedBackgroundImage; else showBackgroundImage">
+                            </div>
+                        </div>
+                        <div *ngIf="form.showBackgroundImage">
+                            <div class="col-md-12 col-lg-12 pl0">
+                                <div class="form-group" style="margin-bottom: 5px!important;">
+                                    <label>Select Background Image</label>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+
+                                <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick('formBackgroundImage')">
+                                    <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
+                                    <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
+                                        <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
+                                            <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload background image</div>
+                                            <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
+                                        <img class="img-grid" [src]="formBackgroundImagePath" alt="">
+                                    </div>
+                                    <ng-template #showCroppedBackgroundImage>
+                                        <span *ngIf="croppedBackgroundImage; else showBackgroundImage">
                                         <img class="img-grid" [src]="croppedBackgroundImage" alt="">
                                     </span>
-                                </ng-template>
-                                <ng-template #showBackgroundImage>
-                                    <img class="img-grid" *ngIf="form.backgroundImage" [src]="form.backgroundImage" (error)="errorHandler($event)" alt=""> </ng-template>
+                                    </ng-template>
+                                    <ng-template #showBackgroundImage>
+                                        <img class="img-grid" *ngIf="form.backgroundImage" [src]="form.backgroundImage" (error)="errorHandler($event)" alt=""> </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!form.showBackgroundImage" class="col-md-12 col-lg-12 pl0 pr0">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Background Color</label>
+                                        <input class="form-control" [value]="pageBackgroundControllerColor" [(ngModel)]="form.pageBackgroundColor" style="margin-bottom: 10px;padding-left: 40px;" />
+                                        <span class="input-group-addon color-pick" [(colorPicker)]="pageBackgroundControllerColor" [style.background]="pageBackgroundControllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'pageBackgroundColor')"
+                                            [cpPosition]="'bottom'" readonly></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding-top: 10px;">

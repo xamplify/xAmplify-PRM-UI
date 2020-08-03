@@ -14,5 +14,6 @@ export class CampaignAccess {
   allBoundSource = false;
   vanityUrlDomain = false;
   mdf = false;
-loginAsTeamMember = false;
+  loginAsTeamMember = false;
+  roleId:number = 0;
 }

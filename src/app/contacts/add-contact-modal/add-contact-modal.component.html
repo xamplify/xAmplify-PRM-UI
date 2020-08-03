@@ -62,7 +62,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
             <span class="star"> *</span>
           </label>
-          <div class="form-group col-xs-10 col-sm-10">
+          <div class="form-group col-xs-10 col-sm-10" *ngIf="authenticationService.module.isContact">
             <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
               [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" 
               oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">

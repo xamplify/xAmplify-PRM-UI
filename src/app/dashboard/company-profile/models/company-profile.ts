@@ -34,4 +34,5 @@ export class CompanyProfile {
     favIconLogoPath:string;
     loginScreenDirection:string;
     enableVanityURL:boolean =false;
+    roleId:number = 0;
 }

@@ -85,11 +85,11 @@ export class SelectCampaignTypeComponent implements OnInit{
      }
     ngOnInit() {
         try{
-            if(!this.refService.companyId) { this.getCompanyIdByUserId(); } else { this.getOrgCampaignTypes();}
             Metronic.init();
             Layout.init();
             Demo.init();
             TableManaged.init();
+ 		this.getCompanyIdByUserId(); 
         }catch(error){
             this.logger.error("error in select-campaign-type ngOnInit()", error);
         }

@@ -313,7 +313,7 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         else {
             this.checkingForEmail = false;
         }
-        if ( lowerCaseEmail != this.editingEmailId ) {
+        if ( (lowerCaseEmail != this.editingEmailId) && this.contactService.allPartners!=undefined  ) {
             for ( let i = 0; i < this.contactService.allPartners.length; i++ ) {
                 if ( lowerCaseEmail == this.contactService.allPartners[i].emailId ) {
                     this.isEmailExist = true;

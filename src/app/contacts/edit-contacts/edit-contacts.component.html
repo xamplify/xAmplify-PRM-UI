@@ -215,7 +215,7 @@
 											<ng-container *ngIf="showAddOptions">
 											<div class="col-xs-12 col-md-6 col-sm-6 p0" 
 											*ngIf="hasAllAccess || authenticationService.isPartner() || authenticationService.isVendorPartner() ||
-											 authenticationService.module.isVendor || authenticationService.module.isPartner || 
+											 authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || 
 											 (hasContactRole && loggedInUserId==uploadedUserId)">
 												<div class="btn-group" *ngIf="!isSynchronizationList">
 													<button id="add_contact" class="btn green"
@@ -612,7 +612,7 @@
 														<th class="text-center hidden-xs" *ngIf="gdprStatus || isPartner"></th>
 														<th class="text-center" *ngIf="isPartner"></th>
 														<!-- <th class='text-center'>MORE</th> -->
-														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>ACTIONS</th>
+														<th class='text-center' style="width:16%" *ngIf="((hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList || isPartner || contactsByType.selectedCategory == 'non-active') && !clickBoard" translate>ACTIONS</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -731,7 +731,7 @@
 																	*ngIf="contact.isShowDetails" translate>Less</span>
 															</button>
 															</td>
-															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
+															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
 															<div class="actions-block override-actions">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -757,7 +757,7 @@
 																	{{contact.legalBasisString}}
 																</td>
 															</tr>
-															<tr *ngIf="isPartner">
+															<tr *ngIf="isPartner && authenticationService.module.isContact">
 																<td class='pt10 pb10 bold' translate>Contacts Limit : </td>
 																<td align="center" class="pt10 pb10">
 																	{{contact.contactsLimit}}
@@ -1018,7 +1018,7 @@
 																	{{allcontacts.legalBasisString}}
 																</td>
 															</tr>
-															<ng-container *ngIf="isPartner">
+															<ng-container *ngIf="isPartner && authenticationService.module.isContact">
 																<tr>
 																	<td class='pt10 pb10 bold' translate>Contacts Limit : </td>
 																	<td align="center" class="pt10 pb10">
@@ -1208,7 +1208,7 @@
                         <thead>
                             <tr>
                                 <th scope="row" translate>Entity Info</th>
-                                <th scope="row" translate>#Contacts
+                                <th *ngIf="authenticationService.module.isContact" scope="row" translate>#Contacts
                                      <span id="tooltip-helper">
                                         <i class="fa fa-question-circle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Assign number of contacts to each partner (Minimum 1)"></i>
                                     </span>
@@ -1227,7 +1227,7 @@
                                         <app-user-info [isPartnerEntityInfo]="true" [userInfo]="partner">
                                         </app-user-info>
                                     </td>
-                                    <td class="contact-count error" id="contact-count-{{i}}">
+                                    <td *ngIf="authenticationService.module.isContact" class="contact-count error" id="contact-count-{{i}}">
                                         <input type="number" [(ngModel)]="partner.contactsLimit"  [ngModelOptions]="{standalone: true}"  class="form-control" name="contactsLimit" placeholder="Contacts" min="1" oninput="validity.valid||(value='');">
                                     </td>
                                     <td *ngIf="mdfAccess">

@@ -68,6 +68,8 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
+import {NoCacheHeadersInterceptor} from './core/no-cache-provider';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -92,6 +94,11 @@ import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-err
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: NoCacheHeadersInterceptor,
+        multi: true
+      },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,

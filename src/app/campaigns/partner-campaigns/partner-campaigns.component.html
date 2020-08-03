@@ -198,7 +198,7 @@
 													</ng-container>
 													<ng-container *ngIf="!campaign.allowRedistribution">
 														<a data-toggle="tooltip" data-placement="top"
-															title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute"
+															title="{{campaign?.redistibuteToolTipMessage}}"
 															data-rel="fancybox-button">
 															<i class="fa fa-clone cancelled-event"></i>
 														</a>
@@ -317,7 +317,7 @@
                                             </ng-container>
 
                                             <ng-container *ngIf="!campaign.allowRedistribution">
-                                                <a data-toggle="tooltip" data-placement="top" title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute" data-rel="fancybox-button">
+                                                <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
                                                     <i class="fa fa-clone cancelled-event"></i>
                                                 </a>
                                             </ng-container>

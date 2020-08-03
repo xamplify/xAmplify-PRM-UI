@@ -113,7 +113,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                             self.landingPage.jsonBody = jsonContent;
                             if (self.landingPage.coBranded) {
                                 if (jsonContent.indexOf(self.coBraningImage) < 0) {
-                                    swal("", "Whoops! We’re unable to save this page because you deleted the co-branding logo. You’ll need to select a new page and start over.", "error");
+                                    swal("", "Whoops! We're unable to save this page because you deleted the co-branding logo. You'll need to select a new page and start over.", "error");
                                     return false;
                                 }
                             }
@@ -247,9 +247,9 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
 
                         }
 
-
-                        if (this.referenceService.defaultPlayerSettings != null) {
-                            var beeUserId = "bee-" + this.referenceService.defaultPlayerSettings.companyProfile.id;
+                        
+                        if (this.referenceService.companyId!=undefined && this.referenceService.companyId>0) {
+                            var beeUserId = "bee-" + this.referenceService.companyId;
                             var beeConfig = {
                                 uid: beeUserId,
                                 container: 'bee-plugin-container',
@@ -305,7 +305,7 @@ export class AddLandingPageComponent implements OnInit, OnDestroy {
                                 });
                         }
                     } else {
-                        swal("Please Contact Admin!", "No Page Found", "error");
+                        swal("Please Contact Admin!", "No CompanyId Found", "error");
                     }
                     this.referenceService.loading(this.httpRequestLoader, false);
                 },

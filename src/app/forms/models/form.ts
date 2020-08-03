@@ -32,5 +32,7 @@ export class Form {
     showFooter=false;
     titleColor="";
     borderColor="";
+    pageBackgroundColor="";
+    showBackgroundImage=false;
 	
 }

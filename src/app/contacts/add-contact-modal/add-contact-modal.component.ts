@@ -8,6 +8,7 @@ import { VideoFileService } from '../../videos/services/video-file.service'
 import { ReferenceService } from '../../core/services/reference.service';
 import { XtremandLogger } from '../../error-pages/xtremand-logger.service';
 import { LegalBasisOption } from '../../dashboard/models/legal-basis-option';
+import { AuthenticationService } from '../../core/services/authentication.service';
 
 declare var $: any;
 
@@ -45,7 +46,7 @@ export class AddContactModalComponent implements OnInit, AfterViewInit,OnDestroy
     gdprStatus:boolean = true;
     validLimit = false;
     constructor( public countryNames: CountryNames, public regularExpressions: RegularExpressions,public router:Router,
-                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger ) {
+                 public contactService: ContactService, public videoFileService: VideoFileService, public referenceService:ReferenceService,public logger: XtremandLogger,public authenticationService: AuthenticationService ) {
         this.notifyParent = new EventEmitter();
         this.isPartner = this.router.url.includes('home/contacts')? false: true;
 

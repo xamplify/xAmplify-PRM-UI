@@ -215,8 +215,8 @@
                         <app-user-info [userInfo]="companyAndUserDetails">
                         </app-user-info>
                       </td>
-                      <td>{{companyAndUserDetails.companyName}}</td>
-                      <td>{{companyAndUserDetails.userStatus}}</td>
+                      <td>{{companyAndUserDetails?.companyName}}</td>
+                      <td>{{companyAndUserDetails?.userStatus}}</td>
                       <td align="center">
                         <app-timestamp [dateAndTime]="companyAndUserDetails?.dateReg"> </app-timestamp>
                       </td>
@@ -224,7 +224,7 @@
                         <app-timestamp [dateAndTime]="companyAndUserDetails?.dateLastLogin"> </app-timestamp>
                       </td>
                       <td align="center">
-                        <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
+                        <app-timestamp [dateAndTime]="companyAndUserDetails?.updatedTime"> </app-timestamp>
                       </td>
                     </tr>
                   </ng-container>

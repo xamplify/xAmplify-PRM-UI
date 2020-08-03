@@ -80,7 +80,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 	selectedSocialProviderId: number;
 	savedURL: string;
 	categoryNames: any;
-	showRssFeed = false;
+	showRssFeed:boolean = false;
 
 	constructor(private _location: Location, public socialService: SocialService,
 		private videoFileService: VideoFileService, public properties: Properties,
@@ -937,14 +937,7 @@ export class UpdateStatusComponent implements OnInit, OnDestroy {
 		this.socialService.hasRssFeedAccess(this.userId)
         .subscribe(
           data => {
-			let isOnlyPartner = this.authenticationService.loggedInUserRole == "Partner" && this.authenticationService.isPartnerTeamMember == false;
-			let isPartnerTeamMember = 	this.authenticationService.isPartnerTeamMember;
-			if(isOnlyPartner || isPartnerTeamMember){
-				this.showRssFeed =false;
-			}else{
-				this.showRssFeed = data.access;
-			}
-			
+			this.showRssFeed = data.access;
           },
           error => {
             this.loading = false;

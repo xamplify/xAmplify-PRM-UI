@@ -468,7 +468,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                         }
                         localStorage.setItem('currentUser', JSON.stringify(userToken));
                 localStorage.setItem('defaultDisplayType',data.modulesDisplayType);
-                console.log(JSON.parse(localStorage.getItem( 'currentUser' )));
                 
               },
               error => {console.log( error ); this.router.navigate(['/su'])},
@@ -1410,6 +1409,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                !this.zipError && !this.logoError && !this.aboutUsError) {
                this.customResponse = new CustomResponse();
                this.companyProfile.campaignAccessDto = this.campaignAccess;
+               this.companyProfile.roleId = $('#selectedRole option:selected').val();
                this.companyProfileService.createNewVendorRole(this.companyProfile)
                .subscribe(
                (result:any) => {
@@ -1484,7 +1484,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
 
     setVendorLogoTooltipText() {
         this.vendorLogoTooltipText = "<b> On </b> - Your company logo will be displayed throughout the platform when your partners log into their accounts. <br/>"
-            + "<b> Off </b> - Each partner’s logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>"
+            + "<b> Off </b> - Each partner's logo will be displayed throughout the platform when they log into their account. <br/>" + "<b>*This setting does not affect co-branding.</b>"
     }
 
     
