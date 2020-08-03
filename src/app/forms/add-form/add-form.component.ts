@@ -102,6 +102,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     cropRounded = false;
     @ViewChild(ImageCropperComponent) cropper: ImageCropperComponent;
     errorUploadCropper = false;
+    fileSizeError = false;
     loadingcrop = false;
     fileObj: any;
     backgroundImageFileObj: any;
@@ -186,16 +187,16 @@ export class AddFormComponent implements OnInit, OnDestroy {
             if (this.form.borderColor) {
                 this.borderControllerColor = this.form.borderColor;
             }
-            if(this.form.pageBackgroundColor){
+            if (this.form.pageBackgroundColor) {
                 this.pageBackgroundControllerColor = this.form.pageBackgroundColor;
             }
             if (!this.form.buttonValue) {
                 this.form.buttonValue = "Submit";
             }
-            if(this.form.showBackgroundImage){
+            if (this.form.showBackgroundImage) {
                 this.formBackgroundImage = this.form.backgroundImage;
                 this.pageBackgroundColor = "";
-            }else{
+            } else {
                 this.pageBackgroundColor = this.form.pageBackgroundColor;
                 this.formBackgroundImage = "";
             }
@@ -871,7 +872,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
             } else if (type === "borderColor") {
                 this.borderControllerColor = event;
                 form.borderColor = event
-            }else if (type === "pageBackgroundColor") {
+            } else if (type === "pageBackgroundColor") {
                 this.pageBackgroundControllerColor = event;
                 form.pageBackgroundColor = event;
                 this.pageBackgroundColor = event;
@@ -909,14 +910,20 @@ export class AddFormComponent implements OnInit, OnDestroy {
         const image: any = new Image();
         const file: File = event.target.files[0];
         const isSupportfile = file.type;
+        const fileSize = file.size;
         if (isSupportfile === 'image/jpg' || isSupportfile === 'image/jpeg' || isSupportfile === 'image/png') {
-            this.errorUploadCropper = false;
-            if (this.popupOpenedFor == 'formBackgroundImage') {
-                this.backgroundImageChangedEvent = event;
-            } else if (this.popupOpenedFor == 'companyLogo') {
-                this.companyLogoChangedEvent = event;
+            if (fileSize < 12582912){
+                this.errorUploadCropper = false;
+                this.fileSizeError = false;
+                if (this.popupOpenedFor == 'formBackgroundImage') {
+                    this.backgroundImageChangedEvent = event;
+                } else if (this.popupOpenedFor == 'companyLogo') {
+                    this.companyLogoChangedEvent = event;
+                }
+                this.imageChangedEvent = event;
+            }else{
+                this.fileSizeError = true;
             }
-            this.imageChangedEvent = event;
         } else {
             this.errorUploadCropper = true;
             this.showCropper = false;
@@ -953,6 +960,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
         if (this.popupOpenedFor == 'formBackgroundImage') {
             this.backgroundImageFileObj = this.utilService.convertBase64ToFileObject(this.croppedBackgroundImage);
             this.backgroundImageFileObj = this.utilService.blobToFile(this.backgroundImageFileObj);
+            console.log(this.backgroundImageFileObj.size)
             this.uploadFile(this.backgroundImageFileObj, 'backgroundImage')
             this.formBackgroundImagePath = null;
             this.backgroundImageChangedEvent = null;
@@ -972,6 +980,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     fileChangeEvent(type: string) {
         this.popupOpenedFor = type;
         this.cropRounded = false;
+        this.fileSizeError = false;
         if (this.popupOpenedFor == 'formBackgroundImage') {
             this.imageChangedEvent = this.backgroundImageChangedEvent;
         } else if (this.popupOpenedFor == 'companyLogo') {
@@ -1255,12 +1264,12 @@ export class AddFormComponent implements OnInit, OnDestroy {
         this.referenceService.loading(this.httpRequestLoader, false);
     }
 
-    setShowBackgroundImage(event:any){
+    setShowBackgroundImage(event: any) {
         this.form.showBackgroundImage = event;
-        if(this.form.showBackgroundImage){
+        if (this.form.showBackgroundImage) {
             this.formBackgroundImage = this.form.backgroundImage;
             this.pageBackgroundColor = "";
-        }else{
+        } else {
             this.pageBackgroundColor = this.form.pageBackgroundColor;
             this.formBackgroundImage = "";
         }
