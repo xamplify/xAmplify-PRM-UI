@@ -42,6 +42,8 @@ export class ManageTeamMembersComponent implements OnInit {
 	isOrgAdmin = false;
 	moduleNames:Array<string>;
 
+	
+	allAccess = false;
 	videoAccess = false;
 	campaignAccess = false;
 	designAccess = false;
@@ -109,6 +111,7 @@ export class ManageTeamMembersComponent implements OnInit {
 						if (data.statusCode == 200) {
 							this.teamMemberModules = response.modules;
 							this.moduleNames = this.teamMemberModules.map(function (a) { return a.moduleName; });
+							this.allAccess = this.moduleNames.indexOf('All')>-1;
 							this.videoAccess = this.moduleNames.indexOf('Video')>-1;
 							this.campaignAccess = this.moduleNames.indexOf('Campaign')>-1;
 							this.designAccess = this.moduleNames.indexOf('Design')>-1;
@@ -566,6 +569,7 @@ export class ManageTeamMembersComponent implements OnInit {
 					this.loading = false;
 					if(data.statusCode==200){
 						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+						this.newlyAddedTeamMembers = [];
 						this.refreshList();
 						this.isUploadCsv = false;
 				        this.isAddTeamMember = false;
