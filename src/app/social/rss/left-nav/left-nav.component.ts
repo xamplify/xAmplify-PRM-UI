@@ -20,6 +20,7 @@ export class LeftNavComponent implements OnInit {
   showFeeds = false;
   roleDetails:any;
   vendors: Array<any>;
+  customFeedCollections: Array<any>;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isloading = true;
@@ -37,11 +38,13 @@ export class LeftNavComponent implements OnInit {
           this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
           if(this.showVendorFeeds){
             this.listAllVendors();
+            this.listAllCustomFeedCollections();
           }
         }else{
           this.showFeeds = false;
           this.showVendorFeeds = true;
           this.listAllVendors();
+          this.listAllCustomFeedCollections();
         }
       },
       error => {
@@ -60,6 +63,27 @@ export class LeftNavComponent implements OnInit {
       let statusCode = data.statusCode;
       if(statusCode==200){
         this.vendors = data.data;
+      }
+
+    },
+    error => {
+      this.isloading = false;
+    },
+    () => {
+      this.isloading = false;
+    }
+  );
+
+  }
+  
+  listAllCustomFeedCollections(){
+    this.isloading = true;
+    this.socialService.listAllCustomFeedCollections(this.loggedInUserId)
+  .subscribe(
+    data => {
+      let statusCode = data.statusCode;
+      if(statusCode==200){
+        this.customFeedCollections = data.data;
       }
 
     },
@@ -100,9 +124,9 @@ export class LeftNavComponent implements OnInit {
     this.router.navigate(['/home/rss/add-custom-feed']);
   }
 
-  goToAllCustomFeeds(type:string){
+   goToAllCustomFeeds(type:string, collectionId:number){
     this.isloading = true;
-    this.router.navigate(['/home/rss/manage-custom-feed/'+type]);
+    this.router.navigate(['/home/rss/manage-custom-feed/'+type+"/"+collectionId]);
   }
 
   goToVendorFeeds(vendorCompanyId:number,type:string){

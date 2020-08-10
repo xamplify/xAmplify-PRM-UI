@@ -67,6 +67,7 @@ export class Pagination {
 	vanityUrlFilter:boolean = false;
 	vendorCompanyProfileName:string;
 	vendorCompanyId:number = 0;
+	collectionId:number = 0;
 
 
 }

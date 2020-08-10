@@ -35,7 +35,7 @@ export class RssComponent implements OnInit {
               this.getHomeFeeds(this.userId);
             }else{
               this.loading = false;
-              this.router.navigate(['/home/rss/manage-custom-feed/p']);
+              this.router.navigate(['/home/rss/manage-custom-feed/p/0']);
             }
           },
           error => {

@@ -522,3 +522,22 @@ outline:none;
 .margin-top-folder{
 	margin-top: 15px;
 }
+
+.bs-example-popover {
+    position: absolute;
+    right: 300px;
+    top: 30px;
+    margin: 10px;
+}
+.bs-example-popover .popover {
+    display: block;
+    min-width: 300px;
+}
+.popover.bottom>.arrow {
+    top: -11px;
+    left: 90%;
+    margin-left: -11px;
+    border-top-width: 0;
+    border-bottom-color: #999;
+    border-bottom-color: rgba(0,0,0,.25);
+}
