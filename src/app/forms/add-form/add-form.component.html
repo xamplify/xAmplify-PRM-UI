@@ -730,11 +730,12 @@
                 </div>
                 <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button>
                 <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
+                <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be less than 12MB</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
                     <div [hidden]="!imageChangedEvent">
                         <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true" [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                            (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
+                            [resizeToWidth]="1000" (preserveSize)="true" (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
                         </image-cropper>
                     </div>
                     <div *ngIf="!imageChangedEvent">

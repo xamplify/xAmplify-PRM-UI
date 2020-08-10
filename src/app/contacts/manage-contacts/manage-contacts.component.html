@@ -172,6 +172,33 @@
 											</button>
 										</div>
 									</div>
+									
+									<span *ngIf = "iszohoAccessTokenExpired">
+										<h4>{{zohoExpiredAccessTokenMessage}}<a (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')" class="badge badge-primary"> ReLogin</a></h4>
+									</span> 
+									
+	<!--	<div *ngIf = "iszohoAccessTokenExpired">
+			<div class="alert alert-dismissible m0" role="alert"
+			[ngClass]="{'alert-success': customResponse.responseType == 'SUCCESS',
+				'alert-danger': customResponse.responseType == 'ERROR',
+				'alert-info': customResponse.responseType == 'INFO'}">
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close" (click)="customResponse.responseType = null">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 style="padding-top: 6px;">
+				<!-- <i class="fa"
+					[ngClass]="{'fa-check': customResponse.responseType == 'SUCCESS',
+					'fa-exclamation': customResponse.responseType == 'ERROR'}"
+					aria-hidden="true" style="padding-right: 7px; padding-top: 10px;"></i> --> 
+		   <!--			<span class="text" id='responseMessage'>
+						<h4>{{zohoExpiredAccessTokenMessage}}<a (click)="zohoAuthenticationThroughExpiredAccessTokenMessage('zoho')" class="badge badge-primary"> Relogin</a></h4>
+									
+					</span>
+			</h4>
+		</div>
+		</div>  -->
+									
 									<div class="page-bar m0" *ngIf="showListOfContactList">
 										<ul class="page-breadcrumb">
 											<li style="font-size: 16px; color: #888888" translate>

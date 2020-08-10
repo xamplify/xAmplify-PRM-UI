@@ -1788,9 +1788,9 @@
                     <h6>
                       <img *ngIf="emailLog.countryCode"
                         src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
-                        width="20px" class="mr10">{{emailLog.country}}, {{emailLog.city}}
+                        width="20px" class="mr10" alt="">{{emailLog.country}}, {{emailLog.city}}
                     </h6>
-                    <h6 class="mb0">{{emailLog.isp}}</h6>
+                    <h6 class="mb0">{{emailLog.isp}} ( <strong>{{emailLog?.ipAddress}}</strong> )</h6>
                   </span>
                   <div *ngIf="emailLog.actionId == 1">
                     <app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>

@@ -519,7 +519,6 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                             self.authenticationService.user.hasCompany = true;
                             self.authenticationService.user.websiteUrl = self.companyProfile.website;
                             self.authenticationService.isCompanyAdded = true;
-                            let module = self.authenticationService.module;
                             self.router.navigate(["/home/dashboard/welcome"]);
                             self.processor.set(self.processor);
                             self.saveVideoBrandLog();

@@ -279,7 +279,7 @@
                                                                             (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
                                                                             <i class="fa fa-envelope" style="width: 30px;"></i> Send Preview Email
                                                                         </a>
-                                                                        <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                                                        <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                                                             title="Invite More" translate>
                                                                             <i class="fa fa-users" style="width: 30px;"></i> Invite More
                                                                         </a>
@@ -435,7 +435,7 @@
                                                                         (click)="sendEventEmail(campaign)" title="Send Preview Email" translate>
                                                                         <i class="fa fa-envelope" style="width: 30px;"></i> Send Preview Email
                                                                     </a>
-                                                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                                                    <a *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                                                         title="Invite More" translate>
                                                                         <i class="fa fa-users" style="width: 30px;"></i> Invite More
                                                                     </a>
@@ -605,7 +605,7 @@
                                                              data-rel="fancybox-button" (click)="addWorkFlows(campaign)" title="Add Workflows">
                                                             <i class="fa fa-reply-all"></i>
                                                             </a> -->
-                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
+                                                        <a [class.disablednew]="!campaign.hasAccess" *ngIf="( hasAllAccess ||  hasCampaignRole|| isOnlyPartner || authenticationService.module.isVendor || authenticationService.module.isVendorTier) && (campaign.campaignType.indexOf('EVENT') > -1 && campaign.nurtureCampaign && campaign.showCancelButton && !campaign.parentCampaignLaunchedByVendorTierCompany)" data-rel="fancybox-button" (click)="inviteMore(campaign)"
                                                             title="Invite More">
                                                             <i class="fa fa-users"></i>
                                                         </a>

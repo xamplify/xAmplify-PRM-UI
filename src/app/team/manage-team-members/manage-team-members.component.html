@@ -104,7 +104,7 @@
                 </td>
               </ng-container>
                 <!-- -All-- -->
-                <td>
+                <td *ngIf="allAccess">
                 <input  type="checkbox" (change)="addAllAuthorities($event,teamMember,'add-team-member-table',i)" class="check-all-{{i}}" [(ngModel)]="teamMember.all">
                 <br>
               </td>
@@ -241,7 +241,7 @@
                   </td>
               </ng-container>
             <!-- -All-- -->
-              <td>
+              <td *ngIf="allAccess">
                 <input  type="checkbox" (change)="addAllAuthorities($event,teamMember,'list-team-member-table',i)" class="check-all-{{i}}" [(ngModel)]="teamMember.all">
                 <br>
             </td>
