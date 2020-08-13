@@ -92,27 +92,30 @@
                      <div class="caption" translate><i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>Manage MDF Funds</div>
                      <div class="inputs" align="right" style="float: right; padding: 4px">
                         <div style="float: left; margin: 0 10px;">
-                           <select class="form-control">
-                              <option >Sort by</option>
-                           </select>
+                          <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                            <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
+                                [ngValue]="option" translate>
+                                {{option.name}}</option>
+                        </select>
                         </div>
                         <div class="portlet-input input-inline">
                            <div class="input-icon right">
-                              <input type="text" class="form-control" placeholder="Search for a Partner">
-                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"></button>
-                              <button type="submit" class="search-box-item-click"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a partner" (keypress)="eventHandler($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
                            </div>
                         </div>
                      </div>
                   </div>
-                  <div class="portlet-body">
+                  <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
+                  <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!partnerListLoader.isLoading">
                      <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
                         <div class="inputs" align="right" style="float: right"></div>
                      </div>
                      <div class="clearfix">
                         <div class="col-xs-12" style="padding: 10px 0;">
                            <div class="table-responsive">
-                              <table class='table tgrid' aria-describedby="manage-mdf-fund-table">
+                              <table class='table tgrid' aria-describedby="manage-mdf-fund-table" *ngIf="!partnerListLoader.isLoading">
                                  <thead>
                                     <tr>
                                        <th class='text-center'>
@@ -163,13 +166,19 @@
                                   
                                  </tbody>
                               </table>
+                              <div *ngIf="pagination.pagedItems.length !== 0">
+                                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)" [hidden]="partnerListLoader.isLoading">
+                                </app-pagination>
+                            </div>
+                            <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
+                                <strong>No Data Found.</strong>
+                            </div>
                            </div>
                         </div>
                      </div>
                   </div>
                </div>
                <!-- END EXAMPLE TABLE PORTLET-->
-               <!-- <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination> -->
             </div>
          </div>
       </div>

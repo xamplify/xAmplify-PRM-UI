@@ -8,12 +8,15 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
-
+import { SortOption } from '../../core/models/sort-option';
+import { HttpRequestLoader } from '../../core/models/http-request-loader';
+import { UtilService } from '../../core/services/util.service';
 
 @Component({
   selector: 'app-manage-mdf-funds',
   templateUrl: './manage-mdf-funds.component.html',
-  styleUrls: ['./manage-mdf-funds.component.css','../html-sample/html-sample.component.css']
+  styleUrls: ['./manage-mdf-funds.component.css','../html-sample/html-sample.component.css'],
+  providers: [HttpRequestLoader, SortOption],
 })
 export class ManageMdfFundsComponent implements OnInit {
 
@@ -25,7 +28,7 @@ export class ManageMdfFundsComponent implements OnInit {
   loading = false;
   tilesLoader = false;
   tileData:any;
-  constructor(private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router) {
+  constructor(private utilService: UtilService,public sortOption: SortOption,public partnerListLoader: HttpRequestLoader,private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
 
@@ -50,9 +53,8 @@ export class ManageMdfFundsComponent implements OnInit {
         if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
           this.getTilesInfo();
           this.pagination.vendorCompanyId = this.vendorCompanyId;
-          this.getAllMdfFunds(this.pagination);
+          this.listPartners(this.pagination);
         }
-
       }
     );
   }
@@ -72,17 +74,20 @@ export class ManageMdfFundsComponent implements OnInit {
     });
   }
 
-  getAllMdfFunds(pagination: Pagination) {
+  listPartners(pagination: Pagination) {
+    this.referenceService.loading(this.partnerListLoader, true);
     this.mdfService.getMdfFundsAnalyticsForPagination(pagination).subscribe((result: any) => {
-      this.loading = false;
       if (result.statusCode === 200) {
         let data = result.data;
         pagination.totalRecords = data.totalRecords;
         this.mdfFundsPartnersInfoList = data.partnerList;
         pagination = this.pagerService.getPagedItems(pagination, this.mdfFundsPartnersInfoList);
       }
+      this.loading = false;
+      this.referenceService.loading(this.partnerListLoader, false);
     }, error => {
       this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
     });
   }
 
@@ -95,9 +100,37 @@ export class ManageMdfFundsComponent implements OnInit {
     });
   }
 
+      /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy(text: any) {
+      this.sortOption.mdfPartnersSortOption = text;
+      this.getAllFilteredResults(this.pagination);
+  }
+
+
+  /*************************Search********************** */
+  searchPartners() {
+      this.getAllFilteredResults(this.pagination);
+  }
+
+  paginationDropdown(items: any) {
+      this.sortOption.itemsSize = items;
+      this.getAllFilteredResults(this.pagination);
+  }
+
   /************Page************** */
   setPage(event: any) {
-    this.pagination.pageIndex = event.page;
-    this.getAllMdfFunds(this.pagination);
+      this.pagination.pageIndex = event.page;
+      this.listPartners(this.pagination);
   }
+
+  getAllFilteredResults(pagination: Pagination) {
+      this.pagination.pageIndex = 1;
+      this.pagination.searchKey = this.sortOption.searchKey;
+      this.pagination = this.utilService.sortOptionValues(this.sortOption.mdfPartnersSortOption, this.pagination);
+      this.listPartners(this.pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+  /********************Pagaination&Search Code*****************/
 }
