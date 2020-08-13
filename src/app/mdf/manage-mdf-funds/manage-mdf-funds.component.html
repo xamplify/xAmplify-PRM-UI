@@ -13,7 +13,7 @@
       <div class="col-md-12 col-lg-12">
          <div class="portlet light" style=" height:163px;">
             <div class="row" style="margin-top: 20px;">
-              <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
+               <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
                      <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
@@ -78,6 +78,98 @@
                      </div>
                   </div>
                </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="portlet box">
+         <div class="clearfix">
+            <div class="col-xs-12">
+               <!-- BEGIN EXAMPLE TABLE PORTLET-->
+               <div class="portlet box blue">
+                  <div class="portlet-title">
+                     <div class="caption" translate><i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>Manage MDF Funds</div>
+                     <div class="inputs" align="right" style="float: right; padding: 4px">
+                        <div style="float: left; margin: 0 10px;">
+                           <select class="form-control">
+                              <option >Sort by</option>
+                           </select>
+                        </div>
+                        <div class="portlet-input input-inline">
+                           <div class="input-icon right">
+                              <input type="text" class="form-control" placeholder="Search for a Partner">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"></button>
+                              <button type="submit" class="search-box-item-click"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="portlet-body">
+                     <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
+                        <div class="inputs" align="right" style="float: right"></div>
+                     </div>
+                     <div class="clearfix">
+                        <div class="col-xs-12" style="padding: 10px 0;">
+                           <div class="table-responsive">
+                              <table class='table tgrid' aria-describedby="manage-mdf-fund-table">
+                                 <thead>
+                                    <tr>
+                                       <th class='text-center'>
+                                          <input type="checkbox" name="all" />
+                                       </th>
+                                       <th style="width: 23%;" translate>Partner Info</th>
+                                       <th class="hidden-xs" translate>MDF Account Balance</th>
+                                       <th class="hidden-xs" translate>Used Balance</th>
+                                       <th class="hidden-xs" translate>Available Balance</th>
+                                       <th></th>
+                                       <th class='text-center' translate>ACTIONS</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                  <ng-container *ngFor="let partner of mdfFundsPartnersInfoList;let i=index">
+                                    <tr>
+                                      <td style="text-align: center;">
+                                         <input type="checkbox" name="all" />
+                                      </td>
+                                      <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner">
+                                        </app-user-info>
+                                    </td>
+                                      <td>
+                                         <span>${{partner?.mdfAccountBalance | number:'1.0':'en-US'}}</span>
+                                      </td>
+                                      <td>
+                                         <span>${{partner?.mdfUsedAmount | number:'1.0':'en-US'}}</span>
+                                      </td>
+                                      <td>
+                                         <span>${{partner?.mdfAvailableBalance | number:'1.0':'en-US'}}</span>
+                                      </td>
+                                      <td>
+                                         <button class="hidden-xs" id="more_less_button_0">
+                                         <span translate="" >More</span> 
+                                         </button>
+                                      </td>
+                                      <td style="text-align: center;">
+                                         <div class=" override-actions">
+                                            <a data-placement="bottom" data-toggle="tooltip" id="edit_0" title="" data-original-title="Edit partner" data-toggle="modal" data-target="#myModal">
+                                            <i class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
+                                            </a>
+                                         </div>
+                                      </td>
+                                   </tr>
+
+                                    </ng-container>
+                                  
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- END EXAMPLE TABLE PORTLET-->
+               <!-- <app-pagination [pagination]="pagination" [type]="'contacts'" (notifyParent)="setPage($event)" (notifyParentDropDown)="onChangeAllPartnerUsers($event)"></app-pagination> -->
             </div>
          </div>
       </div>

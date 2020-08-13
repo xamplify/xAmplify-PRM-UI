@@ -30,7 +30,7 @@ export class ManageMdfFundsComponent implements OnInit {
    }
 
    ngOnInit() {
-    // this.loading  = true;
+     this.loading  = true;
      this.getCompanyId();
     
   }
@@ -49,6 +49,8 @@ export class ManageMdfFundsComponent implements OnInit {
       () => {
         if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
           this.getTilesInfo();
+          this.pagination.vendorCompanyId = this.vendorCompanyId;
+          this.getAllMdfFunds(this.pagination);
         }
 
       }
@@ -63,22 +65,24 @@ export class ManageMdfFundsComponent implements OnInit {
       if (result.statusCode === 200) {
          this.tilesLoader = false;
          this.tileData = result.data;
-        //this.getAllMdfFunds(this.pagination);
+       
       }
     }, error => {
-      console.log(error);
+      this.xtremandLogger.log(error);
     });
   }
 
   getAllMdfFunds(pagination: Pagination) {
     this.mdfService.getMdfFundsAnalyticsForPagination(pagination).subscribe((result: any) => {
+      this.loading = false;
       if (result.statusCode === 200) {
-        pagination.totalRecords = result.totalRecords;
-        this.mdfFundsPartnersInfoList = result.data;
+        let data = result.data;
+        pagination.totalRecords = data.totalRecords;
+        this.mdfFundsPartnersInfoList = data.partnerList;
         pagination = this.pagerService.getPagedItems(pagination, this.mdfFundsPartnersInfoList);
       }
     }, error => {
-      console.log(error);
+      this.xtremandLogger.log(error);
     });
   }
 
