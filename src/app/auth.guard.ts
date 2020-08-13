@@ -20,6 +20,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     opportunityBaseUrl = 'deals';
     formBaseUrl = 'forms';
     landingPagesUrl = 'pages';
+    mdfUrl = 'mdf';
     constructor( private authenticationService: AuthenticationService, private router: Router,private referenceService:ReferenceService,public utilService:UtilService) {  }
     canActivate( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): boolean {
         const url: string = state.url;
@@ -133,6 +134,9 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         if(url.indexOf(this.landingPagesUrl)>-1){
             return this.authorizeUrl(roles, url, this.landingPagesUrl);
          }
+         if(url.indexOf(this.mdfUrl)>-1){
+            return this.authorizeUrl(roles, url, this.mdfUrl);
+         }
       }catch(error){ console.log('error'+error);}
     }
 
@@ -208,6 +212,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
                 console.log("hasRole:-"+hasFormAccess);
                 return this.goToAccessDenied(url);
             }
+        }else if(urlType==this.mdfUrl){
+            return true;
         }
         else if(urlType==this.landingPagesUrl){
             let hasLandingPageAccess = false;

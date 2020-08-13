@@ -39,14 +39,7 @@ import { PublicPageResponseComponent } from 'app/common/public-page-response/pub
 import { SamlsecurityauthComponent } from './authentication/samlsecurityauth/samlsecurityauth.component';
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
-import { CreateMdfRequestComponent } from './mdf/create-mdf-request/create-mdf-request.component';
-import { ManageMdfFundsComponent } from './mdf/manage-mdf-funds/manage-mdf-funds.component';
-import { ManageMdfRequestsComponent } from './mdf/manage-mdf-requests/manage-mdf-requests.component';
-
 import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
-
-
-
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },    
@@ -75,6 +68,7 @@ export const routes: Routes = [
             { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
             { path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
             { path: 'design', loadChildren: 'app/design/design.module#DesignModule',  data: { preload: true } },
+ 			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule',  data: { preload: false } },
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },
@@ -115,10 +109,7 @@ export const routes: Routes = [
     { path: 'download/:type', component: DownloadTemplateComponent },
     {path: 'samlsecurity/:alias', component:SamlsecurityauthComponent},
     {path: 'au/:alias', component:SamlsecurityauthComponent},    
-    {path:'vanity-domain-error', component:DomainErrorComponent},
-    {path:'mdf/create-request', component:CreateMdfRequestComponent},
-    {path:'mdf/funds', component:ManageMdfFundsComponent},    
-    {path:'mdf/requests', component:ManageMdfRequestsComponent},    
+    {path:'vanity-domain-error', component:DomainErrorComponent},  
     { path: '**', component: PageNotFoundComponent },
 ];
 

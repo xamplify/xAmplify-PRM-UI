@@ -16,7 +16,9 @@ export class ManageMdfFundsComponent implements OnInit {
   mdfCreditTransaction: MdfCreditTransaction = new MdfCreditTransaction();
   mdfFundsPartnersInfoList: Array<MdfFunds> = new Array<MdfFunds>();
   vendorCompanyId: number;
-  constructor(private mdfService: MdfService, private pagerService: PagerService) { }
+  constructor(private mdfService: MdfService, private pagerService: PagerService) {
+    alert("I am here");
+   }
 
   ngOnInit() {
     this.getTilesInfo();

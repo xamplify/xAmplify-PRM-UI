@@ -169,11 +169,19 @@
                         <span class="selected"></span>
                     </a>
                 </li>
-
+                <!-- ------RSS------ -->
                  <li *ngIf="rssFeedAccess">
                     <a [routerLink]="['/home/rss/']">
                     <i class="fa fa-rss" aria-hidden="true"></i>
                     <span class="title">Feeds</span>
+                    <span class="arrow "></span>
+                    </a>
+                 </li> 
+                 <!-- ------MDF------ -->
+                 <li *ngIf="mdfAccess">
+                    <a [routerLink]="['/home/mdf/']">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span class="title">MDF</span>
                     <span class="arrow "></span>
                     </a>
                  </li> 
