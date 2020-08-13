@@ -1,21 +1,27 @@
 <div class="page-content">
     <div class="page-bar">
         <ul class="page-breadcrumb">
-            <li><i class="fa fa-home"></i> <a routerLink="/home/dashboard/default">Home</a><i class="fa fa-angle-right"></i></li>
-            <li><i class="fa fa-rss"></i>RSS</li>
+            <li>
+                <i class="fa fa-home" aria-hidden="true"></i>
+                 <a routerLink="/home/dashboard/default">Home</a>
+                 <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </li>
+            <li><i class="fa fa-rss" aria-hidden="true"></i>RSS</li>
         </ul>
     </div>
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
     <div class="row">
         <div class="col-md-12 col-lg-12">
             <div class="row">
                 <app-left-nav></app-left-nav>
-                <div class="col-sm-9">
+                <div class="col-sm-9" >
                     <div class="page-bar page-bar-shadow pb-m">
                         <div class="portlet light" style="border-color: #fff !important;">
                             <div class="portlet-body pt0">
                                 <h4 class="head-h">Today</h4>
                                 <h2 style="font-size:14px">The insights you need to get the inside edge</h2>
-                                <app-rss-loader *ngIf="loading"></app-rss-loader>                                
+                                <app-rss-loader *ngIf="loading"></app-rss-loader>      
+                                <ng-container *ngIf="!hasError">                      
                                     <div *ngFor="let item of homeFeedsResponse?.data">
                                         <div *ngFor="let feed of item.feeds">
                                             <div class="col-md-12 col-lg-12">
@@ -46,7 +52,13 @@
                                                     </div>
                                                 </div>
                                         </div>
-                                    </div>                          
+                                    </div>  
+                                </ng-container>    
+                                    <div *ngIf="hasError">
+                                         <div>
+        									<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
+    									</div>
+                                    </div>
                             </div>
                         </div>
                     </div>

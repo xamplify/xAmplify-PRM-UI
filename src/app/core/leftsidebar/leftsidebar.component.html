@@ -76,9 +76,9 @@
                 </ul>
             </li>
 
-            <li *ngIf="authService.user.hasCompany && (authService.module.isContact || authService.isShowContact)" [ngClass]="{'active': location.path().includes('contacts')}">
+            <li *ngIf="authService.user.hasCompany && (authService.module.isContact)" [ngClass]="{'active': location.path().includes('contacts')}">
                 <a href="javascript:;" (click)="openOrCloseTabs('contacts')">
-                    <i class="fa fa-list-ul"></i>
+                    <i class="fa fa-list-ul" aria-hidden="true"></i>
                     <span class="title" translate>Contacts</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
@@ -100,17 +100,17 @@
             </li>
             <li *ngIf="authService.module.hasPartnerLandingPageAccess && authService.module.isCompanyPartner" [ngClass]="{'active': location.path().includes('landing-pages')}">
                 <a [routerLink]="['./pages/partner']">
-                    <i class="fa fa-wpforms"></i>
+                    <i class="fa fa-wpforms" aria-hidden="true"></i>
                     <span class="title" translate>Pages</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
                 </a>
             </li>
 
-            <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor
+            <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor  || authService.module.isVendorTier
 	   		 || authService.module.hasFormAccess || authService.module.hasLandingPageAccess || authService.module.isEmailTemplate)" [ngClass]="{'active': location.path().includes('design') ||location.path().includes('emailtemplates') ||location.path().includes('forms') || location.path().includes('pages')  }">
                 <a [routerLink]="['./design/add']">
-                    <i class="fa fa-paint-brush"></i>
+                    <i class="fa fa-paint-brush" aria-hidden="true"></i>
                     <span class="title" translate>Design</span>
                     <span class="arrow "></span>
                     <span class="selected"></span>
@@ -148,9 +148,11 @@
                 </ul>
                 </li>
 
-                <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || authService.module.isCompanyPartner || isLoggedInAsTeamMember)" [ngClass]="{'active': location.path().includes('team')}">
+                <li *ngIf="authService.user.hasCompany && (authService.module.isOrgAdmin || authService.module.isVendor || 
+                authService.module.isCompanyPartner || isLoggedInAsTeamMember || authService.module.isVendorTier || authService.module.isMarketing )" 
+                [ngClass]="{'active': location.path().includes('team')}">
                     <a [routerLink]="['./team/add-team']">
-                        <i class="fa fa-users"></i>
+                        <i class="fa fa-users" aria-hidden="true"></i>
                         <span class="title" translate>Team</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
@@ -161,21 +163,21 @@
                 <!-- ------Deal Registration------ -->
                 <li *ngIf="authService.user.hasCompany && authService.enableLeads" [ngClass]="{'active': location.path().includes('deals')}">
                     <a [routerLink]="['./deals/manage']">
-                        <i class="fa fa-tags"></i>
+                        <i class="fa fa-tags" aria-hidden="true"></i>
                         <span class="title" translate>Opportunities</span>
                         <span class="arrow "></span>
                         <span class="selected"></span>
                     </a>
                 </li>
 
-                <!--  <li *ngIf="true">
-        <a [routerLink]="['/home/rss/']">
-        <i class="fa fa-rss"></i>
-        <span class="title">RSS</span>
-        <span class="arrow "></span>
-        </a>
-      </li>
- -->
+                 <li *ngIf="rssFeedAccess">
+                    <a [routerLink]="['/home/rss/']">
+                    <i class="fa fa-rss" aria-hidden="true"></i>
+                    <span class="title">Feeds</span>
+                    <span class="arrow "></span>
+                    </a>
+                 </li> 
+
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>

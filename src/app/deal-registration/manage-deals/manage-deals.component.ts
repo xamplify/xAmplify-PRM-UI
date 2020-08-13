@@ -154,7 +154,7 @@ export class ManageDealsComponent implements OnInit {
                 if (
                     roles.indexOf(this.roleName.orgAdminRole) > -1 ||
                     roles.indexOf(this.roleName.allRole) > -1 ||
-                    roles.indexOf(this.roleName.vendorRole) > -1) {
+                    roles.indexOf(this.roleName.vendorRole) > -1 || roles.indexOf(this.roleName.vendorTierRole) > -1 ) {
                     this.isVendor = true;
                 }
                 if (this.authenticationService.isCompanyPartner || this.authenticationService.isPartnerTeamMember) {

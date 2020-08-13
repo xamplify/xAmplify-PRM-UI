@@ -36,15 +36,12 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     forms: any;
     landingPages:any;
     isLoggedInAsTeamMember = false;
-
     sourceType = "";
-
     isLoggedInFromAdminPortal = false;
     loggedInThroughVanityUrl:boolean = false;
-
     checkCreateCampaignOptionForVanityURL:boolean = true;
-
-
+    loading = false;
+    rssFeedAccess: boolean;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -52,7 +49,6 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.updateLeftSideBar( location );
         this.sourceType = this.authService.getSource();
         this.isLoggedInFromAdminPortal = this.utilService.isLoggedInFromAdminPortal(); 
-        
     }
 
     updateLeftSideBar( location: Location ) {
@@ -70,6 +66,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                 if ( roles.indexOf( this.roleName.campaignRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.companyPartnerRole ) > -1) {
                     this.authService.module.isCampaign = true;
                     if( (roles.indexOf( this.roleName.campaignRole ) > -1 && (this.authService.superiorRole === 'OrgAdmin & Partner' || this.authService.superiorRole === 'Vendor & Partner' || this.authService.superiorRole === 'Partner'))
@@ -79,43 +77,47 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.authService.module.isReDistribution = false;
                     }
                 }
-                if ( roles.indexOf( this.roleName.contactsRole ) > -1 ||
-                    roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
-                    roles.indexOf( this.roleName.companyPartnerRole ) > -1 
-                    // || (this.authService.superiorRole === 'OrgAdmin & Partner' || (this.authService.superiorRole === 'Vendor & Partner' && !this.loggedInThroughVanityUrl)) 
-                    )
-                {
-                    this.authService.module.isContact = true;
-                }
                 if ( roles.indexOf( this.roleName.emailTemplateRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isEmailTemplate = true;
                 }
                 if ( roles.indexOf( this.roleName.statsRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isStats = true;
                 }
                 if ( roles.indexOf( this.roleName.partnersRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isPartner = true;
                 }
                 if ( roles.indexOf( this.roleName.videRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.isVideo = true;
                 }
                 if ( roles.indexOf( this.roleName.opportunityRole ) > -1 ||
                     roles.indexOf( this.roleName.orgAdminRole ) > -1 ||
+                    roles.indexOf( this.roleName.vendorTierRole ) > -1 ||
+                    roles.indexOf( this.roleName.marketingRole ) > -1 ||
                     roles.indexOf( this.roleName.vendorRole ) > -1 ) {
                     this.authService.module.hasOpportunityRole = true;
                 }
 
                 if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 &&
                         roles.indexOf( this.roleName.orgAdminRole ) < 0 &&
-                        roles.indexOf( this.roleName.vendorRole ) < 0 ) {
+                        roles.indexOf( this.roleName.vendorRole ) < 0 && 
+                        roles.indexOf( this.roleName.vendorTierRole )<0 && 
+                        roles.indexOf( this.roleName.marketingRole )<0  ) {
                         this.authService.module.isOnlyPartner = true;
                     }
 
@@ -123,12 +125,14 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                     this.authService.module.isOrgAdmin = true;
                 }
 
-                if (roles.indexOf(this.roleName.vendorRole) > -1)
-                 {
+                if (roles.indexOf(this.roleName.vendorRole) > -1){
                     this.authService.module.isVendor = true;
                 }
+                if (roles.indexOf(this.roleName.vendorTierRole) > -1){
+                    this.authService.module.isVendorTier = true;
+                }
                 
-                if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
+                 if ( roles.indexOf( this.roleName.companyPartnerRole ) > -1 ) {
                     this.pagination.pageIndex = 1;
                     this.pagination.maxResults = 10000;
                     this.dashBoardService.loadVendorDetails( this.authService.getUserId(), this.pagination ).subscribe( response => {
@@ -177,8 +181,9 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         } catch ( error ) { console.log( error ); }
     }
     
-    ngOnInit() {        
+    ngOnInit() { 
         this.isOnlyPartner = this.authService.loggedInUserRole =="Partner" && this.authService.isPartnerTeamMember==false;        
+        this.listLeftSideBarNavItems();
     }
     ngDoCheck() {
         if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false,false,false ); }
@@ -223,5 +228,33 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.authService.logout();
         this.router.navigate( ['/login'] );
     }
+
+    listLeftSideBarNavItems(){
+        this.loading = true;
+        let vanityUrlPostDto = {};
+        if(this.authService.companyProfileName !== undefined && this.authService.companyProfileName !== ''){
+            vanityUrlPostDto['vendorCompanyProfileName'] = this.authService.companyProfileName;
+            vanityUrlPostDto['vanityUrlFilter'] = true;
+        }
+        vanityUrlPostDto['userId'] = this.authService.getUserId();
+        this.dashBoardService.listLeftSideNavBarItems(vanityUrlPostDto)
+        .subscribe(
+          data => {
+            this.loading = false;
+            this.rssFeedAccess = data.rssFeeds;
+            this.authService.module.isContact = data.contacts;
+          },
+          error => {
+            this.loading = false;
+            this.rssFeedAccess = false;
+          },
+          () => {
+            this.loading = false;
+          }
+        );
+    }
+
+    
+
 
 }

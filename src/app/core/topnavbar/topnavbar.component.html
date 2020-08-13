@@ -83,7 +83,7 @@
                     <li style="margin-top: 17px;margin-right: 5px;" *ngIf="(refService.hasAllAccess()
 										|| authenticationService.module.hasSocialStatusRole
 										|| authenticationService.module.isOrgAdmin
-										|| authenticationService.module.isVendor) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign && !authenticationService.isPartnerTeamMember">
+										|| authenticationService.module.isVendor  || authenticationService.module.isVendorTier) && authenticationService.user.hasCompany && !authenticationService.isOnlyUser() && refService.socialCampaign && !authenticationService.isPartnerTeamMember">
                         <!-- *ngIf="refService.hasCompany" -->
                         <button class="btn btn-primary" [routerLink]="['/home/social/update-status']" style="border-radius: 3px !important;">
 							<span class="hidden-xs" translate>Update Status</span>
@@ -199,6 +199,7 @@
 										|| authenticationService.module.hasSocialStatusRole
 										|| authenticationService.module.isOrgAdmin
 										|| authenticationService.module.isVendor
+										 || authenticationService.module.isVendorTier
 										|| authenticationService.module.isCompanyPartner) && authenticationService.user.hasCompany">
                                 <a [routerLink]="['/home/social/manage/all']" translate> <i class="fa fa-cog" aria-hidden="true"></i> Social Accounts</a>
                             </li>

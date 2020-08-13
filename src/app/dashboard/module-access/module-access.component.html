@@ -26,6 +26,7 @@
 					  <th class='text-center' scope="row">REGISTRATION DATE</th>
 					  <th class='text-center' scope="row">LAST LOGIN</th>
 					  <th class='text-center' scope="row">UPDATED TIME</th>
+					  <th class='text-center' scope="row">Role</th>
 					</tr>
 				  </thead>
 				  <tbody>
@@ -46,6 +47,9 @@
 						<td class='text-center'>
 						  <app-timestamp [dateAndTime]="companyAndUserDetails.updatedTime"> </app-timestamp>
 						</td>
+						<td class='text-center'>
+							{{companyAndUserDetails.roleName}}
+						  </td>
 					  </tr>
 					</ng-container>
 				  </tbody>
@@ -66,6 +70,16 @@
 							</tr>
 						</thead>
 						<tbody>
+							<tr>
+								<th scope="row">Select Role</th>
+								<td>
+									<select class="form-control" id="roleId" [(ngModel)]="roleId">
+										<option value="13" [selected]="roleId ==13">Vendor</option>
+										<option value="19" [selected]="roleId ==19">Vendor-Tier</option>
+										<option value="18" [selected]="roleId ==18">Marketing</option>
+										<option value="2" [selected]="roleId ==2">Org Admin</option>
+									</select>
+							</tr>
 							<tr>
 								<th scope="row">Select source as ALLBOUND</th>
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.allBoundSource"
@@ -127,6 +141,11 @@
 							<tr>
 								<th scope="row">MDF</th>
 								<td><input type="checkbox" [(ngModel)]="campaignAccess.mdf"
+										[ngModelOptions]="{standalone: true}"></td>
+							</tr>
+							<tr>
+								<th scope="row">Rss Feeds</th>
+								<td><input type="checkbox" [(ngModel)]="campaignAccess.rssFeeds"
 										[ngModelOptions]="{standalone: true}"></td>
 							</tr>
 						</tbody>

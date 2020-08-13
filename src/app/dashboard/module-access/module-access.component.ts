@@ -8,6 +8,8 @@ import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
 import { MdfService } from 'app/mdf/services/mdf.service';
 
+
+declare var $;
 @Component({
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
@@ -28,6 +30,9 @@ export class ModuleAccessComponent implements OnInit {
   ngxLoading = false;
   constructor(public authenticationService: AuthenticationService, private dashboardService: DashboardService, public route: ActivatedRoute, public referenceService: ReferenceService, private mdfService: MdfService) { }
 
+  roleId:number = 0;
+ 
+
   ngOnInit() {
     this.companyId = this.route.snapshot.params['alias'];
     this.userAlias = this.route.snapshot.params['userAlias'];
@@ -39,6 +44,7 @@ export class ModuleAccessComponent implements OnInit {
     this.dashboardService.getCompanyDetailsAndUserId(this.companyId, this.userAlias).subscribe(result => {
       this.companyLoader = false;
       this.companyAndUserDetails = result;
+      this.roleId = result.roleId;
     }, error => {
       this.companyLoader = false;
       this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
@@ -61,6 +67,8 @@ export class ModuleAccessComponent implements OnInit {
   updateModuleAccess() {
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
+    this.campaignAccess.roleId = $('#roleId option:selected').val();
+    this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
       if (result.statusCode === 200) {
         if (this.campaignAccess.mdf) {
@@ -77,6 +85,7 @@ export class ModuleAccessComponent implements OnInit {
         }
         this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
         this.getModuleAccessByCompanyId();
+        this.getCompanyAndUserDetails();
         this.referenceService.goToTop();
         this.ngxLoading = false;
       }

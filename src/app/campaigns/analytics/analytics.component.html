@@ -847,8 +847,6 @@
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">invites</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Email opened
                               </th>
-                              
-                              
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign">Yes</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign" >No</th>
                               <th id="table-header" *ngIf="campaignType==='EVENT' && isChannelCampaign && !campaign.publicEventCampaign">MayBe</th>
@@ -884,6 +882,7 @@
                             <ng-container *ngFor="let item of campaignViewsPagination.pagedItems;let i=index">
                               <tr (click)="userTimeline(item);">
                                 <td>
+                                   <i title="This user is unsubscribed"  *ngIf="item?.unsubscribedUser" class="fa fa-flag" id="unsubscribed-flag" aria-hidden="true"></i>
                                   <app-user-info [isCompanyInfo]="true" [userInfo]="item"> </app-user-info>
                                   <!-- here emailId coming as userMail -->
                                 </td>
@@ -894,11 +893,6 @@
                                   <h4 *ngIf="item.campaignName==null">-</h4>
                                 </td>
 
-                                 <!--  <td class="text-center" *ngIf="campaignType==='VIDEO'">
-                                    {{item.timeSpent}}</td>
- -->
-
-                                <!-- 	<td class="text-center" *ngIf="campaignType==='EVENT'">20 August</td> -->
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
                                   {{item.rsvpMap.totalInvities}}</td>
                                 <td class="text-center" *ngIf="campaignType==='EVENT' && isChannelCampaign">
@@ -927,7 +921,6 @@
                                   <span
                                     *ngIf="item.rsvpMap.additionalCount === 0 || item.rsvpMap.additionalCount === null"><b>-</b></span>
                                 </td>
-                                <!-- <td class="td-chart"><h6>{{item.userEmail}}</h6></td> -->
                                 <td class="td-chart" *ngIf="campaignType!=='EVENT'">
                                   <h6>
                                     <app-timestamp *ngIf="item?.latestView" [dateAndTime]="item.latestView">
@@ -1795,9 +1788,9 @@
                     <h6>
                       <img *ngIf="emailLog.countryCode"
                         src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog.countryCode | lowercase}}.svg"
-                        width="20px" class="mr10">{{emailLog.country}}, {{emailLog.city}}
+                        width="20px" class="mr10" alt="">{{emailLog.country}}, {{emailLog.city}}
                     </h6>
-                    <h6 class="mb0">{{emailLog.isp}}</h6>
+                    <h6 class="mb0">{{emailLog.isp}} ( <strong>{{emailLog?.ipAddress}}</strong> )</h6>
                   </span>
                   <div *ngIf="emailLog.actionId == 1">
                     <app-heat-map [sessionId]="emailLog.sessionId"></app-heat-map>

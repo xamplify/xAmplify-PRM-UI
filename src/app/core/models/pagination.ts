@@ -66,6 +66,8 @@ export class Pagination {
 	loggedInAsTeamMember = false;
 	vanityUrlFilter:boolean = false;
 	vendorCompanyProfileName:string;
+	vendorCompanyId:number = 0;
+	collectionId:number = 0;
 
 
 }

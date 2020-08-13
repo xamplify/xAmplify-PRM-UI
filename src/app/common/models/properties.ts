@@ -119,7 +119,7 @@ export class Properties {
   EVENT_TO_PARTNER_MESSAGE = 'To Partners: Send a campaign intended just for selected recipients';
   TO_PARTNER_MESSAGE = 'To Recipient(s): Send a campaign intended just for your Partner(s)/ Contact(s)';
   THROUGH_PARTNER_MESSAGE = 'Through Partner: Send a campaign that your Partners can redistribute';
-  ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor’s access to your campaign analytics';
+  ENALEORDISABLE_VENDOR_MESSAGE='Enable/disable the Vendor access to your campaign analytics';
   ACTIVE_PARTICIPANTS = 'Active participants - Share only the recipients that have interacted with your campaign';
   ALL_PARTICIPANTS = 'All participants - Share all campaign recipient data';
 

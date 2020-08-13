@@ -73,13 +73,19 @@ import { ManageMdfFundsComponent } from './mdf/manage-mdf-funds/manage-mdf-funds
 import { ManageMdfRequestsComponent } from './mdf/manage-mdf-requests/manage-mdf-requests.component';
 import { MdfService } from './mdf/services/mdf.service';
 
+import {NoCacheHeadersInterceptor} from './core/no-cache-provider';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
+
+
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
-        , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, DomainErrorComponent, CreateMdfRequestComponent, ManageMdfFundsComponent, ManageMdfRequestsComponent
+               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS,
+         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, DomainErrorComponent, CreateMdfRequestComponent, ManageMdfFundsComponent, ManageMdfRequestsComponent
 
                ],
+   
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
         Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot(),
@@ -96,6 +102,11 @@ import { MdfService } from './mdf/services/mdf.service';
         useFactory: httpService,
         deps: [XHRBackend, RequestOptions, SlimLoadingBarService]
     }, { provide: LoggerService, useClass: ConsoleLoggerService },
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: NoCacheHeadersInterceptor,
+        multi: true
+      },
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,

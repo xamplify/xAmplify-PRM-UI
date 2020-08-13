@@ -12,10 +12,12 @@ img {
 }
 
 #leftbar{
-    height: 570px!important;
+    min-height: 820px!important;
     background-color: #ffffff!important;
     box-shadow: 0px 5px 5px 5px #eae9e9;
     border-radius: 5px;
+    max-height: 820px!important;
+    overflow-y: auto;
 }
 
 .single {
@@ -29,7 +31,8 @@ img {
     background-color: #f1f3fa;
     color: #fff!important;
     padding-left: 8px;
-    padding-top: 4px;
+    padding-top: 10px;
+    height: 40px;
 }
 
 .page-content-wrapper .page-content {
@@ -55,4 +58,9 @@ img {
 }
 .lbg:hover{
     background: #f1f3fa;
+}
+
+#vpc{
+    float: right;
+    margin-top: -5px;
 }

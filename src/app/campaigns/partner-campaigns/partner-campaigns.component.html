@@ -179,28 +179,28 @@
 															(click)="reDistributeCampaign(campaign)"
 															data-toggle="tooltip" data-placement="top"
 															title="Redistribute Campaign" data-rel="fancybox-button">
-															<i class="fa fa-clone"></i>
+															<i class="fa fa-clone" aria-hidden="true"></i>
 														</a>
 
 														<a *ngIf="campaign.campaignType === 'EVENT' && campaign.showCancelButton"
 															(click)="reDistributeCampaign(campaign)"
 															data-toggle="tooltip" data-placement="top"
 															title="Redistribute Campaign" data-rel="fancybox-button">
-															<i class="fa fa-clone"></i>
+															<i class="fa fa-clone" aria-hidden="true"></i>
 														</a>
 
 														<a *ngIf="campaign.campaignType === 'EVENT' && !campaign.showCancelButton"
 															data-toggle="tooltip" data-placement="top"
 															title="Not available for cancelled event"
 															data-rel="fancybox-button">
-															<i class="fa fa-clone cancelled-event"></i>
+															<i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
 														</a>
 													</ng-container>
 													<ng-container *ngIf="!campaign.allowRedistribution">
 														<a data-toggle="tooltip" data-placement="top"
-															title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute"
+															title="{{campaign?.redistibuteToolTipMessage}}"
 															data-rel="fancybox-button">
-															<i class="fa fa-clone cancelled-event"></i>
+															<i class="fa fa-clone cancelled-event" aria-hidden="true"></i>
 														</a>
 													</ng-container>
 
@@ -215,27 +215,27 @@
                                                                     <ul class="dropdown-menu pull-right">
                                                                     <li *ngIf="campaign.campaignType != 'EVENT'">
                                                                         <a (click)="downloadFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" translate>
-                                                                            <i class="fa fa-file" style="width: 30px;"></i> Download Html
+                                                                            <i class="fa fa-file" style="width: 30px;" aria-hidden="true"></i> Download Html
                                                                         </a>
                                                                     </li>
                                                                     <li *ngIf="campaign.campaignType != 'EVENT'">
                                                                         <a (click)="downloadFile(campaign,'pdf')" data-toggle="tooltip" data-placement="top" title="Download Pdf" data-rel="fancybox-button" translate>
-                                                                            <i class="fa fa-file-pdf-o" style="width: 30px;"></i> Download Pdf
+                                                                            <i class="fa fa-file-pdf-o" style="width: 30px;" aria-hidden="true"></i> Download Pdf
                                                                         </a>
                                                                     </li>
                                                                        <li *ngIf="campaign.campaignType === 'EVENT'">
                                                                         <a (click)="downloadHTMLFile(campaign,'html')" data-toggle="tooltip" data-placement="top" title="Download Html" data-rel="fancybox-button" translate>
-                                                                            <i class="fa fa-file" style="width: 30px;"></i> Download Html
+                                                                            <i class="fa fa-file" style="width: 30px;" aria-hidden="true"></i> Download Html
                                                                         </a>
                                                                     </li>
                                                                 </ul>
                                                             </div>
                                             <a *ngIf="!campaign.allowDownload" data-toggle="tooltip" data-placement="top" title="Please turn on GDPR settings to download" data-rel="fancybox-button">
-                                                <i class="fa fa-download cancelled-event"></i>
+                                                <i class="fa fa-download cancelled-event" aria-hidden="true"></i>
                                             </a>
                                             </ng-container>
                                             </span>
-                                            <a class="hidden"><i class="fa fa-trash"></i></a>
+                                            <a class="hidden"><i class="fa fa-trash" aria-hidden="true"></i></a>
                         </div>
                         </td>
                         </tr>
@@ -253,7 +253,7 @@
                             <ng-container *ngIf="totalRecords > 0 && !httpRequestLoader.isLoading && !httpRequestLoader.isServerError">
                                 <div *ngFor="let campaign of pagination.pagedItems; let i= index" class="col-xs-12 col-sm-4 col-lg-3">
                                     <div class="grid-box">
-                                        <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png">
+                                        <img src="https://cdn2.iconfinder.com/data/icons/facebook-ads-1/204/1-48.png" alt="">
                                         <!-- <br> -->
                                         <h4 class="ellipsis" title="{{campaign.campaignName}}">
                                             {{campaign.campaignName | slice:0:25}}
@@ -317,7 +317,7 @@
                                             </ng-container>
 
                                             <ng-container *ngIf="!campaign.allowRedistribution">
-                                                <a data-toggle="tooltip" data-placement="top" title="Not available for GDPR enabled campaigns.Please turn on GDPR to redistribute" data-rel="fancybox-button">
+                                                <a data-toggle="tooltip" data-placement="top" title="{{campaign?.redistibuteToolTipMessage}}" data-rel="fancybox-button">
                                                     <i class="fa fa-clone cancelled-event"></i>
                                                 </a>
                                             </ng-container>

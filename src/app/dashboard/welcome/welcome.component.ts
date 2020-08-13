@@ -32,9 +32,9 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     contactOrPartnerLink:string ="";
     welcomeVideoInfo: any;
     vendor_welcome_text = {
-        "videos": "Upload your content and you’ll soon be ready for primetime.",
+        "videos": "Upload your content and you'll soon be ready for primetime.",
         "contacts": "Add, segment, manage, and edit the members of your Strategic Network.",
-        "campaigns": "Easily automate your audience’s digital journey.",
+        "campaigns": "Easily automate your audience's digital journey.",
         "templates": "Design beautiful, responsive email  templates that communicate effectively.",
         "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
         "analytics": "Manage, monitor, and measure various aspects of your campaigns and your partners.",
@@ -44,7 +44,7 @@ export class WelcomeComponent implements OnInit, OnDestroy {
     partner_welcome_text = {
         "videos": "Check out the shareable content you received from your Strategic Alliances.",
         "contacts": "Add, segment, manage, and edit your customers and leads.",
-        "campaigns": "Easily automate your audience’s digital journey.",
+        "campaigns": "Easily automate your audience's digital journey.",
         "templates": "Browse through the templates that your Strategic Alliances have provided.",
         "socialMedia": "Up your social game and coordinate your message across all of your social media accounts.",
         "analytics": "Manage, monitor, and measure various aspects of your campaigns."

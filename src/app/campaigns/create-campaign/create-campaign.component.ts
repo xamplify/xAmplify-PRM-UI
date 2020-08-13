@@ -672,7 +672,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     loadContacts(){
         const roles = this.authenticationService.getRoles();
-        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1;
         let isOrgAdmin = this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor);
         if(isOrgAdmin){
             this.channelCampaignFieldName = "To Recipient";
@@ -932,7 +932,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
 
     clearSelectedContactList(){
         const roles = this.authenticationService.getRoles();
-        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1;
+        let isVendor = roles.indexOf(this.roleName.vendorRole)>-1 || roles.indexOf(this.roleName.vendorTierRole)>-1;
         if(this.authenticationService.isOrgAdmin() || (!this.authenticationService.isAddedByVendor && !isVendor)){
             this.selectedContactListIds = [];
             this.userListDTOObj = [];

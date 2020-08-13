@@ -42,6 +42,8 @@ export class ManageTeamMembersComponent implements OnInit {
 	isOrgAdmin = false;
 	moduleNames:Array<string>;
 
+	
+	allAccess = false;
 	videoAccess = false;
 	campaignAccess = false;
 	designAccess = false;
@@ -82,6 +84,7 @@ export class ManageTeamMembersComponent implements OnInit {
 	addTeamMemberLoader: boolean;
 	errorMessage: string;
 	isLoggedInThroughVanityUrl = false;
+	partnershipEstablishedOnlyWithVendorTier = false;
 	constructor(public logger: XtremandLogger, public referenceService: ReferenceService, private teamMemberService: TeamMemberService,
 		public authenticationService: AuthenticationService, private pagerService: PagerService, public pagination: Pagination,
 		private fileUtil: FileUtil, public callActionSwitch: CallActionSwitch, public userService: UserService, private router: Router,
@@ -109,6 +112,7 @@ export class ManageTeamMembersComponent implements OnInit {
 						if (data.statusCode == 200) {
 							this.teamMemberModules = response.modules;
 							this.moduleNames = this.teamMemberModules.map(function (a) { return a.moduleName; });
+							this.allAccess = this.moduleNames.indexOf('All')>-1;
 							this.videoAccess = this.moduleNames.indexOf('Video')>-1;
 							this.campaignAccess = this.moduleNames.indexOf('Campaign')>-1;
 							this.designAccess = this.moduleNames.indexOf('Design')>-1;
@@ -120,6 +124,7 @@ export class ManageTeamMembersComponent implements OnInit {
 							this.isOrgAdmin = this.superiorRole =="Org Admin" || this.superiorRole =="Org Admin & Partner";
 							this.isOnlyPartner = this.superiorRole == "Partner";
 							this.csvFilePath = response.csvFilePath;
+							this.partnershipEstablishedOnlyWithVendorTier = response.partnershipEstablishedOnlyWithVendorTier;
 						} else {
 							this.showUIError("Please pass the userId as input");
 						}
@@ -566,6 +571,7 @@ export class ManageTeamMembersComponent implements OnInit {
 					this.loading = false;
 					if(data.statusCode==200){
 						this.customResponse = new CustomResponse('SUCCESS', data.message, true);
+						this.newlyAddedTeamMembers = [];
 						this.refreshList();
 						this.isUploadCsv = false;
 				        this.isAddTeamMember = false;
@@ -617,9 +623,10 @@ export class ManageTeamMembersComponent implements OnInit {
 				let headers = headersRow[0].split(',');
 
 				let partnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==4;
-				let vendorCsvHeadersMatched = this.superiorRole== "Vendor" && headers.length==8;
-				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin") &&  headers.length==9);
-				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched){
+				let vendorTierPartnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==2 && this.partnershipEstablishedOnlyWithVendorTier ; 
+				let vendorCsvHeadersMatched = (this.superiorRole== "Vendor" ||  this.superiorRole=="Vendor Tier" || (this.superiorRole=="Vendor Tier & Partner" && this.partnershipEstablishedOnlyWithVendorTier)) && headers.length==8;
+				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" ||  (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier)) &&  headers.length==9);
+				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched || vendorTierPartnerCsvHeadersMatched){
 					if (this.validateHeaders(headers)) {
 						this.readCsvData(csvRecordsArray, headersRow.length);
 					} else {
@@ -645,10 +652,14 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	validateHeaders(headers:any){
         if(this.superiorRole=="Partner"){
-	        return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "CAMPAIGN" && headers[3] == "CONTACTS");
-		 }else if(this.superiorRole=="Vendor"){
+			if(this.partnershipEstablishedOnlyWithVendorTier){
+				return (headers[0] == "EMAIL_ID"  &&  headers[1] == "CAMPAIGN");
+			}else{
+				return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "CAMPAIGN" && headers[3] == "CONTACTS");
+			}
+		 }else if(this.superiorRole=="Vendor" || this.superiorRole=="Vendor Tier" || (this.superiorRole=="Vendor Tier & Partner" && this.partnershipEstablishedOnlyWithVendorTier)){
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS");
-         }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin")){
+         }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" || (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier ))){
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS" && headers[8] == "CONTACTS");
 		 }
 	}

@@ -43,6 +43,11 @@ import { CreateMdfRequestComponent } from './mdf/create-mdf-request/create-mdf-r
 import { ManageMdfFundsComponent } from './mdf/manage-mdf-funds/manage-mdf-funds.component';
 import { ManageMdfRequestsComponent } from './mdf/manage-mdf-requests/manage-mdf-requests.component';
 
+import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
+
+
+
+
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },    
     { path: 'signup', component: SignupComponent },
@@ -80,6 +85,7 @@ export const routes: Routes = [
     { path: ':social/login', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
+    { path: 'e/:socialProvider/:userId/:vud/:accessToken', component: ExpiredAccessTokenLoginComponent },
     { path: 'share/:alias', component: ShareVideoComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },

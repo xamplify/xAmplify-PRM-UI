@@ -276,15 +276,15 @@
 						</section>
 						<section [hidden]="isSocialCampaign && alias" class="pull-left actions-group">
 							<label class="add-photos m0" title="Add photos" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-image"></i>
+								<i class="fa fa-image" aria-hidden="true"></i>
 								<input type="file" (click)="input.value = null" value="" (change)="fileChange($event, socialStatus)" #input name="media[]" accept="image/*" multiple="multiple" class="file-input js-tooltip">
 							</label>
 							<span class="add-video" (click)="openListVideosModal(socialStatus)" title="Add video" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-video-camera"></i>
+								<i class="fa fa-video-camera" aria-hidden="true"></i>
 							</span>
-							<!-- <span class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
-								<i class="fa fa-rss-square"></i>
-							</span> -->
+							<span *ngIf="showRssFeed" class="rss" title="RSS Feeds" (click)="openRssModal(socialStatus)" data-toggle="tooltip" data-placement="top">
+								<i class="fa fa-rss-square" aria-hidden="true"></i>
+							</span>
 						</section>
 					</div>
 					<div class="clearfix"></div>
@@ -356,7 +356,7 @@
 								</li>
 							</ul>
 							</div>
-<div class='clearfix'></div>
+				<div class='clearfix'></div>
 							</div>
 						</div>
 					</section>

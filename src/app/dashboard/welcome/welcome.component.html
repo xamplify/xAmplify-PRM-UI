@@ -108,9 +108,9 @@
 
          <div class="divider" *ngIf=" !authenticationService.isPartnerTeamMember && ( authenticationService.isVendor() || authenticationService.isOrgAdmin() || authenticationService.module.isVideo)"></div>
 
-         <div class="flex" *ngIf=" (authenticationService.isPartnerTeamMember && authenticationService.module.isContact) || authenticationService.isOnlyPartner() || authenticationService.isVendorPartner() || authenticationService.isOrgAdminPartner() || authenticationService.module.isContact">
+         <div class="flex" *ngIf="authenticationService.module.isContact">
          <div class="col-sm-6 col-xs-12 block image-block" *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember">
-           <img src="../../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 200px; ">
+           <img src="../../../assets/images/welcome/img-partners.png" style="max-width: 100%;height: 200px;" alt="">
          </div>
          <div class="col-sm-6 col-xs-12 block" style="right: -46px;">
            <div class="text-block">
@@ -153,7 +153,7 @@
              <h1 class="text-left" style="color: #827596" translate>Campaigns</h1>
              <p class="left-side">{{welcome_text.campaigns}}</p>
              <div class="text-left">
-               <button *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns']" translate>Create campaigns</button>
+               <button *ngIf="!authenticationService.isOnlyPartner() && !authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/select']" translate>Create campaigns</button>
                <button *ngIf="authenticationService.isOnlyPartner() || authenticationService.isPartnerTeamMember" class="btn btn-xs color3" [routerLink]="['/home/campaigns/partner/all']" translate>Create campaigns</button>
                <button type="button" class="btn btn-xs color3-invert" data-toggle="modal" (click)="showHowToVideo(createCampaignUrl,'Campaigns')" translate>Tell me how</button>
              </div>

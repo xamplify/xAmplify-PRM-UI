@@ -1814,7 +1814,7 @@ goBackToManageList(){
 		if (this.gdprStatus) {
 			let self = this;
 			$.each(list, function(index, contact) {
-				if (self.legalBasisOptions.length > 0) {
+				if ( self.legalBasisOptions!=undefined && self.legalBasisOptions.length > 0) {
 					let filteredLegalBasisOptions = $.grep(self.legalBasisOptions, function(e) { return contact.legalBasis.indexOf(e.id) > -1 });
 					let selectedLegalBasisOptionsArray = filteredLegalBasisOptions.map(function(a) { return a.name; });
 					contact.legalBasisString = selectedLegalBasisOptionsArray;

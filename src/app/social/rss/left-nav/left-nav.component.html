@@ -1,12 +1,58 @@
-<div class="col-md-3 pr0" style="margin-top: -10px;">
+<div class="col-md-3 pr0">
+    <ngx-loading [show]="isloading" [config]="{ backdropBorderRadius: '14px' }">
+    </ngx-loading>
     <div id="leftbar">
-        <div class="portlet-body" style="height:530px!important;padding-top:0px!important;">
+        <div class="portlet-body" style="min-height:777px!important;padding-top:0px!important;overflow-y: auto;">
             <div class="single category">
+                <!--Feeds Shared By Vendor-->
+                    <ng-container *ngIf="showVendorFeeds">
+                        <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">VENDOR FEEDS</h4>
+                         <div class="heading-top">
+                            <a (click)="goToAllCustomFeeds('p', 0)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                                All Shared Feeds
+                            </a>
+                        </div>
+                        
+                        <br>
+                        <div class="heading-top" *ngFor="let vendor of vendors">
+                            <a (click)="goToVendorFeeds(vendor.companyId,'p')" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                                {{vendor.companyName}} 
+                                <span class="circled-number" id="vpc">{{vendor.publishedFeedCount}}</span>
+                                <br>
+                            </a>
+                        </div>
+                    </ng-container>
+                    <br>
+                <!--All Feeds---->
+                <ng-container *ngIf="showFeeds">
+                    <hr>
+                    <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">FEEDS</h4>
+                    <div class="heading-top">
+                    <a (click)="goToAllCustomFeeds('v', 0)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                        All Feeds
+                    </a>
+                </div>
+                <div class="heading-top" *ngFor="let customFeedCollection of customFeedCollections">
+                            <a (click)="goToAllCustomFeeds('v', customFeedCollection.id)" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">
+                                {{customFeedCollection.title}} 
+                                <span class="circled-number" id="vpc">{{customFeedCollection.feedCount}}</span>
+                                <br>
+                            </a>
+                        </div>
+                <a (click)="goToAddCustomFeeds()" class="btn btn-primary btn-block"  style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
+                    <i class="fa fa-plus" style="padding: 5px;font-size:14px" aria-hidden="true"> &nbsp;
+                        <span style="font-family: Open Sans, sans-serif;">Add Content</span>
+                    </i>
+                </a>
+                <br>
+                <hr>
+                <!----Rss Feeds----->
                 <h4 aria-expanded="false" style="font-size: 16px!important;padding-bottom: 10px;font-weight: 500;border-bottom: 1px solid #cecbcb;">RSS FEEDS </h4>
                 <div class="box" *ngIf="rssService.collectionsResponse?.statusCode === 8101">
                     <div class="row">
                         <div class="col-md-12" style="text-align: center;padding-top:11px;">
-                            <span><i class="fa fa-wifi" style="font-size: 70px;color: #b3b1b1;padding-top: 20px;"></i></span>
+                            <span>
+                                <i class="fa fa-wifi" style="font-size: 70px;color: #b3b1b1;padding-top: 20px;" aria-hidden="true"></i></span>
                         </div>
                         <div class="col-md-12" style="text-align: center;padding-top:16px;">
                             <p>Keep up with your favourite sources and keyword alerts</p>
@@ -19,20 +65,22 @@
                 <div *ngFor="let item of rssService.collectionsResponse?.data" style="margin-bottom: 1px">
                     <div>
                         <div class="heading-top">
-                            <a class="mr5" (click)="item.isExpand=!item.isExpand"><i class="fa" style="font-size:16px;color:#2a3f54" [ngClass]="{'fa-angle-down': item.isExpand, 'fa-angle-up': !item.isExpand}"></i></a>
-                            <a [routerLink]="['/home/rss/collections', item.alias]" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">{{item.title}}</a></div>
+                            <a class="mr5" (click)="item.isExpand=!item.isExpand">
+                                <i class="fa" style="font-size:16px;color:#2a3f54" [ngClass]="{'fa-angle-down': item.isExpand, 'fa-angle-up': !item.isExpand}" aria-hidden="true"></i></a>
+                            <a [routerLink]="['/home/rss/collections', item.alias]" style="text-transform: capitalize;font-weight: 600;font-size: 14px;color:#2a3f54">{{item.title}}</a>
+                        </div>
                         <div class="lbg" style="margin-left: 28px" *ngFor="let source of item.sources" [ngClass]="{'show': item.isExpand, 'hidden': !item.isExpand}">
                             <a [routerLink]="['/home/rss/sources', source.alias]">
-                                <img src="{{source.imageUrl}}" (error)="rssService.errorHandlerImage($event)">
+                                <img src="{{source.imageUrl}}" (error)="rssService.errorHandlerImage($event)" alt="">
                                 <h6 class="overflow" style="font-size: 13px;font-weight: 500;padding: 5px;">{{source.customTitle}}</h6>
                             </a>
                         </div>
                     </div>
                 </div>
-                <div>
-                </div>
+            </ng-container>
             </div>
         </div>
-        <a class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;"><i class="fa fa-plus" style="padding: 5px;font-size:14px"> &nbsp;<span style="font-family: Open Sans, sans-serif;">Add Content</span></i></a>
+        <a *ngIf="showFeeds" class="btn btn-primary btn-block" routerLink="/home/rss/discover" style="padding: 9px; border-radius: 0px 0px 5px 5px !important;">
+            <i class="fa fa-plus" style="padding: 5px;font-size:14px" aria-hidden="true"> &nbsp;<span style="font-family: Open Sans, sans-serif;">Add Content</span></i></a>
     </div>
 </div>

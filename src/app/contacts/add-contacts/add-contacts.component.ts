@@ -161,6 +161,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     loggedInThroughVanityUrl = false;
     zohoErrorResponse:CustomResponse = new CustomResponse();
     zohoPopupLoader: boolean = false;
+    public checkZohoStatusCode: any;
+    public contactListIdZoho: any;
+    public socialNetworkZoho: any;
+    statusCodeFromAddContacts:any;
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -2546,7 +2550,22 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
+            this.checkZohoStatusCode = localStorage.getItem("statusCode");
+            if(this.checkZohoStatusCode == 202){
+                //this.router.navigate( ['/home/contacts/manage'] )
+                this.statusCodeFromAddContacts = 303;
+                localStorage.setItem("statusCodeFromAddContacts",this.statusCodeFromAddContacts);
+                
+                this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
+                this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
+               // let url = "http://"+"localhost"+":4200/home/contacts/manage/";
+               // window.opener.location.href = url;
+               localStorage.setItem("isZohoSynchronization", "yes");
+               localStorage.removeItem("statusCode");
+               self.close();
+            
         }
+    }
         catch ( error ) {
             this.xtremandLogger.error( "addContacts.component error " + error );
         }
@@ -3422,6 +3441,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                         this.zohoPopupLoader = false;
                                         localStorage.setItem("userAlias", data.userAlias)
                                         localStorage.setItem("isPartner", data.isPartner);
+                                        localStorage.setItem("statusCode", data.statusCode);
                                         window.location.href = "" + data.redirectUrl;
     
                                     }

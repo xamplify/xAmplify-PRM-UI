@@ -31,23 +31,20 @@
                         </h4>
                     </div>
                     <div class="col-xs-7 col-sm-3 col-md-2 col-lg-2">
-                        <div class="design-btn-group">
-                            <button (click)="openFormFields()" style="border-radius: 3px 0px 0px 3px;" translate>Add
-                                Fields</button>
-                            <button (click)="openFormFields()" style="border-radius: 0px 3px 3px 0px;">
-                                <i class="fa fa-plus" data-toggle="tooltip" data-original-title=""
-                                    title=""></i></button>
-                        </div>
+                        <button (click)="openFormFields()" class="btn btn-primary" style="border-radius: 3px !important;">
+                            <span class="hidden-xs margin-right-design" translate>Add Fields</span>
+                            <i class="fa fa-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                        </button>
                     </div>
                     <div class=" col-xs-12 col-sm-6 col-md-8 col-lg-8">
                         <a class="close-circle xamp-margin-left-icon" (click)="navigateBack()" aria-hidden="true">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </a>
                         <div class="design-btn-group" style="float: right;">
-                            <button (click)="openFormDesignModal()" style="border-radius: 3px 0px 0px 3px;" translate>Design</button>
-                            <button (click)="openFormDesignModal()" style="border-radius: 0px 3px 3px 0px;">
-                                <i class="fa fa-paint-brush" data-toggle="tooltip" data-original-title=""
-                                    title=""></i></button>
+                            <button (click)="openFormDesignModal()" class="btn btn-primary" style="border-radius: 3px !important;">
+                                <span class="hidden-xs margin-right-design" translate>Design</span>
+                                <i class="fa fa-paint-brush" data-toggle="tooltip" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -74,7 +71,7 @@
                                         <a class="close-circle" data-toggle="tooltip" title="Preview" id="preview-form" (click)="previewForm()"><i class="fa fa-eye" aria-hidden="true"
                                                 id="eye"></i></a>
                                     </div>
-                                    <div class="portlet-body clearfix" id="create-from-div" [ngStyle]="{ 'background-image': 'url(' + form.backgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}">
+                                    <div class="portlet-body clearfix" id="create-from-div" [ngStyle]="{ 'background-image': 'url(' + formBackgroundImage + ')','background-repeat': 'no-repeat','background-size': 'cover'}" [style.backgroundColor]="pageBackgroundColor">
                                         <div *ngIf="form.showCompanyLogo">
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')===0;" [src]="authenticationService.MEDIA_URL + form.companyLogo" alt="" />
                                             <img id="form-company-logo" *ngIf="form.companyLogo.indexOf('images/')!==0;" [src]="form.companyLogo" alt="" />
@@ -120,7 +117,7 @@
                                                                                     <span class="edit-field-prefix">
                                                                                         {{columnInfo.priceSymbol}}
                                                                                     </span>
-                                                                                    <input type="number" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}" />
+                                                                                    <input type="number" min="0" placeholder="{{columnInfo.placeHolder}}" class="form-control disabled" id="{{columnInfo.labelId}}" />
                                                                                 </div>
                                                                             </ng-container>
                                                                             <!-- ---------------------------Upload----------------------------- -->
@@ -252,7 +249,7 @@
                                                                     </ng-container>
                                                                 </ng-container>
                                                             </select>
-                                                            <input type="number" [(ngModel)]="selectedColumn.placeHolder" class="form-control" />
+                                                            <input type="number" min="0" [(ngModel)]="selectedColumn.placeHolder" class="form-control" />
                                                         </div>
                                                     </div>
 
@@ -436,7 +433,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label>Background Color:</label>
+                                        <label>Background Color(Form)</label>
                                         <input class="form-control" [value]="backgroundControllerColor" [(ngModel)]="form.backgroundColor" style="margin-bottom: 10px;padding-left: 40px;" />
                                         <span class="input-group-addon color-pick" [(colorPicker)]="backgroundControllerColor" [style.background]="backgroundControllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'backgroundColor')" [cpPosition]="'bottom'"
                                             readonly></span>
@@ -478,7 +475,7 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group" id="formButtonValueDiv">
                                         <label>Submit Button Value<span class="invalid-form-name">*</span></label>
-                                        <input class="form-control" [(ngModel)]="form.buttonValue" maxlength="1000" (input)="validateFormButtonValue(form.buttonValue)" />
+                                        <input class="form-control" [(ngModel)]="form.buttonValue" maxlength="15" (input)="validateFormButtonValue(form.buttonValue)" />
                                         <span *ngIf="!form.isFormButtonValueValid" class="required">{{formButtonValueErrorMessage}}</span>
                                     </div>
                                 </div>
@@ -491,8 +488,6 @@
 
                                 </div>
                             </div>
-
-
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding: 10px 15px;border: 1px solid #eaeaea;background: #eaeaea;">
                             <div class="form-group">
@@ -502,33 +497,70 @@
                                     left</label>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-12 pl0">
-                            <div class="form-group" style="margin-bottom: 5px!important;">
-                                <label>Select Background Image</label>
-                            </div>
 
-                        </div>
                         <div class="col-md-12 col-lg-12 pl0 pr0" style="padding-top: 10px;">
-
-                            <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick('formBackgroundImage')">
-                                <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
-
-                                <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
-                                    <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
-                                        <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload background image</div>
-                                        <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
+                            <div class="row">
+                                <div class="col-sm-5" style="margin-top: 10px;float: left;">
+                                    <label *ngIf="form.showBackgroundImage">Background Image</label>
+                                    <div *ngIf="!form.showBackgroundImage">Background Image</div>
+                                </div>
+                                <div class="col-sm-2" style="float: left;">
+                                    <div class="email-options-checkbox-group email-options-notify">
+                                        <div class="email-options-checkbox clearfix">
+                                            <div class="col-sm-1 ui-switch-custom-div">
+                                                <switch [status]="form.showBackgroundImage" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.onTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onGreenColorSwitch" [size]="callActionSwitch.size"
+                                                    (statusChange)="setShowBackgroundImage($event)">
+                                                </switch>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
-                                    <img class="img-grid" [src]="formBackgroundImagePath" alt="">
+                                <div class="col-sm-5" style="margin-top: 12px;float: left;">
+                                    <label *ngIf="!form.showBackgroundImage">Background Color</label>
+                                    <div *ngIf="form.showBackgroundImage">Background Color</div>
                                 </div>
-                                <ng-template #showCroppedBackgroundImage>
-                                    <span *ngIf="croppedBackgroundImage; else showBackgroundImage">
+                            </div>
+                        </div>
+                        <div *ngIf="form.showBackgroundImage">
+                            <div class="col-md-12 col-lg-12 pl0">
+                                <div class="form-group" style="margin-bottom: 5px!important;">
+                                    <label>Select Background Image</label>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 col-lg-12 pl0 pr0">
+
+                                <div class="profile-image-wrapper" style="cursor: pointer;text-align:center;color:#fff;" (click)="imageClick('formBackgroundImage')">
+                                    <div *ngIf="logoError" style="color: #f55d7a">{{logoErrorMessage}}</div>
+                                    <div *ngIf="!croppedBackgroundImage && !formBackgroundImagePath && !form.backgroundImage">
+                                        <div *ngIf="!formBackgroundImagePath" style="margin: 10px 0px 10px 0px;">
+                                            <div style="color: #f55d7a;margin-top: 10px;margin-bottom: 10px;">* Please upload background image</div>
+                                            <img *ngIf="!backgroundImageChangedEvent && !form.backgroundImage" src="assets/images/background-form.png" class="profile-image img-grid" alt="">
+                                        </div>
+                                    </div>
+                                    <div *ngIf="formBackgroundImagePath?.length>0; else showCroppedBackgroundImage">
+                                        <img class="img-grid" [src]="formBackgroundImagePath" alt="">
+                                    </div>
+                                    <ng-template #showCroppedBackgroundImage>
+                                        <span *ngIf="croppedBackgroundImage; else showBackgroundImage">
                                         <img class="img-grid" [src]="croppedBackgroundImage" alt="">
                                     </span>
-                                </ng-template>
-                                <ng-template #showBackgroundImage>
-                                    <img class="img-grid" *ngIf="form.backgroundImage" [src]="form.backgroundImage" (error)="errorHandler($event)" alt=""> </ng-template>
+                                    </ng-template>
+                                    <ng-template #showBackgroundImage>
+                                        <img class="img-grid" *ngIf="form.backgroundImage" [src]="form.backgroundImage" (error)="errorHandler($event)" alt=""> </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!form.showBackgroundImage" class="col-md-12 col-lg-12 pl0 pr0">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label>Background Color</label>
+                                        <input class="form-control" [value]="pageBackgroundControllerColor" [(ngModel)]="form.pageBackgroundColor" style="margin-bottom: 10px;padding-left: 40px;" />
+                                        <span class="input-group-addon color-pick" [(colorPicker)]="pageBackgroundControllerColor" [style.background]="pageBackgroundControllerColor" [cpWidth]="'200px'" [cpHeight]="'265px'" (colorPickerChange)="changeControllerColor($event,form,'pageBackgroundColor')"
+                                            [cpPosition]="'bottom'" readonly></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
@@ -698,11 +730,12 @@
                 </div>
                 <button style="position: relative; top: -5px; width: 118px;" class="btn green" (click)="chooseFileFromList()">Your images</button>
                 <div style="position: relative; top: -5px;" *ngIf="errorUploadCropper" style="color:red">*Please Upload only images</div>
+                <div style="position: relative; top: -5px;" *ngIf="fileSizeError" style="color:red">*File size should be less than 12MB</div>
                 <div>
                     <ngx-loading [show]="loadingcrop" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop:true }"></ngx-loading>
                     <div [hidden]="!imageChangedEvent">
                         <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="false" [onlyScaleDown]="true" [roundCropper]="false" format="jpg" outputType="base64" (imageCropped)="imageCroppedMethod($event)" (imageLoaded)="imageLoaded()" (cropperReady)="cropperReady()"
-                            (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
+                            [resizeToWidth]="1000" (preserveSize)="true" (imageQuality)=0 (loadImageFailed)="loadImageFailed()" [style.display]="showCropper ? null : 'none'">
                         </image-cropper>
                     </div>
                     <div *ngIf="!imageChangedEvent">
@@ -775,8 +808,8 @@
                                                 </span>
                                             </div>
                                             <span class="item__name" data-toggle="tooltip" [title]="file.fileName">
-                                                <strong>{{file.fileName	| slice: 0: 16}} <span
-                                                        *ngIf="file.fileName?.length>16">...</span>
+                                                <strong>{{file.fileName	| slice: 0: 8}} <span
+                                                        *ngIf="file.fileName?.length>8">...</span>
                                             </strong>
                                             </span>
                                             <div class="item__size">
@@ -827,16 +860,19 @@
                                 <a (click)="setPage(pager.totalPages)" translate>Last</a>
                             </li>
                         </ul>
-                        <select class="form-control" style="cursor: pointer; float: right;width:6%;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
+                        <select class="form-control" style="cursor: pointer; float: right;width:auto;" [(ngModel)]="pageNumber" (ngModelChange)="selectedPageNumber($event.value)">
                             <option [ngValue]="numberPerPage[0]"> {{numberPerPage[0].name}}</option>
-                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[1]">
+                            <option *ngIf="paginatedList?.length>6" [ngValue]="numberPerPage[1]">
                                 {{numberPerPage[1].name}}
                             </option>
-                            <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[2]">
+                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[2]">
                                 {{numberPerPage[2].name}}
                             </option>
-                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[3]">
+                            <option *ngIf="paginatedList?.length>24" [ngValue]="numberPerPage[3]">
                                 {{numberPerPage[3].name}}
+                            </option>
+                            <option *ngIf="paginatedList?.length>12" [ngValue]="numberPerPage[4]">
+                                {{numberPerPage[4].name}}
                             </option>
                         </select>
                     </section>
