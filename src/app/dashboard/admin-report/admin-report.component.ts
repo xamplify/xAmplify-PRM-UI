@@ -406,8 +406,8 @@ public authenticationService: AuthenticationService, public router:Router) {
     }
 
     displayModuleAccess(report:any){
-        if(report && report.companyId){
-            this.router.navigate(['/home/dashboard/module-access/' + report.companyId+"/"+report.alias]);
+        if(report && report.companyId && report.companyProfileName){
+            this.router.navigate(['/home/dashboard/module-access/' + report.companyId+"/"+report.alias+"/"+report.companyProfileName]);
         }        
     }  
 }

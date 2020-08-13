@@ -71,6 +71,7 @@ import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-err
 import { CreateMdfRequestComponent } from './mdf/create-mdf-request/create-mdf-request.component';
 import { ManageMdfFundsComponent } from './mdf/manage-mdf-funds/manage-mdf-funds.component';
 import { ManageMdfRequestsComponent } from './mdf/manage-mdf-requests/manage-mdf-requests.component';
+import { MdfService } from './mdf/services/mdf.service';
 
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
@@ -98,7 +99,7 @@ import { ManageMdfRequestsComponent } from './mdf/manage-mdf-requests/manage-mdf
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,
-        VanityURLService],
+        VanityURLService,MdfService],
     bootstrap: [AppComponent]
 
 })
