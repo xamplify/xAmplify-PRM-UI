@@ -8,12 +8,13 @@ import { ManageMdfFundsComponent } from './manage-mdf-funds/manage-mdf-funds.com
 import { ManageMdfRequestsComponent } from './manage-mdf-requests/manage-mdf-requests.component';
 import { MdfService } from './services/mdf.service';
 import {MdfRoutingModule} from './mdf-routing.module';
+import { HtmlSampleComponent } from './html-sample/html-sample.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, MdfRoutingModule
   ],
-  declarations: [CreateMdfRequestComponent,ManageMdfFundsComponent,ManageMdfRequestsComponent],
+  declarations: [CreateMdfRequestComponent,ManageMdfFundsComponent,ManageMdfRequestsComponent, HtmlSampleComponent],
   providers :[MdfService]
 })
 export class MdfModule { }

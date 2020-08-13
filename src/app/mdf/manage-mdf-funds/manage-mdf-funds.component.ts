@@ -4,11 +4,16 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { MdfFunds } from '../models/mdf.funds';
 import { MdfCreditTransaction } from '../models/mdf.credit.history';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { ReferenceService } from "app/core/services/reference.service";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-manage-mdf-funds',
   templateUrl: './manage-mdf-funds.component.html',
-  styleUrls: ['./manage-mdf-funds.component.css']
+  styleUrls: ['./manage-mdf-funds.component.css','../html-sample/html-sample.component.css']
 })
 export class ManageMdfFundsComponent implements OnInit {
 
@@ -16,18 +21,49 @@ export class ManageMdfFundsComponent implements OnInit {
   mdfCreditTransaction: MdfCreditTransaction = new MdfCreditTransaction();
   mdfFundsPartnersInfoList: Array<MdfFunds> = new Array<MdfFunds>();
   vendorCompanyId: number;
-  constructor(private mdfService: MdfService, private pagerService: PagerService) {
-    alert("I am here");
+  loggedInUserId: number=0;
+  loading = false;
+  tilesLoader = false;
+  tileData:any;
+  constructor(private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router) {
+    this.loggedInUserId = this.authenticationService.getUserId();
    }
 
-  ngOnInit() {
-    this.getTilesInfo();
+   ngOnInit() {
+    // this.loading  = true;
+     this.getCompanyId();
+    
   }
 
+   getCompanyId() {
+    this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
+      (result: any) => {
+        if (result !== "") { 
+          this.vendorCompanyId = result;
+        }else{
+          this.loading = false;
+          this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
+          this.router.navigate(["/home/dashboard"]);
+        }
+      }, (error: any) => { this.xtremandLogger.log(error); },
+      () => {
+        if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
+          this.getTilesInfo();
+        }
+
+      }
+    );
+  }
+
+ 
+
   getTilesInfo() {
+    this.tilesLoader = true;
     this.mdfService.getMdfFundsAnalyticsForTiles(this.vendorCompanyId).subscribe((result: any) => {
       if (result.statusCode === 200) {
-        this.getAllMdfFunds(this.pagination);
+         this.tilesLoader = false;
+         this.tileData = result.data;
+        //this.getAllMdfFunds(this.pagination);
       }
     }, error => {
       console.log(error);
