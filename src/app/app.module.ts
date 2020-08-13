@@ -68,16 +68,24 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { VanitySocialLoginComponent } from 'app/social/common/vanity-social-login/vanity-social-login.component';
 import { DomainErrorComponent } from './vanity-url/pages/domain-error/domain-error.component';
+import { CreateMdfRequestComponent } from './mdf/create-mdf-request/create-mdf-request.component';
+import { ManageMdfFundsComponent } from './mdf/manage-mdf-funds/manage-mdf-funds.component';
+import { ManageMdfRequestsComponent } from './mdf/manage-mdf-requests/manage-mdf-requests.component';
+import { MdfService } from './mdf/services/mdf.service';
+
 import {NoCacheHeadersInterceptor} from './core/no-cache-provider';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-token-login/expired-access-token-login.component';
 
+
 @NgModule({
     declarations: [AppComponent, SocialLoginComponent, SocialCallbackComponent, ShareVideoComponent,
                    CampaignVideoComponent, LogEmailClickComponent, LogUnsubscribeComponent, LogRegularCampaignComponent, RsvpComponent
-               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS
-               , LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, ExpiredAccessTokenLoginComponent, DomainErrorComponent
-               		],
+               ,LogRegularCampaignComponentSMS,CampaignSMSVideoComponent, RsvpComponent,LogEventCampaignComponentSMS,
+         LogSMSClickComponent, ShowLandingPageComponent, PageNotFoundComponent, DownloadTemplateComponent,VanitySocialLoginComponent, DomainErrorComponent, CreateMdfRequestComponent, ManageMdfFundsComponent, ManageMdfRequestsComponent
+
+               ],
+   
     imports: [BrowserAnimationsModule, BrowserModule, FormsModule, HttpModule, HttpClientModule, HttpClientJsonpModule,
         AppRoutingModule, DashboardModule, CoreModule, AuthenticationModule, ReactiveFormsModule, CommonModule, ShareButtonsModule.forRoot(),
         Ng2DeviceDetectorModule.forRoot(), ErrorPagesModule,LoadingModule, CommonComponentModule, NgIdleKeepaliveModule.forRoot(),
@@ -102,7 +110,7 @@ import { ExpiredAccessTokenLoginComponent } from 'app/contacts/expired-access-to
         AuthenticationService, UtilService, UserService, LogService, PagerService, ReferenceService, SocialService,RssService,
         TwitterService, FacebookService, XtremandLogger, VideoUtilService,ParterService,
         VideoFileService, UploadCloudvideoService, ContactService, EmailTemplateService, EmailSpamCheckService, CampaignService, EnvServiceProvider,HubSpotService,Title,IntegrationService,
-        VanityURLService],
+        VanityURLService,MdfService],
     bootstrap: [AppComponent]
 
 })

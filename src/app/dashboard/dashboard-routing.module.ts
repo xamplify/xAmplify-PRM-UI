@@ -51,7 +51,7 @@ const routes: Routes = [
   {path:'sso-samlsecurity',component:SamlsecurityComponent},
   {path:'buttons', component:DashboardButtonsComponent},
   {path:'v-templates', component:VanityEmailTemplatesComponent},
-  {path:'module-access/:alias/:userAlias', component:ModuleAccessComponent},
+  {path:'module-access/:alias/:userAlias/:companyProfileName', component:ModuleAccessComponent},
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
