@@ -75,6 +75,7 @@ export class ManageMdfFundsComponent implements OnInit {
   }
 
   listPartners(pagination: Pagination) {
+    this.loading = true;
     this.referenceService.loading(this.partnerListLoader, true);
     this.mdfService.getMdfFundsAnalyticsForPagination(pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {

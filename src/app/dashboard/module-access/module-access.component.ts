@@ -14,7 +14,7 @@ declare var $;
   selector: 'app-module-access',
   templateUrl: './module-access.component.html',
   styleUrls: ['./module-access.component.css'],
-  providers: [HttpRequestLoader]
+  providers: [HttpRequestLoader,MdfService]
 })
 export class ModuleAccessComponent implements OnInit {
 
@@ -93,5 +93,22 @@ export class ModuleAccessComponent implements OnInit {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
     });
+  }
+
+  addAmount(){
+    let mdfAmount = $('#mdfAmount').val();
+    if(mdfAmount!=""){
+      this.ngxLoading = true;
+      this.mdfService.addDefaultMdfAmountToPartners(this.companyId, mdfAmount).subscribe(result => {
+        this.referenceService.showSweetAlertSuccessMessage("Success");
+        this.ngxLoading = false;
+      }, error => {
+        this.ngxLoading = false;
+        this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
+      });
+    }else{
+      this.referenceService.showSweetAlertErrorMessage("Invalid Amount");
+    }
+    
   }
 }

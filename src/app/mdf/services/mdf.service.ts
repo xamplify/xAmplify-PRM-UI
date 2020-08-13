@@ -148,6 +148,12 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+    addDefaultMdfAmountToPartners(companyId:number,mdfAmount:number): Observable<any> {
+        return this.http.get(this.authenticationService.REST_URL + "addDefaultMdfCredit/"+companyId+"/"+mdfAmount+"?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
     extractData(res: Response) {
         let body = res.json();
         return body || {};
