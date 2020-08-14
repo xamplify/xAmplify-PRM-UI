@@ -121,6 +121,13 @@ export class FormService {
 
     }
 
+    validateCaptcha(response : any) {
+        return this.http.get( this.authenticationService.REST_URL + "validate-captcha/" + response  )
+            .map( this.extractData )
+            .catch( this.handleError );
+
+    }
+    
     private extractData( res: Response ) {
         const body = res.json();
         return body || {};
