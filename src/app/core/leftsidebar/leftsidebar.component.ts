@@ -43,6 +43,8 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
     loading = false;
     rssFeedAccess: boolean;
     mdfAccess: boolean;
+    mdfAccessAsPartner: boolean;
+    mdf: boolean;
     constructor( location: Location, public authService: AuthenticationService, public refService: ReferenceService, private router: Router
         , private dashBoardService: DashboardService,public userService: UserService,public logger: XtremandLogger,public utilService:UtilService
         ) {
@@ -187,43 +189,47 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
         this.listLeftSideBarNavItems();
     }
     ngDoCheck() {
-        if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false,false,false ); }
+        if ( window.innerWidth > 990 ) { this.clearSubMenuValues( false, false, false, false, false,false,false,false ); }
     }
     openOrCloseTabs( urlType: string ) {
         if ( window.innerWidth < 990 ) {
             if ( urlType === 'emailtemplates' ) {
                 this.emailtemplates = this.router.url.includes( 'emailtemplates' ) ? true : ( this.emailtemplates = !this.emailtemplates );
-                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false );
+                this.clearSubMenuValues( this.emailtemplates, false, false, false, false,false,false,false );
             }
             else if ( urlType === 'contacts' ) {
                 this.contacts = this.router.url.includes( 'contacts' ) ? true : ( this.contacts = !this.contacts );
-                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false );
+                this.clearSubMenuValues( false, false, false, this.contacts, false,false,false,false );
             }
             else if ( urlType === 'partners' ) {
                 this.partners = this.router.url.includes( 'partners' ) ? true : ( this.partners = !this.partners );
-                this.clearSubMenuValues( false, false, false, false, this.partners,false,false );
+                this.clearSubMenuValues( false, false, false, false, this.partners,false,false,false );
             }
             else if ( urlType === 'campaigns' ) {
                 this.campaigns = this.router.url.includes( 'campaigns' ) ? true : ( this.campaigns = !this.campaigns );
-                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false );
+                this.clearSubMenuValues( false, this.campaigns, false, false, false,false,false,false );
             }
             else if ( urlType === 'content' ) {
                 this.videos = this.router.url.includes( 'content' ) ? true : ( this.videos = !this.videos );
-                this.clearSubMenuValues( false, false, this.videos, false, false,false,false );
+                this.clearSubMenuValues( false, false, this.videos, false, false,false,false,false );
             }
             else if(urlType ==='forms') {
                 this.videos = this.router.url.includes('forms') ? true: (this.forms = !this.forms);
-                this.clearSubMenuValues(false,false,false,false,false,this.forms,false); 
+                this.clearSubMenuValues(false,false,false,false,false,this.forms,false,false); 
             }
             else if(urlType ==='landing-pages') {
                 this.videos = this.router.url.includes('forms') ? true: (this.landingPages = !this.landingPages);
-                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages); 
+                this.clearSubMenuValues(false,false,false,false,false,false,this.landingPages,false); 
+               }
+               else if(urlType ==='mdf') {
+                this.mdf = this.router.url.includes('mdf') ? true: (this.mdf = !this.mdf);
+                this.clearSubMenuValues(false,false,false,false,false,false,false,this.mdf); 
                }
         }
     }
-    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages ) {
+    clearSubMenuValues( emailTemplate, campaigs, videos, contacts, partners,forms,landingPages,mdf) {
         this.emailtemplates = emailTemplate; this.campaigns = campaigs; this.videos = videos; this.contacts = contacts; this.partners = partners;
-        this.forms = forms;this.landingPages = landingPages;
+        this.forms = forms;this.landingPages = landingPages;this.mdf = mdf;
     }
     logout() {
         this.authService.logout();
@@ -245,11 +251,13 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
             this.rssFeedAccess = data.rssFeeds;
             this.authService.module.isContact = data.contacts;
             this.mdfAccess = data.mdf;
+            this.mdfAccessAsPartner = data.mdfAccessAsPartner;
           },
           error => {
             this.loading = false;
             this.rssFeedAccess = false;
             this.mdfAccess = false;
+            this.mdfAccessAsPartner = false;
           },
           () => {
             this.loading = false;

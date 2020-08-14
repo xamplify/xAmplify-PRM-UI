@@ -178,14 +178,71 @@
                     </a>
                  </li> 
                  <!-- ------MDF------ -->
-                 <li *ngIf="mdfAccess">
-                    <a [routerLink]="['/home/mdf/']">
-                    <i class="fa fa-money" aria-hidden="true"></i>
-                    <span class="title">MDF</span>
-                    <span class="arrow "></span>
-                    </a>
-                 </li> 
+                 <ng-container *ngIf="mdfAccess && !mdfAccessAsPartner">
+                    <li  [ngClass]="{'active': location.path().includes('mdf')}">
+                        <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <span class="title" translate>MDF</span>
+                            <span class="arrow"></span>
+                            <span class="selected"></span>
+                        </a>
+                        <ul class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }" >
+                            <li>
+                                <a [routerLink]="['/home/mdf/']">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage MDF Funds</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a [routerLink]="['/home/mdf/requests']">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage MDF Requests</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                 </ng-container>
+                 <!--Partner View Only-->
+                 <ng-container *ngIf="mdfAccessAsPartner && !mdfAccess">
+                    <li>
+                        <a [routerLink]="['/home/mdf/']">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        <span class="title">MDF</span>
+                        <span class="arrow"></span>
+                        </a>
+                     </li> 
+                 </ng-container>
 
+                 <ng-container *ngIf="mdfAccess && mdfAccessAsPartner">
+                    <li  [ngClass]="{'active': location.path().includes('mdf')}">
+                        <a href="javascript:;" (click)="openOrCloseTabs('mdf')">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            <span class="title" translate>MDF</span>
+                            <span class="arrow"></span>
+                            <span class="selected"></span>
+                        </a>
+                        <ul class="sub-menu" [ngStyle]="{'display': mdf? 'block': 'none' }" >
+                            <li>
+                                <a [routerLink]="['/home/mdf/']">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage MDF Funds</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a [routerLink]="['/home/mdf/requests']">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage MDF Requests</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a [routerLink]="['/home/mdf/requests']">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="title" translate>Manage MDF Requests (Partner)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                 </ng-container>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>
