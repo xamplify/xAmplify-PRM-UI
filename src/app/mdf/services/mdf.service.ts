@@ -10,6 +10,7 @@ import { FormOption } from "app/forms/models/form-option";
 import { MdfRequest } from "../models/mdf.request";
 import { Pagination } from "app/core/models/pagination";
 import { MdfCreditTransaction } from "../models/mdf.credit.history";
+import { MdfFunds } from "../models/mdf.funds";
 
 @Injectable()
 export class MdfService {
@@ -150,6 +151,18 @@ export class MdfService {
 
     addDefaultMdfAmountToPartners(companyId:number,mdfAmount:number): Observable<any> {
         return this.http.get(this.authenticationService.REST_URL + "addDefaultMdfCredit/"+companyId+"/"+mdfAmount+"?access_token=" + this.authenticationService.access_token, "")
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    getMdfCreditDetailsById(id: number) {
+        return this.http.get(this.URL + "getMdfCreditDetailsById/" + id + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+    addCreditBalance(mdfFunds: MdfFunds) {
+        return this.http.post(this.URL + "addCreditBalance?access_token=" + this.authenticationService.access_token, mdfFunds)
             .map(this.extractData)
             .catch(this.handleError);
     }

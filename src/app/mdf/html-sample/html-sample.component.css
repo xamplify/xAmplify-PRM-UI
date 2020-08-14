@@ -24,9 +24,7 @@ h5 {
     height: 233px;
 }
 
-.img-responsive,
-.thumbnail a>img,
-.thumbnail>img {
+.img-responsive, .thumbnail a>img, .thumbnail>img {
     padding-top: 65px;
     display: block;
     max-width: 112px;
@@ -190,7 +188,6 @@ a {
     background-color: #E87E04;
 }
 
-
 /* add partner's css */
 
 @media screen and (min-width:601px) {
@@ -327,15 +324,6 @@ a {
     border-radius: 50%;
 }
 
-.modal-dialog {
-    margin: 0px 0px 0px 800px!important;
-}
-
-.modal-body {
-    max-height: calc(100vh - 12px)!important;
-    overflow-y: auto;
-}
-
 .page-content-wrapper .page-content {
     min-height: 550px!important;
 }
@@ -392,12 +380,6 @@ a {
     padding: 10px 50px;
 }
 
-.modal-body {
-    height: calc(100vh - 122px)!important;
-    overflow-y: auto;
-}
-
-
 /* tabs */
 
 .panel.with-nav-tabs .panel-heading {
@@ -412,31 +394,21 @@ a {
     margin-bottom: -1px;
 }
 
-
 /********************************************************************/
-
 
 /*** PANEL DEFAULT ***/
 
-.with-nav-tabs.panel-default .nav-tabs>li>a,
-.with-nav-tabs.panel-default .nav-tabs>li>a:hover,
-.with-nav-tabs.panel-default .nav-tabs>li>a:focus {
+.with-nav-tabs.panel-default .nav-tabs>li>a, .with-nav-tabs.panel-default .nav-tabs>li>a:hover, .with-nav-tabs.panel-default .nav-tabs>li>a:focus {
     color: #777;
 }
 
-.with-nav-tabs.panel-default .nav-tabs>.open>a,
-.with-nav-tabs.panel-default .nav-tabs>.open>a:hover,
-.with-nav-tabs.panel-default .nav-tabs>.open>a:focus,
-.with-nav-tabs.panel-default .nav-tabs>li>a:hover,
-.with-nav-tabs.panel-default .nav-tabs>li>a:focus {
+.with-nav-tabs.panel-default .nav-tabs>.open>a, .with-nav-tabs.panel-default .nav-tabs>.open>a:hover, .with-nav-tabs.panel-default .nav-tabs>.open>a:focus, .with-nav-tabs.panel-default .nav-tabs>li>a:hover, .with-nav-tabs.panel-default .nav-tabs>li>a:focus {
     color: #777;
     background-color: #ddd;
     border-color: transparent;
 }
 
-.with-nav-tabs.panel-default .nav-tabs>li.active>a,
-.with-nav-tabs.panel-default .nav-tabs>li.active>a:hover,
-.with-nav-tabs.panel-default .nav-tabs>li.active>a:focus {
+.with-nav-tabs.panel-default .nav-tabs>li.active>a, .with-nav-tabs.panel-default .nav-tabs>li.active>a:hover, .with-nav-tabs.panel-default .nav-tabs>li.active>a:focus {
     color: #555;
     background-color: #fff;
     border-color: #ddd;
@@ -452,23 +424,18 @@ a {
     color: #777;
 }
 
-.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>li>a:hover,
-.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>li>a:focus {
+.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>li>a:hover, .with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>li>a:focus {
     background-color: #ddd;
 }
 
-.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>.active>a,
-.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>.active>a:hover,
-.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>.active>a:focus {
+.with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>.active>a, .with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>.active>a:hover, .with-nav-tabs.panel-default .nav-tabs>li.dropdown .dropdown-menu>.active>a:focus {
     color: #fff;
     background-color: #555;
 }
 
-.nav-tabs,
-.nav-pills {
+.nav-tabs, .nav-pills {
     margin-bottom: 0px!important;
 }
-
 
 /* timeline css */
 
@@ -510,8 +477,7 @@ a {
     bottom: -4px;
 }
 
-.timeline .line::before,
-.timeline .line::after {
+.timeline .line::before, .timeline .line::after {
     content: '';
     position: absolute;
     left: -4px;
@@ -571,11 +537,29 @@ a {
     padding: 10px 0px;
 }
 
-.timeline .panel-outline .panel-heading:not(.icon),
-.timeline .panel-outline .panel-footer {
+.timeline .panel-outline .panel-heading:not(.icon), .timeline .panel-outline .panel-footer {
     display: none;
 }
 
 .panel-default>.panel-heading {
     background-color: #ffffff!important;
+}
+
+/****Add Balance Form Rleated Css*********/
+
+.textCss {
+    background-color: rgba(0, 0, 0, 0.12);
+    bottom: -2px;
+    height: 1px;
+    left: 13;
+    margin: 0;
+    padding: 0;
+    width: 91%;
+}
+
+.email-css {
+    border: none;
+    font-size: 15px;
+    cursor: not-allowed;
+    position: relative;
 }
