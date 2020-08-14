@@ -193,8 +193,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     public contactListIdZoho: any;
     public socialNetworkZoho: any;
     public statusCodeFromAddContacts:any;
-    isCalledZohoSycronization = false;
-    
+    public isCalledZohoSycronization = false;
+    public zohoCurrentUrl:any;
+    public isZohoSynchronizationThroughVanity
+    public zohoCurrentUser:any;
     constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
         public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
@@ -569,22 +571,17 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
         }
     }
     
-    remveZohoAuthenticationLocalStorageValues(){
-        /* localStorage.removeItem("contactListIdZoho");
-         localStorage.removeItem("socialNetworkZoho");
-         localStorage.removeItem("statusCode");
-         localStorage.removeItem("statusCodeFromAddContacts"); */
+    remveZohoAuthenticationLocalStorageValues()
+    {
          localStorage.removeItem("isZohoSynchronization");
 
      }
     
 
     zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
-     
-    //  alert("its in synchronizaiton method");
-        this.contactListIdZoho = contactListId;
-        this.contactListIdZoho = localStorage.setItem("contactListIdZoho",this.contactListIdZoho);
-        this.socialNetworkZoho = localStorage.setItem("socialNetworkZoho",socialNetwork);
+           
+        localStorage.removeItem('contactListIdZoho');
+        localStorage.removeItem('socialNetworkZoho');
         try {
             this.resetResponse();
             swal({ title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
@@ -599,8 +596,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.socialContact.contactType = this.contactType;
             this.contactService.checkingZohoSyncAuthentication(this.isPartner)
                 .subscribe(
-                (data: any) => {
-                	 //  alert("its in data"+data);			
+                (data: any) => {		
                     this.xtremandLogger.info(data);
                     this.storeLogin = data;
                     if(data.statusCode == 402){
@@ -608,19 +604,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                        // this.customResponse = new CustomResponse( 'INFO', data.message, true );
                         this.iszohoAccessTokenExpired=true;
                         this.zohoExpiredAccessTokenMessage = data.message;
+                        this.contactListIdZoho = contactListId;
+                        this.contactListIdZoho = localStorage.setItem("contactListIdZoho",this.contactListIdZoho);
+                        this.socialNetworkZoho = localStorage.setItem("socialNetworkZoho",socialNetwork);
                     }
                     else{
                         this.syncronizeContactList(contactListId, socialNetwork);
                     }
-                    
-                    this.remveZohoAuthenticationLocalStorageValues();
-
-                 /*  else if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
-                        this.syncronizeContactList(contactListId, socialNetwork);
-                    } else {
-                        localStorage.setItem("userAlias", data.userAlias);
-                        window.location.href = "" + data.redirectUrl;
-                    } */
+                        this.remveZohoAuthenticationLocalStorageValues();
                 },
                 (error: any) => {
                     var body = error['_body'];
@@ -1855,7 +1846,6 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
            
             if(!this.isCalledZohoSycronization){
-              //  alert("its in ngafterviewchecked metod");
                  this.isCalledZohoSycronization = true;
                  this.iszohoAccessTokenExpired = false;
               this.zohoContactsSynchronizationAuthentication( this.contactListIdZoho,this.socialNetworkZoho);
@@ -1878,13 +1868,16 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
-            /*  this.statusCodeFromAddContacts = localStorage.getItem("statusCodeFromAddContacts");
-            if(this.statusCodeFromAddContacts == 303){
-                this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
-                this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-                this.zohoContactsSynchronizationAuthentication( this.contactListIdZoho,this.socialNetworkZoho);
-            } */
 
+            window.addEventListener('message', function(e) {
+                //  var origin = e.originalEvent.origin || e.origin;
+                /*  if(origin !== window.location.hostname)
+                      return; */
+                  console.log('received message:  ' + e.data, e);
+                  localStorage.setItem("isZohoSynchronization", "yes");
+              }, false);
+
+            
         }
         catch (error) {
             this.xtremandLogger.error("ERROR : MangeContactsComponent ngOnInit() " + error);
@@ -1910,9 +1903,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     }
 
     zohoAuthenticationThroughExpiredAccessTokenMessage(providerName: string){
-        let url = this.authenticationService.APP_URL+"e/"+providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token;
+        this.zohoCurrentUser = localStorage.getItem('currentUser');
+        let url = this.authenticationService.APP_URL+"e/"+providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.isPartner;
                     var x = screen.width/2 - 700/2;
                     var y = screen.height/2 - 450/2;
                     window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                    
     }
 }

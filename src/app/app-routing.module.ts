@@ -79,7 +79,7 @@ export const routes: Routes = [
     { path: ':social/login', component: SocialLoginComponent },
     { path: ':social/callback', component: SocialCallbackComponent },
     { path: 'v/:socialProvider/:userId/:vud', component: VanitySocialLoginComponent },
-    { path: 'e/:socialProvider/:userId/:vud/:accessToken', component: ExpiredAccessTokenLoginComponent },
+    { path: 'e/:socialProvider/:userId/:vud/:accessToken/:zohoCurrentUser/:isPartner', component: ExpiredAccessTokenLoginComponent },
     { path: 'share/:alias', component: ShareVideoComponent },
     { path: 'embed/:alias', component: ShareVideoComponent },
     { path: 'showCampaignVideo/:alias', component: CampaignVideoComponent },

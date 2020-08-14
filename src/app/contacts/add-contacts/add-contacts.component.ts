@@ -162,9 +162,6 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     zohoErrorResponse:CustomResponse = new CustomResponse();
     zohoPopupLoader: boolean = false;
     public checkZohoStatusCode: any;
-    public contactListIdZoho: any;
-    public socialNetworkZoho: any;
-    statusCodeFromAddContacts:any;
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -2550,19 +2547,21 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
+
             this.checkZohoStatusCode = localStorage.getItem("statusCode");
             if(this.checkZohoStatusCode == 202){
-                //this.router.navigate( ['/home/contacts/manage'] )
-                this.statusCodeFromAddContacts = 303;
-                localStorage.setItem("statusCodeFromAddContacts",this.statusCodeFromAddContacts);
-                
-                this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
-                this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-               // let url = "http://"+"localhost"+":4200/home/contacts/manage/";
-               // window.opener.location.href = url;
-               localStorage.setItem("isZohoSynchronization", "yes");
-               localStorage.removeItem("statusCode");
-               self.close();
+                localStorage.setItem("isZohoSynchronization", "yes");
+                localStorage.removeItem("statusCode");
+
+               if(localStorage.getItem('vanityUrlDomain'))
+               {
+                var message = "isZohoSynchronization";
+                let trargetWindow = window.opener;
+                trargetWindow.postMessage(message,"*");
+                localStorage.removeItem('vanityUrlDomain');
+                self.close();
+            }
+              
             
         }
     }
@@ -3410,7 +3409,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         try {
             if(this.loggedInThroughVanityUrl)
             {
-                this.referenceService.showSweetAlertInfoMessage();
+               // this.referenceService.showSweetAlertInfoMessage();
+                this.zohoVanityUrlAuthentication();
             }
             else{
                 this.zohoPopupLoader = true;
@@ -3459,6 +3459,52 @@ export class AddContactsComponent implements OnInit, OnDestroy {
         } catch ( error ) {
             this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
         }
+    }
+    zohoVanityUrlAuthentication() {
+        this.zohoPopupLoader = true;
+                this.authenticationService.vanityURLEnabled == true;
+                this.zohoErrorResponse = new CustomResponse();
+                let selectedOption = $("select.opts:visible option:selected ").val();
+                if(selectedOption=="DEFAULT"){
+                    this.zohoErrorResponse = new CustomResponse('ERROR','Please select atleast one option',true);
+                    this.zohoPopupLoader = false;
+                }
+                else{
+                    if (this.selectedAddContactsOption == 8 && !this.disableOtherFuctionality) {
+                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                            .subscribe(
+                                (data: any) => {
+                                    this.storeLogin = data;
+                                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                                        let self = this;
+                                        self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
+                                        if (this.selectedZohoDropDown == "contact") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoContactsUsingOAuth2();
+                                        }
+                                        if (this.selectedZohoDropDown == "lead") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoLeadsUsingOAuth2();
+                                        }
+    
+                                    } else {
+                                        this.zohoPopupLoader = false;
+                                        localStorage.setItem("userAlias", data.userAlias)
+                                        localStorage.setItem("isPartner", data.isPartner);
+                                        localStorage.setItem("statusCode", data.statusCode);
+                                        window.location.href = "" + data.redirectUrl;
+    
+                                    }
+                                },
+                                (error: any) => {
+                                    this.zohoPopupLoader = false;
+                                    this.referenceService.showSweetAlertServerErrorMessage();
+                                },
+                                () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
+                            )
+                    }
+                }
+       
     }
 
 
@@ -3561,6 +3607,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 }
                
             }
+
+            contacts.synchronisedList == true;
 
             $("button#sample_editable_1_new").prop('disabled', false);
             $("button#cancel_button").prop('disabled', false);
