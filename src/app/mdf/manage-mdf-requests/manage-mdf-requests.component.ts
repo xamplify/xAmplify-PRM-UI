@@ -216,6 +216,11 @@ export class ManageMdfRequestsComponent implements OnInit {
     this.router.navigate(["/home/mdf/vendors"]);
   }
 
+  doAction(mdfId:number){
+    this.loading = true;
+    this.router.navigate(["/home/mdf/change-request/"+mdfId]);
+  }
+
 
   
 
@@ -258,5 +263,7 @@ export class ManageMdfRequestsComponent implements OnInit {
       console.log(error);
     });
   }
+
+ 
 
 }

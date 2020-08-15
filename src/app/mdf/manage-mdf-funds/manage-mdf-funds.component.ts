@@ -168,6 +168,7 @@ export class ManageMdfFundsComponent implements OnInit {
     this.mdfService.addCreditBalance(this.selectedPartnerMdfFund).subscribe((result: any) => {
       if(result.statusCode==200){
         this.pagination.pageIndex = 1;
+        this.getTilesInfo();
         this.listPartners(this.pagination);
         this.referenceService.showSweetAlertSuccessMessage("Credit Added Successfully");
         this.closeAddBalancePopup();

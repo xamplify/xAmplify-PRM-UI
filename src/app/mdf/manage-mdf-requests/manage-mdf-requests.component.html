@@ -134,7 +134,7 @@
                      </thead>
                      <tbody>
                         <ng-container *ngFor="let partner of mdfRequestsPartnersInfoList;let i=index">
-                           <tr>
+                           <tr class="custom-pointer" (click)="doAction(partner.id)">
                               <td>{{partner.createdDate}}</td>
                               <td>{{partner.mdfRequestTitle}}</td>
                               <td>{{partner.mdfRequestAmount}}</td>

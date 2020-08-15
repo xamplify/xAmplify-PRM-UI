@@ -5,11 +5,13 @@ import { ManageMdfFundsComponent } from './manage-mdf-funds/manage-mdf-funds.com
 import { ManageMdfRequestsComponent } from './manage-mdf-requests/manage-mdf-requests.component';
 import { HtmlSampleComponent } from './html-sample/html-sample.component';
 import { ListVendorsComponent } from './list-vendors/list-vendors.component';
+import { EditMditRequestComponent } from './edit-mdit-request/edit-mdit-request.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "funds", pathMatch: "full" },
   { path: "funds", component: ManageMdfFundsComponent },
   { path: "create-request/:vendorCompanyId", component: CreateMdfRequestComponent },
+  { path: "change-request/:mdfId", component: EditMditRequestComponent },
   {path: "requests", component:ManageMdfRequestsComponent},
   {path: "html", component:HtmlSampleComponent},
   {path: "requests/:role", component:ManageMdfRequestsComponent},

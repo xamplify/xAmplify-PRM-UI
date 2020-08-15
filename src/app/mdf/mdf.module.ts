@@ -10,12 +10,13 @@ import { MdfService } from './services/mdf.service';
 import {MdfRoutingModule} from './mdf-routing.module';
 import { HtmlSampleComponent } from './html-sample/html-sample.component';
 import { ListVendorsComponent } from './list-vendors/list-vendors.component';
+import { EditMditRequestComponent } from './edit-mdit-request/edit-mdit-request.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, MdfRoutingModule
   ],
-  declarations: [CreateMdfRequestComponent,ManageMdfFundsComponent,ManageMdfRequestsComponent, HtmlSampleComponent, ListVendorsComponent],
+  declarations: [CreateMdfRequestComponent,ManageMdfFundsComponent,ManageMdfRequestsComponent, HtmlSampleComponent, ListVendorsComponent, EditMditRequestComponent],
   providers :[MdfService]
 })
 export class MdfModule { }

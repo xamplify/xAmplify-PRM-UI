@@ -1,0 +1,245 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home" aria-hidden="true"></i> 
+            <a translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+         <li><a translate>Change Request</a></li>
+      </ul>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light" style="height:640px;padding-right: 0px!important;   padding-top: 0px!important;">
+            <div class="col-md-12 col-lg-12">
+               <div class="row">
+                  <div class="col-md-9 col-lg-9 pr0">
+                     <div class="row">
+                        <div class="col-md-10 col-lg-10">
+                           <h2 style="font-weight: 500; color: #867c7c;">Healthcare Technology Magazine <sub class="sub-text">MDF REQUEST</sub></h2>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
+                           <div class="row">
+                              <div class="col-md-6 col-lg-6" style="text-align: right;">
+                                 <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                                    <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                       <li><a href="#">Change MDF Request Owner</a></li>
+                                       <li><a href="#">Change MDF Request Status & Assignment</a></li>
+                                       <li><a href="#">Duplicate </a></li>
+                                       <li><a href="#">Archive </a></li>
+                                       <li><a href="#">Delete </a></li>
+                                    </ul>
+                                 </div>
+                              </div>
+                              <div class="col-md-6 col-lg-6" style="text-align: left;">
+                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal1">Edit</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12 col-lg-12" style="margin-top:10px;">
+                           <span class="label label-warning">New Request(Open)</span>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="padding: 40px 40px 0px 17px;">
+                           <div class="portlet light" style=" height: 260px;padding: 0px 0px!important;">
+                              <div class="portlet-title port-heading">
+                                 <div class="caption" style="color:#000!important;">
+                                    MDF Request Status
+                                 </div>
+                                 <!-- <div>
+                                    <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                                    </div> -->
+                              </div>
+                              <div class="row row-space">
+                                 <div class="col-md-6 col-lg-6 pr0" style="border-right: 1px solid #d8d4d4;">
+                                    <div class="row">
+                                       <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                          <i class="fa fa-user-circle-o" aria-hidden="true" style="color: #66b6e4;font-size: 45px;"></i>
+                                       </div>
+                                       <div class="col-md-10 col-lg-10 pl0">
+                                          <label style="font-size: 15px;font-weight: 600;">MDF Request Owner:</label><br>
+                                          <label style="font-size: 14px;color: #65b6e4;">Toshiro Mifune(Kambei Technologies)</label>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-6 col-lg-6 ">
+                                    <label style="font-size: 15px;font-weight: 600;">Assigned To:</label>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-md-12 col-lg-12">
+                                    <div class="row">
+                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                          <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;">
+                                             <label style="font-size: 15px;font-weight: 600;">Request:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$ 5,000.00</label><br>
+                                             <label style="font-size: 15px;">Jan 31,2018</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">Requested by Toshiro Mifune</label>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                          <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;height: 100px;">
+                                             <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$ 0,000.00</label><br>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                          <div class="row text-left" style="padding-left: 30px;">
+                                             <label style="font-size: 15px;font-weight: 600;">Reimbursement:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$ 0,000.00</label><br>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="padding: 15px 40px 0px 17px;">
+                           <div class="portlet light" style=" height:205px;">
+                              <div class="portlet-title">
+                                 <div class="caption" translate>
+                                    Partner MDF Balances
+                                 </div>
+                                 <!-- <div>
+                                    <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
+                                    </div> -->
+                              </div>
+                              <div class="row" style="margin-top: 20px;">
+                                 <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                                    <div class="row">
+                                       <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                                          <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">Partner Organization</div>
+                                                <div class="desc" style="    font-size: 13px;">Kambei Technologies</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more"> Detailed view 
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                       <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">$5,000.00</div>
+                                                <div class="desc" style="    font-size: 13px;">Current MDF Available Bal.</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                       <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">$5,300.00</div>
+                                                <div class="desc" style="    font-size: 13px;"> Available Balance</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                       <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">$ 300.00</div>
+                                                <div class="desc" style="    font-size: 13px;">Avail. Balance for new MDF Req</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-lg-3 pr0" style=" height: 617px;background: #f1f1f1;">
+                     <div class="row">
+                        <div class="col-md-12 col-lg-12 pl0">
+                           <h5 class="h5-heading">MDF Request Owner</h5>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
+                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
+                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
+                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
+                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
+                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
+                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
+                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
+                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
+                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
+                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
+                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
+                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
