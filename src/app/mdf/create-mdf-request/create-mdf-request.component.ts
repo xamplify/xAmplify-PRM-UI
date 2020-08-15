@@ -10,10 +10,16 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { Form } from 'app/forms/models/form';
+import { FormSubmit } from 'app/forms/models/form-submit';
+import { FormSubmitField } from 'app/forms/models/form-submit-field';
+import { ColumnInfo } from 'app/forms/models/column-info';
+import { FormOption } from 'app/forms/models/form-option';
+
 @Component({
   selector: 'app-create-mdf-request',
   templateUrl: './create-mdf-request.component.html',
-  styleUrls: ['./create-mdf-request.component.css'],
+  styleUrls: ['./create-mdf-request.component.css','../html-sample/html-sample.component.css'],
   providers: [HttpRequestLoader,Properties]
 })
 export class CreateMdfRequestComponent implements OnInit {
@@ -26,6 +32,8 @@ export class CreateMdfRequestComponent implements OnInit {
   mdfRequest: MdfRequest = new MdfRequest();
   vendorCompanyId:number = 0;
   loggedInUserCompanyId: number = 0;
+  formLoader = false;
+  form: Form = new Form();
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -59,6 +67,7 @@ export class CreateMdfRequestComponent implements OnInit {
       () => {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
           this.getTilesInfo();
+          this.showMdfForm();
         }
       }
     );
@@ -72,13 +81,29 @@ export class CreateMdfRequestComponent implements OnInit {
          this.tilesLoader = false;
          this.tileData = result.data;
       }
+    }, error => {
+      this.xtremandLogger.log(error);
+    this.xtremandLogger.errorPage(error);
+    });
+  }
+
+  showMdfForm(){
+    this.formLoader = true;
+    this.mdfService.getMdfRequestForm(this.vendorCompanyId).
+    subscribe((result: any) => {
+      if (result.statusCode === 200) {
+        this.form = result.data;
+      }else{
+        this.customResponse = new CustomResponse('ERROR','No MDF Form Found.Please contact admin',true);
+      }
       this.loading = false;
     }, error => {
       this.xtremandLogger.log(error);
     this.xtremandLogger.errorPage(error);
     });
   }
-  
+
+
 
 
   goToVendorList(){
@@ -86,8 +111,8 @@ export class CreateMdfRequestComponent implements OnInit {
     this.router.navigate(["/home/mdf/vendors"]);
   }
 
-  getTi
 
+  /*************Vivek************* */
   getAllMdfRequests() {
     this.mdfService.getAllMdfRequestsForPagination().subscribe((result: any) => {
       if (result.statusCode === 200) {
@@ -102,6 +127,7 @@ export class CreateMdfRequestComponent implements OnInit {
     this.mdfService.saveMdfRequest(this.mdfRequest).subscribe((result: any) => {
       if (result.statusCode === 200) {
         console.log("success");
+        
       }
     }, error => {
       console.log(error);
