@@ -22,8 +22,8 @@ export class MdfService {
     defaultMdfRequestLabels = [
         { 'labelName': 'Title', 'labelType': 'text' },
         { 'labelName': 'Activity', 'labelType': 'select' },
-        { 'labelName': 'Request Amount', 'labelType': 'text' },
-        { 'labelName': 'Event Date', 'labelType': 'text' },
+        { 'labelName': 'Request Amount', 'labelType': 'number' },
+        { 'labelName': 'Event Date', 'labelType': 'date' },
         { 'labelName': 'Description', 'labelType': 'textarea' }
     ];
 
