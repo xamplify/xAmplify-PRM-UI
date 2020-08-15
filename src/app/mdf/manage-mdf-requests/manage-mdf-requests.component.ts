@@ -47,6 +47,9 @@ export class ManageMdfRequestsComponent implements OnInit {
   isPartnerView = false;
   constructor(private mdfService: MdfService, private pagerService: PagerService,private route: ActivatedRoute,private utilService: UtilService,public sortOption: SortOption,public partnerListLoader: HttpRequestLoader,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
+    if(this.referenceService.isCreated){
+      this.customResponse = new CustomResponse('SUCCESS','Request Saved Successfully',true);
+    }
     this.workflowStepsFilePath = 'assets/config-files/mdf.workflow.steps.json';
     this.mdfService.getMdfWorkflowSteps(this.workflowStepsFilePath).subscribe(result => {
       this.wfStepsList = result.workflow_steps;

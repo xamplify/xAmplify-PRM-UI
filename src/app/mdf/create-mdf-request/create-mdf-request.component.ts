@@ -15,6 +15,7 @@ import { FormSubmit } from 'app/forms/models/form-submit';
 import { FormSubmitField } from 'app/forms/models/form-submit-field';
 import { ColumnInfo } from 'app/forms/models/column-info';
 import { FormOption } from 'app/forms/models/form-option';
+declare var $: any;
 
 @Component({
   selector: 'app-create-mdf-request',
@@ -34,6 +35,12 @@ export class CreateMdfRequestComponent implements OnInit {
   loggedInUserCompanyId: number = 0;
   formLoader = false;
   form: Form = new Form();
+  formStatusCode:number = 200;
+  alertClass = "";
+  successAlertClass = "alert alert-success";
+  errorAlertClass = "alert-danger error-alert-custom-padding";
+  show: boolean;
+  message: string;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -91,6 +98,7 @@ export class CreateMdfRequestComponent implements OnInit {
     this.formLoader = true;
     this.mdfService.getMdfRequestForm(this.vendorCompanyId).
     subscribe((result: any) => {
+      this.formStatusCode = result.statusCode;
       if (result.statusCode === 200) {
         this.form = result.data;
       }else{
@@ -102,6 +110,51 @@ export class CreateMdfRequestComponent implements OnInit {
     this.xtremandLogger.errorPage(error);
     });
   }
+
+  submitRequest(){
+    this.mdfRequest = new MdfRequest();
+    this.customResponse = new CustomResponse();
+    this.loading = true;
+    const formLabelDtos = this.form.formLabelDTOs;
+    const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
+    if (requiredFormLabels.length > 0) {
+      this.customResponse = new CustomResponse('ERROR','Please fill required fields',true);
+      this.loading = false;
+    } else {
+      const formSubmit = new FormSubmit();
+      formSubmit.id = this.form.id;
+      formSubmit.alias = this.form.alias;
+      $.each(formLabelDtos, function (_index: number, field: ColumnInfo) {
+        const formField = new FormSubmitField();
+        formField.id = field.id;
+        formField.value = $.trim(field.value);
+        if (field.labelType === "checkbox") {
+          formField.dropdownIds = field.value;
+          formField.value = "";
+        }
+        formSubmit.fields.push(formField);
+      });
+      this.mdfRequest.userId = this.loggedInUserId;
+      this.mdfRequest.formSubmitDto = formSubmit;
+      this.saveMdfRequest();
+
+    }
+  }
+
+  saveMdfRequest() {
+    
+    this.mdfService.saveMdfRequest(this.mdfRequest).subscribe((result: any) => {
+      if (result.statusCode === 200) {
+        this.referenceService.isCreated = true;
+        this.router.navigate(['/home/mdf/requests/p']);
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  
+
 
 
 
@@ -119,20 +172,11 @@ export class CreateMdfRequestComponent implements OnInit {
         console.log("success");
       }
     }, error => {
-      console.log(error);
+      this.xtremandLogger.errorPage(error);
     });
   }
 
-  saveMdfRequest() {
-    this.mdfService.saveMdfRequest(this.mdfRequest).subscribe((result: any) => {
-      if (result.statusCode === 200) {
-        console.log("success");
-        
-      }
-    }, error => {
-      console.log(error);
-    });
-  }
+ 
 
   updateMdfRequest() {
     this.mdfService.updateMdfRequest(this.mdfRequest).subscribe((result: any) => {
@@ -140,7 +184,7 @@ export class CreateMdfRequestComponent implements OnInit {
         console.log("success");
       }
     }, error => {
-      console.log(error);
+      this.xtremandLogger.errorPage(error);
     });
   }
 

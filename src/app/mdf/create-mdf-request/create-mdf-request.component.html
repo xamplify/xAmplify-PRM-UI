@@ -127,7 +127,7 @@
                       </ng-container>
                      </div>
                   </div>
-                  <div class="footer" id="right">
+                  <div class="footer" id="right" *ngIf="formStatusCode==200">
                      <button class="btn btn-primary" style="margin-right: 108px;" type="button" (click)="submitRequest()" translate>Submit</button>
                   </div>
                </form>
