@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MdfRequest } from '../models/mdf.request';
 import { MdfRequestAnalytics } from '../models/mdf.request.analytics';
@@ -28,7 +28,7 @@ declare var $: any;
 export class ManageMdfRequestsComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
-  mdfRequest:MdfRequest = new MdfRequest();
+  mdfRequest:MdfRequest;
   mdfRequestsPartnersInfoList: Array<MdfRequest> = new Array<MdfRequest>();
   mdfRequestAnalytics: MdfRequestAnalytics = new MdfRequestAnalytics();
   mdfRequestStatusAndBalance: MdfRequestStatusAndBalanceInfo = new MdfRequestStatusAndBalanceInfo();
@@ -45,7 +45,11 @@ export class ManageMdfRequestsComponent implements OnInit {
   tileData:any;
   customResponse: CustomResponse = new CustomResponse();
   isPartnerView = false;
-  constructor(private mdfService: MdfService, private pagerService: PagerService,private route: ActivatedRoute,private utilService: UtilService,public sortOption: SortOption,public partnerListLoader: HttpRequestLoader,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
+  partnerListLoader: HttpRequestLoader = new HttpRequestLoader();
+  vendorTilesClass = "col-sm-3 col-xs-6 col-lg-3 col-md-3";
+  partnerTilesClass = "col-sm-4 col-xs-6 col-lg-4 col-md-4";
+  tileClass: string = "";
+  constructor(private mdfService: MdfService, private pagerService: PagerService,private route: ActivatedRoute,private utilService: UtilService,public sortOption: SortOption,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
     if(this.referenceService.isCreated){
       this.customResponse = new CustomResponse('SUCCESS','Request Saved Successfully',true);
@@ -60,15 +64,21 @@ export class ManageMdfRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.loading  = true;
+    this.tilesLoader = true;
     this.role = this.route.snapshot.params['role'];
     if(this.role!=undefined && this.role=="p"){
       this.isPartnerView = true;
+      this.tileClass = this.partnerTilesClass;
     }else{
       this.isPartnerView = false;
+      this.tileClass = this.vendorTilesClass;
     }
     this.getCompanyId();
-   
   }
+  ngOnDestroy() {
+    this.referenceService.isCreated = false;
+  }
+
   getCompanyId() {
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
       (result: any) => {
@@ -91,13 +101,13 @@ export class ManageMdfRequestsComponent implements OnInit {
           }else{
             this.getTilesInfoForVendor();
           }
+          this.listMdfRequests(this.pagination);
         }
       }
     );
   }
 
   getTilesInfoForPartner() {
-    this.tilesLoader = true;
     this.mdfService.getMdfRequestsAnalyticsTilesForPartner(this.loggedInUserCompanyId).subscribe((result: any) => {
       if (result.statusCode === 200) {
          this.tilesLoader = false;
@@ -113,14 +123,91 @@ export class ManageMdfRequestsComponent implements OnInit {
   getTilesInfoForVendor() {
     this.mdfService.getMdfRequestsAnalyticsForTiles(this.loggedInUserCompanyId).subscribe((result: any) => {
       if (result.statusCode === 200) {
-        this.mdfRequestAnalytics = result.data;
-        this.getAllMdfRequests(this.pagination);
-      }
+        this.tilesLoader = false;
+        this.loading = false;
+        this.tileData = result.data;
+     }
     }, error => {
       console.log(error);
       this.xtremandLogger.errorPage(error);
     });
   }
+
+  listMdfRequests(pagination: Pagination) {
+    this.referenceService.loading(this.partnerListLoader, true);
+    if(this.isPartnerView){
+      this.listMdfRequestsForPartners(pagination);
+    }else{
+      this.listMdfRequestsForVendors(pagination);
+    }
+   
+  }
+
+  listMdfRequestsForPartners(pagination:Pagination){
+    this.mdfService.listMdfRequestsForPartners(pagination).subscribe((result: any) => {
+      if (result.statusCode === 200) {
+        let data = result.data;
+        pagination.totalRecords = data.totalRecords;
+        this.mdfRequestsPartnersInfoList = data.partnerList;
+        pagination = this.pagerService.getPagedItems(pagination, this.mdfRequestsPartnersInfoList);
+      }
+      this.loading = false;
+      this.referenceService.loading(this.partnerListLoader, false);
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    });
+  }
+
+  listMdfRequestsForVendors(pagination:Pagination){
+    this.mdfService.getMdfRequestsAnalyticsForPagination(pagination).subscribe((result: any) => {
+      if (result.statusCode === 200) {
+        let data = result.data;
+        pagination.totalRecords = data.totalRecords;
+        this.mdfRequestsPartnersInfoList = data.partnerList;
+        pagination = this.pagerService.getPagedItems(pagination, this.mdfRequestsPartnersInfoList);
+      }
+      this.loading = false;
+      this.referenceService.loading(this.partnerListLoader, false);
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    });
+  }
+
+   /********************Pagaination&Search Code*****************/
+
+    /*************************Sort********************** */
+    sortBy(text: any) {
+      this.sortOption.mdfPartnersSortOption = text;
+      this.getAllFilteredResults(this.pagination);
+  }
+
+
+  /*************************Search********************** */
+  searchPartners() {
+      this.getAllFilteredResults(this.pagination);
+  }
+
+  paginationDropdown(items: any) {
+      this.sortOption.itemsSize = items;
+      this.getAllFilteredResults(this.pagination);
+  }
+
+  /************Page************** */
+  setPage(event: any) {
+      this.pagination.pageIndex = event.page;
+      this.listMdfRequests(this.pagination);
+  }
+
+  getAllFilteredResults(pagination: Pagination) {
+      this.pagination.pageIndex = 1;
+      this.pagination.searchKey = this.sortOption.searchKey;
+      this.pagination = this.utilService.sortOptionValues(this.sortOption.mdfPartnersSortOption, this.pagination);
+      this.listMdfRequests(this.pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
+  /********************Pagaination&Search Code*****************/
 
   listMdfAccessVendors(){
     this.loading = true;
@@ -128,21 +215,6 @@ export class ManageMdfRequestsComponent implements OnInit {
   }
 
 
-
-
-
-
-  getAllMdfRequests(pagination: Pagination) {
-    this.mdfService.getMdfRequestsAnalyticsForPagination(pagination).subscribe((result: any) => {
-      if (result.statusCode === 200) {
-        pagination.totalRecords = result.totalRecords;
-        this.mdfRequestsPartnersInfoList = result.data;
-        pagination = this.pagerService.getPagedItems(pagination, this.mdfRequestsPartnersInfoList);
-      }
-    }, error => {
-      console.log(error);
-    });
-  }
   
 
   getMdfRequestStatusAndBalanceDetails() {

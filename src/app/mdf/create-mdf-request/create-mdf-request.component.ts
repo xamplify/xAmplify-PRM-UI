@@ -47,6 +47,7 @@ export class CreateMdfRequestComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.tilesLoader = true;
     this.vendorCompanyId = this.route.snapshot.params['vendorCompanyId'];
     if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
       this.getCompanyId();
@@ -105,6 +106,7 @@ export class CreateMdfRequestComponent implements OnInit {
         this.customResponse = new CustomResponse('ERROR','No MDF Form Found.Please contact admin',true);
       }
       this.loading = false;
+      this.formLoader = false;
     }, error => {
       this.xtremandLogger.log(error);
     this.xtremandLogger.errorPage(error);
@@ -159,9 +161,9 @@ export class CreateMdfRequestComponent implements OnInit {
 
 
 
-  goToVendorList(){
+  goToManageMdfRequests(){
     this.loading = true;
-    this.router.navigate(["/home/mdf/vendors"]);
+    this.router.navigate(["/home/mdf/requests/p"]);
   }
 
 

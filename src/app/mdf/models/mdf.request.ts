@@ -3,18 +3,18 @@ import { FormSubmit } from "app/forms/models/form-submit";
 export class MdfRequest{
     id:number;
     userId:number;
-    companyProfileName:String;
+    companyProfileName:string;
     formSubmitId:number;
     allocationAmount:number;
     allocationDate:Date;
     allocationExpirationDate:Date;
     reimburseAmount:number;    
     formSubmitDto:FormSubmit;
-    statusInString:String;
-    createdDate:String;
-    mdfRequestTitle:String;
+    statusInString:string;
+    createdDate:string;
+    mdfRequestTitle:string;
     mdfRequestAmount:number;
-    partnerCompany: String;
-    partnerContact:String;
-    eventDate:String;
+    partnerCompany: string;
+    partnerContact:string;
+    eventDate:string;
 }

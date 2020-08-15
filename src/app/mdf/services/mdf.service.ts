@@ -192,6 +192,14 @@ export class MdfService {
     }
 
 
+    listMdfRequestsForPartners(pagination: Pagination) {
+        return this.http.post(this.URL + "requests/analytics/partnersInfoForPartner?access_token=" + this.authenticationService.access_token, pagination)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
+
     extractData(res: Response) {
         let body = res.json();
         return body || {};
