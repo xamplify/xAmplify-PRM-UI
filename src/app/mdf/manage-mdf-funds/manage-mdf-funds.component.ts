@@ -30,7 +30,7 @@ export class ManageMdfFundsComponent implements OnInit {
   modalPopupLoader: boolean;
   showCreditAmountError = false;
 
-  vendorCompanyId: number=0;
+  loggedInUserCompanyId: number=0;
   loggedInUserId: number=0;
   loading = false;
   tilesLoader = false;
@@ -51,7 +51,7 @@ export class ManageMdfFundsComponent implements OnInit {
     this.referenceService.getCompanyIdByUserId(this.loggedInUserId).subscribe(
       (result: any) => {
         if (result !== "") { 
-          this.vendorCompanyId = result;
+          this.loggedInUserCompanyId = result;
         }else{
           this.loading = false;
           this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
@@ -59,9 +59,9 @@ export class ManageMdfFundsComponent implements OnInit {
         }
       }, (error: any) => { this.xtremandLogger.log(error); },
       () => {
-        if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
+        if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
           this.getTilesInfo();
-          this.pagination.vendorCompanyId = this.vendorCompanyId;
+          this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
           this.listPartners(this.pagination);
         }
       }
@@ -72,7 +72,7 @@ export class ManageMdfFundsComponent implements OnInit {
 
   getTilesInfo() {
     this.tilesLoader = true;
-    this.mdfService.getMdfFundsAnalyticsForTiles(this.vendorCompanyId).subscribe((result: any) => {
+    this.mdfService.getMdfFundsAnalyticsForTiles(this.loggedInUserCompanyId).subscribe((result: any) => {
       if (result.statusCode === 200) {
          this.tilesLoader = false;
          this.tileData = result.data;

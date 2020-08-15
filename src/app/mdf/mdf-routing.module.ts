@@ -4,6 +4,7 @@ import { CreateMdfRequestComponent } from './create-mdf-request/create-mdf-reque
 import { ManageMdfFundsComponent } from './manage-mdf-funds/manage-mdf-funds.component';
 import { ManageMdfRequestsComponent } from './manage-mdf-requests/manage-mdf-requests.component';
 import { HtmlSampleComponent } from './html-sample/html-sample.component';
+import { ListVendorsComponent } from './list-vendors/list-vendors.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "funds", pathMatch: "full" },
@@ -11,7 +12,9 @@ export const routes: Routes = [
   { path: "create-request", component: CreateMdfRequestComponent },
   {path: "requests", component:ManageMdfRequestsComponent},
   {path: "html", component:HtmlSampleComponent},
-  {path: "requests/:role", component:ManageMdfRequestsComponent}
+  {path: "requests/:role", component:ManageMdfRequestsComponent},
+  {path: "vendors", component:ListVendorsComponent}
+
 
 
   ];

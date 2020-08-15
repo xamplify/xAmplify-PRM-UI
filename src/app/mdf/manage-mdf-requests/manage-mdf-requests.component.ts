@@ -119,6 +119,16 @@ export class ManageMdfRequestsComponent implements OnInit {
     });
   }
 
+  listMdfAccessVendors(){
+    this.loading = true;
+    this.router.navigate(["/home/mdf/vendors"]);
+  }
+
+
+
+
+
+
   getAllMdfRequests(pagination: Pagination) {
     this.mdfService.getMdfRequestsAnalyticsForPagination(pagination).subscribe((result: any) => {
       if (result.statusCode === 200) {
@@ -130,6 +140,7 @@ export class ManageMdfRequestsComponent implements OnInit {
       console.log(error);
     });
   }
+  
 
   getMdfRequestStatusAndBalanceDetails() {
     this.mdfService.getMdfRequestStatusAndBalanceDetails(this.loggedInUserCompanyId, this.partnerCompanyId).subscribe((result: any) => {
@@ -171,9 +182,4 @@ export class ManageMdfRequestsComponent implements OnInit {
     });
   }
 
-  /************Page************** */
-  setPage(event: any) {
-    this.pagination.pageIndex = event.page;
-    this.getAllMdfRequests(this.pagination);
-  }
 }

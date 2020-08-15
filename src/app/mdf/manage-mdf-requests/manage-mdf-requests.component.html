@@ -14,9 +14,10 @@
             </div>
             <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-                  <button style="border-radius: 3px 0px 0px 3px;" translate="" ng-reflect-translate="">Request MDF</button>
-                  <button style="border-radius: 0px 3px 3px 0px;">
-                  <i  class="fa fa-user-plus" data-original-title="" data-toggle="tooltip" aria-hidden="true"></i></button>
+                  <button (click)="listMdfAccessVendors()" class="btn btn-primary" style="border-radius: 3px !important;">
+                     <span class="hidden-xs margin-right-design" translate>Request MDF</span>
+                     <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                 </button>
                </div>
             </div>
          </div>
@@ -103,15 +104,15 @@
                   </div>
                </div>
                <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
-                  <table id="example" class="table table-striped table-bordered" style="width:100%">
+                  <table id="example" class="table table-striped table-bordered" style="width:100%" aria-describedby="PartnerRequestList">
                      <thead>
                         <tr>
-                           <th>Name</th>
-                           <th>Position</th>
-                           <th>Office</th>
-                           <th>Age</th>
-                           <th>Start date</th>
-                           <th>Salary</th>
+                           <th>Date Created</th>
+                           <th>MDF Request</th>
+                           <th>Amount</th>
+                           <th>Stage</th>
+                           <th>Event Date</th>
+                           <th>Partner Contact</th>
                         </tr>
                      </thead>
                      <tbody>

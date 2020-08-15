@@ -173,6 +173,12 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+    listMdfAccessVendorCompanyDetailsByPartnerCompanyId(partnerCompanyId: number) {
+        return this.http.get(this.URL + "listMdfAccessVendorCompanyDetailsByPartnerCompanyId/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     extractData(res: Response) {
         let body = res.json();

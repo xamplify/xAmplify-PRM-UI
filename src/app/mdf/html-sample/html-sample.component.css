@@ -563,3 +563,6 @@ a {
     cursor: not-allowed;
     position: relative;
 }
+.margin-right-design{
+    margin-right: 5px;
+}
