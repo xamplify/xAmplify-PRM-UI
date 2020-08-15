@@ -25,7 +25,7 @@
                         <tr *ngFor="let vendor of vendorsList">
                           <td>{{vendor.companyName}}</td>
                           <td>
-                            <button (click)="listMdfAccessVendors()" class="btn btn-primary" style="border-radius: 3px !important;">
+                            <button (click)="createMdfRequest(vendor.vendorCompanyId)" class="btn btn-primary" style="border-radius: 3px !important;">
                               <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
                           </button>
                           </td>

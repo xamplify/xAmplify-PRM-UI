@@ -9,7 +9,7 @@ import { ListVendorsComponent } from './list-vendors/list-vendors.component';
 export const routes: Routes = [
   { path: "", redirectTo: "funds", pathMatch: "full" },
   { path: "funds", component: ManageMdfFundsComponent },
-  { path: "create-request", component: CreateMdfRequestComponent },
+  { path: "create-request/:vendorCompanyId", component: CreateMdfRequestComponent },
   {path: "requests", component:ManageMdfRequestsComponent},
   {path: "html", component:HtmlSampleComponent},
   {path: "requests/:role", component:ManageMdfRequestsComponent},

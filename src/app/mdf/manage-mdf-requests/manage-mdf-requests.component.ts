@@ -73,7 +73,7 @@ export class ManageMdfRequestsComponent implements OnInit {
           this.loggedInUserCompanyId = result;
         }else{
           this.loading = false;
-          this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
+          this.referenceService.showSweetAlertErrorMessage('Company Id Not Found');
           this.router.navigate(["/home/dashboard"]);
         }
       }, (error: any) => {

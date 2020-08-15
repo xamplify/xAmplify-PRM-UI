@@ -179,6 +179,12 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+    getPartnerMdfBalance(vendorCompanyId: number,partnerCompanyId:number) {
+        return this.http.get(this.URL + "requests/partnerMdfBalance/" + vendorCompanyId + "/"+partnerCompanyId+"?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     extractData(res: Response) {
         let body = res.json();

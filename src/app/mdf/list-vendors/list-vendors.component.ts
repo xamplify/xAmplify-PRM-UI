@@ -78,4 +78,15 @@ goToMangeMdfRequests(){
   this.loading = true;
   this.router.navigate(["/home/mdf/requests/p"]);
 }
+
+createMdfRequest(vendorCompanyId:number){
+  if(vendorCompanyId!=null && vendorCompanyId>0){
+    this.loading = true;
+    this.router.navigate(["/home/mdf/create-request/"+vendorCompanyId]);
+  }else{
+    this.referenceService.showSweetAlertErrorMessage('Vendor Company Id Not Found');
+  }
+  
+
+}
 }
