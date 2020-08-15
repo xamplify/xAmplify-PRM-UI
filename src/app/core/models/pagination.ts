@@ -68,6 +68,7 @@ export class Pagination {
 	vendorCompanyProfileName:string;
 	vendorCompanyId:number = 0;
 	collectionId:number = 0;
+	feedId = 0;
 
 
 }

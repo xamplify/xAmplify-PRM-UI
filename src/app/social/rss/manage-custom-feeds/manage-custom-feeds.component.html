@@ -198,7 +198,7 @@
 														</a>
 														<a *ngIf="selectedType!='p'" data-toggle="tooltip" 
 															data-placement="top"
-															title="Analytics" (click)="editFeed(feed)"> <i
+															title="Analytics" (click)="showFeedAnalyticsPopUp(feed.id)"> <i
 															class="fa fa-bar-chart" aria-hidden="true"></i>
 														</a>
 														 <a *ngIf="selectedType!='p' && feed.canDelete" data-toggle="tooltip"
@@ -233,6 +233,11 @@
 													<div class="popover-content p10">
 														<ul class="list-group m0" id="popover_{{feed.id}}">
 															<li class="list-group-item" *ngIf="addNewCollection">
+																<div *ngIf="addCollectionError">
+																	<span style="color: red"> <i
+																		class="fa fa-times-circle" aria-hidden="true"></i>{{addCollectionErrorMessage}}
+																	</span>
+																</div>
 																<form>
 																	<div class="form-group">
 																		<label for="customCollectionName">Collection
@@ -243,7 +248,7 @@
 																	</div>
 																	<button class="btn btn-primary"
 																		(click)="moveToCollection(0, feed, customCollectionName.value)">Submit</button>
-																	<button (click)="addNewCollection = false"
+																	<button (click)="addNewCollection = false; addCollectionError = false"
 																		class="btn btn-secondary">Cancel</button>
 																</form>
 															</li>
@@ -282,8 +287,176 @@
                   <strong translate>No Feeds Found.</strong>
                </div>
             </div>
-         	
-         </div>
+
+			<div class="modal right" id="feedAnalyticsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+					<div class="modal-dialog modal-css" role="document" style="right:0">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close-circle" data-dismiss="modal"
+									(click)="feedAnalyticsModalClose()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h4 class="modal-title size-font" translate>Feed Analytics</h4>
+							</div>
+							<div class="modal-body">
+								 <table class='table tgrid table-hover table-sm' id="partnerList">
+                                <thead>
+                                    <tr >
+                                        <th class="text-center" style="min-width: 200px;" translate>Partner</th>
+                                        <th class="text-center" style="min-width: 200px;" translate>Total Shares</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                	<tr *ngFor="let analyticsPageItem of analyticsPagination.pagedItems; let i =index">
+                                		<td class="text-center"><a title="{{analyticsPageItem.partnerCompanyName}}" (click)="showPartnerFeedAnalyticsPopUp(analyticsPageItem.partnerCompanyId)">{{analyticsPageItem.partnerCompanyName}}</a></td>
+                                		<td class="text-center">{{analyticsPageItem.sharedCount}}</td>
+                                	</tr>
+                                	
+                                </tbody>
+                                </table>
+                                <div *ngIf="analyticsPagination.pagedItems.length !== 0" class="pg8">
+									<app-pagination [pagination]="analyticsPagination"
+										(notifyParent)="setAnalyticsPage($event)"
+										(notifyParentDropDown)="getFeedAnalytics($event)"
+										[hidden]="loading"></app-pagination>
+								</div>
+								<div *ngIf="analyticsPagination.pagedItems.length === 0" class="text-center">
+								This feed is not yet shared by any partner.
+								</div>
+							</div>
+							<div class="modal-footer" style="border: none">
+								<!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
+								<button class="btn btn-default"
+									(click)="feedAnalyticsModalClose()" translate>Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal right" id="partnerAnalyticsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static">
+					<div class="modal-dialog modal-css" role="document" style="right:0">
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close-circle" data-dismiss="modal"
+									(click)="partnerAnalyticsModalClose()">
+									<i class="fa fa-times"></i>
+								</button>
+								<h4 class="modal-title size-font" translate>Feed Analytics for Partner</h4>
+							</div>
+							<div class="modal-body">
+
+								<div
+									*ngFor="let partnerAnalyticsPageItem of partnerAnalyticsPagination.pagedItems;let i =index">
+									<div class="row" style="margin-bottom: -4px;">
+										<div class="page-bar page-bar-shadow pb-m">
+											<div class="portlet light"
+												style="border-color: #fff !important;">
+												<div class="portlet-body pt0">
+													<div class="col-sm-12 col-xs-12">
+														<div class="row">
+															<div class="col-md-8 col-lg-8" style="padding: 0px;">
+																<div style="margin-top: 10px; margin-bottom: 10px;">
+																	<span><strong>{{partnerAnalyticsPageItem.statusMessage}}</strong></span>
+																</div>
+																<ng-container
+																	*ngIf="partnerAnalyticsPageItem?.socialStatusContents.length>0">
+																<ng-container
+																	*ngFor="let item of partnerAnalyticsPageItem?.socialStatusContents">
+																<div class="img-wrap img-thumbnail rounded-0"
+																	style="margin-bottom: 15px;">
+																	<img async *ngIf="item.fileType !== 'video'"
+																		src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
+																		style="height: 50px"> <img async
+																		*ngIf="item.fileType === 'video'"
+																		src="{{item.filePath}}"
+																		(error)="videoUtilService.errorVideoHandler($event)">
+																</div>
+																</ng-container> </ng-container>
+																<!-- <ng-container
+																	*ngIf="partnerAnalyticsPageItem.socialStatusContents.length>0">
+																<ng-container
+																	*ngFor="let item of partnerAnalyticsPageItem.socialStatusContents">
+																<div class="img-wrap img-thumbnail rounded-0"
+																	style="margin-bottom: 15px;">
+																	<img async *ngIf="item.fileType !== 'video'"
+																		src="{{authenticationService.MEDIA_URL}}{{item.filePath}}"
+																		style="height: 50px"> <img async
+																		*ngIf="item.fileType === 'video'"
+																		src="{{item.filePath}}"
+																		(error)="videoUtilService.errorVideoHandler($event)">
+																</div>
+																</ng-container> </ng-container> -->
+															</div>
+															<div class="col-md-4 col-lg-4"
+																style="margin-bottom: 20px;">
+																<div class="text-right"
+																	style="margin-right: 10px; margin-top: 10px">
+																	<span
+																		*ngIf="partnerAnalyticsPageItem.postStatus === 'FAILURE'"
+																		style="background: #ed1c24;"
+																		class="published-banner uppercase">{{partnerAnalyticsPageItem.postStatus}}</span>
+																	<span
+																		*ngIf="partnerAnalyticsPageItem.postStatus === 'SUCCESS'"
+																		style="background: green;"
+																		class="published-banner uppercase">{{partnerAnalyticsPageItem.postStatus}}</span>
+																</div>
+
+															</div>
+														</div>
+														<div class="row"
+															style="border-top: solid 1px #ccc; padding: 10px 5px;">
+															<div class="col-md-9 col-lg-9" style="padding: 0px;">
+																<div class="col-md-2 col-lg-2"> <img
+																		src="{{partnerAnalyticsPageItem.profileImage}}"
+																		style="width: 40px; height: 40px;" /></div> 
+																	<div class="col-md-10 col-lg-10">{{partnerAnalyticsPageItem.profileName}}
+																		<div>
+																			<span>{{partnerAnalyticsPageItem.postedOn}}</span>
+																		</div>
+																	</div>
+															</div>
+															<div class="col-md-3 col-lg-3" style="padding: 0px;">
+																<div class="text-right">
+																	<span *ngIf="partnerAnalyticsPageItem.socialNetwork === 'FACEBOOK'">
+																		<i class="fa fa-facebook-square" style="font-size: 18px;color:#3b5998" aria-hidden="true"></i>
+																	</span>
+																	<span *ngIf="partnerAnalyticsPageItem.socialNetwork === 'TWITTER'">
+																		<i class="fa fa-twitter-square" style="font-size: 18px;color:#0084b4" aria-hidden="true"></i>
+																	</span> 
+																	<span *ngIf="partnerAnalyticsPageItem.socialNetwork === 'LINKEDIN'">
+																		<i class="fa fa-linkedin-square" style="font-size: 18px;color:#0077b5" aria-hidden="true"></i>
+																	</span>  
+																	<span>{{partnerAnalyticsPageItem.socialNetwork}}</span>
+																</div>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div *ngIf="partnerAnalyticsPagination.pagedItems.length !== 0" class="pg8">
+									<app-pagination [pagination]="partnerAnalyticsPagination"
+										(notifyParent)="setPartnerAnalyticsPage($event)"
+										(notifyParentDropDown)="getPartnerFeedAnalytics($event)"
+										[hidden]="loading"></app-pagination>
+								</div>
+							</div>
+							<div class="modal-footer" style="border: none">
+								<!-- <span style="float: left;"><span style="color: red">*</span> Required field</span> -->
+								<button class="btn btn-default"
+									(click)="partnerAnalyticsModalClose()" translate>Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
       </div>
    </div>
 </div>

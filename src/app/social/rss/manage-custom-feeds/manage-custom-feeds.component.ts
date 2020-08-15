@@ -39,12 +39,22 @@ export class ManageCustomFeedsComponent implements OnInit {
 	canDeleteCollection = false;
 	addNewCollection = false;
 	customFeedCollections: Array<any>;
+	analyticsPagination: Pagination = new Pagination();
+	analyticsPageItems: Array<any>;
+	partnerAnalyticsPagination: Pagination = new Pagination();
+	partnerAnalyticsPageItems: Array<any>;
+	feedId = 0;
+	partnerCompanyId = 0;
+	addCollectionError = false;
+	addCollectionErrorMessage: string;
 	constructor(public referenceService: ReferenceService, public pagerService:
 		PagerService, public authenticationService: AuthenticationService,
 		public router: Router, public logger: XtremandLogger,
 		public actionsDescription: ActionsDescription, private route: ActivatedRoute, private socialService: SocialService,public videoUtilService: VideoUtilService) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 		this.pagination.userId = this.loggedInUserId;
+		this.analyticsPagination.userId = this.loggedInUserId;
+		this.partnerAnalyticsPagination.userId = this.loggedInUserId;
 		if (this.referenceService.isCreated) {
 			this.message = "Feed created successfully";
 			this.showMessageOnTop(this.message);
@@ -148,6 +158,18 @@ export class ManageCustomFeedsComponent implements OnInit {
 	setPage(event: any) {
 		this.pagination.pageIndex = event.page;
 		this.listAllFeeds(this.pagination);
+	}
+	
+	/************Page************** */
+	setAnalyticsPage(event: any) {
+		this.analyticsPagination.pageIndex = event.page;
+		this.getFeedAnalytics(this.analyticsPagination);
+	}
+	
+	/************Page************** */
+	setPartnerAnalyticsPage(event: any) {
+		this.partnerAnalyticsPagination.pageIndex = event.page;
+		this.getPartnerFeedAnalytics(this.partnerAnalyticsPagination);
 	}
 
 	getAllFilteredResults() {
@@ -335,6 +357,9 @@ renameCollection(){
   }
   
  toggleChangeCollection(divId: any) {
+ 	this.addCollectionError = false;
+    this.addCollectionErrorMessage = '';
+    this.addNewCollection = false;
     var x = document.getElementById('toggleChangeCollection' + divId);
     if (x.style.display === "none") {
       x.style.display = "block";
@@ -343,13 +368,108 @@ renameCollection(){
     }
   }
   
+  showFeedAnalyticsPopUp(feedId : number) {
+  	//this.analyticsPagination.pageIndex = 1;
+  	//this.analyticsPagination.userId = this.loggedInUserId;
+  	this.analyticsPagination.feedId = feedId;
+  	this.feedId = feedId;
+    this.getFeedAnalytics(this.analyticsPagination);
+    var x = document.getElementById('feedAnalyticsModal');
+  	x.style.display = "block";
+  }
+  
+  getFeedAnalytics(analyticsPagination: Pagination) {
+  	this.socialService.getFeedAnalytics(this.analyticsPagination).subscribe(
+      		data => {
+      			analyticsPagination.totalRecords = data.totalRecords;
+				analyticsPagination = this.pagerService.getPagedItems(analyticsPagination, data.data);
+      			this.analyticsPageItems = data.data;
+      	},
+      	error => console.log(error),
+      		() => this.loading = false
+    	);
+  }
+  
+  feedAnalyticsModalClose(){
+  	var x = document.getElementById('feedAnalyticsModal');
+  	x.style.display = "none";
+  	this.loading = false;
+  }
+  
+ /* getPartnerFeedAnalytics(analyticsPageItem : any){
+  	this.partnerAnalyticsPagination.pageIndex = 1;
+  	this.partnerAnalyticsPagination.userId = this.loggedInUserId;
+  	this.partnerAnalyticsPagination.feedId = analyticsPageItem.socialStatusId;
+  	this.partnerAnalyticsPagination.partnerCompanyId = analyticsPageItem.partnerCompanyId;
+    this.socialService.getPartnerFeedAnalytics(this.partnerAnalyticsPagination).subscribe(
+      		data => {
+        		this.partnerAnalyticsPageItems = data.data;
+        		$.each(this.partnerAnalyticsPageItems, function (_index:number, partnerAnalyticsPageItem) {
+                        partnerAnalyticsPageItem.postedOn = new Date(partnerAnalyticsPageItem.postedOnUTC);
+                    });
+      	},
+      	error => console.log(error),
+      		() => this.loading = false
+    	);
+    	
+   var x = document.getElementById('partnerAnalyticsModal');
+  	x.style.display = "block";
+  }*/
+  
+  showPartnerFeedAnalyticsPopUp(partnerCompanyId : number) {
+  	this.partnerAnalyticsPagination.partnerCompanyId = partnerCompanyId;
+  	this.partnerAnalyticsPagination.feedId = this.feedId;
+    this.getPartnerFeedAnalytics(this.partnerAnalyticsPagination);
+    var x = document.getElementById('partnerAnalyticsModal');
+  	x.style.display = "block";
+  }
+  
+  getPartnerFeedAnalytics(partnerAnalyticsPagination : Pagination){
+    this.socialService.getPartnerFeedAnalytics(this.partnerAnalyticsPagination).subscribe(
+      		data => {
+				partnerAnalyticsPagination.totalRecords = data.totalRecords;
+				partnerAnalyticsPagination = this.pagerService.getPagedItems(partnerAnalyticsPagination, data.data);      		
+        		this.partnerAnalyticsPageItems = data.data;
+        		$.each(partnerAnalyticsPagination.pagedItems, function (_index:number, partnerAnalyticsPageItem) {
+                        partnerAnalyticsPageItem.postedOn = new Date(partnerAnalyticsPageItem.postedOnUTC);
+                    });
+      	},
+      	error => console.log(error),
+      		() => this.loading = false
+    	);
+  }
+  
+  
+  
+  partnerAnalyticsModalClose() {
+  	var x = document.getElementById('partnerAnalyticsModal');
+  	x.style.display = "none";
+  	this.loading = false;
+  }
+  
+  
   moveToCollection(collectionId: number, feed: any, collectionName: string){
    // this.resetCustomResponse();
-    this.loading = true;
+     this.loading = true;
       if (collectionId > 0) {
       	this.moveCustomFeedToOtherCollection(collectionId, feed);
       } else {
-      	this.createCollection(feed, collectionName);
+      	let duplicateName = false;		
+      	if (this.customFeedCollections.length > 0) {
+      		$.each(this.customFeedCollections, function (_index:number, customFeedCollection) {
+                 if(customFeedCollection.title === collectionName) {
+                 	duplicateName = true;
+                 }
+            });
+      	}
+      	if (!duplicateName) {
+      		this.createCollection(feed, collectionName);
+      	} else {
+      		this.loading = false;
+      		this.addCollectionError = true;
+      		this.addCollectionErrorMessage = "Duplicate Collection Name";
+      		//this.customResponse = new CustomResponse('ERROR', "Duplicate Collection Name", true);
+      	}
       }
   }
   

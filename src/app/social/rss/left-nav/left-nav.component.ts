@@ -21,6 +21,8 @@ export class LeftNavComponent implements OnInit {
   roleDetails:any;
   vendors: Array<any>;
   customFeedCollections: Array<any>;
+  vendorFeedsCount = 0;
+  vendorFeedsExpand = false;
   ngOnInit() {
     this.loggedInUserId = this.authenticationService.getUserId();
     this.isloading = true;
@@ -36,15 +38,16 @@ export class LeftNavComponent implements OnInit {
           let isOrgAdminAndPartnerTeamMember  = data.orgAdminAndPartnerTeamMember;
           let isVendorAndPartnerTeamMember = data.vendorAndPartnerTeamMember;
           this.showVendorFeeds = isOrgAdminAndPartner ||isVendorAndPartner || isOrgAdminAndPartnerTeamMember ||isVendorAndPartnerTeamMember;
+          this.listAllCustomFeedCollections();
+          this.getVendorFeedsCount();
           if(this.showVendorFeeds){
             this.listAllVendors();
-            this.listAllCustomFeedCollections();
           }
         }else{
           this.showFeeds = false;
           this.showVendorFeeds = true;
           this.listAllVendors();
-          this.listAllCustomFeedCollections();
+          //this.listAllCustomFeedCollections();
         }
       },
       error => {
@@ -55,6 +58,26 @@ export class LeftNavComponent implements OnInit {
     
   }
 
+  getVendorFeedsCount(){
+    this.isloading = true;
+    this.socialService.getVendorFeedsCount(this.loggedInUserId)
+  	.subscribe(
+    	data => {
+      	let statusCode = data.statusCode;
+      	if(statusCode==200){
+        this.vendorFeedsCount = data.data.count;
+      	}
+    },
+    error => {
+      this.isloading = false;
+    },
+    () => {
+      this.isloading = false;
+    }
+  );
+
+  }
+  
   listAllVendors(){
     this.isloading = true;
     this.socialService.listAllVendors(this.loggedInUserId)

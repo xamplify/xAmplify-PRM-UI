@@ -355,6 +355,23 @@ export class SocialService {
         .map(this.extractData)
         .catch(this.handleError);
     }
+    
+    getVendorFeedsCount(userId:number){
+    	return this.http.get( this.URL + 'social/vendor/'+userId+'/feeds/count?access_token=' + this.authenticationService.access_token,"" )
+    		.map( this.extractData ).catch( this.handleError );
+   }
+   
+   getFeedAnalytics( pagination: Pagination){
+      return this.http.post( this.URL + 'social/vendor/feed/analytics?access_token=' + this.authenticationService.access_token, pagination )
+          .map( this.extractData )
+          .catch( this.handleError );
+  }
+  
+  getPartnerFeedAnalytics( pagination: Pagination){
+      return this.http.post( this.URL + 'social/vendor/feed/partner/analytics?access_token=' + this.authenticationService.access_token, pagination )
+          .map( this.extractData )
+          .catch( this.handleError );
+  }
   
   hasRssFeedAccess(userId:number) {
     const url =  this.URL+'module/hasRssFeedAccess/'+userId+'?access_token=' + this.authenticationService.access_token;
