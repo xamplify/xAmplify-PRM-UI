@@ -136,8 +136,10 @@ export class ManageMdfRequestsComponent implements OnInit {
   listMdfRequests(pagination: Pagination) {
     this.referenceService.loading(this.partnerListLoader, true);
     if(this.isPartnerView){
+      pagination.partnerCompanyId = this.loggedInUserCompanyId;
       this.listMdfRequestsForPartners(pagination);
     }else{
+      pagination.vendorCompanyId = this.loggedInUserCompanyId;
       this.listMdfRequestsForVendors(pagination);
     }
    
