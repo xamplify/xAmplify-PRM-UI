@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MdfService } from '../services/mdf.service';
-import { Pagination } from 'app/core/models/pagination';
-import { PagerService } from 'app/core/services/pager.service';
 import { MdfFunds } from '../models/mdf.funds';
 import { MdfCreditTransaction } from '../models/mdf.credit.history';
+/*****Requried In All Mdf Components */
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -13,27 +11,30 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
-
+import { MdfService } from '../services/mdf.service';
+import { Pagination } from 'app/core/models/pagination';
+import { PagerService } from 'app/core/services/pager.service';
 declare var $: any;
 @Component({
   selector: 'app-manage-mdf-funds',
   templateUrl: './manage-mdf-funds.component.html',
   styleUrls: ['./manage-mdf-funds.component.css','../html-sample/html-sample.component.css'],
-  providers: [HttpRequestLoader, SortOption,Properties],
+  providers: [HttpRequestLoader, SortOption,Properties]
 })
 export class ManageMdfFundsComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
   mdfCreditTransaction: MdfCreditTransaction = new MdfCreditTransaction();
   mdfFundsPartnersInfoList: Array<MdfFunds> = new Array<MdfFunds>();
-  vendorCompanyId: number;
+  selectedPartnerMdfFund:MdfFunds = new MdfFunds();
+  modalPopupLoader: boolean;
+  showCreditAmountError = false;
+
+  vendorCompanyId: number=0;
   loggedInUserId: number=0;
   loading = false;
   tilesLoader = false;
   tileData:any;
-  selectedPartnerMdfFund:MdfFunds = new MdfFunds();
-  modalPopupLoader: boolean;
-  showCreditAmountError = false;
   customResponse: CustomResponse = new CustomResponse();
 
   constructor(private utilService: UtilService,public sortOption: SortOption,public partnerListLoader: HttpRequestLoader,private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
@@ -79,6 +80,7 @@ export class ManageMdfFundsComponent implements OnInit {
       }
     }, error => {
       this.xtremandLogger.log(error);
+    this.xtremandLogger.errorPage(error);
     });
   }
 

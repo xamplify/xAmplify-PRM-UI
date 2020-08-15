@@ -10,7 +10,8 @@ export const routes: Routes = [
   { path: "funds", component: ManageMdfFundsComponent },
   { path: "create-request", component: CreateMdfRequestComponent },
   {path: "requests", component:ManageMdfRequestsComponent},
-  {path: "html", component:HtmlSampleComponent}
+  {path: "html", component:HtmlSampleComponent},
+  {path: "requests/:role", component:ManageMdfRequestsComponent}
 
 
   ];

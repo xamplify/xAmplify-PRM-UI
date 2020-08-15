@@ -167,6 +167,13 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+    getMdfRequestsAnalyticsTilesForPartner(partnerCompanyId: number) {
+        return this.http.get(this.URL + "requests/analytics/tiles/partner/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
+
     extractData(res: Response) {
         let body = res.json();
         return body || {};

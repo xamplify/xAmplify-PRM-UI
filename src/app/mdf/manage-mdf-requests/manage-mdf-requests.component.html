@@ -1,3 +1,253 @@
-<p>
-  manage-mdf-requests works!
-</p>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+   <div class="page-bar">
+      <div class="col-md-12 col-lg-12">
+         <div class="row">
+            <div class="col-md-6 col-lg-6 text-left">
+               <ul class="page-breadcrumb">
+                  <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+                     <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
+                  <li><a translate>MDF</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+                  <li><a translate>Manage MDF Requests</a></li>
+               </ul>
+            </div>
+            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;">
+               <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
+                  <button style="border-radius: 3px 0px 0px 3px;" translate="" ng-reflect-translate="">Request MDF</button>
+                  <button style="border-radius: 0px 3px 3px 0px;">
+                  <i  class="fa fa-user-plus" data-original-title="" data-toggle="tooltip" aria-hidden="true"></i></button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light" style=" height:163px;">
+            <div class="row" style="margin-top: 20px;">
+              <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
+               <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                  <div class="row">
+                     <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">{{tileData?.numberOfRequests}}</div>
+                              <div class="desc">Number of Requests</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.averageRequestsSize | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Average Request Size</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.totalValue | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Total Value</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light">
+            <div class="row" style="margin-top: 20px;">
+               <div class="col-md-12 col-lg-12">
+                  <div class="row">
+                     <div class="col-md-10 col-lg-10" style="padding-left: 39px;padding-bottom: 13px;">
+                        <div class="row">
+                           <button class="btn btn-default" data-target="" data-toggle="modal" type="button">Excel</button>
+                           <button class="btn btn-default" data-target="" data-toggle="modal" type="button">CSV</button>
+                        </div>
+                     </div>
+                     <div class="col-md-2 col-lg-2 " style="padding-right: 30px;">
+                        <div class="input-icon right">
+                           <input class="form-control" placeholder="Search" type="text">
+                           <!--bindings={}-->
+                           <button class="search-box-item-click" type="submit">
+                             <i  class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                  <table id="example" class="table table-striped table-bordered" style="width:100%">
+                     <thead>
+                        <tr>
+                           <th>Name</th>
+                           <th>Position</th>
+                           <th>Office</th>
+                           <th>Age</th>
+                           <th>Start date</th>
+                           <th>Salary</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Tiger Nixon</td>
+                           <td>System Architect</td>
+                           <td>Edinburgh</td>
+                           <td>61</td>
+                           <td>2011/04/25</td>
+                           <td>$320,800</td>
+                        </tr>
+                        <tr>
+                           <td>Garrett Winters</td>
+                           <td>Accountant</td>
+                           <td>Tokyo</td>
+                           <td>63</td>
+                           <td>2011/07/25</td>
+                           <td>$170,750</td>
+                        </tr>
+                        <tr>
+                           <td>Gloria Little</td>
+                           <td>Systems Administrator</td>
+                           <td>New York</td>
+                           <td>59</td>
+                           <td>2009/04/10</td>
+                           <td>$237,500</td>
+                        </tr>
+                        <tr>
+                           <td>Bradley Greer</td>
+                           <td>Software Engineer</td>
+                           <td>London</td>
+                           <td>41</td>
+                           <td>2012/10/13</td>
+                           <td>$132,000</td>
+                        </tr>
+                        <tr>
+                           <td>Dai Rios</td>
+                           <td>Personnel Lead</td>
+                           <td>Edinburgh</td>
+                           <td>35</td>
+                           <td>2012/09/26</td>
+                           <td>$217,500</td>
+                        </tr>
+                        <tr>
+                           <td>Angelica Ramos</td>
+                           <td>Chief Executive Officer (CEO)</td>
+                           <td>London</td>
+                           <td>47</td>
+                           <td>2009/10/09</td>
+                           <td>$1,200,000</td>
+                        </tr>
+                        <tr>
+                           <td>Brenden Wagner</td>
+                           <td>Software Engineer</td>
+                           <td>San Francisco</td>
+                           <td>28</td>
+                           <td>2011/06/07</td>
+                           <td>$206,850</td>
+                        </tr>
+                        <tr>
+                           <td>Michelle House</td>
+                           <td>Integration Specialist</td>
+                           <td>Sydney</td>
+                           <td>37</td>
+                           <td>2011/06/02</td>
+                           <td>$95,400</td>
+                        </tr>
+                        <tr>
+                           <td>Gavin Cortez</td>
+                           <td>Team Leader</td>
+                           <td>San Francisco</td>
+                           <td>22</td>
+                           <td>2008/10/26</td>
+                           <td>$235,500</td>
+                        </tr>
+                        <tr>
+                           <td>Martena Mccray</td>
+                           <td>Post-Sales support</td>
+                           <td>Edinburgh</td>
+                           <td>46</td>
+                           <td>2011/03/09</td>
+                           <td>$324,050</td>
+                        </tr>
+                        <tr>
+                           <td>Hope Fuentes</td>
+                           <td>Secretary</td>
+                           <td>San Francisco</td>
+                           <td>41</td>
+                           <td>2010/02/12</td>
+                           <td>$109,850</td>
+                        </tr>
+                        <tr>
+                           <td>Vivian Harrell</td>
+                           <td>Financial Controller</td>
+                           <td>San Francisco</td>
+                           <td>62</td>
+                           <td>2009/02/14</td>
+                           <td>$452,500</td>
+                        </tr>
+                        <tr>
+                           <td>Olivia Liang</td>
+                           <td>Support Engineer</td>
+                           <td>Singapore</td>
+                           <td>64</td>
+                           <td>2011/02/03</td>
+                           <td>$234,500</td>
+                        </tr>
+                        <tr>
+                           <td>Bruno Nash</td>
+                           <td>Software Engineer</td>
+                           <td>London</td>
+                           <td>38</td>
+                           <td>2011/05/03</td>
+                           <td>$163,500</td>
+                        </tr>
+                        <tr>
+                           <td>Hermione Butler</td>
+                           <td>Regional Director</td>
+                           <td>London</td>
+                           <td>47</td>
+                           <td>2011/03/21</td>
+                           <td>$356,250</td>
+                        </tr>
+                        <tr>
+                           <td>Lael Greer</td>
+                           <td>Systems Administrator</td>
+                           <td>London</td>
+                           <td>21</td>
+                           <td>2009/02/27</td>
+                           <td>$103,500</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
