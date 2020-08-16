@@ -111,8 +111,11 @@
                                 </ng-container>
                                 <!----Number------->
                                 <ng-container *ngIf="columnInfo.labelType=='number'">
-                                 <input type="{{columnInfo.labelType}}" min="1" class="form-control" placeholder="{{columnInfo.placeHolder}}"  id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
-                                 [ngModelOptions]="{standalone: true}">
+                                 <!-- <input type="{{columnInfo.labelType}}" min="1" class="form-control" placeholder="{{columnInfo.placeHolder}}"  id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
+                                 [ngModelOptions]="{standalone: true}"> -->
+                                 <input type="name"   class="form-control padding-mobile currency" id="mdfAmount"
+                                    [(ngModel)]="columnInfo.value"  [ngModelOptions]="{standalone: true}" 
+                                    placeholder="{{columnInfo.placeHolder}}" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                               </ng-container>
                                <!----DropDown------->
                                 <ng-container *ngIf="columnInfo.labelType=='select'">

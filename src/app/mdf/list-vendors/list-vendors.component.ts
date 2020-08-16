@@ -62,6 +62,13 @@ export class ListVendorsComponent implements OnInit {
       this.vendorsList = result.data;
       if(this.vendorsList.length==0){
         this.customResponse = new CustomResponse('INFO','No data found',true);
+      }else if(this.vendorsList!=undefined && this.vendorsList.length==1){
+        let vendorCompanyId = this.vendorsList[0].vendorCompanyId;
+        if(vendorCompanyId!=undefined){
+          this.loading = true;
+          this.router.navigate(["/home/mdf/create-request/"+vendorCompanyId]);
+        }
+        
       }
     }else{
       this.customResponse = new CustomResponse('INFO','No data found',true);

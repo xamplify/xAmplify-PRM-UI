@@ -12,6 +12,8 @@ import { Properties } from '../../common/models/properties';
 import { MdfService } from '../services/mdf.service';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
+import { MdfRequest } from '../models/mdf.request';
+
 declare var $: any;
 @Component({
   selector: 'app-edit-mdit-request',
@@ -27,6 +29,11 @@ export class EditMditRequestComponent implements OnInit {
   mdfId: number=0;
   rightCornerData : any;
   mdfOwnerDisplayName = "";
+  modalPopupLoader = false;
+  changeRequestLoader = false;
+  customResponse:CustomResponse = new CustomResponse();
+  mdfRequest: MdfRequest = new MdfRequest();
+  showStausError: boolean;
   constructor(private mdfService: MdfService, private pagerService: PagerService,private route: ActivatedRoute,private utilService: UtilService,public sortOption: SortOption,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -34,7 +41,7 @@ export class EditMditRequestComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.pageLoader = true;
-    this.mdfId = this.route.snapshot.params['mdfId'];
+    this.mdfId = parseInt(this.route.snapshot.params['mdfId']);
     this.getCompanyId();
   }
 
@@ -74,6 +81,16 @@ export class EditMditRequestComponent implements OnInit {
             this.mdfOwnerDisplayName = emailId;
           }
         }
+        let mdfDetails = this.rightCornerData['mdfDetails'];
+        this.mdfRequest.id = this.mdfId;
+        this.mdfRequest.statusInString = mdfDetails.statusInString;
+        this.mdfRequest.requestedAmountInDouble = mdfDetails.mdfRequestAmountInDouble;
+        this.mdfRequest.allocationAmount = mdfDetails.allocationAmount;
+        this.mdfRequest.statusCode = mdfDetails.statusCode;
+        this.mdfRequest.allocationDateInString = mdfDetails['allocationDateInString'];
+        this.mdfRequest.allocationExpirationDateInString = mdfDetails['allocationExpirationDateInString'];
+        this.mdfRequest.assignedTo = this.mdfOwnerDisplayName;
+        this.mdfRequest.userId = this.loggedInUserId;
         this.loading = false;
         this.pageLoader  = false;
     }, error => {
@@ -84,6 +101,37 @@ export class EditMditRequestComponent implements OnInit {
     }
     );
   }
+
+  openForm(){
+    $('#changeRequestModal').modal('show');
+  }
+  closeChangeRequestPopup(){
+    $('#changeRequestModal').modal('hide');
+    this.customResponse = new CustomResponse();
+    this.modalPopupLoader=false;
+  }
+
+  updateMdfRequest(){
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    this.modalPopupLoader = true;
+    this.mdfService.updateMdfRequestByVendor(this.mdfRequest).subscribe((result: any) => {
+      if(result.statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage("Status Changed Successfully");
+        this.closeChangeRequestPopup();
+        this.loadRightSideCornerData();
+      }else if(result.statusCode==400){
+        this.modalPopupLoader = false;
+        this.customResponse = new CustomResponse('ERROR',result.message,true);
+      } else{
+        this.modalPopupLoader = false;
+      }
+    }, error => {
+      this.modalPopupLoader = false;
+      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    });
+  }
+
 
   goToManageMdfRequests(){
     this.loading = true;

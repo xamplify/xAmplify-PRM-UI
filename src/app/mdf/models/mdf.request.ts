@@ -5,16 +5,22 @@ export class MdfRequest{
     userId:number;
     companyProfileName:string;
     formSubmitId:number;
-    allocationAmount:number;
+    allocationAmount:any;
     allocationDate:Date;
     allocationExpirationDate:Date;
-    reimburseAmount:number;    
+    reimburseAmount:any;    
     formSubmitDto:FormSubmit;
     statusInString:string;
     createdDate:string;
     mdfRequestTitle:string;
-    mdfRequestAmount:number;
+    mdfRequestAmount:any;
     partnerCompany: string;
     partnerContact:string;
     eventDate:string;
+    requestedAmount:any;
+    requestedAmountInDouble:any;
+    allocationDateInString:string;
+    allocationExpirationDateInString:string;
+    assignedTo:string;
+    statusCode:number = 0;
 }

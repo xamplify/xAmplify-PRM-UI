@@ -166,6 +166,11 @@ export class MdfService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    updateMdfRequestByVendor(mdfRequest: MdfRequest) {
+        return this.http.post(this.URL + "request/update?access_token=" + this.authenticationService.access_token, mdfRequest)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     getMdfRequestsAnalyticsTilesForPartner(partnerCompanyId: number) {
         return this.http.get(this.URL + "requests/analytics/tiles/partner/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
