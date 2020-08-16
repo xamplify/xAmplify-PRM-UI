@@ -17,10 +17,13 @@
                <div class="row">
                   <div class="col-md-9 col-lg-9 pr0">
                      <div class="row">
-                        <div class="col-md-9 col-lg-9">
-                           <h2 style="font-weight: 500; color: #867c7c;">Healthcare Technology Magazine <sub class="sub-text">MDF REQUEST</sub></h2>
+                        <div class="col-md-10 col-lg-10">
+                           <h2 style="font-weight: 500; color: #867c7c;">
+                                 {{rightCornerData?.mdfDetails?.mdfRequestTitle | slice:0:40}}
+                                 <span *ngIf="rightCornerData?.mdfDetails?.mdfRequestTitle.length>40">..</span>
+                              <sub class="sub-text">MDF REQUEST</sub></h2>
                         </div>
-                        <div class="col-md-3 col-lg-3 pl0" style="padding-top:15px;">
+                        <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
                            <div class="row">
                               <div class="col-md-6 col-lg-6" style="text-align: right;">
                                  <div class="dropdown">
@@ -31,19 +34,19 @@
                                        <li><a href="#">Change MDF Request Status & Assignment</a></li>
                                        <li><a href="#">Duplicate </a></li>
                                        <li><a href="#">Archive </a></li>
-                                       <li><a href="#">Delete </a></li>
+                                       <!-- <li><a href="#">Delete </a></li> -->
                                     </ul>
                                  </div>
                               </div>
-                              <div class="col-md-6 col-lg-6" style="text-align: left;">
+                              <!-- <div class="col-md-6 col-lg-6" style="text-align: left;">
                                  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1">Edit</button>
-                              </div>
+                              </div> -->
                            </div>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-12 col-lg-12" style="margin-top:10px;">
-                           <span class="label label-warning">New Request(Open)</span>
+                           <span class="label label-warning">{{rightCornerData?.mdfDetails?.statusInString}}</span>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding: 40px 40px 0px 17px;">
                            <div class="portlet light" style=" height: 260px;padding: 0px 0px!important;">
@@ -56,11 +59,18 @@
                                  <div class="col-md-6 col-lg-6 pr0" style="border-right: 1px solid #d8d4d4;">
                                     <div class="row">
                                        <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                          <i class="fa fa-user-circle-o" aria-hidden="true" style="color: #66b6e4;font-size: 45px;"></i>
+                                          <img class="img-circle" src="{{rightCornerData?.mdfRequestOwner?.profilePicturePath}}" alt="">
                                        </div>
                                        <div class="col-md-10 col-lg-10 pl0">
                                           <label style="font-size: 15px;font-weight: 600;">MDF Request Owner:</label><br>
-                                          <label style="font-size: 14px;color: #65b6e4;">Toshiro Mifune(Kambei Technologies)</label>
+                                          <label title="{{mdfOwnerDisplayName}}({{rightCornerData?.mdfRequestOwner?.companyName}})" style="font-size: 14px;color: #65b6e4;">
+                                             {{mdfOwnerDisplayName | slice:0:20}}
+                                               <span *ngIf="mdfOwnerDisplayName?.length>20">..</span>
+
+                                               ( {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
+                                               <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span> )
+                                             
+                                          </label>
                                        </div>
                                     </div>
                                  </div>
@@ -74,21 +84,24 @@
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;">
                                              <label style="font-size: 15px;font-weight: 600;">Request:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">$ 5,000.00</label><br>
-                                             <label style="font-size: 15px;">Jan 31,2018</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">Requested by Toshiro Mifune</label>
+                                             <label style="font-size: 14px;color: #65b6e4;">${{rightCornerData?.mdfDetails?.mdfRequestAmountInDouble | number:'1.0':'en-US'}}</label><br>
+                                             <label style="font-size: 15px;">{{rightCornerData?.mdfDetails?.createdDate}}</label><br>
+                                             <label title="{{mdfOwnerDisplayName}}" style="font-size: 14px;color: #65b6e4;">Requested by
+                                                 {{mdfOwnerDisplayName | slice:0:20}}
+                                                   <span *ngIf="mdfOwnerDisplayName?.length>20">..</span>
+                                                </label>
                                           </div>
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;height: 100px;">
                                              <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">$ 0,000.00</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$ {{rightCornerData?.mdfDetails?.allocationAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Reimbursement:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">$ 0,000.00</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$ {{rightCornerData?.mdfDetails?.reimburseAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
                                     </div>
@@ -182,7 +195,7 @@
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                <img class="img-circle" src="{{rightCornerData?.mdfRequestOwner.profilePicturePath}}" alt="">
+                                <img class="img-circle" src="{{rightCornerData?.mdfRequestOwner?.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
                                  <ng-container *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
@@ -225,6 +238,10 @@
                                  <label title="{{rightCornerData?.vendorDetailsDto?.emailId}}" style="font-size: 15px;font-weight: 600;">
                                     {{rightCornerData?.vendorDetailsDto?.emailId | slice:0:20}}
                                     <span *ngIf="rightCornerData?.vendorDetailsDto?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.vendorDetailsDto?.companyName!=null"  title="{{rightCornerData?.vendorDetailsDto?.companyName}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.vendorDetailsDto?.companyName | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.companyName?.length>20">..</span>
                                  </label>
                                  <label *ngIf="rightCornerData?.vendorDetailsDto?.website!=null"  title="{{rightCornerData?.vendorDetailsDto?.website}}" style="font-size: 15px;font-weight: 600;">
                                     {{rightCornerData?.vendorDetailsDto?.website | slice:0:20}}

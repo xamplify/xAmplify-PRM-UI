@@ -26,6 +26,7 @@ export class EditMditRequestComponent implements OnInit {
   loggedInUserCompanyId: number = 0;
   mdfId: number=0;
   rightCornerData : any;
+  mdfOwnerDisplayName = "";
   constructor(private mdfService: MdfService, private pagerService: PagerService,private route: ActivatedRoute,private utilService: UtilService,public sortOption: SortOption,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -63,7 +64,16 @@ export class EditMditRequestComponent implements OnInit {
     this.mdfService.getMdfRequestsOwnerAndOtherDetails(this.loggedInUserCompanyId,this.mdfId).
     subscribe((result: any) => {
         this.rightCornerData = result.data;
-        console.log(this.rightCornerData);
+        if(this.rightCornerData!=undefined){
+          let mdfRequestOwner = this.rightCornerData['mdfRequestOwner'];
+          let fullName = mdfRequestOwner['fullName'];
+          let emailId = mdfRequestOwner['emailId'];
+          if(fullName!=null){
+            this.mdfOwnerDisplayName = fullName;
+          }else{
+            this.mdfOwnerDisplayName = emailId;
+          }
+        }
         this.loading = false;
         this.pageLoader  = false;
     }, error => {

@@ -12,6 +12,7 @@ export class MdfFunds{
 	creditAmount:any;
 	dateInString:string;
 	expirationDateInString:string;
+	mdfAmount:any;
 	
     
 }
