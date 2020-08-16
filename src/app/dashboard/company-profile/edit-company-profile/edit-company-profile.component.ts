@@ -40,7 +40,7 @@ declare var $,swal: any;
     templateUrl: './edit-company-profile.component.html',
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
-    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess,CallActionSwitch]
+    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess,CallActionSwitch,MdfService]
 
 })
 export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterViewInit {

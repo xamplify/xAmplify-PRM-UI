@@ -9,17 +9,18 @@
          <li><a translate>Change Request</a></li>
       </ul>
    </div>
-   <div class="row">
+   <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
+   <div class="row" *ngIf="!pageLoader">
       <div class="col-md-12 col-lg-12">
          <div class="portlet light" style="height:640px;padding-right: 0px!important;   padding-top: 0px!important;">
             <div class="col-md-12 col-lg-12">
                <div class="row">
                   <div class="col-md-9 col-lg-9 pr0">
                      <div class="row">
-                        <div class="col-md-10 col-lg-10">
+                        <div class="col-md-9 col-lg-9">
                            <h2 style="font-weight: 500; color: #867c7c;">Healthcare Technology Magazine <sub class="sub-text">MDF REQUEST</sub></h2>
                         </div>
-                        <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
+                        <div class="col-md-3 col-lg-3 pl0" style="padding-top:15px;">
                            <div class="row">
                               <div class="col-md-6 col-lg-6" style="text-align: right;">
                                  <div class="dropdown">
@@ -35,7 +36,7 @@
                                  </div>
                               </div>
                               <div class="col-md-6 col-lg-6" style="text-align: left;">
-                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal1">Edit</button>
+                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal1">Edit</button>
                               </div>
                            </div>
                         </div>
@@ -50,9 +51,6 @@
                                  <div class="caption" style="color:#000!important;">
                                     MDF Request Status
                                  </div>
-                                 <!-- <div>
-                                    <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-                                    </div> -->
                               </div>
                               <div class="row row-space">
                                  <div class="col-md-6 col-lg-6 pr0" style="border-right: 1px solid #d8d4d4;">
@@ -104,9 +102,6 @@
                                  <div class="caption" translate>
                                     Partner MDF Balances
                                  </div>
-                                 <!-- <div>
-                                    <button class="add-button-xamplify" id="right" (click)="openCreateFolderPopup()" translate>Create a Folder</button>
-                                    </div> -->
                               </div>
                               <div class="row" style="margin-top: 20px;">
                                  <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
@@ -183,55 +178,93 @@
                         <div class="col-md-12 col-lg-12 pl0">
                            <h5 class="h5-heading">MDF Request Owner</h5>
                         </div>
+                        <!-----Request Owner------->
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                                <img class="img-circle" src="{{rightCornerData?.mdfRequestOwner.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
-                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
-                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
-                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                                 <ng-container *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
+                                    <label title="{{rightCornerData?.mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
+                                       {{rightCornerData?.mdfRequestOwner?.fullName | slice:0:20}}
+                                       <span *ngIf="rightCornerData?.mdfRequestOwner?.fullName?.length>20">..</span>
+                                    </label>
+                                 </ng-container>
+                                 <label title="{{rightCornerData?.mdfRequestOwner?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.mdfRequestOwner?.emailId | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.title!=null"  title="{{rightCornerData?.mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.mdfRequestOwner?.title | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.title?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyName!=null" title="{{rightCornerData?.mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
+                                    {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyPhoneNumber!=null" title="{{rightCornerData?.mdfRequestOwner?.companyPhoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{rightCornerData?.mdfRequestOwner?.companyPhoneNumber | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyPhoneNumber?.length>20">..</span></label>
                               </div>
                            </div>
                         </div>
+                        <!-----Vendor Company Details------->
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                                <img class="img-circle" src="{{rightCornerData?.vendorDetailsDto.companyLogo}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
-                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
-                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
-                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                                 <ng-container *ngIf="rightCornerData?.vendorDetailsDto?.fullName!=null">
+                                    <label title="{{rightCornerData?.vendorDetailsDto?.fullName}}" style="font-size: 15px;font-weight: 600;">
+                                       {{rightCornerData?.vendorDetailsDto?.fullName | slice:0:20}}
+                                       <span *ngIf="rightCornerData?.vendorDetailsDto?.fullName?.length>20">..</span>
+                                    </label>
+                                 </ng-container>
+                                 <label title="{{rightCornerData?.vendorDetailsDto?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.vendorDetailsDto?.emailId | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.vendorDetailsDto?.website!=null"  title="{{rightCornerData?.vendorDetailsDto?.website}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.vendorDetailsDto?.website | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.website?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.vendorDetailsDto?.phone!=null" title="{{rightCornerData?.vendorDetailsDto?.phone}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{rightCornerData?.vendorDetailsDto?.phone | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.phone?.length>20">..</span></label>
                               </div>
                            </div>
                         </div>
+                        <!-----Partner Company Details------->
+                        <p style="margin-left: 5px;"><strong>Partner Manager</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
+                                <img class="img-circle" src="{{rightCornerData?.partnerManager.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
-                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
-                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
-                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
-                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                 <i aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i>
-                              </div>
-                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <label style="font-size: 15px;font-weight: 600;">Toshiro Mifune</label><br>
-                                 <label style="font-size: 15px;font-weight: 600;">Sales Manager</label><br>
-                                 <label style="font-size: 14px;color: #65b6e4;">Kambei Technologies</label>
-                                 <label style="font-size: 15px;font-weight: 600;">Phone:+91 9098989898</label>
+                                 <ng-container *ngIf="rightCornerData?.partnerManager?.fullName!=null">
+                                    <label title="{{rightCornerData?.partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
+                                       {{rightCornerData?.partnerManager?.fullName | slice:0:20}}
+                                       <span *ngIf="rightCornerData?.partnerManager?.fullName?.length>20">..</span>
+                                    </label>
+                                 </ng-container>
+                                 <label title="{{rightCornerData?.partnerManager?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.partnerManager?.emailId | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.partnerManager?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.partnerManager?.title!=null"  title="{{rightCornerData?.mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.mdfRequestOwner?.title | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.title?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyName!=null" title="{{rightCornerData?.mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
+                                    {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.partnerManager?.phoneNumber!=null" title="{{rightCornerData?.partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{rightCornerData?.partnerManager?.phoneNumber | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.partnerManager?.phoneNumber?.length>20">..</span></label>
                               </div>
                            </div>
                         </div>

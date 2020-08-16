@@ -173,6 +173,7 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+
     listMdfAccessVendorCompanyDetailsByPartnerCompanyId(partnerCompanyId: number) {
         return this.http.get(this.URL + "listMdfAccessVendorCompanyDetailsByPartnerCompanyId/" + partnerCompanyId + "?access_token=" + this.authenticationService.access_token)
             .map(this.extractData)
@@ -197,6 +198,13 @@ export class MdfService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+
+    getMdfRequestsOwnerAndOtherDetails(companyId: number,mdfId:number) {
+        return this.http.get(this.URL + "/request/" + companyId + "/"+mdfId+"?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
 
 
