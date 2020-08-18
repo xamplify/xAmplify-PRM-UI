@@ -151,6 +151,7 @@ export class ManageMdfFundsComponent implements OnInit {
       this.modalPopupLoader = false;
      
     }, error => {
+      this.modalPopupLoader = false;
       this.xtremandLogger.log(error);
       this.xtremandLogger.errorPage(error);
     });

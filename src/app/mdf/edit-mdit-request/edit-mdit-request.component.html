@@ -30,10 +30,10 @@
                                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                                     <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
-                                       <li><a href="javascript:void(0)">Change MDF Request Owner</a></li>
+                                       <!-- <li><a href="javascript:void(0)">Change MDF Request Owner</a></li> -->
                                        <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
-                                       <li><a href="javascript:void(0)">Duplicate </a></li>
-                                       <li><a href="javascript:void(0)">Archive </a></li>
+                                       <li><a (click)="viewTimeLine()">View Timeline </a></li>
+                                       <!-- <li><a href="javascript:void(0)">Archive </a></li> -->
                                        <!-- <li><a href="#">Delete </a></li> -->
                                     </ul>
                                  </div>
@@ -157,7 +157,7 @@
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{rightCornerData?.partnerMdfBalance?.totalAvailableBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">${{availableBalance | number:'1.0':'en-US'}}</div>
                                                 <div class="desc" style="    font-size: 13px;"> Available Balance</div>
                                              </div>
                                              <span class="morePadding">
@@ -172,7 +172,7 @@
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{rightCornerData?.partnerMdfBalance?.totalUsedBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">${{usedBalance | number:'1.0':'en-US'}}</div>
                                                 <div class="desc" style="font-size: 13px;">Used Balance</div>
                                              </div>
                                              <span class="morePadding">
@@ -320,7 +320,7 @@
                                <label class="control-label col-sm-3" translate>Status
                                        <font style="color: red">*</font>
                                    </label>
-                               <div class="col-sm-8">
+                               <div class="col-sm-8"> 
                                    <select class="form-control" name="" style="width: 100%" [(ngModel)]="mdfRequest.statusCode" [ngModelOptions]="{standalone: true}">
                                            <option [value]="1"  [selected]="mdfRequest.statusCode ==1">New Request (Open)</option>
                                            <option [value]="2" [selected]="mdfRequest.statusCode ==2">In Progress,assigned to manager (Open)</option>
@@ -340,7 +340,7 @@
                                        </label>
                                    <div class="col-sm-8">
                                     <input type="name" [disabled]="true"  class="form-control padding-mobile currency" id="mdfAmount"
-                                    [(ngModel)]="mdfRequest.requestedAmountInDouble"  [ngModelOptions]="{standalone: true}" 
+                                    [(ngModel)]="mdfRequest.mdfRequestAmountInDouble"  [ngModelOptions]="{standalone: true}" 
                                     placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                                    </div>
                                </div>
@@ -348,20 +348,25 @@
                            <div class="col-md-12 col-lg-12 ">
                               <div class="form-group">
                                   <label class="control-label col-sm-3" translate>Allocated Amount
-                                          <font style="color: red">*</font>
+                                    <font *ngIf="mdfRequest.statusCode<=3" style="color: red">*</font>
                                       </label>
-                                  <div class="col-sm-8">
-                                   <input type="name"  class="form-control padding-mobile currency" id="mdfAmount"
+                                  <div class="col-sm-8" *ngIf="mdfRequest.statusCode<=3">
+                                   <input type="name" class="form-control padding-mobile currency" 
                                    [(ngModel)]="mdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
                                    placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                                   </div>
+                                  <div class="col-sm-8" *ngIf="mdfRequest.statusCode>3">
+                                    <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                                    [(ngModel)]="mdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
+                                    placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                   </div>
                               </div>
                           </div>
 
                           <div class="col-md-12 col-lg-12 ">
                            <div class="form-group">
                                <label class="control-label col-sm-3" translate>Allocation Date
-                                       <font style="color: red">*</font>
+                                       <font *ngIf="mdfRequest.statusCode<=3" style="color: red">*</font>
                                    </label>
                                <div class="col-sm-8">
                                  <app-flatpickr [(dataField)]="mdfRequest.allocationDateInString" [isFromMdfCredit]='true'>>
@@ -391,6 +396,29 @@
                          </div>
                      </div>
                  </div>
+                 <div class="col-md-12 col-lg-12" *ngIf="mdfRequest.statusCode==4">
+                  <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Reimbursement Amount
+                        <font style="color: red">*</font>
+                          </label>
+                      <div class="col-sm-8">
+                       <input type="name"  class="form-control padding-mobile currency"
+                       [(ngModel)]="mdfRequest.reimburseAmount"  [ngModelOptions]="{standalone: true}" 
+                       placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                      </div>
+                  </div>
+              </div>
+                 <div class="col-md-12 col-lg-12 ">
+                  <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Description
+                          </label>
+                      <div class="col-sm-8">
+                         <textarea class="form-control"  [(ngModel)]="mdfRequest.description"  [ngModelOptions]="{standalone: true}" 
+                         placeholder="Description"></textarea>
+                      
+                      </div>
+                  </div>
+              </div>
                        
                        </div>
                    </div>
