@@ -18,9 +18,11 @@ export class MdfRequest{
     partnerContact:string;
     eventDate:string;
     requestedAmount:any;
-    requestedAmountInDouble:any;
+    mdfRequestAmountInDouble:any;
     allocationDateInString:string;
     allocationExpirationDateInString:string;
     assignedTo:string;
     statusCode:number = 0;
+    description:string = "";
+    currentMdfBalance:any;
 }

@@ -34,6 +34,8 @@ export class EditMditRequestComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   mdfRequest: MdfRequest = new MdfRequest();
   showStausError: boolean;
+  availableBalance:any;
+  usedBalance:any;
   constructor(private mdfService: MdfService, private pagerService: PagerService,private route: ActivatedRoute,private utilService: UtilService,public sortOption: SortOption,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -84,13 +86,26 @@ export class EditMditRequestComponent implements OnInit {
         let mdfDetails = this.rightCornerData['mdfDetails'];
         this.mdfRequest.id = this.mdfId;
         this.mdfRequest.statusInString = mdfDetails.statusInString;
-        this.mdfRequest.requestedAmountInDouble = mdfDetails.mdfRequestAmountInDouble;
+        this.mdfRequest.mdfRequestAmountInDouble = mdfDetails.mdfRequestAmountInDouble;
         this.mdfRequest.allocationAmount = mdfDetails.allocationAmount;
+        this.mdfRequest.currentMdfBalance = this.rightCornerData.partnerMdfBalance.totalMdfAccountBalance;
+        if(this.mdfRequest.allocationAmount!=null && this.mdfRequest.allocationAmount>0){
+          this.availableBalance =  this.mdfRequest.currentMdfBalance - this.mdfRequest.allocationAmount;
+        }else{
+          this.availableBalance = this.rightCornerData.partnerMdfBalance.totalAvailableBalance;
+        }
         this.mdfRequest.statusCode = mdfDetails.statusCode;
         this.mdfRequest.allocationDateInString = mdfDetails['allocationDateInString'];
         this.mdfRequest.allocationExpirationDateInString = mdfDetails['allocationExpirationDateInString'];
         this.mdfRequest.assignedTo = this.mdfOwnerDisplayName;
         this.mdfRequest.userId = this.loggedInUserId;
+        this.mdfRequest.reimburseAmount = mdfDetails['reimburseAmount'];
+        this.mdfRequest.description = mdfDetails['description'];
+        if(this.mdfRequest.reimburseAmount!=null && this.mdfRequest.reimburseAmount>0){
+          this.usedBalance = this.mdfRequest.reimburseAmount;
+        }else{
+          this.usedBalance = this.rightCornerData.partnerMdfBalance.totalUsedBalance;
+        }
         this.loading = false;
         this.pageLoader  = false;
     }, error => {
