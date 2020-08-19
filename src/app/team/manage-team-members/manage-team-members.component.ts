@@ -624,8 +624,8 @@ export class ManageTeamMembersComponent implements OnInit {
 
 				let partnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==4;
 				let vendorTierPartnerCsvHeadersMatched = this.superiorRole=='Partner' && headers.length==2 && this.partnershipEstablishedOnlyWithVendorTier ; 
-				let vendorCsvHeadersMatched = (this.superiorRole== "Vendor" ||  this.superiorRole=="Vendor Tier") && headers.length==8;
-				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" ||  this.superiorRole=="Vendor Tier & Partner") &&  headers.length==9);
+				let vendorCsvHeadersMatched = (this.superiorRole== "Vendor" ||  this.superiorRole=="Vendor Tier" || (this.superiorRole=="Vendor Tier & Partner" && this.partnershipEstablishedOnlyWithVendorTier)) && headers.length==8;
+				let vendorAndPartnerOrOrgAdminCsvHeadersMatched = ((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" ||  (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier)) &&  headers.length==9);
 				if(partnerCsvHeadersMatched || vendorCsvHeadersMatched || vendorAndPartnerOrOrgAdminCsvHeadersMatched || vendorTierPartnerCsvHeadersMatched){
 					if (this.validateHeaders(headers)) {
 						this.readCsvData(csvRecordsArray, headersRow.length);
@@ -657,9 +657,9 @@ export class ManageTeamMembersComponent implements OnInit {
 			}else{
 				return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" &&  headers[2] == "CAMPAIGN" && headers[3] == "CONTACTS");
 			}
-		 }else if(this.superiorRole=="Vendor" || this.superiorRole=="Vendor Tier"){
+		 }else if(this.superiorRole=="Vendor" || this.superiorRole=="Vendor Tier" || (this.superiorRole=="Vendor Tier & Partner" && this.partnershipEstablishedOnlyWithVendorTier)){
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS");
-         }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" || this.superiorRole=="Vendor Tier & Partner")){
+         }else if((this.superiorRole=="Org Admin & Partner" || this.superiorRole=="Vendor & Partner" ||this.superiorRole=="Org Admin" || (this.superiorRole=="Vendor Tier & Partner" && !this.partnershipEstablishedOnlyWithVendorTier ))){
 			return (headers[0] == "EMAIL_ID" && headers[1] == "ALL" && headers[2] == "VIDEO" && headers[3] == "CAMPAIGN" && headers[4] == "DESIGN" && headers[5] == "SOCIAL SHARE" && headers[6] == "STATS" && headers[7] == "PARTNERS" && headers[8] == "CONTACTS");
 		 }
 	}

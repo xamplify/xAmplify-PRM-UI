@@ -19,6 +19,7 @@ import { Ng2DeviceService } from 'ng2-device-detector';
 import { LandingPageService } from '../../landing-pages/services/landing-page.service';
 import { DomSanitizer } from "@angular/platform-browser";
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { SocialService } from 'app/social/services/social.service'
 
 declare var $: any;
 
@@ -48,9 +49,26 @@ export class FormPreviewComponent implements OnInit {
   uploadedFile: File = null;
   formBackgroundImage = "";
   pageBackgroundColor = "";
+  enableButton = false;
+  siteKey = "";
+  resolved(captchaResponse: string) {
+    if(captchaResponse){
+      this.formService.validateCaptcha(captchaResponse).subscribe(
+        (response: any) => {
+          console.log(response);
+          this.enableButton = response;
+        },
+        (error: string) => {
+          this.logger.errorPage(error);
+        }
+      );
+    }else{
+      this.enableButton = false;
+    }
+  }
   constructor(private route: ActivatedRoute, private referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private formService: FormService,
-    private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router,
+    private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
     private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService) {
 
 
@@ -88,14 +106,15 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
+            this.siteKey = response.captchaSiteKey;
             //$("body").css("background-color","this.form.backgroundColor");
-            if(this.form.showBackgroundImage){
+            if (this.form.showBackgroundImage) {
               this.formBackgroundImage = this.form.backgroundImage;
               this.pageBackgroundColor = "";
-          }else{
+            } else {
               this.pageBackgroundColor = this.form.pageBackgroundColor;
               this.formBackgroundImage = "";
-          }
+            }
             if (!this.isSubmittedAgain) {
               this.saveLocationDetails(this.form);
             }

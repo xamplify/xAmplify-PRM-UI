@@ -180,3 +180,8 @@ span.ui-column-resizer {
 	cursor: pointer;
 	color: #54a7e9;
 }
+.img-circle {
+    height: 40px;
+    width: 40px;
+    border: 1px solid #ccc;
+}

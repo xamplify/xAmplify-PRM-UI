@@ -1,0 +1,32 @@
+{
+    "workflow_steps": [
+        {
+            "name": "New Request (Open)",
+            "id": "NEW_REQUEST"
+        },
+        {
+            "name": "In Progress (Open)",
+            "id": "IN_PROGRESS"
+        },
+        {
+            "name": "Pre-Approved (Closed)",
+            "id": "PRE_APPROVED"
+        },
+        {
+            "name": "Reimbursement Issued (Closed)",
+            "id": "REIMBURSEMENT_ISSUED"
+        },
+        {
+            "name": "Request Declined (Closed)",
+            "id": "REQUEST_DECLINED"
+        },
+        {
+            "name": "Reimbursement Declined (Closed)",
+            "id": "REIMBURSEMENT_DECLINED"
+        },
+        {
+            "name": "Request Expired (Closed)",
+            "id": "REQUEST_EXPIRED"
+        }
+    ]
+}

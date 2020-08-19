@@ -44,6 +44,9 @@ export class AddCustomFeedsComponent implements OnInit {
   savedURL: string;
   isAdd = true;
   selectedFeedId = 0;
+  addNewCollection = false;
+  customFeedCollections: Array<any>;
+  isloading = false;
   constructor(private socialService:SocialService,private videoFileService:VideoFileService,private authenticationService:AuthenticationService,public pagerService:PagerService,private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
     public referenceService: ReferenceService) {
@@ -86,7 +89,7 @@ export class AddCustomFeedsComponent implements OnInit {
    }
 
   ngOnInit() {
-
+	this.listAllCustomFeedCollections();
   }
 
  
@@ -171,13 +174,52 @@ export class AddCustomFeedsComponent implements OnInit {
     }, 500);
   }
 
-  save(isPublish:boolean){
+  save(isPublish:boolean, collectionId: number, collectionName: string){
     this.resetCustomResponse();
     if (this.validate()) {
       this.loading = true;
       this.socialStatus.userId = this.userId;
       this.socialStatus.publishToPartners = isPublish;
-      this.socialService.saveFeed(this.socialStatus)
+      
+      if (collectionId > 0) {
+      	this.socialStatus.collectionId = collectionId;
+      	this.saveFeedInCollection();
+      } else {
+      	this.createCollection(collectionName);
+      }
+    }
+  }
+
+	createCollection(collectionName: string) {
+		this.loading = true;
+		let collectionNameTrimmed = $.trim(collectionName);
+    	if (collectionNameTrimmed.length==0) {
+    		this.resetCustomResponse();
+    		this.loading = false;
+      		this.setCustomResponse(ResponseType.Warning, 'Collection Name can not be empty');
+    	} else {
+    		let request = { "userId": this.userId, "title": collectionName };
+    		this.socialService.saveCustomFeedCollection(request)
+        .subscribe(
+          data => {
+            if (data.statusCode === 200) {
+         		this.socialStatus.collectionId = data.data.id;
+          		this.saveFeedInCollection();
+        	}
+          },
+          error => {
+            this.loading = false;
+            this.setCustomResponse(ResponseType.Error, 'Error while adding the collection.');
+          },
+          () => {
+            this.loading = false;
+          }
+        );
+    	}
+	}
+
+  saveFeedInCollection() {
+  		this.socialService.saveFeed(this.socialStatus)
         .subscribe(
           data => {
             this.referenceService.isCreated = true;
@@ -192,9 +234,6 @@ export class AddCustomFeedsComponent implements OnInit {
           }
         );
     }
-  }
-
- 
 
   validate() {
     let isValid = true;
@@ -449,5 +488,64 @@ export class AddCustomFeedsComponent implements OnInit {
     }
   }
  
+  popoverToggle(divId: string) {
+    var x = document.getElementById('popover' + divId);
+    var y;
+    if (divId === "1") {
+    	y = document.getElementById('popover2');
+    	 y.style.display = "none";
+    } else if (divId === "2") {
+    	y = document.getElementById('popover1');
+    	y.style.display = "none";
+    }
+    
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  
+  savePopoverToggle() {
+    var x = document.getElementById('savePopover');
+    var y = document.getElementById('savePublishPopover');
+    y.style.display = "none";
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  
+  savePublishPopoverToggle() {
+    var x = document.getElementById('savePublishPopover');
+    var y = document.getElementById('savePopover');
+    y.style.display = "none";
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+ 	
+ 	listAllCustomFeedCollections(){
+    this.isloading = true;
+    this.socialService.listAllCustomFeedCollections(this.userId)
+  .subscribe(
+    data => {
+      let statusCode = data.statusCode;
+      if(statusCode==200){
+        this.customFeedCollections = data.data;
+      }
 
+    },
+    error => {
+      this.isloading = false;
+    },
+    () => {
+      this.isloading = false;
+    }
+  );
+	}
+  
 }

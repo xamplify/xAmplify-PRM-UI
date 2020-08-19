@@ -1,0 +1,259 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a> 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><a translate>MDF</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+         <li><a translate>Manage MDF Funds</a></li>
+      </ul>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light" style=" height:163px;">
+            <div class="row" style="margin-top: 20px;">
+               <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
+               <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                  <div class="row">
+                     <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">{{tileData?.totalPartners}}</div>
+                              <div class="desc">Total Partners</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more"> Detailed view 
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.totalMdfAccountBalance | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Total MDF Account Balance</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more"> Detailed view 
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.totalUsedBalance | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Total Used Balance</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="col-sm-3 col-xs-6 col-lg-3 col-md-3">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.totalAvailableBalance | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Total Available Balance</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="portlet box">
+         <div class="clearfix">
+            <div class="col-xs-12">
+               <!-- BEGIN EXAMPLE TABLE PORTLET-->
+               <div class="portlet box blue">
+                  <div class="portlet-title">
+                     <div class="caption" translate><i class="fa fa-edit" style="font-size: 19px;" aria-hidden="true"></i>Manage MDF Funds</div>
+                     <div class="inputs" align="right" style="float: right; padding: 4px">
+                        <div style="float: left; margin: 0 10px;">
+                          <select class="form-control" [(ngModel)]="sortOption.mdfPartnersSortOption" (ngModelChange)="sortBy($event)" id="select-dropdown">
+                            <option *ngFor="let option of sortOption.mdfPartnersSortDropDownOptions"
+                                [ngValue]="option" translate>
+                                {{option.name}}</option>
+                        </select>
+                        </div>
+                        <div class="portlet-input input-inline">
+                           <div class="input-icon right">
+                              <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search for a partner" (keypress)="eventHandler($event.keyCode)">
+                              <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchPartners();"></button>
+                              <button type="submit" class="search-box-item-click" (click)="searchPartners()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
+                  <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!partnerListLoader.isLoading">
+                     <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
+                        <div class="inputs" align="right" style="float: right"></div>
+                     </div>
+                     <div class="clearfix">
+                        <div class="col-xs-12" style="padding: 10px 0;">
+                           <div class="table-responsive">
+                              <table class='table tgrid' aria-describedby="manage-mdf-fund-table" *ngIf="!partnerListLoader.isLoading">
+                                 <thead>
+                                    <tr>
+                                       <th style="width: 23%;" translate>Partner Info</th>
+                                       <th class="hidden-xs" translate>MDF Account Balance</th>
+                                       <th class="hidden-xs" translate>Used Balance</th>
+                                       <th class="hidden-xs" translate>Available Balance</th>
+                                       <th class='text-center' translate>ACTIONS</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                  <ng-container *ngFor="let partner of mdfFundsPartnersInfoList;let i=index">
+                                    <tr>
+                                      <td>
+                                        <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="partner">
+                                        </app-user-info>
+                                    </td>
+                                      <td>
+                                         <span>${{partner?.mdfAmount | number:'1.0':'en-US'}}</span>
+                                      </td>
+                                      <td>
+                                         <span>${{partner?.mdfUsedAmount | number:'1.0':'en-US'}}</span>
+                                      </td>
+                                      <td>
+                                         <span>${{partner?.mdfAvailableBalance | number:'1.0':'en-US'}}</span>
+                                      </td>
+                                      <td style="text-align: center;">
+                                         <div class=" override-actions">
+                                            <a (click)="addBalance(partner)" data-placement="bottom" data-toggle="tooltip" id="edit_0" title="" data-original-title="Add Balance">
+                                            <i class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
+                                            </a>
+                                         </div>
+                                      </td>
+                                   </tr>
+                                    </ng-container>
+                                 </tbody>
+                              </table>
+                              <div *ngIf="pagination.pagedItems.length !== 0">
+                                <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listPartners($event)" [hidden]="partnerListLoader.isLoading">
+                                </app-pagination>
+                            </div>
+                            <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
+                                <strong>No Data Found.</strong>
+                            </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- END EXAMPLE TABLE PORTLET-->
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!--Add Balance Modal Pop Up------->
+<div id="addBalance" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-css" role="document">
+     <!-- Modal content-->
+     <div class="modal-content">
+      <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="modal-header">
+             <a class="close-circle" (click)="closeAddBalancePopup()">
+               <i class="fa fa-times" aria-hidden="true"></i></a>
+             <h4 class="modal-title" style="font-weight: 600;" translate>New Credit Transaction</h4>
+         </div>
+         <div class="modal-body">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
+            <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+             <form  class="form-horizontal" id="add-balance-form" *ngIf="!modalPopupLoader">
+               <p class="modal-title" style="font-weight: 600;" translate>Partner Details</p>
+               <br>
+               <div class="form-group">
+                  <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+                  </label>
+                  <div class="form-group col-xs-6 col-sm-10">
+                     <span class="email-css">{{selectedPartnerMdfFund?.emailId}}</span>
+                     <div class="textCss"></div>
+                  </div>
+              </div>
+                 <div class="form-group">
+                     <label class="control-label col-sm-2" for="firstName" style="color:blue">
+                     </label>
+                     <div class="form-group col-sm-5">
+                        <span class="email-css">{{selectedPartnerMdfFund?.firstName}}</span>
+                        <div class="textCss"></div>
+                     </div>
+                     <div class="form-group col-sm-5">
+                        <span class="email-css">{{selectedPartnerMdfFund?.lastName}}</span>
+                        <div class="textCss"></div>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                  <label class="control-label col-xs-2 col-sm-2" for="email" style="color: #00bcd4; right: 11px !important">
+                  </label>
+                  <div class="form-group col-xs-6 col-sm-10">
+                     <span class="email-css">{{selectedPartnerMdfFund?.contactCompany}}</span>
+                     <div class="textCss"></div>
+                  </div>
+              </div>
+               <hr><br>
+               <p class="modal-title" style="font-weight: 600;" translate>Credit Details</p>
+               <br>
+               <div class="form-group">
+                  <label class="control-label col-xs-2 col-sm-2" for="expiryDate" style="color: #00bcd4; right: 11px !important">
+                      <span class="required">*</span>
+                  </label>
+                  <div class="form-group col-xs-6 col-sm-10" title="Expiry Date">
+                     <input type="name" style="border: none" class="form-control padding-mobile currency" id="mdfAmount"
+                        [(ngModel)]="selectedPartnerMdfFund.creditAmount"  [ngModelOptions]="{standalone: true}" 
+                        placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                        <div class="textCss"></div>
+                        <span class="required" *ngIf="showCreditAmountError" translate>Please enter credit amount</span>
+                  </div>
+              </div>
+              <div class="form-group">
+               <label class="control-label col-xs-2 col-sm-2" for="expiryDate" style="color: #00bcd4; right: 11px !important">
+               </label>
+               <div class="form-group col-xs-6 col-sm-10" title="Expiry Date">
+                  <app-flatpickr [(dataField)]="selectedPartnerMdfFund.expirationDateInString" [isFromMdfCredit]='true'>
+                  </app-flatpickr>
+               </div>
+           </div>
+           <div class="form-group">
+            <label class="control-label col-xs-2 col-sm-2" for="date" style="color: #00bcd4; right: 11px !important">
+            </label>
+            <div class="form-group col-xs-6 col-sm-10" title="Date">
+               <app-flatpickr [(dataField)]="selectedPartnerMdfFund.dateInString" [isFromMdfCredit]='true'>
+               </app-flatpickr>
+            </div>
+         </div>
+             </form>
+         </div>
+         <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+             <button class="btn btn-info" type="reset" (click)="closeAddBalancePopup();" translate>Cancel</button>
+             <button type="button" class="btn btn-primary"  (click)="addCreditBalance()" translate>Update</button>
+         </div>
+     </div>
+ </div>
+</div>

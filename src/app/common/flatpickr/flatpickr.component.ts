@@ -13,6 +13,7 @@ export class FlatpickrComponent implements OnInit {
 
   @Input() dataField: any;
   @Input() isFromForm: boolean;
+  @Input() isFromMdfCredit: boolean;
   @Output() dataFieldChange: EventEmitter<any> = new EventEmitter();
   constructor() { }
 
@@ -24,7 +25,15 @@ export class FlatpickrComponent implements OnInit {
         //minDate: new Date()
       });
      this.customPlaceHolder="MM-DD-YYYY";
-    } else {
+    }else if(this.isFromMdfCredit!=undefined && this.isFromMdfCredit){
+      flatpickr('.flatpickr', {
+        enableTime: false,
+        dateFormat: 'm/d/Y',
+        minDate: new Date()
+      });
+      this.customPlaceHolder="MM/DD/YYYY";
+    }
+     else {
       flatpickr('.flatpickr', {
         enableTime: false,
         dateFormat: 'Y-m-d',

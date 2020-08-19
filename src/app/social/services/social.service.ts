@@ -277,7 +277,7 @@ export class SocialService {
         .map(this.extractData)
         .catch(this.handleError);
     }
-
+    
     updateFeed(socialStatus: SocialStatus) {
       return this.http.post(this.URL + 'social/vendor/feed/edit?access_token=' + this.authenticationService.access_token, socialStatus)
         .map(this.extractData)
@@ -319,6 +319,60 @@ export class SocialService {
     .map( this.extractData )
     .catch( this.handleError );
   }
+  
+  listAllCustomFeedCollections(userId:number){
+    return this.http.get( this.URL + 'social/vendor/'+userId+'/feed/collections?access_token=' + this.authenticationService.access_token,"" )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+  
+  getCollectionById(collectionId:number, userId:number){
+    return this.http.get( this.URL + 'social/vendor/'+userId+'/collection/'+collectionId+'?access_token=' + this.authenticationService.access_token,"" )
+    .map( this.extractData )
+    .catch( this.handleError );
+  }
+  
+  saveCustomFeedCollection(request: any) {
+      return this.http.post(this.URL + 'social/vendor/feed/collection/save?access_token=' + this.authenticationService.access_token, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    renameCustomFeedCollection(request: any) {
+      return this.http.post(this.URL + 'social/vendor/feed/collection/edit?access_token=' + this.authenticationService.access_token, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    deleteCustomFeedCollection(request: any) {
+      return this.http.post(this.URL + 'social/vendor/feed/collection/delete?access_token=' + this.authenticationService.access_token, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+     moveCustomFeedToOtherCollection(request: any) {
+      return this.http.post(this.URL + 'social/vendor/feed/collection/move?access_token=' + this.authenticationService.access_token, request)
+        .map(this.extractData)
+        .catch(this.handleError);
+    }
+    
+    getVendorFeedsCount(userId:number){
+    	return this.http.get( this.URL + 'social/vendor/'+userId+'/feeds/count?access_token=' + this.authenticationService.access_token,"" )
+    		.map( this.extractData ).catch( this.handleError );
+   }
+   
+   getFeedAnalytics( pagination: Pagination){
+      return this.http.post( this.URL + 'social/vendor/feed/analytics?access_token=' + this.authenticationService.access_token, pagination )
+          .map( this.extractData )
+          .catch( this.handleError );
+  }
+  
+  getPartnerFeedAnalytics( pagination: Pagination){
+      return this.http.post( this.URL + 'social/vendor/feed/partner/analytics?access_token=' + this.authenticationService.access_token, pagination )
+          .map( this.extractData )
+          .catch( this.handleError );
+  }
+  
   hasRssFeedAccess(userId:number) {
     const url =  this.URL+'module/hasRssFeedAccess/'+userId+'?access_token=' + this.authenticationService.access_token;
         return this.http.get(url, "")

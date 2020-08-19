@@ -171,6 +171,17 @@ export class SortOption {
       { 'name': 'Created Time (DESC)', 'value': 'createdTime-DESC' }
       ];
 
+      mdfPartnersSortDropDownOptions = [
+        { 'name': 'MDF Account Balance (ASC)', 'value': 'mdfAccountBalance-ASC' },
+        { 'name': 'MDF Account Balance (DESC)', 'value': 'mdfAccountBalance-DESC' },
+        { 'name': 'Used Balance (ASC)', 'value': 'mdfUsedAmount-ASC' },
+        { 'name': 'Used Balance (DESC)', 'value': 'mdfUsedAmount-DESC' },
+        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
+        { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
+        { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
+    ];
+
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
@@ -192,6 +203,7 @@ export class SortOption {
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
+    public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[5];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

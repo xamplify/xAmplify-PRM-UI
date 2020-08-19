@@ -35,4 +35,5 @@ export class SocialStatus {
   publishToPartners = false;
   type:any;
 parentFeed:SocialStatus;
+collectionId: number;
 }

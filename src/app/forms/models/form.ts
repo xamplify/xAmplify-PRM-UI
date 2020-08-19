@@ -32,6 +32,9 @@ export class Form {
     showFooter=false;
     titleColor="";
     borderColor="";
+
+    userName:String = "";
+    createdByAdmin = false;    
     pageBackgroundColor="";
     showBackgroundImage=false;
 	

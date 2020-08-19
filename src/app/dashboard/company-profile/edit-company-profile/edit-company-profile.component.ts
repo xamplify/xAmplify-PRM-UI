@@ -30,6 +30,7 @@ import { ImageCropperComponent } from '../../../common/image-cropper/component/i
 import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
+import { MdfService } from 'app/mdf/services/mdf.service';
 
 
 declare var $,swal: any;
@@ -39,7 +40,7 @@ declare var $,swal: any;
     templateUrl: './edit-company-profile.component.html',
     styleUrls: ['./edit-company-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
                 '../../../../assets/css/phone-number-plugin.css'],
-    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess,CallActionSwitch]
+    providers: [Processor, CountryNames, RegularExpressions, Properties,CampaignAccess,CallActionSwitch,MdfService]
 
 })
 export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -184,7 +185,7 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
         private companyProfileService: CompanyProfileService, public homeComponent: HomeComponent,private sanitizer: DomSanitizer,
         public refService: ReferenceService, private router: Router, public processor: Processor, public countryNames: CountryNames,
         public regularExpressions: RegularExpressions, public videoFileService: VideoFileService, public videoUtilService: VideoUtilService,
-        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute,public callActionSwitch: CallActionSwitch, private vanityURLService: VanityURLService) {
+        public userService: UserService, public properties: Properties, public utilService:UtilService,public route: ActivatedRoute,public callActionSwitch: CallActionSwitch, private vanityURLService: VanityURLService, private mdfService:MdfService) {
         if(this.router.url.indexOf("/home/dashboard/admin-company-profile")>-1){
             this.userAlias = this.route.snapshot.params['alias'];
             if(this.userAlias!=undefined && $.trim(this.userAlias).length>0){
@@ -1412,7 +1413,26 @@ export class EditCompanyProfileComponent implements OnInit, OnDestroy, AfterView
                this.companyProfileService.createNewVendorRole(this.companyProfile)
                .subscribe(
                (result:any) => {
-                   this.goBackToAdminPanel("Account Created Successfully");
+                   if(this.campaignAccess.mdf){
+                    this.mdfService.saveMdfRequestForm(this.companyProfile.userEmailId, this.companyProfile.companyProfileName).subscribe((result :any)=> {
+                        if (result.access) {
+                            if (result.statusCode === 100) {
+                                console.log("Mdf Form already exists");
+                            }                                                        
+                        }else{
+                            this.customResponse = new CustomResponse( 'ERROR',"MDF form not created", true );
+                        }   
+                        this.goBackToAdminPanel("Account Created Successfully");                     
+                    },(error:string) => {
+                        this.isLoading = false;
+                        $('#module-access-button').show();
+                        this.refService.goToTop();
+                        this.customResponse = new CustomResponse( 'ERROR', this.serverErrorMessage, true );
+                    });
+                   }
+                   else{
+                    this.goBackToAdminPanel("Account Created Successfully");
+                   }
                },
                (error:string) => {
                    this.isLoading = false;

@@ -1,0 +1,162 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+   <div class="page-bar">
+      <div class="col-md-12 col-lg-12">
+         <div class="row">
+            <div class="col-md-6 col-lg-6 text-left">
+               <ul class="page-breadcrumb">
+                  <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a>
+                     <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  </li>
+                  <li><a translate>MDF</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+                  <li><a translate>Manage MDF Requests</a></li>
+               </ul>
+            </div>
+            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="isPartnerView">
+               <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
+                  <button (click)="listMdfAccessVendors()" class="btn btn-primary" style="border-radius: 3px !important;">
+                     <span class="hidden-xs margin-right-design" translate>Request MDF</span>
+                     <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
+                 </button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light" style=" height:163px;">
+            <div class="row" style="margin-top: 20px;">
+              <app-box-loader [countLoader]=4 *ngIf="tilesLoader"></app-box-loader>
+               <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                  <div class="row">
+                     <div title="Click to see details" class="{{tileClass}}" *ngIf="!isPartnerView">
+                        <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">{{tileData?.totalPartners}}</div>
+                              <div class="desc">Number of Partners</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="{{tileClass}}">
+                        <a class="dashboard-stat dashboard-stat-lighter blue-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">{{tileData?.numberOfRequests}}</div>
+                              <div class="desc">Number of Requests</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="{{tileClass}}">
+                        <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.averageRequestsSize | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Average Request Size</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="{{tileClass}}">
+                        <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                           <div class="visual">
+                              <i aria-hidden="true" class=""></i>
+                           </div>
+                           <div class="details">
+                              <div class="number">${{tileData?.totalValue | number:'1.0':'en-US'}}</div>
+                              <div class="desc">Total Value</div>
+                           </div>
+                           <span class="morePadding">
+                        <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                        <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light">
+            <app-list-loader *ngIf="partnerListLoader.isLoading"></app-list-loader>
+            <div *ngIf="!partnerListLoader.isLoading" class="row" style="margin-top: 20px;">
+               <div class="col-md-12 col-lg-12">
+                  <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+                  </app-response-message>
+                  <div class="row" style="display: none;">
+                     <div class="col-md-10 col-lg-10" style="padding-left: 39px;padding-bottom: 13px;">
+                        <div class="row" style="display: none;">
+                           <button class="btn btn-default" data-target="" data-toggle="modal" type="button">Excel</button>
+                           <button class="btn btn-default" data-target="" data-toggle="modal" type="button">CSV</button>
+                        </div>
+                     </div>
+                     <div class="col-md-2 col-lg-2 " style="padding-right: 30px;margin-bottom: 10px;">
+                        <div class="input-icon right">
+                           <input class="form-control" placeholder="Search" type="text">
+                           <button class="search-box-item-click" type="submit">
+                             <i  class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;" >
+                  <table  id="example" class="table table-striped table-bordered" style="width:100%" aria-describedby="PartnerRequestList">
+                     <thead>
+                        <tr>
+                           <th>Date Created</th>
+                           <th>MDF Request</th>
+                           <th>Amount</th>
+                           <th>Stage</th>
+                           <th>Event Date</th>
+                           <th>Partner Company</th>
+                           <th>Partner Contact</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <ng-container *ngFor="let partner of mdfRequestsPartnersInfoList;let i=index">
+                           <tr class="custom-pointer" (click)="doAction(partner.id)">
+                              <td>{{partner.createdDate}}</td>
+                              <td>{{partner.mdfRequestTitle}}</td>
+                              <td>{{partner.mdfRequestAmount}}</td>
+                              <td>{{partner.statusInString}}</td>
+                               <td>{{partner.eventDate}}</td>
+                              <td>{{partner.partnerCompany}}</td>
+                              <td>{{partner.partnerContact}}</td>
+                           </tr>
+                        </ng-container>
+                     </tbody>
+                  </table>
+                  <div *ngIf="pagination.pagedItems.length !== 0">
+                     <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listMdfRequests($event)" [hidden]="partnerListLoader.isLoading">
+                     </app-pagination>
+                 </div>
+                 <div *ngIf="pagination.totalRecords==0 && !partnerListLoader.isLoading" class="alert alert-info">
+                     <strong>No Data Found.</strong>
+                 </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
