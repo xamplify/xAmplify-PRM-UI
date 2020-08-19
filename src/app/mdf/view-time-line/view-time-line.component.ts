@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-view-time-line',
@@ -8,12 +10,21 @@ import { Router } from '@angular/router';
 })
 export class ViewTimeLineComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  mdfId:number = 0;
+  constructor(private router:Router,private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.mdfId = parseInt(this.route.snapshot.params['mdfId']);
   }
 
   goToManageMdfRequests(){
-    this.router.navigate(["/home/mdf/requests/p"]);
+    if(this.mdfId!=undefined && this.mdfId>0){
+      this.router.navigate(["/home/mdf/change-request/"+this.mdfId]);
+    }else{
+      this.router.navigate(["/home/mdf/requests/p"]);
+    }
+    
   }
+
+ 
 }

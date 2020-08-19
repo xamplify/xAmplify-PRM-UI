@@ -152,5 +152,9 @@ export class EditMditRequestComponent implements OnInit {
     this.loading = true;
     this.router.navigate(["/home/mdf/requests"]);
   }
+  viewTimeLine(){
+    this.loading = true;
+    this.router.navigate(["/home/mdf/timeline/"+this.mdfId]);
+  }
 
 }

@@ -17,7 +17,8 @@ export const routes: Routes = [
   {path: "html", component:HtmlSampleComponent},
   {path: "requests/:role", component:ManageMdfRequestsComponent},
   {path: "vendors", component:ListVendorsComponent},
-  {path: "timeline", component:ViewTimeLineComponent}
+  {path: "timeline", component:ViewTimeLineComponent},
+  {path: "timeline/:mdfId", component:ViewTimeLineComponent}
 
 
 

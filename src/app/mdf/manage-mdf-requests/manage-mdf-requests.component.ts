@@ -217,9 +217,11 @@ export class ManageMdfRequestsComponent implements OnInit {
   }
 
   doAction(mdfId:number){
+    this.loading = true;
     if(!this.isPartnerView){
-      this.loading = true;
       this.router.navigate(["/home/mdf/change-request/"+mdfId]);
+    }else{
+      this.router.navigate(["/home/mdf/timeline/"]);
     }
    
   }
