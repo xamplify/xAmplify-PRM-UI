@@ -11,18 +11,28 @@ import { ActivatedRoute } from '@angular/router';
 export class ViewTimeLineComponent implements OnInit {
 
   mdfId:number = 0;
+  type:string = "";
+  message = "";
   constructor(private router:Router,private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.mdfId = parseInt(this.route.snapshot.params['mdfId']);
+    this.type = this.route.snapshot.params['type'];
+    if("v"==this.type){
+      this.message = "Download Documents For Reimbursement";
+    }else{
+      this.message = "Upload Documents For Reimbursement";
+    }
   }
 
   goToManageMdfRequests(){
-    if(this.mdfId!=undefined && this.mdfId>0){
+    if("v"==this.type){
       this.router.navigate(["/home/mdf/change-request/"+this.mdfId]);
     }else{
       this.router.navigate(["/home/mdf/requests/p"]);
+      
     }
+   
     
   }
 

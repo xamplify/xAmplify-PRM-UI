@@ -30,11 +30,11 @@
                                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                                     <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
-                                       <!-- <li><a href="javascript:void(0)">Change MDF Request Owner</a></li> -->
                                        <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
                                        <li><a (click)="viewTimeLine()">View Timeline </a></li>
-                                       <!-- <li><a href="javascript:void(0)">Archive </a></li> -->
-                                       <!-- <li><a href="#">Delete </a></li> -->
+                                       <li class="disabled"><a href="javascript:void(0)">Change MDF Request Owner</a></li>
+                                       <li class="disabled"><a href="javascript:void(0)">Archive </a></li>
+                                       <li class="disabled"><a href="javascript:void(0)">Delete </a></li>
                                     </ul>
                                  </div>
                               </div>
@@ -157,7 +157,7 @@
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{availableBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">${{rightCornerData?.partnerMdfBalance?.totalAvailableBalance | number:'1.0':'en-US'}}</div>
                                                 <div class="desc" style="    font-size: 13px;"> Available Balance</div>
                                              </div>
                                              <span class="morePadding">
@@ -172,7 +172,7 @@
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">${{usedBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="number" style="font-size: 20px;">${{rightCornerData?.partnerMdfBalance?.totalUsedBalance | number:'1.0':'en-US'}}</div>
                                                 <div class="desc" style="font-size: 13px;">Used Balance</div>
                                              </div>
                                              <span class="morePadding">
@@ -191,9 +191,10 @@
                   <div class="col-md-3 col-lg-3 pr0" style=" height: 617px;background: #f1f1f1;">
                      <div class="row">
                         <div class="col-md-12 col-lg-12 pl0">
-                           <h5 class="h5-heading">MDF Request Owner</h5>
+                           <h5 class="h5-heading">MDF Hierarchy</h5>
                         </div>
                         <!-----Request Owner------->
+                        <p style="margin-left: 20px;"><strong>Partner Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
@@ -225,6 +226,7 @@
                            </div>
                         </div>
                         <!-----Vendor Company Details------->
+                        <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
@@ -256,7 +258,7 @@
                            </div>
                         </div>
                         <!-----Partner Company Details------->
-                        <p style="margin-left: 5px;"><strong>Partner Manager</strong></p>
+                        <p style="margin-left: 20px;"><strong>Partner Manager</strong></p>
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">

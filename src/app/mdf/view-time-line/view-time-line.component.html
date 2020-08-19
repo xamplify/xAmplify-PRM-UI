@@ -47,8 +47,8 @@
                   <div class="col-md-5 col-lg-5 pl0 pr0">
                       <div class="portlet light" style="height:500px;">
                           <div class="col-md-12 col-lg-12">
-                              <h4 style="font-size: 15px!important;font-weight: 600!important; color: #65b6e4;">Upload Documents For Reimbursement</h4>
-                              <div class="col-md-12 col-lg-12 " style="margin-top: 20px;">
+                              <h4 style="font-size: 15px!important;font-weight: 600!important; color: #65b6e4;">{{message}}</h4>
+                              <div class="col-md-12 col-lg-12 " style="margin-top: 20px;" *ngIf="type=='p'">
                                   <div class="form-group">
                                       <label class="control-label col-sm-4" translate>
                                           Upload File
@@ -58,6 +58,27 @@
                                       </div>
                                   </div>
                               </div>
+                              <div class="col-md-12 col-lg-12 " style="margin-top: 20px;" *ngIf="type=='v'">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" translate>
+                                        Invoice
+                                        </label>
+                                    <div class="col-sm-8">
+                                      <a href="assets/images/invoice.pdf" download>Download</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-12 " style="margin-top: 20px;" *ngIf="type=='v'">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" translate>
+                                        Reimbursement
+                                        </label>
+                                    <div class="col-sm-8">
+                                        <a href="assets/images/reimbursement.pdf" download>Download</a>
+                                    </div>
+                                </div>
+                            </div>
                           </div>
                       </div>
                   </div>

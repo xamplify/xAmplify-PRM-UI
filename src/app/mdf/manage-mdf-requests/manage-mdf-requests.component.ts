@@ -221,7 +221,7 @@ export class ManageMdfRequestsComponent implements OnInit {
     if(!this.isPartnerView){
       this.router.navigate(["/home/mdf/change-request/"+mdfId]);
     }else{
-      this.router.navigate(["/home/mdf/timeline/"]);
+      this.router.navigate(["/home/mdf/timeline/p/"+mdfId]);
     }
    
   }

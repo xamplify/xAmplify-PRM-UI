@@ -89,11 +89,6 @@ export class EditMditRequestComponent implements OnInit {
         this.mdfRequest.mdfRequestAmountInDouble = mdfDetails.mdfRequestAmountInDouble;
         this.mdfRequest.allocationAmount = mdfDetails.allocationAmount;
         this.mdfRequest.currentMdfBalance = this.rightCornerData.partnerMdfBalance.totalMdfAccountBalance;
-        if(this.mdfRequest.allocationAmount!=null && this.mdfRequest.allocationAmount>0){
-          this.availableBalance =  this.mdfRequest.currentMdfBalance - this.mdfRequest.allocationAmount;
-        }else{
-          this.availableBalance = this.rightCornerData.partnerMdfBalance.totalAvailableBalance;
-        }
         this.mdfRequest.statusCode = mdfDetails.statusCode;
         this.mdfRequest.allocationDateInString = mdfDetails['allocationDateInString'];
         this.mdfRequest.allocationExpirationDateInString = mdfDetails['allocationExpirationDateInString'];
@@ -101,11 +96,6 @@ export class EditMditRequestComponent implements OnInit {
         this.mdfRequest.userId = this.loggedInUserId;
         this.mdfRequest.reimburseAmount = mdfDetails['reimburseAmount'];
         this.mdfRequest.description = mdfDetails['description'];
-        if(this.mdfRequest.reimburseAmount!=null && this.mdfRequest.reimburseAmount>0){
-          this.usedBalance = this.mdfRequest.reimburseAmount;
-        }else{
-          this.usedBalance = this.rightCornerData.partnerMdfBalance.totalUsedBalance;
-        }
         this.loading = false;
         this.pageLoader  = false;
     }, error => {
@@ -154,7 +144,7 @@ export class EditMditRequestComponent implements OnInit {
   }
   viewTimeLine(){
     this.loading = true;
-    this.router.navigate(["/home/mdf/timeline/"+this.mdfId]);
+    this.router.navigate(["/home/mdf/timeline/v/"+this.mdfId]);
   }
 
 }
