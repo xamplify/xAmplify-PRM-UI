@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
 
 import { DonutChartComponent } from './donut-chart/donut-chart.component';

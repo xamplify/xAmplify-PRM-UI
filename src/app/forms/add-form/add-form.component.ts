@@ -15,7 +15,7 @@ import { DragulaService } from 'ng2-dragula';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';
 import { PreviewPopupComponent } from '../preview-popup/preview-popup.component';
 import { VideoUtilService } from '../../videos/services/video-util.service';
-import { CropperSettings, ImageCropperComponent } from 'ng2-img-cropper';
+import {  ImageCropperComponent } from 'ng2-img-cropper';
 import { UtilService } from 'app/core/services/util.service';
 import { Pagination } from '../../core/models/pagination';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
@@ -24,8 +24,6 @@ import { SocialPagerService } from '../../contacts/services/social-pager.service
 import { ActionsDescription } from '../../common/models/actions-description';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContentManagement } from 'app/videos/models/content-management';
-
-
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
 
 declare var $: any, swal: any, CKEDITOR: any;
@@ -39,6 +37,7 @@ declare var $: any, swal: any, CKEDITOR: any;
 })
 export class AddFormComponent implements OnInit, OnDestroy {
     ngxloading = false;
+    logoErrorMessage = "";
     formType: FormType = FormType.XAMPLIFY_FORM;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     allItems = [];
@@ -145,7 +144,7 @@ export class AddFormComponent implements OnInit, OnDestroy {
     pageBackgroundColor = "";
     constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
         public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
-        private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, private sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
+        private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
         // CKEDITOR.config.extraPlugins = 'colorbutton,colordialog';
         this.loggedInUserId = this.authenticationService.getUserId();
         let categoryId = this.route.snapshot.params['categoryId'];
@@ -233,7 +232,6 @@ export class AddFormComponent implements OnInit, OnDestroy {
                     this.ngxloading = false;
                     this.form.companyLogo = data;
                     this.companyLogoImageUrlPath = data;
-                    console.log(data)
                     $('#add-form-name-modal').modal('show');
                 },
                 error => {
