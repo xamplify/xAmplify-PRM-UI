@@ -1,3 +1,4 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content">
   <div class="page-bar">
      <ul class="page-breadcrumb">
@@ -16,15 +17,15 @@
                   <div class="row">
                       <div class="col-md-4 col-lg-4 text-left" style="padding-left: 60px;">
                           <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">MDF Request</label><br>
-                          <label style="font-size: 14px;font-weight: 600;">Inbound Event Sponsorship</label>
+                          <label style="font-size: 14px;font-weight: 600;">{{mdfDetails?.mdfRequestTitle}}</label>
                       </div>
                       <div class="col-md-4 col-lg-4 text-left" style="padding-left: 190px;">
                           <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Amount</label><br>
-                          <label style="font-size: 14px;font-weight: 600;">$15,000.00</label>
+                          <label style="font-size: 14px;font-weight: 600;">$ {{mdfDetails?.mdfRequestAmountInDouble | number:'1.0':'en-US'}}</label>
                       </div>
                       <div class="col-md-4 col-lg-4 text-left" style="padding-left: 225px;">
-                          <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Event Date</label><br>
-                          <label style="font-size: 14px;font-weight: 600;">August 20,2020</label>
+                          <label style="font-size: 15px;font-weight: 600; color: #65b6e4;">Created Date</label><br>
+                          <label style="font-size: 14px;font-weight: 600;">{{mdfDetails?.createdDate}}</label>
                       </div>
                   </div>
               </div>

@@ -209,6 +209,11 @@ export class MdfService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    getMdfById(mdfId:number) {
+        return this.http.get(this.URL + "/request/getById/"+mdfId+"?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
 
 
