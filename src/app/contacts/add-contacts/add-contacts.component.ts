@@ -162,6 +162,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     zohoErrorResponse:CustomResponse = new CustomResponse();
     zohoPopupLoader: boolean = false;
     public checkZohoStatusCode: any;
+    public zohoCurrentUser:any;
+    loggedInUserId = 0;
+    public providerName: String = 'zoho';
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -2552,6 +2555,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if(this.checkZohoStatusCode == 202){
                 localStorage.setItem("isZohoSynchronization", "yes");
                 localStorage.removeItem("statusCode");
+                this.checkZohoStatusCode = 0;
 
                if(localStorage.getItem('vanityUrlDomain'))
                {
@@ -3492,7 +3496,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                         localStorage.setItem("userAlias", data.userAlias)
                                         localStorage.setItem("isPartner", data.isPartner);
                                         localStorage.setItem("statusCode", data.statusCode);
-                                        window.location.href = "" + data.redirectUrl;
+                                       // window.location.href = "" + data.redirectUrl;
+                                        
+                                       this.loggedInUserId = this.authenticationService.getUserId();
+
+                                       this.zohoCurrentUser = localStorage.getItem('currentUser');
+                                       let url = this.authenticationService.APP_URL+"e/"+this.providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.isPartner; 
+                                       var x = screen.width/2 - 700/2;
+                                       var y = screen.height/2 - 450/2;
+                                        window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                                        
     
                                     }
                                 },

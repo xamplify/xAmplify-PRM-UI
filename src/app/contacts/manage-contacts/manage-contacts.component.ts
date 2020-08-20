@@ -197,6 +197,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     public zohoCurrentUrl:any;
     public isZohoSynchronizationThroughVanity
     public zohoCurrentUser:any;
+    tempIsZohoSynchronization: any;
+
     constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
         public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
@@ -553,10 +555,14 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                        // this.checkSyncCode = data.statusCode;
                       //  localStorage.setItem("checkSyncCode", data.statusCode);
                         this.customResponse = new CustomResponse('INFO', data.message, true);
+                        localStorage.setItem('isZohoSynchronization','no');
                     }else{
                         this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
                         this.loadContactLists(this.pagination);
                         this.contactsCount();
+                        localStorage.setItem('isZohoSynchronization','no');
+                        localStorage.setItem('statusCode','201');
+                        localStorage.removeItem('isZohoSynchronization');
                     }
                    
                 },
@@ -573,6 +579,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     
     remveZohoAuthenticationLocalStorageValues()
     {
+      //  localStorage.removeItem('contactListIdZoho');
+      //  localStorage.removeItem('socialNetworkZoho');
          localStorage.removeItem("isZohoSynchronization");
 
      }
@@ -580,8 +588,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     zohoContactsSynchronizationAuthentication(contactListId: number, socialNetwork: string) {
            
-        localStorage.removeItem('contactListIdZoho');
+      /*  localStorage.removeItem('contactListIdZoho');
         localStorage.removeItem('socialNetworkZoho');
+        localStorage.removeItem('isZohoSynchronization'); */
         try {
             this.resetResponse();
             swal({ title: 'Sychronization processing...!', text: "Please Wait...", showConfirmButton: false, imageUrl: "assets/images/loader.gif" });
@@ -610,8 +619,9 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     }
                     else{
                         this.syncronizeContactList(contactListId, socialNetwork);
+                      //  this.remveZohoAuthenticationLocalStorageValues();
                     }
-                        this.remveZohoAuthenticationLocalStorageValues();
+                     //   this.remveZohoAuthenticationLocalStorageValues();
                 },
                 (error: any) => {
                     var body = error['_body'];
@@ -1839,16 +1849,20 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     ngAfterViewInit() {
     }
-    
+
     ngAfterViewChecked(){
-        if(localStorage.getItem("isZohoSynchronization")){
+
+        let tempIsZohoSynchronization = localStorage.getItem('isZohoSynchronization');
+       if(tempIsZohoSynchronization == 'yes' || !this.authenticationService.isPartner)
+
+        {
             this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
             this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
-           
-            if(!this.isCalledZohoSycronization){
-                 this.isCalledZohoSycronization = true;
-                 this.iszohoAccessTokenExpired = false;
-              this.zohoContactsSynchronizationAuthentication( this.contactListIdZoho,this.socialNetworkZoho);
+            if(!this.isCalledZohoSycronization)
+            {
+            this.isCalledZohoSycronization = true;
+            this.iszohoAccessTokenExpired = false;
+            this.zohoContactsSynchronizationAuthentication( this.contactListIdZoho,this.socialNetworkZoho);
           }
         }
     }
@@ -1869,12 +1883,10 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
 
-            window.addEventListener('message', function(e) {
-                //  var origin = e.originalEvent.origin || e.origin;
-                /*  if(origin !== window.location.hostname)
-                      return; */
+            window.addEventListener('message', function(e)
+             {
                   console.log('received message:  ' + e.data, e);
-                  localStorage.setItem("isZohoSynchronization", "yes");
+                  localStorage.setItem('isZohoSynchronization', 'yes');
               }, false);
 
             

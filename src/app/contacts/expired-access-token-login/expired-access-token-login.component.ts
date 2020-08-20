@@ -26,6 +26,7 @@ ngOnInit()
     let accessToken = this.route.snapshot.params['accessToken'];
     let isPartner = this.route.snapshot.params['isPartner'];
     this.isPartner = isPartner;
+    let redirectUrl = this.route.snapshot.params['redirectUrl'];
     localStorage.setItem('vanityUrlDomain',vanityUrlDomainName);
     localStorage.setItem('access_token',accessToken);
     localStorage.setItem('currentUser',zohoCurrentUser);
@@ -33,7 +34,11 @@ ngOnInit()
     this.authenticationService.access_token = accessToken;
     this.authenticationService.vanityURLEnabled == true;
 
-    if(providerName == "zoho"){
+    if(redirectUrl)
+    {
+      window.location.href = "" + redirectUrl;
+    }
+    else if(providerName == "zoho"){
       this.zohoAuth();
     }
 

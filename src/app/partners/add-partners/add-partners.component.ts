@@ -198,6 +198,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
    zohoPopupLoader: boolean =false;
    public zohoAuthUrl: String;
    public isZohoRedirectUrlButton: boolean=false;
+   public zohoCurrentUser:any;
+   public providerName: String = 'zoho';
 
     constructor(private fileUtil:FileUtil, private router: Router, public authenticationService: AuthenticationService, public editContactComponent: EditContactsComponent,
         public socialPagerService: SocialPagerService, public manageContactComponent: ManageContactsComponent,
@@ -3410,7 +3412,8 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         try {
             this.selectedAddPartnerOption = 6;
             if (this.loggedInThroughVanityUrl) {
-                this.referenceService.showSweetAlertInfoMessage();
+               // this.referenceService.showSweetAlertInfoMessage();
+                this.zohoVanityUrlAuthentication();
             }
             else {
                this.zohoPopupLoader = true;
@@ -3461,6 +3464,64 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error(error, "AddContactsComponent zohoContactsAuthenticationChecking().")
         }
     }
+
+
+    zohoVanityUrlAuthentication() {
+        this.zohoPopupLoader = true;
+                this.authenticationService.vanityURLEnabled == true;
+                this.zohoErrorResponse = new CustomResponse();
+                let selectedOption = $("select.opts:visible option:selected ").val();
+                if(selectedOption=="DEFAULT"){
+                    this.zohoErrorResponse = new CustomResponse('ERROR','Please select atleast one option',true);
+                    this.zohoPopupLoader = false;
+                }
+                else{
+                    if (this.selectedAddPartnerOption == 6 && !this.disableOtherFuctionality) {
+                        this.contactService.checkingZohoAuthentication(this.isPartner)
+                            .subscribe(
+                                (data: any) => {
+                                    this.storeLogin = data;
+                                    if (this.storeLogin.message != undefined && this.storeLogin.message == "AUTHENTICATION SUCCESSFUL FOR SOCIAL CRM") {
+                                        let self = this;
+                                        self.selectedZohoDropDown = $("select.opts:visible option:selected ").val();
+                                        if (this.selectedZohoDropDown == "contact") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoContactsUsingOAuth2();
+                                        }
+                                        if (this.selectedZohoDropDown == "lead") {
+                                            this.zohoPopupLoader = false;
+                                            this.getZohoLeadsUsingOAuth2();
+                                        }
+    
+                                    } else {
+                                        this.zohoPopupLoader = false;
+                                        localStorage.setItem("userAlias", data.userAlias)
+                                        localStorage.setItem("isPartner", data.isPartner);
+                                        localStorage.setItem("statusCode", data.statusCode);
+                                       // window.location.href = "" + data.redirectUrl;
+                                        
+                                       this.loggedInUserId = this.authenticationService.getUserId();
+
+                                       this.zohoCurrentUser = localStorage.getItem('currentUser');
+                                       let url = this.authenticationService.APP_URL+"e/"+this.providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.isPartner;
+                                        var x = screen.width/2 - 700/2;
+                                        var y = screen.height/2 - 450/2;
+                                        window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                                        
+    
+                                    }
+                                },
+                                (error: any) => {
+                                    this.zohoPopupLoader = false;
+                                    this.referenceService.showSweetAlertServerErrorMessage();
+                                },
+                                () => this.xtremandLogger.info("Add contact component checkingZohoContactsAuthentication() finished")
+                            )
+                    }
+                }
+       
+    }
+
 
 
 
