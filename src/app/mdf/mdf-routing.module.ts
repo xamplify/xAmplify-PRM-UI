@@ -7,6 +7,8 @@ import { HtmlSampleComponent } from './html-sample/html-sample.component';
 import { ListVendorsComponent } from './list-vendors/list-vendors.component';
 import { EditMditRequestComponent } from './edit-mdit-request/edit-mdit-request.component';
 import { ViewTimeLineComponent } from './view-time-line/view-time-line.component';
+import { EditFormComponent } from './edit-form/edit-form.component';
+
 
 export const routes: Routes = [
   { path: "", redirectTo: "funds", pathMatch: "full" },
@@ -17,7 +19,8 @@ export const routes: Routes = [
   {path: "html", component:HtmlSampleComponent},
   {path: "requests/:role", component:ManageMdfRequestsComponent},
   {path: "vendors", component:ListVendorsComponent},
-  {path: "timeline/:type/:mdfId", component:ViewTimeLineComponent}
+  {path: "timeline/:type/:mdfId", component:ViewTimeLineComponent},
+  {path: "form",component:EditFormComponent}
 
 
 

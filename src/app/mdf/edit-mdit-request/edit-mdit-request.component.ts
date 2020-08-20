@@ -10,7 +10,6 @@ import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { MdfService } from '../services/mdf.service';
-import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import { MdfRequest } from '../models/mdf.request';
 

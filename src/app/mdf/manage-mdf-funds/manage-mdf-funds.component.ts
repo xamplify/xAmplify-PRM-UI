@@ -182,4 +182,9 @@ export class ManageMdfFundsComponent implements OnInit {
       this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
     });
   }
+
+  editMdfForm(){
+    this.loading = true;
+    this.referenceService.goToRouter("/home/mdf/form");
+  }
 }
