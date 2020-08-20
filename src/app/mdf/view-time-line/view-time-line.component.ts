@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
+import { MdfService } from '../services/mdf.service';
+import { MdfRequest } from '../models/mdf.request';
 
 
 @Component({
@@ -13,9 +16,12 @@ export class ViewTimeLineComponent implements OnInit {
   mdfId:number = 0;
   type:string = "";
   message = "";
-  constructor(private router:Router,private route: ActivatedRoute) { }
+  loading = false;
+  mdfDetails:any;
+  constructor(private mdfService: MdfService,private router:Router,private route: ActivatedRoute,public xtremandLogger: XtremandLogger) { }
 
   ngOnInit() {
+    this.loading =  true;
     this.mdfId = parseInt(this.route.snapshot.params['mdfId']);
     this.type = this.route.snapshot.params['type'];
     if("v"==this.type){
@@ -23,6 +29,7 @@ export class ViewTimeLineComponent implements OnInit {
     }else{
       this.message = "Upload Documents For Reimbursement";
     }
+    this.getMdfData();
   }
 
   goToManageMdfRequests(){
@@ -32,9 +39,24 @@ export class ViewTimeLineComponent implements OnInit {
       this.router.navigate(["/home/mdf/requests/p"]);
       
     }
-   
     
   }
+  getMdfData(){
+    this.mdfService.getMdfById(this.mdfId).
+    subscribe((result: any) => {
+        this.mdfDetails = result.data.mdfDetails;
+        console.log(this.mdfDetails);
+        this.loading = false;
+    }, error => {
+      this.loading = false;
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    },
+    () => {
+    }
+    );
+  }   
+
 
  
 }
