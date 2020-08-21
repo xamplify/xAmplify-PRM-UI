@@ -64,6 +64,7 @@ export class MdfService {
         columnInfo.required = true;
         columnInfo.labelLength = "16";
         columnInfo.labelType = labelData.labelType;
+        columnInfo.defaultColumn = true;
         if (labelData.labelType === 'textarea') {
             columnInfo.labelLength = "255";
         }
@@ -82,6 +83,7 @@ export class MdfService {
         formOption.name = option;
         formOption.labelId = option.toLowerCase();
         formOption.hiddenLabelId = formOption.labelId;
+        formOption.defaultColumn = true;
         return formOption;
     }
 

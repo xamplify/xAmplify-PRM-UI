@@ -145,6 +145,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   pageBackgroundColor = "";
   @Input() isMdfForm:boolean;
   @Input() selectedForm:any;
+  formHeader = "CREATE FORM";
   constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
@@ -227,8 +228,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     });
     this.listPriceTypes();
       if(this.isMdfForm){
+        this.formHeader = "EDIT MDF FORM"; 
         this.removeBlurClass();
       }else{
+        this.formHeader = "CREATE FORM"; 
         this.listFormNames();
         this.listCategories();
         if (this.isAdd) {
@@ -388,6 +391,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       let length = this.allItems.length;
       length = length + 1;
       columnInfo.divId = "column-" + length;
+      columnInfo.defaultColumn = column.defaultColumn;
       if (column.value !== undefined) {
           const field = column.value;
           columnInfo.labelName = field + "-" + length;
@@ -446,16 +450,17 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   addDefaultOptions(columnInfo: ColumnInfo) {
       const defaultFormChoice = new DefaultFormChoice();
       for (let i = 1; i <= 2; i++) {
-          defaultFormChoice.defaultChoices.push(this.constructChoice(i));
+          defaultFormChoice.defaultChoices.push(this.constructChoice(i,false));
       }
       return defaultFormChoice.defaultChoices;
   }
-  constructChoice(index: number) {
+  constructChoice(index: number,defaultColumn:boolean) {
       const formOption = new FormOption();
       formOption.name = 'Choice ' + index;
       formOption.labelId = 'choice-' + index;
       formOption.hiddenLabelId = this.referenceService.replaceAllSpacesWithEmpty(formOption.name);
       formOption.errorMessage = "";
+      formOption.defaultColumn = defaultColumn;
       return formOption;
   }
   /********On clicking create form  column div***********/
@@ -476,18 +481,18 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (columnInfo.labelType === 'radio') {
           columnInfo.radioButtonErrorMessage = "";
           const count = columnInfo.allRadioButtonChoicesCount;
-          const formOption = this.constructChoice(count);
+          const formOption = this.constructChoice(count,false);
           columnInfo.radioButtonChoices.push(formOption);
           columnInfo.allRadioButtonChoicesCount++;
       } else if (columnInfo.labelType === 'checkbox') {
           columnInfo.checkBoxErrorMessage = "";
           const count = columnInfo.allCheckBoxChoicesCount;
-          columnInfo.checkBoxChoices.push(this.constructChoice(count));
+          columnInfo.checkBoxChoices.push(this.constructChoice(count,false));
           columnInfo.allCheckBoxChoicesCount++;
       } else {
           columnInfo.dropDownErrorMessage = "";
           const count = columnInfo.allDropDownChoicesCount;
-          columnInfo.dropDownChoices.push(this.constructChoice(count));
+          columnInfo.dropDownChoices.push(this.constructChoice(count,false));
           columnInfo.allDropDownChoicesCount++;
       }
       this.referenceService.scrollToBottomByDivId('edit-from-div');
@@ -837,11 +842,16 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   navigateBack() {
-      if (this.isAdd) {
-          this.router.navigate(["/home/design/add"]);
-      } else {
-          this.navigateToManageSection();
+      if(this.isMdfForm){
+        this.referenceService.goToRouter("/home/mdf/funds");
+      }else{
+        if (this.isAdd) {
+            this.router.navigate(["/home/design/add"]);
+        } else {
+            this.navigateToManageSection();
+        }
       }
+      
   }
 
   selectCategory(event) {
@@ -849,12 +859,18 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   }
 
   navigateToManageSection() {
-      let categoryId = this.route.snapshot.params['categoryId'];
-      if (categoryId > 0) {
-          this.router.navigate(["/home/forms/manage/" + categoryId]);
-      } else {
-          this.router.navigate(["/home/forms/manage"]);
+      if(this.isMdfForm){
+        this.ngxloading = false; 
+        this.customResponse = new CustomResponse('SUCCESS','Form Updated Successfully',true);
+      }else{
+        let categoryId = this.route.snapshot.params['categoryId'];
+        if (categoryId > 0) {
+            this.router.navigate(["/home/forms/manage/" + categoryId]);
+        } else {
+            this.router.navigate(["/home/forms/manage"]);
+        }
       }
+     
   }
 
   changeControllerColor(event: any, form: Form, type: string) {
