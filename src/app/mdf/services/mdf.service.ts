@@ -199,6 +199,12 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+    getMdfRequestFormForPartner(companyId: number) {
+        return this.http.get(this.URL + "getMdfRequestFormForPartner/" + companyId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     listMdfRequestsForPartners(pagination: Pagination) {
         return this.http.post(this.URL + "requests/analytics/partnersInfoForPartner?access_token=" + this.authenticationService.access_token, pagination)
