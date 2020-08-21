@@ -111,15 +111,16 @@
                                         </ng-container>
                                     </div>
                                 </ng-container>
-                                <div style="text-align: center;">
-                                    <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                <div *ngIf="form.showCaptcha">
+                                    <re-captcha id="grecaptcha" (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
                                 </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>
-                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || !enableButton" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
+                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || (form.showCaptcha && !enableButton)" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor"
+                                        (click)="submitForm()">{{form.buttonValue}}</button>
                                 </ng-template>
                                 <ng-template #dontShow>
-                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || !enableButton" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
+                                    <button *ngIf="!authenticationService.isFromRsvpPage" type="submit" [disabled]="!isValidEmailIds || (form.showCaptcha && !enableButton)" class="btn green-haze" id="bottom-right" [style.color]="form.buttonValueColor" (click)="submitForm()">{{form.buttonValue}}</button>
                                 </ng-template>
                             </div>
                         </div>

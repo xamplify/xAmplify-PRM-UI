@@ -25,6 +25,7 @@ import { ActionsDescription } from '../../common/models/actions-description';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ContentManagement } from 'app/videos/models/content-management';
 import { ImageCroppedEvent } from '../../common/image-cropper/interfaces/image-cropped-event.interface';
+import { EnvService } from 'app/env.service'
 
 declare var $: any, swal: any, CKEDITOR: any;
 
@@ -146,7 +147,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   @Input() isMdfForm:boolean;
   @Input() selectedForm:any;
   formHeader = "CREATE FORM";
-  constructor(public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
+  siteKey = "";
+  constructor(public logger: XtremandLogger, public envService: EnvService, public referenceService: ReferenceService, public videoUtilService: VideoUtilService, private emailTemplateService: EmailTemplateService,
       public pagination: Pagination, public actionsDescription: ActionsDescription, public socialPagerService: SocialPagerService, public authenticationService: AuthenticationService, public formService: FormService,
       private router: Router, private dragulaService: DragulaService, public callActionSwitch: CallActionSwitch, public route: ActivatedRoute, public utilService: UtilService, public sanitizer: DomSanitizer, private contentManagement: ContentManagement) {
       this.loggedInUserId = this.authenticationService.getUserId();
@@ -158,6 +160,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       dragulaService.dropModel.subscribe((value) => {
           this.onDropModel(value);
       });
+      this.siteKey = this.envService.captchaSiteKey;
       
   }
 
@@ -182,6 +185,9 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
         }
         if (this.form.showFooter === undefined || this.form.showFooter === null) {
             this.form.showFooter = false;
+        }
+        if (this.form.showCaptcha === undefined || this.form.showCaptcha === null) {
+            this.form.showCaptcha = false;
         }
         if (this.form.backgroundColor) {
             this.backgroundControllerColor = this.form.backgroundColor;
@@ -1097,6 +1103,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       this.form.showFooter = !this.form.showFooter;
   }
 
+  showCaptchaChange() {
+    this.form.showCaptcha = !this.form.showCaptcha;
+  }
+
   errorHandler(event) { event.target.src = 'assets/images/your-logo.png'; }
 
   uploadFile(file: File, type: string) {
@@ -1298,4 +1308,8 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
           this.formBackgroundImage = "";
       }
   }
+
+resolved(captchaResponse: string) {
+          console.log(captchaResponse);
+}
 }

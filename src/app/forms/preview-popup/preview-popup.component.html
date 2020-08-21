@@ -219,6 +219,9 @@
                                         </ng-container>
                                     </div>
                                 </ng-container>
+                                <div *ngIf="form.showCaptcha">
+                                    <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                </div>
                                 <div *ngIf="form.buttonColor?.length>0;then show else dontShow"></div>
                                 <ng-template #show>
                                     <button type="submit" disabled="disabled" class="button-padding" id="bottom-right" [style.backgroundColor]="form.buttonColor" [style.color]="form.buttonValueColor">{{form.buttonValue}}</button>

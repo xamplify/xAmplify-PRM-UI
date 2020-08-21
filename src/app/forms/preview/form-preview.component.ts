@@ -20,6 +20,7 @@ import { LandingPageService } from '../../landing-pages/services/landing-page.se
 import { DomSanitizer } from "@angular/platform-browser";
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SocialService } from 'app/social/services/social.service'
+import { EnvService } from 'app/env.service'
 
 declare var $: any;
 
@@ -66,11 +67,11 @@ export class FormPreviewComponent implements OnInit {
       this.enableButton = false;
     }
   }
-  constructor(private route: ActivatedRoute, private referenceService: ReferenceService,
+  constructor(private route: ActivatedRoute, public envService: EnvService, private referenceService: ReferenceService,
     public authenticationService: AuthenticationService, private formService: FormService,
     private logger: XtremandLogger, public httpRequestLoader: HttpRequestLoader, public processor: Processor, private router: Router, private socialService: SocialService,
     private landingPageService: LandingPageService, public deviceService: Ng2DeviceService, public utilService: UtilService, public sanitizer: DomSanitizer, private vanityURLService: VanityURLService) {
-
+      this.siteKey = this.envService.captchaSiteKey;
 
   }
 
@@ -95,6 +96,9 @@ export class FormPreviewComponent implements OnInit {
     this.isValidEmailIds = true;
     this.customResponse = new CustomResponse();
     this.show = false;
+    if(this.form.showCaptcha){
+      grecaptcha.reset();
+    }
     this.getFormFieldsByAlias(this.alias);
   }
 
@@ -106,7 +110,6 @@ export class FormPreviewComponent implements OnInit {
           if (response.statusCode === 200) {
             this.hasFormExists = true;
             this.form = response.data;
-            this.siteKey = response.captchaSiteKey;
             //$("body").css("background-color","this.form.backgroundColor");
             if (this.form.showBackgroundImage) {
               this.formBackgroundImage = this.form.backgroundImage;

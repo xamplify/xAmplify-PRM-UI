@@ -15,6 +15,7 @@ import { UtilService } from '../../core/services/util.service';
 import { environment } from 'environments/environment';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DomSanitizer } from "@angular/platform-browser";
+import { EnvService } from 'app/env.service'
 
 declare var swal, $: any;
 @Component({
@@ -38,11 +39,12 @@ export class PreviewPopupComponent implements OnInit {
     formAliasUrl: string = "";
     formBackgroundImage = "";
     pageBackgroundColor = "";
-    constructor(private formService: FormService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
+    siteKey = "";
+    constructor(private formService: FormService, public envService: EnvService, public logger: XtremandLogger, public authenticationService: AuthenticationService,
         public referenceService: ReferenceService, public sortOption: SortOption, public pagerService: PagerService, public utilService: UtilService,
         public router: Router, private vanityUrlService: VanityURLService, public sanitizer: DomSanitizer) {
         this.pagination.vanityUrlFilter = this.vanityUrlService.isVanityURLEnabled();
-
+        this.siteKey = this.envService.captchaSiteKey;
     }
 
     ngOnInit() {
@@ -53,7 +55,6 @@ export class PreviewPopupComponent implements OnInit {
         if (this.authenticationService.isShowForms) {
             this.pagination.campaignType = 'EVENT';
         }
-
         console.log(this.pagination.campaignType);
     }
 
@@ -201,4 +202,7 @@ export class PreviewPopupComponent implements OnInit {
         }
     }
 
+    resolved(captchaResponse: string) {
+              console.log(captchaResponse)
+    }
 }

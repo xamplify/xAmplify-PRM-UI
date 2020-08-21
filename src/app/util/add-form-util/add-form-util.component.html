@@ -75,7 +75,7 @@
                                                                                         *ngIf="columnInfo.required">*</span>
                                                                                 </label>
                                                                                 <ng-container *ngIf="columnInfo.defaultColumn">
-                                                                                    <button title="Default label cannot be deleted"  class="btn btn-danger btn-xs right-corner disabled">
+                                                                                    <button title="Default label cannot be deleted" class="btn btn-danger btn-xs right-corner disabled">
                                                                                         <span  class="glyphicon glyphicon-trash"></span>
                                                                                     </button>
                                                                                 </ng-container>
@@ -84,7 +84,7 @@
                                                                                         <span  class="glyphicon glyphicon-trash"></span>
                                                                                     </button>
                                                                                 </ng-container>
-                                                                                
+
 
                                                                             </h4>
                                                                             <!-- ---------------------------Text/Email----------------------------- -->
@@ -166,6 +166,9 @@
                                                     </ng-container>
                                                     <br>
                                                     <!-- End of form-div -->
+                                                    <div *ngIf="form.showCaptcha">
+                                                        <re-captcha (resolved)="resolved($event)" [siteKey]="siteKey"></re-captcha>
+                                                    </div>
                                                     <div *ngIf="form.buttonColor?.length>0;then show else dontShow">
                                                     </div>
                                                     <ng-template #show>
@@ -250,15 +253,16 @@
 
                                                     <div class="form-group" *ngIf="!selectedColumn.defaultColumn">
                                                         <label class="control-label">Required</label>
-                                                            <switch  [status]="selectedColumn.required" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+                                                        <switch [status]="selectedColumn.required" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
                                                             (statusChange)="changeStatus($event,selectedColumn)">
                                                         </switch>
                                                     </div>
 
                                                     <div class="form-group" *ngIf="selectedColumn.defaultColumn" title="Status cannot be changed for default label">
                                                         <label class="control-label">Required</label>
-                                                            <switch  [disabled]="callActionSwitch.disabled" [status]="selectedColumn.required" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize">
-                                                            </switch>
+                                                        <switch [disabled]="callActionSwitch.disabled" [status]="selectedColumn.required" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue" [onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch"
+                                                            [size]="callActionSwitch.bsize">
+                                                        </switch>
                                                     </div>
                                                 </fieldset>
                                                 <!-- ----------------Radio Buttons/Check Boxes-------------- -->
@@ -323,7 +327,7 @@
                                                                                 class="glyphicon glyphicon-plus"></span>
                                                                         </button>
                                                                         <ng-container *ngIf="dropDown.defaultColumn">
-                                                                            <button title="Default label cannot be deleted"  class="btn btn-danger btn-xs disabled">
+                                                                            <button title="Default label cannot be deleted" class="btn btn-danger btn-xs disabled">
                                                                                 <span  class="glyphicon glyphicon-trash"></span>
                                                                             </button>
                                                                         </ng-container>
@@ -656,6 +660,23 @@
                         <div *ngIf="form.showFooter" class="col-xs-12 col-md-12 col-lg-12 pl0 pr0" style="margin-top:5px;">
                             <ckeditor [(ngModel)]="form.footer" #myckeditor [config]="ckeConfig" debounce="500">
                             </ckeditor>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="padding-top: 10px;">
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-3 col-lg-3 pl0 pr0">
+                                            <label>Show Captcha </label>
+                                        </div>
+                                        <div class="col-md-9 col-lg-9 pl0">
+                                            <div class="switch">
+                                                <input id="cmn-toggle-6" class="cmn-toggle cmn-toggle-round-flat" [checked]="form.showCaptcha" type="checkbox" (change)="showCaptchaChange()">
+                                                <label for="cmn-toggle-6"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
