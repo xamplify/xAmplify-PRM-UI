@@ -154,6 +154,10 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
       if (categoryId > 0) {
           this.routerLink += "/" + categoryId;
       }
+      dragulaService.setOptions('form-options', {})
+      dragulaService.dropModel.subscribe((value) => {
+          this.onDropModel(value);
+      });
       
   }
 
@@ -222,10 +226,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
     this.cropperSettings();
     this.pageNumber = this.numberPerPage[0];
 
-    this.dragulaService.setOptions('form-options', {})
-    this.dragulaService.dropModel.subscribe((value) => {
-        this.onDropModel(value);
-    });
+   
     this.listPriceTypes();
       if(this.isMdfForm){
         this.formHeader = "EDIT MDF FORM"; 

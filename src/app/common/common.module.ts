@@ -67,10 +67,11 @@ import { XamplifyDefaultTemplatesComponent } from 'app/util/xamplify-default-tem
 import { EmailTemplatePreviewUtilComponent } from 'app/util/email-template-preview-util/email-template-preview-util.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RecaptchaModule } from 'ng-recaptcha';
-import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
 import { DragulaModule } from 'ng2-dragula';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { AddFormUtilComponent } from 'app/util/add-form-util/add-form-util.component';
+
 
 
 @NgModule({

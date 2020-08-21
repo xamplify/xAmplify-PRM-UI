@@ -207,14 +207,9 @@
                                                         <input type="text" [(ngModel)]="selectedColumn.labelName" class="form-control" (input)="updateHiddenLabelId(selectedColumn)" maxlength="1000" />
                                                     </div>
                                                     <!-- ----------------Filed PlaceHolder Text-------------- -->
-                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea'">
+                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='text' || selectedColumn.labelType=='email' || selectedColumn.labelType=='textarea' || selectedColumn.labelType=='number' ">
                                                         <label class="control-label">Field Placeholder Text</label>
                                                         <input type="text" [(ngModel)]="selectedColumn.placeHolder" class="form-control" maxlength="1000" />
-                                                    </div>
-                                                     <!-- ---------------------------Number----------------------------- -->
-                                                    <div class="form-group" *ngIf="selectedColumn.labelType=='number'">
-                                                        <label class="control-label">Field Placeholder Text</label>
-                                                        <input type="number" [(ngModel)]="selectedColumn.placeHolder" class="form-control" min="0" />
                                                     </div>
                                                     <!-- ---------------------------Price----------------------------- -->
                                                     <div class="form-group" *ngIf="selectedColumn.labelType=='price'">
