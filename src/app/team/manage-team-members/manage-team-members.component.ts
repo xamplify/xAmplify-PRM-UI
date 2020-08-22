@@ -563,6 +563,7 @@ export class ManageTeamMembersComponent implements OnInit {
 
 	save(){
 		this.loading = true;
+		this.referenceService.goToTop();
 		$('.add-tm-tr').css("background-color", "#fff");
 		this.customResponse = new CustomResponse();
 		this.teamMemberService.saveTeamMembers(this.newlyAddedTeamMembers)
@@ -838,6 +839,11 @@ export class ManageTeamMembersComponent implements OnInit {
 	logoutAsTeamMember() {
 		let adminEmailId = JSON.parse(localStorage.getItem('adminEmailId'));
 		this.loginAsTeamMember(adminEmailId, true);
+	}
+
+	sendEmailInvitation(teamMember:TeamMember){
+		this.loading = true;
+		console.log(teamMember);
 	}
 
 }
