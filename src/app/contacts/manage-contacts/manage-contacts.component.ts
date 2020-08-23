@@ -1853,7 +1853,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     ngAfterViewChecked(){
 
         let tempIsZohoSynchronization = localStorage.getItem('isZohoSynchronization');
-       if(tempIsZohoSynchronization == 'yes' || !this.authenticationService.isPartner)
+       if(tempIsZohoSynchronization == 'yes' && !this.isPartner)
 
         {
             this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
