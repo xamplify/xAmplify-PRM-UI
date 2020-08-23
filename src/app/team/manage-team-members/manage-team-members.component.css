@@ -15,6 +15,9 @@ table th:first-child {
 .fa-user {
     padding-right: 10px;
 }
+.gray{
+    color: gray;
+}
 
 
 /*
