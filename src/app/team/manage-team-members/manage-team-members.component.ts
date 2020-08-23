@@ -841,9 +841,37 @@ export class ManageTeamMembersComponent implements OnInit {
 		this.loginAsTeamMember(adminEmailId, true);
 	}
 
-	sendEmailInvitation(teamMember:TeamMember){
-		this.loading = true;
-		console.log(teamMember);
+	
+	resendEmailInvitation(teamMember:TeamMember) {
+		if(!this.isLoggedInAsTeamMember){
+			this.customResponse = new CustomResponse();
+			try {
+				this.loading = true;
+				let input = {};
+				input['userId'] = this.authenticationService.getUserId();
+				input['emailId'] = teamMember.emailId;
+				this.teamMemberService.resendTeamMemberInvitation(input)
+					.subscribe(
+						data => {
+							if (data.statusCode == 200) {
+								this.customResponse = new CustomResponse('SUCCESS',"Invitation sent successfully.",true);
+							} else {
+								this.customResponse = new CustomResponse('ERROR',"Invitation cannot be sent as the account is already created for team member",true);
+							}
+							this.loading = false;
+						},
+						error => {
+							this.loading = false;
+							this.logger.errorPage(error);
+						}
+					);
+			} catch (error) {
+				this.showUIError(error);
+				this.loading = false;
+			}
+		}
+		
 	}
+
 
 }

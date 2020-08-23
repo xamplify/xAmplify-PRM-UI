@@ -311,7 +311,7 @@
       </td>
        <!-- -Invitation Email--- -->
       <td>
-        <a *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'"  (click)="sendEmailInvitation(teamMember)">
+        <a *ngIf="teamMember.status.toLocaleString()=='UNAPPROVED'" title="Resend the invitation email" [className]="isLoggedInAsTeamMember? 'btn-sm inactive':'btn-sm'"  (click)="resendEmailInvitation(teamMember)">
             <i class="fa fa-envelope" aria-hidden="true"></i>
         </a>
         <a  *ngIf="teamMember.status.toLocaleString()!='UNAPPROVED'" title="Invitation cannot be sent as the account is created successfully" class="btn-sm inactive">
