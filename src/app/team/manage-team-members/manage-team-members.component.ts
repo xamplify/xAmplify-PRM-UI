@@ -844,34 +844,52 @@ export class ManageTeamMembersComponent implements OnInit {
 	
 	resendEmailInvitation(teamMember:TeamMember) {
 		if(!this.isLoggedInAsTeamMember){
-			this.customResponse = new CustomResponse();
-			try {
-				this.loading = true;
-				let input = {};
-				input['userId'] = this.authenticationService.getUserId();
-				input['emailId'] = teamMember.emailId;
-				this.teamMemberService.resendTeamMemberInvitation(input)
-					.subscribe(
-						data => {
-							if (data.statusCode == 200) {
-								this.customResponse = new CustomResponse('SUCCESS',"Invitation sent successfully.",true);
-							} else {
-								this.customResponse = new CustomResponse('ERROR',"Invitation cannot be sent as the account is already created for team member",true);
-							}
-							this.loading = false;
-						},
-						error => {
-							this.loading = false;
-							this.logger.errorPage(error);
-						}
-					);
-			} catch (error) {
-				this.showUIError(error);
-				this.loading = false;
-			}
+			let self = this;
+            swal( {
+                title: 'Are you sure?',
+                text: "An invitation email will be sent to team member",
+                type: 'warning',
+                showCancelButton: true,
+                swalConfirmButtonColor: '#54a7e9',
+                swalCancelButtonColor: '#999',
+                confirmButtonText: 'Yes, send it!'
+
+            }).then( function() {
+				self.sendEmail(teamMember);
+            }, function( dismiss: any ) {
+                console.log( 'you clicked on option' + dismiss );
+            });
+		
 		}
 		
 	}
 
+	sendEmail(teamMember:TeamMember){
+		this.customResponse = new CustomResponse();
+		try {
+			this.loading = true;
+			let input = {};
+			input['userId'] = this.authenticationService.getUserId();
+			input['emailId'] = teamMember.emailId;
+			this.teamMemberService.resendTeamMemberInvitation(input)
+				.subscribe(
+					data => {
+						if (data.statusCode == 200) {
+							this.customResponse = new CustomResponse('SUCCESS',"Invitation sent successfully.",true);
+						} else {
+							this.customResponse = new CustomResponse('ERROR',"Invitation cannot be sent as the account is already created for team member",true);
+						}
+						this.loading = false;
+					},
+					error => {
+						this.loading = false;
+						this.logger.errorPage(error);
+					}
+				);
+		} catch (error) {
+			this.showUIError(error);
+			this.loading = false;
+		}
+	}
 
 }
