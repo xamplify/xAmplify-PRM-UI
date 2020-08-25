@@ -25,6 +25,7 @@ export class ColumnInfo {
     dropDownErrorMessage = "";
     priceType="Dollar";
     priceSymbol="$";
+    defaultColumn = false;
     /****Edit Form Fields******/
     editFormLabelDivClass = "default-fieldset";
     editFormChoiceDivClass = "default-fieldset";

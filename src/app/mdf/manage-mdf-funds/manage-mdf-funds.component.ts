@@ -97,6 +97,7 @@ export class ManageMdfFundsComponent implements OnInit {
       this.loading = false;
       this.referenceService.loading(this.partnerListLoader, false);
     }, error => {
+      this.loading = false;
       this.xtremandLogger.log(error);
       this.xtremandLogger.errorPage(error);
     });
@@ -138,23 +139,29 @@ export class ManageMdfFundsComponent implements OnInit {
 
   /**********Add Balance************ */
   addBalance(partner:any){
-    this.selectedPartnerMdfFund = partner;
-    this.modalPopupLoader = true;
-    $('#addBalance').modal('show');
-    this.mdfService.getMdfCreditDetailsById(partner.id).subscribe((result: any) => {
-      if(result.statusCode==200){
-        let data = result.data;
-        this.selectedPartnerMdfFund.dateInString = data.dateInString;
-        this.selectedPartnerMdfFund.expirationDateInString = data.expirationDateInString;
-        this.selectedPartnerMdfFund.creditAmount = data.creditAmount;
-      }
-      this.modalPopupLoader = false;
-     
-    }, error => {
-      this.modalPopupLoader = false;
-      this.xtremandLogger.log(error);
-      this.xtremandLogger.errorPage(error);
-    });
+    if(partner.id!=null && partner.id>0){
+      this.selectedPartnerMdfFund = partner;
+      this.modalPopupLoader = true;
+      $('#addBalance').modal('show');
+      this.mdfService.getMdfCreditDetailsById(partner.id).subscribe((result: any) => {
+        if(result.statusCode==200){
+          let data = result.data;
+          this.selectedPartnerMdfFund.dateInString = data.dateInString;
+          this.selectedPartnerMdfFund.expirationDateInString = data.expirationDateInString;
+          this.selectedPartnerMdfFund.creditAmount = data.creditAmount;
+        }
+        this.modalPopupLoader = false;
+       
+      }, error => {
+       this.closeAddBalancePopup();
+        this.modalPopupLoader = false;
+        this.xtremandLogger.log(error);
+        this.xtremandLogger.errorPage(error);
+      });
+    }else{
+      this.referenceService.showSweetAlertErrorMessage("MDF Balance is empty.Please contact admin");
+    }
+    
   }
 
   closeAddBalancePopup(){
@@ -178,8 +185,14 @@ export class ManageMdfFundsComponent implements OnInit {
         this.showCreditAmountError = true;
       }
     }, error => {
+      this.loading = false;
       this.modalPopupLoader = false;
       this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
     });
+  }
+
+  editMdfForm(){
+    this.loading = true;
+    this.referenceService.goToRouter("/home/mdf/form");
   }
 }

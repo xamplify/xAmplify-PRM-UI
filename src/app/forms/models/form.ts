@@ -37,5 +37,6 @@ export class Form {
     createdByAdmin = false;    
     pageBackgroundColor="";
     showBackgroundImage=false;
+    showCaptcha=false;
 	
 }

@@ -136,6 +136,16 @@ export class TeamMemberService{
         .catch(this.handleError);   
     }
 
+    resendTeamMemberInvitation(input:any){
+        let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
+        input['vanityUrlFilter'] = vanityUrlFilter;
+        input['vanityUrlDomainName'] = this.authenticationService.companyProfileName;
+        var url =this.URL+"teamMember/resendTeamMemberInvitation?access_token="+this.authenticationService.access_token;
+        return this.http.post(url, input)
+        .map(this.extractData)
+        .catch(this.handleError);   
+    }
+
     listTeamMembers(pagination:Pagination){
         let vanityUrlFilter = this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== '';
         pagination.vanityUrlFilter = vanityUrlFilter;

@@ -21,6 +21,8 @@ export class EnvService {
 
   vendorRoleHash = "";
   partnerRoleHash = "";
+
+  captchaSiteKey = "6LfGfb0ZAAAAAEsdwjFHjpcssfxfCjMsZ8rL6gEQ";
   
   
   // Whether or not to enable debug mode

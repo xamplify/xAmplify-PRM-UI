@@ -7,5 +7,6 @@ export class FormOption {
     errorMessage = "";
     borderColor ="#e5e5e5";
     isValid = true;
+    defaultColumn = false;
 
 }

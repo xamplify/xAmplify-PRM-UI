@@ -58,11 +58,11 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
        
         <ng-container *ngIf="isPartner && isUpdateUser">
           <!---Contacts Limit------->
-        <div class="form-group">
+        <div class="form-group" *ngIf="authenticationService.contactsCount">
           <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
             <span class="star"> *</span>
           </label>
-          <div class="form-group col-xs-10 col-sm-10" *ngIf="authenticationService.module.isContact">
+          <div class="form-group col-xs-10 col-sm-10" >
             <input type="number" min="0" style="border: none" class="form-control padding-mobile" id="contactsLimit"
               [(ngModel)]="addContactuser.contactsLimit"  [ngModelOptions]="{standalone: true}" placeholder="Contacts Limit" min="1" 
               oninput="validity.valid||(value='');" (input)="validteContactsCount(addContactuser.contactsLimit)">
@@ -71,7 +71,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
           </div>
         </div>
       <!---MDF Amount Limit------->
-      <div class="form-group" *ngIf="mdfAccess">
+      <!-- <div class="form-group" *ngIf="mdfAccess">
         <label class="control-label col-xs-2 col-sm-2" for="company" style="color: #00bcd4; right: 11px !important">
         </label>
         <div class="form-group col-xs-10 col-sm-10">
@@ -81,7 +81,7 @@ data-keyboard="false" data-backdrop="static" style="padding-right: 0 !important;
            >
           <div class="textCss"></div>
         </div>
-      </div>
+      </div> -->
         </ng-container>
         
 

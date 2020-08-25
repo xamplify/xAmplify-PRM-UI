@@ -85,6 +85,7 @@ export class AuthenticationService {
   allLanguagesList: any = [];
   loginScreenDirection: string = 'Center';
   vendorTierTeamMember: boolean = false;
+  contactsCount = false;
   constructor(public envService: EnvService, private http: Http, private router: Router, private utilService: UtilService, public xtremandLogger: XtremandLogger, public translateService: TranslateService) {
     this.SERVER_URL = this.envService.SERVER_URL;
     this.APP_URL = this.envService.CLIENT_URL;
@@ -471,6 +472,7 @@ export class AuthenticationService {
     module.isReDistribution = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
+	this.contactsCount = false;
     try {
       swal.close();
     } catch (error) {

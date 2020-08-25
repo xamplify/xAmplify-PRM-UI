@@ -2059,5 +2059,9 @@ export class ReferenceService {
 	closeChildWindowOnError(){
         window.opener.postMessage('Something went wrong', '*');
         self.close();
-    }
+	}
+	
+	goToRouter(url:string){
+		this.router.navigate([url]);
+	}
 }

@@ -162,6 +162,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     zohoErrorResponse:CustomResponse = new CustomResponse();
     zohoPopupLoader: boolean = false;
     public checkZohoStatusCode: any;
+    public zohoCurrentUser:any;
+    loggedInUserId = 0;
+    public providerName: String = 'zoho';
     constructor( private fileUtil: FileUtil, public socialPagerService: SocialPagerService, public referenceService: ReferenceService, private authenticationService: AuthenticationService,
         public contactService: ContactService, public regularExpressions: RegularExpressions, public paginationComponent: PaginationComponent,
         private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef, private route: ActivatedRoute, public properties: Properties,
@@ -1896,12 +1899,18 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.contactService.saveAsSuccessMessage = "add";
             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
             if (!this.isPartner) {
+                localStorage.removeItem('isZohoSynchronization');
                 this.router.navigateByUrl( '/home/contacts/manage' )
+                localStorage.removeItem('isZohoSynchronization');
             } else {
+                localStorage.removeItem('isZohoSynchronization');
                 this.router.navigateByUrl( 'home/partners/manage' )
+                localStorage.removeItem('isZohoSynchronization');
             }
         }else{
-        	this.authenticationService.forceToLogout();
+            localStorage.removeItem('isZohoSynchronization');
+            this.authenticationService.forceToLogout();
+           
         }
         },
 
@@ -1955,12 +1964,17 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.info( "update Contacts ListUsers:" + data );
             if ( this.isPartner == false ) {
                 this.router.navigateByUrl( '/home/contacts/manage' )
+                localStorage.removeItem('isZohoSynchronization');
             } else {
                 this.router.navigateByUrl( 'home/partners/manage' )
+                localStorage.removeItem('isZohoSynchronization');
             }
             this.contactService.successMessage = true;
+            localStorage.removeItem('isZohoSynchronization');
         }else{
-        	this.authenticationService.forceToLogout();
+            localStorage.removeItem('isZohoSynchronization');
+            this.authenticationService.forceToLogout();
+            
         }
         },
 
@@ -2524,7 +2538,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             if ( this.contactService.socialProviderName == 'google' ) {
                 this.getGoogleContactsUsers();
                 this.contactService.socialProviderName = "nothing";
-            } else if ( this.contactService.socialProviderName == 'salesforce' ) {
+            } else if ( this.contactService.socialProviderName == 'salesforce' ) 
+            {
                 this.showModal();
                 this.contactService.socialProviderName = "nothing";
             }
@@ -2549,11 +2564,14 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.getLegalBasisOptions();
 
             this.checkZohoStatusCode = localStorage.getItem("statusCode");
-            if(this.checkZohoStatusCode == 202){
+            if(this.checkZohoStatusCode == 202)
+            {
                 localStorage.setItem("isZohoSynchronization", "yes");
                 localStorage.removeItem("statusCode");
+                this.checkZohoStatusCode = 0;
+            
 
-               if(localStorage.getItem('vanityUrlDomain'))
+            if(localStorage.getItem('vanityUrlDomain'))
                {
                 var message = "isZohoSynchronization";
                 let trargetWindow = window.opener;
@@ -2561,8 +2579,10 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                 localStorage.removeItem('vanityUrlDomain');
                 self.close();
             }
-              
-            
+           
+        }else
+        {
+            localStorage.setItem("isZohoSynchronization", "no");
         }
     }
         catch ( error ) {
@@ -3406,6 +3426,7 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     /**************Sravan************************ */
 
     checkingZohoContactsAuthentication() {
+        localStorage.removeItem('isZohoSynchronization');
         try {
             if(this.loggedInThroughVanityUrl)
             {
@@ -3460,7 +3481,9 @@ export class AddContactsComponent implements OnInit, OnDestroy {
             this.xtremandLogger.error( error, "AddContactsComponent zohoContactsAuthenticationChecking()." )
         }
     }
+
     zohoVanityUrlAuthentication() {
+        localStorage.removeItem('isZohoSynchronization');
         this.zohoPopupLoader = true;
                 this.authenticationService.vanityURLEnabled == true;
                 this.zohoErrorResponse = new CustomResponse();
@@ -3492,7 +3515,16 @@ export class AddContactsComponent implements OnInit, OnDestroy {
                                         localStorage.setItem("userAlias", data.userAlias)
                                         localStorage.setItem("isPartner", data.isPartner);
                                         localStorage.setItem("statusCode", data.statusCode);
-                                        window.location.href = "" + data.redirectUrl;
+                                       // window.location.href = "" + data.redirectUrl;
+                                        
+                                       this.loggedInUserId = this.authenticationService.getUserId();
+
+                                       this.zohoCurrentUser = localStorage.getItem('currentUser');
+                                       let url = this.authenticationService.APP_URL+"e/"+this.providerName+"/"+this.loggedInUserId+"/"+window.location.hostname+"/"+this.authenticationService.access_token+"/"+this.zohoCurrentUser+"/"+this.isPartner; 
+                                       var x = screen.width/2 - 700/2;
+                                       var y = screen.height/2 - 450/2;
+                                        window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
+                                        
     
                                     }
                                 },
@@ -3509,7 +3541,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
 
 
 
-    getZohoContactsUsingOAuth2(){
+    getZohoContactsUsingOAuth2()
+    {
         this.contactService.socialProviderName = 'zoho';
         this.socialContact.socialNetwork = "ZOHO";
         this.socialContact.contactType = "CONTACT";
@@ -3545,7 +3578,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     
     
-    getZohoLeadsUsingOAuth2(){
+    getZohoLeadsUsingOAuth2()
+    {
         this.contactService.socialProviderName = 'zoho';
         this.socialContact.socialNetwork = "ZOHO";
         this.socialContact.contactType = "LEAD";
@@ -3585,7 +3619,8 @@ export class AddContactsComponent implements OnInit, OnDestroy {
     }
     
    
-    processZohoContactsToDisplayInUI(data) {
+    processZohoContactsToDisplayInUI(data)
+    {
         swal.close();
         this.hideZohoAuthorisedPopup();
         this.getZohoConatacts = data;

@@ -12,12 +12,13 @@ import { HtmlSampleComponent } from './html-sample/html-sample.component';
 import { ListVendorsComponent } from './list-vendors/list-vendors.component';
 import { EditMditRequestComponent } from './edit-mdit-request/edit-mdit-request.component';
 import { ViewTimeLineComponent } from './view-time-line/view-time-line.component';
+import { EditFormComponent } from './edit-form/edit-form.component';
 
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, MdfRoutingModule
   ],
-  declarations: [CreateMdfRequestComponent,ManageMdfFundsComponent,ManageMdfRequestsComponent, HtmlSampleComponent, ListVendorsComponent, EditMditRequestComponent, ViewTimeLineComponent],
+  declarations: [CreateMdfRequestComponent,ManageMdfFundsComponent,ManageMdfRequestsComponent, HtmlSampleComponent, ListVendorsComponent, EditMditRequestComponent, ViewTimeLineComponent, EditFormComponent],
   providers :[MdfService]
 })
 export class MdfModule { }

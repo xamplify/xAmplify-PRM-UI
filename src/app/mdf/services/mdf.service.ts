@@ -64,6 +64,7 @@ export class MdfService {
         columnInfo.required = true;
         columnInfo.labelLength = "16";
         columnInfo.labelType = labelData.labelType;
+        columnInfo.defaultColumn = true;
         if (labelData.labelType === 'textarea') {
             columnInfo.labelLength = "255";
         }
@@ -82,6 +83,7 @@ export class MdfService {
         formOption.name = option;
         formOption.labelId = option.toLowerCase();
         formOption.hiddenLabelId = formOption.labelId;
+        formOption.defaultColumn = true;
         return formOption;
     }
 
@@ -197,6 +199,12 @@ export class MdfService {
             .catch(this.handleError);
     }
 
+    getMdfRequestFormForPartner(companyId: number) {
+        return this.http.get(this.URL + "getMdfRequestFormForPartner/" + companyId + "?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+
 
     listMdfRequestsForPartners(pagination: Pagination) {
         return this.http.post(this.URL + "requests/analytics/partnersInfoForPartner?access_token=" + this.authenticationService.access_token, pagination)
@@ -214,9 +222,6 @@ export class MdfService {
             .map(this.extractData)
             .catch(this.handleError);
     }
-
-
-
 
     extractData(res: Response) {
         let body = res.json();

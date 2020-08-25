@@ -95,28 +95,69 @@
                            <span class="required" *ngIf="columnInfo.required">*</span>
                         </label>
                            <div class="col-sm-8">
-                                 <ng-container *ngIf="columnInfo.labelType=='text'">
+                                 <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
                                     <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}"  id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
-                                          [ngModelOptions]="{standalone: true}">
+                                          [ngModelOptions]="{standalone: true}" (input)="validateEmail(columnInfo)">
+                                    <span class="required" *ngIf="columnInfo.divClass=='error'">
+                                       Please enter a valid email address
+                                    </span>
                                  </ng-container>
-
+                              <!-- ---------------------------Text Area----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='textarea'">
                                     <textarea [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}" rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}" maxlength="1000"></textarea>
                                 </ng-container>
-
                                  <!-- ---------------------------Date----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='date'">
                                     <app-flatpickr [(dataField)]="columnInfo.value" [isFromMdfCredit]='true'>>
                                     </app-flatpickr>
                                 </ng-container>
+                                 <!-- ---------------------------Price----------------------------- -->
+                                 <ng-container *ngIf="columnInfo.labelType=='price'">
+                                    <div class="input-group prefix">
+                                        <span class="input-group-addon">{{columnInfo.priceSymbol}}</span>
+                                        <input type="number" min="0" [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}"  rows="4" cols="4" class="form-control" placeholder="{{columnInfo.placeHolder}}">
+                                    </div>
+                                </ng-container>
                                 <!----Number------->
                                 <ng-container *ngIf="columnInfo.labelType=='number'">
-                                 <!-- <input type="{{columnInfo.labelType}}" min="1" class="form-control" placeholder="{{columnInfo.placeHolder}}"  id="{{columnInfo.labelId}}" [(ngModel)]="columnInfo.value" maxlength="1000"
-                                 [ngModelOptions]="{standalone: true}"> -->
                                  <input type="name"   class="form-control padding-mobile currency" id="mdfAmount"
                                     [(ngModel)]="columnInfo.value"  [ngModelOptions]="{standalone: true}" 
                                     placeholder="{{columnInfo.placeHolder}}" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                               </ng-container>
+                               <!-- ---------------------------Upload----------------------------- -->
+                               <ng-container *ngIf="columnInfo.labelType=='upload'">
+                                 <input type="file" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="file-{{i}}" (change)="onFileChangeEvent($event,columnInfo,i)">
+                             </ng-container>
+                              <!-- ---------------------------Radio Button----------------------------- -->
+                              <ng-container *ngIf="columnInfo.labelType=='radio'">
+                                 <ng-container *ngFor="let radioButton of columnInfo.radioButtonChoices;let i=index">
+                                     <div class="form-check">
+                                         <label class="form-check-label" [style.color]="form.labelColor">
+                                  <input type="{{columnInfo.labelType}}"
+                                     name="{{columnInfo.labelId}}" class="form-check-input"
+                                     (click)="columnInfo.value = radioButton.id"
+                                     [checked]="radioButton.id === columnInfo.value || radioButton.id === columnInfo.selectedValue">
+                                  {{radioButton.name}}
+                                    </label>
+                                     </div>
+                                     <br>
+                                 </ng-container>
+                             </ng-container>
+                              <!-- ---------------------------Check Box----------------------------- -->
+                              <ng-container *ngIf="columnInfo.labelType=='checkbox'">
+                                 <ng-container *ngFor="let checkBox of columnInfo.checkBoxChoices;let i=index">
+                                     <div class="form-check">
+                                         <label class="form-check-label" [style.color]="form.labelColor">
+                                  <input type="{{columnInfo.labelType}}"
+                                     name="{{columnInfo.labelId}}"
+                                     [checked]="checkBox.isChecked" class="form-check-input"
+                                     (click)="updateCheckBoxModel(columnInfo,checkBox,$event)">
+                                  {{checkBox.name}}
+                               </label>
+                                     </div>
+                                     <br>
+                                 </ng-container>
+                             </ng-container>
                                <!----DropDown------->
                                 <ng-container *ngIf="columnInfo.labelType=='select'">
                                  <select class="form-control" [(ngModel)]="columnInfo.value" [ngModelOptions]="{standalone: true}">
@@ -132,7 +173,7 @@
                      </div>
                   </div>
                   <div class="footer" id="right" *ngIf="formStatusCode==200">
-                     <button class="btn btn-primary" style="margin-right: 108px;" type="button" (click)="submitRequest()" translate>Submit</button>
+                     <button [disabled]="!isValidEmailIds" class="btn btn-primary" style="margin-right: 108px;" type="button" (click)="submitRequest()" translate>Submit</button>
                   </div>
                </form>
             </div>

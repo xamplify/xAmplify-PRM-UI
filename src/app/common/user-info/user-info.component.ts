@@ -17,7 +17,7 @@ export class UserInfoComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        if ( this.userInfo.firstName ) {
+        if (  this.userInfo!=undefined &&  this.userInfo.firstName ) {
             const first = this.userInfo.firstName.charAt( 0 ).toLowerCase();
             if ( first === 'a' || first === 'f' || first === 'k' || first === 'p' || first === 'u' ) {
                 this.backgroudColor = "#512da8";
