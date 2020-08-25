@@ -47,6 +47,8 @@ export class AddCustomFeedsComponent implements OnInit {
   addNewCollection = false;
   customFeedCollections: Array<any>;
   isloading = false;
+  addCollectionError = false;
+  addCollectionErrorMessage: string;
   constructor(private socialService:SocialService,private videoFileService:VideoFileService,private authenticationService:AuthenticationService,public pagerService:PagerService,private router: Router, public videoUtilService: VideoUtilService,
     private logger: XtremandLogger, public callActionSwitch: CallActionSwitch, private route: ActivatedRoute,
     public referenceService: ReferenceService) {
@@ -185,7 +187,22 @@ export class AddCustomFeedsComponent implements OnInit {
       	this.socialStatus.collectionId = collectionId;
       	this.saveFeedInCollection();
       } else {
-      	this.createCollection(collectionName);
+      	let duplicateName = false;		
+      	if (this.customFeedCollections !== undefined && this.customFeedCollections.length > 0) {
+      		$.each(this.customFeedCollections, function (_index:number, customFeedCollection) {
+                 if(customFeedCollection.title === collectionName) {
+                 	duplicateName = true;
+                 }
+            });
+      	}
+      	if (!duplicateName) {
+      		this.createCollection(collectionName);
+      	} else {
+      		this.loading = false;
+      		this.addCollectionError = true;
+      		this.addCollectionErrorMessage = "Duplicate Collection Name";
+      		//this.customResponse = new CustomResponse('ERROR', "Duplicate Collection Name", true);
+      	}
       }
     }
   }
@@ -535,7 +552,12 @@ export class AddCustomFeedsComponent implements OnInit {
     data => {
       let statusCode = data.statusCode;
       if(statusCode==200){
-        this.customFeedCollections = data.data;
+      	if (data.data != undefined) {
+      		this.customFeedCollections = data.data;
+      	} else {
+      		this.customFeedCollections = [];
+      	}
+        
       }
 
     },

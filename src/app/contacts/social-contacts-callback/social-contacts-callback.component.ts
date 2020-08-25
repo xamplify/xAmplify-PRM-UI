@@ -105,11 +105,12 @@ export class SocialContactsCallbackComponent implements OnInit {
                         localStorage.removeItem("userAlias");
                         localStorage.removeItem("isPartner");
                         this.router.navigate(['/home/dashboard/myprofile']);
-                        if(type === "isalesforce"){
+                        // Commented below code by Swathi. Custom form creation should not be done here.
+                        /*if(type === "isalesforce"){
                             this.contactService.getSfFormFields().subscribe(result =>{
                                 console.log(result);
                             })
-                        }
+                        }*/
                     },
                     error => {
                         localStorage.removeItem("userAlias");
