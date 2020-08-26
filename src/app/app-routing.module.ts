@@ -68,7 +68,8 @@ export const routes: Routes = [
             { path: 'forms', loadChildren: 'app/forms/forms.module#FormsModule',  data: { preload: true } },
             { path: 'pages', loadChildren: 'app/landing-pages/landing-pages.module#LandingPagesModule',  data: { preload: true } },
             { path: 'design', loadChildren: 'app/design/design.module#DesignModule',  data: { preload: true } },
- 			{ path: 'mdf', loadChildren: 'app/mdf/mdf.module#MdfModule',  data: { preload: false } },
+ 			{ path: 'mdf-old', loadChildren: 'app/mdf/mdf.module#MdfModule',  data: { preload: false } },
+		 	{ path: 'mdf', loadChildren: 'app/mdf-/mdf.module#MdfModule',  data: { preload: false } },
             { path: 'error/:errorStatusId', component: ErrorPagesComponent }
         ]
     },

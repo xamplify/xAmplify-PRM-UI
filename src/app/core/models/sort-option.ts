@@ -172,14 +172,16 @@ export class SortOption {
       ];
 
       mdfPartnersSortDropDownOptions = [
-        { 'name': 'MDF Account Balance (ASC)', 'value': 'mdfAccountBalance-ASC' },
-        { 'name': 'MDF Account Balance (DESC)', 'value': 'mdfAccountBalance-DESC' },
-        { 'name': 'Used Balance (ASC)', 'value': 'mdfUsedAmount-ASC' },
-        { 'name': 'Used Balance (DESC)', 'value': 'mdfUsedAmount-DESC' },
-        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
-        { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
+      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+      { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+      { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+      { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+      { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+      { 'name': 'Company Name (A-Z)', 'value': 'contactCompany-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'contactCompany-DESC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
 
