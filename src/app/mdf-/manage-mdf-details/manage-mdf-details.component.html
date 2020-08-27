@@ -149,9 +149,13 @@
                                       </td>
                                       <td style="text-align: center;">
                                          <div class=" override-actions">
-                                            <a (click)="addBalance(partner)" data-placement="bottom" data-toggle="tooltip" id="edit_0" title="" data-original-title="Add Balance">
+                                            <a (click)="openMdfAmountPopup(partner)" title="Add/Remove MDF Amount">
                                             <i class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
                                             </a>
+                                            <!----Timeline History-->
+                                            <a (click)="viewMdfAmountHistory(partner)" title="View History">
+                                             <i class="fa fa-line-chart action-btn" aria-hidden="true"></i>
+                                             </a>
                                          </div>
                                       </td>
                                    </tr>
@@ -176,3 +180,125 @@
       </div>
    </div>
 </div>
+
+<!--Add/Remove Amount Modal Pop Up------->
+<div id="mdfAmountPopup" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-css" role="document">
+     <!-- Modal content-->
+     <div class="modal-content">
+      <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="modal-header">
+             <a class="close-circle" (click)="closeMdfAmountPopup()">
+               <i class="fa fa-times" aria-hidden="true"></i></a>
+             <h4 class="modal-title" style="font-weight: 600;" translate>Add/Remove MDF Funds</h4>
+         </div>
+         <div class="modal-body">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
+            <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+            <form role="form" class="form-horizontal form-bordered form-label-stripped" *ngIf="!modalPopupLoader">
+               <div class="portlet box">
+                   <div class="">
+                     <div class="col-md-12 col-lg-12 ">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" translate>Partner Info
+                                </label>
+                            <div class="col-sm-8">
+                              <app-user-info [isPartnerEntityInfo]="true" [isPartnerInfo]="true" [userInfo]="mdfPartnerDto">
+                              </app-user-info>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 ">
+                       <div class="form-group">
+                           <label class="control-label col-sm-3" translate>Select Option
+                                   <span class="required">*</span>
+                               </label>
+                           <div class="col-sm-8"> 
+                               <select class="form-control" id="mdfAmountSelection" name="amountType" style="width: 100%" (change)="calculateTotalAvailableBalance()" [(ngModel)]="mdfDetails.selectedAmountType" [ngModelOptions]="{standalone: true}">
+                                       <option [value]="1"  [selected]="mdfDetails.selectedAmountType==1">Add Funds</option>
+                                       <option [value]="2" [selected]="mdfDetails.selectedAmountType==2">Remove Funds</option>
+                                 </select>
+                           </div>
+                       </div>
+                   </div>
+
+                 <div class="col-md-12 col-lg-12 ">
+                  <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Current Available Balance </label>
+                      <div class="col-sm-8">
+                        <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                        [(ngModel)]="mdfPartnerDto.availableBalance"  [ngModelOptions]="{standalone: true}" 
+                        placeholder="Available Balance" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-md-12 col-lg-12 ">
+               <div class="form-group">
+                   <label class="control-label col-sm-3" translate>Calculated Available Balance </label>
+                   <div class="col-sm-8">
+                     <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                     [(ngModel)]="mdfDetails.calculatedAvailableBalance"  [ngModelOptions]="{standalone: true}" 
+                     placeholder="Calculated Available Balance" currencyMask [options]="{align :'left',allowNegative :true }">
+                   </div>
+               </div>
+           </div>
+
+              <div class="col-md-12 col-lg-12 ">
+               <div class="form-group">
+                   <label class="control-label col-sm-3" translate>Enter Amount <span class="required">*</span></label>
+                   <div class="col-sm-8">
+                     <input type="text"  class="form-control padding-mobile currency" 
+                     [(ngModel)]="mdfDetails.mdfAmount"  [ngModelOptions]="{standalone: true}" 
+                     placeholder="Enter Amount" (ngModelChange)="calculateTotalAvailableBalance()" min="0.00" maxlength="20" autocomplete="off" currencyMask [options]="{align :'left',allowNegative :false }">
+                   </div>
+               </div>
+           </div>
+           <div class="col-md-12 col-lg-12 ">
+            <div class="form-group">
+                <label class="control-label col-sm-3" translate>Description
+                    </label>
+                <div class="col-sm-8">
+                   <textarea class="form-control"  [(ngModel)]="mdfDetails.description"  [ngModelOptions]="{standalone: true}" 
+                   placeholder="Description"></textarea>
+                
+                </div>
+            </div>
+        </div>
+           <ng-container *ngIf="mdfDetails.selectedAmountType==1">
+            <div class="col-md-12 col-lg-12 ">
+               <div class="form-group">
+                   <label class="control-label col-sm-3" translate>Allocation Date</label>
+                   <div class="col-sm-8">
+                     <app-flatpickr [(dataField)]="mdfDetails.allocationDateInString" [isFromMdfCredit]='true'>
+                     </app-flatpickr>
+                   </div>
+               </div>
+           </div>
+   
+           <div class="col-md-12 col-lg-12">
+            <div  [attr.class]="expirationDateError ? 'form-group has-error':'form-group'">
+                <label class="control-label col-sm-3" translate>Expiration Date</label>
+                <div class="col-sm-8">
+                  <app-flatpickr [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
+                  </app-flatpickr>
+                  <ng-container *ngFor="let errorResponse of errorResponses">
+                     <span class="required" *ngIf="errorResponse.field=='expirationDate'">{{errorResponse.message}}</span>
+                  </ng-container>
+                </div>
+            </div>
+        </div>
+           </ng-container>
+             </div>
+               </div>
+           </form>
+         </div>
+         <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+             <button class="btn btn-info" type="reset" (click)="closeMdfAmountPopup();" translate>Cancel</button>
+             <button type="button" class="btn btn-primary"  (click)="updateMdfAmount()" translate>Update</button>
+         </div>
+     </div>
+ </div>
+</div>
+

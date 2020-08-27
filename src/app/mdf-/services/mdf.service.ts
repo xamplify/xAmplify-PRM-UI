@@ -8,12 +8,14 @@ import { ColumnInfo } from "app/forms/models/column-info";
 import { FormType } from "app/forms/models/form-type.enum";
 import { FormOption } from "app/forms/models/form-option";
 import { Pagination } from "app/core/models/pagination";
+import {MdfDetails} from '../models/mdf-details';
 
 
 @Injectable()
 export class MdfService {
   URL = this.authenticationService.REST_URL + "mdf/";
   form: Form = new Form();
+  mdfDetails: MdfDetails = new MdfDetails();
   columnInfos: Array<ColumnInfo> = new Array<ColumnInfo>();
 
 
@@ -93,6 +95,12 @@ export class MdfService {
 
 listPartners(pagination:Pagination){
   return this.http.post(this.URL + "listPartners?access_token=" + this.authenticationService.access_token,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
+updateMdfAmount(mdfDetails:MdfDetails){
+  return this.http.post(this.URL + "updateMdfAmount?access_token=" + this.authenticationService.access_token,mdfDetails)
         .map(this.extractData)
         .catch(this.handleError);
 }

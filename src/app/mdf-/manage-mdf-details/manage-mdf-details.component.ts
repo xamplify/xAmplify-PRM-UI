@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MdfService } from '../services/mdf.service';
+import {MdfPartnerDto} from '../models/mdf-partner-dto';
+import {MdfDetails} from '../models/mdf-details';
 /*****Common Imports**********************/
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -12,6 +14,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
+import {ErrorResponse} from 'app/util/models/error-response';
 declare var $: any;
 /********************************************************* */
 @Component({
@@ -25,16 +28,18 @@ export class ManageMdfDetailsComponent implements OnInit {
 
   pagination: Pagination = new Pagination();
   modalPopupLoader: boolean;
-  showCreditAmountError = false;
   loggedInUserCompanyId: number = 0;
   loggedInUserId: number = 0;
   loading = false;
   tilesLoader = false;
   tileData: any;
   customResponse: CustomResponse = new CustomResponse();
-
-
-
+  mdfPartnerDto:MdfPartnerDto = new MdfPartnerDto();
+  mdfDetails:MdfDetails = new MdfDetails();
+  selectedPartnerDetails:any;
+  errorResponses: Array<ErrorResponse> = new Array<ErrorResponse>();
+  expirationDateError = false;
+  mdfAmountError = false;
   constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -143,5 +148,71 @@ export class ManageMdfDetailsComponent implements OnInit {
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchPartners(); } }
   /********************Pagaination&Search Code*****************/
+
+  openMdfAmountPopup(partner:MdfPartnerDto){
+    this.mdfPartnerDto = partner;
+    this.mdfDetails = new MdfDetails();
+    this.mdfDetails.partnershipId = this.mdfPartnerDto.partnershipId;
+    this.mdfDetails.calculatedAvailableBalance = this.mdfPartnerDto.availableBalance;
+    $('#mdfAmountPopup').modal('show');
+  }
+
+  calculateTotalAvailableBalance(){
+    let mdfAmount = 0;
+    if(this.mdfDetails.mdfAmount!=undefined){
+      mdfAmount = this.mdfDetails.mdfAmount;
+    }
+    if(this.mdfDetails.selectedAmountType==1){
+      this.mdfDetails.calculatedAvailableBalance =  this.mdfPartnerDto.availableBalance + mdfAmount;
+    }else{
+      this.mdfDetails.calculatedAvailableBalance = this.mdfPartnerDto.availableBalance - mdfAmount;
+      this.mdfDetails.allocationDateInString = "";
+      this.mdfDetails.expirationDateInString = "";
+    }
+  }
+
+  updateMdfAmount(){
+    this.modalPopupLoader = true;
+    this.resetErrors();
+    this.mdfService.updateMdfAmount(this.mdfDetails).subscribe(
+      (result: any) => {
+        if(result.statusCode==200){
+
+        }else{
+          this.errorResponses = result.errorResponses;
+          let self = this;
+          $.each(this.errorResponses,function(_index:number,errorResponse:ErrorResponse){
+            if(errorResponse['field']=="expirationDate"){
+              self.expirationDateError = true;
+            }else if(errorResponse['field']=="mdfAmount"){
+              self.mdfAmountError = true;
+            }
+          });
+        }
+      this.modalPopupLoader = false;
+    }, error => {
+      this.modalPopupLoader = false;
+      this.xtremandLogger.log(error);
+    });
+  }
+
+  closeMdfAmountPopup(){
+    $('#mdfAmountPopup').modal('hide');
+    this.customResponse = new CustomResponse();
+    this.mdfDetails = new MdfDetails();
+    this.mdfPartnerDto = new MdfPartnerDto();
+    this.resetErrors();
+  }
+
+  resetErrors(){
+    this.mdfAmountError = false;
+    this.expirationDateError = false;
+    this.errorResponses = new Array<ErrorResponse>();
+  }
+
+
+  viewMdfAmountHistory(partner:MdfPartnerDto){
+
+  }
 
 }

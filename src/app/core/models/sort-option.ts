@@ -205,7 +205,7 @@ export class SortOption {
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
-    public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[5];
+    public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

@@ -188,32 +188,6 @@ a {
     background-color: #E87E04;
 }
 
-/* add partner's css */
-
-@media screen and (min-width:601px) {
-    .modal-css {
-        width: 50% !important;
-        right: 0 !important;
-    }
-    .salesforce {
-        margin-top: -44px;
-        text-align: center;
-    }
-}
-
-@media screen and (max-width:600px) {
-    .modal-css {
-        width: 100% !important;
-        right: 0 !important;
-    }
-    .cloud-css {
-        left: 73px !important;
-    }
-    .salesforce {
-        margin-top: -25px;
-        text-align: center;
-    }
-}
 
 @media only screen and (max-width: 992px) and (min-width: 601px) {
     .cloud-css {
