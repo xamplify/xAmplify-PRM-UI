@@ -157,6 +157,11 @@ export class ManageMdfDetailsComponent implements OnInit {
     $('#mdfAmountPopup').modal('show');
   }
 
+  updateFieldsStatus(){
+    this.expirationDateError = false;
+    this.calculateTotalAvailableBalance();
+  }
+
   calculateTotalAvailableBalance(){
     let mdfAmount = 0;
     if(this.mdfDetails.mdfAmount!=undefined){
@@ -174,10 +179,11 @@ export class ManageMdfDetailsComponent implements OnInit {
   updateMdfAmount(){
     this.modalPopupLoader = true;
     this.resetErrors();
+    this.mdfDetails.amountAdded = this.mdfDetails.selectedAmountType==1;
     this.mdfService.updateMdfAmount(this.mdfDetails).subscribe(
       (result: any) => {
         if(result.statusCode==200){
-
+          alert("succs");
         }else{
           this.errorResponses = result.errorResponses;
           let self = this;

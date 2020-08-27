@@ -215,7 +215,7 @@
                                    <span class="required">*</span>
                                </label>
                            <div class="col-sm-8"> 
-                               <select class="form-control" id="mdfAmountSelection" name="amountType" style="width: 100%" (change)="calculateTotalAvailableBalance()" [(ngModel)]="mdfDetails.selectedAmountType" [ngModelOptions]="{standalone: true}">
+                               <select class="form-control" id="mdfAmountSelection" name="amountType" style="width: 100%" (change)="updateFieldsStatus()" [(ngModel)]="mdfDetails.selectedAmountType" [ngModelOptions]="{standalone: true}">
                                        <option [value]="1"  [selected]="mdfDetails.selectedAmountType==1">Add Funds</option>
                                        <option [value]="2" [selected]="mdfDetails.selectedAmountType==2">Remove Funds</option>
                                  </select>
@@ -246,14 +246,18 @@
            </div>
 
               <div class="col-md-12 col-lg-12 ">
-               <div class="form-group">
+               <div  [attr.class]="mdfAmountError ? 'form-group has-error':'form-group'">
                    <label class="control-label col-sm-3" translate>Enter Amount <span class="required">*</span></label>
                    <div class="col-sm-8">
                      <input type="text"  class="form-control padding-mobile currency" 
                      [(ngModel)]="mdfDetails.mdfAmount"  [ngModelOptions]="{standalone: true}" 
                      placeholder="Enter Amount" (ngModelChange)="calculateTotalAvailableBalance()" min="0.00" maxlength="20" autocomplete="off" currencyMask [options]="{align :'left',allowNegative :false }">
-                   </div>
+                     <ng-container *ngFor="let errorResponse of errorResponses">
+                        <span class="required" *ngIf="errorResponse.field=='mdfAmount'">{{errorResponse.message}}</span>
+                     </ng-container>
+                  </div>
                </div>
+              
            </div>
            <div class="col-md-12 col-lg-12 ">
             <div class="form-group">
@@ -284,7 +288,7 @@
                   <app-flatpickr [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
                   </app-flatpickr>
                   <ng-container *ngFor="let errorResponse of errorResponses">
-                     <span class="required" *ngIf="errorResponse.field=='expirationDate'">{{errorResponse.message}}</span>
+                     <span class="required" *ngIf="errorResponse.field=='expirationDate' && expirationDateError ">{{errorResponse.message}}</span>
                   </ng-container>
                 </div>
             </div>

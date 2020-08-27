@@ -8,5 +8,7 @@ export class MdfDetails {
     expirationDateInString:string;
     calculatedAvailableBalance:any;
     partnershipId:number;
+    partnerCompanyId:number;
+    vendorCompanyId:number;
     description:string = "";
 }
