@@ -40,7 +40,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">${{tileData?.totalBalance | number:'1.0':'en-US'}}</div>
+                              <div class="number">${{tileData?.totalBalance | number:'1.2-2':'en-US'}}</div>
                               <div class="desc">Total MDF Account Balance</div>
                            </div>
                            <span class="morePadding">
@@ -55,7 +55,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">${{tileData?.usedBalance | number:'1.0':'en-US'}}</div>
+                              <div class="number">${{tileData?.usedBalance | number:'1.2-2':'en-US'}}</div>
                               <div class="desc">Total Used Balance</div>
                            </div>
                            <span class="morePadding">
@@ -70,7 +70,7 @@
                               <i aria-hidden="true" class=""></i>
                            </div>
                            <div class="details">
-                              <div class="number">${{tileData?.availableBalance | number:'1.0':'en-US'}}</div>
+                              <div class="number">${{tileData?.availableBalance | number:'1.2-2':'en-US'}}</div>
                               <div class="desc">Total Available Balance</div>
                            </div>
                            <span class="morePadding">
@@ -139,13 +139,13 @@
                                         </app-user-info>
                                     </td>
                                       <td>
-                                         <span>${{partner?.totalBalance | number:'1.0':'en-US'}}</span>
+                                         <span>${{partner?.totalBalance | number:'1.2-2':'en-US'}}</span>
                                       </td>
                                       <td>
-                                         <span>${{partner?.usedBalance | number:'1.0':'en-US'}}</span>
+                                         <span>${{partner?.usedBalance | number:'1.2-2':'en-US'}}</span>
                                       </td>
                                       <td>
-                                         <span>${{partner?.availableBalance | number:'1.0':'en-US'}}</span>
+                                         <span>${{partner?.availableBalance | number:'1.2-2':'en-US'}}</span>
                                       </td>
                                       <td style="text-align: center;">
                                          <div class=" override-actions">
@@ -190,7 +190,7 @@
          <div class="modal-header">
              <a class="close-circle" (click)="closeMdfAmountPopup()">
                <i class="fa fa-times" aria-hidden="true"></i></a>
-             <h4 class="modal-title" style="font-weight: 600;" translate>Add/Remove MDF Funds</h4>
+             <h4 class="modal-title" style="font-weight: 600;" translate>Add/Remove MDF</h4>
          </div>
          <div class="modal-body">
             <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
@@ -214,11 +214,17 @@
                            <label class="control-label col-sm-3" translate>Select Option
                                    <span class="required">*</span>
                                </label>
-                           <div class="col-sm-8"> 
-                               <select class="form-control" id="mdfAmountSelection" name="amountType" style="width: 100%" (change)="updateFieldsStatus()" [(ngModel)]="mdfDetails.selectedAmountType" [ngModelOptions]="{standalone: true}">
-                                       <option [value]="1"  [selected]="mdfDetails.selectedAmountType==1">Add Funds</option>
-                                       <option [value]="2" [selected]="mdfDetails.selectedAmountType==2">Remove Funds</option>
-                                 </select>
+                           <div class="col-sm-8">
+                                 <select class="form-control" name="mdfAmountType" (change)="updateFieldsStatus()" [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
+                                    <ng-container *ngFor="let type of MdfAmountType.values();">
+                                       <ng-container *ngIf="type=='FUND_ADDED'">
+                                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">Add Funds</option>
+                                       </ng-container>
+                                       <ng-container *ngIf="type=='FUND_REMOVED'">
+                                          <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_REMOVED'">Remove Funds</option>
+                                       </ng-container>
+                                    </ng-container>
+                                  </select>
                            </div>
                        </div>
                    </div>
@@ -270,7 +276,7 @@
                 </div>
             </div>
         </div>
-           <ng-container *ngIf="mdfDetails.selectedAmountType==1">
+           <ng-container *ngIf="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">
             <div class="col-md-12 col-lg-12 ">
                <div class="form-group">
                    <label class="control-label col-sm-3" translate>Allocation Date</label>
