@@ -9,6 +9,7 @@ import { FormType } from "app/forms/models/form-type.enum";
 import { FormOption } from "app/forms/models/form-option";
 import { Pagination } from "app/core/models/pagination";
 import {MdfDetails} from '../models/mdf-details';
+import {VanityLoginDto} from '../../util/models/vanity-login-dto';
 
 
 @Injectable()
@@ -44,7 +45,7 @@ export class MdfService {
       .catch(this.handleError);
   }
 
-  frameMdfRequestForm(userName: String, companyProfileName: String) {
+  frameMdfRequestForm(userName: string, companyProfileName: string) {
     this.form.name = companyProfileName + "-" + "mdf-request-form";
     this.form.description = this.form.name;
     this.form.userName = userName;
@@ -103,6 +104,18 @@ updateMdfAmount(mdfDetails:MdfDetails){
   return this.http.post(this.URL + "updateMdfAmount?access_token=" + this.authenticationService.access_token,mdfDetails)
         .map(this.extractData)
         .catch(this.handleError);
+}
+
+getMdfRequestTilesInfoForPartners(vanityLoginDto:VanityLoginDto){
+  return this.http.post(this.URL + "getMdfRequestTilesInfoForPartners?access_token=" + this.authenticationService.access_token,vanityLoginDto)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
+
+getMdfRequestTilesInfoForVendors(vanityLoginDto:VanityLoginDto){
+  return this.http.post(this.URL + "getMdfRequestTilesInfoForVendors?access_token=" + this.authenticationService.access_token,vanityLoginDto)
+  .map(this.extractData)
+  .catch(this.handleError);
 }
 
   extractData(res: Response) {

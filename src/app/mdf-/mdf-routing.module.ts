@@ -6,7 +6,9 @@ import { ManageMdfRequestsComponent } from './manage-mdf-requests/manage-mdf-req
 export const routes: Routes = [
   { path: "", redirectTo: "details", pathMatch: "full" },
   { path: "details", component: ManageMdfDetailsComponent },
-  { path: "requests", component: ManageMdfRequestsComponent }
+  { path: "requests", component: ManageMdfRequestsComponent },
+  {path: "requests/:role", component:ManageMdfRequestsComponent},
+
 
 
 
