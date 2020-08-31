@@ -184,6 +184,16 @@ export class SortOption {
       { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
 
+    mdfVendorsSortDropDownOptions = [
+      { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+      { 'name': 'Number Of Requests(ASC)', 'value': 'count-ASC' },
+      { 'name': 'Number Of Requests(DESC)', 'value': 'count-DESC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
+    ];
+
+
 
     numberOfItemsPerPage = [
         { 'name': '12', 'value': '12' },
@@ -206,6 +216,7 @@ export class SortOption {
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
     public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
+    public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

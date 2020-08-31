@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MdfService } from '../services/mdf.service';
 import { ActivatedRoute } from '@angular/router';
 import {VanityLoginDto} from '../../util/models/vanity-login-dto';
-import {MdfRequestTiles} from '../models/mdf-request-tiles'
+import {MdfRequestTiles} from '../models/mdf-request-tiles';
+import {MdfRequestVendorDto} from '../models/mdf-request-vendor-dto';
 /*****Common Imports**********************/
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
@@ -16,6 +16,7 @@ import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import {ErrorResponse} from 'app/util/models/error-response';
+import { MdfService } from '../services/mdf.service';
 declare var $: any;
 /********************************************************* */
 @Component({
@@ -34,7 +35,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   tileData:any;
   customResponse: CustomResponse = new CustomResponse();
   isPartnerView = false;
-  partnerListLoader: HttpRequestLoader = new HttpRequestLoader();
+  listLoader: HttpRequestLoader = new HttpRequestLoader();
   vendorTilesClass = "col-sm-3 col-xs-6 col-lg-3 col-md-3";
   partnerTilesClass = "col-sm-4 col-xs-6 col-lg-4 col-md-4";
   tileClass: string = "";
@@ -42,6 +43,8 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   role: string="";
   pagination:Pagination = new Pagination();
   mdfRequestTiles:MdfRequestTiles = new MdfRequestTiles();
+  vendors:Array<MdfRequestVendorDto> = new Array<MdfRequestVendorDto>();
+
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
      this.vanityLoginDto.userId = this.loggedInUserId; 
@@ -58,6 +61,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.loading  = true;
     this.tilesLoader = true;
+    this.referenceService.loading(this.listLoader, true);
     this.role = this.route.snapshot.params['role'];
     if(this.role!=undefined && this.role=="p"){
       this.isPartnerView = true;
@@ -86,10 +90,12 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
          },
       () => {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
-          this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
           if(this.isPartnerView){
+            this.pagination.partnerCompanyId = this.loggedInUserCompanyId;
             this.getTilesInfoForPartner();
+            this.listVendors(this.pagination);
           }else{
+            this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
             this.getTilesInfoForVendor();
           }
          // this.listMdfRequests(this.pagination);
@@ -110,6 +116,53 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
       this.xtremandLogger.errorPage(error);
     });
   }
+  listVendors(pagination:Pagination) {
+    this.loading = true;
+    this.referenceService.loading(this.listLoader, true);
+    this.mdfService.listMdfAccessVendors(this.pagination).subscribe((result: any) => {
+      let data = result.data;
+      pagination.totalRecords = data.totalRecords;
+      pagination = this.pagerService.getPagedItems(pagination, data.vendors);
+      this.loading = false;
+      this.referenceService.loading(this.listLoader, false);
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    });
+  }
+  /********************Pagaination&Search Code*****************/
+
+  /*************************Sort********************** */
+  sortBy(text: any) {
+    this.sortOption.mdfVendorsSortOption = text;
+    this.getAllFilteredResults(this.pagination);
+  }
+
+
+  /*************************Search********************** */
+  searchVendors() {
+    this.getAllFilteredResults(this.pagination);
+  }
+
+  paginationDropdown(items: any) {
+    this.sortOption.itemsSize = items;
+    this.getAllFilteredResults(this.pagination);
+  }
+
+  /************Page************** */
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.listVendors(this.pagination);
+  }
+
+  getAllFilteredResults(pagination: Pagination) {
+    this.pagination.pageIndex = 1;
+    this.pagination.searchKey = this.sortOption.searchKey;
+    this.pagination = this.utilService.sortOptionValues(this.sortOption.mdfVendorsSortOption, this.pagination);
+    this.listVendors(this.pagination);
+  }
+  eventHandler(keyCode: any) { if (keyCode === 13) { this.searchVendors(); } }
+  /********************Pagaination&Search Code*****************/
 
   getTilesInfoForVendor() {
     this.mdfService.getMdfRequestTilesInfoForVendors(this.vanityLoginDto).subscribe((result: any) => {

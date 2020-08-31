@@ -118,6 +118,17 @@ getMdfRequestTilesInfoForVendors(vanityLoginDto:VanityLoginDto){
   .catch(this.handleError);
 }
 
+getPartnerMdfAmountTilesInfo(vendorCompanyId: number,partnerCompanyId:number) {
+  return this.http.get(this.URL + "getPartnerMdfAmountTilesInfo/" + vendorCompanyId + "/"+partnerCompanyId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+listMdfAccessVendors(pagination: Pagination) {
+  return this.http.post(this.URL + "listMdfAccessVendors?access_token=" + this.authenticationService.access_token,pagination)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};
