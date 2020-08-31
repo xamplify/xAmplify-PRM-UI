@@ -41,7 +41,7 @@
                            </div>
                            <div class="details">
                               <div class="number">${{tileData?.totalBalance | number:'1.2-2':'en-US'}}</div>
-                              <div class="desc">Total MDF Account Balance</div>
+                              <div class="desc">Total MDF Balance</div>
                            </div>
                            <span class="morePadding">
                         <a  translate="" ng-reflect-translate="" class="more"> Detailed view 
@@ -259,7 +259,7 @@
                      [(ngModel)]="mdfDetails.mdfAmount"  [ngModelOptions]="{standalone: true}" 
                      placeholder="Enter Amount" (ngModelChange)="calculateTotalAvailableBalance()" min="0.00" maxlength="20" autocomplete="off" currencyMask [options]="{align :'left',allowNegative :false }">
                      <ng-container *ngFor="let errorResponse of errorResponses">
-                        <span class="required" *ngIf="errorResponse.field=='mdfAmount'">{{errorResponse.message}}</span>
+                        <span class="required" *ngIf="errorResponse.field=='mdfAmount'">{{errorResponse.errorMessage}}</span>
                      </ng-container>
                   </div>
                </div>
@@ -294,7 +294,7 @@
                   <app-flatpickr [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
                   </app-flatpickr>
                   <ng-container *ngFor="let errorResponse of errorResponses">
-                     <span class="required" *ngIf="errorResponse.field=='expirationDate' && expirationDateError ">{{errorResponse.message}}</span>
+                     <span class="required" *ngIf="errorResponse.field=='expirationDate' && expirationDateError ">{{errorResponse.errorMessage}}</span>
                   </ng-container>
                 </div>
             </div>

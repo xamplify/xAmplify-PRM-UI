@@ -10,6 +10,7 @@ import { FormOption } from "app/forms/models/form-option";
 import { Pagination } from "app/core/models/pagination";
 import {MdfDetails} from '../models/mdf-details';
 import {VanityLoginDto} from '../../util/models/vanity-login-dto';
+import {SaveMdfRequest} from '../models/save-mdf-request';
 
 
 @Injectable()
@@ -129,6 +130,17 @@ listMdfAccessVendors(pagination: Pagination) {
       .catch(this.handleError);
 }
 
+getMdfRequestFormForPartner(vendorCompanyId:number){
+  return this.http.get(this.URL + "getMdfRequestFormForPartner/" + vendorCompanyId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
+saveMdfRequest(saveMdfRequestDto:SaveMdfRequest){
+  return this.http.post(this.URL + "saveMdfRequest?access_token=" + this.authenticationService.access_token,saveMdfRequestDto)
+  .map(this.extractData)
+  .catch(this.handleError);
+}
   extractData(res: Response) {
     let body = res.json();
     return body || {};

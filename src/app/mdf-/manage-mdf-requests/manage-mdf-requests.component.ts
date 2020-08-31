@@ -177,6 +177,12 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
     });
   }
 
+  /****Add Request***** */
+  goToAddRequest(vendor:MdfRequestVendorDto){
+    console.log(vendor);
+    this.referenceService.goToRouter("/home/mdf/create-request/"+vendor.companyId);
+  }
+
   ngOnDestroy() {
     this.referenceService.isCreated = false;
   }
