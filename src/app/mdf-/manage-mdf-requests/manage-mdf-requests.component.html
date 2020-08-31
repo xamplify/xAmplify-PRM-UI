@@ -96,7 +96,7 @@
          </div>
       </div>
    </div>
-   <div class="row">
+   <div class="row" *ngIf="isPartnerView">
       <div class="portlet box">
          <div class="clearfix">
             <div class="col-xs-12">
@@ -173,7 +173,7 @@
                                                 <i class="fa fa-user-plus action-btn" aria-hidden="true"></i>
                                              </a>
                                              <!----See Request Analytics-->
-                                             <a (click)="nn()" title="View Requests">
+                                             <a (click)="viewRequests()" title="View Requests">
                                               <i class="fa fa-line-chart action-btn" aria-hidden="true"></i>
                                               </a>
                                           </div>
@@ -198,5 +198,8 @@
             </div>
          </div>
       </div>
+   </div>
+   <div class="row" *ngIf="formAnalytics">
+      <app-form-analytics-util [importedObject]="exportingObject"></app-form-analytics-util>
    </div>
 </div>

@@ -7,7 +7,6 @@ import { Pagination } from '../../core/models/pagination';
 import { PagerService } from '../../core/services/pager.service';
 import { FormService } from '../../forms/services/form.service';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { SubmittedFormRow } from '../../forms/models/submitted-form-row';
 import { SubmittedFormData } from '../../forms/models/submitted-form-data';
 import { Router } from '@angular/router';
 import { CallActionSwitch } from '../../videos/models/call-action-switch';

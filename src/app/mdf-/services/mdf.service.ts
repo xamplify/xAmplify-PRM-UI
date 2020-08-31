@@ -35,13 +35,13 @@ export class MdfService {
 
   saveMdfRequestForm(userName: string, companyProfileName: string): Observable<Form> {
     this.frameMdfRequestForm(userName, companyProfileName);
-    return this.http.post(this.URL + "requestForm/save?access_token=" + this.authenticationService.access_token, this.form)
+    return this.http.post(this.URL + "createMdfForm?access_token=" + this.authenticationService.access_token, this.form)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   updateMdfRequestForm(form: Form): Observable<Form> {
-    return this.http.post(this.URL + "requestForm/update?access_token=" + this.authenticationService.access_token, form)
+    return this.http.post(this.URL + "updateMdfForm?access_token=" + this.authenticationService.access_token, form)
       .map(this.extractData)
       .catch(this.handleError);
   }

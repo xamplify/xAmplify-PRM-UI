@@ -44,7 +44,7 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   pagination:Pagination = new Pagination();
   mdfRequestTiles:MdfRequestTiles = new MdfRequestTiles();
   vendors:Array<MdfRequestVendorDto> = new Array<MdfRequestVendorDto>();
-
+  formAnalytics  = false;
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
      this.vanityLoginDto.userId = this.loggedInUserId; 
@@ -98,7 +98,6 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
             this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
             this.getTilesInfoForVendor();
           }
-         // this.listMdfRequests(this.pagination);
         }
       }
     );
@@ -166,13 +165,10 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
 
   getTilesInfoForVendor() {
     this.mdfService.getMdfRequestTilesInfoForVendors(this.vanityLoginDto).subscribe((result: any) => {
-      if (result.statusCode === 200) {
-        this.tilesLoader = false;
-        this.loading = false;
-        this.tileData = result.data;
-     }
+      this.tilesLoader = false;
+      this.loading = false;
+      this.mdfRequestTiles = result.data;
     }, error => {
-      console.log(error);
       this.xtremandLogger.errorPage(error);
     });
   }
@@ -181,6 +177,10 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   goToAddRequest(vendor:MdfRequestVendorDto){
     console.log(vendor);
     this.referenceService.goToRouter("/home/mdf/create-request/"+vendor.companyId);
+  }
+
+  viewRequests(){
+    this.formAnalytics = true;
   }
 
   ngOnDestroy() {
