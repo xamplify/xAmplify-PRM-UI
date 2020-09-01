@@ -499,7 +499,8 @@
 														<table class='table tgrid'>
 															<thead>
 															<tr>
-																<th></th>
+																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th>
 																<th>Field Name</th>
 																<th>Data Type</th>
 															</tr>
@@ -509,7 +510,7 @@
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
 																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="sfCustomField.selected"/></td>
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
 																	<td><span>{{sfCustomField.type}}</span></td>
 																</tr>

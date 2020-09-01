@@ -177,6 +177,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     sfcfPagedItems: any[];
     pageSize: number = 12;
     pageNumber: any;
+    sfcfMasterCBClicked = false;
     
     constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -1992,16 +1993,22 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     
     salesforceSettings() {
+    	this.sfcfMasterCBClicked = false;
     	this.customFieldsResponse.isVisible = false;
         this.integrationTabIndex = 2;
         this.ngxloading = true;
-        this.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+        this.listSalesforceCustomFields();
+    }
+    
+    listSalesforceCustomFields() {
+    	this.integrationService.listSalesforceCustomFields(this.loggedInUserId)
         .subscribe(
             data => {
                 this.ngxloading = false;
                 if(data.statusCode==200){
                     this.sfCustomFieldsResponse = data.data;
                     this.setSfCfPage(1);
+                    this.sfcfMasterCBClicked = false;
                 }
             },
             error => {
@@ -2030,7 +2037,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.ngxloading = false;
                 if(data.statusCode==200){
                     this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
-                   // this.salesforceSettings();
+                    this.listSalesforceCustomFields();
                 }
             },
             error => {
@@ -2042,7 +2049,7 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     
     setSfCfPage( page: number ) {
         try {
-            if ( page < 1 || page > this.sfcfPager.totalPages ) {
+            if ( page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages) ) {
                 return;
             }
              this.sfcfPager = this.socialPagerService.getPager( this.sfCustomFieldsResponse.length, page, this.pageSize );
@@ -2082,6 +2089,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
 			this.ngxloading = false;
 		}
+	}
+	
+	sfcfMasterCB() {
+		//let checked = e.target.checked;
+		this.sfcfMasterCBClicked = true;
 	}
     
     
