@@ -39,16 +39,43 @@
 											</ng-container>
 										</ng-container>
 										<th *ngIf="columns?.length>3" scope="row"></th>
-										<th *ngIf="isEventCheckIn" id="th-width">
-											<img src="assets/images/attendees-black.png" id="custom-width" alt="">
-										</th>
+										
 									</tr>
 								</thead>
 								<tbody>
 									<ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
 										<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
 											<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
-												<td *ngIf="columnIndex<=3">
+												<td *ngIf="columnIndex==0">
+													<div class="col-md-12 col-lg-12">
+														<div class="row">
+														   <div class="col-md-2 col-lg-2 text-right">
+															 <img class="img-circle" src="{{columnValue?.values[3]}}" alt="">
+														   </div>
+														   <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+															  <label title="{{columnValue?.values[1]}}">
+																{{columnValue?.values[1] | slice:0:20}}
+                                                               <span *ngIf="columnValue?.values[1].length>20">..</span>
+															  </label><br>
+															  <label title="{{columnValue?.values[2]}}">
+																{{columnValue?.values[2] | slice:0:20}}
+                                                               <span *ngIf="columnValue?.values[2].length>20">..</span>
+															  </label><br>
+															  <label title="{{columnValue?.values[0]}}">
+																{{columnValue?.values[0] | slice:0:15}}
+                                                               <span *ngIf="columnValue?.values[0].length>15">..</span>
+															  </label><br>
+															  <label title="{{columnValue?.values[5]}}">
+																{{columnValue?.values[5]}}
+															  </label><br>
+															  <label title="{{columnValue?.values[4]}}">
+																<span class="label label-warning">{{columnValue?.values[4]}}</span>
+															  </label><br>
+														   </div>
+														</div>
+													 </div>
+												</td>
+												<td *ngIf="columnIndex>0 && columnIndex<=3">
 													<ng-container *ngIf="columnValue.downloadable">
 														<a href="{{columnValue.downloadLink}}">
 															{{columnValue.value}}
@@ -65,12 +92,6 @@
 													<i class="fa"
 														[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}" aria-hidden="true"></i>
 												</a>
-											</td>
-											<td *ngIf="isEventCheckIn">
-												<switch [status]="formDataRow.checkedInForEvent" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
-											[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
-											(statusChange)="checkIn($event,formDataRow)">
-												</switch>
 											</td>
 										</tr>
 										<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
