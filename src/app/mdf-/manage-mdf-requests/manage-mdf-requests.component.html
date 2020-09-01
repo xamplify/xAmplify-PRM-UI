@@ -96,7 +96,7 @@
          </div>
       </div>
    </div>
-   <div class="row" *ngIf="isPartnerView">
+   <div class="row" *ngIf="isPartnerView && !formAnalytics">
       <div class="portlet box">
          <div class="clearfix">
             <div class="col-xs-12">
@@ -146,9 +146,9 @@
                                   <ng-container *ngFor="let vendor of pagination.pagedItems;let i=index">
                                     <tr>
                                        <td>
-                                          <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
-                                             <div class="row" style="margin-right: 0px;padding-bottom: 10px;">
-                                                <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                          <div class="col-md-12 col-lg-12">
+                                             <div class="row">
+                                                <div class="col-md-2 col-lg-2 text-right">
                                                   <img class="img-circle" src="{{vendor?.companyLogoPath}}" alt="">
                                                 </div>
                                                 <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
@@ -173,7 +173,7 @@
                                                 <i class="fa fa-user-plus action-btn" aria-hidden="true"></i>
                                              </a>
                                              <!----See Request Analytics-->
-                                             <a (click)="viewRequests()" title="View Requests">
+                                             <a (click)="viewRequests(vendor)" title="View Requests">
                                               <i class="fa fa-line-chart action-btn" aria-hidden="true"></i>
                                               </a>
                                           </div>
@@ -200,6 +200,6 @@
       </div>
    </div>
    <div class="row" *ngIf="formAnalytics">
-      <app-form-analytics-util [importedObject]="exportingObject"></app-form-analytics-util>
+        <app-manage-mdf-request-form [vendorCompanyId]="vendorCompanyId" [partnershipId]="partnershipId" [partnerView]="isPartnerView"></app-manage-mdf-request-form>
    </div>
 </div>

@@ -17,6 +17,7 @@ import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
 import {ErrorResponse} from 'app/util/models/error-response';
 import { MdfService } from '../services/mdf.service';
+import { ThrowStmt } from '@angular/compiler';
 declare var $: any;
 /********************************************************* */
 @Component({
@@ -45,6 +46,8 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   mdfRequestTiles:MdfRequestTiles = new MdfRequestTiles();
   vendors:Array<MdfRequestVendorDto> = new Array<MdfRequestVendorDto>();
   formAnalytics  = false;
+  vendorCompanyId:number = 0;
+  partnershipId:number = 0;
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
      this.vanityLoginDto.userId = this.loggedInUserId; 
@@ -179,8 +182,10 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
     this.referenceService.goToRouter("/home/mdf/create-request/"+vendor.companyId);
   }
 
-  viewRequests(){
+  viewRequests(mdfRequestVendorDto:MdfRequestVendorDto){
     this.formAnalytics = true;
+     this.vendorCompanyId = mdfRequestVendorDto.companyId;
+    this.partnershipId = mdfRequestVendorDto.partnershipId;
   }
 
   ngOnDestroy() {

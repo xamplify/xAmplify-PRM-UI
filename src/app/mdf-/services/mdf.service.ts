@@ -141,6 +141,13 @@ saveMdfRequest(saveMdfRequestDto:SaveMdfRequest){
   .map(this.extractData)
   .catch(this.handleError);
 }
+
+getMdfFormAnalytics(pagination:Pagination){
+  return this.http.post(this.URL + "listMdfFormDetails?access_token=" + this.authenticationService.access_token,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};

@@ -1,0 +1,120 @@
+<div class="row" id="responsive">
+	<div class="col-xs-12 p5">
+			<div class="portlet light">
+				<div class="portlet-title">
+				   <div class="col-xs-12">
+				     <div class="row">
+				         <div class="col-xs-12 col-sm-6 col-md-6 text-left">
+				         <div class="caption" style="padding:10px">
+						<span class="caption-subject font-red-sunglo uppercase">{{formName}}</span>
+					</div>
+				         </div>
+				         <div class="col-xs-12 col-sm-6 col-md-6 text-right">
+				         <div class="inputs" align="right" style="padding-bottom:10px!important">
+								<a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
+									<i class="fa fa-refresh margin" aria-hidden="true"></i>
+								</a>
+								<div class="portlet-input input-inline input-small" id="search-margin">
+									<div class="input-icon right" id="icon-right">
+										<input type="text" id="search-text" class="form-control" [(ngModel)]="searchKey"
+											[ngModelOptions]="{standalone: true}" placeholder="search..."
+											(keypress)="eventHandler($event.keyCode)">
+										<button class="glyphicon glyphicon-remove search-box-item-clear" *ngIf="searchKey"
+											(click)="searchKey='';search()"></button>
+										<button type="submit" class="search-box-item-click" (click)="search()">
+											<i class="fa fa-search" aria-hidden="true"></i></button>
+									</div>
+								</div>
+							</div>
+				         </div>
+				     </div>
+				   </div>
+					
+					
+				</div>
+				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>
+				<div class="portlet-body" *ngIf="!httpRequestLoader.isLoading">
+					<table class="table tgrid" aria-describedby="form-analytics-table">
+						<thead>
+							<tr>
+								<ng-container *ngFor="let column of columns;let i  = index">
+									<ng-container *ngIf="i<=3">
+										<th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
+									</ng-container>
+								</ng-container>
+								<th *ngIf="columns?.length>3" scope="row"></th>
+								<th *ngIf="isEventCheckIn" id="th-width">
+									<img src="assets/images/attendees-black.png" id="custom-width" alt="">
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
+								<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
+									<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
+										<td *ngIf="columnIndex<=3">
+											<ng-container *ngIf="columnValue.downloadable">
+												<a href="{{columnValue.downloadLink}}">
+													{{columnValue.value}}
+												</a>
+											</ng-container>
+											<ng-container *ngIf="!columnValue.downloadable">
+												{{columnValue.value}}
+											</ng-container>
+										</td>
+									</ng-container>
+									<td *ngIf="columns?.length>3">
+										<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
+											title="View More Columns" *ngIf="columns.length>4">
+											<i class="fa"
+												[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}" aria-hidden="true"></i>
+										</a>
+									</td>
+									<td *ngIf="isEventCheckIn">
+										<switch [status]="formDataRow.checkedInForEvent" [onText]="callActionSwitch.onTextValue" [offText]="callActionSwitch.offTextValue"
+									[onColor]="callActionSwitch.onGreenColorSwitch" [offColor]="callActionSwitch.onDefaultColorSwitch" [size]="callActionSwitch.bsize"
+									(statusChange)="checkIn($event,formDataRow)">
+										</switch>
+									</td>
+								</tr>
+								<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
+									<td colspan="5">
+										<table id="expanded-table" class="table tgrid table-bordered" aria-describedby="form-analytics-table">
+											<tr *ngFor="let column of columns;let i  = index;">
+												<th *ngIf="i>=4" scope="row">
+													{{column.labelName}}<span class="required" *ngIf="column.required">*</span>
+												</th>
+												<td *ngIf="i>=4">
+													<ng-container *ngIf="formDataRow.values[i].downloadable">
+														<a href="{{formDataRow.values[i].downloadLink}}">
+															{{formDataRow.values[i].value}}
+														</a>
+													</ng-container>
+													<ng-container *ngIf="!formDataRow.values[i].downloadable">
+														{{formDataRow.values[i].value}}
+													</ng-container>
+													
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</ng-container>
+						</tbody>
+					</table>
+				</div>
+
+				<div *ngIf="pagination.pagedItems.length !== 0" class="pg8">
+					<app-pagination [pagination]="pagination" (notifyParent)="setPage($event)"
+						(notifyParentDropDown)="listSubmittedData($event)" [hidden]="httpRequestLoader.isLoading"></app-pagination>
+				</div>
+				<!-- End of 24 -->
+				<div *ngIf="pagination.totalRecords==0 && !httpRequestLoader.isLoading" class="alert alert-info">
+					<strong>No Data Found.</strong>
+				</div>
+			</div>
+		</div>
+
+
+	<app-scroll-top></app-scroll-top>
+</div>
