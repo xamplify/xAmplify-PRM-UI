@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Properties } from '../../common/models/properties';
 import { SubmittedFormData } from '../../forms/models/submitted-form-data';
 import { MdfService } from '../services/mdf.service';
+import { CustomResponse } from 'app/common/models/custom-response';
 
 
 declare var $: any, swal: any;
@@ -18,7 +19,7 @@ declare var $: any, swal: any;
 @Component({
   selector: 'app-manage-mdf-request-form',
   templateUrl: './manage-mdf-request-form.component.html',
-  styleUrls: ['./manage-mdf-request-form.component.css'],
+  styleUrls: ['./manage-mdf-request-form.component.css','../mdf-html/mdf-html.component.css'],
   providers: [Pagination, HttpRequestLoader,Properties]
 })
 export class ManageMdfRequestFormComponent implements OnInit {
@@ -32,13 +33,15 @@ export class ManageMdfRequestFormComponent implements OnInit {
   @Input() partnerView:boolean;
   @Input() partnershipId:number;
   formName: string="";
-
+  statusCode:number = 0; 
+  customResponse:CustomResponse = new CustomResponse();
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService,private mdfService:MdfService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
     public logger: XtremandLogger,public properties:Properties) { }
 
   ngOnInit() {
+    this.customResponse = new CustomResponse();
     this.loggedInUserId = this.authenticationService.getUserId();
     this.pagination.userId = this.loggedInUserId;
     this.pagination.vendorCompanyId = this.vendorCompanyId;
@@ -52,12 +55,17 @@ export class ManageMdfRequestFormComponent implements OnInit {
     this.referenceService.loading( this.httpRequestLoader, true );
     this.mdfService.getMdfFormAnalytics( pagination).subscribe(
         ( response: any ) => {
-            const data = response.data;
+            this.statusCode = response.statusCode;
+            if(response.statusCode==200){
+                const data = response.data;
                 this.columns = data.columns;
                 this.formDataRows = data.submittedData;
                 this.formName = data.formName;
                 pagination.totalRecords = data.totalRecords;
                 pagination = this.pagerService.getPagedItems( pagination, this.formDataRows );
+            }else{
+                this.customResponse = new CustomResponse('ERROR','Default MDF Form Not Found',true);
+            }
             this.referenceService.loading( this.httpRequestLoader, false );
         },
         ( error: any ) => { this.logger.errorPage( error ); } );

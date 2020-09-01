@@ -15,9 +15,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { Pagination } from 'app/core/models/pagination';
 import { PagerService } from 'app/core/services/pager.service';
-import {ErrorResponse} from 'app/util/models/error-response';
 import { MdfService } from '../services/mdf.service';
-import { ThrowStmt } from '@angular/compiler';
 declare var $: any;
 /********************************************************* */
 @Component({
@@ -178,7 +176,6 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
 
   /****Add Request***** */
   goToAddRequest(vendor:MdfRequestVendorDto){
-    console.log(vendor);
     this.referenceService.goToRouter("/home/mdf/create-request/"+vendor.companyId);
   }
 

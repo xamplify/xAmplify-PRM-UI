@@ -1,0 +1,72 @@
+.required {
+	color: red;
+	display: inline-flex !important;
+}
+
+#responsive {
+	max-width: 1378px;
+}
+
+.portlet-body {
+	overflow-x: auto;
+}
+
+.close-circle {
+	margin-left: 5px;
+}
+
+#th-width {
+	width: 25%;
+}
+
+#expanded-table {
+	background-color: #dddddd24;
+}
+
+#search-margin {
+	margin-right: 10px;
+}
+
+#icon-right {
+	position: relative;
+	right: -11px;
+}
+
+#search-text {
+	height: 34px;
+}
+
+#child-table {
+	background: #c1c1c11c
+}
+
+.fa.fa-refresh.margin {
+	line-height: 15px;
+}
+
+.margin {
+	line-height: 15px;
+}
+
+#custom-width {
+	width: 25px;
+}
+
+#center-align {
+	text-align: center;
+}
+
+#response-message {
+	position: relative;
+	top: -10px
+}
+
+.cross {
+	padding-top: 3px;
+	padding-left: 5px;
+}
+
+#icon-properties {
+	z-index: 1;
+	font-size: 13px;
+}

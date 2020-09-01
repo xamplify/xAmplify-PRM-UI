@@ -12,6 +12,13 @@
                   <li><a translate>Manage MDF Requests</a></li>
                </ul>
             </div>
+            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="formAnalytics">
+               <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
+                   <a class="close-circle" (click)="formAnalytics=false"  title="Close">
+						<i class="fa fa-times-circle" aria-hidden="true"></i>
+					</a> 
+               </div>
+            </div>
             <!-- <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="isPartnerView">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
                   <button (click)="listMdfAccessVendors()" class="btn btn-primary" style="border-radius: 3px !important;">
@@ -22,6 +29,7 @@
             </div> -->
          </div>
       </div>
+      
    </div>
    <div class="row">
       <div class="col-md-12 col-lg-12">
@@ -155,7 +163,7 @@
                                                    <label title="{{vendor?.companyName}}" style="font-size: 15px;font-weight: 600;">
                                                       {{vendor?.companyName | slice:0:20}}
                                                       <span *ngIf="vendor?.companyName.length>20">..</span>
-                                                   </label>
+                                                   </label><br>
                                                    <label title="{{vendor?.companyProfileName}}" style="font-size: 15px;font-weight: 600;">
                                                       {{vendor?.companyProfileName | slice:0:20}}
                                                       <span *ngIf="vendor?.companyProfileName.length>20">..</span>
@@ -165,7 +173,7 @@
                                           </div>
                                        </td>
                                        <td class="center-align">
-                                          {{vendor?.requestsCount}}
+                                         <span><strong>{{vendor?.requestsCount}}</strong> </span>
                                        </td>
                                        <td class="center-align">
                                           <div class="override-actions">
@@ -199,7 +207,7 @@
          </div>
       </div>
    </div>
-   <div class="row" *ngIf="formAnalytics">
+   <div *ngIf="formAnalytics">
         <app-manage-mdf-request-form [vendorCompanyId]="vendorCompanyId" [partnershipId]="partnershipId" [partnerView]="isPartnerView"></app-manage-mdf-request-form>
    </div>
 </div>
