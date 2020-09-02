@@ -43,9 +43,10 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   pagination:Pagination = new Pagination();
   mdfRequestTiles:MdfRequestTiles = new MdfRequestTiles();
   vendors:Array<MdfRequestVendorDto> = new Array<MdfRequestVendorDto>();
-  formAnalytics  = false;
+  showMdfFormAnalyticsForParnterView  = false;
   vendorCompanyId:number = 0;
   partnershipId:number = 0;
+  mdfRequestVendorDto: MdfRequestVendorDto = new MdfRequestVendorDto();
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
      this.vanityLoginDto.userId = this.loggedInUserId; 
@@ -105,6 +106,8 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   }
   
   getTilesInfoForPartner() {
+    this.tilesLoader = true;
+    this.loading = true;
     this.mdfService.getMdfRequestTilesInfoForPartners(this.vanityLoginDto).subscribe((result: any) => {
       if (result.statusCode === 200) {
          this.tilesLoader = false;
@@ -180,9 +183,26 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   }
 
   viewRequests(mdfRequestVendorDto:MdfRequestVendorDto){
-    this.formAnalytics = true;
-     this.vendorCompanyId = mdfRequestVendorDto.companyId;
+    this.showMdfFormAnalyticsForParnterView = true;
+    this.mdfRequestVendorDto = mdfRequestVendorDto;
+    this.vanityLoginDto.vendorCompanyProfileName =mdfRequestVendorDto.companyProfileName;
+    this.vanityLoginDto.vanityUrlFilter = true;
+    this.tileClass = this.vendorTilesClass;
+    this.getTilesInfoForPartner();
+    this.vendorCompanyId = mdfRequestVendorDto.companyId;
     this.partnershipId = mdfRequestVendorDto.partnershipId;
+    this.referenceService.goToTop();
+    
+  }
+  goToManageRequest(){
+    this.showMdfFormAnalyticsForParnterView = false;
+    this.mdfRequestVendorDto = new MdfRequestVendorDto();
+    this.vanityLoginDto.vendorCompanyProfileName ="";
+    this.vanityLoginDto.vanityUrlFilter = false;
+    this.tileClass = this.partnerTilesClass;
+    this.getTilesInfoForPartner();
+    this.vendorCompanyId =0;
+    this.partnershipId = 0;
   }
 
   ngOnDestroy() {

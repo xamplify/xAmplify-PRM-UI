@@ -47,7 +47,7 @@
 										<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
 											<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
 												<td *ngIf="columnIndex==0">
-													<div class="col-md-12 col-lg-12">
+													<div class="col-md-12 col-lg-12" *ngIf="columnValue?.values?.length>0">
 														<div class="row">
 														   <div class="col-md-2 col-lg-2 text-right">
 															 <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">

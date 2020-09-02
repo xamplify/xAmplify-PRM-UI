@@ -12,9 +12,9 @@
                   <li><a translate>Manage MDF Requests</a></li>
                </ul>
             </div>
-            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="formAnalytics">
+            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="showMdfFormAnalyticsForParnterView">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-                   <a class="close-circle" (click)="formAnalytics=false"  title="Close">
+                   <a class="close-circle" (click)="goToManageRequest()"  title="Close">
 						<i class="fa fa-times-circle" aria-hidden="true"></i>
 					</a> 
                </div>
@@ -50,6 +50,24 @@
                            <span class="morePadding">
                         <a  translate="" ng-reflect-translate="" class="more">Detailed view  
                         <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                        </span>
+                        </a>
+                     </div>
+                     <div title="Click to see details" class="{{tileClass}}" *ngIf="showMdfFormAnalyticsForParnterView">
+                        <a  class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                           <div  class="visual">
+                              <img  style="width: 100px; height: 66px;" src="{{mdfRequestVendorDto?.companyLogoPath}}" alt="">
+                           </div>
+                           <div  class="details">
+                              <div  class="number" title="{{mdfRequestVendorDto?.companyProfileName}}">{{mdfRequestVendorDto?.companyProfileName}}</div>
+                              <div class="desc" title="{{mdfRequestVendorDto?.companyName}}">
+                                 {{mdfRequestVendorDto?.companyName}}
+                              </div>
+                           </div> 
+                           <span  class="morePadding" id="permhref">
+                           <a  translate="" ng-reflect-translate="" class="more"> Detailed view
+                               <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
+                           </a>
                         </span>
                         </a>
                      </div>
@@ -104,7 +122,7 @@
          </div>
       </div>
    </div>
-   <div class="row" *ngIf="isPartnerView && !formAnalytics">
+   <div class="row" *ngIf="isPartnerView && !showMdfFormAnalyticsForParnterView">
       <div class="portlet box">
          <div class="clearfix">
             <div class="col-xs-12">
@@ -207,7 +225,7 @@
          </div>
       </div>
    </div>
-   <div *ngIf="formAnalytics">
+   <div *ngIf="showMdfFormAnalyticsForParnterView">
         <app-manage-mdf-request-form [vendorCompanyId]="vendorCompanyId" [partnershipId]="partnershipId" [partnerView]="isPartnerView"></app-manage-mdf-request-form>
    </div>
 </div>

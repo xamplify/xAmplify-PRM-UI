@@ -239,6 +239,7 @@ export class CreateMdfRequestComponent implements OnInit {
 
   goToManageMdfRequests(){
     this.loading = true;
+    this.referenceService.goToTop();
     this.router.navigate(["/home/mdf/requests/p"]);
   }
 
