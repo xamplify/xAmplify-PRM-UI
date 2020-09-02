@@ -50,7 +50,7 @@
 													<div class="col-md-12 col-lg-12">
 														<div class="row">
 														   <div class="col-md-2 col-lg-2 text-right">
-															 <img class="img-circle" src="{{columnValue?.values[3]}}" alt="">
+															 <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
 														   </div>
 														   <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
 															  <label title="{{columnValue?.values[1]}}">
@@ -58,15 +58,12 @@
                                                                <span *ngIf="columnValue?.values[1].length>20">..</span>
 															  </label><br>
 															  <label title="{{columnValue?.values[2]}}">
-																{{columnValue?.values[2] | slice:0:20}}
-                                                               <span *ngIf="columnValue?.values[2].length>20">..</span>
+																{{columnValue?.values[2] | slice:0:21}}
+                                                               <span *ngIf="columnValue?.values[2].length>21">..</span>
 															  </label><br>
-															  <label title="{{columnValue?.values[0]}}">
-																{{columnValue?.values[0] | slice:0:15}}
-                                                               <span *ngIf="columnValue?.values[0].length>15">..</span>
-															  </label><br>
-															  <label title="{{columnValue?.values[5]}}">
-																{{columnValue?.values[5]}}
+															  <label title="{{columnValue?.values[3]}}">
+																{{columnValue?.values[3] | slice:0:15}}
+                                                               <span *ngIf="columnValue?.values[3].length>15">..</span>
 															  </label><br>
 															  <label title="{{columnValue?.values[4]}}">
 																<span class="label label-warning">{{columnValue?.values[4]}}</span>
