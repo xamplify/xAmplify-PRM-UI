@@ -47,13 +47,15 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   vendorCompanyId:number = 0;
   partnershipId:number = 0;
   mdfRequestVendorDto: MdfRequestVendorDto = new MdfRequestVendorDto();
+  vanityLogin = false;
   constructor(private utilService: UtilService, public sortOption: SortOption, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties,private route:ActivatedRoute) {
     this.loggedInUserId = this.authenticationService.getUserId();
      this.vanityLoginDto.userId = this.loggedInUserId; 
     if(this.authenticationService.companyProfileName !== undefined && this.authenticationService.companyProfileName !== ''){
       this.vanityLoginDto.vendorCompanyProfileName = this.authenticationService.companyProfileName;
       this.vanityLoginDto.vanityUrlFilter = true;
-      }
+      this.vanityLogin = true;
+    }
     if(this.referenceService.isCreated){
       this.customResponse = new CustomResponse('SUCCESS','Request Saved Successfully',true);
     }
@@ -73,7 +75,12 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
       this.tileClass = this.vendorTilesClass;
     }
     this.getCompanyId();
+  }
 
+  stopLoaders(){
+    this.loading  = false;
+    this.tilesLoader = false;
+    this.referenceService.loading(this.listLoader, false);
   }
   
   getCompanyId() {
@@ -94,8 +101,15 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
           if(this.isPartnerView){
             this.pagination.partnerCompanyId = this.loggedInUserCompanyId;
-            this.getTilesInfoForPartner();
-            this.listVendors(this.pagination);
+            if(this.vanityLogin){
+              this.pagination.vanityUrlFilter  = this.vanityLoginDto.vanityUrlFilter;
+              this.pagination.vendorCompanyProfileName = this.vanityLoginDto.vendorCompanyProfileName;
+              this.listVendors(this.pagination);
+            }else{
+              this.getTilesInfoForPartner();
+              this.listVendors(this.pagination);
+            }
+            
           }else{
             this.pagination.vendorCompanyId = this.loggedInUserCompanyId;
             this.getTilesInfoForVendor();
@@ -126,6 +140,9 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
       let data = result.data;
       pagination.totalRecords = data.totalRecords;
       pagination = this.pagerService.getPagedItems(pagination, data.vendors);
+      if(this.vanityLogin){
+        this.viewRequests(data.vendors[0]);
+      }
       this.loading = false;
       this.referenceService.loading(this.listLoader, false);
     }, error => {
@@ -178,8 +195,8 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   }
 
   /****Add Request***** */
-  goToAddRequest(vendor:MdfRequestVendorDto){
-    this.referenceService.goToRouter("/home/mdf/create-request/"+vendor.companyId);
+  goToAddRequest(vendorCompanyId:number){
+    this.referenceService.goToRouter("/home/mdf/create-request/"+vendorCompanyId);
   }
 
   viewRequests(mdfRequestVendorDto:MdfRequestVendorDto){

@@ -12,21 +12,21 @@
                   <li><a translate>Manage MDF Requests</a></li>
                </ul>
             </div>
-            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="showMdfFormAnalyticsForParnterView">
+            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="showMdfFormAnalyticsForParnterView && !vanityLogin">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
                    <a class="close-circle" (click)="goToManageRequest()"  title="Close">
 						<i class="fa fa-times-circle" aria-hidden="true"></i>
 					</a> 
                </div>
             </div>
-            <!-- <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="isPartnerView">
+            <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="isPartnerView && vanityLogin">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-                  <button (click)="listMdfAccessVendors()" class="btn btn-primary" style="border-radius: 3px !important;">
+                  <button (click)="goToAddRequest(459)" class="btn btn-primary" style="border-radius: 3px !important;">
                      <span class="hidden-xs margin-right-design" translate>Request MDF</span>
                      <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
                  </button>
                </div>
-            </div> -->
+            </div>
          </div>
       </div>
       
@@ -195,7 +195,7 @@
                                        </td>
                                        <td class="center-align">
                                           <div class="override-actions">
-                                             <a (click)="goToAddRequest(vendor)" title="Add Request">
+                                             <a (click)="goToAddRequest(vendor.companyId)" title="Add Request">
                                                 <i class="fa fa-user-plus action-btn" aria-hidden="true"></i>
                                              </a>
                                              <!----See Request Analytics-->
