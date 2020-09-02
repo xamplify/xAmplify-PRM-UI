@@ -46,7 +46,9 @@ export class ManageMdfRequestFormComponent implements OnInit {
     this.pagination.userId = this.loggedInUserId;
     this.pagination.vendorCompanyId = this.vendorCompanyId;
     this.pagination.partnerView = this.partnerView;
-    this.pagination.partnershipId = this.partnershipId;
+    if(this.partnershipId!=undefined && this.partnershipId>0){
+        this.pagination.partnershipId = this.partnershipId;
+    }
     this.listSubmittedData(this.pagination);
   }
 

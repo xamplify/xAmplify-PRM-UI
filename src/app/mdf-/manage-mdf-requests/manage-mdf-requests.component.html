@@ -224,7 +224,7 @@
          </div>
       </div>
    </div>
-   <div *ngIf="showMdfFormAnalyticsForParnterView">
+   <div *ngIf="showMdfFormAnalyticsForParnterView ||showMdfFormAnalyticsForVendorView ">
         <app-manage-mdf-request-form [vendorCompanyId]="vendorCompanyId" [partnershipId]="partnershipId" [partnerView]="isPartnerView"></app-manage-mdf-request-form>
    </div>
 </div>

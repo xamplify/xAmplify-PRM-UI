@@ -113,8 +113,8 @@ getMdfRequestTilesInfoForPartners(vanityLoginDto:VanityLoginDto){
   .catch(this.handleError);
 }
 
-getMdfRequestTilesInfoForVendors(vanityLoginDto:VanityLoginDto){
-  return this.http.post(this.URL + "getMdfRequestTilesInfoForVendors?access_token=" + this.authenticationService.access_token,vanityLoginDto)
+getMdfRequestTilesInfoForVendors(loggedInUserCompanyId:number){
+  return this.http.get(this.URL + "getMdfRequestTilesInfoForVendors/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token,"")
   .map(this.extractData)
   .catch(this.handleError);
 }
