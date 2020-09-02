@@ -58,8 +58,8 @@
                                                                <span *ngIf="columnValue?.values[1].length>20">..</span>
 															  </label><br>
 															  <label title="{{columnValue?.values[2]}}">
-																{{columnValue?.values[2] | slice:0:21}}
-                                                               <span *ngIf="columnValue?.values[2].length>21">..</span>
+																{{columnValue?.values[2] | slice:0:15}}
+                                                               <span *ngIf="columnValue?.values[2].length>15">..</span>
 															  </label><br>
 															  <label title="{{columnValue?.values[3]}}">
 																{{columnValue?.values[3] | slice:0:15}}

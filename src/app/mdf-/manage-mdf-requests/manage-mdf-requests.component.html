@@ -53,23 +53,22 @@
                         </span>
                         </a>
                      </div>
-                     <div title="Click to see details" class="{{tileClass}}" *ngIf="showMdfFormAnalyticsForParnterView">
-                        <a  class="dashboard-stat dashboard-stat-lighter yellow-gold">
-                           <div  class="visual">
-                              <img  style="width: 100px; height: 66px;" src="{{mdfRequestVendorDto?.companyLogoPath}}" alt="">
+                     <div  id="vendor-details-tile" class="{{tileClass}}" *ngIf="showMdfFormAnalyticsForParnterView">
+                        <div class="row">
+                           <div class="col-md-2 col-lg-2 text-right">
+                             <img class="img-circle" src="{{mdfRequestVendorDto?.companyLogoPath}}" alt="">
                            </div>
-                           <div  class="details">
-                              <div  class="number" title="{{mdfRequestVendorDto?.companyProfileName}}">{{mdfRequestVendorDto?.companyProfileName}}</div>
-                              <div class="desc" title="{{mdfRequestVendorDto?.companyName}}">
-                                 {{mdfRequestVendorDto?.companyName}}
-                              </div>
-                           </div> 
-                           <span  class="morePadding" id="permhref">
-                           <a  translate="" ng-reflect-translate="" class="more"> Detailed view
-                               <i class="m-icon-swapright m-icon-white" aria-hidden="true"></i>
-                           </a>
-                        </span>
-                        </a>
+                           <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                              <label title="{{mdfRequestVendorDto?.companyName}}" style="font-size: 15px;font-weight: 600;">
+                                 {{mdfRequestVendorDto?.companyName | slice:0:20}}
+                                 <span *ngIf="mdfRequestVendorDto?.companyName.length>20">..</span>
+                              </label><br>
+                              <label title="{{mdfRequestVendorDto?.companyProfileName}}" style="font-size: 15px;font-weight: 600;">
+                                 {{mdfRequestVendorDto?.companyProfileName | slice:0:20}}
+                                 <span *ngIf="mdfRequestVendorDto?.companyProfileName.length>20">..</span>
+                              </label>
+                           </div>
+                        </div>
                      </div>
                      <div title="Click to see details" class="{{tileClass}}">
                         <a class="dashboard-stat dashboard-stat-lighter blue-soft">
