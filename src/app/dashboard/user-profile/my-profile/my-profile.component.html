@@ -76,19 +76,31 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
+
+                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" 
+                            *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                             !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
                                 (click)="videojsCall()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"(click)="activateTab('playerSettings');">
                                     <span>{{properties.defaultPlayerSettings | translate}}</span>
                                 </a> 
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || 
+                                    hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                     || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                                     !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
+                                      authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
+                                authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || roleNames=='Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || 
+                                        authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
+                                        authenticationService.isOnlyPartner() || roleNames=='Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
                             <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
