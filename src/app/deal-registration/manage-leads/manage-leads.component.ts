@@ -36,6 +36,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
     @Output() dealPushObj = new EventEmitter<any>();
     @Input() isPartner: any;
     @Input() isCampaignByLeads: boolean;
+    @Input() loggedInUserId: number;
     httpRequestLoader: HttpRequestLoader = new HttpRequestLoader();
     pagination: Pagination = new Pagination();
     selectedDealId: any;
@@ -737,6 +738,31 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
                 () => { })
         });
     }
+    
+    syncLeadsWithSalesforce() {
+		 this.referenceService.loading(this.httpRequestLoader, true);
+		this.dealRegistrationService.syncLeadsWithSalesforce(this.campaignId, this.loggedInUserId)
+        .subscribe(
+          data => {
+            let statusCode = data.statusCode;
+            if(statusCode==200){
+               this.referenceService.loading(this.httpRequestLoader, false);
+               if (!this.isPartner)
+            		this.listLeadsBasedOnFilters();
+        	   else
+            		this.listLeadsBasedOnFiltersByPartner();
+            }else{
+               this.referenceService.loading(this.httpRequestLoader, false);
+            }
+          },
+          error => {
+            
+          },
+          () => {
+             this.referenceService.loading(this.httpRequestLoader, false);
+          }
+        );
+	}
 
 
 }
