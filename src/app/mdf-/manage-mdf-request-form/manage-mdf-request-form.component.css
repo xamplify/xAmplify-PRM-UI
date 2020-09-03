@@ -70,3 +70,11 @@
 	z-index: 1;
 	font-size: 13px;
 }
+
+.request-details-td{
+	width: 40%;
+}
+
+.request-form-actions-div{
+	width: 160px;
+}
