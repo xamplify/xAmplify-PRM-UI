@@ -38,33 +38,36 @@
 												<th id="th-width">{{column.labelName}}<span class="required" *ngIf="column.required">*</span></th>
 											</ng-container>
 										</ng-container>
-										<th *ngIf="columns?.length>3" scope="row"></th>
-										
+										<th class="center-align" id="th-width">
+											Actions
+										</th>
 									</tr>
 								</thead>
 								<tbody>
 									<ng-container *ngFor="let formDataRow of pagination.pagedItems;let rowIndex = index">
 										<tr id="form-data-row-{{rowIndex}}" class="form-data-row">
 											<ng-container *ngFor="let columnValue of  formDataRow.values;let columnIndex = index">
-												<td *ngIf="columnIndex==0">
+												<td *ngIf="columnIndex==0" class="request-details-td">
 													<div class="col-md-12 col-lg-12" *ngIf="columnValue?.values?.length>0">
 														<div class="row">
 														   <div class="col-md-2 col-lg-2 text-right">
 															 <img class="img-circle" src="{{columnValue?.values[0]}}" alt="">
 														   </div>
-														   <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+														   <div class="col-md-10 col-lg-10">
 															  <label title="{{columnValue?.values[1]}}">
-																{{columnValue?.values[1] | slice:0:20}}
-                                                               <span *ngIf="columnValue?.values[1].length>20">..</span>
+																{{columnValue?.values[1] | slice:0:30}}
+                                                               <span *ngIf="columnValue?.values[1].length>30">..</span>
 															  </label><br>
 															  <label title="{{columnValue?.values[2]}}">
-																{{columnValue?.values[2] | slice:0:15}}
-                                                               <span *ngIf="columnValue?.values[2].length>15">..</span>
+																{{columnValue?.values[2] | slice:0:30}}
+                                                               <span *ngIf="columnValue?.values[2].length>30">..</span>
 															  </label><br>
+															  <label><strong>Request Created On:</strong></label>
 															  <label title="{{columnValue?.values[3]}}">
-																{{columnValue?.values[3] | slice:0:15}}
-                                                               <span *ngIf="columnValue?.values[3].length>15">..</span>
-															  </label><br>
+																{{columnValue?.values[3]}}
+															  </label>
+															  <br>
+															  <label><strong>Status:</strong></label>
 															  <label title="{{columnValue?.values[4]}}">
 																<span class="label label-warning">{{columnValue?.values[4]}}</span>
 															  </label><br>
@@ -83,12 +86,27 @@
 													</ng-container>
 												</td>
 											</ng-container>
+											
 											<td *ngIf="columns?.length>3">
-												<a class="close-circle" (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
+												<div class="request-form-actions-div">
+													<a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
 													title="View More Columns" *ngIf="columns.length>4">
-													<i class="fa"
-														[ngClass]="{'fa-plus': !formDataRow.expanded, 'fa-minus': formDataRow.expanded}" aria-hidden="true"></i>
-												</a>
+													<i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn"aria-hidden="true"></i>
+													<i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn"aria-hidden="true"></i>
+													</a>
+													
+													<a title="Change Request">
+													<i class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
+													</a>
+													<!----Timeline History-->
+													<a  title="View History">
+													 <i class="fa fa-line-chart action-btn" aria-hidden="true"></i>
+													 </a>
+
+													 <a  title="Comments">
+														<i class="fa fa-comment action-btn" aria-hidden="true"></i>
+														</a>
+												 </div>
 											</td>
 										</tr>
 										<tr [ngClass]="{'hidden': !formDataRow.expanded}" id="child-table">
@@ -107,7 +125,6 @@
 															<ng-container *ngIf="!formDataRow.values[i].downloadable">
 																{{formDataRow.values[i].value}}
 															</ng-container>
-															
 														</td>
 													</tr>
 												</table>
