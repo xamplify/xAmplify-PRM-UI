@@ -1,0 +1,418 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+   <div class="page-bar">
+      <ul class="page-breadcrumb">
+         <li><i class="fa fa-home" aria-hidden="true"></i> 
+            <a translate>Home</a> <i class="fa fa-angle-right" aria-hidden="true"></i>
+         </li>
+         <li><a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
+         <li><a translate>Change Request</a></li>
+      </ul>
+   </div>
+   <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
+   <div class="row" *ngIf="!pageLoader">
+      <div class="col-md-12 col-lg-12">
+         <div class="portlet light" style="height:640px;padding-right: 0px!important;   padding-top: 0px!important;">
+            <div class="col-md-12 col-lg-12">
+               <div class="row">
+                  <div class="col-md-9 col-lg-9 pr0">
+                     <div class="row">
+                        <div class="col-md-10 col-lg-10">
+                           <h2 style="font-weight: 500; color: #867c7c;">
+                                 Request Title
+                                 <span *ngIf="rightCornerData?.mdfDetails?.mdfRequestTitle.length>40">..</span>
+                              <sub class="sub-text">MDF REQUEST</sub></h2>
+                        </div>
+                        <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
+                           <div class="row">
+                              <div class="col-md-6 col-lg-6" style="text-align: right;">
+                                 <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                                    <span class="caret"></span></button>
+                                    <ul class="dropdown-menu">
+                                       <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
+                                       <li><a (click)="viewTimeLine()">View Timeline </a></li>
+                                       <li class="disabled"><a href="javascript:void(0)">Change MDF Request Owner</a></li>
+                                       <li class="disabled"><a href="javascript:void(0)">Archive </a></li>
+                                       <li class="disabled"><a href="javascript:void(0)">Delete </a></li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-12 col-lg-12" style="margin-top:10px;">
+                           <span class="label label-warning">New Request (Open)</span>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="padding: 40px 40px 0px 17px;">
+                           <div class="portlet light" style=" height: 260px;padding: 0px 0px!important;">
+                              <div class="portlet-title port-heading">
+                                 <div class="caption" style="color:#000!important;">
+                                    MDF Request Status
+                                 </div>
+                              </div>
+                              <div class="row row-space">
+                                 <div class="col-md-6 col-lg-6 pr0" style="border-right: 1px solid #d8d4d4;">
+                                    <div class="row">
+                                       <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                          <img class="img-circle" src="https://aravindu.com/vod/images/40315/03092020/profilePicture/1599131924258.jpg" alt="">
+                                       </div>
+                                       <div class="col-md-10 col-lg-10 pl0">
+                                          <label style="font-size: 15px;font-weight: 600;">MDF Request Owner:</label><br>
+                                          <label title="T" style="font-size: 14px;color: #65b6e4;">
+                                            Owner
+                                             <!-- {{mdfOwnerDisplayName | slice:0:20}}
+                                               <span *ngIf="mdfOwnerDisplayName?.length>20">..</span>
+                                               ( {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
+                                               <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span> ) -->
+                                             
+                                          </label>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-6 col-lg-6 ">
+                                    <label style="font-size: 15px;font-weight: 600;">Assigned To:</label>
+                                    inr
+                                    <!-- {{mdfOwnerDisplayName | slice:0:20}}
+                                                   <span *ngIf="mdfOwnerDisplayName?.length>20">..</span> -->
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-md-12 col-lg-12">
+                                    <div class="row">
+                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                          <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;">
+                                             <label style="font-size: 15px;font-weight: 600;">Request:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$1000</label><br>
+                                             <label style="font-size: 15px;">25/122</label><br>
+                                             <label title="Title" style="font-size: 14px;color: #65b6e4;">Requested by
+                                                 <!-- {{mdfOwnerDisplayName | slice:0:20}}
+                                                   <span *ngIf="mdfOwnerDisplayName?.length>20">..</span> -->
+                                                </label>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                          <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;height: 100px;">
+                                             <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$1000</label><br>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
+                                          <div class="row text-left" style="padding-left: 30px;">
+                                             <label style="font-size: 15px;font-weight: 600;">Reimbursement:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">$1000</label><br>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12" style="padding: 15px 40px 0px 17px;">
+                           <div class="portlet light" style=" height:205px;">
+                              <div class="portlet-title">
+                                 <div class="caption" translate>
+                                    Partner MDF Balances
+                                 </div>
+                              </div>
+                              <div class="row" style="margin-top: 20px;">
+                                 <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+                                    <div class="row">
+                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">1000</div>
+                                                <div class="desc" style="    font-size: 13px;">Current MDF Available Bal.</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter yellow-gold">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">1999</div>
+                                                <div class="desc" style="    font-size: 13px;"> Available Balance</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">10000</div>
+                                                <div class="desc" style="font-size: 13px;">Used Balance</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-3 col-lg-3 pr0" style=" height: 617px;background: #f1f1f1;">
+                     <div class="row">
+                        <div class="col-md-12 col-lg-12 pl0">
+                           <h5 class="h5-heading">MDF Hierarchy</h5>
+                        </div>
+                        <!-----Request Owner------->
+                        <p style="margin-left: 20px;"><strong>Partner Contact</strong></p>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                <img class="img-circle" src="https://aravindu.com/vod/images/40315/03092020/profilePicture/1599131924258.jpg" alt="">
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <ng-container *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
+                                    <label title="{{rightCornerData?.mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
+                                       {{rightCornerData?.mdfRequestOwner?.fullName | slice:0:20}}
+                                       <span *ngIf="rightCornerData?.mdfRequestOwner?.fullName?.length>20">..</span>
+                                    </label>
+                                 </ng-container>
+                                 <label title="{{rightCornerData?.mdfRequestOwner?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.mdfRequestOwner?.emailId | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.title!=null"  title="{{rightCornerData?.mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.mdfRequestOwner?.title | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.title?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyName!=null" title="{{rightCornerData?.mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
+                                    {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyPhoneNumber!=null" title="{{rightCornerData?.mdfRequestOwner?.companyPhoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{rightCornerData?.mdfRequestOwner?.companyPhoneNumber | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyPhoneNumber?.length>20">..</span></label>
+                              </div>
+                           </div>
+                        </div>
+                        <!-----Vendor Company Details------->
+                        <p style="margin-left: 20px;"><strong>Vendor Contact</strong></p>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                <img class="img-circle" src="{{rightCornerData?.vendorDetailsDto.companyLogo}}" alt="">
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <ng-container *ngIf="rightCornerData?.vendorDetailsDto?.fullName!=null">
+                                    <label title="{{rightCornerData?.vendorDetailsDto?.fullName}}" style="font-size: 15px;font-weight: 600;">
+                                       {{rightCornerData?.vendorDetailsDto?.fullName | slice:0:20}}
+                                       <span *ngIf="rightCornerData?.vendorDetailsDto?.fullName?.length>20">..</span>
+                                    </label>
+                                 </ng-container>
+                                 <label title="{{rightCornerData?.vendorDetailsDto?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.vendorDetailsDto?.emailId | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.vendorDetailsDto?.companyName!=null"  title="{{rightCornerData?.vendorDetailsDto?.companyName}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.vendorDetailsDto?.companyName | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.companyName?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.vendorDetailsDto?.website!=null"  title="{{rightCornerData?.vendorDetailsDto?.website}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.vendorDetailsDto?.website | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.website?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.vendorDetailsDto?.phone!=null" title="{{rightCornerData?.vendorDetailsDto?.phone}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{rightCornerData?.vendorDetailsDto?.phone | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.vendorDetailsDto?.phone?.length>20">..</span></label>
+                              </div>
+                           </div>
+                        </div>
+                        <!-----Partner Company Details------->
+                        <p style="margin-left: 20px;"><strong>Partner Manager</strong></p>
+                        <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
+                           <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
+                              <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
+                                <img class="img-circle" src="{{rightCornerData?.partnerManager.profilePicturePath}}" alt="">
+                              </div>
+                              <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
+                                 <ng-container *ngIf="rightCornerData?.partnerManager?.fullName!=null">
+                                    <label title="{{rightCornerData?.partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
+                                       {{rightCornerData?.partnerManager?.fullName | slice:0:20}}
+                                       <span *ngIf="rightCornerData?.partnerManager?.fullName?.length>20">..</span>
+                                    </label>
+                                 </ng-container>
+                                 <label title="{{rightCornerData?.partnerManager?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.partnerManager?.emailId | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.partnerManager?.emailId?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.partnerManager?.title!=null"  title="{{rightCornerData?.mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
+                                    {{rightCornerData?.mdfRequestOwner?.title | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.title?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyName!=null" title="{{rightCornerData?.mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
+                                    {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span>
+                                 </label>
+                                 <label *ngIf="rightCornerData?.partnerManager?.phoneNumber!=null" title="{{rightCornerData?.partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{rightCornerData?.partnerManager?.phoneNumber | slice:0:20}}
+                                    <span *ngIf="rightCornerData?.partnerManager?.phoneNumber?.length>20">..</span></label>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!--Change Request Modal Pop Up------->
+<!-- <div id="changeRequestModal" class="modal fade right" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+   <div class="modal-dialog modal-css" role="document">
+     <div class="modal-content">
+      <ngx-loading [show]="modalPopupLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+         <div class="modal-header">
+             <a class="close-circle" (click)="closeChangeRequestPopup()">
+               <i class="fa fa-times" aria-hidden="true"></i></a>
+             <h4 class="modal-title" style="font-weight: 600;" translate>Change MDF Request Status & Assignment</h4>
+         </div>
+         <div class="modal-body">
+            <app-response-message class="pg8" [customResponse]="customResponse" *ngIf="customResponse.isVisible">
+            </app-response-message>
+            <app-modal-popup-loader *ngIf="modalPopupLoader"></app-modal-popup-loader>
+            <div class="row" style="margin-top: 20px;">
+               <form role="form" class="form-horizontal form-bordered form-label-stripped">
+                   <div class="portlet box">
+                       <div class="">
+                        <div class="col-md-12 col-lg-12 ">
+                           <div class="form-group">
+                               <label class="control-label col-sm-3" translate>Status
+                                       <font style="color: red">*</font>
+                                   </label>
+                               <div class="col-sm-8"> 
+                                   <select class="form-control" name="" style="width: 100%" [(ngModel)]="mdfRequest.statusCode" [ngModelOptions]="{standalone: true}">
+                                           <option [value]="1"  [selected]="mdfRequest.statusCode ==1">New Request (Open)</option>
+                                           <option [value]="2" [selected]="mdfRequest.statusCode ==2">In Progress,assigned to manager (Open)</option>
+                                           <option [value]="3" [selected]="mdfRequest.statusCode ==3">Pre-Approved for 90 days (Closed)</option>
+                                           <option [value]="4" [selected]="mdfRequest.statusCode ==4">Reimbursement Issued (Closed)</option>
+                                           <option [value]="5" [selected]="mdfRequest.statusCode ==5">Reimbursement Declined (Closed)</option>
+                                           <option [value]="6" [selected]="mdfRequest.statusCode ==6">Request Expired (Closed)</option>
+                                           <option [value]="7" [selected]="mdfRequest.statusCode ==7">Request Declined (Closed)</option>
+                                          </select>
+                               </div>
+                           </div>
+                       </div>
+
+                           <div class="col-md-12 col-lg-12 ">
+                               <div class="form-group">
+                                   <label class="control-label col-sm-3" translate>Requested Amount
+                                       </label>
+                                   <div class="col-sm-8">
+                                    <input type="name" [disabled]="true"  class="form-control padding-mobile currency" id="mdfAmount"
+                                    [(ngModel)]="mdfRequest.mdfRequestAmountInDouble"  [ngModelOptions]="{standalone: true}" 
+                                    placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-12 col-lg-12 ">
+                              <div class="form-group">
+                                  <label class="control-label col-sm-3" translate>Allocated Amount
+                                    <font *ngIf="mdfRequest.statusCode<=3" style="color: red">*</font>
+                                      </label>
+                                  <div class="col-sm-8" *ngIf="mdfRequest.statusCode<=3">
+                                   <input type="name" class="form-control padding-mobile currency" 
+                                   [(ngModel)]="mdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
+                                   placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                  </div>
+                                  <div class="col-sm-8" *ngIf="mdfRequest.statusCode>3">
+                                    <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                                    [(ngModel)]="mdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
+                                    placeholder="MDF Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                   </div>
+                              </div>
+                          </div>
+
+                          <div class="col-md-12 col-lg-12 ">
+                           <div class="form-group">
+                               <label class="control-label col-sm-3" translate>Allocation Date
+                                       <font *ngIf="mdfRequest.statusCode<=3" style="color: red">*</font>
+                                   </label>
+                               <div class="col-sm-8">
+                                 <app-flatpickr [(dataField)]="mdfRequest.allocationDateInString" [isFromMdfCredit]='true'>
+                                 </app-flatpickr>
+                               </div>
+                           </div>
+                       </div>
+                          
+                       <div class="col-md-12 col-lg-12 ">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" translate>Allocation Expiration Date
+                              </label>
+                            <div class="col-sm-8">
+                              <app-flatpickr [(dataField)]="mdfRequest.allocationExpirationDateInString" [isFromMdfCredit]='true'>>
+                              </app-flatpickr>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 ">
+                     <div class="form-group">
+                         <label class="control-label col-sm-3" translate>Assigned To
+                             </label>
+                         <div class="col-sm-8">
+                          <input [disabled]="true" type="text" class="form-control" 
+                          [(ngModel)]="mdfRequest.assignedTo"  [ngModelOptions]="{standalone: true}" 
+                          placeholder="Assigned To" min="0.00">
+                         </div>
+                     </div>
+                 </div>
+                 <div class="col-md-12 col-lg-12" *ngIf="mdfRequest.statusCode==4">
+                  <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Reimbursement Amount
+                        <font style="color: red">*</font>
+                          </label>
+                      <div class="col-sm-8">
+                       <input type="name"  class="form-control padding-mobile currency"
+                       [(ngModel)]="mdfRequest.reimburseAmount"  [ngModelOptions]="{standalone: true}" 
+                       placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                      </div>
+                  </div>
+              </div>
+                 <div class="col-md-12 col-lg-12 ">
+                  <div class="form-group">
+                      <label class="control-label col-sm-3" translate>Description
+                          </label>
+                      <div class="col-sm-8">
+                         <textarea class="form-control"  [(ngModel)]="mdfRequest.description"  [ngModelOptions]="{standalone: true}" 
+                         placeholder="Description"></textarea>
+                      
+                      </div>
+                  </div>
+              </div>
+                       
+                       </div>
+                   </div>
+               </form>
+           </div>
+         </div>
+         <div class="modal-footer" style="border:none;" *ngIf="!modalPopupLoader">
+             <button class="btn btn-default" type="button" (click)="closeChangeRequestPopup();" translate>Cancel</button>
+             <button type="button" class="btn btn-primary"  (click)="updateMdfRequest()" translate>Update</button>
+         </div>
+     </div>
+ </div>
+</div> -->

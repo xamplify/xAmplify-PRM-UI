@@ -35,6 +35,8 @@ export class ManageMdfRequestFormComponent implements OnInit {
   formName: string="";
   statusCode:number = 0; 
   customResponse:CustomResponse = new CustomResponse();
+  requestId: number = 0;
+  goToChangeRequestPage = false;
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService,private mdfService:MdfService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -104,6 +106,16 @@ expandColumns( selectedFormDataRow: any, selectedIndex: number ) {
         $( '#form-data-row-' + selectedIndex ).css( "background-color", "#fff" );
     }
 
+}
+
+changeRequest(formData:any){
+    let values = formData['values'];
+    let requestId = parseInt(values[5]);
+    if(requestId>0){
+        this.referenceService.goToRouter("home/mdf/change-request/"+requestId);
+    }else{
+        this.referenceService.showSweetAlertErrorMessage("Request Id Not Found");
+    }
 }
 
 }

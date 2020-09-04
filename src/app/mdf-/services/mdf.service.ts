@@ -148,6 +148,12 @@ getMdfFormAnalytics(pagination:Pagination){
         .catch(this.handleError);
 }
 
+getMdfRequestDetailsById(requestId:number){
+  return this.http.get(this.URL + "getRequestDetailsById/" + requestId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
   extractData(res: Response) {
     let body = res.json();
     return body || {};

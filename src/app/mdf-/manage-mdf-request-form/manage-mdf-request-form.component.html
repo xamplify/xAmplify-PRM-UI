@@ -9,7 +9,7 @@
 					  <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
 						{{formName}}
 				   </div>
-				   <div class="inputs" align="right" style="float: right; padding: 4px">
+				   <div class="inputs" style="float: right; padding: 4px">
 					  <div class="portlet-input input-inline">
 						 <div class="input-icon right">
 							<input type="text" id="sort-text" class="form-control" [(ngModel)]="searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
@@ -94,9 +94,8 @@
 													<i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn"aria-hidden="true"></i>
 													<i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn"aria-hidden="true"></i>
 													</a>
-													
 													<a title="Change Request">
-													<i class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
+													<i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
 													</a>
 													<!----Timeline History-->
 													<a  title="View History">
@@ -155,6 +154,7 @@
  <div style="margin-top:10px">
 	<app-response-message [customResponse]="customResponse" *ngIf="customResponse.isVisible"></app-response-message>
   </div>
+
 
 
 
