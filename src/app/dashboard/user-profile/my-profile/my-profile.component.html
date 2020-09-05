@@ -511,8 +511,11 @@
 														<table class='table tgrid'>
 															<thead>
 															<tr>
+																<!-- <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th> -->
 																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
-																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th>
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
+																		
 																<th>Field Name</th>
 																<th>Data Type</th>
 															</tr>
@@ -521,8 +524,10 @@
 																<ng-container
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
-																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td>
+																	<!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1)"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
 																	<td><span>{{sfCustomField.type}}</span></td>
 																</tr>

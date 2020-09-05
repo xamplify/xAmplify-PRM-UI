@@ -53,4 +53,10 @@ export class IntegrationService {
             .catch(this.handleError);
         
     }
+    
+    checkSfCustomFields(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + "/salesforce/" + userId + "/checkCustomFields?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

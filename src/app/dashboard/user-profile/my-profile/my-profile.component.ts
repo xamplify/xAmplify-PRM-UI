@@ -178,6 +178,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     pageSize: number = 12;
     pageNumber: any;
     sfcfMasterCBClicked = false;
+    selectedCfIds = [];
+    paginatedSelectedIds = [];
+    isHeaderCheckBoxChecked: boolean = false;
     
     constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
@@ -2001,7 +2004,9 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     
     listSalesforceCustomFields() {
-    	this.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+    	let self = this;
+    	self.selectedCfIds = [];
+    	self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
         .subscribe(
             data => {
                 this.ngxloading = false;
@@ -2009,6 +2014,11 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sfCustomFieldsResponse = data.data;
                     this.setSfCfPage(1);
                     this.sfcfMasterCBClicked = false;
+                    $.each(this.sfCustomFieldsResponse, function (_index:number, customField) {
+                        if (customField.selected) {
+                        	self.selectedCfIds.push(customField.name);
+                        }
+                    });
                 }
             },
             error => {
@@ -2031,7 +2041,8 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 				console.log(id);
 				self.selectedCustomFieldIds.push(id);
 		});
-		 this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, self.selectedCustomFieldIds)
+		
+		 this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
         .subscribe(
             data => {
                 this.ngxloading = false;
@@ -2048,14 +2059,30 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     
     setSfCfPage( page: number ) {
+    	this.paginatedSelectedIds = [];
         try {
             if ( page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages) ) {
                 return;
             }
              this.sfcfPager = this.socialPagerService.getPager( this.sfCustomFieldsResponse.length, page, this.pageSize );
              this.sfcfPagedItems = this.sfCustomFieldsResponse.slice( this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1 );
+             var cfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
+                var items = $.grep( this.selectedCfIds, function( element ) {
+                    return $.inArray( element, cfIds ) !== -1;
+                });
+                if ( items.length == this.sfcfPager.pageSize  || items.length == this.sfCustomFieldsResponse.length || items.length == this.sfcfPagedItems.length ) {
+                    this.isHeaderCheckBoxChecked = true;
+                } else {
+                    this.isHeaderCheckBoxChecked = false;
+                }
+
+				if ( items ) {
+					for ( let i = 0; i < items.length; i++ ) {
+                    	this.paginatedSelectedIds.push( items[i] );
+                	}
+                }
         } catch ( error ) {
-           // this.xtremandLogger.error( error, "AddContactsComponent setSfCfPage()." )
+           // this.xtremandLogger.error( error, "setSfCfPage()." )
         }
 
     }
@@ -2095,6 +2122,58 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 		//let checked = e.target.checked;
 		this.sfcfMasterCBClicked = true;
 	}
+	
+	checkAll( ev: any ) {
+        if ( ev.target.checked ) {
+                console.log( "checked" );
+                $( '[name="sfcf[]"]' ).prop( 'checked', true );
+                let self = this;
+                $( '[name="sfcf[]"]:checked' ).each( function() {
+                    var id = $( this ).val();
+                    self.selectedCfIds.push( id );
+                    self.paginatedSelectedIds.push( id );
+                });
+                this.selectedCfIds = this.referenceService.removeDuplicates( this.selectedCfIds );
+                this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
+                console.log( self.selectedCfIds );
+            } else {
+                $( '[name="sfcf[]"]' ).prop( 'checked', false );
+                if ( this.sfcfPager.maxResults == this.sfcfPager.totalItems ) {
+                    this.selectedCfIds = [];
+                    this.paginatedSelectedIds = [];
+                    //this.allselectedUsers.length = 0;
+                } else {
+                    this.paginatedSelectedIds = [];
+                    let currentPageCfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
+                    this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedCfIds, currentPageCfIds );
+                }
+            }
+            ev.stopPropagation();
+    }
+	
+	selectCf( cfName: string) {
+        let isChecked = $( '#' + cfName ).is( ':checked' );
+        console.log( this.selectedCfIds )
+        if ( isChecked ) {
+           // $( '#row_' + contactId ).addClass( 'contact-list-selected' );
+            this.selectedCfIds.push( cfName );
+            this.paginatedSelectedIds.push( cfName );
+            //this.allselectedUsers.push( object );
+            console.log( this.selectedCfIds );
+        } else {
+           // $( '#row_' + cfName ).removeClass( 'contact-list-selected' );
+            this.selectedCfIds.splice( $.inArray( cfName, this.selectedCfIds ), 1 );
+            this.paginatedSelectedIds.splice( $.inArray( cfName, this.paginatedSelectedIds ), 1 );
+            //this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,email);
+
+        }
+        if ( this.paginatedSelectedIds.length == this.sfcfPagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
     
     
 }
