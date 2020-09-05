@@ -31,6 +31,7 @@ export class ChangeMdfRequestComponent implements OnInit {
   loggedInUserCompanyId: number=0;
   mdfRequest:MdfRequestDto = new MdfRequestDto();
   mdfAmountTiles:MdfAmountTiles = new MdfAmountTiles();
+  vendorContact:any;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
 
@@ -67,6 +68,7 @@ export class ChangeMdfRequestComponent implements OnInit {
               if(result.statusCode==200){
                 this.mdfRequest = result.map.requestDetails;
                 this.mdfAmountTiles = result.map.partnerMdfBalances;
+                this.vendorContact = result.map.vendorContact;
               }else if(result.statusCode==404){
                 this.goToManageMdfRequests();
                 this.referenceService.showSweetAlertErrorMessage("Invalid Request");
