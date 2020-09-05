@@ -19,9 +19,10 @@
                      <div class="row">
                         <div class="col-md-10 col-lg-10">
                            <h2 style="font-weight: 500; color: #867c7c;">
-                                 Request Title
-                                 <span *ngIf="rightCornerData?.mdfDetails?.mdfRequestTitle.length>40">..</span>
-                              <sub class="sub-text">MDF REQUEST</sub></h2>
+                                 {{mdfRequest?.title | slice:0:40}}
+                                 <span *ngIf="mdfRequest?.title>40">..</span>
+                              <!-- <sub class="sub-text">MDF REQUEST</sub> -->
+                           </h2>
                         </div>
                         <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
                            <div class="row">
@@ -43,7 +44,7 @@
                      </div>
                      <div class="row">
                         <div class="col-md-12 col-lg-12" style="margin-top:10px;">
-                           <span class="label label-warning">New Request (Open)</span>
+                           <span class="label label-warning">{{mdfRequest?.mdfWorkFlowStepTypeInString}}</span>
                         </div>
                         <div class="col-md-12 col-lg-12" style="padding: 40px 40px 0px 17px;">
                            <div class="portlet light" style=" height: 260px;padding: 0px 0px!important;">
@@ -71,21 +72,15 @@
                                        </div>
                                     </div>
                                  </div>
-                                 <div class="col-md-6 col-lg-6 ">
-                                    <label style="font-size: 15px;font-weight: 600;">Assigned To:</label>
-                                    inr
-                                    <!-- {{mdfOwnerDisplayName | slice:0:20}}
-                                                   <span *ngIf="mdfOwnerDisplayName?.length>20">..</span> -->
-                                 </div>
                               </div>
                               <div class="row">
                                  <div class="col-md-12 col-lg-12">
                                     <div class="row">
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;">
-                                             <label style="font-size: 15px;font-weight: 600;">Request:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">$1000</label><br>
-                                             <label style="font-size: 15px;">25/122</label><br>
+                                             <label style="font-size: 15px;font-weight: 600;">Request Amount:</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label><br>
+                                             <label style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
                                              <label title="Title" style="font-size: 14px;color: #65b6e4;">Requested by
                                                  <!-- {{mdfOwnerDisplayName | slice:0:20}}
                                                    <span *ngIf="mdfOwnerDisplayName?.length>20">..</span> -->
@@ -95,13 +90,13 @@
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;height: 100px;">
                                              <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">$1000</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.allocationAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Reimbursement:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">$1000</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.reimbursementAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
                                     </div>
@@ -120,16 +115,31 @@
                                  <div class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                                     <div class="row">
                                        <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
+                                          <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                                             <div class="visual">
+                                                <i aria-hidden="true" class=""></i>
+                                             </div>
+                                             <div class="details">
+                                                <div class="number" style="font-size: 20px;">${{mdfAmountTiles?.totalBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="desc" style="font-size: 13px;">Total MDF Balance</div>
+                                             </div>
+                                             <span class="morePadding">
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                                          </span>
+                                          </a>
+                                       </div>
+                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
                                           <a class="dashboard-stat dashboard-stat-lighter purple-soft">
                                              <div class="visual">
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">1000</div>
-                                                <div class="desc" style="    font-size: 13px;">Current MDF Available Bal.</div>
+                                                <div class="number" style="font-size: 20px;">${{mdfAmountTiles?.usedBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="desc" style="font-size: 13px;">Total Used Balance</div>
                                              </div>
                                              <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
                                           <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
                                           </span>
                                           </a>
@@ -140,23 +150,8 @@
                                                 <i aria-hidden="true" class=""></i>
                                              </div>
                                              <div class="details">
-                                                <div class="number" style="font-size: 20px;">1999</div>
-                                                <div class="desc" style="    font-size: 13px;"> Available Balance</div>
-                                             </div>
-                                             <span class="morePadding">
-                                          <a  translate="" ng-reflect-translate="" class="more">Detailed view
-                                          <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
-                                          </span>
-                                          </a>
-                                       </div>
-                                       <div title="Click to see details" class="col-sm-4 col-xs-6 col-lg-4 col-md-4">
-                                          <a class="dashboard-stat dashboard-stat-lighter green-soft">
-                                             <div class="visual">
-                                                <i aria-hidden="true" class=""></i>
-                                             </div>
-                                             <div class="details">
-                                                <div class="number" style="font-size: 20px;">10000</div>
-                                                <div class="desc" style="font-size: 13px;">Used Balance</div>
+                                                <div class="number" style="font-size: 20px;">${{mdfAmountTiles?.availableBalance | number:'1.0':'en-US'}}</div>
+                                                <div class="desc" style="font-size: 13px;">Total Available Balance</div>
                                              </div>
                                              <span class="morePadding">
                                           <a  translate="" ng-reflect-translate="" class="more">Detailed view
