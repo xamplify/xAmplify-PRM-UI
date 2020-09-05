@@ -21,7 +21,6 @@
                            <h2 style="font-weight: 500; color: #867c7c;">
                                  {{mdfRequest?.title | slice:0:40}}
                                  <span *ngIf="mdfRequest?.title>40">..</span>
-                              <!-- <sub class="sub-text">MDF REQUEST</sub> -->
                            </h2>
                         </div>
                         <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
@@ -57,17 +56,17 @@
                                  <div class="col-md-6 col-lg-6 pr0" style="border-right: 1px solid #d8d4d4;">
                                     <div class="row">
                                        <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                          <img class="img-circle" src="https://aravindu.com/vod/images/40315/03092020/profilePicture/1599131924258.jpg" alt="">
+                                          <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                                        </div>
                                        <div class="col-md-10 col-lg-10 pl0">
                                           <label style="font-size: 15px;font-weight: 600;">MDF Request Owner:</label><br>
-                                          <label title="T" style="font-size: 14px;color: #65b6e4;">
-                                            Owner
-                                             <!-- {{mdfOwnerDisplayName | slice:0:20}}
-                                               <span *ngIf="mdfOwnerDisplayName?.length>20">..</span>
-                                               ( {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
-                                               <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span> ) -->
-                                             
+                                          <label title="{{mdfRequestOwner?.displayName}} ({{mdfRequestOwner?.companyName}})" style="font-size: 14px;color: #65b6e4;">
+                                             {{mdfRequestOwner?.displayName | slice:0:18}}
+                                               <span *ngIf="mdfRequestOwner?.displayName?.length>18">..</span>
+                                               <ng-container *ngIf="mdfRequestOwner?.companyName!=null && mdfRequestOwner?.companyName.length>0">
+                                                ( {{mdfRequestOwner?.companyName | slice:0:18}}
+                                                <span *ngIf="mdfRequestOwner?.companyName?.length>18">..</span> )
+                                               </ng-container>
                                           </label>
                                        </div>
                                     </div>
@@ -81,10 +80,6 @@
                                              <label style="font-size: 15px;font-weight: 600;">Request Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.requestAmount | number:'1.0':'en-US'}}</label><br>
                                              <label style="font-size: 15px;">{{mdfRequest?.requestCreatedDateInString}}</label><br>
-                                             <label title="Title" style="font-size: 14px;color: #65b6e4;">Requested by
-                                                 <!-- {{mdfOwnerDisplayName | slice:0:20}}
-                                                   <span *ngIf="mdfOwnerDisplayName?.length>20">..</span> -->
-                                                </label>
                                           </div>
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
@@ -95,7 +90,7 @@
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;">
-                                             <label style="font-size: 15px;font-weight: 600;">Reimbursement:</label><br>
+                                             <label style="font-size: 15px;font-weight: 600;">Reimbursement Amount:</label><br>
                                              <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.reimbursementAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
@@ -176,30 +171,30 @@
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                <img class="img-circle" src="https://aravindu.com/vod/images/40315/03092020/profilePicture/1599131924258.jpg" alt="">
+                                <img class="img-circle" src="{{mdfRequestOwner?.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <ng-container *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
-                                    <label title="{{rightCornerData?.mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="rightCornerData?.mdfRequestOwner?.fullName!=null">
-                                       {{rightCornerData?.mdfRequestOwner?.fullName | slice:0:20}}
-                                       <span *ngIf="rightCornerData?.mdfRequestOwner?.fullName?.length>20">..</span>
+                                 <ng-container *ngIf="mdfRequestOwner?.fullName!=null">
+                                    <label title="{{mdfRequestOwner?.fullName}}" style="font-size: 15px;font-weight: 600;" *ngIf="mdfRequestOwner?.fullName!=null">
+                                       {{mdfRequestOwner?.fullName | slice:0:20}}
+                                       <span *ngIf="mdfRequestOwner?.fullName?.length>20">..</span>
                                     </label>
                                  </ng-container>
-                                 <label title="{{rightCornerData?.mdfRequestOwner?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{rightCornerData?.mdfRequestOwner?.emailId | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.emailId?.length>20">..</span>
+                                 <label title="{{mdfRequestOwner?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{mdfRequestOwner?.emailId | slice:0:20}}
+                                    <span *ngIf="mdfRequestOwner?.emailId?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.title!=null"  title="{{rightCornerData?.mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
-                                    {{rightCornerData?.mdfRequestOwner?.title | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.title?.length>20">..</span>
+                                 <label *ngIf="mdfRequestOwner?.title!=null"  title="{{mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
+                                    {{mdfRequestOwner?.title | slice:0:20}}
+                                    <span *ngIf="mdfRequestOwner?.title?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyName!=null" title="{{rightCornerData?.mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
-                                    {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span>
+                                 <label *ngIf="mdfRequestOwner?.companyName!=null" title="{{mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
+                                    {{mdfRequestOwner?.companyName | slice:0:20}}
+                                    <span *ngIf="mdfRequestOwner?.companyName?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyPhoneNumber!=null" title="{{rightCornerData?.mdfRequestOwner?.companyPhoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{rightCornerData?.mdfRequestOwner?.companyPhoneNumber | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyPhoneNumber?.length>20">..</span></label>
+                                 <label *ngIf="mdfRequestOwner?.companyPhoneNumber!=null" title="{{mdfRequestOwner?.companyPhoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{mdfRequestOwner?.companyPhoneNumber | slice:0:20}}
+                                    <span *ngIf="mdfRequestOwner?.companyPhoneNumber?.length>20">..</span></label>
                               </div>
                            </div>
                         </div>
@@ -240,30 +235,30 @@
                         <div class="col-md-12 col-lg-12" style="margin-top:20px;padding-bottom: 10px;">
                            <div class="row" style="margin-right: 0px;border-bottom: 1px solid #ddd;padding-bottom: 10px;">
                               <div class="col-md-2 col-lg-2 text-right" style="padding-top: 15px;">
-                                <img class="img-circle" src="{{rightCornerData?.partnerManager.profilePicturePath}}" alt="">
+                                <img class="img-circle" src="{{partnerManager?.profilePicturePath}}" alt="">
                               </div>
                               <div class="col-md-10 col-lg-10 " style="padding-left: 34px!important;">
-                                 <ng-container *ngIf="rightCornerData?.partnerManager?.fullName!=null">
-                                    <label title="{{rightCornerData?.partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
-                                       {{rightCornerData?.partnerManager?.fullName | slice:0:20}}
-                                       <span *ngIf="rightCornerData?.partnerManager?.fullName?.length>20">..</span>
+                                 <ng-container *ngIf="partnerManager?.fullName!=null">
+                                    <label title="{{partnerManager?.fullName}}" style="font-size: 15px;font-weight: 600;">
+                                       {{partnerManager?.fullName | slice:0:20}}
+                                       <span *ngIf="partnerManager?.fullName?.length>20">..</span>
                                     </label>
                                  </ng-container>
-                                 <label title="{{rightCornerData?.partnerManager?.emailId}}" style="font-size: 15px;font-weight: 600;">
-                                    {{rightCornerData?.partnerManager?.emailId | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.partnerManager?.emailId?.length>20">..</span>
+                                 <label title="{{partnerManager?.emailId}}" style="font-size: 15px;font-weight: 600;">
+                                    {{partnerManager?.emailId | slice:0:20}}
+                                    <span *ngIf="partnerManager?.emailId?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="rightCornerData?.partnerManager?.title!=null"  title="{{rightCornerData?.mdfRequestOwner?.title}}" style="font-size: 15px;font-weight: 600;">
-                                    {{rightCornerData?.mdfRequestOwner?.title | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.title?.length>20">..</span>
+                                 <label *ngIf="partnerManager?.title!=null"  title="{{partnerManager?.title}}" style="font-size: 15px;font-weight: 600;">
+                                    {{partnerManager?.title | slice:0:20}}
+                                    <span *ngIf="partnerManager?.title?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="rightCornerData?.mdfRequestOwner?.companyName!=null" title="{{rightCornerData?.mdfRequestOwner?.companyName}}" style="font-size: 14px;color: #65b6e4;">
-                                    {{rightCornerData?.mdfRequestOwner?.companyName | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.mdfRequestOwner?.companyName?.length>20">..</span>
+                                 <label *ngIf="partnerManager?.companyName!=null" title="{{partnerManager?.companyName}}" style="font-size: 14px;color: #65b6e4;">
+                                    {{partnerManager?.companyName | slice:0:20}}
+                                    <span *ngIf="partnerManager?.companyName?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="rightCornerData?.partnerManager?.phoneNumber!=null" title="{{rightCornerData?.partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
-                                    Phone: {{rightCornerData?.partnerManager?.phoneNumber | slice:0:20}}
-                                    <span *ngIf="rightCornerData?.partnerManager?.phoneNumber?.length>20">..</span></label>
+                                 <label *ngIf="partnerManager?.phoneNumber!=null" title="{{partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                    Phone: {{partnerManager?.phoneNumber | slice:0:20}}
+                                    <span *ngIf="partnerManager?.phoneNumber?.length>20">..</span></label>
                               </div>
                            </div>
                         </div>
