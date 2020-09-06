@@ -11,6 +11,7 @@ import { Pagination } from "app/core/models/pagination";
 import {MdfDetails} from '../models/mdf-details';
 import {VanityLoginDto} from '../../util/models/vanity-login-dto';
 import {SaveMdfRequest} from '../models/save-mdf-request';
+import {MdfRequestDto} from "../models/mdf-request-dto";
 
 
 @Injectable()
@@ -152,6 +153,11 @@ getMdfRequestDetailsById(requestId:number,loggedInUserCompanyId:number){
   return this.http.get(this.URL + "getRequestDetailsById/" + requestId+"/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token)
       .map(this.extractData)
       .catch(this.handleError);
+}
+updateMdfRequest(mdfRequest:MdfRequestDto){
+  return this.http.post(this.URL + "updateMdfRequest?access_token=" + this.authenticationService.access_token,mdfRequest)
+        .map(this.extractData)
+        .catch(this.handleError);
 }
 
   extractData(res: Response) {

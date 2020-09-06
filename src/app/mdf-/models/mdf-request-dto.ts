@@ -13,4 +13,5 @@ export class MdfRequestDto {
 	requestAmount:any;
 	requestCreatedDateInString:string = "";
 	statusInInteger:number = 0;
+	loggedInUserId:number = 0;
 }

@@ -30,6 +30,7 @@ export class ChangeMdfRequestComponent implements OnInit {
   requestId: number=0;
   loggedInUserCompanyId: number=0;
   mdfRequest:MdfRequestDto = new MdfRequestDto();
+  selectedMdfRequest:MdfRequestDto = new MdfRequestDto();
   mdfAmountTiles:MdfAmountTiles = new MdfAmountTiles();
   vendorContact:any;
   mdfRequestOwner: any;
@@ -62,34 +63,40 @@ export class ChangeMdfRequestComponent implements OnInit {
          },
       () => {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
-          if(this.requestId>0){
-            this.loading = true;
-            this.pageLoader = true;
-            this.mdfService.getMdfRequestDetailsById(this.requestId,this.loggedInUserCompanyId).
-            subscribe((result: any) => {
-              if(result.statusCode==200){
-                this.mdfRequest = result.map.requestDetails;
-                this.mdfAmountTiles = result.map.partnerMdfBalances;
-                this.vendorContact = result.map.vendorContact;
-                this.mdfRequestOwner = result.map.mdfRequestOwner;
-                this.partnerManager = result.map.partnerManager;
-              }else if(result.statusCode==404){
-                this.goToManageMdfRequests();
-                this.referenceService.showSweetAlertErrorMessage("Invalid Request");
-              }
-              this.loading = false;
-              this.pageLoader = false;
-            }, error => {
-              this.xtremandLogger.log(error);
-              this.xtremandLogger.errorPage(error);
-            });
-          }else{
-            this.referenceService.showSweetAlertErrorMessage("Request Id Not Found");
-          }
+          this.loadData();
         }
       }
     );
   }    
+
+  loadData(){
+    if(this.requestId>0){
+      this.loading = true;
+      this.pageLoader = true;
+      this.mdfService.getMdfRequestDetailsById(this.requestId,this.loggedInUserCompanyId).
+      subscribe((result: any) => {
+        if(result.statusCode==200){
+          this.mdfRequest = result.map.requestDetails;
+          this.selectedMdfRequest = result.map.requestDetails;
+          this.mdfAmountTiles = result.map.partnerMdfBalances;
+          this.vendorContact = result.map.vendorContact;
+          this.mdfRequestOwner = result.map.mdfRequestOwner;
+          this.partnerManager = result.map.partnerManager;
+          console.log(this.mdfRequest);
+        }else if(result.statusCode==404){
+          this.goToManageMdfRequests();
+          this.referenceService.showSweetAlertErrorMessage("Invalid Request");
+        }
+        this.loading = false;
+        this.pageLoader = false;
+      }, error => {
+        this.xtremandLogger.log(error);
+        this.xtremandLogger.errorPage(error);
+      });
+    }else{
+      this.referenceService.showSweetAlertErrorMessage("Request Id Not Found");
+    }
+  }
 
 
   goToManageMdfRequests(){
@@ -98,6 +105,7 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   openForm(){
+    this.selectedMdfRequest = this.mdfRequest;
     $('#changeRequestModal').modal('show');
   }
   closeChangeRequestPopup(){
@@ -106,5 +114,27 @@ export class ChangeMdfRequestComponent implements OnInit {
     this.modalPopupLoader=false;
   }
 
+  updateMdfRequest(){
+    this.referenceService.goToTop();
+    this.customResponse = new CustomResponse();
+    this.modalPopupLoader = true;
+    this.selectedMdfRequest.loggedInUserId = this.loggedInUserId;
+    this.mdfService.updateMdfRequest(this.selectedMdfRequest).subscribe((result: any) => {
+      if(result.statusCode==200){
+        this.referenceService.showSweetAlertSuccessMessage("Status Changed Successfully");
+        this.closeChangeRequestPopup();
+        this.loadData();
+      }else if(result.statusCode==400){
+        this.referenceService.goToTop();
+        this.modalPopupLoader = false;
+        this.customResponse = new CustomResponse('ERROR',result.message,true);
+      } else{
+        this.modalPopupLoader = false;
+      }
+    }, error => {
+      this.modalPopupLoader = false;
+      this.customResponse = new CustomResponse('ERROR',this.properties.serverErrorMessage,true);
+    });
+  }
 
 }
