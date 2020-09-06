@@ -97,4 +97,14 @@ export class ChangeMdfRequestComponent implements OnInit {
     this.referenceService.goToRouter("home/mdf/requests");
   }
 
+  openForm(){
+    $('#changeRequestModal').modal('show');
+  }
+  closeChangeRequestPopup(){
+    $('#changeRequestModal').modal('hide');
+    this.customResponse = new CustomResponse();
+    this.modalPopupLoader=false;
+  }
+
+
 }
