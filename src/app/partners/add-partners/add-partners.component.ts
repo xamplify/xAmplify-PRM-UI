@@ -2472,7 +2472,6 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
-            this.getModuleAccess();
             if(localStorage.getItem('vanityUrlDomain'))
             {
                 localStorage.removeItem('vanityUrlDomain');
