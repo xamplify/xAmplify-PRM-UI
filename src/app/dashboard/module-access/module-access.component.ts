@@ -6,7 +6,7 @@ import { CustomResponse } from 'app/common/models/custom-response';
 import { CampaignAccess } from 'app/campaigns/models/campaign-access';
 import { ReferenceService } from 'app/core/services/reference.service';
 import { HttpRequestLoader } from 'app/core/models/http-request-loader';
-import { MdfService } from 'app/mdf-/services/mdf.service';
+import { MdfService } from 'app/mdf/services/mdf.service';
 
 
 declare var $;
