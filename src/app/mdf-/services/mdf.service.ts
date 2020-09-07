@@ -165,6 +165,12 @@ getMdfRequestForm(companyId: number) {
       .catch(this.handleError);
 }
 
+getRequestDetailsByIdForTimeLine(requestId:number,loggedInUserCompanyId:number){
+  return this.http.get(this.URL + "getRequestDetailsByIdForTimeLine/" + requestId+"/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
 
   extractData(res: Response) {
     let body = res.json();

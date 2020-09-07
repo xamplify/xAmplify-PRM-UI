@@ -1,3 +1,4 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
   <div class="row" *ngIf="statusCode!=404">
 	<div class="portlet box">
 	   <div class="clearfix">
@@ -99,7 +100,7 @@
 													<i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
 													</a>
 													<!----Timeline History-->
-													<a  title="View History" (click)="wip()">
+													<a  title="View Timeline" (click)="goToTimeLine(formDataRow.values[0])">
 													 <i class="fa fa-line-chart action-btn" aria-hidden="true"></i>
 													 </a>
 													 <a  title="Comments" (click)="wip()">

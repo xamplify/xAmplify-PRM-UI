@@ -138,7 +138,8 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   viewTimeLine(){
-    this.referenceService.showSweetAlertInfoMessage();
+    this.loading = true;
+    this.referenceService.goToRouter('/home/mdf/timeline/v/'+this.mdfRequest.id);
   }
 
 }

@@ -37,6 +37,7 @@ export class ManageMdfRequestFormComponent implements OnInit {
   customResponse:CustomResponse = new CustomResponse();
   requestId: number = 0;
   goToChangeRequestPage = false;
+  loading =false;
   constructor(public referenceService: ReferenceService, private route: ActivatedRoute,
     public authenticationService: AuthenticationService,private mdfService:MdfService,
     public httpRequestLoader: HttpRequestLoader, public pagerService: PagerService, public router: Router,
@@ -56,6 +57,7 @@ export class ManageMdfRequestFormComponent implements OnInit {
 
   listSubmittedData( pagination: Pagination ) {
     pagination.searchKey = this.searchKey;
+    this.loading = true;
     this.referenceService.loading( this.httpRequestLoader, true );
     this.mdfService.getMdfFormAnalytics( pagination).subscribe(
         ( response: any ) => {
@@ -71,6 +73,7 @@ export class ManageMdfRequestFormComponent implements OnInit {
                 this.customResponse = new CustomResponse('ERROR','Default MDF Form Not Found',true);
             }
             this.referenceService.loading( this.httpRequestLoader, false );
+            this.loading = false;
         },
         ( error: any ) => { this.logger.errorPage( error ); } );
 }
@@ -120,6 +123,20 @@ changeRequest(formData:any){
 
 wip(){
     this.referenceService.showSweetAlertInfoMessage();
+}
+goToTimeLine(formData:any){
+    this.loading = true;
+    let values = formData['values'];
+    let requestId = parseInt(values[5]);
+    if(requestId>0){
+        if(this.partnerView){
+            this.referenceService.goToRouter("/home/mdf/timeline/p/"+requestId);
+        }else{
+            this.referenceService.goToRouter("/home/mdf/timeline/v/"+requestId);
+        }
+    }else{
+        this.referenceService.showSweetAlertErrorMessage("Request Id Not Found");
+    }
 }
 
 }

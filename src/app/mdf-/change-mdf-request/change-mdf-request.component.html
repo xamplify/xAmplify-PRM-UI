@@ -23,7 +23,7 @@
                         <div class="col-md-10 col-lg-10">
                            <h2 style="font-weight: 500; color: #867c7c;">
                                  {{mdfRequest?.title | slice:0:40}}
-                                 <span *ngIf="mdfRequest?.title>40">..</span>
+                               <span *ngIf="mdfRequest?.title?.length>40">..</span>
                            </h2>
                         </div>
                         <div class="col-md-2 col-lg-2 pl0" style="padding-top:15px;">
@@ -34,7 +34,7 @@
                                     <span class="caret"></span></button>
                                     <ul class="dropdown-menu">
                                        <li><a (click)="openForm()">Change MDF Request Status & Assignment</a></li>
-                                       <li><a (click)="viewTimeLine()">View Timeline </a></li>
+                                       <!-- <li><a (click)="viewTimeLine()">View Timeline </a></li> -->
                                        <li class="disabled"><a href="javascript:void(0)">Change MDF Request Owner</a></li>
                                        <li class="disabled"><a href="javascript:void(0)">Archive </a></li>
                                        <li class="disabled"><a href="javascript:void(0)">Delete </a></li>
