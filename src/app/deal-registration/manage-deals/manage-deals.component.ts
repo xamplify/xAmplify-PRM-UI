@@ -21,7 +21,7 @@ import { CustomResponse } from '../../common/models/custom-response';
 import { UserService } from 'app/core/services/user.service';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { DashboardAnalyticsDto } from "app/dashboard/models/dashboard-analytics-dto";
-
+import { IntegrationService } from '../../core/services/integration.service';
 declare var $: any;
 
 
@@ -101,7 +101,7 @@ export class ManageDealsComponent implements OnInit {
 
     customResponse: CustomResponse;
     superiorId: number = 0;
-
+	//syncSalesForce = false;
 
     @ViewChild(ManagePartnersComponent)
     set leadId(partner: ManagePartnersComponent) {
@@ -113,7 +113,8 @@ export class ManageDealsComponent implements OnInit {
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
-        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService, userService: UserService, public vanityUrlService: VanityURLService) {
+        public sortOption: SortOption, public pagerService: PagerService, private campaignService: CampaignService, userService: UserService,
+         public vanityUrlService: VanityURLService, public integrationService: IntegrationService) {
         this.loggedInUserId = this.authenticationService.getUserId();
         const url = "admin/getRolesByUserId/" + this.loggedInUserId + "?access_token=" + this.authenticationService.access_token;
         userService.getHomeRoles(url)
@@ -1074,6 +1075,7 @@ export class ManageDealsComponent implements OnInit {
                 },
                 error => console.log(error),
                     () => { });
+               
             });
             
         },error => {
@@ -1083,6 +1085,7 @@ export class ManageDealsComponent implements OnInit {
 
 
     }
+    
 
     dealAnalyticsDisable() {
         this.isDealAnalytics = !this.isDealAnalytics;

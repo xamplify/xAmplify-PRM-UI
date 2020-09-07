@@ -496,7 +496,7 @@
                                         <div *ngIf="integrationTabIndex == 2">
                                         <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
                                         </app-response-message>
-                                        	<div align="center" style="margin-bottom:20px"><h3>Pick required custom fields from Salesforce
+                                        	<div align="center" style="margin-bottom:20px"><h3>Salesforce custom fields
                                         		<span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
 																	<a (click)="salesforceSettings()" data-toggle="tooltip"
 															data-placement="top" title="Refresh Custom Fields"><i class="fa fa-refresh"
@@ -504,6 +504,8 @@
 															</span>
 												</h3>
                                         	</div>
+                                        	
+                                        	<div>*Note: Please pick all fields that are marked required in Salesforce.  Otherwise, leads and deals will not be pushed into Salesforce. </div>
                                         	
                                         	<!-- <app-response-message [customResponse]="customResponse"
 														*ngIf="customResponse.isVisible" style="margin: 10px"></app-response-message> -->

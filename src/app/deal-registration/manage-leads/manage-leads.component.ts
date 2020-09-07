@@ -16,6 +16,7 @@ import { EventEmitter } from '@angular/core';
 import { CustomResponse } from '../../common/models/custom-response';
 import { Campaign } from '../../campaigns/models/campaign';
 import { User } from '../../core/models/user';
+import { IntegrationService } from '../../core/services/integration.service';
 declare var swal, $: any;
 
 
@@ -56,20 +57,24 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
     isDealSection = false;
     loggedInUser: User;
     ownCampaignLeadAndDeal = false;
-
+	syncSalesForce = false;
 
     constructor(public listLoaderValue: ListLoaderValue, public router: Router, public authenticationService: AuthenticationService,
         public utilService: UtilService, public referenceService: ReferenceService,
         private dealRegistrationService: DealRegistrationService, public homeComponent: HomeComponent, public xtremandLogger: XtremandLogger,
-        public sortOption: SortOption, public pagerService: PagerService, public callActionSwitch: CallActionSwitch) { }
+        public sortOption: SortOption, public pagerService: PagerService, public callActionSwitch: CallActionSwitch, public integrationService: IntegrationService) { }
 
     ngOnInit() {
         this.changePointerStyle(true);
         this.loggedInUser = this.authenticationService.user;
-        if (!this.isPartner)
-            this.listLeadsBasedOnFilters();
-        else
-            this.listLeadsBasedOnFiltersByPartner();
+        if (!this.isPartner) {
+        	this.checkSalesforceIntegration();
+        	this.listLeadsBasedOnFilters();
+        }
+        else {
+        	this.listLeadsBasedOnFiltersByPartner();
+        }
+            
     }
 
     changePointerStyle(loading: boolean) {
@@ -764,5 +769,29 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
         );
 	}
 
-
+	checkSalesforceIntegration(): any {
+	  this.referenceService.loading(this.httpRequestLoader, true);
+      this.integrationService.checkConfigurationByTypeAndUserId("isalesforce", this.selectedCampaign.userId).subscribe(data =>{
+           let response = data;
+           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+               this.integrationService.checkSfCustomFields(this.selectedCampaign.userId).subscribe(cfData =>{
+           			let cfResponse = cfData;
+           			if (cfResponse.statusCode === 400) {
+           				this.syncSalesForce = false;
+           			} else {
+           				this.syncSalesForce = true;
+           			}
+       			},error =>{
+           			console.log("Error in salesforce checkSalesforceIntegration()");
+       			}, () => console.log("Error in salesforce checkSalesforceIntegration()"));
+              	console.log("Error in salesforce checkSalesforceIntegration()");
+           } else{
+                 this.syncSalesForce = false;             
+              }
+       },error =>{
+       		console.log("Error in salesforce checkSalesforceIntegration()");
+       }, () => console.log("Error in checkSalesforceIntegration()"));
+       this.referenceService.loading(this.httpRequestLoader, false);
+   }
+	
 }

@@ -19,6 +19,13 @@ export class IntegrationService {
             .map(this.extractData)
             .catch(this.handleError);
     }
+    
+    checkConfigurationByTypeAndUserId(type: string, userId: number) {
+        this.logger.info(this.authenticationService.REST_URL + type + "/" + userId + "/authorize?access_token=" + this.authenticationService.access_token);
+        return this._http.get(this.authenticationService.REST_URL + type + "/" + userId + "/authorize?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 
     handleCallbackByType(code: string, type: string): Observable<String> {
         this.logger.info(this.authenticationService.REST_URL + type + "/" + this.authenticationService.getUserId() + "/oauth/callback?access_token=" + this.authenticationService.access_token + "&code=" + code);

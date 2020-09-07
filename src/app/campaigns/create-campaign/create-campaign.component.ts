@@ -300,7 +300,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
                         console.log(data)
                         this.enableLeads = data.enableLeads;
-                        this.checkSalesforceIntegration();
+                        this.isSalesforceIntegrated();
                     });
                 })
                 authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
@@ -3251,6 +3251,29 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                       window.location.href = response.data.redirectUrl;
                   }                
               }
+       },error =>{
+           this.logger.error(error, "Error in salesforce checkIntegrations()");
+       }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+     }
+     this.loading = false;
+   }
+   
+    isSalesforceIntegrated(): any {
+      if(this.enableLeads){ 
+      this.loading = true;
+      this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
+           let response = data;
+           if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
+               this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data =>{
+           			let cfResponse = data;
+           			if (cfResponse.statusCode === 400) {
+           				swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+           			}
+       			},error =>{
+           			this.logger.error(error, "Error in salesforce checkIntegrations()");
+       			}, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+              	console.log("isPushToSalesforce ::::" + this.pushToCRM);
+           } 
        },error =>{
            this.logger.error(error, "Error in salesforce checkIntegrations()");
        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
