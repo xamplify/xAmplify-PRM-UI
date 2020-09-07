@@ -8,6 +8,9 @@
          <li><a (click)="goToManageMdfRequests()" translate>Manage MDF Requests</a>  <i class="fa fa-angle-right" aria-hidden="true"></i></li>
          <li><a translate>Change Request</a></li>
       </ul>
+      <a class="close-circle xamp-margin-left-icon" (click)="goToManageMdfRequests()" aria-hidden="true">
+         <i class="fa fa-times" aria-hidden="true"></i>
+     </a>
    </div>
    <app-modal-popup-loader *ngIf="pageLoader"></app-modal-popup-loader>
    <div class="row" *ngIf="!pageLoader">
@@ -260,7 +263,7 @@
                                     {{partnerManager?.companyName | slice:0:20}}
                                     <span *ngIf="partnerManager?.companyName?.length>20">..</span>
                                  </label>
-                                 <label *ngIf="partnerManager?.phoneNumber!=null" title="{{partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
+                                 <label *ngIf="partnerManager?.phoneNumber!=null && partnerManager?.phoneNumber?.length>0" title="{{partnerManager?.phoneNumber}}" style="font-size: 15px;font-weight: 600;">
                                     Phone: {{partnerManager?.phoneNumber | slice:0:20}}
                                     <span *ngIf="partnerManager?.phoneNumber?.length>20">..</span></label>
                               </div>

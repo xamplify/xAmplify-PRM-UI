@@ -137,4 +137,8 @@ export class ChangeMdfRequestComponent implements OnInit {
     });
   }
 
+  viewTimeLine(){
+    this.referenceService.showSweetAlertInfoMessage();
+  }
+
 }
