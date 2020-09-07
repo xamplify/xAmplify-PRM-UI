@@ -300,6 +300,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                     refService.getOrgCampaignTypes(response).subscribe(data=>{
                         console.log(data)
                         this.enableLeads = data.enableLeads;
+                        this.checkSalesforceIntegration();
                     });
                 })
                 authenticationService.getSMSServiceModule(this.authenticationService.getUserId()).subscribe(response=>{
@@ -505,7 +506,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
                 }
             }
         }
-        
     }
 
     setActiveTabForVideo(){
@@ -652,7 +652,6 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
         this.listAllTeamMemberEmailIds();
         /***********Load Email Template Filters/LandingPages Filter Data********/
         this.listEmailTemplateOrLandingPageFolders();
-      
     }
 
     listCategories(){
@@ -3234,12 +3233,19 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
    checkSalesforceIntegration(): any {
      // this.pushToCRM = [];
       if(this.enableLeads){ 
+      this.loading = true;
       this.integrationService.checkConfigurationByType("isalesforce").subscribe(data =>{
            let response = data;
            if (response.data.isAuthorize !== undefined && response.data.isAuthorize) {
-              this.pushToCRM.push('salesforce');
-              this.validatePushToCRM();
-              console.log("isPushToSalesforce ::::" + this.pushToCRM);
+               this.integrationService.checkSfCustomFields(this.authenticationService.getUserId()).subscribe(data =>{
+           			let cfResponse = data;
+           			if (cfResponse.statusCode === 400) {
+           				swal("Oh! Custom fields are missing in your Salesforce account. Leads and Deals created by your partners will not be pushed into Salesforce.", "", "error");
+           			}
+       			},error =>{
+           			this.logger.error(error, "Error in salesforce checkIntegrations()");
+       			}, () => this.logger.log("Integration Salesforce Configuration Checking done"));
+              	console.log("isPushToSalesforce ::::" + this.pushToCRM);
            } else{
                   if (response.data.redirectUrl !== undefined && response.data.redirectUrl !== '') {
                       window.location.href = response.data.redirectUrl;
@@ -3249,6 +3255,7 @@ export class CreateCampaignComponent implements OnInit,OnDestroy{
            this.logger.error(error, "Error in salesforce checkIntegrations()");
        }, () => this.logger.log("Integration Salesforce Configuration Checking done"));
      }
+     this.loading = false;
    }
 
    showFolderFilterPopup(){

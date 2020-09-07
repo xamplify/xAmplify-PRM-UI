@@ -40,4 +40,23 @@ export class IntegrationService {
             error.status ? `${error.status} - ${error.statusText}` : 'Server   error';
         return Observable.throw(error);
     }
+    
+    listSalesforceCustomFields(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + "/salesforce/formfields/" + userId + "/all?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
+    syncSalesforceCustomForm(userId: number, request: any) {
+        return this._http.post(this.authenticationService.REST_URL + "/salesforce/form/" + userId + "/sync?access_token=" + this.authenticationService.access_token, request)
+            .map(this.extractData)
+            .catch(this.handleError);
+        
+    }
+    
+    checkSfCustomFields(userId: number) {
+        return this._http.get(this.authenticationService.REST_URL + "/salesforce/" + userId + "/checkCustomFields?access_token=" + this.authenticationService.access_token)
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
 }

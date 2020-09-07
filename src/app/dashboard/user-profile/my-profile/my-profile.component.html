@@ -76,19 +76,31 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
+
+                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" 
+                            *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                             !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
                                 (click)="videojsCall()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"(click)="activateTab('playerSettings');">
                                     <span>{{properties.defaultPlayerSettings | translate}}</span>
                                 </a> 
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || 
+                                    hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                     || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                                     !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
+                                      authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
+                                authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || roleNames=='Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || 
+                                        authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
+                                        authenticationService.isOnlyPartner() || roleNames=='Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
                             <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
@@ -441,13 +453,20 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4" (click)="configSalesforce()">
+                                                <div class="col-lg-4">
+                                                	
                                                     <div class="card mb-5 mb-lg-4">
                                                         <div class="card-body" style="padding:10px;">
                                                             <!-- <div class="triangle-up-right">
 
 															</div> -->
-                                                            <h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Salesforce</h5>
+																<span *ngIf="sfRibbonText == 'configured'" 
+																	style="float: right; color: #488fd6; border: 1px solid #eaeaea; padding: 7px 5px 2px 5px; border-radius: 2px;">
+																	<a (click)="salesforceSettings()" data-toggle="tooltip"
+															data-placement="top" title="Manage Custom Fields"><i class="fa fa-cog"
+																	style="font-size: 20px !important;"></i></a>
+																</span>
+																<h5 class="card-title  text-uppercase text-center" style="padding-top: 4%;">Salesforce</h5>
 
                                                             <div class="ribbon draft" style="left:10px">
                                                                 <span [style.background-color]="sfRibbonText == 'configured' ? 'green':'yello'">{{sfRibbonText}}</span>
@@ -457,19 +476,90 @@
                                                                     <img src="assets/images/crm/xamplify-salesforce.png" style="margin-top:20px; text-align: center;width:100%">
                                                                 </div>
                                                             </div>
-
-                                                            <a class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configure'" translate>configure</a>
-                                                            <a class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configured'" translate>re configure</a>
+															<!-- <a (click)="salesforceSettings()" style="margin:5px"><span class="fa fa-cogs" *ngIf="sfRibbonText == 'configured'"> Settings</span></a>
+                                                             -->
+                                                             <a (click)="configSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configure'" translate>configure</a>
+                                                            <a (click)="reConfigSalesforce()" class="btn btn-block btn-primary text-uppercase" *ngIf="sfRibbonText == 'configured'" translate>re configure</a>
                                                         </div>
                                                     </div>
                                                 </div>
 
                                             </div>
-
+	
                                         </section>
+                                        
                                         <div *ngIf="integrationTabIndex == 1">
                                             <app-marketo-authentication (closeEvent)="closeMarketoForm($event)">
                                             </app-marketo-authentication>
+                                        </div>
+                                        
+                                        <div *ngIf="integrationTabIndex == 2">
+                                        <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
+                                        </app-response-message>
+                                        	<div align="center" style="margin-bottom:20px"><h3>Pick required custom fields from Salesforce
+                                        		<span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
+																	<a (click)="salesforceSettings()" data-toggle="tooltip"
+															data-placement="top" title="Refresh Custom Fields"><i class="fa fa-refresh"
+																	style="font-size: 15px !important;"></i> Reload</a>
+															</span>
+												</h3>
+                                        	</div>
+                                        	
+                                        	<!-- <app-response-message [customResponse]="customResponse"
+														*ngIf="customResponse.isVisible" style="margin: 10px"></app-response-message> -->
+													<form class="form-horizontal" autocomplete="off">
+														<table class='table tgrid'>
+															<thead>
+															<tr>
+																<!-- <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th> -->
+																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
+																		
+																<th>Field Name</th>
+																<th>Data Type</th>
+															</tr>
+														</thead>
+															<tbody>
+																<ng-container
+																	*ngFor="let sfCustomField of sfcfPagedItems ">
+																<tr>
+																	<!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1)"/></td>
+																	<td><span>{{sfCustomField.label}}</span></td>
+																	<td><span>{{sfCustomField.type}}</span></td>
+																</tr>
+																</ng-container>
+															</tbody>
+														</table>
+													</form>
+													<ul *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="pagination">
+											<li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(1)">First</a></li>
+											<li [ngClass]="{disabled:sfcfPager.currentPage === 1}"><a (click)="setSfCfPage(sfcfPager.currentPage - 1)">Previous</a></li>
+											<li *ngFor="let page of sfcfPager.pages" [ngClass]="{active:sfcfPager.currentPage === page}"><a (click)="setSfCfPage(page)">{{page}}</a></li>
+											<li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+												<a (click)="setSfCfPage(sfcfPager.currentPage + 1)">Next</a>
+											</li>
+											<li [ngClass]="{disabled:sfcfPager.currentPage === sfcfPager.totalPages}">
+												<a (click)="setSfCfPage(sfcfPager.totalPages)">Last</a>
+											</li>
+										</ul>
+										<div *ngIf="sfcfPager.pages && sfcfPager.pages.length" class="p-drop-down" style="width: max-content;">
+											<select class="form-control" style="cursor: pointer" [(ngModel)]="pageNumber" [ngModelOptions]="{standalone: true}" (ngModelChange)="selectedPageNumber($event.value)">
+												<option *ngFor="let pageNo of paginationComponent.numberPerPage" [ngValue]="pageNo">{{pageNo.name}}</option>
+											</select>
+										</div>
+										<div *ngIf="!sfcfPager.pages || sfcfPager.pages.length == 0" style="margin-bottom: 10px;">
+											<span>There are no custom fields in your Salesforce account.</span>
+										</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-warning"
+														(click)="closeSfSettings()">CANCEL</button>
+													<button type="button" class="btn btn-primary" *ngIf="sfcfPager.pages && sfcfPager.pages.length" 
+													(click)="submitSfSettings()">Submit</button>
+												</div>
                                         </div>
                                     </div>
                                     <div class="tab-pane" [ngClass]="{'active': activeTabName == 'password'}">

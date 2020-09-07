@@ -38,6 +38,8 @@ import {ModulesDispalyType} from "app/dashboard/models/modules-dispaly-type.enum
 import { TranslateService } from '@ngx-translate/core';
 import { VanityEmailTempalte } from 'app/email-template/models/vanity-email-template';
 
+import { SocialPagerService } from '../../../contacts/services/social-pager.service';
+import { PaginationComponent } from '../../../common/pagination/pagination.component';
 declare var swal, $, videojs: any;
 
 @Component({
@@ -46,7 +48,7 @@ declare var swal, $, videojs: any;
     styleUrls: ['./my-profile.component.css', '../../../../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css',
         '../../../../assets/admin/pages/css/profile.css', '../../../../assets/css/video-css/video-js.custom.css',
         '../../../../assets/css/phone-number-plugin.css'],
-    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption],
+    providers: [User, DefaultVideoPlayer, CallActionSwitch, Properties, RegularExpressions, CountryNames, HttpRequestLoader, SortOption, PaginationComponent],
 })
 export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -168,14 +170,27 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     subjectLineTooltipText:string;
     isMarketoProcess: boolean;
     
-    constructor(public videoFileService: VideoFileService, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
+    sfCustomFieldsResponse: any;
+    selectedCustomFieldIds = [];
+    customFieldsResponse: CustomResponse = new CustomResponse();
+    sfcfPager: any = {};
+    sfcfPagedItems: any[];
+    pageSize: number = 12;
+    pageNumber: any;
+    sfcfMasterCBClicked = false;
+    selectedCfIds = [];
+    paginatedSelectedIds = [];
+    isHeaderCheckBoxChecked: boolean = false;
+    
+    constructor(public videoFileService: VideoFileService,  public socialPagerService: SocialPagerService, public paginationComponent: PaginationComponent, public countryNames: CountryNames, public fb: FormBuilder, public userService: UserService, public authenticationService: AuthenticationService,
         public logger: XtremandLogger, public referenceService: ReferenceService, public videoUtilService: VideoUtilService,
         public router: Router, public callActionSwitch: CallActionSwitch, public properties: Properties,
         public regularExpressions: RegularExpressions, public route: ActivatedRoute, public utilService: UtilService, public dealRegSevice: DealRegistrationService, private dashBoardServiece: DashboardService,
         private hubSpotService: HubSpotService, public httpRequestLoader: HttpRequestLoader, private integrationService: IntegrationService, public pagerService:
             PagerService,private renderer:Renderer, private translateService: TranslateService) {
                 this.referenceService.renderer = this.renderer;
-                this.isUser = this.authenticationService.isOnlyUser();        
+                this.isUser = this.authenticationService.isOnlyUser();     
+                this.pageNumber = this.paginationComponent.numberPerPage[0];   
     }
     cropperSettings() {
         this.circleCropperSettings = this.utilService.cropSettings(this.circleCropperSettings, 200, 156, 200, true);
@@ -1979,4 +1994,186 @@ export class MyProfileComponent implements OnInit, AfterViewInit, OnDestroy {
     setSubjectLineTooltipText() {
         this.subjectLineTooltipText = "Set your own subject line"
     }
+    
+    salesforceSettings() {
+    	this.sfcfMasterCBClicked = false;
+    	this.customFieldsResponse.isVisible = false;
+        this.integrationTabIndex = 2;
+        this.ngxloading = true;
+        this.listSalesforceCustomFields();
+    }
+    
+    listSalesforceCustomFields() {
+    	let self = this;
+    	self.selectedCfIds = [];
+    	self.integrationService.listSalesforceCustomFields(this.loggedInUserId)
+        .subscribe(
+            data => {
+                this.ngxloading = false;
+                if(data.statusCode==200){
+                    this.sfCustomFieldsResponse = data.data;
+                    this.setSfCfPage(1);
+                    this.sfcfMasterCBClicked = false;
+                    $.each(this.sfCustomFieldsResponse, function (_index:number, customField) {
+                        if (customField.selected) {
+                        	self.selectedCfIds.push(customField.name);
+                        }
+                    });
+                }
+            },
+            error => {
+                this.ngxloading = false;
+                },
+            () => { }
+        );
+    }
+    
+    closeSfSettings() {
+    	 this.integrationTabIndex = 0;
+    }
+    
+    submitSfSettings() {
+    	this.ngxloading = true;
+    	let self = this;
+    	this.selectedCustomFieldIds = [];
+		$('[name="sfcf[]"]:checked').each(function() {
+				var id = $(this).val();
+				console.log(id);
+				self.selectedCustomFieldIds.push(id);
+		});
+		
+		 this.integrationService.syncSalesforceCustomForm(this.loggedInUserId, this.selectedCfIds)
+        .subscribe(
+            data => {
+                this.ngxloading = false;
+                if(data.statusCode==200){
+                    this.customFieldsResponse = new CustomResponse('SUCCESS', "Submitted Successfully", true);
+                    this.listSalesforceCustomFields();
+                }
+            },
+            error => {
+                this.ngxloading = false;
+                },
+            () => { }
+        );
+    }
+    
+    setSfCfPage( page: number ) {
+    	this.paginatedSelectedIds = [];
+        try {
+            if ( page < 1 || (this.sfcfPager.totalPages > 0 && page > this.sfcfPager.totalPages) ) {
+                return;
+            }
+             this.sfcfPager = this.socialPagerService.getPager( this.sfCustomFieldsResponse.length, page, this.pageSize );
+             this.sfcfPagedItems = this.sfCustomFieldsResponse.slice( this.sfcfPager.startIndex, this.sfcfPager.endIndex + 1 );
+             var cfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
+                var items = $.grep( this.selectedCfIds, function( element ) {
+                    return $.inArray( element, cfIds ) !== -1;
+                });
+                if ( items.length == this.sfcfPager.pageSize  || items.length == this.sfCustomFieldsResponse.length || items.length == this.sfcfPagedItems.length ) {
+                    this.isHeaderCheckBoxChecked = true;
+                } else {
+                    this.isHeaderCheckBoxChecked = false;
+                }
+
+				if ( items ) {
+					for ( let i = 0; i < items.length; i++ ) {
+                    	this.paginatedSelectedIds.push( items[i] );
+                	}
+                }
+        } catch ( error ) {
+           // this.xtremandLogger.error( error, "setSfCfPage()." )
+        }
+
+    }
+    
+    selectedPageNumber( event ) {
+        this.pageNumber.value = event;
+        if ( event === 0 ) { event = this.sfCustomFieldsResponse.length; }
+        this.pageSize = event;
+        this.setSfCfPage( 1 );
+    }
+    
+    /***********Re configure**************/
+	reConfigSalesforce() {
+		try {
+			  const self = this;
+  swal( {
+      title: 'Salesforce Re-configuration?',
+      text: 'Are you sure? All data related to existing Salesforce account will be deleted by clicking Yes.',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#54a7e9',
+      cancelButtonColor: '#999',
+      confirmButtonText: 'Yes'
+
+  }).then( function() {
+      self.configSalesforce();
+  }, function( dismiss: any ) {
+      console.log( 'you clicked on option' + dismiss );
+  }); 
+		} catch (error) {
+			this.logger.error(this.referenceService.errorPrepender + " confirmDelete():" + error);
+			this.ngxloading = false;
+		}
+	}
+	
+	sfcfMasterCB() {
+		//let checked = e.target.checked;
+		this.sfcfMasterCBClicked = true;
+	}
+	
+	checkAll( ev: any ) {
+        if ( ev.target.checked ) {
+                console.log( "checked" );
+                $( '[name="sfcf[]"]' ).prop( 'checked', true );
+                let self = this;
+                $( '[name="sfcf[]"]:checked' ).each( function() {
+                    var id = $( this ).val();
+                    self.selectedCfIds.push( id );
+                    self.paginatedSelectedIds.push( id );
+                });
+                this.selectedCfIds = this.referenceService.removeDuplicates( this.selectedCfIds );
+                this.paginatedSelectedIds = this.referenceService.removeDuplicates( this.paginatedSelectedIds );
+                console.log( self.selectedCfIds );
+            } else {
+                $( '[name="sfcf[]"]' ).prop( 'checked', false );
+                if ( this.sfcfPager.maxResults == this.sfcfPager.totalItems ) {
+                    this.selectedCfIds = [];
+                    this.paginatedSelectedIds = [];
+                    //this.allselectedUsers.length = 0;
+                } else {
+                    this.paginatedSelectedIds = [];
+                    let currentPageCfIds = this.sfcfPagedItems.map( function( a ) { return a.name; });
+                    this.selectedCfIds = this.referenceService.removeDuplicatesFromTwoArrays( this.selectedCfIds, currentPageCfIds );
+                }
+            }
+            ev.stopPropagation();
+    }
+	
+	selectCf( cfName: string) {
+        let isChecked = $( '#' + cfName ).is( ':checked' );
+        console.log( this.selectedCfIds )
+        if ( isChecked ) {
+           // $( '#row_' + contactId ).addClass( 'contact-list-selected' );
+            this.selectedCfIds.push( cfName );
+            this.paginatedSelectedIds.push( cfName );
+            //this.allselectedUsers.push( object );
+            console.log( this.selectedCfIds );
+        } else {
+           // $( '#row_' + cfName ).removeClass( 'contact-list-selected' );
+            this.selectedCfIds.splice( $.inArray( cfName, this.selectedCfIds ), 1 );
+            this.paginatedSelectedIds.splice( $.inArray( cfName, this.paginatedSelectedIds ), 1 );
+            //this.allselectedUsers =  this.referenceService.removeRowsFromPartnerOrContactListByEmailId(this.allselectedUsers,email);
+
+        }
+        if ( this.paginatedSelectedIds.length == this.sfcfPagedItems.length ) {
+            this.isHeaderCheckBoxChecked = true;
+        } else {
+            this.isHeaderCheckBoxChecked = false;
+        }
+        event.stopPropagation();
+    }
+    
+    
 }

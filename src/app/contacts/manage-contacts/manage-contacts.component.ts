@@ -556,6 +556,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                       //  localStorage.setItem("checkSyncCode", data.statusCode);
                         this.customResponse = new CustomResponse('INFO', data.message, true);
                         localStorage.setItem('isZohoSynchronization','no');
+                        localStorage.removeItem('isZohoSynchronization');
                     }else{
                         this.customResponse = new CustomResponse('SUCCESS', this.properties.CONTACT_LIST_SYNCHRONIZATION_SUCCESS, true);
                         this.loadContactLists(this.pagination);
@@ -616,6 +617,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                         this.contactListIdZoho = contactListId;
                         this.contactListIdZoho = localStorage.setItem("contactListIdZoho",this.contactListIdZoho);
                         this.socialNetworkZoho = localStorage.setItem("socialNetworkZoho",socialNetwork);
+                        localStorage.removeItem('isZohoSynchronization');
                     }
                     else{
                         this.syncronizeContactList(contactListId, socialNetwork);
@@ -1852,9 +1854,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     ngAfterViewChecked(){
 
-        let tempIsZohoSynchronization = localStorage.getItem('isZohoSynchronization');
+       let tempIsZohoSynchronization = localStorage.getItem('isZohoSynchronization');
        if(tempIsZohoSynchronization == 'yes' && !this.isPartner)
-
         {
             this.contactListIdZoho = localStorage.getItem("contactListIdZoho");
             this.socialNetworkZoho = localStorage.getItem("socialNetworkZoho");
@@ -1882,7 +1883,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
-
+            
             window.addEventListener('message', function(e)
              {
                   console.log('received message:  ' + e.data, e);

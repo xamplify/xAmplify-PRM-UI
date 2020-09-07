@@ -1668,8 +1668,10 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if ( this.socialPartnerUsers.length > 0 ) {
             this.newPartnerUser = this.socialPartners.contacts;
             this.saveValidEmails();
+            localStorage.removeItem('isZohoSynchronization');
         } else
             this.xtremandLogger.error( "AddContactComponent saveZohoContacts() Contacts Null Error" );
+            localStorage.removeItem('isZohoSynchronization');
     }
 
     saveZohoContactSelectedUsers() {
@@ -1677,9 +1679,11 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
         if ( this.allselectedUsers.length != 0 ) {
             this.newPartnerUser = this.allselectedUsers;
             this.saveValidEmails();
+            localStorage.removeItem('isZohoSynchronization');
         }
         else {
             this.xtremandLogger.error( "AddContactComponent saveZohoContactSelectedUsers() ContactList Name Error" );
+            localStorage.removeItem('isZohoSynchronization');
         }
     }
 
@@ -2468,6 +2472,12 @@ export class AddPartnersComponent implements OnInit, OnDestroy {
             /********Check Gdpr Settings******************/
             this.checkTermsAndConditionStatus();
             this.getLegalBasisOptions();
+            this.getModuleAccess();
+            if(localStorage.getItem('vanityUrlDomain'))
+            {
+                localStorage.removeItem('vanityUrlDomain');
+                self.close();
+            }
         }
         catch ( error ) {
             this.xtremandLogger.error( "addPartner.component oninit " + error );

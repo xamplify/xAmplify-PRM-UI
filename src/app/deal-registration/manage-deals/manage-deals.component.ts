@@ -1205,5 +1205,5 @@ export class ManageDealsComponent implements OnInit {
         this.campaignsPagination = new Pagination();
         this.campaignsPaginationByDeals = new Pagination();
     }
-
+	
 }

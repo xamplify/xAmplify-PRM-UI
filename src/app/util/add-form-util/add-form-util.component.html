@@ -837,8 +837,8 @@
                                                 </span>
                                             </div>
                                             <span class="item__name" data-toggle="tooltip" [title]="file.fileName">
-                                                <strong>{{file.fileName	| slice: 0: 8}} <span
-                                                        *ngIf="file.fileName?.length>8">...</span>
+                                                <strong>{{file.fileName	| slice: 0: 8}}
+                                                 <span *ngIf="file.fileName?.length>8">...</span>
                                             </strong>
                                             </span>
                                             <div class="item__size">

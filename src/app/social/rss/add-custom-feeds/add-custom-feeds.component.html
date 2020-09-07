@@ -110,6 +110,11 @@
 														<div class="popover-content p10">
 															<ul class="list-group m0" id="popover_1">
 																<li class="list-group-item" *ngIf="addNewCollection">
+																	<div *ngIf="addCollectionError">
+																		<span style="color: red"> <i
+																			class="fa fa-times-circle" aria-hidden="true"></i>{{addCollectionErrorMessage}}
+																		</span>
+																	</div>
 																	<form>
 																		<div class="form-group">
 																			<label for="customCollectionName">Collection Name</label> <input

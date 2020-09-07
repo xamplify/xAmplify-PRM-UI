@@ -398,7 +398,7 @@ export class AuthenticationService {
   isVendorPartner() {
     try {
       const roleNames = this.getRoles();
-      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
+      if (roleNames && ((roleNames.indexOf(this.roleName.vendorRole) > -1  || roleNames.indexOf(this.roleName.vendorTierRole) > -1 || (roleNames.indexOf('ROLE_ALL') > -1)) && roleNames.indexOf('ROLE_COMPANY_PARTNER') > -1) && !this.hasOnlyPartnerRole && !this.isPartnerTeamMember) {
         return true;
       } else {
         return false;
@@ -545,7 +545,7 @@ export class AuthenticationService {
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser !== undefined && currentUser != null) {
       let roles = JSON.parse(currentUser)['roles'];
-      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2);
+      let rolesExists = roles.filter(role => role.roleId === 13 || role.roleId === 2 || role.roleId===18 || role.roleId===19);
       if (rolesExists.length > 0) {
         return true;
       }
