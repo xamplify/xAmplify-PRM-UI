@@ -148,9 +148,7 @@ export class CreateMdfRequestComponent implements OnInit {
       this.saveMdfRequestDto.formSubmitDto = formSubmit;
       this.saveMdfRequestDto.vendorCompanyId = this.vendorCompanyId;
       this.saveMdfRequestDto.partnerCompanyId = this.loggedInUserCompanyId;
-      this.loading = false;
-     // this.saveMdfRequest();
-
+      this.saveMdfRequest();
     }
   }
   validateEmail(columnInfo: ColumnInfo) {
