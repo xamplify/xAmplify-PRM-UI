@@ -89,20 +89,20 @@
 											
 											<td *ngIf="columns?.length>3">
 												<div class="request-form-actions-div">
-													<a (click)="expandColumns(formDataRow,rowIndex)" data-toggle="tooltip"
-													title="View More Columns" *ngIf="columns.length>4">
+													<!--View More Columns-->
+													<a (click)="expandColumns(formDataRow,rowIndex)" title="View More Columns" *ngIf="columns.length>4">
 													<i *ngIf="!formDataRow.expanded" class="fa fa-plus action-btn"aria-hidden="true"></i>
 													<i *ngIf="formDataRow.expanded" class="fa fa-minus action-btn"aria-hidden="true"></i>
 													</a>
-													<a title="Change Request">
+													<!---Change Request-->
+													<a title="Change Request" *ngIf="!partnerView">
 													<i (click)="changeRequest(formDataRow.values[0])" class="fa fa-pencil-square-o action-btn" aria-hidden="true"></i>
 													</a>
 													<!----Timeline History-->
-													<a  title="View History">
+													<a  title="View History" (click)="wip()">
 													 <i class="fa fa-line-chart action-btn" aria-hidden="true"></i>
 													 </a>
-
-													 <a  title="Comments">
+													 <a  title="Comments" (click)="wip()">
 														<i class="fa fa-comment action-btn" aria-hidden="true"></i>
 														</a>
 												 </div>

@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="isPartnerView && vanityLogin">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
-                  <button (click)="goToAddRequest(459)" class="btn btn-primary" style="border-radius: 3px !important;">
+                  <button (click)="goToAddRequest(vendorCompanyId)" class="btn btn-primary" style="border-radius: 3px !important;">
                      <span class="hidden-xs margin-right-design" translate>Request MDF</span>
                      <i class="fa fa-user-plus" data-toggle="tooltip" aria-hidden="true"></i>
                  </button>
@@ -29,7 +29,6 @@
             </div>
          </div>
       </div>
-      
    </div>
    <div class="row">
       <div class="col-md-12 col-lg-12">

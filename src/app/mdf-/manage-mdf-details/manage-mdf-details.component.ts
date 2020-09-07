@@ -231,7 +231,12 @@ export class ManageMdfDetailsComponent implements OnInit {
 
 
   viewMdfAmountHistory(partner: MdfPartnerDto) {
+    this.referenceService.showSweetAlertInfoMessage();
+  }
 
+  editMdfForm(){
+    this.loading = true;
+    this.referenceService.goToRouter("/home/mdf/form");
   }
 
 }

@@ -5,7 +5,6 @@ import { XtremandLogger } from "app/error-pages/xtremand-logger.service";
 import { Observable } from "rxjs";
 import { Form } from "app/forms/models/form";
 import { ColumnInfo } from "app/forms/models/column-info";
-import { FormType } from "app/forms/models/form-type.enum";
 import { FormOption } from "app/forms/models/form-option";
 import { Pagination } from "app/core/models/pagination";
 import {MdfDetails} from '../models/mdf-details';
@@ -159,6 +158,13 @@ updateMdfRequest(mdfRequest:MdfRequestDto){
         .map(this.extractData)
         .catch(this.handleError);
 }
+
+getMdfRequestForm(companyId: number) {
+  return this.http.get(this.URL + "getMdfRequestForm/" + companyId + "?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
 
   extractData(res: Response) {
     let body = res.json();

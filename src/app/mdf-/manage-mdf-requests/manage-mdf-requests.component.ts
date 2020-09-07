@@ -201,16 +201,15 @@ export class ManageMdfRequestsComponent implements OnInit,OnDestroy {
   }
 
   viewRequests(mdfRequestVendorDto:MdfRequestVendorDto){
-    this.showMdfFormAnalyticsForParnterView = true;
-    this.mdfRequestVendorDto = mdfRequestVendorDto;
-    this.vanityLoginDto.vendorCompanyProfileName =mdfRequestVendorDto.companyProfileName;
-    this.vanityLoginDto.vanityUrlFilter = true;
-    this.tileClass = this.vendorTilesClass;
-    this.getTilesInfoForPartner();
-    this.vendorCompanyId = mdfRequestVendorDto.companyId;
-    this.partnershipId = mdfRequestVendorDto.partnershipId;
-    this.referenceService.goToTop();
-    
+      this.showMdfFormAnalyticsForParnterView = true;
+      this.mdfRequestVendorDto = mdfRequestVendorDto;
+      this.vanityLoginDto.vendorCompanyProfileName =mdfRequestVendorDto.companyProfileName;
+      this.vanityLoginDto.vanityUrlFilter = true;
+      this.tileClass = this.vendorTilesClass;
+      this.getTilesInfoForPartner();
+      this.vendorCompanyId = mdfRequestVendorDto.companyId;
+      this.partnershipId = mdfRequestVendorDto.partnershipId;
+      this.referenceService.goToTop();
   }
   goToManageRequest(){
     this.showMdfFormAnalyticsForParnterView = false;

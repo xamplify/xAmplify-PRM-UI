@@ -11,11 +11,12 @@ import { ManageMdfRequestsComponent } from './manage-mdf-requests/manage-mdf-req
 import { CreateMdfRequestComponent } from './create-mdf-request/create-mdf-request.component';
 import { ManageMdfRequestFormComponent } from './manage-mdf-request-form/manage-mdf-request-form.component';
 import { ChangeMdfRequestComponent } from './change-mdf-request/change-mdf-request.component';
+import { EditMdfRequestFormComponent } from './edit-mdf-request-form/edit-mdf-request-form.component';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, MdfRoutingModule
   ],
-  declarations: [MdfHtmlComponent, ManageMdfDetailsComponent, ManageMdfRequestsComponent, CreateMdfRequestComponent, ManageMdfRequestFormComponent, ChangeMdfRequestComponent],
+  declarations: [MdfHtmlComponent, ManageMdfDetailsComponent, ManageMdfRequestsComponent, CreateMdfRequestComponent, ManageMdfRequestFormComponent, ChangeMdfRequestComponent, EditMdfRequestFormComponent],
   providers: [MdfService]
 })
 export class MdfModule { }

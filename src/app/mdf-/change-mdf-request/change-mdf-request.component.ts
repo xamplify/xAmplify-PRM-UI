@@ -101,7 +101,7 @@ export class ChangeMdfRequestComponent implements OnInit {
 
   goToManageMdfRequests(){
     this.loading = true;
-    this.referenceService.goToRouter("home/mdf/requests");
+    this.referenceService.goToRouter("/home/mdf/requests");
   }
 
   openForm(){
