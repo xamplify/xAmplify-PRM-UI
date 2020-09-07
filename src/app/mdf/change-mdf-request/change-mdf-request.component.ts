@@ -81,7 +81,7 @@ export class ChangeMdfRequestComponent implements OnInit {
       subscribe((result: any) => {
         if(result.statusCode==200){
           this.mdfRequest = result.map.requestDetails;
-          this.selectedMdfRequest = result.map.requestDetails;
+          this.selectedMdfRequest = this.mdfRequest;
           this.mdfAmountTiles = result.map.partnerMdfBalances;
           this.vendorContact = result.map.vendorContact;
           this.mdfRequestOwner = result.map.mdfRequestOwner;
@@ -108,7 +108,6 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   openForm(){
-    this.selectedMdfRequest = this.mdfRequest;
     this.errorResponses = new Array<ErrorResponse>();
     this.errorFieldNames = [];
     $('#changeRequestModal').modal('show');
@@ -117,6 +116,7 @@ export class ChangeMdfRequestComponent implements OnInit {
     $('#changeRequestModal').modal('hide');
     this.customResponse = new CustomResponse();
     this.modalPopupLoader=false;
+    this.loadData();
   }
 
   updateMdfRequest(){
