@@ -43,6 +43,8 @@ export class ManageMdfFundsComponent implements OnInit {
 
    ngOnInit() {
      this.loading  = true;
+     this.tilesLoader = true;
+     this.referenceService.loading(this.partnerListLoader, true);
      this.getCompanyId();
     
   }
@@ -57,7 +59,10 @@ export class ManageMdfFundsComponent implements OnInit {
           this.referenceService.showSweetAlertErrorMessage('Company Id Not Found.Please try aftersometime');
           this.router.navigate(["/home/dashboard"]);
         }
-      }, (error: any) => { this.xtremandLogger.log(error); },
+      }, (error: any) => { 
+        this.xtremandLogger.log(error);
+        this.xtremandLogger.errorPage(error);
+              },
       () => {
         if(this.loggedInUserCompanyId!=undefined && this.loggedInUserCompanyId>0){
           this.getTilesInfo();

@@ -30,7 +30,7 @@ import { ImageCropperComponent } from '../../../common/image-cropper/component/i
 import { CampaignAccess } from '../../../campaigns/models/campaign-access';
 import { CallActionSwitch } from '../../../videos/models/call-action-switch';
 import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
-import { MdfService } from 'app/mdf/services/mdf.service';
+import { MdfService } from 'app/mdf-/services/mdf.service';
 
 
 declare var $,swal: any;

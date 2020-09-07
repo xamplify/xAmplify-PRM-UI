@@ -1591,7 +1591,7 @@ goBackToManageList(){
 		if (this.isValidLegalOptions) {
 			if(this.isPartner){
 			 this.loading = true;
-			 this.getContactsLimitAndMdfAmount();
+			 this.getContactsLimit();
 			}else{
 				this.saveData();
 			}
@@ -1604,8 +1604,8 @@ goBackToManageList(){
 		this.cancelContacts();
 	}
 
-	getContactsLimitAndMdfAmount(){
-		this.contactService.getContactsLimitAndMdfAmount(this.users,this.loggedInUserId).subscribe(
+	getContactsLimit(){
+		this.contactService.getContactsLimit(this.users,this.loggedInUserId).subscribe(
             (data: any) => {
 				this.users = data.data;
 				this.loading = false;
@@ -3143,7 +3143,6 @@ goBackToManageList(){
 			this.loadContactListsNames();
 			if (this.isPartner) {
 				this.listTeamMembers();
-				this.getModuleAccess();
 				/*  this.listOrgAdmin();*/
 			}
 
@@ -3172,18 +3171,7 @@ goBackToManageList(){
 		}
 	}
 
-	getModuleAccess(){
-        this.loading = true;
-        this.campaignService.getModuleAccessByUserId(this.loggedInUserId).subscribe(
-            (data: any) => {
-				this.loading = false;
-               this.mdfAccess = data.mdf;
-              }, (error: any) => {
-				this.loading = false;
-                console.log("Unable to fetch mdf access data",error);
-              }
-            );
-    }
+	
 
 	checkTermsAndConditionStatus() {
 		if (this.companyId > 0) {

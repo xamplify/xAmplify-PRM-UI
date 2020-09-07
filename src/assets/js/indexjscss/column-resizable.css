@@ -185,3 +185,6 @@ span.ui-column-resizer {
     width: 40px;
     border: 1px solid #ccc;
 }
+.center-align{
+	text-align: center;
+}
