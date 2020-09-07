@@ -108,7 +108,9 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   openForm(){
-   // this.selectedMdfRequest = this.mdfRequest;
+    this.selectedMdfRequest = this.mdfRequest;
+    this.errorResponses = new Array<ErrorResponse>();
+    this.errorFieldNames = [];
     $('#changeRequestModal').modal('show');
   }
   closeChangeRequestPopup(){
