@@ -124,7 +124,9 @@ export class CreateMdfRequestComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.loading = true;
     const formLabelDtos = this.form.formLabelDTOs;
-    const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
+    const requiredFormLabels = formLabelDtos.filter((item) =>
+     (item.required === true && $.trim(item.value).length === 0) ||
+      (item.defaultColumn && item.labelType=='number' && item.value<='0'));
     if (requiredFormLabels.length > 0) {
       this.customResponse = new CustomResponse('ERROR','Please fill required fields',true);
       this.loading = false;
@@ -146,7 +148,8 @@ export class CreateMdfRequestComponent implements OnInit {
       this.saveMdfRequestDto.formSubmitDto = formSubmit;
       this.saveMdfRequestDto.vendorCompanyId = this.vendorCompanyId;
       this.saveMdfRequestDto.partnerCompanyId = this.loggedInUserCompanyId;
-      this.saveMdfRequest();
+      this.loading = false;
+     // this.saveMdfRequest();
 
     }
   }

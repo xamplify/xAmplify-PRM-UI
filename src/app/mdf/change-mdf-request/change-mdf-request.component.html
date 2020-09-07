@@ -297,7 +297,7 @@
                    <div class="portlet box">
                        <div class="">
                         <div class="col-md-12 col-lg-12 ">
-                           <div class="form-group">
+                           <div [attr.class]="errorFieldNames.indexOf('status')>-1 ? 'form-group has-error':'form-group'">
                                <label class="control-label col-sm-3" translate>Status
                                        <span style="color: red">*</span>
                                    </label>
@@ -311,6 +311,9 @@
                                            <option [value]="6" [selected]="selectedMdfRequest.statusInInteger ==6">Request Expired (Closed)</option>
                                            <option [value]="7" [selected]="selectedMdfRequest.statusInInteger ==7">Request Declined (Closed)</option>
                                           </select>
+                                          <ng-container *ngFor="let errorResponse of errorResponses">
+                                             <span class="required" *ngIf="errorResponse.field=='status'">{{errorResponse.message}}</span>
+                                          </ng-container>
                                </div>
                            </div>
                        </div>

@@ -11,6 +11,8 @@ import { MdfService } from '../services/mdf.service';
 import { ActivatedRoute } from '@angular/router';
 import {MdfRequestDto} from '../models/mdf-request-dto';
 import {MdfAmountTiles} from '../models/mdf-amount-tiles';
+import { ErrorResponse } from 'app/util/models/error-response';
+
 declare var $: any;
 @Component({
   selector: 'app-change-mdf-request',
@@ -35,6 +37,8 @@ export class ChangeMdfRequestComponent implements OnInit {
   vendorContact:any;
   mdfRequestOwner: any;
   partnerManager: any;
+  errorResponses: Array<ErrorResponse> = new Array<ErrorResponse>();
+  errorFieldNames:Array<string> = new Array<string>();
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
 
@@ -82,7 +86,6 @@ export class ChangeMdfRequestComponent implements OnInit {
           this.vendorContact = result.map.vendorContact;
           this.mdfRequestOwner = result.map.mdfRequestOwner;
           this.partnerManager = result.map.partnerManager;
-          console.log(this.mdfRequest);
         }else if(result.statusCode==404){
           this.goToManageMdfRequests();
           this.referenceService.showSweetAlertErrorMessage("Invalid Request");
@@ -105,7 +108,7 @@ export class ChangeMdfRequestComponent implements OnInit {
   }
 
   openForm(){
-    this.selectedMdfRequest = this.mdfRequest;
+   // this.selectedMdfRequest = this.mdfRequest;
     $('#changeRequestModal').modal('show');
   }
   closeChangeRequestPopup(){
@@ -117,6 +120,8 @@ export class ChangeMdfRequestComponent implements OnInit {
   updateMdfRequest(){
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
+    this.errorResponses = new Array<ErrorResponse>();
+    this.errorFieldNames = [];
     this.modalPopupLoader = true;
     this.selectedMdfRequest.loggedInUserId = this.loggedInUserId;
     this.mdfService.updateMdfRequest(this.selectedMdfRequest).subscribe((result: any) => {
@@ -127,7 +132,8 @@ export class ChangeMdfRequestComponent implements OnInit {
       }else if(result.statusCode==400){
         this.referenceService.goToTop();
         this.modalPopupLoader = false;
-        this.customResponse = new CustomResponse('ERROR',result.message,true);
+        this.errorResponses = result.errorResponses;
+        this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
       } else{
         this.modalPopupLoader = false;
       }

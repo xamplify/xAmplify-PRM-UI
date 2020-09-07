@@ -133,7 +133,7 @@
                                 </ng-container>
                                 <!----Number------->
                                 <ng-container *ngIf="columnInfo.labelType=='number'">
-                                 <input type="name"   class="form-control padding-mobile currency" id="mdfAmount"
+                                 <input type="name"   class="form-control padding-mobile currency"
                                     [(ngModel)]="columnInfo.value"  [ngModelOptions]="{standalone: true}" 
                                     placeholder="{{columnInfo.placeHolder}}" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                               </ng-container>
