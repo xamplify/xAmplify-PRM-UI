@@ -850,7 +850,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
   navigateBack() {
       if(this.isMdfForm){
-        this.referenceService.goToRouter("/home/mdf/funds");
+        this.referenceService.goToRouter("/home/mdf/details");
       }else{
         if (this.isAdd) {
             this.router.navigate(["/home/design/add"]);
