@@ -76,19 +76,31 @@
                             <li [ngClass]="{'active-tab': activeTabName == 'settings'}" [class.disabled]="authenticationService.isSuperAdmin()" class="hidden-xs">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'settings'}" (click)="activateTab('settings');clearCustomResponse()">{{properties.viewType | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
+
+                            <li [ngClass]="{'active-tab': activeTabName == 'playerSettings'}" [class.disabled]="authenticationService.isSuperAdmin()" 
+                            *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                             authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                             !authenticationService.isOnlyPartner() && authenticationService.superiorRole != 'Partner'"
                                 (click)="videojsCall()">
                                 <a  [ngClass]="{'active-tab-anchor-text': activeTabName == 'playerSettings'}"(click)="activateTab('playerSettings');">
                                     <span>{{properties.defaultPlayerSettings | translate}}</span>
                                 </a> 
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner()) && !authenticationService.isOnlyPartner() && authenticationService.enableLeads &&  authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'dealTypes'}" class="hidden-xs" *ngIf="(hasAllAccess || 
+                                    hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner()
+                                     || authenticationService.isVendor() || authenticationService.isVendorPartner()) && 
+                                     !authenticationService.isOnlyPartner() && authenticationService.enableLeads && 
+                                      authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'dealTypes'}"  (click)="activateTab('dealTypes');clearCustomResponse()">{{properties.dealRegistration | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || authenticationService.superiorRole != 'Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'integrations'}" class="hidden-xs" *ngIf="hasAllAccess || hasVideoRole || authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() ||
+                               authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() ||
+                                authenticationService.superiorRole != 'Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'integrations'}" (click)="activateTab('integrations');clearCustomResponse()"> {{properties.integrations | translate}}</a>
                             </li>
-                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || authenticationService.isOnlyPartner() || roleNames=='Partner'">
+                            <li [ngClass]="{'active-tab': activeTabName == 'gdpr'}" class="hidden-xs" *ngIf="authenticationService.isOrgAdmin() || 
+                                        authenticationService.isOrgAdminPartner() || authenticationService.isVendor() || authenticationService.isVendorPartner() || 
+                                        authenticationService.isOnlyPartner() || roleNames=='Partner'">
                                 <a [ngClass]="{'active-tab-anchor-text': activeTabName == 'gdpr'}"  (click)="activateTab('gdpr');clearCustomResponse()">{{properties.gdprSettings | translate}}</a>
                             </li>
                             <li  [ngClass]="{'active-tab': activeTabName == 'categories'}" class="hidden-xs">
@@ -484,7 +496,7 @@
                                         <div *ngIf="integrationTabIndex == 2">
                                         <app-response-message class="pg8" [customResponse]="customFieldsResponse" *ngIf="customFieldsResponse.isVisible">
                                         </app-response-message>
-                                        	<div align="center" style="margin-bottom:20px"><h3>Pick required custom fields from Salesforce
+                                        	<div align="center" style="margin-bottom:20px"><h3>Salesforce custom fields
                                         		<span style="color: #488fd6; border: 1px solid #eaeaea; padding: 2px 5px 2px 5px; border-radius: 2px; font-size: 15px;">
 																	<a (click)="salesforceSettings()" data-toggle="tooltip"
 															data-placement="top" title="Refresh Custom Fields"><i class="fa fa-refresh"
@@ -493,14 +505,19 @@
 												</h3>
                                         	</div>
                                         	
+                                        	<div>*Note: Please pick all fields that are marked required in Salesforce.  Otherwise, leads and deals will not be pushed into Salesforce. </div>
+                                        	
                                         	<!-- <app-response-message [customResponse]="customResponse"
 														*ngIf="customResponse.isVisible" style="margin: 10px"></app-response-message> -->
 													<form class="form-horizontal" autocomplete="off">
 														<table class='table tgrid'>
 															<thead>
 															<tr>
+																<!-- <th class="text-center"><input type="checkbox" value="sfcfSelectAll"
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th> -->
 																<th class="text-center"><input type="checkbox" value="sfcfSelectAll"
-																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="sfcfSelectAll" (change)="sfcfMasterCB()"/></th>
+																		id="sfcfSelectAll" name="sfcfSelectAll" [(ngModel)]="isHeaderCheckBoxChecked" (change)="checkAll($event)"/></th>
+																		
 																<th>Field Name</th>
 																<th>Data Type</th>
 															</tr>
@@ -509,8 +526,10 @@
 																<ng-container
 																	*ngFor="let sfCustomField of sfcfPagedItems ">
 																<tr>
-																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
-																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td>
+																	<!-- <td align="center"><input type="checkbox" value="{{sfCustomField.name}}"
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(!sfcfMasterCBClicked && sfCustomField.selected) || (sfcfMasterCBClicked && sfcfSelectAll)"/></td> -->
+																	<td align="center"><input type="checkbox" value="{{sfCustomField.name}}" (click)="selectCf(sfCustomField.name)"
+																		id="{{sfCustomField.name}}" name="sfcf[]" [checked]="(selectedCfIds.indexOf(sfCustomField.name)>-1)"/></td>
 																	<td><span>{{sfCustomField.label}}</span></td>
 																	<td><span>{{sfCustomField.type}}</span></td>
 																</tr>

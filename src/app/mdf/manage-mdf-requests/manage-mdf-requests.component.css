@@ -1,3 +1,8 @@
-.custom-pointer{
-    cursor: pointer;
+#vendor-details-tile{
+    border-color: lightgrey;
+    border-style: solid;
+    height: 102px;
+    border-radius: 10px;
+    padding-top: 15px;
+    background-color: #fff;
 }

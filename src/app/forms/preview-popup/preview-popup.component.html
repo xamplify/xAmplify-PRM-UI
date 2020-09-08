@@ -158,9 +158,9 @@
                                 <ng-container *ngFor="let columnInfo of form?.formLabelDTOs;let i = index">
                                     <div class="form-group">
                                         <label class="control-label" [style.color]="form.labelColor">{{columnInfo.labelName}}
-                    <span class="required" *ngIf="columnInfo.required">*</span>
-                  </label>
-                                        <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email'">
+                    						<span class="required" *ngIf="columnInfo.required">*</span>
+                  						</label>
+                                        <ng-container *ngIf="columnInfo.labelType=='text' || columnInfo.labelType=='email' || columnInfo.labelType=='number'">
                                             <input type="{{columnInfo.labelType}}" class="form-control" placeholder="{{columnInfo.placeHolder}}" id="{{columnInfo.labelId}}" maxlength="1000" disabled="disabled">
                                         </ng-container>
 
@@ -175,8 +175,8 @@
                                         <ng-container *ngIf="columnInfo.labelType=='price'">
                                             <div class="input-group prefix">
                                                 <span class="input-group-addon" style="pointer-events: none;">
-                        {{columnInfo.priceSymbol}}
-                      </span>
+                        								{{columnInfo.priceSymbol}}
+                     							 </span>
                                                 <input type="number" min="0" class="form-control" disabled="disabled" placeholder="{{columnInfo.placeHolder}}">
                                             </div>
                                         </ng-container>

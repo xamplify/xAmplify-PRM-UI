@@ -1,33 +1,31 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from "@angular/router";
-import { CreateMdfRequestComponent } from './create-mdf-request/create-mdf-request.component';
-import { ManageMdfFundsComponent } from './manage-mdf-funds/manage-mdf-funds.component';
+import { ManageMdfDetailsComponent } from './manage-mdf-details/manage-mdf-details.component';
 import { ManageMdfRequestsComponent } from './manage-mdf-requests/manage-mdf-requests.component';
-import { HtmlSampleComponent } from './html-sample/html-sample.component';
-import { ListVendorsComponent } from './list-vendors/list-vendors.component';
-import { EditMditRequestComponent } from './edit-mdit-request/edit-mdit-request.component';
-import { ViewTimeLineComponent } from './view-time-line/view-time-line.component';
-import { EditFormComponent } from './edit-form/edit-form.component';
-
+import { CreateMdfRequestComponent } from './create-mdf-request/create-mdf-request.component';
+import { ChangeMdfRequestComponent } from './change-mdf-request/change-mdf-request.component';
+import { EditMdfRequestFormComponent } from './edit-mdf-request-form/edit-mdf-request-form.component';
+import { MdfRequestTimelineComponent } from './mdf-request-timeline/mdf-request-timeline.component';
 
 export const routes: Routes = [
-  { path: "", redirectTo: "funds", pathMatch: "full" },
-  { path: "funds", component: ManageMdfFundsComponent },
-  { path: "create-request/:vendorCompanyId", component: CreateMdfRequestComponent },
-  { path: "change-request/:mdfId", component: EditMditRequestComponent },
-  {path: "requests", component:ManageMdfRequestsComponent},
-  {path: "html", component:HtmlSampleComponent},
+  { path: "", redirectTo: "details", pathMatch: "full" },
+  { path: "details", component: ManageMdfDetailsComponent },
+  { path: "requests", component: ManageMdfRequestsComponent },
   {path: "requests/:role", component:ManageMdfRequestsComponent},
-  {path: "vendors", component:ListVendorsComponent},
-  {path: "timeline/:type/:mdfId", component:ViewTimeLineComponent},
-  {path: "form",component:EditFormComponent}
+  {path: "create-request/:vendorCompanyId", component:CreateMdfRequestComponent},
+  {path: "change-request/:requestId", component:ChangeMdfRequestComponent},
+  {path: "form", component:EditMdfRequestFormComponent},
+  {path: "timeline/:role/:requestId", component:MdfRequestTimelineComponent},
 
 
 
 
-  ];
-@NgModule( {
-  imports: [RouterModule.forChild( routes )],
+
+
+
+];
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
-} )
+})
 export class MdfRoutingModule { }

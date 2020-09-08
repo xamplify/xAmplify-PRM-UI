@@ -81,13 +81,18 @@ export class ModuleAccessComponent implements OnInit {
           }, error => {
             this.ngxLoading = false;
             this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
-          });
+          },
+          () => {
+              this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
+              this.getModuleAccessByCompanyId();
+              this.getCompanyAndUserDetails();
+              this.referenceService.goToTop();
+              this.ngxLoading = false;
+          }
+          
+          );
         }
-        this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
-        this.getModuleAccessByCompanyId();
-        this.getCompanyAndUserDetails();
-        this.referenceService.goToTop();
-        this.ngxLoading = false;
+        
       }
     }, error => {
       this.ngxLoading = false;
@@ -95,20 +100,5 @@ export class ModuleAccessComponent implements OnInit {
     });
   }
 
-  addAmount(){
-    let mdfAmount = $('#mdfAmount').val();
-    if(mdfAmount!=""){
-      this.ngxLoading = true;
-      this.mdfService.addDefaultMdfAmountToPartners(this.companyId, mdfAmount).subscribe(result => {
-        this.referenceService.showSweetAlertSuccessMessage("Success");
-        this.ngxLoading = false;
-      }, error => {
-        this.ngxLoading = false;
-        this.customResponse = new CustomResponse('ERROR', 'Something went wrong.', true);
-      });
-    }else{
-      this.referenceService.showSweetAlertErrorMessage("Invalid Amount");
-    }
-    
-  }
+  
 }

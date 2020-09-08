@@ -185,3 +185,10 @@ span.ui-column-resizer {
     width: 40px;
     border: 1px solid #ccc;
 }
+.center-align{
+	text-align: center;
+}
+
+.xamp-margin-left-icon {
+    margin: 5px 5px 5px 5px;
+}

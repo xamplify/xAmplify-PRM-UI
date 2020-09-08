@@ -2064,4 +2064,8 @@ export class ReferenceService {
 	goToRouter(url:string){
 		this.router.navigate([url]);
 	}
+
+	filterSelectedColumnsFromArrayList(list:any,columnName:string){
+		return list.map(function (e:any) { return e[columnName]; });
+	}
 }

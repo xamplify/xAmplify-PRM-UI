@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MdfService } from '../services/mdf.service';
-import { MdfRequest } from '../models/mdf.request';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
@@ -10,20 +8,23 @@ import { HttpRequestLoader } from '../../core/models/http-request-loader';
 import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
+import { MdfService } from '../services/mdf.service';
 import { Form } from 'app/forms/models/form';
 import { FormSubmit } from 'app/forms/models/form-submit';
 import { FormSubmitField } from 'app/forms/models/form-submit-field';
 import { ColumnInfo } from 'app/forms/models/column-info';
 import { FormOption } from 'app/forms/models/form-option';
 import { FormService } from 'app/forms/services/form.service';
-
+import {MdfAmountTiles} from '../models/mdf-amount-tiles';
+import {SaveMdfRequest} from '../models/save-mdf-request';
 declare var $: any;
 
 @Component({
   selector: 'app-create-mdf-request',
   templateUrl: './create-mdf-request.component.html',
-  styleUrls: ['./create-mdf-request.component.css','../html-sample/html-sample.component.css'],
+  styleUrls: ['./create-mdf-request.component.css','../mdf-html/mdf-html.component.css'],
   providers: [HttpRequestLoader,Properties,FormService]
+
 })
 export class CreateMdfRequestComponent implements OnInit {
 
@@ -32,7 +33,6 @@ export class CreateMdfRequestComponent implements OnInit {
   tilesLoader = false;
   tileData:any;
   customResponse: CustomResponse = new CustomResponse();
-  mdfRequest: MdfRequest = new MdfRequest();
   vendorCompanyId:number = 0;
   loggedInUserCompanyId: number = 0;
   formLoader = false;
@@ -44,6 +44,8 @@ export class CreateMdfRequestComponent implements OnInit {
   show: boolean;
   message: string;
   isValidEmailIds: boolean;
+  mdfAmountTiles:MdfAmountTiles = new MdfAmountTiles();
+  saveMdfRequestDto:SaveMdfRequest = new SaveMdfRequest();
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties,private formService:FormService) {
     this.loggedInUserId = this.authenticationService.getUserId();
    }
@@ -51,11 +53,14 @@ export class CreateMdfRequestComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.tilesLoader = true;
+    this.formLoader = true;
     this.vendorCompanyId = this.route.snapshot.params['vendorCompanyId'];
     if(this.vendorCompanyId!=undefined && this.vendorCompanyId>0){
       this.getCompanyId();
     }else{
       this.loading = false;
+      this.formLoader = false;
+      this.tilesLoader = false;
       this.referenceService.showSweetAlertErrorMessage('Vendor Company Id Not Found');
       this.router.navigate(["/home/dashboard"]);
     }
@@ -87,13 +92,11 @@ export class CreateMdfRequestComponent implements OnInit {
 
   getTilesInfo() {
     this.tilesLoader = true;
-    this.mdfService.getPartnerMdfBalance(this.vendorCompanyId,this.loggedInUserCompanyId).subscribe((result: any) => {
-      if (result.statusCode === 200) {
-         this.tilesLoader = false;
-         this.tileData = result.data;
-      }
+    this.mdfService.getPartnerMdfAmountTilesInfo(this.vendorCompanyId,this.loggedInUserCompanyId).subscribe((result: any) => {
+    this.tilesLoader = false;
+    this.mdfAmountTiles = result.data;
     }, error => {
-      this.xtremandLogger.log(error);
+    this.xtremandLogger.log(error);
     this.xtremandLogger.errorPage(error);
     });
   }
@@ -118,11 +121,12 @@ export class CreateMdfRequestComponent implements OnInit {
 
   submitRequest(){
     this.referenceService.goToTop();
-    this.mdfRequest = new MdfRequest();
     this.customResponse = new CustomResponse();
     this.loading = true;
     const formLabelDtos = this.form.formLabelDTOs;
-    const requiredFormLabels = formLabelDtos.filter((item) => (item.required === true && $.trim(item.value).length === 0));
+    const requiredFormLabels = formLabelDtos.filter((item) =>
+     (item.required === true && $.trim(item.value).length === 0) ||
+      (item.defaultColumn && item.labelType=='number' && item.value<='0'));
     if (requiredFormLabels.length > 0) {
       this.customResponse = new CustomResponse('ERROR','Please fill required fields',true);
       this.loading = false;
@@ -140,10 +144,11 @@ export class CreateMdfRequestComponent implements OnInit {
         }
         formSubmit.fields.push(formField);
       });
-      this.mdfRequest.userId = this.loggedInUserId;
-      this.mdfRequest.formSubmitDto = formSubmit;
+      this.saveMdfRequestDto.userId = this.loggedInUserId;
+      this.saveMdfRequestDto.formSubmitDto = formSubmit;
+      this.saveMdfRequestDto.vendorCompanyId = this.vendorCompanyId;
+      this.saveMdfRequestDto.partnerCompanyId = this.loggedInUserCompanyId;
       this.saveMdfRequest();
-
     }
   }
   validateEmail(columnInfo: ColumnInfo) {
@@ -221,13 +226,14 @@ export class CreateMdfRequestComponent implements OnInit {
   }
 
   saveMdfRequest() {
-    this.mdfService.saveMdfRequest(this.mdfRequest).subscribe((result: any) => {
+    this.mdfService.saveMdfRequest(this.saveMdfRequestDto).subscribe((result: any) => {
       if (result.statusCode === 200) {
         this.referenceService.isCreated = true;
         this.router.navigate(['/home/mdf/requests/p']);
       }
     }, error => {
-      console.log(error);
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
     });
   }
 
@@ -235,31 +241,8 @@ export class CreateMdfRequestComponent implements OnInit {
 
   goToManageMdfRequests(){
     this.loading = true;
+    this.referenceService.goToTop();
     this.router.navigate(["/home/mdf/requests/p"]);
-  }
-
-
-  /*************Vivek************* */
-  getAllMdfRequests() {
-    this.mdfService.getAllMdfRequestsForPagination().subscribe((result: any) => {
-      if (result.statusCode === 200) {
-        console.log("success");
-      }
-    }, error => {
-      this.xtremandLogger.errorPage(error);
-    });
-  }
-
- 
-
-  updateMdfRequest() {
-    this.mdfService.updateMdfRequest(this.mdfRequest).subscribe((result: any) => {
-      if (result.statusCode === 200) {
-        console.log("success");
-      }
-    }, error => {
-      this.xtremandLogger.errorPage(error);
-    });
   }
 
 }

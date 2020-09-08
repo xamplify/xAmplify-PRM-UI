@@ -1,0 +1,15 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+    <div class="page-bar">
+       <ul class="page-breadcrumb">
+          <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a> 
+             <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </li>
+          <li (click)="goToManageMdfDetails()"><a translate>Manage MDF Details</a> <i class="fa fa-angle-right" aria-hidden="true"></i> </li>
+          <li><a translate>Edit MDF Form</a></li>
+       </ul>
+    </div>
+    <ng-container *ngIf="formLoaded">
+      <app-add-form-util [isMdfForm]="true" [selectedForm]="selectedForm"></app-add-form-util>
+    </ng-container>
+    </div>

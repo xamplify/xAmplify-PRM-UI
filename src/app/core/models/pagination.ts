@@ -69,6 +69,7 @@ export class Pagination {
 	vendorCompanyId:number = 0;
 	collectionId:number = 0;
 	feedId = 0;
+	partnershipId = 0;
 
 
 }

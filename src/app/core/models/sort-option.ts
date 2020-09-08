@@ -172,15 +172,27 @@ export class SortOption {
       ];
 
       mdfPartnersSortDropDownOptions = [
-        { 'name': 'MDF Account Balance (ASC)', 'value': 'mdfAccountBalance-ASC' },
-        { 'name': 'MDF Account Balance (DESC)', 'value': 'mdfAccountBalance-DESC' },
-        { 'name': 'Used Balance (ASC)', 'value': 'mdfUsedAmount-ASC' },
-        { 'name': 'Used Balance (DESC)', 'value': 'mdfUsedAmount-DESC' },
-        { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
-        { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' },
-        { 'name': 'Updated On (ASC)', 'value': 'updatedTime-ASC' },
-        { 'name': 'Updated On (DESC)', 'value': 'updatedTime-DESC' }
+      { 'name': 'First Name (A-Z)', 'value': 'firstName-ASC' },
+      { 'name': 'First Name (Z-A)', 'value': 'firstName-DESC' },
+      { 'name': 'Last Name (A-Z)', 'value': 'lastName-ASC' },
+      { 'name': 'Last Name (Z-A)', 'value': 'lastName-DESC' },
+      { 'name': 'Email Id (A-Z)', 'value': 'emailId-ASC' },
+      { 'name': 'Email Id (Z-A)', 'value': 'emailId-DESC' },
+      { 'name': 'Company Name (A-Z)', 'value': 'contactCompany-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'contactCompany-DESC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
     ];
+
+    mdfVendorsSortDropDownOptions = [
+      { 'name': 'Company Name (A-Z)', 'value': 'companyName-ASC' },
+      { 'name': 'Company Name (Z-A)', 'value': 'companyName-DESC' },
+      { 'name': 'Number Of Requests(ASC)', 'value': 'count-ASC' },
+      { 'name': 'Number Of Requests(DESC)', 'value': 'count-DESC' },
+      { 'name': 'Created On (ASC)', 'value': 'createdTime-ASC' },
+      { 'name': 'Created On (DESC)', 'value': 'createdTime-DESC' }
+    ];
+
 
 
     numberOfItemsPerPage = [
@@ -203,7 +215,8 @@ export class SortOption {
     public selectedCategoryDropDownOption:any = this.categorySortDropDownOptions[0];
     public selectedShareCampaignDropDownOption:any = this.shareCampaignSortDropDownOptions[3];
     public selectedActiveUsersSortOption:any = this.activeUsersSortDropDownOptions[4];
-    public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[5];
+    public mdfPartnersSortOption: any = this.mdfPartnersSortDropDownOptions[9];
+    public mdfVendorsSortOption:any = this.mdfVendorsSortDropDownOptions[5];
     public itemsSize: any = this.numberOfItemsPerPage[0];
     isListView: boolean = false;
     selectedCampaignTypeIndex:number = 0;

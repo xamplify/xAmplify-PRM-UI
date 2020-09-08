@@ -7,14 +7,32 @@
         <span class="caption-subject font-red-sunglo uppercase">{{pageHeader | translate}}</span>
       </div>
     </div>
+    
     <div class="col-xs-12 col-sm-6 col-lg-6 p0">
+    	<!-- <span><a (click)="syncLeadsWithSalesforce()" class="pull-right" style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+				Sync Leads with Salesforce</a></span> -->
+	  
+	  
       <div class="inputs" align="right" style="display: inline-flex;float: right;margin-bottom: 10px">
-        <div style="float: left;">
-          <select class="form-control" [(ngModel)]="sortOption.leadsSortOption" (ngModelChange)="sortLeads($event)" style="position: relative;right: -3px;">
-            <option *ngFor="let option of sortOption.leadsSortDropDown" [ngValue]="option">{{option.name}}</option>
-          </select>
-        </div>
-        <div class="portlet-input input-inline" style="margin-right: 10px;">
+						<div style="float: left;">
+							<button class="btn btn-primary register_deal" data-toggle="tooltip" 
+								data-placement="top" title="Synchronize with Salesforce"
+								(click)="syncLeadsWithSalesforce()" *ngIf="syncSalesForce"
+								style="margin-right: 4px; margin-top: 0px !important;" translate>
+								<i class="fa fa-refresh"></i> Salesforce
+							</button>
+						</div>
+						<div style="float: left;">
+							<select class="form-control"
+								[(ngModel)]="sortOption.leadsSortOption"
+								(ngModelChange)="sortLeads($event)"
+								style="position: relative; right: -3px;">
+								<option *ngFor="let option of sortOption.leadsSortDropDown"
+									[ngValue]="option">{{option.name}}</option>
+							</select>
+						</div>
+
+						<div class="portlet-input input-inline" style="margin-right: 10px;">
           <div class="input-icon right" style="position: relative;right: -11px;">
             <input type="text" style="height:34px;" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}"
               placeholder="Search " (keypress)="searchLeadsKeyPress($event.keyCode)">

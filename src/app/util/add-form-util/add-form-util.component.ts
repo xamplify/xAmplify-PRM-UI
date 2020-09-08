@@ -741,10 +741,13 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
   saveOrUpdateForm() {
       this.form.formLabelDTOs = this.columnInfos;
       this.form.createdBy = this.authenticationService.getUserId();
-      for (var instanceName in CKEDITOR.instances) {
-          CKEDITOR.instances[instanceName].updateElement();
-          this.form.footer = CKEDITOR.instances[instanceName].getData();
+      if(CKEDITOR!=undefined){
+        for (var instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+            this.form.footer = CKEDITOR.instances[instanceName].getData();
+        }
       }
+      
       if (!this.form.companyLogo) {
           this.form.companyLogo = this.companyLogoImageUrlPath;
       }
@@ -850,7 +853,7 @@ export class AddFormUtilComponent implements OnInit, OnDestroy {
 
   navigateBack() {
       if(this.isMdfForm){
-        this.referenceService.goToRouter("/home/mdf/funds");
+        this.referenceService.goToRouter("/home/mdf/details");
       }else{
         if (this.isAdd) {
             this.router.navigate(["/home/design/add"]);
