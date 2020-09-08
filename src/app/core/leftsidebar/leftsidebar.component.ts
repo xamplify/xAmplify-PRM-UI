@@ -158,16 +158,17 @@ export class LeftsidebarComponent implements OnInit, DoCheck {
                         this.enableLeads = data.enableLeads;
                         this.formAccess = data.form;
                         this.authService.module.hasPartnerLandingPageAccess = data.partnerLandingPage;
-                        /**********Form**************/
-                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
+						let anyAdminRole =  roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ||roles.indexOf( this.roleName.vendorTierRole ) > -1  || roles.indexOf( this.roleName.marketingRole ) > -1;
+						                        /**********Form**************/
+                        if ((anyAdminRole || roles.indexOf( this.roleName.formRole ) > -1 )  && this.formAccess ) {
                             this.authService.module.hasFormAccess = true;
                         }
                         /**********Landing Page**************/
-                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 || roles.indexOf( this.roleName.landingPageRole ) > -1 ) && data.landingPage ) {
+                        if ( ( anyAdminRole || roles.indexOf( this.roleName.landingPageRole ) > -1 ) && data.landingPage ) {
                             this.authService.module.hasLandingPageAccess = true;
                         }
                        /*************Landing Page Campaign*************/ 
-                        if ( ( roles.indexOf( this.roleName.orgAdminRole ) > -1 || roles.indexOf( this.roleName.vendorRole ) > -1 ) && data.landingPageCampaign ) {
+                        if ( (anyAdminRole) && data.landingPageCampaign ) {
                             this.authService.module.hasLandingPageCampaignAccess = true;
                         }
 
