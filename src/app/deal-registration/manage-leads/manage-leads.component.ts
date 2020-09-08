@@ -746,7 +746,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
     
     syncLeadsWithSalesforce() {
 		 this.referenceService.loading(this.httpRequestLoader, true);
-		this.dealRegistrationService.syncLeadsWithSalesforce(this.campaignId, this.loggedInUserId)
+		this.dealRegistrationService.syncLeadsWithSalesforce(this.campaignId, this.loggedInUserId,this.partner.partnerId)
         .subscribe(
           data => {
             let statusCode = data.statusCode;
