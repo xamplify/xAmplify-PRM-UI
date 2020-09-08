@@ -119,6 +119,14 @@ export class ChangeMdfRequestComponent implements OnInit {
     this.loadData();
   }
 
+  resetValues(event:any){
+    if(event>3){
+      this.selectedMdfRequest.allocationAmount = 0;
+    }else if(event!=4){
+      this.selectedMdfRequest.reimbursementAmount = 0;
+    }
+  }
+
   updateMdfRequest(){
     this.referenceService.goToTop();
     this.customResponse = new CustomResponse();
@@ -135,6 +143,7 @@ export class ChangeMdfRequestComponent implements OnInit {
         this.referenceService.goToTop();
         this.modalPopupLoader = false;
         this.errorResponses = result.errorResponses;
+        this.customResponse = new CustomResponse('ERROR','There was a problem with your submission.Please check highlighted errors below.',true);
         this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
       } else{
         this.modalPopupLoader = false;
