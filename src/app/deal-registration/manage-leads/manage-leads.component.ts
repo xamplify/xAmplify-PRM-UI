@@ -752,6 +752,7 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
             let statusCode = data.statusCode;
             if(statusCode==200){
                this.referenceService.loading(this.httpRequestLoader, false);
+               //this.router.navigate(['home/deals/manage']);
                if (!this.isPartner)
             		this.listLeadsBasedOnFilters();
         	   else
