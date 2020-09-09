@@ -1,4 +1,6 @@
 export class SfCustomFieldsDataDTO{ 
     sfCfLabelId:string;
-    value:string;
+    value:string = "";
+    type:string;
+    dateTimeIsoValue:string
 }

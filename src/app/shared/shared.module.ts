@@ -34,11 +34,12 @@ import { ImageCropperModule } from 'ng2-img-cropper';
 import { DragulaModule } from 'ng2-dragula';
 import { SfDealComponent } from 'app/deal-registration/sf-deal/sf-deal.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AngularMultiSelectModule } from 'angular4-multiselect-dropdown/angular4-multiselect-dropdown';
 
 @NgModule({
         imports: [CommonModule, RouterModule, FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,
                   HttpModule, Ng2FilterPipeModule, ColorPickerModule, TimepickerModule.forRoot(),
-                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule,DragulaModule],
+                  BootstrapSwitchModule.forRoot(),ImageCropperModule , TimezonePickerModule, LoadingModule, CommonComponentModule,NgxCurrencyModule,DragulaModule, AngularMultiSelectModule],
 
         declarations: [CountLoaderComponent,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent],
 
@@ -46,7 +47,7 @@ import { TranslateModule } from '@ngx-translate/core';
                   FileUploadModule, ReactiveFormsModule, FormsModule, UiSwitchModule,CommonComponentModule,
                   HttpModule, Ng2FilterPipeModule, ImageCropperModule, TimepickerModule,
                   BootstrapSwitchModule, TimezonePickerModule, LoadingModule,
-                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,TranslateModule],
+                  NgxCurrencyModule,CountLoaderComponent,DragulaModule,SfDealComponent,BoxLoaderComponent,DynamicGridLoaderComponent,TranslateModule,AngularMultiSelectModule],
         providers: [],
 })
 

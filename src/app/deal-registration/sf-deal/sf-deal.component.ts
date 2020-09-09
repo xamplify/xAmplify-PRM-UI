@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ContactService } from 'app/contacts/services/contact.service';
 import { Form } from 'app/forms/models/form';
 import { ColumnInfo } from 'app/forms/models/column-info';
@@ -21,15 +21,40 @@ export class SfDealComponent implements OnInit {
   form: Form = new Form();
   errorMessage: string;
   isDealRegistrationFormValid: boolean = true;
+  dropdownList = [];
+  selectedItems = [];
+  dropdownSettings = {};
+  multiSelectvalueArray=[];
+  optionObj: any;
   constructor(private contactService: ContactService, private referenceService: ReferenceService) {
   }
 
   ngOnInit() {
+    this.dropdownSettings = {
+      singleSelection: false,
+      text: "Please select",
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableSearchFilter: true,
+      classes: "myclass custom-class"
+    };
+
     this.contactService.displaySfForm(this.dealId).subscribe(result => {
       this.form = result.data;
       if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
         this.form.formLabelDTOs.find(field => field.labelId === 'Name').value = this.campaign.campaignName;
       }
+
+      let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
+      for (let multiSelectObj of allMultiSelects) {
+        let selectedOptions = multiSelectObj.value.split(';');        
+        for(let option of selectedOptions){
+          this.optionObj =  multiSelectObj.dropDownChoices.find(optionData => optionData.name === option);
+          this.multiSelectvalueArray.push(this.optionObj);
+        }
+        multiSelectObj.value = this.multiSelectvalueArray; 
+      }      
+
       let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
       if (reqFieldsCheck.length === 0) {
         this.isDealRegistrationFormValid = false;
@@ -39,11 +64,11 @@ export class SfDealComponent implements OnInit {
     });
   }
 
-  validateField(columnInfo: ColumnInfo) {
+  validateField() {
     this.validateAllFields();
   }
 
-  updateCheckBoxModel(columnInfo: ColumnInfo, formOption: FormOption, event: any) {
+  updateCheckBoxModel(columnInfo: ColumnInfo, event: any) {
     if (columnInfo.value === undefined) {
       columnInfo.value = Array<number>();
     }
@@ -55,12 +80,12 @@ export class SfDealComponent implements OnInit {
     this.validateAllFields();
   }
 
-  selectOnChangeEvent(event: any) {
+  selectOnChangeEvent() {
     this.validateAllFields();
   }
 
   validateAllFields() {
-    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === ""));
+    let reqFieldsCheck = this.form.formLabelDTOs.filter(column => column.required && (column.value === undefined || column.value === "" || column.value === null || (column.value !== null && column.value.length === 0)));
     if (reqFieldsCheck.length === 0) {
       this.isDealRegistrationFormValid = false;
     } else {
@@ -69,11 +94,22 @@ export class SfDealComponent implements OnInit {
     if (!this.isDealRegistrationFormValid) {
       let allEmails = this.form.formLabelDTOs.filter(column => column.labelType === "email");
       for (let emailObj of allEmails) {
-          this.validateEmailId(emailObj);
+        this.validateEmailId(emailObj);
       }
+
+      let allURLs = this.form.formLabelDTOs.filter(column => column.labelType === "url");
+      for (let urlObj of allURLs) {
+        this.validateWebsiteURL(urlObj);
+      }
+
+      let allPhoneNumbers = this.form.formLabelDTOs.filter(column => column.labelType === "phone");
+      for (let phoneObj of allPhoneNumbers) {
+        this.validatePhoneNumber(phoneObj);
+      }
+
       let allPercentages = this.form.formLabelDTOs.filter(column => column.labelType === "percent");
       for (let percentObj of allPercentages) {
-          this.validatePercentageValue(percentObj);
+        this.validatePercentageValue(percentObj);
       }
     }
   }
@@ -105,5 +141,42 @@ export class SfDealComponent implements OnInit {
         columnInfo.divClass = "success";
       }
     }
+  }
+
+  validateWebsiteURL(columnInfo: ColumnInfo) {
+    if (!this.referenceService.validateWebsiteURL($.trim(columnInfo.value))) {
+      columnInfo.errorMessage = "Please enter a valid URL";
+      columnInfo.divClass = "error";
+      this.isDealRegistrationFormValid = true;
+    } else {
+      columnInfo.divClass = "success";
+    }
+  }
+
+  validatePhoneNumber(columnInfo: ColumnInfo) {
+    let phoneNumber = columnInfo.value.toString();
+    if (phoneNumber.length < 8 || !this.referenceService.validatePhoneNumber($.trim(phoneNumber))) {
+      columnInfo.errorMessage = "Please enter valid phone number";
+      columnInfo.divClass = "error";
+      this.isDealRegistrationFormValid = true;
+    } else {
+      columnInfo.divClass = "success";
+    }
+  }
+
+  onItemSelect(item: any) {
+    this.validateAllFields();
+  }
+
+  OnItemDeSelect(item: any) {
+    this.validateAllFields();
+  }
+
+  onSelectAll(items: any) {
+    this.validateAllFields();
+  }
+
+  onDeSelectAll(items: any) {
+    this.validateAllFields();
   }
 }

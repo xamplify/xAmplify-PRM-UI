@@ -271,6 +271,17 @@ export class ReferenceService {
 		var regex = /^[A-Za-z0-9]+(\.[_A-Za-z0-9]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/;
 		return regex.test(emailId);
 	}
+
+	validateWebsiteURL(url: string){
+		var regex = /(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)/;
+		return regex.test(url);
+	}
+
+	validatePhoneNumber(phoneNumber: string){
+		var regex = /^[0-9-+]+$/;
+		return regex.test(phoneNumber);
+	}
+	
 	hideDiv(divId: string) {
 		$('#' + divId).hide(600);
 	}
