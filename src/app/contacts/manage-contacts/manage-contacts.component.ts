@@ -1036,7 +1036,8 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                 this.invalidIds = this.removeUserIds;
             });
             this.xtremandLogger.info(this.invalidRemovableContacts);
-            this.contactService.removeInvalidContactListUsers(this.invalidRemovableContacts)
+      
+            this.contactService.removeInvalidContactListUsers(this.selectedInvalidContactIds)
                 .subscribe(
                 data => {
                     data = data;

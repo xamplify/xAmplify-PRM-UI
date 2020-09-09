@@ -1950,7 +1950,7 @@ goBackToManageList(){
 	removeInvalidContactListUsers() {
 		try {
 			this.xtremandLogger.info(this.selectedInvalidContactIds);
-			this.contactService.removeContactListUsers(this.contactListId, this.selectedInvalidContactIds)
+			this.contactService.removeInvalidContactListUsers( this.selectedInvalidContactIds)
 				.subscribe(
                 (data: any) => {
                     if (data.access) {
