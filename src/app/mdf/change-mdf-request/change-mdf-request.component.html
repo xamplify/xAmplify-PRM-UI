@@ -92,13 +92,13 @@
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;border-right: 1px solid #dddd;height: 100px;">
                                              <label style="font-size: 15px;font-weight: 600;">Allocated Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.allocationAmount | number:'1.0':'en-US'}}</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfAllocationAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
                                        <div class="col-md-4 col-lg-4" style="padding-top: 23px;">
                                           <div class="row text-left" style="padding-left: 30px;">
                                              <label style="font-size: 15px;font-weight: 600;">Reimbursement Amount:</label><br>
-                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.reimbursementAmount | number:'1.0':'en-US'}}</label><br>
+                                             <label style="font-size: 14px;color: #65b6e4;">${{mdfRequest?.sumOfReimbursementAmount | number:'1.0':'en-US'}}</label><br>
                                           </div>
                                        </div>
                                     </div>
@@ -302,7 +302,7 @@
                                        <span style="color: red">*</span>
                                    </label>
                                <div class="col-sm-8"> 
-                                   <select class="form-control" name="" style="width: 100%" [(ngModel)]="selectedMdfRequest.statusInInteger" [ngModelOptions]="{standalone: true}">
+                                   <select class="form-control" name="" style="width: 100%" [(ngModel)]="selectedMdfRequest.statusInInteger" [ngModelOptions]="{standalone: true}" (ngModelChange)="resetValues($event)">
                                            <option [value]="1"  [selected]="selectedMdfRequest.statusInInteger ==1">New Request (Open)</option>
                                            <option [value]="2" [selected]="selectedMdfRequest.statusInInteger ==2">In Progress,assigned to manager (Open)</option>
                                            <option [value]="3" [selected]="selectedMdfRequest.statusInInteger ==3">Pre-Approved for 90 days (Closed)</option>
@@ -327,7 +327,7 @@
                              placeholder="Total MDF Balance" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                             </div>
                         </div>
-                    </div>
+                      </div>
                            <div class="col-md-12 col-lg-12 ">
                                <div [attr.class]="errorFieldNames.indexOf('requestAmount')>-1 ? 'form-group has-error':'form-group'">
                                    <label class="control-label col-sm-3" translate>Requested Amount
@@ -342,6 +342,17 @@
                                    </div>
                                </div>
                            </div>
+                           <div class="col-md-12 col-lg-12 ">
+                              <div class="form-group">
+                                  <label class="control-label col-sm-3" translate>Total Allocated Amount
+                                      </label>
+                                  <div class="col-sm-8">
+                                   <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                                   [(ngModel)]="selectedMdfRequest.sumOfAllocationAmount"  [ngModelOptions]="{standalone: true}" 
+                                   placeholder="Total Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                                  </div>
+                              </div>
+                            </div>
                            <div class="col-md-12 col-lg-12 ">
                               <div [attr.class]="errorFieldNames.indexOf('allocationAmount')>-1 ? 'form-group has-error':'form-group'">
                                   <label class="control-label col-sm-3" translate>Allocated Amount
@@ -391,21 +402,35 @@
                             </div>
                         </div>
                     </div>
-                 <div class="col-md-12 col-lg-12" *ngIf="selectedMdfRequest?.statusInInteger==4">
-                  <div [attr.class]="errorFieldNames.indexOf('reimbursementAmount')>-1 ? 'form-group has-error':'form-group'">
-                      <label class="control-label col-sm-3" translate>Reimbursement Amount
-                        <span style="color: red">*</span>
-                          </label>
-                      <div class="col-sm-8">
-                       <input type="name"  class="form-control padding-mobile currency"
-                       [(ngModel)]="selectedMdfRequest.reimbursementAmount"  [ngModelOptions]="{standalone: true}" 
-                       placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
-                       <ng-container *ngFor="let errorResponse of errorResponses">
-                        <span class="required" *ngIf="errorResponse.field=='reimbursementAmount'">{{errorResponse.message}}</span>
-                     </ng-container>
+                    <ng-container *ngIf="selectedMdfRequest?.statusInInteger==4">
+                     <div class="col-md-12 col-lg-12">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" translate>Total Reimbursement Amount
+                                </label>
+                            <div class="col-sm-8">
+                             <input type="name" [disabled]="true"  class="form-control padding-mobile currency" 
+                             [(ngModel)]="selectedMdfRequest.sumOfReimbursementAmount"  [ngModelOptions]="{standalone: true}" 
+                             placeholder="Total Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                            </div>
+                        </div>
                       </div>
-                  </div>
-              </div>
+   
+                    <div class="col-md-12 col-lg-12">
+                     <div [attr.class]="errorFieldNames.indexOf('reimbursementAmount')>-1 ? 'form-group has-error':'form-group'">
+                         <label class="control-label col-sm-3" translate>Reimbursement Amount
+                           <span style="color: red">*</span>
+                             </label>
+                         <div class="col-sm-8">
+                          <input type="name"  class="form-control padding-mobile currency"
+                          [(ngModel)]="selectedMdfRequest.reimbursementAmount"  [ngModelOptions]="{standalone: true}" 
+                          placeholder="Reimbursement Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
+                          <ng-container *ngFor="let errorResponse of errorResponses">
+                           <span class="required" *ngIf="errorResponse.field=='reimbursementAmount'">{{errorResponse.message}}</span>
+                        </ng-container>
+                         </div>
+                     </div>
+                 </div>
+                  </ng-container>
                  <div class="col-md-12 col-lg-12 ">
                   <div class="form-group">
                       <label class="control-label col-sm-3" translate>Description

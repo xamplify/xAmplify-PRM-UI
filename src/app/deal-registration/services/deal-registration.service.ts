@@ -427,9 +427,9 @@ export class DealRegistrationService
         return Observable.throw(error);
     }
     
-    syncLeadsWithSalesforce(selectedCampaignId: number, loggedInUserId: number) {
-       return this.http.get( this.authenticationService.REST_URL + 'salesforce/'+loggedInUserId+'/'+selectedCampaignId+'/leads/sync?access_token=' + this.authenticationService.access_token,"" )
-    		.map( this.extractData ).catch( this.handleError );
-    }
+    syncLeadsWithSalesforce(selectedCampaignId: number, loggedInUserId: number, partnerId: number) {
+        return this.http.get( this.authenticationService.REST_URL + 'salesforce/'+loggedInUserId+'/'+selectedCampaignId+'/'+partnerId+'/leads/sync?access_token=' + this.authenticationService.access_token,"" )
+      .map( this.extractData ).catch( this.handleError );
+     }
 
 }

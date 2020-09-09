@@ -746,12 +746,13 @@ export class ManageLeadsComponent implements OnInit, OnChanges {
     
     syncLeadsWithSalesforce() {
 		 this.referenceService.loading(this.httpRequestLoader, true);
-		this.dealRegistrationService.syncLeadsWithSalesforce(this.campaignId, this.loggedInUserId)
+		this.dealRegistrationService.syncLeadsWithSalesforce(this.campaignId, this.loggedInUserId,this.partner.partnerId)
         .subscribe(
           data => {
             let statusCode = data.statusCode;
             if(statusCode==200){
                this.referenceService.loading(this.httpRequestLoader, false);
+               //this.router.navigate(['home/deals/manage']);
                if (!this.isPartner)
             		this.listLeadsBasedOnFilters();
         	   else

@@ -1079,8 +1079,21 @@ export class DealRegistrationComponent implements OnInit, AfterViewInit {
                 let sfCfDataList = [];
                 for (let formLabel of sfCustomFields) {
                     let sfCfData = new SfCustomFieldsDataDTO();
-                    sfCfData.sfCfLabelId = formLabel.labelId;
-                    sfCfData.value = formLabel.value;
+                    sfCfData.sfCfLabelId = formLabel.labelId;                    
+                    if(formLabel.labelType === 'multiselect'){
+                        for (let option of formLabel.value) {
+                            sfCfData.value = sfCfData.value + option.name + ";";
+                        }
+                        sfCfData.value = sfCfData.value.substring(0,sfCfData.value.length-1);
+                    }else if(formLabel.labelType === 'datetime'){
+                        sfCfData.value = formLabel.value;
+                        sfCfData.type = formLabel.labelType;
+                        const event = new Date(formLabel.value);
+                        sfCfData.dateTimeIsoValue = event.toISOString();                        
+                    }
+                    else{
+                        sfCfData.value = formLabel.value;
+                    }
                     sfCfDataList.push(sfCfData);
                 }
                 this.dealRegistration.sfCustomFieldsDataDto = sfCfDataList;

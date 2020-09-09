@@ -64,41 +64,48 @@ export class ModuleAccessComponent implements OnInit {
     }
   }
 
-  updateModuleAccess() {
+  
+
+  updateModuleAccess(){
     this.ngxLoading = true;
     this.campaignAccess.companyId = this.companyId;
     this.campaignAccess.roleId = $('#roleId option:selected').val();
     this.campaignAccess.userId = this.companyAndUserDetails.id;
     this.dashboardService.changeAccess(this.campaignAccess).subscribe(result => {
-      if (result.statusCode === 200) {
-        if (this.campaignAccess.mdf) {
-          this.mdfService.saveMdfRequestForm(this.companyAndUserDetails.emailId, this.companyProfilename).subscribe((result: any) => {
-            if (result.access) {
-              if (result.statusCode === 100) {
-                console.log("Mdf form already exists");
-              }
-            }
-          }, error => {
-            this.ngxLoading = false;
-            this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
-          },
-          () => {
-              this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
-              this.getModuleAccessByCompanyId();
-              this.getCompanyAndUserDetails();
-              this.referenceService.goToTop();
-              this.ngxLoading = false;
-          }
-          
-          );
-        }
-        
-      }
+
     }, error => {
       this.ngxLoading = false;
       this.customResponse = new CustomResponse('Error', "Something went wrong.", true);
-    });
+    },
+    ()=>{
+        if(this.campaignAccess.mdf){
+          this.addDefaultMdfForm();
+        }else{
+          this.showSuccessMessage();
+        }
+    }
+    );
+
   }
 
+  showSuccessMessage(){
+    this.customResponse = new CustomResponse('SUCCESS', "Modules updated successfully", true);
+    this.getModuleAccessByCompanyId();
+    this.getCompanyAndUserDetails();
+    this.referenceService.goToTop();
+    this.ngxLoading = false;
+  }
+
+  addDefaultMdfForm(){
+    this.mdfService.saveMdfRequestForm(this.companyAndUserDetails.emailId, this.companyProfilename).subscribe((result: any) => {
+      if (result.statusCode!=100) {
+          this.referenceService.showSweetAlertSuccessMessage("Default Mdf Form Is Created");
+        }
+        this.showSuccessMessage();
+    }, error => {
+      this.ngxLoading = false;
+      this.customResponse = new CustomResponse('Error', "Something went wrong while adding default mdf form.", true);
+    });
+  }
   
 }
