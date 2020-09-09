@@ -380,8 +380,8 @@
                                        <span *ngIf="selectedMdfRequest?.statusInInteger<=3" style="color: red">*</span>
                                    </label>
                                <div class="col-sm-8">
-                                 <app-flatpickr [(dataField)]="selectedMdfRequest.allocationDateInString" [isFromMdfCredit]='true'>
-                                 </app-flatpickr>
+                                 <app-date-picker [(dataField)]="selectedMdfRequest.allocationDateInString" [isFromMdfCredit]='true'>
+                                 </app-date-picker>
                                  <ng-container *ngFor="let errorResponse of errorResponses">
                                     <span class="required" *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
                                  </ng-container>
@@ -394,8 +394,8 @@
                             <label class="control-label col-sm-3" translate>Allocation Expiration Date
                               </label>
                             <div class="col-sm-8">
-                              <app-flatpickr [(dataField)]="selectedMdfRequest.allocationExpirationDateInString" [isFromMdfCredit]='true'>
-                              </app-flatpickr>
+                              <app-date-picker [(dataField)]="selectedMdfRequest.allocationExpirationDateInString" [isFromMdfCredit]='true'>
+                              </app-date-picker>
                               <ng-container *ngFor="let errorResponse of errorResponses">
                                  <span class="required" *ngIf="errorResponse.field=='allocationExpirationDateInString'">{{errorResponse.message}}</span>
                               </ng-container>

@@ -252,7 +252,7 @@
            </div>
 
               <div class="col-md-12 col-lg-12 ">
-               <div  [attr.class]="mdfAmountError ? 'form-group has-error':'form-group'">
+               <div  [attr.class]="errorFieldNames.indexOf('mdfAmount')>-1 ? 'form-group has-error':'form-group'">
                    <label class="control-label col-sm-3" translate>Enter Amount <span class="required">*</span></label>
                    <div class="col-sm-8">
                      <input type="text"  class="form-control padding-mobile currency" 
@@ -278,23 +278,26 @@
         </div>
            <ng-container *ngIf="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">
             <div class="col-md-12 col-lg-12 ">
-               <div class="form-group">
+               <div [attr.class]="errorFieldNames.indexOf('allocationDateInString')>-1  ? 'form-group has-error':'form-group'">
                    <label class="control-label col-sm-3" translate>Allocation Date</label>
                    <div class="col-sm-8">
-                     <app-flatpickr [(dataField)]="mdfDetails.allocationDateInString" [isFromMdfCredit]='true'>
-                     </app-flatpickr>
+                     <app-date-picker [(dataField)]="mdfDetails.allocationDateInString" [isFromMdfCredit]='true'>
+                     </app-date-picker>
+                     <ng-container *ngFor="let errorResponse of errorResponses">
+                        <span class="required" *ngIf="errorResponse.field=='allocationDateInString'">{{errorResponse.message}}</span>
+                     </ng-container>
                    </div>
                </div>
            </div>
    
            <div class="col-md-12 col-lg-12">
-            <div  [attr.class]="expirationDateError ? 'form-group has-error':'form-group'">
+            <div  [attr.class]="errorFieldNames.indexOf('expirationDateInString')>-1  ? 'form-group has-error':'form-group'">
                 <label class="control-label col-sm-3" translate>Expiration Date</label>
                 <div class="col-sm-8">
-                  <app-flatpickr [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
-                  </app-flatpickr>
+                  <app-date-picker [(dataField)]="mdfDetails.expirationDateInString" [isFromMdfCredit]='true'>
+                  </app-date-picker>
                   <ng-container *ngFor="let errorResponse of errorResponses">
-                     <span class="required" *ngIf="errorResponse.field=='expirationDate' && expirationDateError ">{{errorResponse.message}}</span>
+                     <span class="required" *ngIf="errorResponse.field=='expirationDateInString' ">{{errorResponse.message}}</span>
                   </ng-container>
                 </div>
             </div>

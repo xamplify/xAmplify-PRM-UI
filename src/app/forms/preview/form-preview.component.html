@@ -56,8 +56,8 @@
                                         </ng-container>
                                         <!-- ---------------------------Date----------------------------- -->
                                         <ng-container *ngIf="columnInfo.labelType=='date'">
-                                            <app-flatpickr [(dataField)]="columnInfo.value" [isFromForm]='true'>
-                                            </app-flatpickr>
+                                            <app-date-picker [(dataField)]="columnInfo.value" [isFromForm]='true'>
+                                            </app-date-picker>
                                         </ng-container>
 
                                         <!-- ---------------------------Price----------------------------- -->

@@ -121,8 +121,8 @@
                                 </ng-container>
                                  <!-- ---------------------------Date----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='date'">
-                                    <app-flatpickr [(dataField)]="columnInfo.value" [isFromMdfCredit]='true'>>
-                                    </app-flatpickr>
+                                    <app-date-picker [(dataField)]="columnInfo.value" [isFromMdfCredit]='true'>>
+                                    </app-date-picker>
                                 </ng-container>
                                  <!-- ---------------------------Price----------------------------- -->
                                  <ng-container *ngIf="columnInfo.labelType=='price'">

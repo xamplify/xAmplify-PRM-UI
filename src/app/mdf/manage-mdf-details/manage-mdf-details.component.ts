@@ -42,7 +42,7 @@ export class ManageMdfDetailsComponent implements OnInit {
   expirationDateError = false;
   mdfAmountError = false;
   MdfAmountType = MdfAmountType;
-
+  errorFieldNames:Array<string> = new Array<string>();
   constructor(private utilService: UtilService, public sortOption: SortOption, public partnerListLoader: HttpRequestLoader, private mdfService: MdfService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
   }
@@ -198,14 +198,7 @@ export class ManageMdfDetailsComponent implements OnInit {
         this.closeMdfAmountPopup();
         } else {
           this.errorResponses = result.errorResponses;
-          let self = this;
-          $.each(this.errorResponses, function (_index: number, errorResponse: ErrorResponse) {
-            if (errorResponse['field'] == "expirationDate") {
-              self.expirationDateError = true;
-            } else if (errorResponse['field'] == "mdfAmount") {
-              self.mdfAmountError = true;
-            }
-          });
+          this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');
         }
         this.modalPopupLoader = false;
       }, error => {
@@ -223,8 +216,7 @@ export class ManageMdfDetailsComponent implements OnInit {
   }
 
   resetErrors() {
-    this.mdfAmountError = false;
-    this.expirationDateError = false;
+    this.errorFieldNames = [];
     this.errorResponses = new Array<ErrorResponse>();
     this.customResponse = new CustomResponse();
   }
