@@ -442,11 +442,29 @@ export class EditContactsComponent implements OnInit, OnDestroy {
 		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "VERTICAL" && headers[6].trim() == "REGION" && headers[7].trim() == "PARTNETTYPE" && headers[8].trim() == "CATEGORY" && headers[9].trim() == "ADDRESS" && headers[10].trim() == "CITY" && headers[11].trim() == "STATE" && headers[12].trim() == "ZIP" && headers[13].trim() == "COUNTRY" && headers[14].trim() == "MOBILE NUMBER");
 	}
 
-	validateContactsCsvHeaders(headers) {
-		return (headers[0].trim() == "FIRSTNAME" && headers[1].trim() == "LASTNAME" && headers[2].trim() == "COMPANY" && headers[3].trim() == "JOBTITLE" && headers[4].trim() == "EMAILID" && headers[5].trim() == "ADDRESS" && headers[6].trim() == "CITY" && headers[7].trim() == "STATE" && headers[8].trim() == "ZIP CODE" && headers[9].trim() == "COUNTRY" && headers[10].trim() == "MOBILE NUMBER");
-	}
+    validateContactsCsvHeaders( headers ) {
+        return (this.removeDoubleQuotes(headers[0]) == "FIRSTNAME" &&
+        this.removeDoubleQuotes(headers[1])== "LASTNAME" && 
+        this.removeDoubleQuotes(headers[2]) == "COMPANY" && 
+        this.removeDoubleQuotes(headers[3]) == "JOBTITLE" && 
+        this.removeDoubleQuotes(headers[4])== "EMAILID" && 
+        this.removeDoubleQuotes(headers[5]) == "ADDRESS" &&
+        this.removeDoubleQuotes(headers[6]) == "CITY" && 
+        this.removeDoubleQuotes(headers[7]) == "STATE" && 
+        this.removeDoubleQuotes(headers[8]) == "ZIP CODE" && 
+        this.removeDoubleQuotes(headers[9]) == "COUNTRY" && 
+        this.removeDoubleQuotes(headers[10]) == "MOBILE NUMBER" );
+    }
 
-	compressArray(original) {
+    removeDoubleQuotes(input:string){
+        if(input!=undefined){
+            return input.trim().replace('"','').replace('"','');
+        }else{
+            return "";
+        }
+    }
+
+    compressArray(original) {
 		var compressed = [];
 		var copy = original.slice(0);
 		for (var i = 0; i < original.length; i++) {
