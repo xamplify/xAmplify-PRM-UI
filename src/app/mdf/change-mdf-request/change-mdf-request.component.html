@@ -363,7 +363,12 @@
                                           [(ngModel)]="selectedMdfRequest.allocationAmount"  [ngModelOptions]="{standalone: true}" 
                                           placeholder="Allocated Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                                           <ng-container *ngFor="let errorResponse of errorResponses">
-                                             <span class="required" *ngIf="errorResponse.field=='allocationAmount'">{{errorResponse.message}}</span>
+                                                <ng-container *ngIf="errorResponse.field=='allocationAmount'">
+                                                   <span class="required">{{errorResponse.message}}</span>
+                                                   <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
+                                                      <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
+                                                   </ng-container>
+                                                </ng-container>
                                           </ng-container>
                                          </div>
                                   <div class="col-sm-8" *ngIf="selectedMdfRequest?.statusInInteger>3">
@@ -454,3 +459,4 @@
      </div>
  </div>
 </div>
+<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="mdfRequest?.partnershipId" (notifyParentComponent)="hideMdfAmountPopup()" (updateList)="updateDetails()"></app-add-mdf-funds-modal-popup>

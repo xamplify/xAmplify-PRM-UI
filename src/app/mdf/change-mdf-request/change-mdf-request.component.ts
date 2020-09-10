@@ -39,6 +39,7 @@ export class ChangeMdfRequestComponent implements OnInit {
   partnerManager: any;
   errorResponses: Array<ErrorResponse> = new Array<ErrorResponse>();
   errorFieldNames:Array<string> = new Array<string>();
+  showMdfAmountPopup = false;
   constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
 
@@ -129,9 +130,7 @@ export class ChangeMdfRequestComponent implements OnInit {
 
   updateMdfRequest(){
     this.referenceService.goToTop();
-    this.customResponse = new CustomResponse();
-    this.errorResponses = new Array<ErrorResponse>();
-    this.errorFieldNames = [];
+    this.resetErrors();
     this.modalPopupLoader = true;
     this.selectedMdfRequest.loggedInUserId = this.loggedInUserId;
     this.mdfService.updateMdfRequest(this.selectedMdfRequest).subscribe((result: any) => {
@@ -157,6 +156,23 @@ export class ChangeMdfRequestComponent implements OnInit {
   viewTimeLine(){
     this.loading = true;
     this.referenceService.goToRouter('/home/mdf/timeline/v/'+this.mdfRequest.id);
+  }
+
+  openMdfAmountPopup(){
+    this.showMdfAmountPopup = true;
+  }
+  hideMdfAmountPopup(){
+    this.showMdfAmountPopup = false;
+  }
+  resetErrors(){
+    this.customResponse = new CustomResponse();
+    this.errorResponses = new Array<ErrorResponse>();
+    this.errorFieldNames = [];
+  }
+  updateDetails(){
+    this.showMdfAmountPopup = false;
+    this.resetErrors();
+    this.loadData();
   }
 
 }

@@ -16,4 +16,5 @@ export class MdfRequestDto {
 	requestCreatedDateInString:string = "";
 	statusInInteger:number = 0;
 	loggedInUserId:number = 0;
+	partnershipId:number = 0;
 }

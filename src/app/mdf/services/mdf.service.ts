@@ -171,6 +171,12 @@ getRequestDetailsByIdForTimeLine(requestId:number,loggedInUserCompanyId:number){
       .catch(this.handleError);
 }
 
+getPartnerAndMdfAmountDetails(partnershipId:number){
+  return this.http.get(this.URL + "getPartnerAndMdfAmountDetails/" + partnershipId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
 
   extractData(res: Response) {
     let body = res.json();
