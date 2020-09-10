@@ -41,9 +41,9 @@ export class SfDealComponent implements OnInit {
 
     this.contactService.displaySfForm(this.dealId).subscribe(result => {
       this.form = result.data;
-      if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
+      /*if (this.campaign.campaignName !== undefined || this.campaign.campaignName !== '') {
         this.form.formLabelDTOs.find(field => field.labelId === 'Name').value = this.campaign.campaignName;
-      }
+      }*/
 
       let allMultiSelects = this.form.formLabelDTOs.filter(column => column.labelType === "multiselect");
       for (let multiSelectObj of allMultiSelects) {
