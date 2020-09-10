@@ -161,14 +161,17 @@ export class ChangeMdfRequestComponent implements OnInit {
   openMdfAmountPopup(){
     this.showMdfAmountPopup = true;
   }
-  hideMdfAmountPopup(){
-    this.showMdfAmountPopup = false;
-  }
+  
   resetErrors(){
     this.customResponse = new CustomResponse();
     this.errorResponses = new Array<ErrorResponse>();
     this.errorFieldNames = [];
   }
+
+  hideMdfAmountPopup(){
+    this.showMdfAmountPopup = false;
+  }
+
   updateDetails(){
     this.showMdfAmountPopup = false;
     this.resetErrors();

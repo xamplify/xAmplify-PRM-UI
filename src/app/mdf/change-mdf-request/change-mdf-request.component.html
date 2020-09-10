@@ -459,4 +459,4 @@
      </div>
  </div>
 </div>
-<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="mdfRequest?.partnershipId" (notifyParentComponent)="hideMdfAmountPopup()" (updateList)="updateDetails()"></app-add-mdf-funds-modal-popup>
+<app-add-mdf-funds-modal-popup *ngIf="showMdfAmountPopup" [partnershipId]="mdfRequest?.partnershipId" [onlyAddMdfAmount]="true" (notifyParentComponent)="hideMdfAmountPopup()" (updateList)="updateDetails()"></app-add-mdf-funds-modal-popup>

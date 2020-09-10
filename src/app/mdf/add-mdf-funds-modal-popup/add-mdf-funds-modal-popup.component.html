@@ -31,7 +31,7 @@
                            <label class="control-label col-sm-3" translate>Select Option
                                    <span class="required">*</span>
                                </label>
-                           <div class="col-sm-8">
+                           <div class="col-sm-8" *ngIf="!onlyAddMdfAmount">
                                  <select class="form-control" name="mdfAmountType" (change)="updateFieldsStatus()" [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
                                     <ng-container *ngFor="let type of MdfAmountType.values();">
                                        <ng-container *ngIf="type=='FUND_ADDED'">
@@ -43,6 +43,15 @@
                                     </ng-container>
                                   </select>
                            </div>
+                           <div class="col-sm-8" *ngIf="onlyAddMdfAmount">
+                            <select disabled="disabled" class="form-control" name="mdfAmountType"  [(ngModel)]="mdfDetails.mdfAmountTypeInString" [ngModelOptions]="{standalone: true}">
+                               <ng-container *ngFor="let type of MdfAmountType.values();">
+                                  <ng-container *ngIf="type=='FUND_ADDED'">
+                                     <option value="{{type}}" [selected]="mdfDetails.mdfAmountTypeInString=='FUND_ADDED'">Add Funds</option>
+                                  </ng-container>
+                               </ng-container>
+                             </select>
+                      </div>
                        </div>
                    </div>
 

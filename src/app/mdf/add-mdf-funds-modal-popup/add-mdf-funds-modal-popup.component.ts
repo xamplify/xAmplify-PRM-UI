@@ -33,15 +33,20 @@ export class AddMdfFundsModalPopupComponent implements OnInit {
 	errorFieldNames: Array<string> = new Array<string>();
   	MdfAmountType = MdfAmountType;
 	@Input() partnershipId:number;
+	@Input() onlyAddMdfAmount:boolean = false;
 	@Output() notifyParentComponent = new EventEmitter();
 	@Output() updateList = new EventEmitter();
 	modalPopupId = "addMdfAmountPopup";
+	modalPopupTitle = "Add/Remove MDF";
 	constructor(private mdfService: MdfService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 
 	ngOnInit() {
+		if(this.onlyAddMdfAmount){
+			this.modalPopupTitle = "Add MDF";
+		}
 		if(this.partnershipId!=undefined && this.partnershipId>0){
 			this.modalPopupLoader = true;
 			$("#"+this.modalPopupId).modal('show');
