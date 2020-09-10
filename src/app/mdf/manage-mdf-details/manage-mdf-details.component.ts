@@ -162,17 +162,20 @@ export class ManageMdfDetailsComponent implements OnInit {
   viewMdfAmountHistory(partner: MdfPartnerDto) {
     this.referenceService.showSweetAlertInfoMessage();
   }
-  resetValues(){
-    this.showMdfAmountPopup = false;
-    this.partnershipId = 0;
-  }
+ 
 
   editMdfForm(){
     this.loading = true;
     this.referenceService.goToRouter("/home/mdf/form");
   }
 
+  resetValues(){
+    this.showMdfAmountPopup = false;
+    this.partnershipId = 0;
+  }
+
   updateListAfterAddingAmount(){
+    this.resetValues();
     this.pagination.pageIndex = 1;
     this.getTilesInfo();
     this.listPartners(this.pagination);

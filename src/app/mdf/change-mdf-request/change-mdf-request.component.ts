@@ -91,8 +91,7 @@ export class ChangeMdfRequestComponent implements OnInit {
           this.goToManageMdfRequests();
           this.referenceService.showSweetAlertErrorMessage("Invalid Request");
         }
-        this.loading = false;
-        this.pageLoader = false;
+       this.stopLoaders();
       }, error => {
         this.xtremandLogger.log(error);
         this.xtremandLogger.errorPage(error);
@@ -102,6 +101,11 @@ export class ChangeMdfRequestComponent implements OnInit {
     }
   }
 
+  stopLoaders(){
+    this.loading = false;
+    this.pageLoader = false;
+    this.modalPopupLoader = false;
+  }
 
   goToManageMdfRequests(){
     this.loading = true;
@@ -175,6 +179,11 @@ export class ChangeMdfRequestComponent implements OnInit {
   updateDetails(){
     this.showMdfAmountPopup = false;
     this.resetErrors();
+    this.loadData();
+  }
+
+  refreshData(){
+    this.modalPopupLoader = true;
     this.loadData();
   }
 

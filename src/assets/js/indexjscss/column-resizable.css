@@ -192,3 +192,10 @@ span.ui-column-resizer {
 .xamp-margin-left-icon {
     margin: 5px 5px 5px 5px;
 }
+
+.fa-margin{
+	margin-left: 5px;
+}
+.header-fw{
+	font-weight: 600;
+}
