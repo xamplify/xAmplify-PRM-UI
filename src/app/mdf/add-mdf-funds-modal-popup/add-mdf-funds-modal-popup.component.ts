@@ -125,11 +125,10 @@ export class AddMdfFundsModalPopupComponent implements OnInit {
 			if (result.statusCode == 200) {
 			  if(this.mdfDetails.mdfAmountTypeInString==MdfAmountType[MdfAmountType.FUND_ADDED]){
 				this.referenceService.showSweetAlertSuccessMessage("Fund Added Successfully");
-				this.updateParentComponent();
 			  }else{
 				this.referenceService.showSweetAlertSuccessMessage("Fund Removed Successfully");
 			  }
-			 this.closeMdfAmountPopup();
+			 this.updateParentComponent();
 			} else {
 			  this.errorResponses = result.errorResponses;
 			  this.errorFieldNames = this.referenceService.filterSelectedColumnsFromArrayList(this.errorResponses,'field');

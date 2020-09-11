@@ -540,3 +540,40 @@ a {
 .margin-right-design{
     margin-right: 5px;
 }
+#vendor-details-tile{
+    border-color: lightgrey;
+    border-style: solid;
+    height: 102px;
+    border-radius: 10px;
+    padding-top: 15px;
+    background-color: #fff;
+}
+.fund-added {
+    color: #fff;
+    background-color: green;
+    border-color: green;
+}
+
+.fund-removed {
+    color: #fff;
+    background-color: red;
+    border-color: red;
+}
+
+.profile{
+    background: #9079d2;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    min-height: 40px;
+    max-height: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    text-align: center;
+    color: #fff;
+    padding-top: 12px;
+}
+.mdf-style{
+    width: 50px;
+    height: 50px;
+}

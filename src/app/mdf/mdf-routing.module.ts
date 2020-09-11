@@ -6,6 +6,7 @@ import { CreateMdfRequestComponent } from './create-mdf-request/create-mdf-reque
 import { ChangeMdfRequestComponent } from './change-mdf-request/change-mdf-request.component';
 import { EditMdfRequestFormComponent } from './edit-mdf-request-form/edit-mdf-request-form.component';
 import { MdfRequestTimelineComponent } from './mdf-request-timeline/mdf-request-timeline.component';
+import { MdfDetailsTimelineComponent } from './mdf-details-timeline/mdf-details-timeline.component';
 
 export const routes: Routes = [
   { path: "", redirectTo: "details", pathMatch: "full" },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   {path: "change-request/:requestId", component:ChangeMdfRequestComponent},
   {path: "form", component:EditMdfRequestFormComponent},
   {path: "timeline/:role/:requestId", component:MdfRequestTimelineComponent},
+  {path: "timeline/:mdfDetailsId", component:MdfDetailsTimelineComponent},
 
 
 

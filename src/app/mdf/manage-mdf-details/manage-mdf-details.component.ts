@@ -160,7 +160,13 @@ export class ManageMdfDetailsComponent implements OnInit {
   }
 
   viewMdfAmountHistory(partner: MdfPartnerDto) {
-    this.referenceService.showSweetAlertInfoMessage();
+    if(partner.mdfDetailsId>0){
+      this.loading = true;
+      this.referenceService.goToRouter("/home/mdf/timeline/"+partner.mdfDetailsId);
+    }else{
+      this.referenceService.showSweetAlertErrorMessage("No History Found");
+    }
+   
   }
  
 

@@ -8,6 +8,8 @@ export class MdfPartnerDto {
 	totalBalance:any;
 	usedBalance:any;
 	availableBalance:any;
+	mdfDetailsId:number = 0;
+	fullName:string = "";
 	
 	
 }

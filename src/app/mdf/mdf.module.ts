@@ -14,11 +14,12 @@ import { ChangeMdfRequestComponent } from './change-mdf-request/change-mdf-reque
 import { EditMdfRequestFormComponent } from './edit-mdf-request-form/edit-mdf-request-form.component';
 import { MdfRequestTimelineComponent } from './mdf-request-timeline/mdf-request-timeline.component';
 import { AddMdfFundsModalPopupComponent } from './add-mdf-funds-modal-popup/add-mdf-funds-modal-popup.component';
+import { MdfDetailsTimelineComponent } from './mdf-details-timeline/mdf-details-timeline.component';
 @NgModule({
   imports: [
     CommonModule, SharedModule, ErrorPagesModule, CommonComponentModule, MdfRoutingModule
   ],
-  declarations: [MdfHtmlComponent, ManageMdfDetailsComponent, ManageMdfRequestsComponent, CreateMdfRequestComponent, ManageMdfRequestFormComponent, ChangeMdfRequestComponent, EditMdfRequestFormComponent, MdfRequestTimelineComponent, AddMdfFundsModalPopupComponent],
+  declarations: [MdfHtmlComponent, ManageMdfDetailsComponent, ManageMdfRequestsComponent, CreateMdfRequestComponent, ManageMdfRequestFormComponent, ChangeMdfRequestComponent, EditMdfRequestFormComponent, MdfRequestTimelineComponent, AddMdfFundsModalPopupComponent, MdfDetailsTimelineComponent],
   providers: [MdfService]
 })
 export class MdfModule { }

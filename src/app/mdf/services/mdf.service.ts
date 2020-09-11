@@ -177,6 +177,12 @@ getPartnerAndMdfAmountDetails(partnershipId:number){
       .catch(this.handleError);
 }
 
+getMdfDetailsTimeLineHistory(mdfDetailsId:number,loggedInUserCompanyId:number){
+  return this.http.get(this.URL + "getMdfDetailsTimeLineHistory/" + mdfDetailsId+"/"+loggedInUserCompanyId+"?access_token=" + this.authenticationService.access_token)
+      .map(this.extractData)
+      .catch(this.handleError);
+}
+
 
   extractData(res: Response) {
     let body = res.json();

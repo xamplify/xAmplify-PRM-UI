@@ -21,7 +21,6 @@ export class MdfRequestTimelineComponent implements OnInit {
   documentsTitle:string = "";
   constructor(private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router) { 
 	    this.loggedInUserId = this.authenticationService.getUserId();
-
 }
 
   ngOnInit() {
