@@ -41,7 +41,9 @@
                                     <span class="margin-left" style="margin-left: 20px;">
                                         <h6 class='m0 user-email' *ngIf="mdfPartnerDto?.contactCompany?.length>0">
                                             <p class="user-company" title="{{mdfPartnerDto?.contactCompany}}">
-                                                <span>{{mdfPartnerDto?.contactCompany |slice:0:25}}</span><span *ngIf="userInfo?.contactCompany?.length>25">..</span></p>
+                                                <span>{{mdfPartnerDto?.contactCompany |slice:0:25}}</span>
+                                                <span *ngIf=mdfPartnerDto?.contactCompany?.length>25">..</span>
+                                            </p>
                                           </h6>
                                           <br>
                                           <h5 *ngIf="mdfPartnerDto?.fullName?.length>0" class='ellipsis user-name' title="{{mdfPartnerDto?.fullName}}">
