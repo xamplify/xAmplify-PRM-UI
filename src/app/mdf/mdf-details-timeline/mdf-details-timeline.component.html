@@ -41,8 +41,8 @@
                                     <span class="margin-left" style="margin-left: 20px;">
                                         <h6 class='m0 user-email' *ngIf="mdfPartnerDto?.contactCompany?.length>0">
                                             <p class="user-company" title="{{mdfPartnerDto?.contactCompany}}">
-                                                <span>{{mdfPartnerDto?.contactCompany |slice:0:25}}</span>
-                                                <span *ngIf=mdfPartnerDto?.contactCompany?.length>25">..</span>
+                                                <span>{{mdfPartnerDto?.contactCompany |slice:0:23}}</span>
+                                                <span *ngIf="mdfPartnerDto?.contactCompany?.length>23">..</span>
                                             </p>
                                           </h6>
                                           <br>
@@ -127,7 +127,7 @@
                     <div class="panel-body pt0">
                         <p>
                           <strong style="color:#65b6e4;">{{timeLine?.displayName}}</strong> 
-                          <button [attr.class]="timeLine.mdfAmountType=='Added' ? 'btn fund-added btn-xs' : 'btn fund-removed btn-xs'">{{timeLine?.mdfAmountType}}</button>  
+                          <button [attr.class]="timeLine.mdfAmountType=='Added' ? 'btn fund-added btn-xs cmargin' : 'btn fund-removed btn-xs cmargin'">{{timeLine?.mdfAmountType}}</button>  
                           <strong>$ {{timeLine?.mdfAmount | number:'1.0':'en-US'}}</strong>
                           On <strong>{{timeLine?.createdTimeInString}}</strong></p>
                           <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date: <strong>{{timeLine?.allocationDateInString}}</strong></p>

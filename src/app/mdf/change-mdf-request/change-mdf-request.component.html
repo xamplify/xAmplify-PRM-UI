@@ -345,6 +345,9 @@
                                     placeholder="Requested Amount" min="0.00" currencyMask [options]="{align :'left',allowNegative :false }">
                                     <ng-container *ngFor="let errorResponse of errorResponses">
                                        <span class="required" *ngIf="errorResponse.field=='requestAmount'">{{errorResponse.message}}</span>
+                                       <ng-container *ngIf="errorResponse.message.indexOf('MDF')>-1">
+                                          <a (click)="openMdfAmountPopup()">Click here to add MDF Amount</a>
+                                       </ng-container>
                                     </ng-container>
                                    </div>
                                </div>
