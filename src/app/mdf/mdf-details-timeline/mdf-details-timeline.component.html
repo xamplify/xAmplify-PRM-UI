@@ -117,7 +117,7 @@
              </div>
           </div>
           <app-modal-popup-loader *ngIf="timeLineLoader"></app-modal-popup-loader>
-          <div  class="row" style="margin-top: 20px;">
+          <div  class="row" style="margin-top: 20px;" *ngIf="!timeLineLoader">
             <div class="timeline">
                 <div class="line text-muted"></div>
                 <article *ngFor="let timeLine of mdfDetailsTimeLineHistory" class="panel panel-default panel-outline">
@@ -128,8 +128,11 @@
                         <p>
                           <strong style="color:#65b6e4;">{{timeLine?.displayName}}</strong> 
                           <button [attr.class]="timeLine.mdfAmountType=='Added' ? 'btn fund-added btn-xs cmargin' : 'btn fund-removed btn-xs cmargin'">{{timeLine?.mdfAmountType}}</button>  
-                          <strong>$ {{timeLine?.mdfAmount | number:'1.0':'en-US'}}</strong>
-                          On <strong>{{timeLine?.createdTimeInString}}</strong></p>
+                          <strong>$ {{timeLine?.mdfAmount | number:'1.0':'en-US'}}</strong> On
+                           <strong>
+                              <span *ngIf="!referenceService.isSafariBrowser()">{{timeLine?.displayTime |date:'mediumDate'}} {{timeLine?.displayTime |date:'shortTime'}}</span>
+                              <span *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
+                           </strong>
                           <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date: <strong>{{timeLine?.allocationDateInString}}</strong></p>
                           <p *ngIf="timeLine?.expirationDateInString?.length>0">Expiration Date: <strong>{{timeLine?.expirationDateInString}}</strong></p>
                           <p *ngIf="timeLine?.description?.length>0">Description: <strong>{{timeLine?.description}}</strong></p>

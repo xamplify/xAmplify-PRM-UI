@@ -88,7 +88,7 @@ export class MdfRequestTimelineComponent implements OnInit {
   goBack(){
     this.startLoaders();
     if("v"==this.role){
-     this.referenceService.goToRouter("/home/mdf/requests");
+     this.referenceService.goToRouter("/home/mdf/v/requests");
     }else if("p"==this.role){
       this.referenceService.goToRouter("/home/mdf/requests/p");
     }

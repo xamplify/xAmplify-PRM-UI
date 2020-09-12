@@ -18,9 +18,6 @@
 							<button type="submit" class="search-box-item-click" (click)="search()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
 						</div>
 					  </div>
-					  <a class="close-circle" (click)="refreshList()" data-toggle="tooltip" data-placement="top" title="Refresh">
-						<i class="fa fa-refresh margin" aria-hidden="true"></i>
-					</a> 
 				   </div>
 				</div>
 				<app-list-loader *ngIf="httpRequestLoader.isLoading"></app-list-loader>

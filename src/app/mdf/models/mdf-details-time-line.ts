@@ -8,4 +8,6 @@ export class MdfDetailsTimeLine {
 	mdfAmountType:string = "";
 	description:string="";
 	createdTimeInString:string = "";
+	displayTime:any;
+	createdTimeInUTCString:string ="";
 }

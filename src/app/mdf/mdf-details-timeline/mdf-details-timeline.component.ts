@@ -7,6 +7,7 @@ import {MdfPartnerDto} from '../models/mdf-partner-dto';
 import {MdfDetailsTimeLine} from '../models/mdf-details-time-line';
 import { ReferenceService } from "app/core/services/reference.service";
 import { AuthenticationService } from '../../core/services/authentication.service';
+declare var $:any;
 @Component({
   selector: 'app-mdf-details-timeline',
   templateUrl: './mdf-details-timeline.component.html',
@@ -61,6 +62,9 @@ export class MdfDetailsTimelineComponent implements OnInit {
     if(result.statusCode==200){
       this.mdfPartnerDto = result.map.partnerMdfAmountDetails;
       this.mdfDetailsTimeLineHistory = result.map.timeLineHistory;
+      $.each(this.mdfDetailsTimeLineHistory,function(_index,mdfDetailsTimeLine:MdfDetailsTimeLine){
+        mdfDetailsTimeLine.displayTime = new Date(mdfDetailsTimeLine.createdTimeInUTCString);
+      });
     }else{
       
     }
