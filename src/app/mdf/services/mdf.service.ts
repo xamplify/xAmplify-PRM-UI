@@ -183,6 +183,22 @@ getMdfDetailsTimeLineHistory(mdfDetailsId:number,loggedInUserCompanyId:number){
       .catch(this.handleError);
 }
 
+  uploadFile(formData: FormData, mdfRequestUploadDto: any) {
+    formData.append('mdfRequestUploadDto', new Blob([JSON.stringify(mdfRequestUploadDto)],
+      {
+        type: "application/json"
+      }));
+    return this.http.post(this.URL + "uploadDocuments?access_token=" + this.authenticationService.access_token, formData)
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+listMdfRequestDocuments(pagination:Pagination){
+  return this.http.post(this.URL + "listMdfRequestDocuments?access_token=" + this.authenticationService.access_token,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
 
 
   extractData(res: Response) {
