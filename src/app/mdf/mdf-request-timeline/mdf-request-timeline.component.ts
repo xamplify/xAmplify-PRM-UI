@@ -6,6 +6,8 @@ import { MdfService } from '../services/mdf.service';
 import {MdfRequestDto} from '../models/mdf-request-dto';
 import { ReferenceService } from "app/core/services/reference.service";
 import { AuthenticationService } from '../../core/services/authentication.service';
+import {MdfRequestTimeLine} from '../models/mdf-request-time-line';
+declare var $:any;
 @Component({
   selector: 'app-mdf-request-timeline',
   templateUrl: './mdf-request-timeline.component.html',
@@ -22,6 +24,7 @@ export class MdfRequestTimelineComponent implements OnInit {
   partnerView = false;
   timeLineLoader = false;
   headerLoader = false;
+  mdfRequestTimeLineHistory:Array<MdfRequestTimeLine> = new Array<MdfRequestTimeLine>();
   constructor(private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router) { 
 	    this.loggedInUserId = this.authenticationService.getUserId();
 }
@@ -67,10 +70,14 @@ export class MdfRequestTimelineComponent implements OnInit {
 
   getMdfRequestDetails(){
     if(this.requestId>0){
-      this.mdfService.getRequestDetailsByIdForTimeLine(this.requestId,this.loggedInUserCompanyId).
+      this.mdfService.getRequestDetailsAndTimeLineHistory(this.requestId,this.loggedInUserCompanyId).
       subscribe((result: any) => {
         if(result.statusCode==200){
           this.mdfRequest = result.map.requestDetails;
+          this.mdfRequestTimeLineHistory = result.map.requestHistory;
+          $.each(this.mdfRequestTimeLineHistory,function(_index,mdfRequestTimeLine:MdfRequestTimeLine){
+            mdfRequestTimeLine.displayTime = new Date(mdfRequestTimeLine.createdTimeInUTCString);
+          });
           this.stopLoaders();
         }else if(result.statusCode==404){
           this.goBack();

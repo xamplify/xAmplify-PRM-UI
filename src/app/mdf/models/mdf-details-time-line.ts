@@ -1,13 +1,14 @@
 export class MdfDetailsTimeLine {
 	
-	displayName:string="";
-	profilePicturePath:string = "";
 	mdfAmount:any;
 	allocationDateInString:string="";;
 	expirationDateInString:string="";;
 	mdfAmountType:string = "";
 	description:string="";
+	displayName:string="";
+	profilePicturePath:string = "";
 	createdTimeInString:string = "";
 	displayTime:any;
 	createdTimeInUTCString:string ="";
+	statusInInteger:number=0;
 }

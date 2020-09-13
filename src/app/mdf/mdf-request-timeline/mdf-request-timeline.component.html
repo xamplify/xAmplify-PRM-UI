@@ -23,8 +23,8 @@
                  Request Details
               </div>
            </div>
-          <app-dashboard-loader *ngIf="timeLineLoader"></app-dashboard-loader>
-          <div class="row" *ngIf="!timeLineLoader">
+          <app-dashboard-loader *ngIf="headerLoader"></app-dashboard-loader>
+          <div class="row" *ngIf="!headerLoader">
              <div  class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                 <div class="row">
                     <div class="col-md-3 col-lg-3 text-left" style="padding-left: 60px;">
@@ -69,84 +69,36 @@
                                     <div class="row">
                                         <div class="timeline">
                                             <div class="line text-muted"></div>
-                                            <!-- Panel -->
-                                            <article class="panel panel-default panel-outline">
-                                                <!-- Icon -->
+                                            <article *ngFor="let timeLine of mdfRequestTimeLineHistory" class="panel panel-default panel-outline">
                                                 <div class="panel-heading icon">
-                                                    <!-- <i _ngcontent-c7="" aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i> -->
-                                                    <img _ngcontent-c2="" class="img-circle" style="    width: 50px;
-                                                    height: 50px;" src="assets/images/icon-user-default.png">
-
+                                                    <img class="img-circle mdf-style" src="{{timeLine?.profilePicturePath}}" alt="">
                                                 </div>
-                                                <!-- /Icon -->
-
-                                                <!-- Body -->
                                                 <div class="panel-body pt0">
-                                                    <p><strong style="color:#65b6e4;">Megan Jhones</strong> Updated the <strong>Proof of Performance</strong> &nbsp;from
-                                                        <strong>Ready for submission</strong> &nbsp;to <strong>Approved</strong></p>
-                                                    <p>Updated the <strong>Amount Granted</strong>&nbsp; from <strong>$15,000.00</strong> to <strong>$15,000.00</strong></p>
+                                                    <p>
+                                                      <strong style="color:#65b6e4;">{{timeLine?.displayName}}</strong>
+                                                      <ng-container *ngIf="timeLine?.statusInInteger!=1">
+                                                        changed the status to 
+                                                        <button class="btn btn-warning btn-xs cmargin">{{timeLine?.status}}</button>  
+                                                      </ng-container>
+                                                      <ng-container *ngIf="timeLine?.statusInInteger==1">
+                                                        <button class="btn btn-warning btn-xs cmargin">Requested MDF</button>
+                                                      </ng-container>
+                                                      On
+                                                       <strong>
+                                                          <span *ngIf="!referenceService.isSafariBrowser()">{{timeLine?.displayTime |date:'mediumDate'}} {{timeLine?.displayTime |date:'shortTime'}}</span>
+                                                          <span *ngIf="referenceService.isSafariBrowser()">{{timeLine?.displayTime}}</span>
+                                                       </strong>
+                                                       <ng-container *ngIf="timeLine?.statusInInteger==2 || timeLine?.statusInInteger==3">
+                                                        <p *ngIf="timeLine?.allocationAmount!=null">Allocation Amount: <strong>$ {{timeLine?.allocationAmount | number:'1.0':'en-US'}}</strong></p>
+                                                        <p *ngIf="timeLine?.allocationDateInString?.length>0">Allocation Date: <strong>{{timeLine?.allocationDateInString}}</strong></p>
+                                                        <p *ngIf="timeLine?.expirationDateInString?.length>0">Expiration Date: <strong>{{timeLine?.expirationDateInString}}</strong></p>
+                                                       </ng-container>
+                                                       <ng-container *ngIf="timeLine?.statusInInteger==4">
+                                                        <p *ngIf="timeLine?.reimburseAmount!=null">Reimbursement Amount: <strong>$ {{timeLine?.reimburseAmount | number:'1.0':'en-US'}}</strong></p>
+                                                       </ng-container>
+                                                      <p *ngIf="timeLine?.description?.length>0">Description: <strong>{{timeLine?.description}}</strong></p>
                                                 </div>
-                                                <!-- /Body -->
-
                                             </article>
-                                            <!-- /Panel -->
-
-                                            <!-- Panel -->
-
-                                            <!-- /Panel -->
-
-                                            <!-- Separator -->
-                                            <!-- <div class="separator text-muted">
-                                                <time>25. 3. 2015</time>
-                                            </div> -->
-                                            <!-- /Separator -->
-
-                                            <!-- Panel -->
-
-
-                                            <!-- Panel -->
-                                            <article class="panel panel-default panel-outline">
-
-                                                <!-- Icon -->
-                                                <div class="panel-heading icon">
-                                                    <!-- <i _ngcontent-c7="" aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i> -->
-                                                    <img _ngcontent-c2="" class="img-circle" style="    width: 50px;
-                                                    height: 50px;" src="assets/images/icon-user-default.png">
-                                                </div>
-                                                <!-- /Icon -->
-
-                                                <!-- Body -->
-                                                <div class="panel-body pt0">
-                                                    <p><strong style="color:#65b6e4;">Kraig Gardner</strong>&nbsp;updated the <strong>Status</strong> &nbsp; from <strong>New</strong>&nbsp;to <strong>Approved</strong></p>
-                                                    <p>Updated the <strong>Proof of Performance Status</strong> &nbsp;from <strong>nothing </strong>&nbsp;to
-                                                        <strong>Ready for submission</strong></p>
-                                                    <p>Updated the <strong>Amount Granted</strong> &nbsp; from <strong>$0</strong>&nbsp; to <strong>$15,000.00</strong></p>
-                                                    <p>Updated the <strong>Amount Requested</strong> &nbsp; from <strong>$15,000.00</strong>&nbsp; to <strong>$15,000.00</strong></p>
-                                                </div>
-                                                <!-- /Body -->
-
-                                            </article>
-                                            <!-- /Panel -->
-
-                                            <!-- Panel -->
-                                            <article class="panel panel-default panel-outline">
-
-                                                <!-- Icon -->
-                                                <div class="panel-heading icon">
-                                                    <!-- <i _ngcontent-c7="" aria-hidden="true" class="fa fa-user-circle-o" style="color: #66b6e4;font-size: 45px;"></i> -->
-                                                    <img _ngcontent-c2="" class="img-circle" style="    width: 50px;
-                                                    height: 50px;" src="assets/images/icon-user-default.png">
-                                                </div>
-                                                <!-- /Icon -->
-
-                                                <!-- Body -->
-                                                <div class="panel-body pt0">
-                                                    <p><strong style="color:#65b6e4;">David Thomson</strong>&nbsp;Requested the MDF</p>
-                                                </div>
-                                                <!-- /Body -->
-
-                                            </article>
-
                                         </div>
                                     </div>
                                 </div>
