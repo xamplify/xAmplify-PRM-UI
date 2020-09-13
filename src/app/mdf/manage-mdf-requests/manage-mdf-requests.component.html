@@ -15,7 +15,7 @@
             <div class="col-md-6 col-lg-6 text-right" style="padding-right: 5px;" *ngIf="showMdfFormAnalyticsForParnterView && !vanityLogin">
                <div class="btn-group refer-vendor-button" style="padding-top: 4px;padding-bottom: 4px;padding-right: 0px;">
                    <a class="close-circle" (click)="goToManageRequest()"  title="Close">
-						<i class="fa fa-times-circle" aria-hidden="true"></i>
+						<i class="fa fa-times" aria-hidden="true"></i>
 					</a> 
                </div>
             </div>
@@ -161,9 +161,9 @@
                               <table class='table tgrid' aria-describedby="manage-mdf-requests-table">
                                  <thead>
                                     <tr>
-                                       <th style="width: 23%;" translate>Vendor Info</th>
-                                       <th class="hidden-xs center-align"   translate>Number Of Requests</th>
-                                       <th class="hidden-xs center-align"  translate>Actions</th>
+                                       <th scope="row" style="width: 23%;" translate>Vendor Info</th>
+                                       <th scope="row" class="hidden-xs center-align"   translate>Number Of Requests</th>
+                                       <th scope="row" class="hidden-xs center-align"  translate>Actions</th>
                                     </tr>
                                  </thead>
                                  <tbody>

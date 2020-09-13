@@ -12,18 +12,13 @@ export const routes: Routes = [
   { path: "", redirectTo: "details", pathMatch: "full" },
   { path: "details", component: ManageMdfDetailsComponent },
   { path: "requests", component: ManageMdfRequestsComponent },
-  {path: "requests/:role", component:ManageMdfRequestsComponent},
-  {path: "create-request/:vendorCompanyId", component:CreateMdfRequestComponent},
-  {path: "change-request/:requestId", component:ChangeMdfRequestComponent},
-  {path: "form", component:EditMdfRequestFormComponent},
-  {path: "timeline/:role/:requestId", component:MdfRequestTimelineComponent},
-  {path: "timeline/:mdfDetailsId", component:MdfDetailsTimelineComponent},
-
-
-
-
-
-
+  { path: "requests/:role", component: ManageMdfRequestsComponent },
+  { path: "requests/:role/:vendorCompanyId", component: ManageMdfRequestsComponent },
+  { path: "create-request/:vendorCompanyId", component: CreateMdfRequestComponent },
+  { path: "change-request/:requestId", component: ChangeMdfRequestComponent },
+  { path: "form", component: EditMdfRequestFormComponent },
+  { path: "timeline/:role/:requestId", component: MdfRequestTimelineComponent },
+  { path: "timeline/:mdfDetailsId", component: MdfDetailsTimelineComponent },
 
 ];
 @NgModule({
