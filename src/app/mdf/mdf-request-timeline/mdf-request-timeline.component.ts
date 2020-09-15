@@ -209,6 +209,12 @@ export class MdfRequestTimelineComponent implements OnInit {
     }
   }
 
+  setPage(event: any) {
+    this.pagination.pageIndex = event.page;
+    this.listDocuments(this.pagination);
+  }
+
+
   clearFile(){
     $('#requestDocument').val('');
   }
