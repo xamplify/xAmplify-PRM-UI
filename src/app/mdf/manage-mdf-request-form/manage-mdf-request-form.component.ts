@@ -177,13 +177,15 @@ goToTimeLine(formData:any){
 }
 
 showRequestCommentPopup(formData:any){
+   
     $('#requestCommentModalPopup').modal('show');
     this.startLoaders();
     let values = formData['values'];
     this.selectedRequestDetails = values;
     this.invalidComment  =true;
     this.listComments();
-   
+    
+    
 }
 listComments(){
     let requestId = parseInt(this.selectedRequestDetails[5]);
@@ -194,6 +196,10 @@ listComments(){
             comment.displayTime = new Date(comment.commentedOnInUTCString);
         });
         this.stopLoaders();
+        let self = this;
+        setTimeout(function(){
+            self.gotoBottom();
+        },250); 
      }, error => {
          this.logger.error(error);
          this.stopLoaders();
@@ -204,8 +210,8 @@ listComments(){
 }
 hideRequestCommentModalPopup(){
     $('#requestCommentModalPopup').modal('hide');
-    this.selectedRequestDetails = new Array<any>();
     this.stopLoaders();
+    this.selectedRequestDetails = new Array<any>();
 }
 
 saveComment(){
@@ -242,6 +248,11 @@ stopLoaders(){
     this.requestCommentModalPopupLoader = false;
     this.mdfRequestCommentDto = new MdfRequestCommentDto();
     this.commentsCustomResponse = new CustomResponse();
+}
+
+gotoBottom(){
+    $("#comments-div").animate({ scrollTop: $('#comments-div').prop("scrollHeight")}, 1000);
+    
 }
 
 }
