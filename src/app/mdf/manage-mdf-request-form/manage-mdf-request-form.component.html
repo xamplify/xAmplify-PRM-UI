@@ -56,10 +56,12 @@
                                                       {{columnValue?.values[1] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[1].length>30">..</span>
                                                       </label><br>
-                                                      <label title="{{columnValue?.values[6]}}">
-                                                         {{columnValue?.values[6] | slice:0:30}}
-                                                         <span *ngIf="columnValue?.values[6].length>30">..</span>
-                                                      </label><br>
+                                                      <ng-container *ngIf="columnValue?.values[6].length>0">
+                                                         <label title="{{columnValue?.values[6]}}">
+                                                            {{columnValue?.values[6] | slice:0:30}}
+                                                            <span *ngIf="columnValue?.values[6].length>30">..</span>
+                                                         </label><br>
+                                                      </ng-container>
                                                       <label title="{{columnValue?.values[2]}}">
                                                       {{columnValue?.values[2] | slice:0:30}}
                                                       <span *ngIf="columnValue?.values[2].length>30">..</span>
@@ -187,6 +189,12 @@
                            <h5 class="mt10 mb0"  title="{{selectedRequestDetails[1]}}">
                               <span><strong>Company Name </strong></span>: {{selectedRequestDetails[1] | slice:0:30}}
                               <span *ngIf="selectedRequestDetails[1]?.length>30">..</span>
+                           </h5>
+                        </div>
+                        <div *ngIf="selectedRequestDetails[6]?.length>0">
+                           <h5 class="mt10 mb0"  title="{{selectedRequestDetails[6]}}">
+                              <span><strong>Name </strong></span>: {{selectedRequestDetails[6] | slice:0:30}}
+                              <span *ngIf="selectedRequestDetails[6]?.length>30">..</span>
                            </h5>
                         </div>
                         <div>
