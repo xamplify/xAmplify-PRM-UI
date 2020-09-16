@@ -11,6 +11,7 @@ import {MdfDetails} from '../models/mdf-details';
 import {VanityLoginDto} from '../../util/models/vanity-login-dto';
 import {SaveMdfRequest} from '../models/save-mdf-request';
 import {MdfRequestDto} from "../models/mdf-request-dto";
+import {MdfRequestCommentDto} from '../models/mdf-request-comment-dto';
 
 
 @Injectable()
@@ -195,6 +196,18 @@ getMdfDetailsTimeLineHistory(mdfDetailsId:number,loggedInUserCompanyId:number){
 
 listMdfRequestDocuments(pagination:Pagination){
   return this.http.post(this.URL + "listMdfRequestDocuments?access_token=" + this.authenticationService.access_token,pagination)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
+saveComment(mdfRequestCommentDto:MdfRequestCommentDto){
+  return this.http.post(this.URL + "saveComment?access_token=" + this.authenticationService.access_token,mdfRequestCommentDto)
+        .map(this.extractData)
+        .catch(this.handleError);
+}
+
+listComments(requestId:number){
+  return this.http.get(this.URL + "listComments/"+requestId+"?access_token=" + this.authenticationService.access_token,"")
         .map(this.extractData)
         .catch(this.handleError);
 }

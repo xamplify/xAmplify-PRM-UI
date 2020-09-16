@@ -60,7 +60,6 @@ export class AddMdfFundsModalPopupComponent implements OnInit {
 	getPartnerAndMdfAmountDetails() {
 		this.mdfService.getPartnerAndMdfAmountDetails(this.partnershipId).subscribe((result: any) => {
 			this.mdfPartnerDto = result.data;
-			console.log(this.mdfPartnerDto);
 			this.mdfDetails = new MdfDetails();
 			this.mdfDetails.partnershipId = this.mdfPartnerDto.partnershipId;
 			this.mdfDetails.mdfAmountTypeInString = MdfAmountType[MdfAmountType.FUND_ADDED];
