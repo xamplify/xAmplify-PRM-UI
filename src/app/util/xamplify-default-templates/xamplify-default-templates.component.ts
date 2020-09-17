@@ -191,6 +191,7 @@ export class XamplifyDefaultTemplatesComponent implements OnInit {
     this.customResponse = new CustomResponse();
     this.replaceToDefaultLogos(emailTemplate);
     this.vanityUrlService.saveOrUpdateEmailTemplate(emailTemplate).subscribe(result => {
+      this.referenceService.goToTop();
       this.loading = false;
       if(result.statusCode === 200){
         this.customResponse = new CustomResponse('SUCCESS', this.properties.VANITY_URL_ET_SUCCESS_TEXT, true);
