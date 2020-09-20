@@ -732,7 +732,9 @@
 														<th class="text-center hidden-xs"  *ngIf="!isPartner" translate>ADDRESS</th>
 														<th class="text-center" *ngIf="isPartner"></th>
 														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
-														<th class="text-center" *ngIf="contactsByType.selectedCategory == 'non-active' || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
+														<th class="text-center" *ngIf="(contactsByType.selectedCategory == 'non-active' && isPartner) || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
+														<th></th>
+														<th></th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -840,17 +842,20 @@
 																	data-placement="bottom"
 																	title="{{actionsDescription.partner_reSendMail}}"
 																	(click)="sendMail(contact.id)"> <i
-																	class="fa fa-envelope"></i>
+																	class="fa fa-envelope" aria-hidden="true"></i>
 																</a>
 															</div>
 														</td>
-														<!-- <td>
-															<button id='more_less_button_{{i}}'
-																(click)="contact.isShowDetails = ! contact.isShowDetails">
-																<span *ngIf="!contact.isShowDetails">More</span> <span
-																	*ngIf="contact.isShowDetails">Less</span>
-															</button>
-														</td> -->
+														<td>
+															<div class="actions-block override-actions" *ngIf="contactsByType.selectedCategory != 'invalid'">
+																<a data-toggle="tooltip"
+																	data-placement="bottom"
+																	title="Campaign Analytics"
+																	(click)="showCampaigns(contact.id)"> <i
+																	class="fa fa-line-chart" aria-hidden="true"></i>
+																</a>
+															</div>
+														</td>
 														<ng-template #NA>N/A</ng-template>
 													</tr>
 													<tr

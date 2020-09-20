@@ -1924,4 +1924,13 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
                     window.open(url,"Social Login","toolbar=yes,scrollbars=yes,resizable=yes,top="+y+",left="+x+",width=700,height=485");
                     
     }
+
+    showCampaigns(userId:number){
+        this.loading = true;
+        if(this.isPartner){
+            this.referenceService.goToRouter("/home/partners/analytics/"+userId);
+        }else{
+            this.referenceService.goToRouter("/home/contacts/analytics/"+userId);
+        }
+    }
 }

@@ -4,7 +4,6 @@ import { XtremandLogger } from "../../error-pages/xtremand-logger.service";
 import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
 import { HttpRequestLoader } from '../../core/models/http-request-loader';
-import { UtilService } from '../../core/services/util.service';
 import { CustomResponse } from 'app/common/models/custom-response';
 import { Properties } from '../../common/models/properties';
 import { MdfService } from '../services/mdf.service';
@@ -40,7 +39,7 @@ export class ChangeMdfRequestComponent implements OnInit {
   errorResponses: Array<ErrorResponse> = new Array<ErrorResponse>();
   errorFieldNames:Array<string> = new Array<string>();
   showMdfAmountPopup = false;
-  constructor(private mdfService: MdfService,private route: ActivatedRoute,private utilService: UtilService,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
+  constructor(private mdfService: MdfService,private route: ActivatedRoute,public authenticationService: AuthenticationService,public xtremandLogger: XtremandLogger,public referenceService: ReferenceService,private router: Router,public properties:Properties) {
     this.loggedInUserId = this.authenticationService.getUserId();
 
    }

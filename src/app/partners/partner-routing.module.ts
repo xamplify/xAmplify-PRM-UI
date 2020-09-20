@@ -5,6 +5,7 @@ import { AddPartnersComponent } from './add-partners/add-partners.component';
 import { ManagePartnersComponent } from './manage-partners/manage-partners.component';
 import { SocialContactsCallbackComponent } from '../contacts/social-contacts-callback/social-contacts-callback.component';
 import { PartnerReportsComponent } from './partner-reports/partner-reports.component';
+import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'add', pathMatch: 'full' },
@@ -14,7 +15,9 @@ const routes: Routes = [
     { path: 'zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'analytics', component: PartnerReportsComponent },
-    { path: 'hubspot-callback',component:SocialContactsCallbackComponent}
+    { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
+	{ path: 'analytics/:userId',component:UserCampaignsListUtilComponent}
+
 ];
 
 @NgModule({

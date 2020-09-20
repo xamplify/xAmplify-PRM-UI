@@ -1,0 +1,119 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<div class="page-content">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+       <li><i class="fa fa-home" aria-hidden="true"></i> <a translate>Home</a> 
+          <i class="fa fa-angle-right" aria-hidden="true"></i>
+       </li>
+       <li><a translate>Campaign Analytics</a></li>
+    </ul>
+ </div>
+ <div class="row">
+  <div class="portlet box">
+     <div class="clearfix">
+        <div class="col-xs-12">
+           <!-- BEGIN EXAMPLE TABLE PORTLET-->
+           <div class="portlet box blue">
+              <div class="portlet-title">
+                 <div class="caption" translate>
+                    <i class="fa fa-list" style="font-size: 19px;" aria-hidden="true"></i>
+                    Campaign Analytics
+                 </div>
+                 <div class="inputs" align="right" style="float: right; padding: 4px">
+                    <div style="float: left; margin: 0 10px;">
+                      <select class="form-control" [(ngModel)]="sortOption.userLevelCampaignAnalyticsSortOption" (ngModelChange)="sortBy($event)">
+                        <option *ngFor="let option of sortOption.userLevelCampaignAnalyticsSortDropDownOptions"
+                            [ngValue]="option" translate>
+                            {{option.name}}</option>
+                    </select>
+                    </div>
+                    <div class="portlet-input input-inline">
+                       <div class="input-icon right">
+                          <input type="text" id="sort-text" class="form-control" [(ngModel)]="sortOption.searchKey" [ngModelOptions]="{standalone: true}" placeholder="Search" (keypress)="eventHandler($event.keyCode)">
+                          <button class="glyphicon glyphicon-remove search-box-item-clear"  *ngIf="sortOption.searchKey" (click)="sortOption.searchKey='';searchCampaigns();"></button>
+                          <button type="submit" class="search-box-item-click" (click)="searchCampaigns()"><i class="fa fa-search" style="color:black !important" aria-hidden="true"></i></button>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+              <app-list-loader *ngIf="listLoader.isLoading"></app-list-loader>
+              <div class="portlet-body table-responsive" style="overflow: hidden;" *ngIf="!listLoader.isLoading">
+                 <div class="btn-group pull-right" style="margin-bottom: 10px; left: -16px;">
+                    <div class="inputs" align="right" style="float: right"></div>
+                 </div>
+                 <div class="clearfix">
+                    <div class="col-xs-12" style="padding: 10px 0;">
+                       <div class="table-responsive">
+                          <table class='table tgrid' aria-describedby="user-campaigns-list-table">
+                             <thead>
+                                <tr>
+                                   <th translate>Campaign Name</th>
+                                   <th  translate>Launched On</th>
+                                   <th  translate>Latest View</th>
+                                   <th  translate>Email Opened</th>
+                                   <th translate>Clicked URLs</th>
+                                   <th translate>Auto Responses</th>
+                                </tr>
+                             </thead>
+                             <tbody>
+                              <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
+                                <tr>
+                                  <td>
+                                    {{campaignAnalytics?.campaignName}}
+                                </td>
+                                <td>
+                                 <span *ngIf="!referenceService.isSafariBrowser()">{{campaignAnalytics?.launchedDisplayTime |date:'mediumDate'}} {{campaignAnalytics?.launchedDisplayTime |date:'shortTime'}}</span>
+                                 <span *ngIf="referenceService.isSafariBrowser()">{{campaignAnalytics?.launchedDisplayTime}}</span>
+                              </td>
+                                  <td>
+                                     <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime!='-'">
+                                       <span *ngIf="!referenceService.isSafariBrowser()">{{campaignAnalytics?.latestViewDisplayTime |date:'mediumDate'}} {{campaignAnalytics?.latestViewDisplayTime |date:'shortTime'}}</span>
+                                       <span *ngIf="referenceService.isSafariBrowser()">{{campaignAnalytics?.latestViewDisplayTime}}</span>
+                                     </ng-container>
+                                     <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime=='-'">
+                                       <span>-</span>
+                                    </ng-container>
+                                  </td>
+                                  <td>
+                                    {{campaignAnalytics?.emailOpenedCount}}
+                                  </td>
+                                  <td>
+                                    {{campaignAnalytics?.clickedUrlsCount}}
+                                  </td>
+                                  <td>
+                                    <div class="actions-block" (click)="$event.stopPropagation()">
+                                       <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount==0"
+                                         style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</span>
+                                       <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0">
+                                         {{campaignAnalytics?.autoResponsesCount}}</span>
+                                       <a *ngIf="campaignAnalytics?.autoResponsesCount>0"
+                                         (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
+                                         data-toggle="tooltip" data-placement="top" title="View Auto Response Analytics">
+                                         <i class="fa"
+                                           [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
+                                       </a>
+                                     </div>
+                                  </td>
+                               </tr>
+                                </ng-container>
+                             </tbody>
+                          </table>
+                          <div *ngIf="pagination.pagedItems.length !== 0">
+                            <app-pagination [pagination]="pagination" (notifyParent)="setPage($event)" (notifyParentDropDown)="listCampaignAnalytics($event)" [hidden]="listLoader.isLoading">
+                            </app-pagination>
+                        </div>
+                        <div *ngIf="pagination.totalRecords==0 && !listLoader.isLoading" class="alert alert-info">
+                            <strong>No Data Found.</strong>
+                        </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+     </div>
+  </div>
+</div>
+
+</div>

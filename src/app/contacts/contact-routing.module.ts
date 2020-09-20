@@ -6,6 +6,7 @@ import { SocialContactsCallbackComponent } from './social-contacts-callback/soci
 
 import { EditContactsComponent } from './edit-contacts/edit-contacts.component';
 import { ManageContactsComponent } from './manage-contacts/manage-contacts.component';
+import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'zoho-callback', component: SocialContactsCallbackComponent },
     { path: 'salesforce-callback', component: SocialContactsCallbackComponent },
     { path: 'hubspot-callback',component:SocialContactsCallbackComponent},
+	{ path: 'analytics/:userId',component:UserCampaignsListUtilComponent}
 ];
 
 
