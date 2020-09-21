@@ -15,9 +15,16 @@ export class BoxLoaderComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.mdfModule != undefined) {
-			this.className = "col-xs-16 col-sm-8 col-md-4";
+			if(this.countLoader==3){
+				this.className = "col-xs-16 col-sm-8 col-md-4";
+			}else if(this.countLoader==4){
+				this.className = "col-sm-3 col-xs-6 col-lg-3 col-md-3";
+			}
+			
 		}
-
+		if(this.mdfModule== undefined && this.countLoader==3){
+			this.className = "col-sm-4 col-xs-8 col-lg-4 col-md-4";
+		}
 		if (this.countLoader != undefined) {
 			for (let i = 0; i < this.countLoader; i++) {
 				this.items.push(i);

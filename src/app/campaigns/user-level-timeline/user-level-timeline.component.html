@@ -1,0 +1,41 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+<section>
+<div id="timeline-view" class="page-content">
+  <div class="page-bar" style="border: 1px solid #CCC;">
+    <a (click)="goBack()" class="pull-right close-circle custom-css">
+    <span class="glyphicon glyphicon-remove icon-style" aria-hidden="true">
+    </span>
+  </a>
+  <div data-animation-name="slideInUp">
+    <div class="col-xs-12">
+      <ng-container *ngIf="campaignType == 'SOCIAL'">
+        <div class="f-w-600 p10">Redistributed Accounts</div>
+        <div class="col-sm-4 col-xs-12" *ngFor="let socialStatus of redistributedAccountsBySelectedUserId">
+          <app-social-status [socialStatus]="socialStatus"></app-social-status>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-xs-12 col-sm-6 p10">
+    </div>
+    <div class="col-xs-12 col-sm-6">
+      <div data-animation="slideInUp">
+        <div class="row mb10">
+          <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
+          <h5 class="f-w-600 mt10 mb0">
+            <span *ngIf="selectedUser?.firstName">{{selectedUser?.firstName | slice:0:20}}</span>
+          <span *ngIf="selectedUser?.firstName?.length>20">..</span>
+          &nbsp;
+          <span *ngIf="selectedUser?.lastName">{{selectedUser?.lastName | slice:0:20}}</span>
+          <span *ngIf="selectedUser?.lastName?.length>20">..</span>
+        </h5>
+        <h6 class="m0">{{selectedUser?.emailId | slice:0:35}}
+          <span *ngIf="selectedUser?.emailId?.length>35">...</span>
+        </h6>
+          </div>
+
+      </div>
+      </div>
+  </div>
+  </div>
+</div>
+</section>

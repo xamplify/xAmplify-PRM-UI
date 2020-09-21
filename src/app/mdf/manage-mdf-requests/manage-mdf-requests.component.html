@@ -34,7 +34,7 @@
       <div class="col-md-12 col-lg-12">
          <div class="portlet light" style=" height:163px;">
             <div class="row" style="margin-top: 20px;">
-              <app-box-loader [countLoader]=3 [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
+              <app-box-loader [countLoader]="countLoader" [mdfModule]="true" *ngIf="tilesLoader"></app-box-loader>
                <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                   <div class="row">
                      <div title="Click to see details" class="{{tileClass}}" *ngIf="!isPartnerView">

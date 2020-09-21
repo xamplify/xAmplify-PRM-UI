@@ -15,6 +15,9 @@ import { PreviewPartnersComponent } from './preview-partners/preview-partners.co
 import { CalendarComponent } from './calendar/calendar.component';
 import { CreateSmsCampaignComponent } from "./create-sms-campaign/create-sms-campaign.component";
 import { EventCheckInComponent } from './event-check-in/event-check-in.component';
+import { UserLevelTimelineComponent } from './user-level-timeline/user-level-timeline.component';
+import { UserCampaignsListUtilComponent } from '../util/user-campaigns-list-util/user-campaigns-list-util.component';
+
 
 export const campaignRoutes: Routes = [
   { path: "", redirectTo: "manage", pathMatch: "full" },
@@ -50,7 +53,11 @@ export const campaignRoutes: Routes = [
   { path: "calendar/:teamMemberId", component: CalendarComponent },
   { path: "calendar/f/:categoryId", component: CalendarComponent },
   { path: "calendar/:teamMemberId/:categoryId", component: CalendarComponent },
-  { path: "sms", component: CreateSmsCampaignComponent }
+  { path: "sms", component: CreateSmsCampaignComponent },
+  { path: "timeline/:type/:campaignId/:userId", component: UserLevelTimelineComponent },
+  { path: 'user-campaigns/:type/:userId',component:UserCampaignsListUtilComponent}
+
+
 ];
 
 @NgModule({

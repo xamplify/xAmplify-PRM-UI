@@ -32,7 +32,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	tileClass = "col-sm-4 col-xs-8 col-lg-4 col-md-4";
 	totalCampaignsCount:number;
 	activeCampaignsCount:number;
-
+	userType:string = "";
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -41,6 +41,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.tilesLoader = true;
 		this.startLoaders();
 		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
+		this.userType = this.route.snapshot.params['type'];
 		this.getCompanyId();
 	}
 	getCompanyId() {
@@ -84,6 +85,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	}
 
 	listCampaignAnalytics(pagination: Pagination) {
+		this.referenceService.goToTop();
 		this.startLoaders();
 		this.campaignService.analyticsByUserId(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
@@ -150,5 +152,11 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	goToCampaignAnalytics(campaignId:number){
 		this.loading = true;
 		this.referenceService.goToRouter("home/campaigns/"+campaignId+"/details");
+	}
+	
+	viewTimeLine(campaignAnalytics:any){
+		this.loading = true;
+		this.referenceService.goToRouter("/home/campaigns/timeline/"+this.userType+"/"+campaignAnalytics.campaignId+"/"+this.pagination.userId);
+		
 	}
 }

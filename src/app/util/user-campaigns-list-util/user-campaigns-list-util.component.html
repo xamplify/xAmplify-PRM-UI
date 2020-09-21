@@ -12,6 +12,7 @@
    <div class="col-md-12 col-lg-12">
       <div class="portlet light" style="height:198px;">
          <div class="row" style="margin-top: 20px;">
+            <app-box-loader [countLoader]=3 *ngIf="tilesLoader"></app-box-loader>
             <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
                <div class="row">
                   <div  id="vendor-details-tile" class="{{tileClass}}">
@@ -164,8 +165,8 @@
                                      </div>
                                   </td>
                                   <td>
-                                    <div class="actions-block" (click)="$event.stopPropagation()">
-                                       <a (click)="viewHistory()" title="View History">
+                                    <div class="actions-block" (click)="viewTimeLine(campaignAnalytics)" >
+                                       <a title="View History">
                                           <i class="fa fa-history action-btn" aria-hidden="true"></i>
                                           </a>
                                        </div>

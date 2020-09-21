@@ -1927,10 +1927,11 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
 
     showCampaigns(userId:number){
         this.loading = true;
+		let prefixUrl = "/home/campaigns/user-campaigns/";
         if(this.isPartner){
-            this.referenceService.goToRouter("/home/partners/analytics/"+userId);
+            this.referenceService.goToRouter(prefixUrl+"/p/"+userId);
         }else{
-            this.referenceService.goToRouter("/home/contacts/analytics/"+userId);
+            this.referenceService.goToRouter(prefixUrl+"/c/"+userId);
         }
     }
 }
