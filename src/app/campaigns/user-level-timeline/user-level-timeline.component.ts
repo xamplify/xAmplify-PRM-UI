@@ -11,11 +11,11 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 @Component({
   selector: 'app-user-level-timeline',
   templateUrl: './user-level-timeline.component.html',
-  styleUrls: ['./user-level-timeline.component.css']
+  styleUrls: ['./user-level-timeline.component.css','../analytics/timeline.css','../analytics/analytics.component.css']
 })
 export class UserLevelTimelineComponent implements OnInit {
 
-  campaignType:string;
+  campaignType:string = "VIDEO";
   userType:string;
   selectedUserId:number;
   redistributedAccountsBySelectedUserId = [];

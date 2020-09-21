@@ -3,7 +3,7 @@
 <div id="timeline-view" class="page-content">
   <div class="page-bar" style="border: 1px solid #CCC;">
     <a (click)="goBack()" class="pull-right close-circle custom-css">
-    <span class="glyphicon glyphicon-remove icon-style" aria-hidden="true">
+    <span class="glyphicon glyphicon-remove" aria-hidden="true" id="icon-style" >
     </span>
   </a>
   <div data-animation-name="slideInUp">
@@ -32,7 +32,69 @@
           <span *ngIf="selectedUser?.emailId?.length>35">...</span>
         </h6>
           </div>
+          <div class="row mb10">
 
+
+            <div class="col-sm-3 col-xs-6">
+              <a class="text-center">
+                <div>
+                  <img src="assets/images/email-opened.png" class="eoc" alt=""></div>
+                <div>Email Opened</div>
+                <div class="number">
+                  <span data-counter="counterup" class="cuc">10</span>
+                </div>
+              </a>
+            </div>
+            <ng-container *ngIf="campaignType != 'EVENT'">
+              <div class="col-sm-3 col-xs-6">
+                <a class="text-center">
+                  <div>
+                    <img src="assets/images/clicked-new.png" class="cnc" alt=""></div>
+                  <div>Clicked URL</div>
+                  <div class="number">
+                    <span data-counter="counterup" class="counterupcss">10</span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-sm-3 col-xs-6"
+                [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE' ">
+                <a class="text-center">
+                  <div>
+                    <img src="assets/images/video-watched.png" class="vwc" alt=""></div>
+                  <div>Views</div>
+                  <div class="number">
+                    <span data-counter="counterup" class="vwcuc">10</span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-sm-3 col-xs-6"
+                [hidden]="campaignType==='REGULAR' || campaignType==='SOCIAL' ||  campaignType==='LANDINGPAGE'">
+                <a class="text-center">
+                  <div>
+                    <img src="assets/images/total-time-spent.png" class="ttsc" alt=""></div>
+                  <div>Time Spent</div>
+                  <div class="number">
+                    <span data-counter="counterup" class="ttscu">10:00</span>
+                  </div>
+                </a>
+              </div>
+            </ng-container>
+
+            <div class="col-sm-3 col-xs-6" *ngIf="campaignType==='SOCIAL'">
+              <a class="text-center">
+                <div>
+                  <img src="assets/images/social-icons.jpg" class="sic" alt="">
+                </div>
+                <div>Social Accounts</div>
+                <div class="number">
+                  <span>5</span>
+                </div>
+              </a>
+            </div>
+
+
+
+            </div>
       </div>
       </div>
   </div>
