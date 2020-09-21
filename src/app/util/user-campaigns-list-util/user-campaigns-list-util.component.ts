@@ -27,12 +27,18 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	loggedInUserCompanyId: number = 0;
 	loggedInUserId: number = 0;
 	loading = false;
+	tilesLoader = false;
+	selectedContactDetails:any;
+	tileClass = "col-sm-4 col-xs-8 col-lg-4 col-md-4";
+	totalCampaignsCount:number;
+	activeCampaignsCount:number;
 
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
 
 	ngOnInit() {
+		this.tilesLoader = true;
 		this.startLoaders();
 		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
 		this.getCompanyId();
@@ -73,6 +79,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	}
 	stopLoaders() {
 		this.loading = false;
+		this.tilesLoader = false;
 		this.referenceService.loading(this.listLoader, false);
 	}
 
@@ -81,6 +88,8 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.campaignService.analyticsByUserId(pagination).subscribe((result: any) => {
 			if (result.statusCode === 200) {
 				let data = result.data;
+				this.totalCampaignsCount = data.totalCampaignsCount;
+				this.activeCampaignsCount = data.activeCampaignsCount;
 				pagination.totalRecords = data.totalRecords;
 				$.each(data.campaignAnalytics,function(index:number,campaign:any){
 					campaign.launchedDisplayTime = new Date(campaign.launchTimeInUTCString);
@@ -136,5 +145,10 @@ export class UserCampaignsListUtilComponent implements OnInit {
 
 	showAutoResponseAnalytics(campaignAnalytics:any,index:number){
 
+	}
+
+	goToCampaignAnalytics(campaignId:number){
+		this.loading = true;
+		this.referenceService.goToRouter("home/campaigns/"+campaignId+"/details");
 	}
 }

@@ -9,6 +9,73 @@
     </ul>
  </div>
  <div class="row">
+   <div class="col-md-12 col-lg-12">
+      <div class="portlet light" style="height:198px;">
+         <div class="row" style="margin-top: 20px;">
+            <div *ngIf="!tilesLoader" class="col-md-12 col-lg-12" style="padding-left: 24px;padding-right: 30px;">
+               <div class="row">
+                  <div  id="vendor-details-tile" class="{{tileClass}}">
+                     <div class="row">
+                         <div class="flex margin-flex">
+                             <span class='profile'>
+                                 <span class='uppercase'>{{mdfPartnerDto?.contactCompany |slice:0:1}}</span>
+                                 </span>
+                                 <span class="margin-left" style="margin-left: 20px;">
+                                     <h6 class='m0 user-email' *ngIf="mdfPartnerDto?.contactCompany?.length>0">
+                                         <p class="user-company" title="{{mdfPartnerDto?.contactCompany}}">
+                                             <span>{{mdfPartnerDto?.contactCompany |slice:0:23}}</span>
+                                             <span *ngIf="mdfPartnerDto?.contactCompany?.length>23">..</span>
+                                         </p>
+                                       </h6>
+                                       <br>
+                                       <h5 *ngIf="mdfPartnerDto?.fullName?.length>0" class='ellipsis user-name' title="{{mdfPartnerDto?.fullName}}">
+                                           {{mdfPartnerDto?.fullName | slice:0:27}}
+                                         <span *ngIf="mdfPartnerDto?.fullName?.length>27">..</span>
+                                        </h5>
+                                        <a style="display: table;" title="{{mdfPartnerDto?.emailId}}">
+                                         {{mdfPartnerDto?.emailId | slice:0:30}}<span *ngIf="mdfPartnerDto?.emailId?.length>30">...</span></a>
+                                 </span>
+                             </div>
+                     </div>
+                  </div>
+                  <div title="Click to see details" class="{{tileClass}}">
+                     <a class="dashboard-stat dashboard-stat-lighter green-soft">
+                        <div class="visual">
+                           <i aria-hidden="true" class=""></i>
+                        </div>
+                        <div class="details">
+                           <div class="number">{{totalCampaignsCount}}</div>
+                           <div class="desc">Total Campaigns</div>
+                        </div>
+                        <span class="morePadding">
+                     <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                     <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                     </span>
+                     </a>
+                  </div>
+                  <div title="Click to see details" class="{{tileClass}}">
+                     <a class="dashboard-stat dashboard-stat-lighter purple-soft">
+                        <div class="visual">
+                           <i aria-hidden="true" class=""></i>
+                        </div>
+                        <div class="details">
+                           <div class="number">{{activeCampaignsCount}}</div>
+                           <div class="desc">Active Campaigns</div>
+                        </div>
+                        <span class="morePadding">
+                     <a  translate="" ng-reflect-translate="" class="more">Detailed view  
+                     <i  aria-hidden="true" class="m-icon-swapright m-icon-white"></i></a>
+                     </span>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+ <div class="row">
   <div class="portlet box">
      <div class="clearfix">
         <div class="col-xs-12">
@@ -53,13 +120,14 @@
                                    <th  translate>Email Opened</th>
                                    <th translate>Clicked URLs</th>
                                    <th translate>Auto Responses</th>
+                                   <th translate>History</th>
                                 </tr>
                              </thead>
                              <tbody>
                               <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
                                 <tr>
-                                  <td>
-                                    {{campaignAnalytics?.campaignName}}
+                                  <td title="Click to see campaign analytics">
+                                    <a (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">{{campaignAnalytics?.campaignName}}</a>
                                 </td>
                                 <td>
                                  <span *ngIf="!referenceService.isSafariBrowser()">{{campaignAnalytics?.launchedDisplayTime |date:'mediumDate'}} {{campaignAnalytics?.launchedDisplayTime |date:'shortTime'}}</span>
@@ -88,11 +156,19 @@
                                          {{campaignAnalytics?.autoResponsesCount}}</span>
                                        <a *ngIf="campaignAnalytics?.autoResponsesCount>0"
                                          (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
-                                         data-toggle="tooltip" data-placement="top" title="View Auto Response Analytics">
+                                         title="View Auto Response Analytics">
                                          <i class="fa"
                                            [ngClass]="{'fa-plus': !campaignAnalytics?.expanded, 'fa-minus': campaignAnalytics?.expanded}" aria-hidden="true"></i>
                                        </a>
+                                       
                                      </div>
+                                  </td>
+                                  <td>
+                                    <div class="actions-block" (click)="$event.stopPropagation()">
+                                       <a (click)="viewHistory()" title="View History">
+                                          <i class="fa fa-history action-btn" aria-hidden="true"></i>
+                                          </a>
+                                       </div>
                                   </td>
                                </tr>
                                 </ng-container>
