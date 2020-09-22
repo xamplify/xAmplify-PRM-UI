@@ -41,7 +41,7 @@
                   <img src="assets/images/email-opened.png" class="eoc" alt=""></div>
                 <div>Email Opened</div>
                 <div class="number">
-                  <span data-counter="counterup" class="cuc">10</span>
+                  <span data-counter="counterup" class="cuc">{{userLevelCampaignAnalyticsDTO?.emailOpenedCount}}</span>
                 </div>
               </a>
             </div>
@@ -52,7 +52,7 @@
                     <img src="assets/images/clicked-new.png" class="cnc" alt=""></div>
                   <div>Clicked URL</div>
                   <div class="number">
-                    <span data-counter="counterup" class="counterupcss">10</span>
+                    <span data-counter="counterup" class="counterupcss">{{userLevelCampaignAnalyticsDTO?.clickedUrlsCount}}</span>
                   </div>
                 </a>
               </div>
@@ -63,7 +63,7 @@
                     <img src="assets/images/video-watched.png" class="vwc" alt=""></div>
                   <div>Views</div>
                   <div class="number">
-                    <span data-counter="counterup" class="vwcuc">10</span>
+                    <span data-counter="counterup" class="vwcuc">{{userLevelCampaignAnalyticsDTO?.watchedCount}}</span>
                   </div>
                 </a>
               </div>
@@ -74,7 +74,7 @@
                     <img src="assets/images/total-time-spent.png" class="ttsc" alt=""></div>
                   <div>Time Spent</div>
                   <div class="number">
-                    <span data-counter="counterup" class="ttscu">10:00</span>
+                    <span data-counter="counterup" class="ttscu">{{userLevelCampaignAnalyticsDTO?.totalTimeSpent}}</span>
                   </div>
                 </a>
               </div>

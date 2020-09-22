@@ -8,6 +8,7 @@ import { ReferenceService } from "app/core/services/reference.service";
 import { Router } from '@angular/router';
 import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
+
 @Component({
   selector: 'app-user-level-timeline',
   templateUrl: './user-level-timeline.component.html',
@@ -17,19 +18,36 @@ export class UserLevelTimelineComponent implements OnInit {
 
   campaignType:string = "VIDEO";
   userType:string;
+  campaignId:number;
   selectedUserId:number;
   redistributedAccountsBySelectedUserId = [];
   selectedUser = {};
   loading = false;
+  userLevelCampaignAnalyticsDTO = {};
   constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
 	}
 
   ngOnInit() {
+    this.loading = true;
     this.userType = this.route.snapshot.params['type'];
     this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
+    this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
     this.selectedUser['firstName'] = "Virat";
     this.selectedUser['lastName'] = "Kohli";
     this.selectedUser['emailId'] = "vendor.role@gmail.com";
+    this.getUserLevelTimeLineSeriesData();
+
+  }
+
+  getUserLevelTimeLineSeriesData(){
+    this.loading = true;
+    this.campaignService.getUserLevelTimeLineSeriesData(this.campaignId,this.selectedUserId).subscribe((result: any) => {
+     this.userLevelCampaignAnalyticsDTO = result.data.userLevelCampaignAnalyticsDTO;
+     this.loading = false;
+    }, error => {
+      this.xtremandLogger.log(error);
+      this.xtremandLogger.errorPage(error);
+    });
   }
 
   goBack(){
