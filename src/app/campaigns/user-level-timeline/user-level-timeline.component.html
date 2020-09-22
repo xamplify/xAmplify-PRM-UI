@@ -3,8 +3,10 @@
 <div id="timeline-view" class="page-content">
   <div class="page-bar" style="border: 1px solid #CCC;">
     <a (click)="goBack()" class="pull-right close-circle custom-css">
-    <span class="glyphicon glyphicon-remove" aria-hidden="true" id="icon-style" >
-    </span>
+    <i class="fa fa-times" aria-hidden="true"> </i>
+  </a>
+  <a (click)="getUserLevelTimeLineSeriesData()" class="pull-right close-circle custom-css">
+    <i class="fa fa-refresh" aria-hidden="true"></i>
   </a>
   <div data-animation-name="slideInUp">
     <div class="col-xs-12">
@@ -15,8 +17,7 @@
         </div>
       </ng-container>
     </div>
-    <div class="col-xs-12 col-sm-6 p10">
-    </div>
+    <div class="col-xs-12 col-sm-6 p10"></div>
     <div class="col-xs-12 col-sm-6">
       <div data-animation="slideInUp">
         <div class="row mb10">
@@ -33,8 +34,6 @@
         </h6>
           </div>
           <div class="row mb10">
-
-
             <div class="col-sm-3 col-xs-6">
               <a class="text-center">
                 <div>
@@ -91,11 +90,97 @@
                 </div>
               </a>
             </div>
+          </div>
+        </div>
+            <ul class="timeline" data-animation="slideInUp">
+              <li class="timeline-inverted">
+                <div class="timeline-badge warning">
+                  <img src="assets/images/closed-env.png" alt=""></div>
+                <div class="timeline-panel">
+                  <div class="timeline-heading">
+                    <span class="timeline-title">
+                      <!-- <app-timestamp [dateAndTime]="campaign.launchTime"> </app-timestamp> -->
+                      Sep 22
+                    </span>
+                  </div>
+                  <div class="timeline-body">
+                    <h5><span class="f-w-600" title="campaignName">
+                        campaign
+                        <!-- <span *ngIf="campaign.campaignName?.length>30">...</span> -->
+                      </span> campaign Launched at 2:00 PM</h5>
+                    <h5>Email sent to <strong>vendor.role@gmail.com</strong></h5>
+                  </div>
+                </div>
+              </li>
+            </ul>
 
-
-
-            </div>
-      </div>
+            <ul class="timeline" *ngFor="let emailLog of emailLogs">
+              <li class="timeline-inverted">
+                <div class="timeline-badge">
+                  <img *ngIf="emailLog?.actionId == 13" alt="opened" src="assets/images/opened.png">
+                  <img *ngIf="emailLog?.actionId == 14" alt="clicked" src="assets/images/clicked.png">
+                  <img *ngIf="emailLog?.actionId == 15" alt="clicked" src="assets/images/clicked.png">
+                  <img *ngIf="emailLog?.actionId == 1 || emailLog?.actionId == 10" alt="watched"
+                    src="assets/images/video.png">
+                  <img *ngIf="emailLog?.autoResponseType" src="assets/images/closed-env.png" alt="">
+                </div>
+                <div class="timeline-panel">
+                  <div class="timeline-heading">
+                    <span class="timeline-title">
+                      <app-timestamp [dateAndTime]="emailLog?.time"> </app-timestamp>
+                    </span>
+                  </div>
+                  <div class="timeline-body">
+                    <h5>
+                      <span *ngIf="emailLog?.actionId == 13">
+                        campaign<span class="f-w-600" *ngIf="emailLog?.subject" title="{{emailLog?.subject}}">
+                          {{emailLog?.subject | slice:0:30}} 
+                          <span *ngIf="emailLog?.subject?.length>30">...</span>
+                        </span> email opened
+                      </span>
+                      <span *ngIf="emailLog?.actionId == 14 && campaign?.campaignVideoFile">Clicked <span class="f-w-600"
+                          title="{{campaign?.campaignVideoFile?.title}}">{{campaign?.campaignVideoFile?.title
+                          | slice:0:30}} <span *ngIf="campaign?.campaignVideoFile?.title?.length>30">...</span></span> video GIF</span>
+                      <span *ngIf="emailLog?.actionId == 15 && emailLog?.url?.length>0 && emailLog?.url!='Clicked on View in browser'">
+                        Clicked on the URL
+                        <span class="f-w-600">
+                          <a href="{{emailLog?.url}}" target="_blank"
+                            title="{{emailLog?.url}}">{{emailLog?.url | slice:0:30}}
+                          <span *ngIf="emailLog?.url?.length>30">...</span></a>
+                        </span>
+                      </span>
+                      <span *ngIf="emailLog?.actionId == 15 && emailLog?.url?.length>0 && emailLog?.url=='Clicked on View in browser'">
+                        <span class="f-w-600">
+                          <a href="javascript:void(0);" title="{{emailLog?.url}}">{{emailLog?.url}}
+                          </a>
+                        </span>
+                      </span>
+                      <span *ngIf="campaign?.campaignVideoFile && (emailLog?.actionId == 1 || emailLog?.actionId == 10)">
+                        <span class="f-w-600"
+                          title="{{campaign?.campaignVideoFile?.title}}">{{campaign?.campaignVideoFile?.title | slice:0:30}}
+                          <span *ngIf="campaign?.campaignVideoFile?.title?.length>30">...</span>
+                        </span> <span *ngIf="emailLog?.actionId == 10">re-</span>played
+                      </span>
+                      <span *ngIf="emailLog?.autoResponseType">
+                        <h5>Email sent for the auto response: <strong>{{emailLog?.autoResponseType}}</strong></h5>
+                        <h6>Subject Line: <strong>{{emailLog?.subject}}</strong></h6>
+                      </span>
+                    </h5>
+                    <span *ngIf="emailLog?.countryCode">
+                      <h6>
+                        <img *ngIf="emailLog?.countryCode"
+                          src="https://lipis.github.io/flag-icon-css/flags/4x3/{{emailLog?.countryCode | lowercase}}.svg"
+                          width="20px" class="mr10" alt="">{{emailLog?.country}}, {{emailLog?.city}}
+                      </h6>
+                      <h6 class="mb0">{{emailLog?.isp}} ( <strong>{{emailLog?.ipAddress}}</strong> )</h6>
+                    </span>
+                    <div *ngIf="emailLog?.actionId == 1">
+                      <app-heat-map [sessionId]="emailLog?.sessionId"></app-heat-map>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
       </div>
   </div>
   </div>

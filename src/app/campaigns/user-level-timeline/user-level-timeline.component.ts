@@ -24,6 +24,7 @@ export class UserLevelTimelineComponent implements OnInit {
   selectedUser = {};
   loading = false;
   userLevelCampaignAnalyticsDTO = {};
+  emailLogs:Array<any> = new Array<any>();
   constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
 	}
 
@@ -43,6 +44,7 @@ export class UserLevelTimelineComponent implements OnInit {
     this.loading = true;
     this.campaignService.getUserLevelTimeLineSeriesData(this.campaignId,this.selectedUserId).subscribe((result: any) => {
      this.userLevelCampaignAnalyticsDTO = result.data.userLevelCampaignAnalyticsDTO;
+     this.emailLogs = result.data.userLevelCampaignAnalyticsDTO.emailLogs;
      this.loading = false;
     }, error => {
       this.xtremandLogger.log(error);
