@@ -14,7 +14,7 @@ import { PagerService } from 'app/core/services/pager.service';
 import { CampaignService } from 'app/campaigns/services/campaign.service';
 import { UtilService } from '../../core/services/util.service';
 
-declare var $:any;
+declare var $,swal:any;
 @Component({
 	selector: 'app-user-campaigns-list-util',
 	templateUrl: './user-campaigns-list-util.component.html',
@@ -24,6 +24,7 @@ declare var $:any;
 export class UserCampaignsListUtilComponent implements OnInit {
 
 	pagination: Pagination = new Pagination();
+	autoResponseAnalyticsPagination: Pagination = new Pagination();
 	loggedInUserCompanyId: number = 0;
 	loggedInUserId: number = 0;
 	loading = false;
@@ -33,6 +34,12 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	totalCampaignsCount:number;
 	activeCampaignsCount:number;
 	userType:string = "";
+	userDetails:any;
+	circleAlphabet = "";
+	campaignAnalytics:Array<any> = new Array<any>();
+	autoResponeAnalyticsLoader: HttpRequestLoader = new HttpRequestLoader();
+	colspanValue: number = 7;
+
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -63,6 +70,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 				() => {
 					if (this.loggedInUserCompanyId != undefined && this.loggedInUserCompanyId > 0) {
 						this.pagination.companyId = this.loggedInUserCompanyId;
+						this.getUserDetailsFromUserList();
 						this.listCampaignAnalytics(this.pagination);
 					}
 				}
@@ -93,6 +101,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 				this.totalCampaignsCount = data.totalCampaignsCount;
 				this.activeCampaignsCount = data.activeCampaignsCount;
 				pagination.totalRecords = data.totalRecords;
+				this.campaignAnalytics = data.campaignAnalytics;
 				$.each(data.campaignAnalytics,function(index:number,campaign:any){
 					campaign.launchedDisplayTime = new Date(campaign.launchTimeInUTCString);
 					if(campaign.latestViewInUTCString!=""){
@@ -109,6 +118,24 @@ export class UserCampaignsListUtilComponent implements OnInit {
 			this.xtremandLogger.errorPage(error);
 		});
 	}
+
+	getUserDetailsFromUserList() {
+		this.tilesLoader = true;
+		this.campaignService.getUserDetailsFromUserList(this.loggedInUserCompanyId,this.pagination.userId,this.userType).subscribe((result: any) => {
+		  this.tilesLoader = false;
+		  this.userDetails = result.data;
+		  let fullName = this.userDetails.fullName;
+		  let emailId = this.userDetails.emailId;
+		  if(fullName!=undefined && fullName!="" && fullName!=null){
+			this.circleAlphabet = fullName.slice(0,1);
+		  }else{
+			this.circleAlphabet = emailId.slice(0,1);
+		  }
+		}, error => {
+		  this.xtremandLogger.log(error);
+		  this.xtremandLogger.errorPage(error);
+		});
+	  }
 
 
 	 /********************Pagaination&Search Code*****************/
@@ -145,9 +172,47 @@ export class UserCampaignsListUtilComponent implements OnInit {
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCampaigns(); } }
   /********************Pagaination&Search Code*****************/
 
-	showAutoResponseAnalytics(campaignAnalytics:any,index:number){
+  showAutoResponseAnalytics(campaign: any, selectedIndex: number) {
+    this.autoResponseAnalyticsPagination = new Pagination();
+    $.each(this.campaignAnalytics, function (index, row) {
+      if (selectedIndex != index) {
+        row.expanded = false;
+      }
+    });
+    campaign.expanded = !campaign.expanded;
+    if (campaign.expanded) {
+      this.listAutoResponseAnalytics(this.autoResponseAnalyticsPagination, campaign);
+    }
+  }
 
-	}
+
+  listAutoResponseAnalytics(pagination: Pagination, campaign: any) {
+    this.referenceService.loading(this.autoResponeAnalyticsLoader, true);
+    this.autoResponseAnalyticsPagination.campaignId = campaign.campaignId;
+	this.autoResponseAnalyticsPagination.userId = this.pagination.userId;
+    this.campaignService.listAutoResponseAnalytics(pagination)
+      .subscribe(
+        response => {
+          let data = response.data;
+          pagination.totalRecords = data.totalRecords;
+          let analyticsList = data.data;
+          $.each(analyticsList, function (index, autoResponse) {
+            autoResponse.displayTime = new Date(autoResponse.sentTimeUtcString);
+            if (autoResponse.openedTimeUtcString != "-") {
+              autoResponse.openedTime = new Date(autoResponse.openedTimeUtcString);
+            }
+          });
+          pagination = this.pagerService.getPagedItems(pagination, analyticsList);
+          this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
+        },
+        error => {
+          swal("Oops! Something went wrong", "Please try after sometime", "error");
+          this.referenceService.loading(this.autoResponeAnalyticsLoader, false);
+        },
+        () => this.xtremandLogger.info("Finished showAutoResponseAnalytics()")
+      );
+  }
+
 
 	goToCampaignAnalytics(campaignId:number){
 		this.loading = true;
@@ -158,5 +223,15 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.loading = true;
 		this.referenceService.goToRouter("/home/campaigns/timeline/"+this.userType+"/"+campaignAnalytics.campaignId+"/"+this.pagination.userId);
 		
+	}
+	goBack(){
+		this.loading = true;
+		let url = "/home/";
+		if(this.userType=="p"){
+			url = url+"partners/";
+		}else{
+			url = url+"contacts/";
+		}
+		this.referenceService.goToRouter(url+"manage");
 	}
 }

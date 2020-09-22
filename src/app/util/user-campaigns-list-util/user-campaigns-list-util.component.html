@@ -7,6 +7,9 @@
        </li>
        <li><a translate>Campaign Analytics</a></li>
     </ul>
+    <a class="close-circle xamp-margin-left-icon" (click)="goBack()" aria-hidden="true">
+      <i class="fa fa-times" aria-hidden="true"></i>
+  </a>
  </div>
  <div class="row">
    <div class="col-md-12 col-lg-12">
@@ -19,22 +22,22 @@
                      <div class="row">
                          <div class="flex margin-flex">
                              <span class='profile'>
-                                 <span class='uppercase'>{{mdfPartnerDto?.contactCompany |slice:0:1}}</span>
+                                 <span class='uppercase'>{{circleAlphabet}}</span>
                                  </span>
                                  <span class="margin-left" style="margin-left: 20px;">
-                                     <h6 class='m0 user-email' *ngIf="mdfPartnerDto?.contactCompany?.length>0">
-                                         <p class="user-company" title="{{mdfPartnerDto?.contactCompany}}">
-                                             <span>{{mdfPartnerDto?.contactCompany |slice:0:23}}</span>
-                                             <span *ngIf="mdfPartnerDto?.contactCompany?.length>23">..</span>
+                                     <h6 class='m0 user-email' *ngIf="userDetails?.companyName?.length>0">
+                                         <p class="user-company" title="{{userDetails?.companyName}}">
+                                             <span>{{userDetails?.companyName |slice:0:50}}</span>
+                                             <span *ngIf="userDetails?.companyName?.length>50">..</span>
                                          </p>
                                        </h6>
                                        <br>
-                                       <h5 *ngIf="mdfPartnerDto?.fullName?.length>0" class='ellipsis user-name' title="{{mdfPartnerDto?.fullName}}">
-                                           {{mdfPartnerDto?.fullName | slice:0:27}}
-                                         <span *ngIf="mdfPartnerDto?.fullName?.length>27">..</span>
+                                       <h5 *ngIf="userDetails?.fullName?.length>0" class='ellipsis user-name' title="{{userDetails?.fullName}}">
+                                           {{userDetails?.fullName | slice:0:50}}
+                                         <span *ngIf="userDetails?.fullName?.length>50">..</span>
                                         </h5>
-                                        <a style="display: table;" title="{{mdfPartnerDto?.emailId}}">
-                                         {{mdfPartnerDto?.emailId | slice:0:30}}<span *ngIf="mdfPartnerDto?.emailId?.length>30">...</span></a>
+                                        <a style="display: table;" title="{{userDetails?.emailId}}">
+                                         {{userDetails?.emailId | slice:0:50}}<span *ngIf="userDetails?.emailId?.length>50">...</span></a>
                                  </span>
                              </div>
                      </div>
@@ -170,6 +173,73 @@
                                        </div>
                                   </td>
                                </tr>
+                               <tr [ngClass]="{'hidden': !campaignAnalytics.expanded}" id="autoresponse-tr">
+                                 <td [attr.colspan]="colspanValue">
+                                   <div class="table-responsive">
+                                   <table class="table tgrid table-condensed" id="autoresponse-analytics">
+                                     <thead>
+                                       <tr>
+                                         <th class="center-aligned">Auto Response Type</th>
+                                         <th class="center-aligned">Subject</th>
+                                         <th class="center-aligned">Reply In X Days</th>
+                                         <th class="center-aligned">Reply Time</th>
+                                         <th class="center-aligned">Sent Time</th>
+                                         <th class="center-aligned">Opened Time</th>
+                                         <th class="center-aligned">URLS CLICKED COUNT</th>
+                                         <th class="center-aligned">CLICKED URLS</th>
+                                       </tr>
+                                     </thead>
+                                     <tbody>
+                                       <app-auto-response-loader *ngIf="autoResponeAnalyticsLoader.isLoading">
+                                       </app-auto-response-loader>
+                                       <ng-container *ngIf="!autoResponeAnalyticsLoader.isLoading">
+                                         <tr
+                                           *ngFor="let autoResponseAnalytics of autoResponseAnalyticsPagination.pagedItems;let i=index">
+                                           <td class="center-aligned">{{autoResponseAnalytics.autoResponseType}}</td>
+                                           <td class="center-aligned">{{autoResponseAnalytics.subject}}</td>
+                                           <td class="center-aligned">{{autoResponseAnalytics.replyInDays}}</td>
+                                           <td class="center-aligned">{{autoResponseAnalytics.replyTimeString}}</td>
+                                           <td class="center-aligned">
+                                             <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
+                                               [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.displayTime">
+                                             </app-timestamp>
+                                             <span
+                                               *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.displayTime}}</span>
+                                           </td>
+                                           <td class="center-aligned"
+                                             *ngIf="autoResponseAnalytics.openedTimeUtcString!='-'">
+                                             <app-timestamp *ngIf="!referenceService.isSafariBrowser()"
+                                               [isOnlyDate]="false" [dateAndTime]="autoResponseAnalytics.openedTime">
+                                             </app-timestamp>
+                                             <span
+                                               *ngIf="referenceService.isSafariBrowser()">{{autoResponseAnalytics.openedTime}}</span>
+                                           </td>
+                                           <td class="center-aligned"
+                                             *ngIf="autoResponseAnalytics.openedTimeUtcString=='-'">
+                                             -
+                                           </td>
+                                           <td class="center-aligned">{{autoResponseAnalytics.urlClickCount}}</td>
+                                           <td class="center-aligned">
+                                             <table>
+                                               <tr *ngFor="let clickedUrls of autoResponseAnalytics.clickedUrls?.split(',')">
+                                                 <td style="padding:5px">{{clickedUrls}}</td>
+                                               </tr>
+                                             </table>
+                                           </td>
+                                         </tr>
+                                       </ng-container>
+                                     </tbody>
+                                   </table>
+                                 </div>
+                                   <div *ngIf="autoResponseAnalyticsPagination.pagedItems.length !== 0">
+                                     <app-pagination [pagination]="autoResponseAnalyticsPagination"
+                                       (notifyParent)="setAutoResponsesPage($event,item)"
+                                       (notifyParentDropDown)="listAutoResponseAnalytics($event,item)"
+                                       [hidden]="autoResponeAnalyticsLoader.isLoading"></app-pagination>
+                                   </div>
+                                 </td>
+                               </tr>
+
                                 </ng-container>
                              </tbody>
                           </table>

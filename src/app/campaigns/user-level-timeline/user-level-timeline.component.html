@@ -23,10 +23,10 @@
         <div class="row mb10" style="margin-left: 30px;">
           <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
           <h5 class="f-w-600 mt10 mb0">
-            <span *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
+            <span title="{{userLevelCampaignAnalyticsDTO?.fullName}}" *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
           <span *ngIf="userLevelCampaignAnalyticsDTO?.fullName?.length>20">..</span>
         </h5>
-        <h6 class="m0">{{userLevelCampaignAnalyticsDTO?.emailId| slice:0:35}}
+        <h6 title="{{userLevelCampaignAnalyticsDTO?.emailId}}" class="m0">{{userLevelCampaignAnalyticsDTO?.emailId| slice:0:35}}
           <span *ngIf="userLevelCampaignAnalyticsDTO?.emailId?.length>35">...</span>
         </h6>
           </div>
@@ -100,7 +100,8 @@
                     </span>
                   </div>
                   <div class="timeline-body">
-                    <h5><span class="f-w-600" title="{{campaignDetails?.campaignName}}">
+                    <h5>
+                      <span class="f-w-600" title="{{campaignDetails?.campaignName}}">
                       {{campaignDetails?.campaignName | slice: 0: 30}}
                       <span *ngIf="campaignDetails?.campaignName?.length>30">...</span>
                      Launched at 
@@ -111,7 +112,7 @@
                       <span>-</span>
                     </ng-container>
                     </span></h5>
-                    <h5>Email sent to <strong>{{userLevelCampaignAnalyticsDTO?.emailId}}</strong></h5>
+                    <h5 title="{{userLevelCampaignAnalyticsDTO?.emailId}}">Email sent to <strong>{{userLevelCampaignAnalyticsDTO?.emailId}}</strong></h5>
                   </div>
                 </div>
               </li>

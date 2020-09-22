@@ -1,6 +1,9 @@
 thead tr th {
 	position: relative;
 }
+#autoresponse-tr {
+	background-color: #d3d3d317
+}
 
 span.ui-column-resizer {
 	display: block;
