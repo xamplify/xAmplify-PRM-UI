@@ -1712,7 +1712,7 @@
             </div>
           </div>
 
-          <ul class="timeline" data-animation="slideInUp" *ngIf="selectedRow">
+          <ul class="timeline custom-padding" data-animation="slideInUp" *ngIf="selectedRow">
             <li class="timeline-inverted">
               <div class="timeline-badge warning"><img src="assets/images/closed-env.png"></div>
               <div class="timeline-panel">
@@ -1732,7 +1732,7 @@
               </div>
             </li>
           </ul>
-          <ul class="timeline" *ngFor="let emailLog of emailLogs">
+          <ul class="timeline custom-padding" *ngFor="let emailLog of emailLogs">
             <li class="timeline-inverted">
               <div class="timeline-badge">
                 <img *ngIf="emailLog.actionId == 13" alt="opened" src="assets/images/opened.png">
