@@ -16,20 +16,23 @@ import { CampaignService } from 'app/campaigns/services/campaign.service';
 })
 export class UserLevelTimelineComponent implements OnInit {
 
-  campaignType:string = "VIDEO";
+  campaignType:string = "";
   userType:string;
   campaignId:number;
   selectedUserId:number;
   redistributedAccountsBySelectedUserId = [];
   selectedUser = {};
   loading = false;
+  dataLoader = false;
   userLevelCampaignAnalyticsDTO = {};
   emailLogs:Array<any> = new Array<any>();
+  campaignDetails = {};
   constructor(private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
 	}
 
   ngOnInit() {
     this.loading = true;
+    this.dataLoader = true;
     this.userType = this.route.snapshot.params['type'];
     this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
     this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
@@ -42,10 +45,22 @@ export class UserLevelTimelineComponent implements OnInit {
 
   getUserLevelTimeLineSeriesData(){
     this.loading = true;
-    this.campaignService.getUserLevelTimeLineSeriesData(this.campaignId,this.selectedUserId).subscribe((result: any) => {
-     this.userLevelCampaignAnalyticsDTO = result.data.userLevelCampaignAnalyticsDTO;
-     this.emailLogs = result.data.userLevelCampaignAnalyticsDTO.emailLogs;
+    this.dataLoader = true;
+    this.campaignService.getUserLevelTimeLineSeriesData(this.campaignId,this.selectedUserId,this.userType).subscribe((result: any) => {
+     let timeLineData = result.data['userLevelCampaignTimeLineData'];
+     this.userLevelCampaignAnalyticsDTO = timeLineData;
+     this.emailLogs = timeLineData['emailLogs'];
+     this.campaignDetails = timeLineData['campaignDetais'];
+     let launchTimeInUtcString = this.campaignDetails['launchTimeInUTCString'];
+     if(launchTimeInUtcString!=""){
+      this.campaignDetails['displayTime'] = new Date(launchTimeInUtcString);
+     }else{
+      this.campaignDetails['displayTime'] = "-";
+     }
+     
+     this.campaignType = this.campaignDetails['campaignType'];
      this.loading = false;
+     this.dataLoader = false;
     }, error => {
       this.xtremandLogger.log(error);
       this.xtremandLogger.errorPage(error);

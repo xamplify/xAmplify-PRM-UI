@@ -131,13 +131,11 @@
                                     <a (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">{{campaignAnalytics?.campaignName}}</a>
                                 </td>
                                 <td>
-                                 <span *ngIf="!referenceService.isSafariBrowser()">{{campaignAnalytics?.launchedDisplayTime |date:'mediumDate'}} {{campaignAnalytics?.launchedDisplayTime |date:'shortTime'}}</span>
-                                 <span *ngIf="referenceService.isSafariBrowser()">{{campaignAnalytics?.launchedDisplayTime}}</span>
+                                 <span>{{campaignAnalytics?.launchedDisplayTime |date:'mediumDate'}},{{campaignAnalytics?.launchedDisplayTime |date:'shortTime'}}</span>
                               </td>
                                   <td>
                                      <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime!='-'">
-                                       <span *ngIf="!referenceService.isSafariBrowser()">{{campaignAnalytics?.latestViewDisplayTime |date:'mediumDate'}} {{campaignAnalytics?.latestViewDisplayTime |date:'shortTime'}}</span>
-                                       <span *ngIf="referenceService.isSafariBrowser()">{{campaignAnalytics?.latestViewDisplayTime}}</span>
+                                       <span>{{campaignAnalytics?.latestViewDisplayTime |date:'mediumDate'}},{{campaignAnalytics?.latestViewDisplayTime |date:'shortTime'}}</span>
                                      </ng-container>
                                      <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime=='-'">
                                        <span>-</span>

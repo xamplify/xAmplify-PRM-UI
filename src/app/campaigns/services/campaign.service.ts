@@ -974,8 +974,8 @@ export class CampaignService {
             .catch(this.handleError);
     }
 
-    getUserLevelTimeLineSeriesData(campaignId:number,userId:number){
-        let url = this.URL + "campaign/userLevelCampaignTimeLineData/"+campaignId+"/"+userId+"?access_token=" + this.authenticationService.access_token;
+    getUserLevelTimeLineSeriesData(campaignId:number,userId:number,userType:string){
+        let url = this.URL + "campaign/userLevelCampaignTimeLineData/"+campaignId+"/"+userId+"/"+userType+"?access_token=" + this.authenticationService.access_token;
         return this.http.get(url, "")
             .map(this.extractData)
             .catch(this.handleError);
