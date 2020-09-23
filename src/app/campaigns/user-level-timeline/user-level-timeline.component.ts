@@ -38,6 +38,7 @@ export class UserLevelTimelineComponent implements OnInit {
   dealId: any;
   leadData: any;
   selectedRow={};
+  previousRouterAlias: string;
   constructor(private dealRegistrationService:DealRegistrationService,private route: ActivatedRoute,private campaignService:CampaignService, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router) {
 	}
 
@@ -45,6 +46,10 @@ export class UserLevelTimelineComponent implements OnInit {
     this.loading = true;
     this.dataLoader = true;
     this.userType = this.route.snapshot.params['type'];
+    this.previousRouterAlias = this.userType;
+		if(this.userType=="pa" || this.userType=="pm"){
+			this.userType = "p";
+		}
     this.selectedUserId = parseInt(this.route.snapshot.params['userId']);
     this.campaignId = parseInt(this.route.snapshot.params['campaignId']);
     this.getUserLevelTimeLineSeriesData();
@@ -108,7 +113,7 @@ export class UserLevelTimelineComponent implements OnInit {
 
   goBack(){
     this.loading = true;
-    this.referenceService.goToRouter("/home/campaigns/user-campaigns/"+this.userType+"/"+this.selectedUserId);
+    this.referenceService.goToRouter("/home/campaigns/user-campaigns/"+this.previousRouterAlias+"/"+this.selectedUserId);
   }
 
   /****************Deal Registration***************************/

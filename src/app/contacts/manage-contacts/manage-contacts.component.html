@@ -736,7 +736,8 @@
 														<th *ngIf="contactsByType.selectedCategory == 'unsubscribe'" class="hidden-xs" translate>Reason</th>
 														<th class="text-center" *ngIf="(contactsByType.selectedCategory == 'non-active' && isPartner) || contactsByType.selectedCategory == 'unsubscribe'" translate>ACTIONS</th>
 														<th></th>
-														<th></th>
+														<th *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid'"></th>
+														<th *ngIf="contactsByType.selectedCategory == 'non-active'"></th>
 														<!-- <th>MORE</th> -->
 													</tr>
 												</thead>
@@ -848,15 +849,15 @@
 																</a>
 															</div>
 														</td>
-														<td>
-															<div class="actions-block override-actions" *ngIf="contactsByType.selectedCategory != 'invalid'">
-																<a 															title="Campaign Analytics"
-																	(click)="showCampaigns(contact.id)"> <i
-																	class="fa fa-line-chart" aria-hidden="true"></i>
+														<td *ngIf="authenticationService.module.isCampaign && contactsByType.selectedCategory != 'invalid'">
+															<div class="actions-block override-actions" >
+																<a 	title="Campaign Analytics" (click)="showCampaigns(contact.id)">
+																	 <i	class="fa fa-line-chart" aria-hidden="true"></i>
 																</a>
 															</div>
 														</td>
 														<td></td>
+														<td *ngIf="contactsByType.selectedCategory == 'non-active' && isPartner"></td>
 														<ng-template #NA>N/A</ng-template>
 													</tr>
 													<tr

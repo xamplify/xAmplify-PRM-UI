@@ -40,6 +40,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	autoResponeAnalyticsLoader: HttpRequestLoader = new HttpRequestLoader();
 	colspanValue: number = 7;
 	selectedCampaignTypeIndex = 0;
+	previousRouterAlias = "";
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -49,6 +50,10 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.startLoaders();
 		this.pagination.userId = parseInt(this.route.snapshot.params['userId']);
 		this.userType = this.route.snapshot.params['type'];
+		this.previousRouterAlias = this.userType;
+		if(this.userType=="pa" || this.userType=="pm"){
+			this.userType = "p";
+		}
 		this.getCompanyId();
 	}
 	getCompanyId() {
@@ -228,17 +233,21 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	
 	viewTimeLine(campaignAnalytics:any){
 		this.loading = true;
-		this.referenceService.goToRouter("/home/campaigns/timeline/"+this.userType+"/"+campaignAnalytics.campaignId+"/"+this.pagination.userId);
+		this.referenceService.goToRouter("/home/campaigns/timeline/"+this.previousRouterAlias+"/"+campaignAnalytics.campaignId+"/"+this.pagination.userId);
 		
 	}
 	goBack(){
 		this.loading = true;
 		let url = "/home/";
-		if(this.userType=="p"){
+		if(this.previousRouterAlias=="pa"){
+			url = url+"partners/add";
+			this.referenceService.goToRouter(url);
+		}else if(this.previousRouterAlias=="pm"){
 			url = url+"partners/";
+			this.referenceService.goToRouter(url+"manage");
 		}else{
 			url = url+"contacts/";
+			this.referenceService.goToRouter(url+"manage");
 		}
-		this.referenceService.goToRouter(url+"manage");
 	}
 }

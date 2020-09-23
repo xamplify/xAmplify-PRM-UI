@@ -732,7 +732,7 @@
 															</button>
 															</td>
 															<td align="center" *ngIf="(hasAllAccess || authenticationService.isPartner() || authenticationService.module.isVendor  || authenticationService.module.isVendorTier || authenticationService.module.isPartner || authenticationService.isVendorPartner() || (hasContactRole && loggedInUserId==uploadedUserId)) && !isSynchronizationList && !clickBoard">
-															<div class="actions-block override-actions">
+															<div class="actions-block override-actions" style="width:170px">
 															  	<a data-toggle="tooltip" data-placement="top" title="{{actionsDescription.contact_edit}} {{checkingContactTypeName}}" (click)="editUserDetails(contact)">
 																  	<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
 																 </a>
@@ -741,6 +741,8 @@
 																</a>
  																<a   data-toggle="tooltip" data-placement="bottom" title="{{campaignsTitle}}" (click)="addCampaigns(contact)">
                                                                 <i class="fa fa-bullhorn" aria-hidden="true"></i></a>
+                                                                <a *ngIf="authenticationService.module.isCampaign"   data-toggle="tooltip" data-placement="bottom" title="Campaign Analytics" (click)="goToCampaigns(contact)">
+                                                                <i class="fa fa-line-chart" aria-hidden="true"></i></a>
                                                             </div>
 															</td>
 															<ng-template #NA>N/A</ng-template>
