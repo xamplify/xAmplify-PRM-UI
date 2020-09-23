@@ -60,6 +60,7 @@ export class UserLevelTimelineComponent implements OnInit {
      this.campaignDetails = timeLineData['campaignDetais'];
      let launchTimeInUtcString = this.campaignDetails['launchTimeInUTCString'];
      if(launchTimeInUtcString!=""){
+       console.log(launchTimeInUtcString);
       this.campaignDetails['displayTime'] = new Date(launchTimeInUtcString);
      }else{
       this.campaignDetails['displayTime'] = "-";

@@ -134,11 +134,11 @@
                                     <a (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">{{campaignAnalytics?.campaignName}}</a>
                                 </td>
                                 <td>
-                                 <span>{{campaignAnalytics?.launchedDisplayTime |date:'mediumDate'}},{{campaignAnalytics?.launchedDisplayTime |date:'shortTime'}}</span>
+                                 <app-timestamp [campaignView]="true" [dateAndTime]="campaignAnalytics?.launchedDisplayTime"> </app-timestamp>
                               </td>
                                   <td>
                                      <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime!='-'">
-                                       <span>{{campaignAnalytics?.latestViewDisplayTime |date:'mediumDate'}},{{campaignAnalytics?.latestViewDisplayTime |date:'shortTime'}}</span>
+                                       <app-timestamp [campaignView]="true" [dateAndTime]="campaignAnalytics?.latestViewDisplayTime"> </app-timestamp>
                                      </ng-container>
                                      <ng-container *ngIf="campaignAnalytics?.latestViewDisplayTime=='-'">
                                        <span>-</span>

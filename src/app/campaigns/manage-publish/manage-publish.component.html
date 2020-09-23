@@ -196,7 +196,7 @@
                                                             </b>
                                                     </ng-container>
                                                 </span>
-                                                <span align="right" title="Upload Date">
+                                                <span align="right" title="Launch Time">
                                                     <b
                                                         *ngIf="campaign.scheduleType=='NOW'">
                                                         <app-timestamp *ngIf="!refService.isSafariBrowser()"
@@ -537,7 +537,7 @@
                                                                 </b>
                                                     </ng-container>
                                                     </span>
-                                                    <span title="Upload date"><b>
+                                                    <span title="Launch Time"><b>
                                                        <ng-container *ngIf="campaign.scheduleType!=='SCHEDULE'">
                                                         <span *ngIf="!refService.isSafariBrowser()">{{campaign.displayTime |date:'mediumDate'}},{{campaign.displayTime |date:'shortTime'}}</span>
                                                         <span *ngIf="refService.isSafariBrowser()">{{campaign.displayTime}}</span>

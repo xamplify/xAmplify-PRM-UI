@@ -10,6 +10,7 @@ export class TimestampComponent implements OnInit {
  @Input() dateAndTime: any;
  @Input() isOnlyTime = false;
  @Input() isOnlyDate = false;
+@Input() campaignView = false;
  isSpacethere = false;
 
   constructor(public referenceService: ReferenceService) { }
