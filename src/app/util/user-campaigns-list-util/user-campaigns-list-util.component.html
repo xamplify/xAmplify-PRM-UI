@@ -118,7 +118,7 @@
                           <table class='table tgrid' aria-describedby="user-campaigns-list-table">
                              <thead>
                                 <tr>
-                                   <th translate>Campaign Name</th>
+                                   <th translate>Campaign</th>
                                    <th  translate>Launched On</th>
                                    <th  translate>Latest View</th>
                                    <th  translate>Email Opened</th>
@@ -130,8 +130,13 @@
                              <tbody>
                               <ng-container *ngFor="let campaignAnalytics of pagination.pagedItems;let i=index">
                                 <tr>
-                                  <td title="Click to see campaign analytics">
-                                    <a (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">{{campaignAnalytics?.campaignName}}</a>
+                                  <td>
+                                     <img *ngIf="campaignAnalytics?.campaignType=='REGULAR'" class="imageClass active" src="assets/images/regular-email.png" alt="Regular Campaign Logo Not Found">
+                                     <img *ngIf="campaignAnalytics?.campaignType=='VIDEO'" class="imageClass active" src="assets/images/video-email.png" alt="Video Campaign Logo Not Found">
+                                     <a class="campaign-name-padding" title="{{campaignAnalytics?.campaignName}}" (click)="goToCampaignAnalytics(campaignAnalytics?.campaignId)">
+                                       {{campaignAnalytics?.campaignName | slice:0:25}}
+                                       <span *ngIf="campaignAnalytics?.campaignName?.length>25">...</span> 
+                                    </a>
                                 </td>
                                 <td>
                                  <app-timestamp [campaignView]="true" [dateAndTime]="campaignAnalytics?.launchedDisplayTime"> </app-timestamp>

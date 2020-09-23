@@ -153,8 +153,9 @@ export class UserLevelTimelineComponent implements OnInit {
             });
           })
         }
-
-      })
+      });
+      this.loading = false;
+      this.dataLoader = false;
     }
 
     this.dealRegistrationService.getDeal(this.campaignId, this.selectedUserId).subscribe(data => {
@@ -176,8 +177,7 @@ export class UserLevelTimelineComponent implements OnInit {
             this.dealButtonText = "Update Lead";
           }
           this.leadData = response.data;
-          this.loading = false;
-          this.dataLoader = false;
+          
         })
       }
     })
