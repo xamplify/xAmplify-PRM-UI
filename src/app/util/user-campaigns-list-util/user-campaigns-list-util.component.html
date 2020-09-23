@@ -150,13 +150,13 @@
                                   <td class="center-align">
                                     {{campaignAnalytics?.clickedUrlsCount}}
                                   </td>
-                                  <td>
-                                    <div class="actions-block" (click)="$event.stopPropagation()">
+                                  <td class="center-align">
+                                    <div (click)="$event.stopPropagation()">
                                        <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount==0"
                                          style="margin-right: 50px;cursor: not-allowed">{{campaignAnalytics?.autoResponsesCount}}</span>
                                        <span class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0">
                                          {{campaignAnalytics?.autoResponsesCount}}</span>
-                                       <a *ngIf="campaignAnalytics?.autoResponsesCount>0"
+                                       <a class="circled-number" *ngIf="campaignAnalytics?.autoResponsesCount>0"
                                          (click)="$event.stopPropagation();showAutoResponseAnalytics(campaignAnalytics,i)"
                                          title="View Auto Response Analytics">
                                          <i class="fa"

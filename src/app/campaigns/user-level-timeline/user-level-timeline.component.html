@@ -22,6 +22,19 @@
       <div data-animation="slideInUp">
         <div class="row mb10" style="margin-left: 30px;">
           <img src="/assets/images/user.png" width="48px" class="user-profile-image" alt="No image found">
+          <ng-container *ngIf="!disabled">
+            <span
+              *ngIf="((campaignDetails?.nurtureCampaign || !campaignDetails?.channelCampaign) &&  (campaignType!='LANDINGPAGE') &&(campaignType!='SOCIAL')&&
+                (authenticationService.module.isCompanyPartner || authenticationService.isPartnerTeamMember ) && enableLeads && !createdBySelf) || campaignDetails?.showRegisterLeadButton">
+              <button style="position: absolute; left: 350px; margin-top: 7px;" (click)="showDealRegistrationForm()"
+                class="btn btn-success">{{dealButtonText}}</button>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="disabled">
+            <button title="This campaign has been deleted by your vendor.You can't register a lead" 
+            style="position: absolute; left: 350px; margin-top: 7px;cursor: not-allowed;background: darkgray;"
+             class="btn btn-success">{{dealButtonText}}</button>
+          </ng-container>
           <h5 class="f-w-600 mt10 mb0">
             <span title="{{userLevelCampaignAnalyticsDTO?.fullName}}" *ngIf="userLevelCampaignAnalyticsDTO?.fullName">{{userLevelCampaignAnalyticsDTO?.fullName | slice:0:20}}</span>
           <span *ngIf="userLevelCampaignAnalyticsDTO?.fullName?.length>20">..</span>
@@ -190,3 +203,34 @@
   </div>
 </div>
 </section>
+
+<!-- --_Deal Registration -->
+<div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  data-keyboard="false" data-backdrop="static" *ngIf="isDealRegistration && !isDealPreview" style="display: block">
+  <div class="modal-dialog modal-css" role="document" style="float: right;position: relative">
+    <div class="modal-content">
+      <div class="modal-body" style="overflow:unset">
+        <a (click)="showTimeLineView()" class="pull-right close-circle"
+          style="margin: 9px 14px;padding-top: 3px;padding-left: 5px;">
+          <span class="glyphicon glyphicon-remove" style="z-index: 1;font-size: 13px;" aria-hidden="true"></span></a>
+        <app-add-leads [campaign]="campaignDetails" [lead]="selectedRow" [dealId]="dealId"></app-add-leads>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- --Lead Registration -->
+<div class="modal right" id="leadFormModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  data-keyboard="false" data-backdrop="static" *ngIf="isDealPreview" style="display: block">
+  <div class="modal-dialog modal-css" role="document" style="float: right; position: relative">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a (click)="showTimeLineView()" class="pull-right close-circle"
+          style="margin: 9px 14px; padding-top: 3px; padding-left: 5px;">
+          <span class="glyphicon glyphicon-remove" style="z-index: 1; font-size: 13px;" aria-hidden="true"></span>
+        </a>
+        <app-deal-registration [campaign]="campaignDetails" [lead]="selectedRow" [dealId]="dealId" [isPreview]="true">
+        </app-deal-registration>
+      </div>
+    </div>
+  </div>
+</div>
