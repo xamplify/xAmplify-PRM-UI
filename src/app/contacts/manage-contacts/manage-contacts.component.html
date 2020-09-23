@@ -1,3 +1,5 @@
+<ngx-loading [show]="campaignLoader"
+							[config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 <div class="page-content"
 	[class.ml0]="authenticationService.isSuperAdmin()">
 	<!-- page-breadcrumb -->
@@ -854,11 +856,12 @@
 																</a>
 															</div>
 														</td>
+														<td></td>
 														<ng-template #NA>N/A</ng-template>
 													</tr>
 													<tr
 												[ngClass]="{'hidden': !contact.isShowDetails, 'show-more': contact.isShowDetails}">
-												<td colspan="8">
+												<td colspan="9">
 													<table cellpadding="5" cellspacing="0"
 														style="padding-left: 50px; margin-left: 55px;">
 														<tbody>

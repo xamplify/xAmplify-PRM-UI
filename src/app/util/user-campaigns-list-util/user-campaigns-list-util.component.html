@@ -144,10 +144,10 @@
                                        <span>-</span>
                                     </ng-container>
                                   </td>
-                                  <td>
+                                  <td class="center-align">
                                     {{campaignAnalytics?.emailOpenedCount}}
                                   </td>
-                                  <td>
+                                  <td class="center-align">
                                     {{campaignAnalytics?.clickedUrlsCount}}
                                   </td>
                                   <td>
@@ -165,9 +165,9 @@
                                        
                                      </div>
                                   </td>
-                                  <td>
-                                    <div class="actions-block" (click)="viewTimeLine(campaignAnalytics)" >
-                                       <a title="View History">
+                                  <td class="center-align">
+                                    <div  (click)="viewTimeLine(campaignAnalytics)" >
+                                       <a class="circled-number" title="View History">
                                           <i class="fa fa-history action-btn" aria-hidden="true"></i>
                                           </a>
                                        </div>

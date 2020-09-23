@@ -64,7 +64,36 @@ export class UserLevelTimelineComponent implements OnInit {
     }, error => {
       this.xtremandLogger.log(error);
       this.xtremandLogger.errorPage(error);
-    });
+    } ,
+        () => {
+          this.listautoResponseAnalyticsByCampaignAndUser();
+        }
+    );
+  }
+
+  listautoResponseAnalyticsByCampaignAndUser() {
+    try {
+      this.loading = true;
+      this.dataLoader = true;
+      let json = { "pageIndex": 1, "maxResults": 120, "userId": this.selectedUserId, "campaignId": this.campaignId };
+      this.campaignService.listautoResponseAnalyticsByCampaignAndUser(json)
+        .subscribe(result => {
+          const response = result.data.data;
+          response.forEach((element, index) => {
+            element.time = new Date(element.sentTimeUtcString);
+          });
+          this.emailLogs.push(...response);
+          this.loading = false;
+          this.dataLoader = false;
+        },
+          error => { this.xtremandLogger.errorPage(error);
+          },
+          () => {
+            this.emailLogs.sort((b, a) => new Date(b.time).getTime() - new Date(a.time).getTime());
+          })
+    } catch (error) { 
+      this.xtremandLogger.error('Error in analytics page listautoResponseAnalyticsByCampaignAndUser' + error); 
+    }
   }
 
   goBack(){

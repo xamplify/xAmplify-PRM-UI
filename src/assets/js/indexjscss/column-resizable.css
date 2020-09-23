@@ -4,6 +4,11 @@ thead tr th {
 #autoresponse-tr {
 	background-color: #d3d3d317
 }
+#autoresponse-analytics {
+	background-color: #f1f1f15e;
+}
+
+
 
 span.ui-column-resizer {
 	display: block;

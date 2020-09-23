@@ -198,7 +198,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     public isZohoSynchronizationThroughVanity
     public zohoCurrentUser:any;
     tempIsZohoSynchronization: any;
-
+	campaignLoader = false;
     constructor(public userService: UserService, public contactService: ContactService, public authenticationService: AuthenticationService, private router: Router, public properties: Properties,
         private pagerService: PagerService, public pagination: Pagination, public referenceService: ReferenceService, public xtremandLogger: XtremandLogger,
         public actionsDescription: ActionsDescription, private render: Renderer, public callActionSwitch: CallActionSwitch) {
@@ -1926,7 +1926,7 @@ export class ManageContactsComponent implements OnInit, AfterViewInit, AfterView
     }
 
     showCampaigns(userId:number){
-        this.loading = true;
+        this.campaignLoader = true;
 		let prefixUrl = "/home/campaigns/user-campaigns/";
         if(this.isPartner){
             this.referenceService.goToRouter(prefixUrl+"/p/"+userId);
