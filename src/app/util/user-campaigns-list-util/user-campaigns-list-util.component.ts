@@ -39,7 +39,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
 	campaignAnalytics:Array<any> = new Array<any>();
 	autoResponeAnalyticsLoader: HttpRequestLoader = new HttpRequestLoader();
 	colspanValue: number = 7;
-
+	selectedCampaignTypeIndex = 0;
 	constructor(private utilService: UtilService,private route: ActivatedRoute,private campaignService:CampaignService,public sortOption: SortOption, public listLoader: HttpRequestLoader, private pagerService: PagerService, public authenticationService: AuthenticationService, public xtremandLogger: XtremandLogger, public referenceService: ReferenceService, private router: Router, public properties: Properties) {
 		this.loggedInUserId = this.authenticationService.getUserId();
 	}
@@ -92,6 +92,13 @@ export class UserCampaignsListUtilComponent implements OnInit {
 		this.referenceService.loading(this.listLoader, false);
 	}
 
+	filterCampaigns(type: string, index: number) {
+        this.selectedCampaignTypeIndex = index;//This is to highlight the tab
+        this.pagination.pageIndex = 1;
+		this.pagination.campaignType = type;
+        this.listCampaignAnalytics(this.pagination);
+	}
+	
 	listCampaignAnalytics(pagination: Pagination) {
 		this.referenceService.goToTop();
 		this.startLoaders();

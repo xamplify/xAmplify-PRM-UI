@@ -70,3 +70,12 @@ img.active {
 .campaign-name-padding{
     padding-left: 5px;
 }
+
+.campaign-filter-option{
+    display: inline-flex;
+}
+
+.campaign-type-selected {
+	background-color: #0095da;
+	color: white;
+}
