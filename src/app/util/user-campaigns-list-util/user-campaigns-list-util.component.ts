@@ -179,7 +179,7 @@ export class UserCampaignsListUtilComponent implements OnInit {
     this.pagination.pageIndex = 1;
     this.pagination.searchKey = this.sortOption.searchKey;
     this.pagination = this.utilService.sortOptionValues(this.sortOption.userLevelCampaignAnalyticsSortOption, this.pagination);
-    this.listCampaignAnalytics(this.pagination);
+	this.listCampaignAnalytics(this.pagination);
   }
   eventHandler(keyCode: any) { if (keyCode === 13) { this.searchCampaigns(); } }
   /********************Pagaination&Search Code*****************/
