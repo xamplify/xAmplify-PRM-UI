@@ -22,7 +22,7 @@ import { VanityURLService } from 'app/vanity-url/services/vanity.url.service';
 import { SocialService } from 'app/social/services/social.service'
 import { EnvService } from 'app/env.service'
 
-declare var $: any;
+declare var $,swal: any;
 
 
 @Component({
@@ -149,7 +149,6 @@ export class FormPreviewComponent implements OnInit {
       .subscribe(
         (response: any) => {
           let geoLocationAnalytics = new GeoLocationAnalytics();
-          let upForm = new Form();
           this.deviceInfo = this.deviceService.getDeviceInfo();
           if (this.deviceInfo.device === 'unknown') {
             this.deviceInfo.device = 'computer';
@@ -282,6 +281,31 @@ export class FormPreviewComponent implements OnInit {
             if (response.statusCode == 200) {
               this.addHeaderMessage(response.message, this.successAlertClass);
               this.formSubmitted = true;
+              let formSubmissionUrl = this.form.formSubmissionUrl;
+              let openLinkInNewTab = this.form.openLinkInNewTab;
+              if(formSubmissionUrl!=undefined && $.trim(formSubmissionUrl).length>0){
+                let url = (window.location != window.parent.location) ? document.referrer: document.location;
+                let redirectMessage = '<strong> You are being redirect to '+formSubmissionUrl+'</strong>' ;
+                let text = !openLinkInNewTab ? redirectMessage:redirectMessage+' <br>(opens in new window)';
+                swal( {
+                  title:'Please Wait',
+                  text: text,
+                  allowOutsideClick: false, 
+                  showConfirmButton: false, 
+                  imageUrl: 'assets/images/loader.gif',
+              });
+                setTimeout(function() {
+                if(openLinkInNewTab){
+                  window.open(formSubmissionUrl, '_blank');
+                }else{
+                  window.parent.location.href = formSubmissionUrl;
+                  //window.location.replace(formSubmissionUrl);
+                }
+                swal.close();
+                }, 3000);
+              }
+              
+
             } else if (response.statusCode == 404) {
               this.addHeaderMessage(response.message, this.errorAlertClass);
             }
