@@ -38,7 +38,7 @@
 <div class="row">
   <div class="clearfix">
     <section class="clearfix">
-      <ng-container *ngIf="!isLoggedInAsTeamMember && !partnershipEstablishedOnlyWithVendorTier">
+      <ng-container *ngIf="!isLoggedInAsTeamMember && !authenticationService.module.isPartnershipEstablishedOnlyWithVendorTier">
         <div class="col-xs-6 col-sm-2 hidden-xs">
             <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;" *ngIf="!isAddTeamMember && !isUploadCsv">
                 <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>

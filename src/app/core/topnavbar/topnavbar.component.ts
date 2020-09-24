@@ -69,7 +69,6 @@ export class TopnavbarComponent implements OnInit,OnDestroy {
               data => {
                 this.translateService.use(data.preferredLanguage);
                 this.getAllPreferredLanguages(data.preferredLanguage);
-                console.log(data);
                 if(this.vanityServiceURL.isVanityURLEnabled()){
                   this.vanityServiceURL.checkVanityURLDetails();
                 }                

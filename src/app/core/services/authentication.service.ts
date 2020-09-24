@@ -470,6 +470,7 @@ export class AuthenticationService {
     this.hasOnlyPartnerRole = false;
     module.isOnlyPartner = false;
     module.isReDistribution = false;
+    module.isPartnershipEstablishedOnlyWithVendorTier = false;
     this.isShowRedistribution = false;
     this.enableLeads = false;
 	this.contactsCount = false;
