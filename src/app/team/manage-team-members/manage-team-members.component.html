@@ -38,7 +38,7 @@
 <div class="row">
   <div class="clearfix">
     <section class="clearfix">
-      <ng-container *ngIf="!isLoggedInAsTeamMember">
+      <ng-container *ngIf="!isLoggedInAsTeamMember && !partnershipEstablishedOnlyWithVendorTier">
         <div class="col-xs-6 col-sm-2 hidden-xs">
             <div class="btn-xs btn-info fileinput-button btn-block rounded-0" style="position: relative;" *ngIf="!isAddTeamMember && !isUploadCsv">
                 <h6 style="text-align: center; font-size:14px" translate>Upload a CSV</h6>
@@ -56,10 +56,10 @@
                 <h6 style="font-size:14px" translate>Add Team Member</h6>
             </button>
         </div>
-      </ng-container>
         <div *ngIf="csvFilePath?.length>0" class="col-xs-12 col-sm-3 hidden-xs pull-right" style="text-align:right">
             <a class="btn btn-success" (click)="downloadEmptyCsv()" download translate>Download CSV Template</a>
         </div>
+      </ng-container>
     </section>
 </div>
 <!------Added Team Members--------------------------->
